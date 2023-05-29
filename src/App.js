@@ -35,11 +35,11 @@ function App() {
   <Hotel/>
    <ChatBox/>
    <PopupCard/>
-   <Footer/>
+  
         <Register/>
         <Login/>
         <Profile/>
-        
+         <Footer/>
         <Routes>
         
         </Routes>
