@@ -1,0 +1,160 @@
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-label {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.input-text {
+  width: 300px;
+  height: 18px;
+  padding: 8px;
+  margin-top: -825px;
+  margin-left: -750px;
+}
+.input-text-local {
+  width: 80px;
+  padding: 8px;
+  margin-bottom: 16px;
+}
+.local{
+  margin-top: -1px;
+  margin-left: -970px;
+}
+.input-startdate{
+  height: 17px;
+  width: 60px;
+  padding: 8px;
+  margin-left: -325px;
+  margin-top: -5px;
+}
+.end-date  {
+  width: 60px;
+  padding: 8px;
+  margin-left: 210px;
+  margin-top: -40px;
+}
+.start-date{
+  width: 60px;
+  padding: 8px;
+  margin-left: 566px;
+  margin-top: -42px;
+}
+.input-enddate {
+  width: 60px;
+  height: 17px;
+  padding: 8px;
+  margin-left: -531px;
+  margin-top: -18px;
+}
+.input-guests{
+  width: 100px;
+  height: 37px;
+ 
+  padding: 8px;
+ 
+  margin-left: 120px;
+}
+.input-rooms {
+  height: 37px;
+  width: 100px;
+  padding: 8px;
+  margin-left: 40px;
+  margin-top: -2px;
+}
+.rooms{
+  margin-left: 150px;
+  margin-top: -35px;
+}
+.guests{
+  margin-left: -130px;
+  margin-top: -44px;
+}
+.input-select{
+  width: 100px;
+}
+.marital{
+  margin-top: -51px;
+  margin-left: -708px;
+  
+}
+.more-options{
+  margin-top: -35px;
+  margin-left: -447px;
+}
+.more-options .input-select-more{
+  padding: 8.2px;
+  width: 100px;
+}
+.marital .input-select-marital{
+  padding: 8px;
+}
+.input-select-more{
+  padding: 5px;
+  width: 60px;
+}
+.date-picker {
+  display: flex;
+  align-items: center;
+}
+
+.date-separator {
+  width: 100px;
+  margin: 0 8px;
+}
+.react-datepicker{
+  margin-left: -500px;
+}
+.react-datepicker__month-container {
+  float: right;
+  
+}
+.search-button {
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: -200px;
+}
+
+.search-button:hover {
+  background-color: #2c5ca9;
+}
+
+.search-button:focus {
+  outline: none;
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  margin-top: -34px;
+  margin-left: -180px;
+}
+
+.btn button {
+  padding: 10px 20px;
+  background-color: #fab9b9;
+  color: rgb(0, 0, 0);
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.btn button:hover {
+  background-color: #eb6363;
+}
+
+.btn button:active {
+  background-color: #3e8e41;
+}
