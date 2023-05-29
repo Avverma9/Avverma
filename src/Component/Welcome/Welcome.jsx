@@ -9,7 +9,7 @@ const location=useLocation()
   const [images, setImages] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/welcome/get')
+    fetch('https://hotel-backend-tge7.onrender.com/welcome/get')
       .then(response => response.json())
       .then(data => {
         setImages(data);

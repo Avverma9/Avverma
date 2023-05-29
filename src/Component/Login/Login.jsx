@@ -15,7 +15,7 @@ const Login = () => {
     setIsLoading(true); // Set loading state to true while making the request
 
     try {
-      const response = await fetch('http://localhost:5000/signin', {
+      const response = await fetch('https://hotel-backend-tge7.onrender.com/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

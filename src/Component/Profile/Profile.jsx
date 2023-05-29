@@ -30,7 +30,7 @@ const UpdateProfile = ({ userData, onCancel, onUpdateDone }) => {
         formData.append('images', images[0]); // Assuming only one image is selected
       }
 
-      const response = await fetch(`http://localhost:5000/user/${userData._id}`, {
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/user/${userData._id}`, {
         method: 'PUT',
         body: formData,
       });
@@ -117,7 +117,7 @@ const Profile = () => {
       navigate('/signin');
     } else {
       const userId = localStorage.getItem('userId');
-      fetch(`http://localhost:5000/get/${userId}`)
+      fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
         .then((response) => {
           if (response.ok) {
             return response.json();

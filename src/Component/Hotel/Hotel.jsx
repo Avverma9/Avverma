@@ -7,7 +7,7 @@ function HotelList() {
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/get/all/hotels')
+    fetch('https://hotel-backend-tge7.onrender.com/get/all/hotels')
       .then(response => response.json())
       .then(data => {
         console.log(data); // Logging the received data
