@@ -62,21 +62,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 const signUp = mongoose.model("user", UserSchema);
-// const UserSchema = new mongoose.Schema({
-//   name: { type: String, required: false },
-//   address: { type: String, required: false },
-//   email: { type: String, required: false, unique: true },
-//   mobile: { type: String, required: false },
-//   password: {
-//     type: String,
-//     required: true,
-//     match: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-//   },
-//   images: { type: [String], required: false },
-// });
-
-// const signUp = mongoose.model('user', UserSchema);
-
 //========================================//POST USER //====================================================================
 app.post("/signup", upload, async (req, res) => {
   const { name, address, email, mobile, password } = req.body;
