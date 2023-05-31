@@ -140,7 +140,7 @@ app.get("/welcome/get", async (req, res) => {
 });
 //====================================================DEMO HOTELS=================================================================//
 
-//====================Schema
+//====================homehotel=============================================================//
 
 const hotelSchema = new mongoose.Schema({
   images: { type: [String], required: false },
@@ -170,7 +170,7 @@ const hotelSchema = new mongoose.Schema({
 
 const Hotel = mongoose.model("Hotel", hotelSchema);
 
-//===============Post Hotel
+//===============
 app.post("/hotel", upload, async (req, res) => {
   try {
     const { name, location, rating, review } = req.body;
@@ -447,5 +447,7 @@ app.get("/complaints/:userId", async (req, res) => {
   }
 });
 
+//===============================================GET hotel by query==============================================//
 
+//===============================================================================================================//
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
