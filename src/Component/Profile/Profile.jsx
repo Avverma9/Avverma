@@ -1,9 +1,10 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Location } from 'react-router-dom';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaSignOutAlt } from 'react-icons/fa';
+import { BsGearFill} from 'react-icons/bs'
 import './Profile.css';
 
 const UpdateProfile = ({ userData, onCancel, onUpdateDone }) => {
@@ -105,14 +106,14 @@ const UpdateProfile = ({ userData, onCancel, onUpdateDone }) => {
 };
 
 const Profile = () => {
-    const location= useLocation()
+  const location = useLocation();
+  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const isSignedIn = localStorage.getItem('isSignedIn');
+        const isSignedIn = localStorage.getItem('isSignedIn');
     if (!isSignedIn) {
       navigate('/signin');
     } else {
@@ -156,11 +157,25 @@ const Profile = () => {
   if(location.pathname !== "/profile"){
     return null
 }
+  const handleSettingsClick = () => {
+    navigate('/usersettings');
+  };
+
+  if (location.pathname !== '/profile') {
+    return null;
+  }
+
   return (
     <>
-    <div className="profile-container">
-      <h1 className="profile-heading">Profile</h1>
-      {isLoading ? (
+      <div className="profile-container">
+        <div className="profile-header">
+          <h1 className="profile-heading">Settings</h1>
+          <button className="settings-button" onClick={handleSettingsClick}>
+            <BsGearFill size={24} />
+          </button>
+        </div>
+        <h1 className="profile-heading">Profile</h1>
+  {isLoading ? (
         <img
           src="https://cdn.dribbble.com/users/1888003/screenshots/10900711/media/ee3dcf5209f7f6261c17e1e1b7cacd50.gif"
           alt="Loading"
@@ -218,7 +233,7 @@ const Profile = () => {
         
         <img src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1685267478~exp=1685268078~hmac=5642d37470421106c55c5de2fc5289f7626bc124ff37dbd00edb813c39967331" alt="" className='nodata' />
       )}
-    </div>
+      </div>
     </>
   );
 };

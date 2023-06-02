@@ -28,7 +28,7 @@ const Header = () => {
               </a>
             </li>
             <li>
-              <a href="/about">
+              <a href="/partner">
                 <BsPerson /> Become a Partner
               </a>
             </li>
