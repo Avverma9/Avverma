@@ -5,7 +5,7 @@
   justify-content: center;
   width: 480px;
   height: 450px;
-  background-image: url(http://www.animated-gifs.fr/category_nature/summer/37902855.gif);
+  background-image: url(https://rurutek.com/jio/assets/img/login-animate.gif);
   background-size: cover;
   background-position: center;
   margin-top: 45px;
@@ -55,7 +55,7 @@
 }
 
 .show-password-button-signin {
-  background-color: transparent;
+  background-color: black;
   border: none;
   font-size: 12px;
   cursor: pointer;
@@ -82,8 +82,9 @@
   background-color: transparent;
   border: none;
   font-size: 14px;
+  margin-bottom: -50px;
   cursor: pointer;
-  color: #007bff;
+  color: #0080ff;
   text-decoration: underline;
 }
 
@@ -107,6 +108,7 @@
 
 button[type="submit-login"] {
   padding: 10px 20px;
+  margin-bottom: 70px;
   margin-left: 170px;
   background-color: #4caf50;
   color: #fff;
@@ -116,10 +118,10 @@ button[type="submit-login"] {
 }
 
 button[type="submit-login"]:hover {
-  background-color: #243524;
+  background-color: #0c0e0c;
 }
 .dhac{
-  margin-top: 100px;
+  margin-top: 130px;
 }
 
 /* Media Queries */
