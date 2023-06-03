@@ -432,7 +432,238 @@ app.get("/complaints/:userId", async (req, res) => {
   }
 });
 
-//===============================================GET hotel by query==============================================//
+//================================= HOTEL BOOKING
+//====SCHEMA
 
+const hotelBookingSchema = new mongoose.Schema({
+  images: { type: [String], required: false },
+  hotelName: {
+    type: String,
+    required: true,
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  room: {
+    type: Number,
+    required: true,
+  },
+  guest: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  roomPrice: {
+    type: Number,
+    default: 700,
+    required: true,
+  },
+  totalRoomPrice: {
+    type: Number,
+    required: true,
+  },
+  petAllowed: {
+    type: Boolean,
+    default: false,
+  },
+  localId: {
+    type: Boolean,
+    default: false,
+  },
+  maritalStatus: {
+    type: String,
+    requried: true,
+    enum: ["Single", "Married", "Married,Single"],
+  },
+  alcoholAllowed: {
+    type: Boolean,
+    default: false,
+  },
+  bachelorAllowed: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const HotelBooking = mongoose.model("HotelBooking", hotelBookingSchema);
+
+//========POST API
+app.post("/hotel/book", upload, async (req, res) => {
+  try {
+    const {
+      hotelName,
+      startDate,
+      endDate,
+      room,
+      guest,
+      petAllowed,
+      localId,
+      maritalStatus,
+      alcoholAllowed,
+      bachelorAllowed,
+    } = req.body;
+    const images = req.files.map((file) => file.location);
+    // Validate startDate
+    const startDateRegex =
+      /^(0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])-(20|24)\d{2}$/;
+    if (!startDate || !startDate.match(startDateRegex)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid startDate. Must be in MM-DD-YYYY format." });
+    }
+
+    // Validate endDate
+    const endDateRegex =
+      /^(0[1-9]|1[0-2])-(0[1-9]|1\d|2\d|3[01])-(20|24)\d{2}$/;
+    if (!endDate || !endDate.match(endDateRegex)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid endDate. Must be in MM-DD-YYYY format." });
+    }
+
+    // Calculate roomPrice based on room count
+    let pricePerRoom = 700;
+    if (room >= 1) {
+      totalRoomPrice = room * 700;
+    } else {
+      res.status(400).send({ status: false, message: "Room field is invalid" });
+    }
+
+    const hotelBooking = new HotelBooking({
+      images,
+      hotelName,
+      startDate,
+      endDate,
+      room,
+      guest,
+      totalRoomPrice,
+      petAllowed,
+      localId,
+      maritalStatus,
+      alcoholAllowed,
+      bachelorAllowed,
+    });
+    await hotelBooking.save();
+    res.status(201).json({
+      message: "Hotel booked successfully",
+      hotelBooking: hotelBooking,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error in booking hotel",
+      error: error.message,
+    });
+  }
+});
+
+//=============GET HOTEL BOOKINGS
+app.get("/hotel/bookings", async (req, res) => {
+  try {
+    // Retrieve all hotel bookings
+    const bookings = await HotelBooking.find();
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//==========GET HOTEL BOOKINGS BY FILTER
+app.get("/hotel/booking", async (req, res) => {
+  try {
+    const {
+      hotelName,
+      startDate,
+      endDate,
+      room,
+      guest,
+      totalRoomPrice,
+      petAllowed,
+      localId,
+      maritalStatus,
+      alcoholAllowed,
+      bachelorAllowed,
+    } = req.query;
+
+    const query = {};
+
+    if (hotelName) {
+      query.hotelName = hotelName;
+    }
+    if (startDate) {
+      query.startDate = startDate;
+    }
+    if (endDate) {
+      query.endDate = endDate;
+    }
+    if (room) {
+      query.room = room;
+    }
+    if (guest) {
+      query.guest = guest;
+    }
+    if (totalRoomPrice) {
+      query.totalRoomPrice = totalRoomPrice;
+    }
+    if (petAllowed) {
+      query.petAllowed = petAllowed;
+    }
+    if (localId) {
+      query.localId = localId;
+    }
+    if (maritalStatus) {
+      query.maritalStatus = maritalStatus;
+    }
+    if (alcoholAllowed) {
+      query.alcoholAllowed = alcoholAllowed;
+    }
+    if (bachelorAllowed) {
+      query.bachelorAllowed = bachelorAllowed;
+    }
+
+    const bookings = await HotelBooking.find(query);
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+//UPDATE ROOM BOOKING
+// PUT route for updating hotel booking
+
+app.put("/hotel/bookings/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { room, guest } = req.body;
+
+    if (!room || !guest) {
+      return res
+        .status(400)
+        .json({ error: "Room and guest values are required for updating." });
+    }
+
+    const booking = await HotelBooking.findById(id);
+
+    if (!booking) {
+      return res.status(404).json({ error: "Hotel booking not found." });
+    }
+
+    booking.room = room;
+    booking.guest = guest;
+
+    booking.totalRoomPrice = booking.roomPrice * booking.room;
+    const updatedBooking = await booking.save();
+
+    res.status(200).json(updatedBooking);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 //===============================================================================================================//
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
