@@ -147,6 +147,10 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+   amenties: {
+    type: String,
+    required: false,
+  },
   review: {
     type: String,
     required: false,
@@ -158,18 +162,18 @@ const Hotel = mongoose.model("Hotel", hotelSchema);
 //===============
 app.post("/hotel", upload, async (req, res) => {
   try {
-    const { name, location, rating, review } = req.body;
+    const { name, location, rating, amenties, review } = req.body;
     const images = req.files.map((file) => file.location);
 
-    if (rating < 1 || rating > 10) {
-      return res.status(400).json({ error: "Rating must be between 1 and 10" });
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ error: "Rating must be between 1 and 5" });
     }
 
     let ratingLabel;
     if (rating < 5) {
-      ratingLabel = "Bad";
-    } else if (rating > 5) {
       ratingLabel = "Good";
+    } else if (rating > 5) {
+      ratingLabel = "Excellent";
     } else {
       ratingLabel = "Average";
     }
@@ -179,6 +183,7 @@ app.post("/hotel", upload, async (req, res) => {
       name: name,
       location: location,
       rating: rating,
+      amenties:amenties,
       review: review,
     });
 
