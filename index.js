@@ -147,7 +147,7 @@ const hotelSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-   amenties: {
+  amenties: {
     type: String,
     required: false,
   },
@@ -183,7 +183,7 @@ app.post("/hotel", upload, async (req, res) => {
       name: name,
       location: location,
       rating: rating,
-      amenties:amenties,
+      amenties: amenties,
       review: review,
     });
 
@@ -232,7 +232,7 @@ const complaint = mongoose.model("complaint", complaintSchema);
 
 app.post("/complaint/:id", async (req, res) => {
   try {
-    const { id } = req.params
+    const { id } = req.params;
     const { complaintDescription } = req.body;
     if (id != undefined) {
       const existingComplaint = await complaint.findOne({ id });
@@ -672,38 +672,82 @@ app.put("/hotel/bookings/:id", async (req, res) => {
 });
 //======================================Search Hotel==========================================//
 const searchSchema = new mongoose.Schema({
-  images:[String],
+  images: [String],
   destination: String,
+  hotelName: String,
   startDate: Date,
   endDate: Date,
-  guests: String,
-  numRooms: String,
+  guests: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  numRooms: Number,
+  price: {
+    type: Number,
+    default: 1000,
+  },
+  newPrice: {
+    type: Number,
+  },
   localId: Boolean,
   maritalStatus: String,
   moreOptions: [String],
+  amenties: [String],
+  rating: Number,
+  review: String,
 });
 
-const Search = mongoose.model('Search', searchSchema);
+const Search = mongoose.model("Search", searchSchema);
 
-app.post('/post/hotel/search', upload, async(req, res) => {
-  const  { destination, startDate, endDate, guests,numRooms,localId,maritalStatus,moreOptions} = req.body;
-const images = req.files.map((file) => file.location);
-  const search = new Search({ images,destination, startDate, endDate, guests,numRooms,localId,maritalStatus,moreOptions});
- await search.save()
+app.post("/post/hotel/search", upload, async (req, res) => {
+  const {
+    destination,
+    hotelName,
+    startDate,
+    endDate,
+    guests,
+    numRooms,
+    localId,
+    maritalStatus,
+    moreOptions,
+    amenties,
+    rating,
+    review,
+  } = req.body;
+  const images = req.files.map((file) => file.location);
+  // Calculate roomPrice based on room count
+  let pricePerRoom = 1000;
+  if (numRooms >= 1) {
+    newPrice = numRooms * 1000;
+  } else {
+    res.status(400).send({ status: false, message: "Room field is invalid" });
+  }
+  const search = new Search({
+    images,
+    destination,
+    hotelName,
+    startDate,
+    endDate,
+    guests,
+    numRooms,
+    newPrice,
+    localId,
+    maritalStatus,
+    moreOptions,
+    amenties,
+    rating,
+    review,
+  });
+  await search.save();
   io.emit("recordAdded", search);
- res.json(search);
+  res.json(search);
 });
 
 //===============================================Search by query============================================//
-app.get('/get/hotel/search', async (req, res) => {
-  const { destination, startDate, endDate, guests, numRooms, localId, maritalStatus, moreOptions } = req.query;
-
+app.get("/get/hotel/search", async (req, res) => {
   try {
-    if (!destination || !startDate || !endDate) {
-      return res.status(400).json({ error: 'Missing required parameters' });
-    }
-
-    const searchResults = await Search.find({
+    const {
       destination,
       startDate,
       endDate,
@@ -711,22 +755,42 @@ app.get('/get/hotel/search', async (req, res) => {
       numRooms,
       localId,
       maritalStatus,
-      moreOptions
-    }).exec();
+      moreOptions,
+    } = req.query;
 
-    if (searchResults.length === 0) {
-      return res.status(404).json({ error: 'No matching results found' });
+    const query = {};
+    
+    if (destination) {
+      query.destination = destination;
+    }
+    if (startDate) {
+      query.startDate = startDate;
+    }
+    if (endDate) {
+      query.endDate = endDate;
+    }
+    if (guests) {
+      query.guests = guests;
+    }
+    if (numRooms) {
+      query.numRooms = numRooms;
+    }
+    if (localId) {
+      query.localId = localId;
+    }
+    if (maritalStatus) {
+      query.maritalStatus = maritalStatus;
+    }
+    if (moreOptions) {
+      query.moreOptions = moreOptions;
     }
 
-    res.json(searchResults);
+    const searchHotel = await Search.find(query);
+
+    res.status(200).json(searchHotel);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
-
-
 //===============================================================================================================//
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
