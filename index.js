@@ -104,24 +104,6 @@ app.post("/signin", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-//========================================update user===============================================//
-app.put('/user/:id', upload,async(req, res) => {
-    const { id } = req.params;
-    const { name, address, email, mobile, password } = req.body;
-    const images = req.files.map(file => file.location);
-
-   const user= await signUp.findByIdAndUpdate(id,{name,address,email,mobile,password,images,},{ new: true })
-      .then((user) => {
-        if (user) {
-          res.json(user);
-        } else {
-          res.status(404).json({ message: 'User not found' });
-        }
-      })
-      .catch((error) => {
-        res.status(500).json({ message: 'Internal server error', error });
-      });
-  });
 
 //=======================================welcome schema=================================================//
 const welcomeSchema = new mongoose.Schema({
@@ -681,6 +663,154 @@ app.put("/hotel/bookings/:id", async (req, res) => {
     res.status(200).json(updatedBooking);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+//======================================Search Hotel=====================================================================//
+const searchSchema = new mongoose.Schema({
+  images: [String],
+  destination: String,
+  hotelName: String,
+  startDate: Date,
+  endDate: Date,
+  guests: {
+    type: Number,
+    required: true,
+    min: 1,
+  },
+  numRooms: Number,
+  price: {
+    type: Number,
+    default: 1000,
+  },
+  newPrice: {
+    type: Number,
+  },
+  localId: Boolean,
+  maritalStatus: String,
+  moreOptions: [String],
+  amenties: [String],
+  rating: Number,
+  review: String,
+});
+
+const Search = mongoose.model("Search", searchSchema);
+
+app.post("/post/hotel/search", upload, async (req, res) => {
+  const {
+    destination,
+    hotelName,
+    guests,
+    startDate,
+    endDate,
+    numRooms,
+    localId,
+    maritalStatus,
+    moreOptions,
+    amenties,
+    rating,
+    review,
+  } = req.body;
+  const images = req.files.map((file) => file.location);
+ 
+  // Calculate roomPrice based on room count
+  let pricePerRoom = 1000;
+  if (numRooms >= 1) {
+    newPrice = numRooms * 1000;
+  } else {
+    res.status(400).send({ status: false, message: "Room field is invalid" });
+  }
+  const search = new Search({
+    images,
+    destination,
+    hotelName,
+    startDate,
+    endDate,
+    guests,
+    numRooms,
+    newPrice,
+    localId,
+    maritalStatus,
+    moreOptions,
+    amenties,
+    rating,
+    review,
+  });
+  await search.save();
+  io.emit("recordAdded", search);
+  res.json(search);
+});
+
+//===============================================Search by query============================================//
+app.get("/get/hotel/search", async (req, res) => {
+  try {
+    const {
+      destination,
+      startDate,
+      endDate,
+      guests,
+      numRooms,
+      localId,
+      maritalStatus,
+      moreOptions,
+    } = req.query;
+
+    const query = {};
+
+    if (destination) {
+      query.destination = destination;
+    }
+    if (startDate) {
+      query.startDate = startDate;
+    }
+    if (endDate) {
+      query.endDate = endDate;
+    }
+    if (guests) {
+      query.guests = guests;
+    }
+    if (numRooms) {
+      query.numRooms = numRooms;
+    }
+    if (localId) {
+      query.localId = localId;
+    }
+    if (maritalStatus) {
+      query.maritalStatus = maritalStatus;
+    }
+    if (moreOptions) {
+      query.moreOptions = moreOptions;
+    }
+
+    const searchHotel = await Search.find(query);
+
+    if (searchHotel.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "No hotels found with the given filters." });
+    }
+
+    res.status(200).json(searchHotel);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+//=============================================Search By hotelName==================================================================//
+app.get("/hotelDestination", async (req, res) => {
+  const { destination } = req.query;
+
+  try {
+    const hotelDestination = await Search.find({ destination });
+
+    if (hotelDestination.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No hotels found with the given hotelName." });
+    }
+
+    res.status(200).json(hotelDestination);
+  } catch (error) {
+    console.error("Error retrieving hotels:", error);
+    res.status(500).json({ error: "Internal server error." });
   }
 });
 //===============================================================================================================//
