@@ -12,16 +12,28 @@ const SearchComponent = () => {
     endDate: null,
     guests: '1 Guest',
     numRooms: '1 Room',
-    localId: '',
+    localId: false,
     maritalStatus: '',
     moreOptions: [],
   });
-  const [moreOptionsVisible, setMoreOptionsVisible] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Perform search logic here
-    console.log('Performing search...');
+
+    // Create the query string from search data
+    const queryString = `destination=${searchData.destination}&startDate=${searchData.startDate}&endDate=${searchData.endDate}&guests=${searchData.guests}&numRooms=${searchData.numRooms}`;
+
+    // Fetch search results from the API
+    fetch(`/get/hotel/search?${queryString}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Search results:', data);
+        // Perform further actions with the search results as needed
+      })
+      .catch((error) => {
+        console.error('Error fetching search results:', error);
+        // Handle error condition
+      });
   };
 
   const handleInputChange = (e) => {
@@ -30,18 +42,6 @@ const SearchComponent = () => {
     setSearchData((prevState) => ({
       ...prevState,
       [name]: inputValue,
-    }));
-  };
-
-  const toggleMoreOptions = () => {
-    setMoreOptionsVisible((prevState) => !prevState);
-  };
-
-  const handleMoreOptionsChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
-    setSearchData((prevState) => ({
-      ...prevState,
-      moreOptions: selectedOptions,
     }));
   };
 
@@ -77,16 +77,17 @@ const SearchComponent = () => {
         />
 
         <div className="date-picker">
-          <div className='start-date'>
-          <DatePicker
-            id="start-date"
-            name="startDate"
-            selected={searchData.startDate}
-            onChange={(date) => setSearchData((prevState) => ({ ...prevState, startDate: date }))}
-            required
-            className="input-startdate"
-            placeholderText="Check-in"
-          /></div>
+          <div className="start-date">
+            <DatePicker
+              id="start-date"
+              name="startDate"
+              selected={searchData.startDate}
+              onChange={(date) => setSearchData((prevState) => ({ ...prevState, startDate: date }))}
+              required
+              className="input-startdate"
+              placeholderText="Check-in"
+            />
+          </div>
           <div className="end-date">
             <DatePicker
               id="endDate"
@@ -100,7 +101,7 @@ const SearchComponent = () => {
           </div>
         </div>
 
-        <div className='guests'>
+        <div className="guests">
           <select
             id="guests"
             name="guests"
@@ -113,7 +114,7 @@ const SearchComponent = () => {
           </select>
         </div>
 
-        <div className='rooms'>
+        <div className="rooms">
           <select
             id="numRooms"
             name="numRooms"
@@ -126,20 +127,21 @@ const SearchComponent = () => {
           </select>
         </div>
 
-        <div className='local'>
-          <input
-            type="text"
-            id="localId"
-            name="localId"
-            placeholder="Local ID"
-            value={searchData.localId}
-            onChange={handleInputChange}
-            required
-            className="input-text-local"
-          />
+        <div className="local">
+          <label htmlFor="localId">
+            <input
+              type="checkbox"
+              id="localId"
+              name="localId"
+              checked={searchData.localId}
+              onChange={handleInputChange}
+              className="input-checkbox"
+            />
+            Local ID
+          </label>
         </div>
 
-        <div className='marital'>
+        <div className="marital">
           <select
             id="maritalStatus"
             name="maritalStatus"
@@ -159,7 +161,7 @@ const SearchComponent = () => {
             id="moreOptions"
             name="moreOptions"
             value={searchData.moreOptions}
-            onChange={handleMoreOptionsChange}
+            onChange={handleInputChange}
             className="input-select-more"
           >
             <option value="">More</option>

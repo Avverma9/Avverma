@@ -21,10 +21,35 @@ function Footer() {
             <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
             <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
             <li><a href="/hotels-goa">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+            
+          </ul>
+          <ul>
+            <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
+            <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
+            <li><a href="/hotels-goa">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+            
+          </ul>
+          <ul>
+            <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
+            <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
+            <li><a href="/hotels-goa">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
             
           </ul>
           <ul>
            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+           <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
+           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
            <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
           </ul>
         </div>

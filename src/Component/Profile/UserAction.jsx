@@ -131,53 +131,59 @@ console.log(id);
           >
             Services
           </button>
+          <br />
           <button
             className={activeSection === 'help' ? styles.activeButton : ''}
             onClick={() => this.setActiveSection('help')}
           >
             Help
           </button>
+          <br />
           <button
             className={activeSection === 'complaints' ? styles.activeButton : ''}
             onClick={() => this.setActiveSection('complaints')}
           >
             Complaints
           </button>
+          <br />
           <button
             className={activeSection === 'feedback' ? styles.activeButton : ''}
             onClick={() => this.setActiveSection('feedback')}
           >
             Feedback
           </button>
+          <br />
           <button
             className={activeSection === 'bookings' ? styles.activeButton : ''}
             onClick={() => this.setActiveSection('bookings')}
           >
             Bookings
           </button>
+          <br />
           <button
             className={activeSection === 'cancelBooking' ? styles.activeButton : ''}
             onClick={() => this.setActiveSection('cancelBooking')}
           >
             Cancel your booking
           </button>
+          
         </div>
         <div>
           {activeSection === 'services' && (
             <div className={styles.activeSection}>
-              <h3>Services</h3>
+             
               {/* Add your services component here */}
             </div>
           )}
           {activeSection === 'help' && (
             <div className={styles.activeSection}>
-              <h3>Help</h3>
+            
               {/* Add your help component here */}
             </div>
           )}
           {activeSection === 'complaints' && (
             <div className={styles.activeSection}>
-              <h3>Complaints</h3>
+             
               <form onSubmit={this.handleSubmitComplaint}>
                 <textarea
                   value={complaintDescription}
@@ -191,7 +197,7 @@ console.log(id);
           )}
           {activeSection === 'feedback' && (
             <div className={styles.activeSection}>
-              <h3>Feedback</h3>
+              
               <form onSubmit={this.handleSubmitFeedback}>
                 <textarea
                   value={feedbackText}
@@ -205,13 +211,13 @@ console.log(id);
           )}
           {activeSection === 'bookings' && (
             <div className={styles.activeSection}>
-              <h3>Bookings</h3>
+            
               {/* Add your bookings component here */}
             </div>
           )}
           {activeSection === 'cancelBooking' && (
             <div className={styles.activeSection}>
-              <h3>Cancel your booking</h3>
+              
               <form onSubmit={this.handleSubmitCancelBooking}>
                 <input
                   type="text-a"
@@ -233,7 +239,7 @@ console.log(id);
 const UserSettings = () => {
   const location = useLocation();
 
-  if (location.pathname !== '/usersettings') {
+  if (location.pathname !== '/profile') {
     return null;
   }
 

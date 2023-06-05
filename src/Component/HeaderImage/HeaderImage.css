@@ -1,89 +1,86 @@
+/* HeaderImage.css */
+
 .header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  height: auto;
+}
+
+.city {
+  position: relative;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .circle {
-  width:50px; /* Adjust the width and height as needed */
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  margin-left: 100px;
-  object-fit: cover; /* Ensure the image fills the circle */
-  margin: 8px; /* Adjust the margin between the images */
-  transition: transform 0.3s ease; /* Add transition for smooth hover effect */
-}
-
-.circle:hover {
-  transform: scale(1.1); /* Apply scale transformation on hover */
+  justify-content: space-between;
+  object-fit: cover;
 }
 
 .city-name {
-  margin-left: -120px;
-  margin-bottom: -70px;
-  transition: transform 0.3s ease;
+  margin-top: 5px;
+  justify-content: space-between;
 }
 
-.city-name:hover {
-  transform: scale(1.1);
-  color: rgb(0, 0, 0);
-  box-sizing: border-box;
-  border-radius: 20%;
-  background-color: #f7d8d8;
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 1;
+  display: none;
+  min-width: 160px;
+  padding: 4px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.city-names {
-  margin-bottom: -100px;
-  margin-right: -130px;
-  transition: transform 0.3s ease;
+.dropdown-menu a {
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+  color: #333;
 }
 
-.city-names:hover {
-  transform: scale(1.1);
+.dropdown-menu a:hover {
+  background-color: #ddd;
 }
 
-@media (max-width: 768px) {
-  .header {
-   
-    flex-direction: row;
-    align-items: center;
+.city:hover .dropdown-menu {
+  display: block;
+}
+
+/* Media Queries */
+
+@media screen and (max-width: 600px) {
+  .city {
+    margin: 10px;
   }
-  .header img {
-    height: 20px;
-    width: 20px;
-   
-  }
-
+  
   .circle {
-    width: 4%;
-    height: 4%;
-    margin-left: -90px;
+    width: 50px;
+    height: 50px;
   }
+}
 
-  .city-name {
-    margin-right: 10px;
-    margin-bottom: -25px;
-    font-size: 4px;
+@media screen and (max-width: 400px) {
+  .header {
+    justify-content:baseline;
   }
-
-  .city-name:hover {
-    transform: scale(1.1);
-    color: rgb(0, 0, 0);
-    box-sizing: border-box;
-    border-radius: 20%;
-    background-color: #f7d8d8;
+  
+  .city {
+    margin: 18px;
   }
-
-  .city-names p{
-    margin-bottom: 40px;
-    margin-left: 90px;
-    font-size: 8px;
-  }
-
-  .city-names:hover {
-    transform: scale(1.1);
+  
+  .circle {
+    width: 35px;
+    height: 35px;
   }
 }

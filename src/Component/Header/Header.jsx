@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React, { useState } from 'react';
-import { Dropdown } from 'react-bootstrap';
-import { BsHouse, BsPerson, BsEnvelope, BsBoxArrowInRight } from 'react-icons/bs';
-import styles from  './header.module.css';
+import { BsHouse, BsPerson, BsBoxArrowInRight } from 'react-icons/bs';
+import {MdOutlineUnfoldMoreDouble} from 'react-icons/md'
+import styles from './header.module.css';
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -13,15 +15,17 @@ const Header = () => {
   return (
     <>
       <header>
-        <nav className={`${styles.nav} ${showMenu ? styles.show : ''}`}>
+        <nav className={styles.nav}>
           <div className={styles.logo}>
-            <img src="https://classroom-training-bucket.s3.ap-south-1.amazonaws.com/1685090244811-Hotel-removebg-preview.png" alt="Logo" />
+            <img src="https://www.freepnglogos.com/uploads/hotel-logo-png/download-building-hotel-clipart-png-33.png" alt="Logo" />
           </div>
-          <div className={styles['search-bar']}></div>
-          <div className={styles['menu-toggle']} onClick={toggleMenu}>
+
+          <div className={`${styles['menu-toggle']} ${showMenu ? styles.active : ''}`} onClick={toggleMenu}>
             <div className={styles.hamburger}></div>
+            
           </div>
-          <ul>
+
+          <ul className={`${styles.menu} ${showMenu ? styles.show : ''}`}>
             <li>
               <a href="/register">
                 <BsBoxArrowInRight /> Register/Login
@@ -31,6 +35,16 @@ const Header = () => {
               <a href="/partner">
                 <BsPerson /> Become a Partner
               </a>
+            </li>
+            <li className={styles.dropdown}>
+              <a href="#">
+                <MdOutlineUnfoldMoreDouble/>
+                More
+              </a>
+              <div className={styles['dropdown-content']}>
+                <a href="#">Complaints</a>
+                <a href="#">Option 2</a>
+              </div>
             </li>
             <li>
               <a href="/">

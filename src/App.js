@@ -12,7 +12,7 @@ import HeaderImage from './Component/HeaderImage/HeaderImage';
 // import CarouselPage from './Component/Carousel/Carousel';
 // import IndividualIntervalsExample from './Component/Carousel/Carousel';
 import Carousel from './Component/Carousel/Carousel';
-import SearchComponent from './Component/Search/Search';
+// import SearchComponent from './Component/Search/Search';
 import Home from './Component/Home/Home.jsx'
 
 import ChatBox from './Component/Chatbot/Chatbot';
@@ -22,6 +22,7 @@ import Hotel from './Component/Hotel/Hotel.jsx';
 
 import UserSettings from './Component/Profile/UserAction';
 import Partner from './Component/Partner/Partner';
+import PunjabPage from './Component/States/Punjab/Punjab';
 
 
 
@@ -35,7 +36,7 @@ function App() {
          <HeaderImage/>
        
    <Carousel/>
-   <SearchComponent/>
+   {/* <SearchComponent/> */}
    <Home/>
   <Hotel/>
    <ChatBox/>
@@ -46,6 +47,7 @@ function App() {
         <Profile/>
         <UserSettings/>
         <Partner/>
+        <PunjabPage/>
         <Footer/>
         <Routes>
         

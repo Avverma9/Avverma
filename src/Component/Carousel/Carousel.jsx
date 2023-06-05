@@ -1,11 +1,13 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-
-
-import './Carousel.css';
 import { useLocation } from 'react-router-dom';
 
+import './Carousel.css';
+import SearchComponent from '../Search/Search';
+
 const CarouselPage = () => {
-  const location=useLocation()
+  const location = useLocation();
   const [slideIndex, setSlideIndex] = useState(0);
   const slides = [
     'https://cdn0.desidime.com/cdn-cgi/image/fit=contain,f=auto,onerror=redirect,w=1200,h=675,q=90/attachments/photos/876716/original/OffersinAmazonSummerSale2023.png',
@@ -31,9 +33,11 @@ const CarouselPage = () => {
   const changeSlide = (n) => {
     showSlide(slideIndex + n);
   };
-  if( location.pathname !== "/"){
-    return null
-    }
+
+  if (location.pathname !== '/') {
+    return null;
+  }
+
   return (
     <div className="carousel">
       {slides.map((slide, index) => (
@@ -44,6 +48,10 @@ const CarouselPage = () => {
           <img src={slide} alt={`Image ${index + 1}`} />
         </div>
       ))}
+
+      <div className="overlay">
+        <SearchComponent />
+      </div>
 
       <button className="prev-button" onClick={() => changeSlide(-1)}>
         <i className="fas fa-chevron-left"></i>

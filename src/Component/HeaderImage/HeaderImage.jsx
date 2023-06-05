@@ -1,42 +1,183 @@
+/* eslint-disable jsx-a11y/anchor-has-content */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './HeaderImage.css'
+import './HeaderImage.css';
 
 const HeaderImage = () => {
-    const location=useLocation()
-if(location.pathname !== "/"){
-    return null
-}
+  const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  if (location.pathname !== '/') {
+    return null;
+  }
+
   return (
     <div className="header">
-      <p className='city-names'>Top Offers</p>
-      <img className="circle" src="https://static.guim.co.uk/sys-images/Guardian/Pix/red/blue_pics/2009/04/14/pasta460.gif" alt="Image 1" />
+      <div className="city">
+        <div className="dropdown">
+          <div className="top-offers" onClick={toggleDropdown}>
+            <img
+              className="circle"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Biswa_Bangla_Gate_in_Kolkata_01.jpg/1200px-Biswa_Bangla_Gate_in_Kolkata_01.jpg"
+              alt="Top Offers"
+            />
+            <p className="city-name">Top Offers</p>
+          </div>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <a href="#">Offers for Hotel</a>
+              <a href="#">Offers for Tour</a>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <a href="state/punjab">
+  <div className="city">
+    <img
+      className="circle"
+      src="https://www.newsclick.in/sites/default/files/styles/amp_1200x675_16_9/public/2020-04/Punjab.PNG?itok=6M8kSqzz"
+      alt="Image 2"
+    />
+    <p className="city-name">Punjab</p>
+  </div>
+</a>
+
+<a href="state/maharashtra">
+      <div className="city">
+        <img
+          className="circle"
+          src="https://static.india.com/wp-content/uploads/2018/08/maharashtra-1.jpg"
+          alt="Image 3"
+        />
+        <p className="city-name">Maharashtra</p>
+      </div>
+</a>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://assets.gqindia.com/photos/61bc4462b764212228e2b603/1:1/w_3716,h_3716,c_limit/Fairfield%20by%20Marriott%20Goa%20Benaulim2.jpeg"
+          alt="Image 4"
+        />
+        <p className="city-name">Goa</p>
+      </div>
+
+      <div className="city">
+        <img
+          className="circle"
+          src="https://gumlet.assettype.com/swarajya%2F2022-08%2Fc4a036cd-b6e8-4f34-a340-f60e6de012ae%2FCollage_Maker_11_Aug_2022_08_07_PM.jpg?q=75&auto=format%2Ccompress&w=1200"
+          alt="Image 5"
+        />
+        <p className="city-name">Tamil Nadu</p>
+      </div>
+
+      <div className="city">
+        <img
+          className="circle"
+          src="https://cdn.britannica.com/22/124522-050-D8C3C313/pilgrims-Varanasi-Ganges-River-India-Uttar-Pradesh.jpg"
+          alt="Image 6"
+        />
+        <p className="city-name">Uttar Pradesh</p>
+      </div>
+
+      <div className="city">
+        <img
+          className="circle"
+          src="https://cdn.britannica.com/37/189837-050-F0AF383E/New-Delhi-India-War-Memorial-arch-Sir.jpg"
+          alt="Image 7"
+        />
+        <p className="city-name">Delhi</p>
+      </div>
+
+      <div className="city">
+        <img
+          className="circle"
+          src="https://images.hindustantimes.com/img/2021/03/04/550x309/_e5c11594-450e-11eb-9d7d-764df83b7a87_1614867899376.jpg"
+          alt="Image 8"
+        />
+        <p className="city-name">West Bengal</p>
+      </div>
+
+      <div className="city">
+        <img
+          className="circle"
+          src="https://static.toiimg.com/thumb/93105946/rajasthan.jpg?width=1200&height=900"
+          alt="Image 9"
+        />
+        <p className="city-name">Rajasthan</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://media.istockphoto.com/id/1246366598/photo/a-scenic-view-of-boats-under-a-blue-sky-in-backwaters-situated-in-allepey-town-located-in.jpg?s=612x612&w=0&k=20&c=YBv_3nP-6YjvN9JRhaNsBmq8ke4azCgvGLS5h3r9jSk="
+          alt="Image 10"
+        />
+        <p className="city-name">Kerala</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPzoADWDPjfXwmeuM-GbOf7I974WSjUlACwg&usqp=CAU"
+          alt="Image 11"
+        />
+        <p className="city-name">Bihar</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://assets.sentinelassam.com/h-upload/2023/03/18/445148-assam-tea-industries.webp"
+          alt="Image 12"
+        />
+        <p className="city-name">Assam</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://cdn.britannica.com/73/156473-050-E0E9F844/Vidah-Sauda-state-legislature-building-Karnataka-Bengaluru.jpg"
+          alt="Image 13"
+        />
+        <p className="city-name">Karnataka</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Mosque_in_Gujrat_Pakistan.JPG/1200px-Mosque_in_Gujrat_Pakistan.JPG"
+          alt="Image 14"
+        />
+        <p className="city-name">Gujrat</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2022/12/12103708/jammu-and-kashmir-1.jpg"
+          alt="Image 14"
+        />
+        <p className="city-name">Jammu & Kashmir</p>
+        
+      </div>
+      <div className="city">
+        <img
+          className="circle"
+          src="https://lp-cms-production.imgix.net/2019-06/f17a82146e4fdc978a9e5b4ad79e95b3bc28e4e77828065ae3ca95282668cef4.jpg"
+          alt="Image 16"
+        />
+        <p className="city-name">Haryana</p>
+        
+      </div>
       
-      <img className="circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Biswa_Bangla_Gate_in_Kolkata_01.jpg/1200px-Biswa_Bangla_Gate_in_Kolkata_01.jpg" alt="Image 2" />
-      <p className='city-name'>Kolkata</p>
       
-      <img className="circle" src="https://www.nationsonline.org/gallery/India/Gateway-of-India.jpg" alt="Image 3" />
-      <p className='city-name'>Mumbai</p>
-      <img className="circle" src="https://a.travel-assets.com/findyours-php/viewfinder/images/res70/68000/68002-New-Delhi.jpg" alt="Image 4" />
-      <p className='city-name'>Delhi</p>
-      <img className="circle" src="https://images.squarespace-cdn.com/content/v1/5a3bb03b4c326d76de73ddaa/1669616058232-6GMLSJ3V1GLQD18BA88I/The+Common+Wanderer-2155-2+%281%29.jpg?format=1000w" alt="Image 1" />
-      <p className='city-name'>Jaipur</p>
-      <img className="circle" src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/33/fc/f0/goa.jpg?w=700&h=500&s=1" alt="Image 2" />
-      <p className='city-name'>Goa</p>
-      <img className="circle" src="https://www.incredibleindiatour.net/packages/img/akshardham-temple.jpg" alt="Image 3" />
-      <p className='city-name'>Gujrat</p>
-      <img className="circle" src="https://tourism.bihar.gov.in/content/dam/bihar-tourism/images/category_a/patna/golghar/3300X2400.jpg/jcr:content/renditions/cq5dam.web.480.480.jpeg" alt="Image 4" />
-      <p className='city-name'>Patna</p>
-     
-      <img className="circle" src="https://travelogyindia.b-cdn.net/blog/wp-content/uploads/2014/02/Taj-Mahal-e1553857594808.jpg" alt="Image 3" />
-      <p className='city-name'>Agra</p>
-      <img className="circle" src="https://travelogyindia.b-cdn.net/blog/wp-content/uploads/2018/12/varanasi-city.png" alt="Image 4" />
-      <p className='city-name'>Varanasi</p>
-      <img className="circle" src="https://travelogyindia.b-cdn.net/blog/wp-content/uploads/2019/07/Jaisalmer-Fort1-Rajasthan.jpg" alt="Image 3" />
-      <p className='city-name'>Jaisalmer</p>
-      <img className="circle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Neeulm_Valley_AJK_%28Arang_Kel%29.jpg/640px-Neeulm_Valley_AJK_%28Arang_Kel%29.jpg" alt="Image 4" />
-      <p className='city-name'>Kashmir</p>
     </div>
   );
 };

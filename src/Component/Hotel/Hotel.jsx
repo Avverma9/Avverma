@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import styles from './hotel.module.css';
 
 function HotelList() {
-  const location=useLocation()
+  const location = useLocation();
   const [hotels, setHotels] = useState([]);
 
   useEffect(() => {
@@ -15,9 +15,16 @@ function HotelList() {
       })
       .catch(error => console.log(error));
   }, []);
-if(location.pathname !=="/"){
-  return null
-}
+
+  if (location.pathname !== '/') {
+    return null;
+  }
+
+  const handleBuy = (hotelName) => {
+    // Replace with the logic to handle the buy action
+    console.log(`Buy ${hotelName}`);
+  };
+
   return (
     <div className={styles['hotel-list']}>
       {Array.isArray(hotels) ? (
@@ -25,39 +32,23 @@ if(location.pathname !=="/"){
           <div className={styles.card} key={index}>
             <img src={hotel.images} alt={hotel.name} />
             <div className={styles['card-info']}>
-              <h2>{hotel.name}</h2>
+              <h2-h>{hotel.name}</h2-h>
               <p>{hotel.location}</p>
-              <div  style={{ display: "flex", justifyContent: "flex-start", alignItems: "center" , height:"15px" }}>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: '15px' }}>
                 <p>Rating: {hotel.rating}</p>
-                <span style={{ color: "green", marginLeft:"10px" }}>
-                  {Array.from({ length: Math.floor(hotel.rating) }, (_, i) => (
-                    <i className="fa fa-star" key={i} ></i>
-                  ))}
+                <span style={{ color: 'green', marginLeft: '10px' }}>
+                  <i className="fa fa-star" key="star"></i>
                 </span>
-                {hotel.rating % 1 !== 0 && (
-                  <span
-                    style={{
-                      display: 'inline-block',
-                      width: '16px',
-                      overflow: 'hidden',
-                     
-                    }}
-                  >
-                    <span style={{ color: 'green', }}>
-                      <i className="fa fa-star-half-alt" key="half"></i>
-                    </span>
-                  </span>
-                )}
               </div>
+              <p>Amenities: {hotel.amenties}</p>
               <p>Reviews: {hotel.review}</p>
+              <button className={styles.buybutton} onClick={() => handleBuy(hotel.name)}>Book Now</button>
             </div>
           </div>
         ))
       ) : (
         <p>No hotels found.</p>
       )}
-
-
     </div>
   );
 }
