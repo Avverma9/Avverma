@@ -169,12 +169,10 @@ const Profile = () => {
     <>
       <div className="profile-container">
         <div className="profile-header">
-          <h1 className="profile-heading">Settings</h1>
-          <button className="settings-button" onClick={handleSettingsClick}>
-            <BsGearFill size={24} />
-          </button>
+         
+        
         </div>
-        <h1 className="profile-heading">Profile</h1>
+       
   {isLoading ? (
         <img
           src="https://cdn.dribbble.com/users/1888003/screenshots/10900711/media/ee3dcf5209f7f6261c17e1e1b7cacd50.gif"

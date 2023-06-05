@@ -16,23 +16,49 @@ const SearchComponent = () => {
     maritalStatus: '',
     moreOptions: [],
   });
+  const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (e) => {
     e.preventDefault();
 
-    // Create the query string from search data
-    const queryString = `destination=${searchData.destination}&startDate=${searchData.startDate}&endDate=${searchData.endDate}&guests=${searchData.guests}&numRooms=${searchData.numRooms}`;
+    const query = new URLSearchParams();
+
+    if (searchData.destination) {
+      query.set('destination', searchData.destination);
+    }
+    if (searchData.startDate) {
+      query.set('startDate', searchData.startDate.toISOString().split('T')[0]);
+    }
+    if (searchData.endDate) {
+      query.set('endDate', searchData.endDate.toISOString().split('T')[0]);
+    }
+    if (searchData.guests) {
+      query.set('guests', searchData.guests);
+    }
+    if (searchData.numRooms) {
+      query.set('numRooms', searchData.numRooms);
+    }
+    if (searchData.localId) {
+      query.set('localId', 'true');
+    }
+    if (searchData.maritalStatus) {
+      query.set('maritalStatus', searchData.maritalStatus);
+    }
+    if (searchData.moreOptions) {
+      query.set('moreOptions', searchData.moreOptions);
+    }
+
+    const queryString = query.toString();
 
     // Fetch search results from the API
-    fetch(`/get/hotel/search?${queryString}`)
+    fetch(`https://hotel-backend-tge7.onrender.com/get/hotel/search?${queryString}`)
       .then((response) => response.json())
       .then((data) => {
         console.log('Search results:', data);
-        // Perform further actions with the search results as needed
+        setSearchResults(data); 
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
-        
       });
   };
 
@@ -172,9 +198,21 @@ const SearchComponent = () => {
         </div>
 
         <div className="btn">
-          <button type="submit-search">Search</button>
+          <button type="submit">Search</button>
         </div>
       </form>
+
+      <div className="search-results">
+        {searchResults.map((result) => (
+          <div key={result._id} className="search-result">
+            <h3>{result.hotelName}</h3>
+            <p>{result.destination}</p>
+            <p>Price: {result.price}</p>
+            <p>Rating: {result.rating}</p>
+            {/* Display other result properties as needed */}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

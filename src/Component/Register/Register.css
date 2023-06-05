@@ -4,7 +4,7 @@
   align-items: center;
   width: 700px;
   height: 420px;
-  background-image: url(https://familydestinationsguide.com/travel-guides/family-travel-guide/images/top-animation.gif);
+  background-image: url(https://cdn.dribbble.com/users/1917942/screenshots/7139971/media/d802dc4eadb049f5a9684759cfdfbffa.gif);
   background-size: cover;
   background-position: center;
   margin-top: 40px;
@@ -96,12 +96,14 @@
  }
  @media screen and (max-width: 768px) {
   .card-signup {
-    display:grid;
+    display: grid;
     justify-content: center;
     align-items: center;
-    width: 320px;
-    height: 320px;
-    background-image: url(https://i.pinimg.com/originals/2b/54/2f/2b542fb210eed84b23386a473c70b253.gif);
+    width: 330px;
+    height: 400px;
+    background-image: url(https://cdn.dribbble.com/users/1917942/screenshots/7139971/media/d802dc4eadb049f5a9684759cfdfbffa.gif);
+    background-size: cover;
+    background-position: center;
     margin-top: 40px;
     margin-left: 10px;
     padding: 20px;
@@ -109,25 +111,20 @@
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   }
-  
-  .form-signup {
-    display:grid;
-    flex-direction :row;
-  }
-  
+
   h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 18px;
+    margin-bottom: 15px;
   }
   
   .input-field-signup[type="text"],
   .input-field-signup[type="email"],
   .input-field-signup[type="password"] {
-    padding: 10px;
-    margin-bottom: -125px;
-    margin-block: 10px;
-    border-radius: 5px;
-    margin-left: 20px;
+    padding: 8px;
+    margin-bottom: -100px;
+    margin-block: 8px;
+    border-radius: 4px;
+    margin-left: 16px;
     border: 1px solid #ccc;
   }
   
@@ -138,55 +135,58 @@
   .profile-picture-wrapper-signup {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   
   .profile-picture-signup {
-    width: 50px;
-    height: 50px;
-    margin-top: -400px;
-    margin-left: 250px;
+    width: 80px;
+    height: 80px;
+    margin-top: -320px;
+    margin-left: 236px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
-    border: 2px solid #ccc;
+    border: 1px solid #ccc;
   }
   
   .upload-button-signup {
-    margin-left: -70px;
-    margin-top: -260px;
-    padding: 6px 12px;
-    width: 50px;
-    font-size: 0px;
+    margin-left: -128px;
+    margin-top: -208px;
+    padding: 4px 8px;
+    width: 160px;
+    font-size: 0;
     background-color: #e0e0e0;
     color: #333;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
   }
   
   button[type="submit"] {
-    padding: 10px 20px;
-    margin-left: 100px;
+    padding: 8px 16px;
+    margin-left: 240px;
     background-color: #4caf50;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
   }
   
   button[type="submit"]:hover {
     background-color: #45a049;
   }
+  
   button[type="submit-sign"] {
-    padding: 10px 20px;
-    margin-left: 70px;
+    padding: 8px 16px;
+    margin-left: 136px;
     background-color: #4caf50;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
   }
- .last-message {
-    margin-left: 100px;
- }
+  
+  .last-message {
+    margin-left: 80px;
+  }
+  
  }

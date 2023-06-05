@@ -104,7 +104,7 @@ const Login = () => {
           Don't have an account?
           <button
             type="button"
-            // onClick={handleSignUp}
+            onClick={handleSignUp}
             className="signup-button"
           >
             Click Here
