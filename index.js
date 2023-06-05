@@ -670,5 +670,63 @@ app.put("/hotel/bookings/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+//======================================Search Hotel==========================================//
+const searchSchema = new mongoose.Schema({
+  images:[String],
+  destination: String,
+  startDate: Date,
+  endDate: Date,
+  guests: String,
+  numRooms: String,
+  localId: Boolean,
+  maritalStatus: String,
+  moreOptions: [String],
+});
+
+const Search = mongoose.model('Search', searchSchema);
+
+app.post('/post/hotel/search', upload, async(req, res) => {
+  const  { destination, startDate, endDate, guests,numRooms,localId,maritalStatus,moreOptions} = req.body;
+const images = req.files.map((file) => file.location);
+  const search = new Search({ images,destination, startDate, endDate, guests,numRooms,localId,maritalStatus,moreOptions});
+ await search.save()
+  io.emit("recordAdded", search);
+ res.json(search);
+});
+
+//===============================================Search by query============================================//
+app.get('/get/hotel/search', async (req, res) => {
+  const { destination, startDate, endDate, guests, numRooms, localId, maritalStatus, moreOptions } = req.query;
+
+  try {
+    if (!destination || !startDate || !endDate) {
+      return res.status(400).json({ error: 'Missing required parameters' });
+    }
+
+    const searchResults = await Search.find({
+      destination,
+      startDate,
+      endDate,
+      guests,
+      numRooms,
+      localId,
+      maritalStatus,
+      moreOptions
+    }).exec();
+
+    if (searchResults.length === 0) {
+      return res.status(404).json({ error: 'No matching results found' });
+    }
+
+    res.json(searchResults);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+
 //===============================================================================================================//
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
