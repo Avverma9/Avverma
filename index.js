@@ -810,5 +810,24 @@ app.get("/get/hotel/search", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-//===============================================================================================================//
+//=================================================get by location==============================================================//
+app.get("/hotelDestination", async (req, res) => {
+  const { destination } = req.query;
+
+  try {
+    const hotelDestination = await Search.find({ destination });
+
+    if (hotelDestination.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No hotels found with the given hotelName." });
+    }
+
+    res.status(200).json(hotelDestination);
+  } catch (error) {
+    console.error("Error retrieving hotels:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+//==================================================================================================================================================
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
