@@ -32,7 +32,7 @@ const SearchComponent = () => {
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
-        // Handle error condition
+        
       });
   };
 
