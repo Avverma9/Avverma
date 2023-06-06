@@ -829,5 +829,228 @@ app.get("/hotelDestination", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+//=====================================================================================================================
+//=====================================================================================================================
+// const hotelsSchema = new mongoose.Schema({
+//   hotelName: {
+//     type: String,
+//     required: true,
+//   },
+//   destination: {
+//     type: String,
+//     required: true,
+//   },
+//   startDate: {
+//     type: Date,
+//     required: true,
+//   },
+//   endDate: {
+//     type: Date,
+//     required: true,
+//   },
+//   guests: {
+//     type: String,
+//     required: true,
+//   },
+//   numRooms: {
+//     type: String,
+//     required: true,
+//   },
+//   localId: {
+//     type: Boolean,
+//     default: false,
+//   },
+//   maritalStatus: {
+//     type: String,
+//     required: true,
+//   },
+//   moreOptions: [String],
+// amenities : [String],
+
+// });
+
+// const Hotels = mongoose.model('Hotels', hotelsSchema);
+// //===================================================================================================================================
+// app.post('/hotels/create/new',upload, async (req, res) => {
+//   try {
+//     const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms,maritalStatus, moreOptions } = req.body;
+// const images = req.files.map((file) => file.location);
+//     const newHotel = new Hotels({
+//       images,
+//       hotelName,
+//       destination,
+//       price,
+//       rating,
+//       startDate,
+//       endDate,
+//       guests,
+//       numRooms,
+//       maritalStatus,
+//       moreOptions,
+//     });
+
+//     const savedHotel = await newHotel.save();
+//     res.status(201).json(savedHotel);
+//   } catch (error) {
+//     console.error('Error creating hotel:', error);
+//     res.status(500).json({ error: 'Failed to create hotel' });
+//   }
+// });
+
+// //====================================================================================================================================
+// app.get('/search', async (req, res) => {
+//   try {
+//     const { destination, startDate, endDate, guests, numRooms,localId, moreOptions } = req.query;
+
+//     const searchQuery = {};
+
+//     if (destination) {
+//       searchQuery.destination = destination;
+//     }
+
+//     if (startDate && endDate) {
+//       searchQuery.startDate = { $gte: new Date(startDate) };
+//       searchQuery.endDate = { $lte: new Date(endDate) };
+//     }
+
+//     if (guests) {
+//       searchQuery.guests = guests;
+//     }
+
+//     if (numRooms) {
+//       searchQuery.numRooms = numRooms;
+//     }
+//  if (localId) {
+//       searchQuery.localId= localId;
+//     }
+
+//     if (moreOptions) {
+//       const options = moreOptions.split(',');
+//       searchQuery.moreOptions = { $in: options };
+//     }
+
+//     const searchResults = await Hotels.find(searchQuery);
+//     res.json(searchResults);
+//   } catch (error) {
+//     console.error('Error fetching search results:', error);
+//     res.status(500).json({ error: 'Failed to fetch search results' });
+//   }
+// });
+
+//=====================================================================================================================
+const hotelsSchema = new mongoose.Schema({
+  images: [String],
+  hotelName: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: String,
+    required: true,
+  },
+  destination: {
+    type: String,
+    required: true,
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  guests: {
+    type: String,
+    required: true,
+  },
+  numRooms: {
+    type: String,
+    required: true,
+  },
+  localId: {
+    type: Boolean,
+    default: false,
+  },
+  maritalStatus: {
+    type: String,
+    required: true,
+  },
+  moreOptions: [String],
+  amenities: [String],
+});
+
+const Hotels = mongoose.model('Hotels', hotelsSchema);
+
+//===================================================================================================================================
+app.post('/hotels/create/new', upload, async (req, res) => {
+  try {
+    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, maritalStatus, moreOptions,amenities } = req.body;
+    const images = req.files.map((file) => file.location);
+
+    const newHotel = new Hotels({
+      images,
+      hotelName,
+      destination,
+      price,
+      rating,
+      startDate,
+      endDate,
+      guests,
+      numRooms,
+      maritalStatus,
+      moreOptions,
+      amenities
+    });
+
+    const savedHotel = await newHotel.save();
+    res.status(201).json(savedHotel);
+  } catch (error) {
+    console.error('Error creating hotel:', error);
+    res.status(500).json({ error: 'Failed to create hotel' });
+  }
+});
+
+
+//====================================================================================================================================
+app.get('/search', async (req, res) => {
+  try {
+    const { destination, startDate, endDate, guests, numRooms,localId, moreOptions } = req.query;
+
+    const searchQuery = {};
+
+    if (destination) {
+      searchQuery.destination = destination;
+    }
+
+    if (startDate && endDate) {
+      searchQuery.startDate = { $gte: new Date(startDate) };
+      searchQuery.endDate = { $lte: new Date(endDate) };
+    }
+
+    if (guests) {
+      searchQuery.guests = guests;
+    }
+
+    if (numRooms) {
+      searchQuery.numRooms = numRooms;
+    }
+ if (localId) {
+      searchQuery.localId= localId;
+    }
+
+    if (moreOptions) {
+      const options = moreOptions.split(',');
+      searchQuery.moreOptions = { $in: options };
+    }
+
+    const searchResults = await Hotels.find(searchQuery);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    res.status(500).json({ error: 'Failed to fetch search results' });
+  }
+});
+
 //==================================================================================================================================================
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
