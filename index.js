@@ -495,6 +495,10 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  Availability: {
+    type: String,
+    required: true,
+  },
   moreOptions: [String],
   amenities: [String],
 });
@@ -504,7 +508,7 @@ const Hotels = mongoose.model('Hotels', hotelsSchema);
 //===================================================================================================================================
 app.post('/hotels/create/new', upload, async (req, res) => {
   try {
-    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, maritalStatus, moreOptions,amenities } = req.body;
+    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, localId, maritalStatus, availability,moreOptions,amenities } = req.body;
     const images = req.files.map((file) => file.location);
 
     const newHotel = new Hotels({
@@ -517,7 +521,9 @@ app.post('/hotels/create/new', upload, async (req, res) => {
       endDate,
       guests,
       numRooms,
+      localId,
       maritalStatus,
+      availability,
       moreOptions,
       amenities
     });
@@ -534,7 +540,7 @@ app.post('/hotels/create/new', upload, async (req, res) => {
 //====================================================================================================================================
 app.get('/search', async (req, res) => {
   try {
-    const { destination, startDate, endDate, guests, numRooms,localId, moreOptions } = req.query;
+    const { destination, startDate, endDate, guests, numRooms, localId, moreOptions } = req.query;
 
     const searchQuery = {};
 
@@ -554,8 +560,12 @@ app.get('/search', async (req, res) => {
     if (numRooms) {
       searchQuery.numRooms = numRooms;
     }
- if (localId) {
-      searchQuery.localId= localId;
+
+    // Set localId to false by default if not passed
+    if (localId !== undefined && localId !== '') {
+      searchQuery.localId = localId;
+    } else {
+      searchQuery.localId = false;
     }
 
     if (moreOptions) {
@@ -570,6 +580,7 @@ app.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch search results' });
   }
 });
+
 //===State Data============================================================
 const stateSchema = new mongoose.Schema({
   state: {
