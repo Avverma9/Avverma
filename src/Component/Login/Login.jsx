@@ -33,7 +33,7 @@ const Login = () => {
 
         localStorage.setItem("isSignedIn", "true");
         localStorage.setItem("userId", userId);
-        navigate("/"); // Redirect to the profile page
+        navigate("/profile")
       } else {
         console.log("Sign in failed");
       }

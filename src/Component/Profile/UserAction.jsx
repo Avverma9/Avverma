@@ -35,7 +35,7 @@ class UserAccount extends React.Component {
     const requestBody = {
       complaintDescription: complaintDescription
     };
-console.log(id);
+    console.log(id);
     fetch(`http://localhost:5000/post/complaint/${id}`, {
       method: 'POST',
       headers: {
@@ -166,24 +166,24 @@ console.log(id);
           >
             Cancel your booking
           </button>
-          
+
         </div>
         <div>
           {activeSection === 'services' && (
             <div className={styles.activeSection}>
-             
+
               {/* Add your services component here */}
             </div>
           )}
           {activeSection === 'help' && (
             <div className={styles.activeSection}>
-            
+
               {/* Add your help component here */}
             </div>
           )}
           {activeSection === 'complaints' && (
             <div className={styles.activeSection}>
-             
+
               <form onSubmit={this.handleSubmitComplaint}>
                 <textarea
                   value={complaintDescription}
@@ -197,7 +197,7 @@ console.log(id);
           )}
           {activeSection === 'feedback' && (
             <div className={styles.activeSection}>
-              
+
               <form onSubmit={this.handleSubmitFeedback}>
                 <textarea
                   value={feedbackText}
@@ -211,13 +211,13 @@ console.log(id);
           )}
           {activeSection === 'bookings' && (
             <div className={styles.activeSection}>
-            
+
               {/* Add your bookings component here */}
             </div>
           )}
           {activeSection === 'cancelBooking' && (
             <div className={styles.activeSection}>
-              
+
               <form onSubmit={this.handleSubmitCancelBooking}>
                 <input
                   type="text-a"
@@ -243,7 +243,8 @@ const UserSettings = () => {
     return null;
   }
 
-  return <UserAccount />;
+  // return <UserAccount />;
+  return null;
 };
 
 export default UserSettings;

@@ -1,6 +1,6 @@
 .search-container {
     width: 100%;
-    max-width: 380px;
+    max-width: 350px;
     margin: 0 auto;
     padding: 1px;
     background-color: #f2f2f22f;
@@ -11,7 +11,6 @@
   .search-form {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
   }
   
   .input-text,
@@ -87,8 +86,8 @@
   }
   
   .search-container p {
-    font-size: 10px;
-    color: #777;
+    font-size: 14px;
+    color: #000000;
     margin-top: 0;
   }
   
@@ -192,7 +191,8 @@
   }
   
   .btn button {
-    padding: 8px 12px;
+    padding: 5px 1px;
+    margin-left: 10px;
     background-color: #4caf50;
     color: #fff;
     font-size: 12px;
@@ -203,6 +203,8 @@
   .btn button:hover {
     background-color: #45a049;
   }
+  /*RESPONSE CSS*/
+
   
   /* Media Query for small screens */
   @media (max-width: 480px) {
@@ -404,6 +406,7 @@
         font-size: 8px;
         width: 40px;
         cursor: pointer;
+        margin-left: -0px;
       }
       
       .btn button:hover {

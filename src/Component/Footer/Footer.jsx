@@ -10,47 +10,44 @@ function Footer() {
         <div className={styles.footerSection}>
           <h3>Company</h3>
           <ul>
-            <li><a href="/about-us">About Us</a></li>
-            <li><a href="/contact-us">Contact Us</a></li>
-            <li><a href="/help">Help</a></li>
+            <li><a href="/about-us" class="no-underline text-black">About Us</a></li>
+            <li><a href="/contact-us" class="no-underline text-black">Contact Us</a></li>
+            <li><a href="/help" class="no-underline text-black">Help</a></li>
           </ul>
         </div>
         <div className={styles.footerSection}>
           <h3>Services</h3>
           <ul>
-            <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
-            <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
-            <li><a href="/hotels-goa">Hotels in Goa</a></li>
-            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-            
+            <li><a href="/hotels-kolkata" class="no-underline text-black">Hotels in Punjab</a></li>
+            <li><a href="/hotels-jaipur" class="no-underline text-black">Hotels in Maharashtra</a></li>
+            <li><a href="/hotels-goa" class="no-underline text-black">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu" class="no-underline text-black">Hotels in Tamilnadu</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
           </ul>
           <ul>
-            <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
-            <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
-            <li><a href="/hotels-goa">Hotels in Goa</a></li>
-            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-            
+            <li><a href="/hotels-kolkata" class="no-underline text-black">Hotels in Punjab</a></li>
+            <li><a href="/hotels-jaipur" class="no-underline text-black">Hotels in Maharashtra</a></li>
+            <li><a href="/hotels-goa" class="no-underline text-black">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu" class="no-underline text-black">Hotels in Tamilnadu</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
           </ul>
           <ul>
-            <li><a href="/hotels-kolkata">Hotels in Punjab</a></li>
-            <li><a href="/hotels-jaipur">Hotels in Maharashtra</a></li>
-            <li><a href="/hotels-goa">Hotels in Goa</a></li>
-            <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-            
+            <li><a href="/hotels-kolkata" class="no-underline text-black">Hotels in Punjab</a></li>
+            <li><a href="/hotels-jaipur" class="no-underline text-black">Hotels in Maharashtra</a></li>
+            <li><a href="/hotels-goa" class="no-underline text-black">Hotels in Goa</a></li>
+            <li><a href="/hotels-tamilnadu" class="no-underline text-black">Hotels in Tamilnadu</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
           </ul>
           <ul>
-           <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-tamilnadu">Hotels in Tamilnadu</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
-           <li><a href="/hotels-uttarpradesh">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-tamilnadu" class="no-underline text-black">Hotels in Tamilnadu</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-tamilnadu" class="no-underline text-black">Hotels in Tamilnadu</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
+            <li><a href="/hotels-uttarpradesh" class="no-underline text-black">Hotels in UttarPradesh</a></li>
           </ul>
         </div>
         <div className={styles.footerSection}>

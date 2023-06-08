@@ -17,7 +17,7 @@ const location=useLocation()
         setShowPopup(true);
         setTimeout(() => {
           setShowPopup(false);
-        }, 10000);
+        }, 3000);
       })
       .catch(error => {
         console.error('Error fetching API:', error);

@@ -4,117 +4,41 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Location } from 'react-router-dom';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaSignOutAlt } from 'react-icons/fa';
-import { BsGearFill} from 'react-icons/bs'
+import { BsGearFill } from 'react-icons/bs'
 import './Profile.css';
+import { getLocalStorage } from '../../hooks/useLocalStorage';
+import Avatar from 'react-avatar';
+import { TbFolderFilled } from "react-icons/tb"
+import { FaUser } from "react-icons/fa"
+import { RiWallet3Fill } from "react-icons/ri"
+import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
+import { AiOutlinePoweroff } from "react-icons/ai"
+import { Button } from 'react-bootstrap';
+import UpdateProfile from './UpdateProfile';
 
-const UpdateProfile = ({ userData, onCancel, onUpdateDone }) => {
-    
-  const [name, setName] = useState(userData.name);
-  const [email, setEmail] = useState(userData.email);
-  const [mobile, setMobile] = useState(userData.mobile);
-  const [address, setAddress] = useState(userData.address);
-  const [images, setImages] = useState([]);
-  const [showUpdateMessage, setShowUpdateMessage] = useState(false);
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('email', email);
-      formData.append('mobile', mobile);
-      formData.append('address', address);
-
-      // Append the image only if it is provided by the user
-      if (images.length > 0) {
-        formData.append('images', images[0]); // Assuming only one image is selected
-      }
-
-      const response = await fetch(`https://hotel-backend-tge7.onrender.com/user/${userData._id}`, {
-        method: 'PUT',
-        body: formData,
-      });
-
-      if (response.ok) {
-        setShowUpdateMessage(true);
-        onUpdateDone(); // Call the onUpdateDone callback
-      } else {
-        throw new Error('Failed to update profile');
-      }
-    } catch (error) {
-      console.error(error);
-      // Handle error state
-    }
-  };
-
-  return (
-    <div className="update-profile-container">
-      {showUpdateMessage ? (
-        <div className="card">
-          <img src="https://cdn.pixabay.com/animation/2023/01/11/09/50/09-50-35-326_512.gif" alt="" />
-          <p>Updated</p>
-        </div>
-      ) : (
-        <>
-          <h1 className="update-profile-heading">Update Profile</h1>
-          <form onSubmit={handleUpdate} className="update-profile-form">
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="mobile">Mobile:</label>
-            <input
-              type="tel"
-              id="mobile"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-            />
-            <label htmlFor="address">Address:</label>
-            <textarea
-              id="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            ></textarea>
-            <label htmlFor="images">Images:</label>
-            <input
-              type="file"
-              id="images"
-              accept="image/*"
-              onChange={(e) => setImages(e.target.files)}
-            />
-            <button type="submit">Update</button>
-            <div className='cancel-update'> <button type="button" onClick={onCancel}>
-              Cancel
-            </button></div>
-           
-          </form>
-        </>
-      )}
-    </div>
-  );
-};
 
 const Profile = () => {
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const location = useLocation();
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(true);
+
+  const [profileUpdated, setProfileUpdated] = useState(false);
+
 
   useEffect(() => {
-        const isSignedIn = localStorage.getItem('isSignedIn');
-    if (!isSignedIn) {
+    const isSignedIn = localStorage.getItem('isSignedIn');
+    const userDetails = getLocalStorage("loggedUser");
+
+    if (!isSignedIn && !userDetails) {
       navigate('/signin');
     } else {
       const userId = localStorage.getItem('userId');
@@ -135,103 +59,150 @@ const Profile = () => {
           setIsLoading(false);
         });
     }
-  }, []);
-
-  const handleSignOut = () => {
-    localStorage.removeItem('isSignedIn');
-    localStorage.removeItem('userId');
-    navigate('/signin');
-  };
-
-  const handleEditProfile = () => {
-    setIsEditing(true);
-  };
-
-  const handleCancel = () => {
-    setIsEditing(false);
-  };
-
-  const handleUpdateDone = () => {
-    setIsEditing(false);
-  };
-  if(location.pathname !== "/profile"){
-    return null
-}
-  const handleSettingsClick = () => {
-    navigate('/usersettings');
-  };
-
-  if (location.pathname !== '/profile') {
-    return null;
   }
+    ,
+    [navigate]);
+
+
+  const userDetails = getLocalStorage("loggedUser");
+  const isSignedIn = getLocalStorage("isSignedIn");
+
+  console.log(userDetails?.photoURL, "jhvsEFj;hvbasfjhvasf")
+  const logOut = () => {
+    localStorage.removeItem('loggedUser');
+    localStorage.removeItem('isSignedIn');
+    localStorage.removeItem("userId");
+    navigate("/signin")
+  }
+
 
   return (
     <>
-      <div className="profile-container">
-        <div className="profile-header">
-         
-        
-        </div>
-       
-  {isLoading ? (
-        <img
-          src="https://cdn.dribbble.com/users/1888003/screenshots/10900711/media/ee3dcf5209f7f6261c17e1e1b7cacd50.gif"
-          alt="Loading"
-          className="profile-loading-image"
-        />
-      ) : userData ? (
-        <div className="profile-info">
-          <div className="profile-images">
-            {isEditing ? null : (
-              <div className="profile-actions">
-                <BsPencilSquare size={24} onClick={handleEditProfile} />
-              </div>
-            )}
-          </div>
-          {isEditing ? (
-            <UpdateProfile
-              userData={userData}
-              onCancel={handleCancel}
-              onUpdateDone={handleUpdateDone}
+    
+      <UpdateProfile show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />
+      <div className="text-center text-slate-800 m-2 h-[680px] flex">
+        <div className='w-[30%] flex flex-col -mt-2 p-4'>
+          <div className="profile_header ml-2 mr-1 rounded-sm shadow-md p-4 bg-slate-100 flex items-center">
+            <Avatar
+              name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}
+              src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]}
+              round={true}
+              size="24"
+              className="hover:cursor-pointer hover:opacity-80"
+            // onClick={editProfileHandler}
             />
-          ) : (
+            <h2 className='ml-2 text-base font-medium mt-4'>{!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}</h2>
+          </div>
+          <div className="profile_body mt-4 ml-2 mr-1 rounded-sm shadow-md p-4 bg-slate-100 ">
             <>
-              <p>
-                <span className="data-label">Name:</span> {userData.name}
-              </p>
-              <p>
-                <span className="data-label">Address:</span> {userData.address}
-              </p>
-              <p>
-                <span className="data-label">Email:</span> {userData.email}
-              </p>
-              <p>
-                <span className="data-label">Mobile:</span> {userData.mobile}
-              </p>
-              {userData.images && userData.images.length > 0 ? (
-                <div className="images-container">
-                  {userData.images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt={`Image ${index}`}
-                      className="user-image"
-                    />
-                  ))}
-                </div>
-              ) : null}
-             <button className="sign-out-button" onClick={handleSignOut}>
-  <FaSignOutAlt size="24" className="logout-icon" />
-</button>
-
+              <div className="flex items-center">
+                <TbFolderFilled className='text-blue-500' />
+                <h2 className="ml-2 text-base font-medium mt-4">My Orders</h2>
+                <MdKeyboardArrowRight className='flex-grow -mr-32' />
+              </div>
+              <div className='border-[1px] border-slate-400' />
             </>
-          )}
+
+            <>
+              <div className="flex items-center">
+                <FaUser className='text-blue-500' />
+                <h2 className="ml-2 text-base font-medium mt-4">Account Settings</h2>
+              </div>
+              <div className="flex flex-col items-start">
+                <div className='bg-blue-200 w-[100%] text-left cursor-pointer'>
+                  <p className="my-1 ml-6 text-sm font-medium">Profile Information</p>
+                </div>
+                <p className="my-1 ml-6 text-sm font-medium">Mannage Addresses</p>
+                <p className="my-1 ml-6 text-sm font-medium">PAN Card Information</p>
+              </div>
+              <div className='border-[1px] border-slate-400' />
+            </>
+
+            <>
+              <div className="flex items-center">
+                <RiWallet3Fill className='text-blue-500' />
+                <h2 className="ml-2 text-base font-medium mt-4">Payments</h2>
+              </div>
+              <div className="flex flex-col items-start">
+                <p className="my-1 ml-6 text-sm font-medium">Gift Cards</p>
+                <p className="my-1 ml-6 text-sm font-medium">Saved Upi</p>
+                <p className="my-1 ml-6 text-sm font-medium">Saved Cards</p>
+              </div>
+              <div className='border-[1px] border-slate-400' />
+            </>
+
+            <>
+              <div className="flex items-center">
+                <MdFolderShared className='text-blue-500' />
+                <h2 className="ml-2 text-base font-medium mt-4">My Stuff</h2>
+              </div>
+              <div className="flex flex-col items-start">
+                <p className="my-1 ml-6 text-sm font-medium">My Coupons</p>
+                <p className="my-1 ml-6 text-sm font-medium">My Reviews and Ratings</p>
+                <p className="my-1 ml-6 text-sm font-medium">All Notifications</p>
+                <p className="my-1 ml-6 text-sm font-medium">My WishList</p>
+              </div>
+              <div className='border-[1px] border-slate-400' />
+            </>
+
+            <>
+              <div className="flex items-center cursor-pointer" onClick={logOut}>
+                <AiOutlinePoweroff className='text-blue-500' />
+                <h2 className="ml-2 text-base font-medium mt-4">Logout</h2>
+              </div>
+            </>
+          </div>
         </div>
-      ) : (
-        
-        <img src="https://img.freepik.com/free-vector/oops-404-error-with-broken-robot-concept-illustration_114360-5529.jpg?w=740&t=st=1685267478~exp=1685268078~hmac=5642d37470421106c55c5de2fc5289f7626bc124ff37dbd00edb813c39967331" alt="" className='nodata' />
-      )}
+        <div className='w-[70%] h-[670px] bg-slate-100 my-2 mr-2 ml-1 rounded-sm shadow-md p-4'>
+          <>
+            <div className="flex">
+              <h1 className="text-lg font-semibold">
+                Personal Information
+              </h1>
+              <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+            </div>
+            <div className="flex mt-4">
+              <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name} className='p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+              <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} className='ml-2 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+            </div>
+          </>
+          <>
+            <h4 className='text-left mt-4 text-sm font-medium'>Your Gender</h4>
+            <div className='flex mt-4'>
+              <input type="radio" id="male" name="gender" value="Male" />
+              <label for="male" className='ml-2'>Male</label>
+              <input type="radio" id="female" name="gender" value="Female" className='ml-2' />
+              <label for="female" className='ml-2'>Female</label>
+            </div>
+          </>
+          <>
+            <div className="flex">
+              <h1 className="text-lg font-semibold mt-4">
+                Email Address
+              </h1>
+              <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+            </div>
+            <div className="flex mt-4">
+              <input type="email" value={!isSignedIn && userDetails ? userDetails?.email : userData?.email} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+            </div>
+          </>
+          <>
+            <div className="flex">
+              <h1 className="text-lg font-semibold mt-4">
+                Mobile Number
+              </h1>
+              <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+            </div>
+            <div className="flex mt-4">
+              <input type="text" value={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+            </div>
+          </>
+          <Button variant="primary" onClick={handleShow}>
+            Update Profile
+          </Button>
+        </div>
       </div>
+
     </>
   );
 };

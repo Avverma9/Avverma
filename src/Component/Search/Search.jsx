@@ -1,92 +1,91 @@
+/* eslint-disable no-unused-vars */
+
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Search.css';
+import moment from 'moment';
+import { getSearchState } from '../redux/SearchSlice';
+import { useDispatch } from 'react-redux';
 
 const SearchComponent = () => {
+  const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
   const [searchData, setSearchData] = useState({
     destination: '',
     startDate: null,
     endDate: null,
-    guests: '1 Guest',
-    numRooms: '1 Room',
+    guests: '1',
+    numRooms: '1',
     localId: false,
     maritalStatus: '',
-    moreOptions: [],
+    moreOptions: '',
   });
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const query = new URLSearchParams();
+    // Format start date and end date
+    const startDate = searchData.startDate
+      ? moment(searchData.startDate).format('YYYY-MM-DD')
+      : '';
+    const endDate = searchData.endDate
+      ? moment(searchData.endDate).format('YYYY-MM-DD')
+      : '';
 
-    if (searchData.destination) {
-      query.set('destination', searchData.destination);
-    }
-    if (searchData.startDate) {
-      query.set('startDate', searchData.startDate.toISOString().split('T')[0]);
-    }
-    if (searchData.endDate) {
-      query.set('endDate', searchData.endDate.toISOString().split('T')[0]);
-    }
-    if (searchData.guests) {
-      query.set('guests', searchData.guests);
-    }
-    if (searchData.numRooms) {
-      query.set('numRooms', searchData.numRooms);
-    }
-    if (searchData.localId) {
-      query.set('localId', 'true');
-    }
-    if (searchData.maritalStatus) {
-      query.set('maritalStatus', searchData.maritalStatus);
-    }
-    if (searchData.moreOptions) {
-      query.set('moreOptions', searchData.moreOptions);
-    }
-
-    const queryString = query.toString();
+    const queryString = new URLSearchParams({
+      destination: searchData.destination,
+      startDate,
+      endDate,
+      guests: searchData.guests,
+      numRooms: searchData.numRooms,
+      localId: searchData.localId ? 'true' : '',
+      moreOptions: searchData.moreOptions,
+    }).toString();
 
     // Fetch search results from the API
-    fetch(`https://hotel-backend-tge7.onrender.com/get/hotel/search?${queryString}`)
+    fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('Search results:', data);
-        setSearchResults(data); 
+        setSearchResults(data);
+        console.log(data[0], "Search results")
+        dispatch(getSearchState(data))
+        navigate("/search/results")
       })
       .catch((error) => {
         console.error('Error fetching search results:', error);
       });
   };
-
+  //====== /search/results
+ 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const inputValue = type === 'checkbox' ? checked : value;
+    const inputValue = type === 'checkbox' ? checked : (type === 'select-one' && value === '') ? '' : value;
     setSearchData((prevState) => ({
       ...prevState,
       [name]: inputValue,
     }));
   };
+  
 
-  const renderOptions = (start, end, label) => {
+  const renderOptions = (start, end, selectedValue) => {
     const options = [];
+
     for (let i = start; i <= end; i++) {
-      const optionLabel = i !== 1 ? `${i} ${label}s` : `${i} ${label}`;
+      const value = i.toString();
+      const label = i === end ? value : value + '';
       options.push(
-        <option key={i} value={optionLabel}>
-          {optionLabel}
+        <option key={value} value={value} selected={selectedValue === value}>
+          {label}
         </option>
       );
     }
+
     return options;
   };
-
-  if (location.pathname !== '/') {
-    return null;
-  }
 
   return (
     <div className="search-container">
@@ -108,10 +107,17 @@ const SearchComponent = () => {
               id="start-date"
               name="startDate"
               selected={searchData.startDate}
-              onChange={(date) => setSearchData((prevState) => ({ ...prevState, startDate: date }))}
+              onChange={(date) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  startDate: date,
+                }))
+              }
               required
               className="input-startdate"
               placeholderText="Check-in"
+              dateFormat="dd-MM-yyyy" // Set the desired date format
+              utcOffset={-1 * new Date().getTimezoneOffset()} // Set the UTC offset to the current local offset
             />
           </div>
           <div className="end-date">
@@ -119,10 +125,17 @@ const SearchComponent = () => {
               id="endDate"
               name="endDate"
               selected={searchData.endDate}
-              onChange={(date) => setSearchData((prevState) => ({ ...prevState, endDate: date }))}
+              onChange={(date) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  endDate: date,
+                }))
+              }
               required
               className="input-enddate"
               placeholderText="Check-out"
+              dateFormat="dd-MM-yyyy" // Set the desired date format
+              utcOffset={-1 * new Date().getTimezoneOffset()}
             />
           </div>
         </div>
@@ -136,8 +149,9 @@ const SearchComponent = () => {
             required
             className="input-guests"
           >
-            {renderOptions(1, 1000, 'Guest')}
+            {renderOptions(1, 1000, 'Guests')}
           </select>
+          <p>Guests</p>
         </div>
 
         <div className="rooms">
@@ -149,23 +163,24 @@ const SearchComponent = () => {
             required
             className="input-rooms"
           >
-            {renderOptions(1, 1000, 'room')}
+            {renderOptions(1, 1000, 'Rooms')}
           </select>
+          <p>Rooms</p>
         </div>
 
         <div className="local">
-          <label htmlFor="localId">
-            <input
-              type="checkbox"
-              id="localId"
-              name="localId"
-              checked={searchData.localId}
-              onChange={handleInputChange}
-              className="input-checkbox"
-            />
-            Local ID
-          </label>
-        </div>
+  <label htmlFor="localId">
+    <input
+      type="checkbox"
+      id="localId"
+      name="localId"
+      checked={searchData.localId}
+      onChange={handleInputChange}
+      className="input-checkbox"
+    />
+    Local ID
+  </label>
+</div>
 
         <div className="marital">
           <select
@@ -191,9 +206,10 @@ const SearchComponent = () => {
             className="input-select-more"
           >
             <option value="">More</option>
-            <option value="petsAllowed">Pets Allowed</option>
-            <option value="alcoholAllowed">Alcohol Allowed</option>
-            <option value="bachelorsAllowed">Bachelors Allowed</option>
+            <option value="Pets Allowed">Pets Allowed</option>
+            <option value="Alcohol Allowed">Alcohol Allowed</option>
+            <option value="Bachelors Allowed">Bachelors Allowed</option>
+            <option value="Smoking Allowed">Smoking Allowed</option>
           </select>
         </div>
 
@@ -205,11 +221,16 @@ const SearchComponent = () => {
       <div className="search-results">
         {searchResults.map((result) => (
           <div key={result._id} className="search-result">
+            <img src={result.images} alt="hotel-pic" />
             <h3>{result.hotelName}</h3>
             <p>{result.destination}</p>
             <p>Price: {result.price}</p>
             <p>Rating: {result.rating}</p>
-            {/* Display other result properties as needed */}
+            <p>Guests: {result.guests}</p>
+            <p>Rooms: {result.numRooms}</p>
+            <p>Local ID: {result.localId}</p>
+            <p>More: {result.moreOptions}</p>
+            <p>Amenities: {result.amenities}</p>
           </div>
         ))}
       </div>

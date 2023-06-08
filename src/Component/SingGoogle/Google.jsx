@@ -5,6 +5,8 @@ import { addUser } from "../redux/bazarSlice";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
+import { getLocalStorage } from "../../hooks/useLocalStorage"
+
 const Google = () => {
   const navigate = useNavigate();
   const auth = getAuth();
@@ -15,14 +17,15 @@ const Google = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-
-        addUser({
-          _id: user.uid,
-          name: user.displayName,
-          email: user.email,
-          image: user.photoURL,
-        });
-
+        // addUser({
+        // _id: user.uid,
+        // name: user.displayName,
+        // email: user.email,
+        // image: user.photoURL,
+        // });
+        localStorage.setItem("loggedUser", JSON.stringify(user))
+        // const userDetails = getLocalStorage("loggedUser");
+        // console.log(userDetails);
         setTimeout(() => {
           navigate("/");
         }, 1500);

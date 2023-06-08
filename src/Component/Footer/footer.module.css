@@ -250,6 +250,7 @@
   .footerSection ul li a {
     transition: color 0.3s, transform 0.3s;
     transform-origin: center;
+    text-decoration:double;
   }
   
   .footerSection ul li a:hover {

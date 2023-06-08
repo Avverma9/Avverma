@@ -26,36 +26,36 @@ const Header = () => {
           </div>
 
           <ul className={`${styles.menu} ${showMenu ? styles.show : ''}`}>
-            <li>
-              <a href="/register">
-                <BsBoxArrowInRight /> Register/Login
-              </a>
-            </li>
-            <li>
-              <a href="/partner">
-                <BsPerson /> Become a Partner
-              </a>
-            </li>
-            <li className={styles.dropdown}>
-              <a href="#">
-                <MdOutlineUnfoldMoreDouble/>
-                More
-              </a>
-              <div className={styles['dropdown-content']}>
-                <a href="#">Complaints</a>
-                <a href="#">Option 2</a>
-              </div>
-            </li>
-            <li>
-              <a href="/">
-                <BsHouse /> Home
-              </a>
-            </li>
-            <li>
-              <a href="/profile">
-                <BsPerson /> Profile
-              </a>
-            </li>
+          <li>
+  <a style={{ textDecoration: 'none' }} href="/register" class="no-underline text-black">
+    <BsBoxArrowInRight /> Register/Login
+  </a>
+</li>
+<li>
+  <a href="/partner" class="no-underline text-black">
+    <BsPerson /> Become a Partner
+  </a>
+</li>
+<li className={styles.dropdown}>
+  <a href="#" class="no-underline text-black">
+    <MdOutlineUnfoldMoreDouble/>
+    More
+  </a>
+  <div className={styles['dropdown-content']}>
+    <a href="#" class="no-underline text-black">Complaints</a>
+    <a href="#" class="no-underline text-black">Option 2</a>
+  </div>
+</li>
+<li>
+  <a href="/" class="no-underline text-black">
+    <BsHouse /> Home
+  </a>
+</li>
+<li>
+  <a href="/profile" class="no-underline text-black">
+    <BsPerson /> Profile
+  </a>
+</li>
           </ul>
         </nav>
       </header>
