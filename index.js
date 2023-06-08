@@ -141,96 +141,6 @@ app.get("/welcome/get", async (req, res) => {
   const user = await welcome.find();
   res.json(user);
 });
-//====================================================DEMO HOTELS=================================================================//
-
-//====================homehotel=============================================================//
-
-const hotelSchema = new mongoose.Schema({
-  images: { type: [String], required: false },
-  name: {
-    type: String,
-    required: false,
-  },
-  location: {
-    type: String,
-    required: false,
-  },
-  rating: {
-    type: Number,
-    required: false,
-    min: 1,
-    max: 10,
-  },
-  ratingLabel: {
-    type: String,
-    required: false,
-  },
-  amenties: {
-    type: String,
-    required: false,
-  },
-  review: {
-    type: String,
-    required: false,
-  },
-});
-
-const Hotel = mongoose.model("Hotel", hotelSchema);
-
-//===============
-app.post("/hotel", upload, async (req, res) => {
-  try {
-    const { name, location, rating, amenties, review } = req.body;
-    const images = req.files.map((file) => file.location);
-
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ error: "Rating must be between 1 and 5" });
-    }
-
-    let ratingLabel;
-    if (rating < 5) {
-      ratingLabel = "Good";
-    } else if (rating > 5) {
-      ratingLabel = "Excellent";
-    } else {
-      ratingLabel = "Average";
-    }
-    // Create a new hotel document
-    const hotel = new Hotel({
-      images: images,
-      name: name,
-      location: location,
-      rating: rating,
-      amenties: amenties,
-      review: review,
-    });
-
-    // Save the hotel document to the database
-    await hotel.save();
-
-    res.status(201).json({
-      message: "Hotel inserted successfully",
-      hotel: hotel,
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Error inserting hotel",
-      error: error.message,
-    });
-  }
-});
-//=========Get All Hotel
-app.get("/get/all/hotels", async (req, res) => {
-  try {
-    const hotels = await Hotels.find();
-    res.json(hotels);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error retrieving hotels",
-      error: error.message,
-    });
-  }
-});
 //===============================================================================================================
 
 const complaintSchema = new mongoose.Schema({
@@ -580,7 +490,15 @@ app.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch search results' });
   }
 });
-
+//===================================get all hotels=============================
+app.get('/get/all/hotels', async (req, res) => {
+  try {
+    const hotels = await Hotels.find();
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 //===State Data============================================================
 const stateSchema = new mongoose.Schema({
   state: {
