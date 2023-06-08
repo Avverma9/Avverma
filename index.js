@@ -222,7 +222,7 @@ app.post("/hotel", upload, async (req, res) => {
 //=========Get All Hotel
 app.get("/get/all/hotels", async (req, res) => {
   try {
-    const hotels = await Hotel.find();
+    const hotels = await Hotels.find();
     res.json(hotels);
   } catch (error) {
     res.status(500).json({
