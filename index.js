@@ -411,6 +411,7 @@ const hotelsSchema = new mongoose.Schema({
   },
   moreOptions: [String],
   amenities: [String],
+  reviews : String
 });
 
 const Hotels = mongoose.model('Hotels', hotelsSchema);
@@ -418,7 +419,7 @@ const Hotels = mongoose.model('Hotels', hotelsSchema);
 //===================================================================================================================================
 app.post('/hotels/create/new', upload, async (req, res) => {
   try {
-    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, localId, maritalStatus, availability,moreOptions,amenities } = req.body;
+    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, localId, maritalStatus, availability,moreOptions,amenities,reviews } = req.body;
     const images = req.files.map((file) => file.location);
 
     const newHotel = new Hotels({
@@ -435,7 +436,8 @@ app.post('/hotels/create/new', upload, async (req, res) => {
       maritalStatus,
       availability,
       moreOptions,
-      amenities
+      amenities,
+      reviews
     });
 
     const savedHotel = await newHotel.save();
