@@ -1,146 +1,130 @@
 .search-results {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.search-result {
+  width: 30%;
+  height: auto;
+  padding: 1rem;
+
+
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.search-result:hover {
+  transform: translateY(-3px);
+}
+
+.search-result-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.search-result-content {
+  color: #333;
+}
+
+.search-result-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.search-result-destination,
+.search-result-price,
+.search-result-rating,
+.search-result-guests,
+.search-result-rooms,
+.search-result-availability {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 0.25rem;
+}
+
+.amenities {
+  margin-top: 0.5rem;
+}
+
+.amenities h6 {
+  margin-bottom: 0.5rem;
+}
+
+.amenities ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.amenities li {
+  font-size: 0.75rem;
+  color: #777;
+  margin-bottom: 0.25rem;
+}
+
+.amenities li:before {
+  content: '•';
+  display: inline-block;
+  margin-right: 0.25rem;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .search-result {
+    width: 50%;
   }
-  
-  .card {
-    width: 30%;
-    height: auto;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: translateY(-3px);
-  }
-  
-  .card-image {
+}
+
+@media (max-width: 576px) {
+  .search-result {
     width: 100%;
-    height: auto;
-    margin-bottom: 0.5rem;
-    border-radius: 0.25rem;
   }
-  
-  .card-content {
-    color: #333;
+}
+
+@media (prefers-color-scheme: white) {
+  .search-result {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
   }
-  
-  .card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+
+  .search-result-title,
+  .search-result-destination,
+  .search-result-price,
+  .search-result-rating,
+  .search-result-guests,
+  .search-result-rooms,
+  .search-result-availability {
+    color: #fff;
   }
-  
-  .card-destination {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
+
+  .search-result:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
   }
-  
-  .card-price {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
-  }
-  
-  .card-rating {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
-  }
-  
-  .card-guests {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
-  }
-  
-  .card-rooms {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
-  }
-  
-  .card-availability {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 0.25rem;
-  }
-  
-  .amenities {
-    margin-top: 0.5rem;
-  }
-  
-  .amenities h4 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .amenities ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .amenities li {
-    font-size: 0.75rem;
-    color: #777;
-    margin-bottom: 0.25rem;
-  }
-  
+
   .amenities li:before {
-    content: '•';
-    display: inline-block;
-    margin-right: 0.25rem;
-    color: #777;
+    color: #fff;
   }
+}
+.view-details-button {
+  background: linear-gradient(to right, #fc5e43, #ff00b3, hsl(14, 100%, 86%));
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.view-details-button:hover {
   
-  @media (max-width: 768px) {
-    .card {
-      width: 50%;
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .card {
-      width: 100%;
-    }
-  }
-  
-  @media (prefers-color-scheme: white) {
-    .card {
-      background-color: #333;
-      color: #fff;
-      border-color: #555;
-    }
-  
-    .card-title,
-    .card-destination,
-    .card-price,
-    .card-rating,
-    .card-guests,
-    .card-rooms,
-    .card-availability {
-      color: #fff;
-    }
-  
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
-    }
-  
-    .amenities li:before {
-      color: #fff;
-    }
-  }
-  
+  background: linear-gradient(to right, #0e0d0c, #72305e, hsl(14, 100%, 86%));
+}
+
