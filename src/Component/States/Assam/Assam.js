@@ -8,6 +8,7 @@ const Assampage = () => {
   if (location.pathname !== "/state/assam"){
     return null
   }
+  //https://hotel-backend-tge7.onrender.com/statesData?state=Assam
     return (
       <div>
         <div className="image-text-container">

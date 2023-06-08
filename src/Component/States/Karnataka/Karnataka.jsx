@@ -8,6 +8,7 @@ const Kernatakapage = () => {
   if (location.pathname !== "/state/karnataka"){
     return null
   }
+  //https://hotel-backend-tge7.onrender.com/statesData?state=Karnataka
     return (
       <div>
         <div className="image-text-container">
@@ -16,6 +17,7 @@ const Kernatakapage = () => {
               src="https://www.holidify.com/images/bgImages/COORG.jpg"
               alt="Image 1"
             />
+
           </div>
           <div className="text">
             <h2>Coorg</h2>

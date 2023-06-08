@@ -15,10 +15,11 @@ const Haryanapage = () => {
             <img
               src="https://www.holidify.com/images/bgImages/PANCHKULA.jpg"
               alt="Image 1"
+//https://hotel-backend-tge7.onrender.com/statesData?state=Haryana
             />
           </div>
           <div className="text">
-            <h2>Panchklula</h2>
+            <h2>Panchkula</h2>
             <p>
            panchkula Presents on the way to hills of Shimla, Panchkula is famous for the ruins of the Chandels and trekking on Morni Hills teemed with peacocks.
 
