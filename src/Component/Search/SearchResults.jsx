@@ -31,9 +31,12 @@ export default function SearchResults() {
             <p className="search-result-availability">Local ID: {result.availability}</p>
             <hr />
 
-            <button className="view-details-button" onClick={() => toggleDetails(result._id)}>
-              View Details
-            </button>
+            <div className="button-container">
+              <button className="view-details-button" onClick={() => toggleDetails(result._id)}>
+                View Details
+              </button>
+              <button className="book-now-button">Book Now</button>
+            </div>
 
             {expandedResultId === result._id && (
               <div>
