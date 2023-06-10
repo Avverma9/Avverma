@@ -26,7 +26,7 @@ const Maharashtrapage = () => {
             />
           </div>
           <div className="text">
-            {/* <h2>Mahabaleshwar</h2> */}
+            <h2>Mahabaleshwar</h2> 
             <p>
             {data[0]?.text[0]}            
             </p>

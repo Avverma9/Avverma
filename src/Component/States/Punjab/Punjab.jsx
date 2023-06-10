@@ -26,7 +26,7 @@ const PunjabPage = () => {
             />
           </div>
           <div className="text">
-            {/* <h2>Sri Harmandir Sahib</h2> */}
+          <h2>Sri Harmandir Sahib</h2>
             <p>
             {data[0]?.text[0]}
             </p>
@@ -35,7 +35,7 @@ const PunjabPage = () => {
 
         <div className="image-text-container">
           <div className="text">
-            {/* <h2>Jalianwala Bagh</h2> */}
+      <h2>Jalianwala Bagh</h2> 
             <p>
             {data[0]?.text[1]}
             </p>
@@ -53,7 +53,7 @@ const PunjabPage = () => {
             <img src={data[0]?.images[2]} alt="Image 3" />
           </div>
           <div className="text">
-            {/* <h2>Kapurthala</h2> */}
+            <h2>Kapurthala</h2> 
             <p>{data[0]?.text[2]}</p>
           </div>
         </div>

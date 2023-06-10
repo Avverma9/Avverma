@@ -6,11 +6,11 @@
   }
   
   .image {
-    flex-basis: 50%;
+    flex-basis: 20%;
   }
   
   .image img {
-    width: 100%;
+    width: 20%;
     height: auto;
   }
   
