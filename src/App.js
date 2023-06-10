@@ -39,6 +39,7 @@ import Gujratpage from './Component/States/Gujrat/Gujrat';
 import Kashmirpage from './Component/States/Kashmir/Kashmir';
 import Haryanapage from './Component/States/Haryana/Haryana';
 import SearchResults from './Component/Search/SearchResults';
+import Dropdownbar from './Component/Dropdownbar/Dropdown';
 
 
 
@@ -50,7 +51,7 @@ function App() {
         <Header />
 
         <HeaderImage />
-
+       <Dropdownbar/>
         <Carousel />
    
         <Home />

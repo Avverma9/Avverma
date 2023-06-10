@@ -45,7 +45,7 @@ function HotelList() {
               <hr />
               <p className="search-result-destination">{result.destination}</p>
               <p className="search-result-price">Price: {result.price}</p>
-              <p className="search-result-rating">Rating: {result.rating}</p>
+              <p className="search-result-rating"> {result.rating}</p>
               <p className="search-result-guests">Guests: {result.guests}</p>
               <p className="search-result-rooms">Rooms: {result.numRooms}</p>
               <hr />
