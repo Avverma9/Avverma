@@ -108,10 +108,10 @@ app.post("/signin", async (req, res) => {
 //========================================update user===============================================//
 app.put('/user/:id', upload,async(req, res) => {
   const { id } = req.params;
-  const { name, address, email, mobile, password } = req.body;
+  const { name, address,gender, email, mobile, password } = req.body;
   const images = req.files.map(file => file.location);
 
- const user= await signUp.findByIdAndUpdate(id,{name,address,email,mobile,password,images,},{ new: true })
+ const user= await signUp.findByIdAndUpdate(id,{name,address,gender,email,mobile,password,images,},{ new: true })
     .then((user) => {
       if (user) {
         res.json(user);
