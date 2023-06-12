@@ -106,12 +106,37 @@ app.post("/signin", async (req, res) => {
   }
 });
 //========================================update user===============================================//
-app.put('/user/:id', upload,async(req, res) => {
-  const { id } = req.params;
-  const { name, address,gender, email, mobile, password } = req.body;
-  const images = req.files.map(file => file.location);
+// app.put('/user/:id', upload,async(req, res) => {
+//   const { id } = req.params;
+//   const { name, address,gender, email, mobile, password } = req.body;
+//   const images = req.files.map(file => file.location);
 
- const user= await signUp.findByIdAndUpdate(id,{name,address,gender,email,mobile,password,images,},{ new: true })
+//  const user= await signUp.findByIdAndUpdate(id,{name,address,gender,email,mobile,password,images,},{ new: true })
+//     .then((user) => {
+//       if (user) {
+//         res.json(user);
+//       } else {
+//         res.status(404).json({ message: 'User not found' });
+//       }
+//     })
+//     .catch((error) => {
+//       res.status(500).json({ message: 'Internal server error', error });
+//     });
+// });
+app.put('/user/:id', upload, async (req, res) => {
+  const { id } = req.params;
+  const { name, address, gender, email, mobile, password } = req.body;
+  let images = [];
+
+  if (req.files.length > 0) {
+    images = req.files.map(file => file.location);
+  }
+
+  const user = await signUp.findByIdAndUpdate(
+    id,
+    { name, address, gender, email, mobile, password, images },
+    { new: true }
+  )
     .then((user) => {
       if (user) {
         res.json(user);
