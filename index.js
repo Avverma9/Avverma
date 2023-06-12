@@ -54,6 +54,7 @@ const upload = multer({
 // ===============================================user Schema========================================================//
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: false },
+  gender : { type: String, required: false },
   address: { type: String, required: false },
   email: { type: String, required: false, unique: true },
   mobile: { type: String, required: false },
@@ -64,9 +65,9 @@ const UserSchema = new mongoose.Schema({
 const signUp = mongoose.model("user", UserSchema);
 //========================================//POST USER //====================================================================
 app.post("/signup", upload, async (req, res) => {
-  const { name, address, email, mobile, password } = req.body;
+  const { name, gender, address, email, mobile, password } = req.body;
   const images = req.files.map((file) => file.location);
-  const user = new signUp({ name, address, email, mobile, password, images });
+  const user = new signUp({ name, gender, address, email, mobile, password, images });
   await user.save();
   io.emit("recordAdded", user);
   res.json(user);
@@ -381,21 +382,21 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  startDate: {
+  startDate: {  //01/06/2023
     type: Date,
     required: true,
   },
   endDate: {
-    type: Date,
+    type: Date, //
     required: true,
   },
   guests: {
     type: String,
-    required: true,
-  },
-  numRooms: {
+    required: true, 
+    },
+  numRooms: {            
     type: String,
-    required: true,
+    required: true, 
   },
   localId: {
     type: Boolean,
@@ -411,7 +412,8 @@ const hotelsSchema = new mongoose.Schema({
   },
   moreOptions: [String],
   amenities: [String],
-  reviews : String
+  reviews : String,
+  rating : Number
 });
 
 const Hotels = mongoose.model('Hotels', hotelsSchema);
@@ -419,7 +421,7 @@ const Hotels = mongoose.model('Hotels', hotelsSchema);
 //===================================================================================================================================
 app.post('/hotels/create/new', upload, async (req, res) => {
   try {
-    const { hotelName, destination, price, rating, startDate, endDate, guests, numRooms, localId, maritalStatus, availability,moreOptions,amenities,reviews } = req.body;
+    const { hotelName,rating , destination, price,  startDate, endDate, guests, numRooms, localId, maritalStatus, availability,moreOptions,amenities,reviews} = req.body;
     const images = req.files.map((file) => file.location);
 
     const newHotel = new Hotels({
@@ -437,7 +439,8 @@ app.post('/hotels/create/new', upload, async (req, res) => {
       availability,
       moreOptions,
       amenities,
-      reviews
+      reviews,
+      rating
     });
 
     const savedHotel = await newHotel.save();
