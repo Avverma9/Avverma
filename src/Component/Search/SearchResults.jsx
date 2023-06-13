@@ -18,7 +18,7 @@ export default function SearchResults() {
     <div className="search-results">
       {searchResults.map((result) => (
         <div key={result._id} className="search-result">
-          <img src={result.images} alt="hotel-pic" className="search-result-image" />
+          <img src={result.images[0]} alt="hotel-pic" className="search-result-image" />
           <div className="search-result-content">
             <h3 className="search-result-title">{result.hotelName}</h3>
             <hr />
