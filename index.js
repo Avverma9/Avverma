@@ -522,48 +522,56 @@ app.post('/hotels/create/new', upload, async (req, res) => {
 // });
 app.get('/search', async (req, res) => {
   try {
-    const { destination, startDate, endDate, guests, numRooms, localId, moreOptions } = req.query;
+      const { destination, startDate, endDate, guests, numRooms, localId, moreOptions } = req.query;
 
-    const searchQuery = {};
+      const searchQuery = {};
 
-    if (destination) {
-      searchQuery.destination = destination;
-    }
+      if (destination) {
+          searchQuery.destination = destination;
+      }
 
-    // Update the start and end date query based on your requirements
-    if (startDate && endDate) {
-      searchQuery.startDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
-      searchQuery.endDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
-    }
+      if (startDate && endDate) {
+          // Checking if the start date is before the end date
+          if (startDate <= endDate) {
 
-    if (guests) {
-      searchQuery.guests = guests;
-    }
+              // Getting the hotels that are available between the start and end date
+              searchQuery.startDate = { $lte: new Date(startDate) };
+              searchQuery.endDate = { $gte: new Date(endDate) };
+          }
+      }
 
-    if (numRooms) {
-      searchQuery.numRooms = numRooms;
-    }
+      if (numRooms) {
+          searchQuery.numRooms = { $gte: Number(numRooms) };
+      }
 
-    // Set localId to false by default if not passed
-    if (localId !== undefined && localId !== '') {
-      searchQuery.localId = localId;
-    } else {
-      searchQuery.localId = false;
-    }
+      // Set localId to false by default if not passed
+      if (localId !== undefined && localId !== '') {
+          searchQuery.localId = localId;
+      } else {
+          searchQuery.localId = false;
+      }
 
-    if (moreOptions) {
-      const options = moreOptions.split(',');
-      searchQuery.moreOptions = { $in: options };
-    }
+      if (moreOptions) {
+          const options = moreOptions.split(',');
+          searchQuery.moreOptions = { $in: options };
+      }
 
-    const searchResults = await Hotels.find(searchQuery);
-    res.json(searchResults);
+      let searchResults = await Hotels.find(searchQuery).lean();
+      searchResults = searchResults.map((hotel) => {
+          // Calculate extra guests by multiplying the number of guests allowed times the number of rooms
+          const extraGuests = guests - (hotel.guests * Number(numRooms)) > 0 ? guests - (hotel.guests * Number(numRooms)) : 0;
+
+          // Calculate the total price by multiplying the price per room times the number of rooms plus the extra guests times 10% of the price per room
+          hotel.price = (Number(hotel.price) * Number(numRooms)) + (extraGuests * (Number(hotel.price) * 0.1));
+
+          return hotel;
+      });
+      res.json(searchResults);
   } catch (error) {
-    console.error('Error fetching search results:', error);
-    res.status(500).json({ error: 'Failed to fetch search results' });
+      console.error('Error fetching search results:', error);
+      res.status(500).json({ error: 'Failed to fetch search results' });
   }
 });
-
 //===================================get all hotels=============================
 app.get('/get/all/hotels', async (req, res) => {
   try {
