@@ -16,27 +16,75 @@ const ChatBox = () => {
 
   const handleMessageSend = () => {
     if (message.trim() !== '') {
-      setMessages((prevMessages) => [...prevMessages, message]);
-  
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: message, user: true },
+      ]);
+
       // Automatically send a reply from the chatbot
       let botReply = '';
       const userMessage = message.toLowerCase().trim();
       if (userMessage === 'hi' || userMessage === 'hello') {
-        botReply = 'Hello, how are you?';
-      } else if (userMessage.includes('how are')) {
-        botReply = 'I am fine, how can I help you?';
+        botReply = 'Hello! How can I assist you today?';
+      } else if (userMessage.includes('book')) {
+        botReply =
+          'Sure! I can help you with booking hotels and tours. Please provide me with your preferred destination and dates.';
+      } else if (userMessage.includes('hotel')) {
+        botReply =
+          'Great! To assist you better, please provide me with your preferred destination and dates for hotel booking.';
+      } else if (userMessage.includes('tour')) {
+        botReply =
+          'Awesome! To assist you better, please provide me with your preferred destination and dates for tour booking.';
+      } else if (userMessage.includes('thank you')) {
+        botReply = 'You are welcome! If you have any more questions, feel free to ask.';
+      } else if (userMessage.includes('help')) {
+        botReply =
+          'Of course! I can help you with hotel recommendations, tour information, and booking assistance. Just let me know what you need!';
+      } else if (userMessage.includes('cancel')) {
+        botReply =
+          'I\'m sorry to hear that. Please provide me with your booking details, and I will assist you in canceling it.';
+      } else if (userMessage.includes('availability')) {
+        botReply =
+          'To check hotel or tour availability, please provide me with your preferred destination and dates.';
+      } else if (userMessage.includes('amenities')) {
+        botReply =
+          'Certainly! Our hotels offer a range of amenities, including swimming pools, fitness centers, and complimentary breakfast. Is there anything specific you would like to know?';
+      } else if (userMessage.includes('payment')) {
+        botReply =
+          'We accept various payment methods, including credit cards and online transfers. Once you provide the necessary booking details, I can assist you with the payment process.';
+      } else if (userMessage.includes('discount')) {
+        botReply =
+          'We offer various discounts and promotional offers throughout the year. Please provide me with your preferred dates and destination, and I can check if any discounts are available for you.';
+      } else if (userMessage.includes('check-in')) {
+        botReply =
+          'The standard check-in time is usually in the afternoon, around 2 PM. However, early check-in may be possible depending on the availability and hotel policy. Please let me know your preferred hotel and dates, and I can check the options for you.';
+      } else if (userMessage.includes('check-out')) {
+        botReply =
+          'The standard check-out time is usually in the morning, around 11 AM. Late check-out may be possible depending on the availability and hotel policy. Please let me know your preferred hotel and dates, and I can check the options for you.';
+      } else if (userMessage.includes('cancellation policy')) {
+        botReply =
+          'Our cancellation policy varies depending on the hotel and tour package. Please provide me with your booking details, and I can provide you with the specific cancellation policy.';
+      } else if (userMessage.includes('room types')) {
+        botReply =
+          'We offer a variety of room types, including standard rooms, suites, and deluxe rooms. Please let me know your preferred hotel and dates, and I can check the available room types for you.';
+      } else if (userMessage.includes('wifi')) {
+        botReply =
+          'Yes, our hotels provide complimentary WiFi for all guests. You can enjoy high-speed internet access throughout your stay.';
       } else {
-        botReply = 'Thank you for sharing your feedback. Our customer support team will contact you soon.';
+        botReply =
+          'I apologize, but I am an AI chatbot and may not be able to provide a specific answer. Please contact our customer support for further assistance.';
       }
-  
+
       setTimeout(() => {
-        setMessages((prevMessages) => [...prevMessages, botReply]);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: botReply, user: false },
+        ]);
       }, 500);
-  
+
       setMessage('');
     }
   };
-  
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -65,9 +113,9 @@ const ChatBox = () => {
             {messages.map((message, index) => (
               <div
                 key={index}
-                className={`message ${index % 2 === 0 ? 'user-message' : 'bot-message'}`}
+                className={`message ${message.user ? 'user-message' : 'bot-message'}`}
               >
-                {message}
+                {message.text}
               </div>
             ))}
           </div>

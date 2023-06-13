@@ -100,10 +100,10 @@ function Payments() {
 
 
 
-function MyReviews() {
+function MyReviews({ navHandler }) {
 
   return (<>
-    <div className="flex items-center my-4">
+    <div className="flex items-center my-4 cursor-pointer" onClick={navHandler}>
       <MdFolderShared className='text-blue-500' />
       <h2 className="ml-2 text-base font-medium">My Reviews</h2>
     </div>
@@ -112,10 +112,10 @@ function MyReviews() {
   </>);
 }
 
-function Complains() {
+function Complains({ navHandler }) {
 
   return (<>
-    <div className="flex items-center my-4">
+    <div className="flex items-center my-4 cursor-pointer" onClick={navHandler}>
       <MdFolderShared className='text-blue-500' />
       <h2 className="ml-2 text-base font-medium">Complains</h2>
     </div>
@@ -142,9 +142,9 @@ function ProfileSidebar({ isSignedIn, userDetails, userData, logOut, selectedNav
 
       <Payments />
 
-      <MyReviews />
+      <MyReviews selectedNav={selectedNav} navHandler={navHandler} />
 
-      <Complains />
+      <Complains selectedNav={selectedNav} navHandler={navHandler} />
 
       <>
         <div className="flex items-center cursor-pointer my-4" onClick={logOut}>
@@ -176,10 +176,16 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
     <>
       <h4 className='text-left mt-4 text-sm font-medium'>Your Gender</h4>
       <div className='flex mt-4'>
-        <input type="radio" id="male" name="gender" value="Male" />
-        <label for="male" className='ml-2'>Male</label>
-        <input type="radio" id="female" name="gender" value="Female" className='ml-2' />
-        <label for="female" className='ml-2'>Female</label>
+        {userData?.gender === "Male" ? <>
+          <input type="radio" id="male" name="gender" value="Male" checked />
+          <label for="male" className='ml-2'>{userData?.gender}</label>
+        </>
+          :
+          <>
+            <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
+            <label for="female" className='ml-2'>{userData?.gender}</label>
+          </>
+        }
       </div>
     </>
     <>
@@ -204,16 +210,44 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
         <input type="text" value={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
       </div>
     </>
-    <Button variant="primary" onClick={handleShow} className="float-left">
+    <button onClick={handleShow} className="float-left py-3 px-4 bg-blue-500 mt-4 border-0 rounded-md text-white font-bold">
       Update Profile
-    </Button>
+    </button>
   </div>);
 }
 
 
 
 
-function AddressInformation() {
+function AddressInformation({ userData }) {
+  const [address, setAddress] = useState("");
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('address', address !== "" ? address : userData?.address);
+
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/user/${userId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (response.ok) {
+        // setProfileUpdated(true);// Call the onUpdateDone callback
+        // handleClose()
+      } else {
+        throw new Error('Failed to update profile');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error state
+    }
+  };
+
+
   return (<div>
     <>
       <div className="flex">
@@ -225,27 +259,27 @@ function AddressInformation() {
         }
       </div>
       <div className="flex mt-4">
-        <textarea type="text" rows="5" value="" className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        <textarea type="text" rows="5" value={userData?.address} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
       </div>
     </>
+    <form onSubmit={handleUpdate}>
 
-    <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
-          New Address
-        </h1>
-        {
-          /* <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' /> */
-        }
-      </div>
-      <div className="flex mt-4">
-        <textarea type="text" rows="5" value="" className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-      </div>
-    </>
+      <>
+        <div className="flex">
+          <h1 className="text-lg font-semibold">
+            New Address
+          </h1>
+          {
+            /* <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' /> */
+          }
+        </div>
+        <div className="flex mt-4">
+          <textarea type="text" rows="5" value={address} onChange={(e) => setAddress(e.target.value)} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        </div>
+      </>
 
-    <Button className='float-left mt-4'>
-      Update Address
-    </Button>
+      <button type="submit">Update Address</button>
+    </form>
   </div>);
 }
 
@@ -272,9 +306,9 @@ function GovernmentIdInformation() {
       <input type="text" value="" className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
     </div>
 
-    <Button className='float-left mt-4'>
+    <button className='float-left mt-4'>
       Add Government Id
-    </Button>
+    </button>
   </div>);
 }
 
@@ -299,9 +333,9 @@ function CancelBooking() {
         <span className="text-left mt-1">Provide the dummy id 123456 for cancellation</span>
       </div>
 
-      <Button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
+      <button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
         Confirm Cancel
-      </Button>
+      </button>
 
     </>
   );
@@ -594,6 +628,85 @@ function FailedBooking() {
   );
 }
 
+function MyReviewSection() {
+  return (
+    <>
+      <div className="flex mb-4">
+        <h1 className="text-lg font-semibold">
+          My Reviews
+        </h1>
+      </div>
+      <>
+
+        <div className="flex mb-4 items-center">
+          <div className="w-40 h-auto">
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" className='w-40 h-auto rounded-md' />
+          </div>
+          <div className="p-8">
+            <p className="text-left text-slate-600 text-base font-bodyFont">Grand Hotel</p>
+            <div className='text-left mt-2'>
+              ⭐⭐⭐⭐⭐
+            </div>
+          </div>
+        </div>
+
+        <div className="flex mb-4 items-center">
+          <div className="w-40 h-auto">
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" className='w-40 h-auto' />
+          </div>
+          <div className="p-8">
+            <p className="text-left text-slate-600 text-base font-bodyFont">Grand Hotel</p>
+            <div className='text-left mt-2'>
+              ⭐⭐⭐⭐⭐
+            </div>
+          </div>
+        </div>
+
+      </>
+
+    </>)
+}
+
+function ComplainsSection() {
+  return (
+    <>
+      <div className="flex mb-4">
+        <h1 className="text-lg font-semibold">
+          Complains
+        </h1>
+      </div>
+
+      <>
+
+        <div className="flex mb-4 items-center">
+          <div>
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0l7k5zqRUVQ5Yq9eTpW2LgHaLJ%26pid%3DApi&f=1&ipt=868dcce95595400e343a3c29eb82c4e06a503f4d530c9fbdc70192753374e0bb&ipo=images" alt="Profile Pic" className='w-10 h-10 rounded-[50%]' />
+          </div>
+          <div className="p-8">
+            <p className="text-left text-slate-700 text-lg font-semibold">Grand Hotel</p>
+            <div className='text-left mt-2 text-sm font-bodyFont text-slate-500'>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+            </div>
+          </div>
+        </div>
+
+        <div className="flex mb-4 items-center">
+          <div>
+            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0l7k5zqRUVQ5Yq9eTpW2LgHaLJ%26pid%3DApi&f=1&ipt=868dcce95595400e343a3c29eb82c4e06a503f4d530c9fbdc70192753374e0bb&ipo=images" alt="Profile Pic" className='w-10 h-10 rounded-[50%]' />
+          </div>
+          <div className="p-8">
+            <p className="text-left text-slate-700 text-lg font-semibold">Grand Hotel</p>
+            <div className='text-left mt-2 text-sm font-bodyFont text-slate-500'>
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
+            </div>
+          </div>
+        </div>
+
+      </>
+    </>
+  )
+}
+
 const Profile = () => {
 
   const [show, setShow] = useState(false);
@@ -643,7 +756,9 @@ const Profile = () => {
   const userDetails = getLocalStorage("loggedUser");
   const isSignedIn = getLocalStorage("isSignedIn");
 
-  console.log(userDetails, "jhvsEFj;hvbasfjhvasf")
+  console.log(userDetails, "USERDETAILS")
+  console.log(userData, "USERDATA")
+
   const logOut = () => {
     localStorage.removeItem('loggedUser');
     localStorage.removeItem('isSignedIn');
@@ -673,6 +788,10 @@ const Profile = () => {
       setselectedNav("NoShow Booking")
     } else if (e.currentTarget.innerText === "Failed Booking") {
       setselectedNav("Failed Booking")
+    } else if (e.currentTarget.innerText === "My Reviews") {
+      setselectedNav("My Reviews")
+    } else if (e.currentTarget.innerText === "Complains") {
+      setselectedNav("Complains")
     }
     else {
       setselectedNav("Profile Information")
@@ -683,16 +802,12 @@ const Profile = () => {
   return (
     <>
 
-      <UpdateProfile show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />
+      {show && <UpdateProfile userData={userData} stShow={setShow} show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />}
       <div className="text-center text-slate-800 m-2 h-[680px] flex">
         <ProfileSidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
         <div className='w-[70%] h-[670px] bg-slate-100 my-2 mr-2 ml-1 rounded-sm shadow-md p-4'>
           {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
-
-
-
-
+            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
         </div>
       </div>
     </>

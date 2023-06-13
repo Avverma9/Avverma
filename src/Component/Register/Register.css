@@ -49,8 +49,8 @@
   .profile-picture-signup {
     width: 100px;
     height: 100px;
-    margin-top: -400px;
-    margin-left: 295px;
+    margin-top: -100px;
+    margin-left: 285px;
     background-size: cover;
     background-position: center;
     border-radius: 50%;
@@ -58,8 +58,8 @@
   }
   
   .upload-button-signup {
-    margin-left: -160px;
-    margin-top: -260px;
+    margin-left: 60px;
+    margin-top: 100px;
     padding: 6px 12px;
     width: 200px;
     font-size: 0px;

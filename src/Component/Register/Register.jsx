@@ -8,6 +8,7 @@ const Register = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
   const [address, setAddress] = useState('');
   const [email, setEmail] = useState('');
   const [mobile, setMobile] = useState('');
@@ -20,6 +21,7 @@ const Register = () => {
     // Create FormData object to send the form data
     const formData = new FormData();
     formData.append('name', name);
+    formData.append('gender', gender);
     formData.append('address', address);
     formData.append('email', email);
     formData.append('mobile', mobile);
@@ -36,6 +38,7 @@ const Register = () => {
         console.log('Signup successful');
         // Reset form fields
         setName('');
+        setGender('');
         setAddress('');
         setEmail('');
         setMobile('');
@@ -72,6 +75,14 @@ const Register = () => {
           placeholder="Name"
           value={name}
           onChange={(event) => setName(event.target.value)}
+          required
+          className="input-field-signup"
+        />
+         <input
+          type="text"
+          placeholder="Gender"
+          value={name}
+          onChange={(event) => setGender(event.target.value)}
           required
           className="input-field-signup"
         />
