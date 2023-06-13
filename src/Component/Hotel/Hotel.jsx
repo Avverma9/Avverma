@@ -41,7 +41,7 @@ function HotelList() {
       <div className="search-results">
         {hotels.map((result) => (
           <div key={result._id} className={`${styles['search-result']} ${expandedResultId === result._id ? styles['expanded'] : ''}`}>
-            <img src={result.images} alt="hotel-pic" className={styles['search-result-image']} />
+            <img src={result.images[0]} alt="hotel-pic" className={styles['search-result-image']} />
             <div className={styles['search-result-content']}>
               <div className={styles['hotel-info']}>
                 <h3 className={styles['search-result-title']}>{result.hotelName}</h3>
@@ -100,7 +100,7 @@ function HotelList() {
                           {amenity !== 'Free WIFI' && amenity !== 'AC' && amenity !== 'GYM' && amenity !== 'Parking' && amenity !== 'Swimming Pool' && amenity !== 'Kitchen' && amenity !== 'TV' && amenity !== 'Geyser' && amenity !== 'Power_backup' && amenity !== 'CCTV' && amenity !== 'Fire-Extinguisher' && amenity !== 'Elevator' && amenity !== 'Card-payment' && (
                             <>
                               <FontAwesomeIcon icon={faCheck} className={styles['fonticon']} />
-                              {amenity}
+                             
                             </>)}
                           {amenity}</li>
                       ))}

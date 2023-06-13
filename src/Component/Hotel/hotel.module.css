@@ -106,11 +106,11 @@
 
 .view-details-button,
 .book-now-button {
-  display: block;
-  width: 100%;
+  
+  width: 40%;
   margin: 10px 0;
   padding: 10px;
-  font-size: 14px;
+  font-size: 9px;
   text-align: center;
   background-color: #007bff;
   color: #ffffff;
@@ -167,31 +167,7 @@ hr {
   border-top: 1px solid #dddddd;
   border-color: #151010;
 }
-/* hotel.module.css */
 
-.search-result {
-  position: relative;
-  
-    
-  background: linear-gradient(to right, #f7f7f7, #9bf1ff);
-
-  
-}
-
-
-
-.search-result:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px);
-}
-
-.search-result:hover .view-details-button,
-.search-result:hover .book-now-button {
-  background-color: #0056b3;
-}
-/* hotel.module.css */
-
-/* ... previous styles ... */
 
 .search-result-title {
   font-size: 18px;
@@ -229,14 +205,20 @@ border-radius: 3px;
   margin: 10px 0;
 }
 
-.view-details-button,
-.book-now-button {
-  /* ... previous styles ... */
+.view-details-button {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
+.book-now-button {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin-left: 50px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
 
 .view-details-button:hover,
 .book-now-button:hover {
@@ -290,6 +272,10 @@ border-radius: 3px;
     font-size: 12px;
     margin-right: 10px;
     margin-bottom: 10px;
+  }
+  .button-block{
+    display: flex;
+    justify-content: space-between;
   }
 }
 
