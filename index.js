@@ -407,12 +407,12 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  startDate: {  //01/06/2023
+  startDate: {  
     type: Date,
     required: true,
   },
   endDate: {
-    type: Date, //
+    type: Date, 
     required: true,
   },
   guests: {
@@ -478,6 +478,48 @@ app.post('/hotels/create/new', upload, async (req, res) => {
 
 
 //====================================================================================================================================
+// app.get('/search', async (req, res) => {
+//   try {
+//     const { destination, startDate, endDate, guests, numRooms, localId, moreOptions } = req.query;
+
+//     const searchQuery = {};
+
+//     if (destination) {
+//       searchQuery.destination = destination;
+//     }
+
+//     if (startDate && endDate) {
+//       searchQuery.startDate = { $gte: new Date(startDate) };
+//       searchQuery.endDate = { $lte: new Date(endDate) };
+//     }
+
+//     if (guests) {
+//       searchQuery.guests = guests;
+//     }
+
+//     if (numRooms) {
+//       searchQuery.numRooms = numRooms;
+//     }
+
+//     // Set localId to false by default if not passed
+//     if (localId !== undefined && localId !== '') {
+//       searchQuery.localId = localId;
+//     } else {
+//       searchQuery.localId = false;
+//     }
+
+//     if (moreOptions) {
+//       const options = moreOptions.split(',');
+//       searchQuery.moreOptions = { $in: options };
+//     }
+
+//     const searchResults = await Hotels.find(searchQuery);
+//     res.json(searchResults);
+//   } catch (error) {
+//     console.error('Error fetching search results:', error);
+//     res.status(500).json({ error: 'Failed to fetch search results' });
+//   }
+// });
 app.get('/search', async (req, res) => {
   try {
     const { destination, startDate, endDate, guests, numRooms, localId, moreOptions } = req.query;
@@ -488,9 +530,10 @@ app.get('/search', async (req, res) => {
       searchQuery.destination = destination;
     }
 
+    // Update the start and end date query based on your requirements
     if (startDate && endDate) {
-      searchQuery.startDate = { $gte: new Date(startDate) };
-      searchQuery.endDate = { $lte: new Date(endDate) };
+      searchQuery.startDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
+      searchQuery.endDate = { $gte: new Date(startDate), $lte: new Date(endDate) };
     }
 
     if (guests) {
@@ -520,6 +563,7 @@ app.get('/search', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch search results' });
   }
 });
+
 //===================================get all hotels=============================
 app.get('/get/all/hotels', async (req, res) => {
   try {
@@ -582,5 +626,7 @@ app.get("/statesData", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+//======================================================================================================//
+
 //==================================================================================================================================================
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
