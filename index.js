@@ -419,6 +419,14 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true, 
     },
+    hotelsPolicy: {
+      type: String,
+      required: true, 
+      },
+      description: {
+        type: String,
+        required: true, 
+        },
   numRooms: {            
     type: String,
     required: true, 
