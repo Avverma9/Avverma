@@ -581,6 +581,16 @@ app.get('/get/all/hotels', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+//================================get hotels by id==================
+app.get('/hotels/:id', async (req, res) => {
+  try {
+    const data = req.params.id
+    const hotels = await Hotels.findById((data));
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 //===State Data============================================================
 const stateSchema = new mongoose.Schema({
   state: {
@@ -592,6 +602,7 @@ const stateSchema = new mongoose.Schema({
 });
 
 const State = mongoose.model("State", stateSchema);
+//========================get booking==================================//
 
 //============POST API=================================
 app.post("/states",upload, async (req, res) => {
