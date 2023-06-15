@@ -1,0 +1,254 @@
+.container {
+    padding: 20px;
+  }
+  .container-p4{
+    background-color: red;
+  }
+  .flex {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .slider-slide {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .slider-slide img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    height: 400px; /* Adjust the height as needed */
+  }
+  .hotel-details1{
+    margin-left: 10%;
+  }
+  
+  .hotel-details1 .hotel-name1 {
+    color: red;
+    font-weight: bold;
+    font-size: 30;
+    
+
+  }
+  .hotel-details1 .location-booknow{
+    color:grey;
+    font-size: 18px;
+  }
+  .hotel-details1 .hotel-descrip{
+    color:rgb(112, 112, 112); 
+    width:50%;
+    margin-bottom: 50px;
+    margin-top: 44px;
+  }
+  
+  .description1{
+    font-size: 20px;
+    color:black;
+    font-weight: bold;
+  }
+  .amenity-word{
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .amenity-section{
+    width:50%;
+    
+  }
+  .amenityclass{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .amenityclass p {
+    width: calc(33.33% - 10px);
+    margin-bottom: 10px;
+  }
+
+  .slider-navigation {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 1;
+    color: white;
+    background: transparent;
+  }
+  
+  .slider-navigation button {
+    margin: 0 5px;
+    padding: 5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .slider-navigation button:hover {
+    color: #999;
+  }
+  
+  .slider-navigation .slider-prev {
+    position: absolute;
+    left: 10px;
+  }
+  
+  .slider-navigation .slider-next {
+    position: absolute;
+    right: 10px;
+  }
+  .booking-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+  }
+  
+  .booking-card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .booking-card-content {
+    font-size: 16px;
+  }
+  
+  .booking-card-content p {
+    margin-bottom: 5px;
+  }
+.bookcardmain{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+}  
+.flex-rating{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:50%;
+}
+.rating0{
+    background-color: green;
+    width: 15%;
+    color: white;
+    border-radius: 5px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+
+
+  .staricon{
+    font-size: 23px;
+  }
+  .booking-card-content{
+    color:gray;
+  }
+  .noofguest {
+    width: 50%;
+    
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .roomtype {
+    width: 50%;
+
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  .person{
+    font-size: 25px;
+    margin-right: 10px;
+  }
+  .hotel{
+    font-size: 17px;
+    margin-right: 10px;
+  }
+  .card {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 50%;
+  }
+  
+  .card p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .card .icon {
+    margin-right: 10px;
+  }
+  
+  .card .noofguest .icon {
+    color: #007bff;
+    margin-right: 17px;
+  }
+  
+  .card .roomtype .icon {
+    color: #28a745;
+  }
+  
+  .card .maritalstatus .icon {
+    color: #dc3545;
+  }
+  .cust-detail{
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    margin-top: 25px;
+    margin-bottom: 20px;
+
+  }
+  .hotel-policyheading{
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    margin-top: 25px;
+    margin-bottom: 20px;
+  }
+  .hotel-policies{
+    width: 50%;
+    margin-top: 50px;
+  }
+  .pricing{
+    color:red;
+    font-size: 25px;
+    font-weight: bolder;
+  }
+  .morehead{
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+  }
+  .reviewhead{
+    font-size: 25px;
+    font-weight: bold;
+    color:rgb(103, 146, 255);
+    margin-bottom: 20px;
+  }
+  .reviews{
+    margin-top: 50px;
+  }
+  .star1{
+    font-size: 22px;
+    margin-left: 20px;
+  }
+  

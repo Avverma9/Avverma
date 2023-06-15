@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import './searchResult.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchResults() {
   const searchResults = useSelector((state) => state.searchState);
   const [expandedResultId, setExpandedResultId] = useState(null);
+  const navigate = useNavigate()
 
   const toggleDetails = (resultId) => {
     if (expandedResultId === resultId) {
@@ -35,7 +37,7 @@ export default function SearchResults() {
               <button className="view-details-button" onClick={() => toggleDetails(result._id)}>
                 View Details
               </button>
-              <button className="book-now-button">Book Now</button>
+              <button className="book-now-button" onClick={() => navigate(`/hotels/${result._id}`)}>Book Now</button>
             </div>
 
             {expandedResultId === result._id && (

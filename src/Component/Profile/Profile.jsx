@@ -284,6 +284,13 @@ function AddressInformation({ userData }) {
 }
 
 function GovernmentIdInformation() {
+  const [gID, setGID] = useState("")  //Sets Government ID Input Field Value
+  const [selectGID, setSelectGID] = useState("") // Sets Type of Gov Id Selected
+
+  const handleIdSubmit = () => {
+    console.log("ID SUBMITTED")
+  }
+  console.log(selectGID)
   return (<div>
 
     <div className="flex">
@@ -294,24 +301,29 @@ function GovernmentIdInformation() {
 
 
     <div className='flex mt-4'>
-      <input type="radio" id="adhaar" name="govid" value="Adhaar" />
+      <input type="radio" id="adhaar" name="govid" value="Adhaar" onChange={e => setSelectGID(e.target.value)} />
       <label for="adhaar" className='ml-4'>Adhaar Card</label>
-      <input type="radio" id="pan" name="govid" value="PAN" className='ml-4' />
+      <input type="radio" id="pan" name="govid" value="PAN" className='ml-4' onChange={e => setSelectGID(e.target.value)} />
       <label for="pan" className='ml-4'>PAN Card</label>
-      <input type="radio" id="dl" name="govid" value="Driving Licence" className='ml-4' />
+      <input type="radio" id="dl" name="govid" value="Driving Licence" className='ml-4' onChange={e => setSelectGID(e.target.value)} />
       <label for="dl" className='ml-4'>Driving Licence</label>
     </div>
 
     <div className="flex mt-4">
-      <input type="text" value="" className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+      {selectGID === "Adhaar" && (gID === "" || gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm
+      ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Adhaar Number</p>)}
+      {selectGID === "PAN" && (gID === "" || gID.match(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/
+      ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid PAN ID</p>)}
+      {selectGID === "Driving Licence" && (gID === "" || gID.match(/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
+      ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Driving License Number</p>)}
+      <input type="text" value={gID} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' onChange={e => setGID(e.target.value)} />
     </div>
 
-    <button className='float-left mt-4'>
+    <button className='float-left mt-4 bg-blue-500 py-2 px-4 rounded-md text-white' onClick={handleIdSubmit}>
       Add Government Id
     </button>
   </div>);
 }
-
 
 function CancelBooking() {
   const [orderId, setOrderId] = useState(null)

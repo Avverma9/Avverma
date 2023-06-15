@@ -40,6 +40,7 @@ import Kashmirpage from './Component/States/Kashmir/Kashmir';
 import Haryanapage from './Component/States/Haryana/Haryana';
 import SearchResults from './Component/Search/SearchResults';
 import Dropdownbar from './Component/Dropdownbar/Dropdown';
+import BookNow from './Component/Hotel/BookNow.jsx';
 
 
 
@@ -51,9 +52,9 @@ function App() {
         <Header />
 
         <HeaderImage />
-       <Dropdownbar/>
+        <Dropdownbar />
         <Carousel />
-   
+
         <Home />
         <Hotel />
         <ChatBox />
@@ -64,27 +65,27 @@ function App() {
         <UserSettings />
         <Partner />
         <PunjabPage />
- 
-        <Maharashtrapage/>
-         <Goapage/>
-         <Tamilnadupage/>
-         <Uttarpradeshpage/>
-         <Delhipage/>
-         <Westbengalpage/>
-         <Rajasthanpage/>
-         <Keralapage/>
-         <Biharpage/>
-         <Assampage/>
-         <Kernatakapage/>
-         <Gujratpage/>
-         <Kashmirpage/>
-         <Haryanapage/>
+
+        <Maharashtrapage />
+        <Goapage />
+        <Tamilnadupage />
+        <Uttarpradeshpage />
+        <Delhipage />
+        <Westbengalpage />
+        <Rajasthanpage />
+        <Keralapage />
+        <Biharpage />
+        <Assampage />
+        <Kernatakapage />
+        <Gujratpage />
+        <Kashmirpage />
+        <Haryanapage />
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/search/results" element={<SearchResults />} />
-
+          <Route path="/hotels/:id" element={<BookNow />} />
         </Routes>
         <Footer />
       </div>

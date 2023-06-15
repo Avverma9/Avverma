@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './hotel.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr , faLocationDot,faHotel,faPerson} from '@fortawesome/free-solid-svg-icons';
+import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr, faLocationDot, faHotel, faPerson } from '@fortawesome/free-solid-svg-icons';
 
 function HotelList() {
   const location = useLocation();
   const [hotels, setHotels] = useState([]);
   const [expandedResultId, setExpandedResultId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch('https://hotel-backend-tge7.onrender.com/get/all/hotels')
@@ -23,9 +24,10 @@ function HotelList() {
     return null;
   }
 
-  const handleBuy = (hotelName) => {
+  const handleBuy = (hotelID) => {
     // Replace with the logic to handle the booking action
-    console.log(`Book Now: ${hotelName}`);
+    console.log(`Book Now: ${hotelID}`);
+    navigate(`/hotels/${hotelID}`);
   };
 
   const toggleDetails = (resultId) => {
@@ -50,7 +52,7 @@ function HotelList() {
               <hr />
               <p className={styles['search-result-destination']}><FontAwesomeIcon icon={faLocationDot} className={styles['location']} />{result.destination}</p>
               <p className={styles['search-result-guests']}><FontAwesomeIcon icon={faPerson} className={styles['guest']} />{result.guests} Guest</p>
-              <p className={styles['search-result-rooms']}><FontAwesomeIcon icon={faHotel} className={styles['room']} />{result.numRooms} Room <span style={{color:'#5963ff',fontWeight:'502'}}>Available</span></p>
+              <p className={styles['search-result-rooms']}><FontAwesomeIcon icon={faHotel} className={styles['room']} />{result.numRooms} Room <span style={{ color: '#5963ff', fontWeight: '502' }}>Available</span></p>
               <p className={styles['search-result-price']}><FontAwesomeIcon icon={faInr} className={styles['rupees']} /> {result.price}<span className={styles['detail']}>per room per night</span></p>
               <hr />
               <p className={styles['search-result-availability']}>Local ID: {result.availability}</p>
@@ -59,7 +61,7 @@ function HotelList() {
               <button className={styles['view-details-button']} onClick={() => toggleDetails(result._id)}>
                 View Details
               </button>
-              <button className={styles['book-now-button']} onClick={() => handleBuy(result.hotelName)}>
+              <button className={styles['book-now-button']} onClick={() => handleBuy(result._id)}>
                 Book Now
               </button>
 
@@ -100,7 +102,7 @@ function HotelList() {
                           {amenity !== 'Free WIFI' && amenity !== 'AC' && amenity !== 'GYM' && amenity !== 'Parking' && amenity !== 'Swimming Pool' && amenity !== 'Kitchen' && amenity !== 'TV' && amenity !== 'Geyser' && amenity !== 'Power_backup' && amenity !== 'CCTV' && amenity !== 'Fire-Extinguisher' && amenity !== 'Elevator' && amenity !== 'Card-payment' && (
                             <>
                               <FontAwesomeIcon icon={faCheck} className={styles['fonticon']} />
-                             
+
                             </>)}
                           {amenity}</li>
                       ))}

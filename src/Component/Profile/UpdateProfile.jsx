@@ -79,9 +79,7 @@ export default function UpdateProfile({ userData, show, handleClose, setProfileU
                         onChange={(e) => setGender(e.target.value)}
                     />
                     <label htmlFor="mobile">
-                        {email === "" || mobile.match(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/) ? "Phone Number:" : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Phone Number</p>}
-
-
+                        {mobile === "" || mobile.match(/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/) ? "Phone Number:" : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Phone Number</p>}
                     </label>
                     <input
                         type="tel"
