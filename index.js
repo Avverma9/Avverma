@@ -813,5 +813,81 @@ app.get("/hotelDestination", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+//============================payment==========================================//
+const razorpay = new Razorpay({
+  key_id: " rzp_test_CE1nBQFs6SwXnC",
+  key_secret: "PTYR3RDbVaNrpkmRqMhX7CKA",
+});
+
+// payment schema
+const paymentSchema = new mongoose.Schema({
+  hotelId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Hotels",
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  currency: {
+    type: String,
+    required: true,
+    default: "INR",
+  },
+  status: {
+    type: String,
+    enum: ["created", "processed", "completed", "failed"],
+    default: "created",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const Payment = mongoose.model("Payment", paymentSchema);
+
+//==PAYMENT API==============================
+app.post("/api/payments", async (req, res) => {
+  try {
+    const { hotelId, userId, amount, currency } = req.body;
+
+    const options = {
+      amount: amount * 100,
+      currency,
+      receipt: "razorUser@gmail.com",
+    };
+
+    const payment = new Payment({
+      hotelId,
+      userId,
+      amount,
+      currency,
+    });
+
+    await payment.save();
+
+    res.json({
+      success: true,
+      payment: {
+        hotelId: payment.hotelId,
+        userId: payment.userId,
+        amount: payment.amount,
+        currency: payment.currency,
+        status: payment.status,
+        createdAt: payment.createdAt,
+      },
+    });
+  } catch (error) {
+    console.error("Payment creation error:", error);
+    res.status(500).json({ error: "Failed to create payment" });
+  }
+});
 //===============================================================================================================//
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
