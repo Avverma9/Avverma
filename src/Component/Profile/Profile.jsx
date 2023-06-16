@@ -5,7 +5,7 @@ import { Location } from 'react-router-dom';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { BsGearFill } from 'react-icons/bs'
-import './Profile.css';
+
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
 import { TbFolderFilled } from "react-icons/tb"
