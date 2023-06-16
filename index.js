@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const multer = require("multer");
+const nodemailer = require('nodemailer');
 
 const app = express();
 const server = createServer(app);
@@ -52,6 +53,47 @@ const upload = multer({
     }
   },
 }).array("images", 10);
+const transporter = nodemailer.createTransport({
+  service: 'your_email_provider',
+  auth: {
+    user: 'your_email',
+    pass: 'your_password'
+  }
+});
+function generateOTP() {
+  const length = 6;
+  let otp = '';
+  for (let i = 0; i < length; i++) {
+    otp += Math.floor(Math.random() * 10);
+  }
+  return otp;
+}
+async function sendOTP(email) {
+  const otp = generateOTP();
+  const mailOptions = {
+    from: 'your_email',
+    to: email,
+    subject: 'OTP Verification',
+    text: `Your OTP: ${otp}`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('OTP email sent:', info.response);
+    return otp;
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    throw error;
+  }
+}
+sendOTP('recipient@example.com')
+  .then(otp => {
+    console.log('Generated OTP:', otp);
+  })
+  .catch(error => {
+    console.error('Error generating/sending OTP:', error);
+  });
+
 // ===============================================user Schema========================================================//
 const UserSchema = new mongoose.Schema({
   name: { type: String, required: false },
@@ -59,6 +101,7 @@ const UserSchema = new mongoose.Schema({
   address: { type: String, required: false },
   email: { type: String, required: false, unique: true },
   mobile: { type: String, required: false },
+  otp: { type: String, required: false },
   password: { type: String, required: false },
   images: { type: [String], required: false },
 });
@@ -90,14 +133,14 @@ app.get("/get/:id", async (req, res) => {
 
 //=============================================SIGN IN===============================================================//
 app.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password,otp } = req.body;
 
   try {
     // Find the user in the database
     const user = await signUp.findOne({ email });
 
     // Check if user exists and compare passwords
-    if (user && user.password === password) {
+    if (user && user.password && user.otp === password) {
       res.json({ message: "Sign-in successful", userId: user._id });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
@@ -225,6 +268,26 @@ app.post("/complaint/:id", async (req, res) => {
       message: " something went wrong",
       error: error.message,
     });
+  }
+});
+app.get('/generate-otp', async (req, res) => {
+  try {
+    const otp = generateOTP(); 
+    const email = 'recipient@example.com'; 
+
+    const mailOptions = {
+      from: 'your_email',
+      to: email,
+      subject: 'OTP Verification',
+      text: `Your OTP: ${otp}`
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log('OTP email sent:', email);
+    res.send('OTP sent successfully!');
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    res.status(500).send('Failed to send OTP email.');
   }
 });
 
