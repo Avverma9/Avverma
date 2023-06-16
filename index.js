@@ -591,15 +591,16 @@ app.get('/get/all/hotels', async (req, res) => {
   }
 });
 //=========================get hotels by state===============================//
-app.get('/get/all/hotels/:state', async (req, res) => {
+app.get('/hotels/:destination', async (req, res) => {
   try {
-    const state = req.params.destination;
-    const hotels = await Hotels.find({ state });
+    const destination = req.params.destination;
+    const hotels = await Hotels.find({ destination });
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
 
 //================================get hotels by id==================
 app.get('/hotels/:id', async (req, res) => {
