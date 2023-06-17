@@ -4,15 +4,20 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faStar, faPerson, faHotel, faPeopleArrows, faIdCard, faRestroom, faInr, faWifi, faParking, faDumbbell, faFire, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faKitchenSet, faCheck,faPaw, faGlassMartini, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faChevronRight, faStar, faPerson, faHotel, faPeopleArrows, faIdCard, faRestroom, faInr, faWifi, faParking, faDumbbell, faFire, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faKitchenSet, faCheck, faPaw, faGlassMartini, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import './Booknow.css';
+import CheckOut from '../Payment/CheckOut';
+import { convertDate } from '../../utils/convertDate';
 
 export default function BookNow() {
     const [bookingDetails, setBookingDetails] = useState({});
     const [hotelImages, setHotelImages] = useState([]);
     const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
     const [hotelAmenities, setHotelAmenities] = useState([]);
+    const [checkIN, setCheckIn] = useState("");
+    const [checkOUT, setCheckOut] = useState("");
     const sliderRef = useRef(null);
+    const userId = localStorage.getItem('userId');
 
     const params = useParams();
 
@@ -31,6 +36,8 @@ export default function BookNow() {
                 setHotelImages(data.images);
                 setHotelAmenities(data.amenities);
                 setHotelMoreOpt(data.moreOptions);
+                setCheckIn(convertDate(bookingDetails.startDate))
+                setCheckOut(convertDate(bookingDetails.endDate))
             })
             .catch((error) => {
                 console.log(error);
@@ -52,6 +59,7 @@ export default function BookNow() {
     const slideToNext = () => {
         sliderRef.current.slickNext();
     };
+
     console.log(bookingDetails);
 
     return (
@@ -133,52 +141,50 @@ export default function BookNow() {
                         </div>
                         </p>
                         <div className='moreopt'><p className='morehead'>More:</p>
-                        <div className='moreitem'>
-                            {hotelMoreOpt.map((option, index) => {
-                                let icon;
-                                switch (option){
-                                    case 'Pets Allowed':
-                                    icon = faPaw;
-                                    break;
-                                    case 'Alcohol Allowed':
-                                    icon = faGlassMartini;
-                                    break;
-                                    case 'Bachelor Allowed':
-                                    icon = faPeopleGroup;
-                                    break;
-                                    
-
-
-                                }
-                                return(
-                                    <p key={index}>
-                                        {icon && <FontAwesomeIcon icon={icon} className='more-icon'/>}{option}
-                                    </p>
-                                );
-                            })}
+                            <div className='moreitem'>
+                                {hotelMoreOpt.map((option, index) => {
+                                    let icon;
+                                    // eslint-disable-next-line default-case
+                                    switch (option) {
+                                        case 'Pets Allowed':
+                                            icon = faPaw;
+                                            break;
+                                        case 'Alcohol Allowed':
+                                            icon = faGlassMartini;
+                                            break;
+                                        case 'Bachelor Allowed':
+                                            icon = faPeopleGroup;
+                                            break;
+                                    }
+                                    return (
+                                        <p key={index}>
+                                            {icon && <FontAwesomeIcon icon={icon} className='more-icon' />}{option}
+                                        </p>
+                                    );
+                                })}
                             </div></div>
-                            
-                                
+
+
 
 
 
                         <div className='bookcardmain'>
                             <div className="booking-card">
-                                <h2 className="booking-card-title">Booking Starts</h2>
+                                <h2 className="booking-card-title">Check in</h2>
                                 <div className="booking-card-content">
                                     <p>
                                         <span className="booking-label"></span>{" "}
-                                        <span className="booking-date">{bookingDetails.startDate}</span>
+                                        <span className="booking-date">{checkIN}</span>
                                     </p>
                                 </div>
                             </div>
 
                             <div className="booking-card">
-                                <h2 className="booking-card-title">Booking Ends</h2>
+                                <h2 className="booking-card-title">Check out</h2>
                                 <div className="booking-card-content">
                                     <p>
                                         <span className="booking-label"></span>{" "}
-                                        <span className="booking-date">{bookingDetails.endDate}</span>
+                                        <span className="booking-date">{checkOUT}</span>
                                     </p>
                                 </div>
                             </div>
@@ -214,7 +220,7 @@ export default function BookNow() {
                             <div className='reviewhead'>Reviews:<FontAwesomeIcon icon={faStar} className='star1' /><FontAwesomeIcon icon={faStar} className='star1' /><FontAwesomeIcon icon={faStar} className='star1' /></div>
                             <p className='reviewdetail'>{bookingDetails.reviews}</p>
                         </div>
-
+                        <CheckOut hotelId={bookingDetails._id} userId={userId} amount={Number(bookingDetails.price)} currency="INR" />
                     </div>
                 </div>
             </div>
