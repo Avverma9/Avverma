@@ -114,7 +114,7 @@ const getAllHotels = async (req, res) => {
 
 const getHotelbyName = async(req,res)=>{
   try {
-    const data= req.params.destination
+    const data= req.query.destination
     const hotels = await hotelModel.find((data));
     res.json(hotels);
   } catch (error) {
