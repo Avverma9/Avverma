@@ -32,7 +32,7 @@ router.post("/hotels/create/new",upload, hotelController.createHotel);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id",hotelController.getHotelsById);
-router.get("/get/all/hotels/:state",hotelController.getHotelbyName)
+router.get("/hotels",hotelController.getHotelbyName)
 
 
 //==================================== STATE ========================================================== 
