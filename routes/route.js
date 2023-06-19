@@ -17,9 +17,9 @@ router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
 
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
-router.get("/userId/:userId", userController.getUserById);
+router.get("/get/:id", userController.getUserById);
 router.post("/signIn", userController.signIn);
-
+router.put("/update/:id", userController.signIn);
 
 
 //==================================== WELCOME ===========================================================
