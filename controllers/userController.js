@@ -51,7 +51,7 @@ const getUserById = async function (req, res) {
   }
 };
 //======================================================================
-const signUp = require("../models/userModel");
+
 
 const signIn = async function (req, res) {
   const { email, password } = req.body;
