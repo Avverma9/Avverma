@@ -51,7 +51,7 @@ const getUserById = async function (req, res) {
   }
 };
 //======================================================================
-const signUp = require("../models/userModel");
+
 
 const signIn = async function (req, res) {
   const { email, password } = req.body;
@@ -68,5 +68,31 @@ const signIn = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+//=====================================================================
+const update= async (req, res) => {
+  const { id } = req.params;
+  const { name, address, gender, email, mobile, password } = req.body;
+  let images = [];
 
-module.exports = { createSignup, getUserById, signIn };
+  if (req.files.length > 0) {
+    images = req.files.map(file => file.location);
+  }
+
+  const user = await signUp.findByIdAndUpdate(
+    id,
+    { name, address, gender, email, mobile, password, images },
+    { new: true }
+  )
+    .then((user) => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: 'Internal server error', error });
+    });
+}
+
+module.exports = { createSignup, getUserById, signIn, update};
