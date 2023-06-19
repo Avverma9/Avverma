@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './searchResult.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInr,faStar,faLocationDot,faPerson,faHotel } from '@fortawesome/free-solid-svg-icons';
+import { faInr,faStar,faLocationDot,faPerson,faHotel, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faFire,faParking,faWifi,faPaw,faKitchenSet, faCheck,faGlassMartini,faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 export default function SearchResults() {
   const searchResults = useSelector((state) => state.searchState);
   const [expandedResultId, setExpandedResultId] = useState(null);
@@ -47,19 +47,85 @@ export default function SearchResults() {
               <div>
                 <div className="amenities">
                   <h6>More:</h6>
-                  <ul>
-                    {result.moreOptions.map((more) => (
-                      <li key={more}>{more}</li>
-                    ))}
-                  </ul>
+                  
+
+<ul>
+  {result.moreOptions.map((option) => {
+    let icon;
+    switch (option) {
+      case 'Pets Allowed':
+        icon = faPaw;
+        break;
+        case 'Alcohol Allowed':
+                                    icon = faGlassMartini;
+                                    break;
+                                    case 'Bachelor Allowed':
+                                    icon = faPeopleGroup;
+                                    break;
+                                    default:
+                                    icon = faCheck; 
+        
+     
+      
+    }
+    return (
+      <li key={option}>
+        {icon && <FontAwesomeIcon icon={icon} className="option-icon" />} {option}
+      </li>
+    );
+  })}
+</ul>
+
                 </div>
                 <hr />
                 <div className="amenities">
                   <h6>Amenities:</h6>
                   <ul>
-                    {result.amenities.map((amenity) => (
-                      <li key={amenity}>{amenity}</li>
-                    ))}
+                    {result.amenities.map((amenity) => {
+    let icon;
+    switch (amenity) {
+      
+      case 'Free WIFI':
+        icon = faWifi;
+        break;
+        case 'GYM':
+        icon = faPaw;
+        break;
+        case 'Geyser':
+        icon = faFire;
+        break;
+        case 'TV':
+        icon = faTv;
+        break;
+        case 'CCTV':
+        icon = faCamera;
+        break;
+        case 'AC':
+        icon = faSnowflake;
+        break;
+        case 'Card-payment':
+        icon = faCreditCard;
+        break;
+      
+      case 'Parking':
+        icon = faParking;
+        break;
+        case 'Elevator':
+        icon = faElevator;
+        break;
+        case 'Kitchen':
+        icon = faKitchenSet;
+        break;
+      default:
+        icon = faCheck;
+    }
+    return (
+      <li key={amenity}>
+        {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {amenity}
+      </li>
+    );
+  })}
+                      
                   </ul>
                 </div>
               </div>

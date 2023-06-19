@@ -184,13 +184,7 @@
   list-style: none;
 }
 
-.amenities li:before {
-  content: '✓';
-  
-  display: inline-block;
-  margin-right: 0.125rem;
-  color: #777;
-}
+
 
 @media (max-width: 768px) {
   .search-result {
