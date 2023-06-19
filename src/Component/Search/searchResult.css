@@ -19,7 +19,6 @@
 }
 .view-details-button,
 .book-now-button {
-  
   width: 40%;
   margin: 10px 0;
   padding: 10px;
@@ -30,14 +29,12 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
-  
-  
 }
-.button-container{
+.button-container {
   display: flex;
   justify-content: space-between;
 }
@@ -45,9 +42,9 @@
 .book-now-button:hover {
   background-color: #0056b3;
 }
-.hotel-rating{
+.hotel-rating {
   font-size: 20px;
-  color:#ffffff;
+  color: #ffffff;
   margin: 0;
   display: flex;
   align-items: center;
@@ -55,7 +52,7 @@
   padding: 8px;
   border-radius: 3px;
 }
-.fastar{
+.fastar {
   margin-left: 5px;
 }
 .hotel-info {
@@ -84,7 +81,7 @@
 .search-result-destination {
   font-size: 20px;
   margin-bottom: 10px;
-  color:red;
+  color: red;
   font-weight: 700;
 }
 .search-result-destination .hotel-location {
@@ -92,28 +89,27 @@
   color: rgb(119, 140, 255);
   font-size: 22px;
 }
-.search-result-guests{
+.search-result-guests {
   font-size: 14px;
   margin-bottom: 4px;
-  
+
   font-weight: 503;
-  color:#686868
+  color: #686868;
 }
-.guest{
+.guest {
   margin-right: 6px;
   font-size: 20px;
 }
-.search-result-rooms{
+.search-result-rooms {
   font-size: 14px;
   margin-bottom: 4px;
-  color:#686868;
+  color: #686868;
   font-weight: 503;
 }
-.room{
+.room {
   margin-right: 8px;
   font-size: 15px;
 }
-
 
 @media (max-width: 768px) {
   .book-now-button {
@@ -145,14 +141,9 @@
 .search-result-price .detail {
   font-size: 12px;
   color: #5e5e5e;
-  margin:5px;
+  margin: 5px;
   font-weight: 501;
 }
-
-
-
-
-
 
 .search-result-availability {
   font-size: 0.625rem;
@@ -174,7 +165,6 @@
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
-  
 }
 
 .amenities li {
@@ -183,8 +173,6 @@
   margin-bottom: 0.125rem;
   list-style: none;
 }
-
-
 
 @media (max-width: 768px) {
   .search-result {
@@ -224,5 +212,3 @@
     color: #fff;
   }
 }
-
-

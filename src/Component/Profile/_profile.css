@@ -1,0 +1,275 @@
+/* Profile Component Container Full */
+
+.profile_container {
+  display: flex;
+  width: 100%;
+  padding: 25px 50px;
+  color: #334155;
+}
+
+/* Profile Component Left Side Container */
+
+.profile_sidebar {
+  width: 30%;
+  margin: 0 25px 0 0;
+}
+
+/* Sidebar Component Styles */
+
+.sidebar_header {
+  background-color: #e2e8f0;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sidebar_header .react-avatar div span {
+  font-size: 18px;
+}
+
+.sidebar_header h2 {
+  margin: 0 0 0 15px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sidebar_body {
+  /* height: 460px; */
+  background-color: #e2e8f0;
+  padding: 10px 15px;
+  margin: 25px 0 0 0;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.sidebar_body .user_logout {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.sidebar_body .user_logout svg {
+  margin: 0 4px;
+  font-size: 30px;
+  color: #475569;
+}
+
+.sidebar_body .user_logout h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* AccountSettings Component styles */
+
+.accountSettings_section {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.accountSettings_section svg {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.accountSettings_section h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.accountSettings_section_collapse {
+  display: flex;
+  flex-direction: column;
+}
+
+.accountSettings_section_collapse button {
+  margin: 0 0 0px 51px;
+  outline: none;
+  border: none;
+  text-align: left;
+  background: transparent;
+  padding: 0 !important;
+}
+
+.accountSettings_section_collapse button p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+/* MyBookings Component styles */
+
+.myBookings_section {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.myBookings_section .folder_filled {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.myBookings_section h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.myBookings_section .arrow_right {
+  margin: 0 0 0 auto;
+  font-size: 18px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.myBookings_section_collapse {
+  display: flex;
+  flex-direction: column;
+}
+
+.myBookings_section_collapse button {
+  margin: 0 0 0px 51px;
+  outline: none;
+  border: none;
+  text-align: left;
+  background: transparent;
+  padding: 0 !important;
+}
+
+.myBookings_section_collapse button p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* Payments Component styles */
+
+.payments_section {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.payments_section svg {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.payments_section h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.payments_section_collapse {
+  display: flex;
+  flex-direction: column;
+}
+
+.payments_section_collapse button {
+  margin: 0 0 0px 51px;
+  outline: none;
+  border: none;
+  text-align: left;
+  background: transparent;
+  padding: 0 !important;
+}
+
+.payments_section_collapse button p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* MyReviews Component styles */
+
+.myReviews_section {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.myReviews_section svg {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.myReviews_section h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Complains Component styles */
+
+.complains_section {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  margin: 15px 0;
+}
+
+.complains_section svg {
+  margin: 0 10px;
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.complains_section h2 {
+  margin: 0 0 0 13px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Profile Component Right Side Container */
+
+.profile_body {
+  background-color: #e2e8f0;
+  width: 70%;
+  margin: 0 0 0 25px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile_information_title {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.profile_information_title h1 {
+  margin: 0 0 0 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.profile_information_title input {
+  margin: 0 0 0 auto;
+  font-size: 16px;
+  font-weight: 400;
+  color: #2563eb;
+  border: none;
+  outline: none;
+  background-color:transparent;
+}
+
+/* Common  */
+
+._underLine {
+  border: 1px solid #94a3b8;
+}

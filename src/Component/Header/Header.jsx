@@ -47,12 +47,12 @@ const Header = () => {
   </div>
 </li>
 <li>
-  <a href="/" class="no-underline text-black">
+  <a href="/" >
     <BsHouse /> Home
   </a>
 </li>
 <li>
-  <a href="/profile" class="no-underline text-black">
+  <a href="/profile" >
     <BsPerson /> Profile
   </a>
 </li>

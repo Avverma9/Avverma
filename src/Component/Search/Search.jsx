@@ -208,7 +208,7 @@ const SearchComponent = () => {
             <option value="">More</option>
             <option value="Pets Allowed">Pets Allowed</option>
             <option value="Alcohol Allowed">Alcohol Allowed</option>
-            <option value="Bachelor Allowed">Bachelors Allowed</option>
+            <option value="Bachelors Allowed">Bachelors Allowed</option>
             <option value="Smoking Allowed">Smoking Allowed</option>
           </select>
         </div>

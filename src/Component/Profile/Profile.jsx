@@ -5,7 +5,7 @@ import { Location } from 'react-router-dom';
 import { BsPencilSquare } from 'react-icons/bs';
 import { FaSignOutAlt } from 'react-icons/fa';
 import { BsGearFill } from 'react-icons/bs'
-
+import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
 import { TbFolderFilled } from "react-icons/tb"
@@ -24,23 +24,23 @@ function AccountSettings({ selectedNav, navHandler }) {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
   return (<>
-    <div className="flex items-center mb-4" {...getToggleProps({
+    <div className="accountSettings_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <FaUser className='text-blue-500' />
-      <h2 className="ml-2 text-base font-medium">Account Settings</h2>
+      <FaUser />
+      <h2>Account Settings</h2>
     </div>
-    <div className="flex flex-col items-start" {...getCollapseProps()}>
-      <button className={selectedNav === 'Profile Information' ? `bg-blue-400 text-slate-600 text-base font-bold shadow-md w-[100%] text-left cursor-pointer` : `w-[100%] text-left cursor-pointer`} onClick={navHandler}>
-        <p className="my-1 ml-6 text-sm font-medium">Profile Information</p>
+    <div className="accountSettings_section_collapse" {...getCollapseProps()}>
+      <button className={selectedNav === 'Profile Information' ? `` : ``} onClick={navHandler}>
+        <p>Profile Information</p>
       </button>
-      <button className={selectedNav === 'Mannage Addresses' ? `bg-blue-400 text-slate-600 text-base font-bold shadow-md w-[100%] text-left cursor-pointer` : `w-[100%] text-left cursor-pointer`} onClick={navHandler}>
-        <p className="my-1 ml-6 text-sm font-medium">Mannage Addresses</p>
+      <button className={selectedNav === 'Mannage Addresses' ? `` : ``} onClick={navHandler}>
+        <p className="">Mannage Addresses</p>
       </button>
-      <button className={selectedNav === 'Add Government id' ? `bg-blue-400 text-slate-600 text-base font-bold shadow-md w-[100%] text-left cursor-pointer` : `w-[100%] text-left cursor-pointer`} onClick={navHandler}>
-        <p className="my-1 ml-6 text-sm font-medium">Add Government id</p></button>
+      <button className={selectedNav === 'Add Government id' ? `` : ``} onClick={navHandler}>
+        <p className="">Add Government id</p></button>
     </div>
-    <div className='border-[1px] border-slate-400' />
+    <div className='_underLine' />
   </>);
 }
 
@@ -48,34 +48,34 @@ function MyBookings({ selectedNav, navHandler }) {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
   return (<>
-    <div className="flex items-center my-4" {...getToggleProps({
+    <div className="myBookings_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <TbFolderFilled className='text-blue-500' />
-      <h2 className="ml-2 text-base font-medium">My Bookings</h2>
-      <MdKeyboardArrowRight className='flex-grow -mr-32' />
+      <TbFolderFilled className='folder_filled' />
+      <h2>My Bookings</h2>
+      <MdKeyboardArrowRight className='arrow_right' />
     </div>
-    <div className="flex flex-col items-start" {...getCollapseProps()}>
-      <button className={selectedNav === "Cancel Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">Cancel Booking</p>
+    <div className="myBookings_section_collapse" {...getCollapseProps()}>
+      <button className={selectedNav === "Cancel Booking" ? `` : ``} onClick={navHandler} >
+        <p>Cancel Booking</p>
       </button>
-      <button className={selectedNav === "Confirm Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">Confirm Booking</p>
+      <button className={selectedNav === "Confirm Booking" ? `` : ``} onClick={navHandler} >
+        <p>Confirm Booking</p>
       </button>
-      <button className={selectedNav === "Checking Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">Checking Booking</p>
+      <button className={selectedNav === "Checking Booking" ? `` : ``} onClick={navHandler} >
+        <p>Checking Booking</p>
       </button>
-      <button className={selectedNav === "Check Out Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">Check Out Booking</p>
+      <button className={selectedNav === "Check Out Booking" ? `` : ``} onClick={navHandler} >
+        <p>Check Out Booking</p>
       </button>
-      <button className={selectedNav === "NoShow Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">NoShow Booking</p>
+      <button className={selectedNav === "NoShow Booking" ? `` : ``} onClick={navHandler} >
+        <p>NoShow Booking</p>
       </button>
-      <button className={selectedNav === "Failed Booking" ? `w-44 my-1 border-[1px] border-blue-300 text-blue-400 text-left cursor-pointer` : `w-44 my-1 border-[1px] border-slate-400 text-left cursor-pointer`} onClick={navHandler} >
-        <p className="my-1 px-6 text-sm font-medium">Failed Booking</p>
+      <button className={selectedNav === "Failed Booking" ? `` : ``} onClick={navHandler} >
+        <p>Failed Booking</p>
       </button>
     </div>
-    <div className='border-[1px] border-slate-400' />
+    <div className='_underLine' />
   </>);
 }
 
@@ -83,18 +83,24 @@ function Payments() {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
   return (<>
-    <div className="flex items-center  my-4" {...getToggleProps({
+    <div className="payments_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <RiWallet3Fill className='text-blue-500' />
+      <RiWallet3Fill />
       <h2 className="ml-2 text-base font-medium">Payments</h2>
     </div>
-    <div className="flex flex-col items-start" {...getCollapseProps()}>
-      <p className="my-1 ml-6 text-sm font-medium">Gift Cards</p>
-      <p className="my-1 ml-6 text-sm font-medium">Saved Upi</p>
-      <p className="my-1 ml-6 text-sm font-medium">Saved Cards</p>
+    <div className="payments_section_collapse" {...getCollapseProps()}>
+      <button>
+        <p>Gift Cards</p>
+      </button>
+      <button>
+        <p>Saved Upi</p>
+      </button>
+      <button>
+        <p>Saved Cards</p>
+      </button>
     </div>
-    <div className='border-[1px] border-slate-400' />
+    <div className='_underLine' />
   </>);
 }
 
@@ -103,38 +109,38 @@ function Payments() {
 function MyReviews({ navHandler }) {
 
   return (<>
-    <div className="flex items-center my-4 cursor-pointer" onClick={navHandler}>
-      <MdFolderShared className='text-blue-500' />
-      <h2 className="ml-2 text-base font-medium">My Reviews</h2>
+    <div className="myReviews_section" onClick={navHandler}>
+      <MdFolderShared />
+      <h2>My Reviews</h2>
     </div>
 
-    <div className='border-[1px] border-slate-400' />
+    <div className='_underLine' />
   </>);
 }
 
 function Complains({ navHandler }) {
 
   return (<>
-    <div className="flex items-center my-4 cursor-pointer" onClick={navHandler}>
-      <MdFolderShared className='text-blue-500' />
-      <h2 className="ml-2 text-base font-medium">Complains</h2>
+    <div className="complains_section" onClick={navHandler}>
+      <MdFolderShared />
+      <h2>Complains</h2>
     </div>
 
-    <div className='border-[1px] border-slate-400' />
+    <div className='_underLine' />
   </>);
 }
 
 
-function ProfileSidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSelectednav, navHandler }) {
+function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSelectednav, navHandler }) {
 
   console.log(selectedNav)
-  return (<div className='w-[30%] flex flex-col -mt-2 p-4'>
-    <div className="profile_header ml-2 mr-1 rounded-sm shadow-md p-4 bg-slate-100 flex items-center">
-      <Avatar name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="24" className="hover:cursor-pointer hover:opacity-80" // onClick={editProfileHandler}
+  return (<>
+    <div className="sidebar_header">
+      <Avatar name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
       />
-      <h2 className='ml-2 text-base font-medium'>{!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}</h2>
+      <h2 className=''>{!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}</h2>
     </div>
-    <div className="profile_body mt-4 ml-2 mr-1 rounded-sm shadow-md p-4 bg-slate-100 overflow-x-hidden">
+    <div className="sidebar_body">
 
       <AccountSettings selectedNav={selectedNav} navHandler={navHandler} />
 
@@ -147,73 +153,75 @@ function ProfileSidebar({ isSignedIn, userDetails, userData, logOut, selectedNav
       <Complains selectedNav={selectedNav} navHandler={navHandler} />
 
       <>
-        <div className="flex items-center cursor-pointer my-4" onClick={logOut}>
-          <AiOutlinePoweroff className='text-slate-700' size={25} />
-          <h2 className="ml-2 text-base font-medium">Logout</h2>
+        <div className="user_logout" onClick={logOut}>
+          <AiOutlinePoweroff />
+          <h2>Logout</h2>
         </div>
       </>
     </div>
-  </div>);
+  </>);
 }
 
 
 
 
 function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
-  return (<div>
+  return (
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
-          Personal Information
-        </h1>
-        <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
-      </div>
-      <div className="flex mt-4">
-        <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name} className='p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-        <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} className='ml-2 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-      </div>
-    </>
-    <>
-      <h4 className='text-left mt-4 text-sm font-medium'>Your Gender</h4>
-      <div className='flex mt-4'>
-        {userData?.gender === "Male" ? <>
-          <input type="radio" id="male" name="gender" value="Male" checked />
-          <label for="male" className='ml-2'>{userData?.gender}</label>
-        </>
-          :
-          <>
-            <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
-            <label for="female" className='ml-2'>{userData?.gender}</label>
+      <>
+        <div className="profile_information_title">
+          <h1>
+            Personal Information
+          </h1>
+          <input type="button" value="Edit" />
+        </div>
+        <div className="flex mt-4">
+          <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name} className='p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+          <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} className='ml-2 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        </div>
+      </>
+      <>
+        <h4 className='text-left mt-4 text-sm font-medium'>Your Gender</h4>
+        <div className='flex mt-4'>
+          {userData?.gender === "Male" ? <>
+            <input type="radio" id="male" name="gender" value="Male" checked />
+            <label for="male" className='ml-2'>{userData?.gender}</label>
           </>
-        }
-      </div>
+            :
+            <>
+              <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
+              <label for="female" className='ml-2'>{userData?.gender}</label>
+            </>
+          }
+        </div>
+      </>
+      <>
+        <div className="flex">
+          <h1 className="text-lg font-semibold mt-4">
+            Email Address
+          </h1>
+          <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+        </div>
+        <div className="flex mt-4">
+          <input type="email" value={!isSignedIn && userDetails ? userDetails?.email : userData?.email} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        </div>
+      </>
+      <>
+        <div className="flex">
+          <h1 className="text-lg font-semibold mt-4">
+            Mobile Number
+          </h1>
+          <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+        </div>
+        <div className="flex mt-4">
+          <input type="text" value={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        </div>
+      </>
+        <button onClick={handleShow} className="float-left py-3 px-4 bg-blue-500 mt-4 border-0 rounded-md text-white font-bold">
+        Update Profile
+      </button>
     </>
-    <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold mt-4">
-          Email Address
-        </h1>
-        <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
-      </div>
-      <div className="flex mt-4">
-        <input type="email" value={!isSignedIn && userDetails ? userDetails?.email : userData?.email} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-      </div>
-    </>
-    <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold mt-4">
-          Mobile Number
-        </h1>
-        <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
-      </div>
-      <div className="flex mt-4">
-        <input type="text" value={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-      </div>
-    </>
-    <button onClick={handleShow} className="float-left py-3 px-4 bg-blue-500 mt-4 border-0 rounded-md text-white font-bold">
-      Update Profile
-    </button>
-  </div>);
+  );
 }
 
 
@@ -815,11 +823,15 @@ const Profile = () => {
     <>
 
       {show && <UpdateProfile userData={userData} stShow={setShow} show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />}
-      <div className="text-center text-slate-800 m-2 h-[680px] flex">
-        <ProfileSidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
-        <div className='w-[70%] h-[670px] bg-slate-100 my-2 mr-2 ml-1 rounded-sm shadow-md p-4'>
-          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+      <div className="profile_container">
+        <div className="profile_sidebar">
+          <Sidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
+        </div>
+        <div className='profile_body'>
+          {/*   {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
+            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}*/}
+          <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />
+
         </div>
       </div>
     </>

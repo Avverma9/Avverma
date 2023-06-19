@@ -7,7 +7,7 @@
 }
 
 .footerSection {
-  flex: 1;
+  flex: -1;
 }
 
 .footerSection h3 {
@@ -19,6 +19,7 @@
 .footerSection ul {
   list-style-type: none;
   padding: 0;
+  line-height: 4;
 }
 
 .footerSection ul li {
@@ -71,6 +72,7 @@
 .footerSection ul li a:hover::after {
   transform: scaleX(1);
 }
+
 
 
 .socialIcons {

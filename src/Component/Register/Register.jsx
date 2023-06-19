@@ -70,74 +70,74 @@ const Register = () => {
     <>
       <div className="card-signup">
         <form onSubmit={handleFormSubmit}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-         <input
-          type="text"
-          placeholder="Gender"
-          value={name}
-          onChange={(event) => setGender(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={address}
-          onChange={(event) => setAddress(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-        <input
-          type="email"
-          placeholder="Email "
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-        <input
-          type="text"
-          placeholder="Mobile"
-          value={mobile}
-          onChange={(event) => setMobile(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-        <input
-          type="password"
-          placeholder="Password  "
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-          className="input-field-signup"
-        />
-        <div className="profile-picture-wrapper-signup">
-          {selectedImage ? (
-            <div
-              className="profile-picture-signup"
-              style={{
-                backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
-              }}
-            ></div>
-          ) : (
-            <div className="profile-picture-signup"></div>
-          )}
-          <label className="upload-button-signup">
-            Select Profile Picture
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-          </label>
-        </div>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <input
+            type="text"
+            placeholder="Gender"
+            value={gender}
+            onChange={(event) => setGender(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <input
+            type="text"
+            placeholder="Address"
+            value={address}
+            onChange={(event) => setAddress(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <input
+            type="email"
+            placeholder="Email "
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <input
+            type="text"
+            placeholder="Mobile"
+            value={mobile}
+            onChange={(event) => setMobile(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <input
+            type="password"
+            placeholder="Password  "
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+            className="input-field-signup"
+          />
+          <div className="profile-picture-wrapper-signup">
+            {selectedImage ? (
+              <div
+                className="profile-picture-signup"
+                style={{
+                  backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
+                }}
+              ></div>
+            ) : (
+              <div className="profile-picture-signup"></div>
+            )}
+            <label className="upload-button-signup">
+              Select Profile Picture
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
           <button type="submit">Sign Up</button>
         </form>
       </div>
