@@ -238,7 +238,7 @@ function AddressInformation({ userData }) {
       formData.append('address', address !== "" ? address : userData?.address);
 
       const userId = localStorage.getItem('userId');
-      const response = await fetch(`https://hotel-backend-tge7.onrender.com/user/${userId}`, {
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}`, {
         method: 'PUT',
         body: formData,
       });

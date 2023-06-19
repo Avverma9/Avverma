@@ -42,17 +42,17 @@ const Header = () => {
     More
   </a>
   <div className={styles['dropdown-content']}>
-    <a href="#" class="no-underline text-black">Complaints</a>
-    <a href="#" class="no-underline text-black">Option 2</a>
+    <a href="#" class="text-black">Complaints</a>
+    <a href="#" >Option 2</a>
   </div>
 </li>
 <li>
-  <a href="/" >
+  <a href="/" class="text-black">
     <BsHouse /> Home
   </a>
 </li>
 <li>
-  <a href="/profile" >
+  <a href="/profile" class="text-black">
     <BsPerson /> Profile
   </a>
 </li>

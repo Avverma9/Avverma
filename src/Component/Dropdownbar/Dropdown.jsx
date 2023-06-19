@@ -73,7 +73,7 @@ const Dropdownbar = () => {
     },
     {
       state: 'Uttarakhand',
-      cities: ['Dehradun', 'Nainital', 'Rishikesh', 'Mussoorie','Haridwar','Almora','Ranikhet','Uttarkashi','Kashipur','Gangotri']
+      cities: ['Dehradun', 'Nainital', 'Rishikesh', 'Mussoorie','Haridwar']
     }
   ];
   const location = useLocation();
