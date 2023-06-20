@@ -23,7 +23,7 @@ export default function SearchResults() {
           <div className="search-result-content">
             <div className='hotel-info'>
               <h3 className="search-result-title">{result.hotelName}</h3>
-              <h5 className='hotel-rating'>{result.rating}<FontAwesomeIcon icon={faStar} className={styles['fastar']} /></h5>
+              <h5 className='hotel-rating'>{result.rating}<FontAwesomeIcon icon={faStar} className='fastaricon' /></h5>
             </div>
             <hr />
             <p className="search-result-destination"><FontAwesomeIcon icon={faLocationDot} className='hotel-location' />{result.destination}</p>

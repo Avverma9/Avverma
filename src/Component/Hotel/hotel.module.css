@@ -8,9 +8,9 @@
 }
 
 .search-result {
-  width: 300px;
-  margin: 20px;
-  padding: 20px;
+  width: 350px;
+  margin: 2px;
+  padding: 5px;
   background-color: #f5f5f5;
   border-radius: 5px;
   display: flex;
@@ -109,7 +109,7 @@
   
   width: 40%;
   margin: 10px 0;
-  padding: 10px;
+  padding: 5px;
   font-size: 9px;
   text-align: center;
   background-color: #007bff;
@@ -177,7 +177,7 @@ hr {
 }
 
 .hotel-rating {
-  font-size: 20px;
+  font-size: 12px;
 color: #ffffff;
 margin: 0px;
 display: flex;

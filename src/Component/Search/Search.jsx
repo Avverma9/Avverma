@@ -138,23 +138,40 @@ const SearchComponent = () => {
               utcOffset={-1 * new Date().getTimezoneOffset()}
             />
           </div>
+          <div className="marital">
+          <select
+            id="maritalStatus"
+            name="maritalStatus"
+            value={searchData.maritalStatus}
+            onChange={handleInputChange}
+            required
+            className="input-select-marital"
+          >
+            <option value="">Marital</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+          </select>
         </div>
-
+        </div>
+<div className='guest-room'>
         <div className="guests">
+        <p>Guest</p>
           <select
             id="guests"
             name="guests"
             value={searchData.guests}
+            
             onChange={handleInputChange}
             required
             className="input-guests"
           >
             {renderOptions(1, 1000, 'Guests')}
           </select>
-          <p>Guests</p>
+          
         </div>
 
         <div className="rooms">
+        <p>Room</p>
           <select
             id="numRooms"
             name="numRooms"
@@ -165,7 +182,24 @@ const SearchComponent = () => {
           >
             {renderOptions(1, 1000, 'Rooms')}
           </select>
-          <p>Rooms</p>
+          
+        </div>
+        <div className="more-options">
+        <p>More</p>
+          <select
+            id="moreOptions"
+            name="moreOptions"
+            value={searchData.moreOptions}
+            onChange={handleInputChange}
+            className="input-select-more"
+          >
+            <option value="">More</option>
+            <option value="Pets Allowed">Pets Allowed</option>
+            <option value="Alcohol Allowed">Alcohol Allowed</option>
+            <option value="Bachelor Allowed">Bachelors Allowed</option>
+            <option value="Smoking Allowed">Smoking Allowed</option>
+          </select>
+        </div>
         </div>
 
         <div className="local">
@@ -182,36 +216,9 @@ const SearchComponent = () => {
   </label>
 </div>
 
-        <div className="marital">
-          <select
-            id="maritalStatus"
-            name="maritalStatus"
-            value={searchData.maritalStatus}
-            onChange={handleInputChange}
-            required
-            className="input-select-marital"
-          >
-            <option value="">Select marital status</option>
-            <option value="single">Single</option>
-            <option value="married">Married</option>
-          </select>
-        </div>
+       
 
-        <div className="more-options">
-          <select
-            id="moreOptions"
-            name="moreOptions"
-            value={searchData.moreOptions}
-            onChange={handleInputChange}
-            className="input-select-more"
-          >
-            <option value="">More</option>
-            <option value="Pets Allowed">Pets Allowed</option>
-            <option value="Alcohol Allowed">Alcohol Allowed</option>
-            <option value="Bachelors Allowed">Bachelors Allowed</option>
-            <option value="Smoking Allowed">Smoking Allowed</option>
-          </select>
-        </div>
+        
 
         <div className="btn">
           <button type="submit">Search</button>
