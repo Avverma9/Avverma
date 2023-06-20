@@ -1,6 +1,7 @@
 const userModel = require("../models/userModel");
 const upload = require("../aws/upload");
 
+//====================================================================================
 const createSignup = async function (req, res) {
   try {
     const { name, gender, address, email, mobile, password } = req.body;
@@ -52,7 +53,6 @@ const getUserById = async function (req, res) {
 };
 //======================================================================
 
-
 const signIn = async function (req, res) {
   const { email, password } = req.body;
 
@@ -69,30 +69,81 @@ const signIn = async function (req, res) {
   }
 };
 //=====================================================================
-const update= async (req, res) => {
+const update = async (req, res) => {
   const { id } = req.params;
   const { name, address, gender, email, mobile, password } = req.body;
   let images = [];
 
   if (req.files.length > 0) {
-    images = req.files.map(file => file.location);
+    images = req.files.map((file) => file.location);
   }
 
-  const user = await signUp.findByIdAndUpdate(
-    id,
-    { name, address, gender, email, mobile, password, images },
-    { new: true }
-  )
+  const user = await userModel
+    .findByIdAndUpdate(
+      id,
+      { name, address, gender, email, mobile, password, images },
+      { new: true }
+    )
     .then((user) => {
       if (user) {
         res.json(user);
       } else {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: "User not found" });
       }
     })
     .catch((error) => {
-      res.status(500).json({ message: 'Internal server error', error });
+      res.status(500).json({ message: "Internal server error", error });
     });
-}
+};
 
-module.exports = { createSignup, getUserById, signIn, update};
+//===============================================================================
+const getAllUsers = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (id) {
+      const user = await userModel.findById(id);
+
+      if (user) {
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "User by id",
+          data: user,
+        });
+      } else {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          message: "Unable to find user by id",
+        });
+      }
+    } else {
+      const users = await userModel.find();
+
+      if (users.length > 0) {
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "All users",
+          data: users,
+        });
+      } else {
+        return res.status(400).json({
+          status: 400,
+          success: false,
+          message: "Unable to find users",
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 500,
+      success: false,
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { createSignup, getUserById, signIn, update, getAllUsers };

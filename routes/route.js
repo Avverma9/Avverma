@@ -19,8 +19,8 @@ router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
-router.put("/update/:id", userController.update);
-
+router.put("/update/:id",upload, userController.update);
+router.get('/getAllUser/user', userController.getAllUsers);
 
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);
@@ -32,7 +32,7 @@ router.post("/hotels/create/new",upload, hotelController.createHotel);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id",hotelController.getHotelsById);
-router.get("/hotels",hotelController.getHotelbyName)
+router.get("/hotels",hotelController.getHotelbyName);
 
 
 //==================================== STATE ========================================================== 
