@@ -6,17 +6,27 @@ const createComplaint = async (req, res) => {
     const { complaintDescription } = req.body;
 
     if (id !== undefined) {
-      const newComplaint = await complaintModel.create({
-        userId: id,
-        complaintDescription: complaintDescription,
-        status: "pending",
-      });
-
-      return res.status(200).json({
-        status: 200,
-        success: true,
-        message: "Complaint created",
-      });
+      const existingComplaint = await complaintModel.findOne({ userId: id });
+      if (existingComplaint) {
+        existingComplaint.complaintDescription = complaintDescription;
+        await existingComplaint.save();
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "Complaint successfully updated",
+        });
+      } else {
+        const newComplaint = await complaintModel.create({
+          userId: id,
+          complaintDescription: complaintDescription,
+          status: "pending",
+        });
+        return res.status(200).json({
+          status: 200,
+          success: true,
+          message: "Complaint created",
+        });
+      }
     } else {
       return res.status(400).json({
         status: 400,
@@ -33,7 +43,6 @@ const createComplaint = async (req, res) => {
     });
   }
 };
-
 
 //=============================================================================================
 //not===========

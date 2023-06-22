@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema({
     mobile: { type: String, required: false },
     password: { type: String, required: false },
     images: { type: [String], required: false },
-    gID: { type: [String], required: false },
   });
   
   module.exports= mongoose.model("user", UserSchema);

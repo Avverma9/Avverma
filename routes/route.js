@@ -7,7 +7,6 @@ const welcomeController = require("../controllers/welcomeController");
 const hotelController = require("../controllers/hotelController");
 const stateController = require("../controllers/stateController");
 const paymentController = require('../controllers/paymentController');
-const partnerController = require('../controllers/partnerController');
 
 
 //================================== COMPLAINT ============================================================
@@ -34,7 +33,7 @@ router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id",hotelController.getHotelsById);
 router.get("/hotels",hotelController.getHotelbyName);
-router.get("/byPrice",hotelController.getHotelsByPrice);
+
 
 //==================================== STATE ========================================================== 
 router.post("/states", upload, stateController.createState);
@@ -43,10 +42,4 @@ router.get("/statesData", stateController.getStateData);
 
 //==================================== PAYMENT ==========================================================
 router.post('/payments', paymentController.createPayment);
-
-//==================================== PATNER ============================================================
-
-router.post('/partners', partnerController.createPartner);
-
-
 module.exports = router;

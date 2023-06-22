@@ -1,6 +1,5 @@
 const userModel = require("../models/userModel");
 const upload = require("../aws/upload");
-const nodemailer = require('nodemailer');
 
 //====================================================================================
 const createSignup = async function (req, res) {
@@ -69,44 +68,6 @@ const signIn = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-//=================================================================
-// Controller function for generating OTP and sending it via email
-const creategenerateOTPAndSendEmail = async (req, res) => {
-  // Extract user's email from the request body
-  const { email } = req.body;
-
-  try {
-    // Generate a random OTP (6 digits)
-    const otp = Math.floor(100000 + Math.random() * 900000);
-
-    // Create a Nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: 'your-email-service', // e.g., Gmail, Yahoo
-      auth: {
-        user: 'your-email-username',
-        pass: 'your-email-password',
-      },
-    });
-
-    // Prepare the email data
-    const mailOptions = {
-      from: 'your-email-username',
-      to: email,
-      subject: 'OTP for Login',
-      text: `Your OTP for login is: ${otp}`,
-    };
-
-    // Send the email
-    await transporter.sendMail(mailOptions);
-
-    // Return the generated OTP to the client (optional)
-    res.json({ otp });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Failed to generate OTP and send email.' });
-  }
-};
-
 //=====================================================================
 const update = async (req, res) => {
   const { id } = req.params;
@@ -114,26 +75,26 @@ const update = async (req, res) => {
   let images = [];
 
   if (req.files.length > 0) {
-    images = req.files.map(file => file.location);
+    images = req.files.map((file) => file.location);
   }
 
-  const user = await signUp.findByIdAndUpdate(
-    id,
-    { name, address, gender, email, mobile, password, images },
-    { new: true }
-  )
+  const user = await userModel
+    .findByIdAndUpdate(
+      id,
+      { name, address, gender, email, mobile, password, images },
+      { new: true }
+    )
     .then((user) => {
       if (user) {
         res.json(user);
       } else {
-        res.status(404).json({ message: 'User not found' });
+        res.status(404).json({ message: "User not found" });
       }
     })
     .catch((error) => {
-      res.status(500).json({ message: 'Internal server error', error });
+      res.status(500).json({ message: "Internal server error", error });
     });
 };
-
 
 //===============================================================================
 const getAllUsers = async (req, res) => {
@@ -185,4 +146,4 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { createSignup, getUserById, signIn, update, getAllUsers,creategenerateOTPAndSendEmail};
+module.exports = { createSignup, getUserById, signIn, update, getAllUsers };
