@@ -30,6 +30,10 @@
   font-size: 18px;
 }
 
+.react-avatar div span {
+  font-size: 18px;
+}
+
 .sidebar_header h2 {
   margin: 0 0 0 15px;
   font-size: 18px;
@@ -50,12 +54,13 @@
   align-items: center;
   justify-content: left;
   margin: 15px 0;
+  cursor: pointer;
 }
 
 .sidebar_body .user_logout svg {
   margin: 0 4px;
   font-size: 30px;
-  color: #475569;
+  color: #e53737;
 }
 
 .sidebar_body .user_logout h2 {
@@ -64,212 +69,415 @@
   font-weight: 600;
 }
 
-/* AccountSettings Component styles */
+/* Sidebar Options Component styles */
 
-.accountSettings_section {
+.sideBar_options_section {
   display: flex;
   align-items: center;
   justify-content: left;
-  margin: 15px 0;
+  margin: 14px 0;
+  cursor: pointer;
 }
 
-.accountSettings_section svg {
+.sideBar_options_section .svg_logo {
   margin: 0 10px;
   font-size: 18px;
   color: #2563eb;
 }
 
-.accountSettings_section h2 {
+.sideBar_options_section h2 {
   margin: 0 0 0 13px;
   font-size: 18px;
   font-weight: 600;
 }
 
-.accountSettings_section_collapse {
+.sideBar_options_section_collapse {
   display: flex;
   flex-direction: column;
 }
 
-.accountSettings_section_collapse button {
+.sideBar_options_section_collapse button {
   margin: 0 0 0px 51px;
   outline: none;
   border: none;
   text-align: left;
   background: transparent;
   padding: 0 !important;
+  transition: 0.3s all ease-in-out;
 }
 
-.accountSettings_section_collapse button p {
+.sideBar_options_section_collapse button:hover {
+  transform: translateY(-3px);
+}
+
+.sideBar_options_section_collapse button p {
   font-size: 14px;
   font-weight: 500;
   color: #64748b;
 }
-/* MyBookings Component styles */
 
-.myBookings_section {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin: 15px 0;
+.sideBar_options_section_collapse button p:hover {
+  color: #0056b3;
+}
+.sideBar_options_section_collapse button svg:hover {
+  color: #0056b3;
 }
 
-.myBookings_section .folder_filled {
-  margin: 0 10px;
-  font-size: 18px;
-  color: #2563eb;
-}
-
-.myBookings_section h2 {
-  margin: 0 0 0 13px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.myBookings_section .arrow_right {
+.sideBar_options_section .arrow_right {
   margin: 0 0 0 auto;
   font-size: 18px;
   font-weight: 600;
   color: #475569;
 }
-
-.myBookings_section_collapse {
-  display: flex;
-  flex-direction: column;
-}
-
-.myBookings_section_collapse button {
-  margin: 0 0 0px 51px;
-  outline: none;
-  border: none;
-  text-align: left;
-  background: transparent;
-  padding: 0 !important;
-}
-
-.myBookings_section_collapse button p {
-  font-size: 14px;
-  font-weight: 500;
-  color: #64748b;
-}
-
-/* Payments Component styles */
-
-.payments_section {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin: 15px 0;
-}
-
-.payments_section svg {
-  margin: 0 10px;
-  font-size: 18px;
-  color: #2563eb;
-}
-
-.payments_section h2 {
-  margin: 0 0 0 13px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.payments_section_collapse {
-  display: flex;
-  flex-direction: column;
-}
-
-.payments_section_collapse button {
-  margin: 0 0 0px 51px;
-  outline: none;
-  border: none;
-  text-align: left;
-  background: transparent;
-  padding: 0 !important;
-}
-
-.payments_section_collapse button p {
-  font-size: 14px;
-  font-weight: 500;
-  color: #64748b;
-}
-
-/* MyReviews Component styles */
-
-.myReviews_section {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin: 15px 0;
-}
-
-.myReviews_section svg {
-  margin: 0 10px;
-  font-size: 18px;
-  color: #2563eb;
-}
-
-.myReviews_section h2 {
-  margin: 0 0 0 13px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-/* Complains Component styles */
-
-.complains_section {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin: 15px 0;
-}
-
-.complains_section svg {
-  margin: 0 10px;
-  font-size: 18px;
-  color: #2563eb;
-}
-
-.complains_section h2 {
-  margin: 0 0 0 13px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-/* Profile Component Right Side Container */
+/*  Right Side Container */
 
 .profile_body {
   background-color: #e2e8f0;
   width: 70%;
+  position: relative;
   margin: 0 0 0 25px;
   padding: 10px 15px;
   border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.profile_information_title {
+/* Profile Information  */
+
+._title {
   display: flex;
   align-items: center;
   justify-content: left;
+  margin: 10px 0;
 }
 
-.profile_information_title h1 {
+._title h1 {
   margin: 0 0 0 0;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
 }
-
-.profile_information_title input {
+._title p {
+  text-align: left;
+  margin: 0 0 0 0;
+  font-size: small;
+  font-weight: 500;
+}
+._title input {
   margin: 0 0 0 auto;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 400;
   color: #2563eb;
   border: none;
   outline: none;
-  background-color:transparent;
+  background-color: transparent;
+}
+
+._fields {
+  display: flex;
+  margin: 10px 0 0 0;
+  gap: 5px;
+}
+
+._fields_col {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 0 0;
+  gap: 5px;
+}
+
+._fields > input[type="text"] {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+._fields > input[type="email"] {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+._fields_col > input[type="text"] {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+._fields_col span {
+  text-align: left;
+  margin: 10px 0 0 0;
+}
+
+._fields textarea {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+.profile_information_gender {
+  display: flex;
+  margin: 10px 0 0 0;
+}
+
+.profile_body_button {
+  float: left;
+  padding: 6px 8px;
+  background-color: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  width: 50%;
+  margin: 15px 0 15px 16px;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.raise_complaint {
+  background-color: #e43b3c;
+  padding: 2px 10px;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.post_complain_button {
+  width: 138px;
+  height: 29px;
+  margin: 10px 0 0 0;
+  background-color: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.raise_complaint:hover {
+  background-color: #911d1d;
+  transform: translateY(-3px);
+}
+.post_complain_button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+.profile_body_button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+.sub_Title {
+  text-align: left;
+  margin: 10px 0 0 0;
+  font-size: small;
+  font-weight: 500;
+}
+
+.review_card {
+  display: flex;
+  margin: 0 0 10px 0;
+  /* align-items: center;
+  justify-content: left; */
+}
+
+.review_card img {
+  width: 200px;
+  height: auto;
+  border-radius: 5px;
+}
+
+.complains_section {
+  display: flex;
+  margin: 0 0 10px 0;
+  align-items: flex-start;
+}
+
+.complains_section img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 /* Common  */
 
 ._underLine {
   border: 1px solid #94a3b8;
+}
+
+input[type="radio"] {
+  width: 16px;
+  margin-right: 8px;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .profile_container {
+    padding: 25px;
+  }
+  .profile_sidebar {
+    width: 50px;
+    margin: 0;
+  }
+  .profile_body {
+    width: 100%;
+  }
+  .sideBar_options_section h2 {
+    display: none;
+  }
+  .sideBar_options_section .arrow_right {
+    display: none;
+  }
+  .sideBar_options_section .svg_logo {
+    margin: 0;
+  }
+  .sidebar_header {
+    padding: 10px 7px;
+  }
+  .sidebar_header h2 {
+    display: none;
+  }
+
+  .sidebar_body .user_logout h2 {
+    display: none;
+  }
+  .sidebar_body .user_logout svg {
+    margin: 0;
+  }
+  .sideBar_options_section_collapse button p {
+    display: none;
+  }
+  .sideBar_options_section_collapse button {
+    margin: 5px 0 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .collapse_list svg {
+    color: #334155;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and down) */
+@media only screen and (max-width: 768px) {
+  ._title h1 {
+    font-size: 14px;
+  }
+  ._fields {
+    flex-direction: column;
+  }
+  ._fields > input[type="text"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  ._fields > input[type="email"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  ._fields_col > input[type="text"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  ._fields_col > input[type="email"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  ._fields > textarea {
+    width: 100%;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  .profile_body_button {
+    float: none;
+    width: 70%;
+    margin: 15px auto;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .collapse_list svg {
+    display: none;
+  }
+  .sideBar_options_section h2 {
+    font-size: 14px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  ._fields > input[type="text"] {
+    width: 80%;
+    height: 32px;
+  }
+  ._fields > input[type="email"] {
+    width: 80%;
+    height: 32px;
+  }
+  ._fields_col > input[type="text"] {
+    width: 80%;
+  }
+  ._fields_col > input[type="email"] {
+    width: 80%;
+    height: 32px;
+  }
+  .sideBar_options_section h2 {
+    font-size: 16px;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .sideBar_options_section h2 {
+    font-size: 18px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
 }

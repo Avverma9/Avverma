@@ -9,13 +9,18 @@ import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
 import { TbFolderFilled } from "react-icons/tb"
-import { FaUser } from "react-icons/fa"
+import { FaUser, FaAddressBook } from "react-icons/fa"
 import { RiWallet3Fill } from "react-icons/ri"
 import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
 import { AiOutlinePoweroff } from "react-icons/ai"
+import { ImProfile } from 'react-icons/im';
+import { HiIdentification } from 'react-icons/hi'
+import { BsFillCalendarCheckFill, BsFillCreditCardFill } from 'react-icons/bs'
+import { TiCancel } from 'react-icons/ti'
 import { Button } from 'react-bootstrap';
 import UpdateProfile from './UpdateProfile';
 import { useCollapse } from 'react-collapsed'
+import axios from 'axios';
 
 
 
@@ -23,22 +28,38 @@ import { useCollapse } from 'react-collapsed'
 function AccountSettings({ selectedNav, navHandler }) {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
+  const [hoverText, setHoverText] = useState("")
+
+  const hoverHandler = (e) => {
+    setHoverText("")
+    setHoverText(e.target?.previousSibling?.innerText)
+  }
+
+
   return (<>
-    <div className="accountSettings_section" {...getToggleProps({
+    <div className="sideBar_options_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <FaUser />
+      <FaUser className='svg_logo' />
       <h2>Account Settings</h2>
     </div>
-    <div className="accountSettings_section_collapse" {...getCollapseProps()}>
-      <button className={selectedNav === 'Profile Information' ? `` : ``} onClick={navHandler}>
+    <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
+      {/* <button className={selectedNav === 'Profile Information' ? `` : ``} onClick={navHandler}>
         <p>Profile Information</p>
+      </button> */}
+      <button className='collapse_list' onClick={navHandler}>
+        <p className={selectedNav === 'Profile Information' ? `text-primary` : ``}>Profile Information</p>
+        <ImProfile className={selectedNav === 'Profile Information' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
+        {/* <div>Profile Information</div> */}
       </button>
-      <button className={selectedNav === 'Mannage Addresses' ? `` : ``} onClick={navHandler}>
-        <p className="">Mannage Addresses</p>
+      <button className="collapse_list" onClick={navHandler}>
+        <p className={selectedNav === 'Mannage Addresses' ? `text-primary` : ``}>Mannage Addresses</p>
+        <FaAddressBook className={selectedNav === 'Mannage Addresses' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === 'Add Government id' ? `` : ``} onClick={navHandler}>
-        <p className="">Add Government id</p></button>
+      <button className="collapse_list" onClick={navHandler}>
+        <p className={selectedNav === 'Add Government id' ? `text-primary` : ``}>Add Government id</p>
+        <HiIdentification className={selectedNav === 'Add Government id' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
+      </button>
     </div>
     <div className='_underLine' />
   </>);
@@ -47,32 +68,44 @@ function AccountSettings({ selectedNav, navHandler }) {
 function MyBookings({ selectedNav, navHandler }) {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
+  const [hoverText, setHoverText] = useState("")
+
+  const hoverHandler = (e) => {
+    setHoverText("")
+    setHoverText(e.target?.previousSibling?.innerText)
+  }
   return (<>
-    <div className="myBookings_section" {...getToggleProps({
+    <div className="sideBar_options_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <TbFolderFilled className='folder_filled' />
+      <BsFillCalendarCheckFill className='svg_logo' />
       <h2>My Bookings</h2>
       <MdKeyboardArrowRight className='arrow_right' />
     </div>
-    <div className="myBookings_section_collapse" {...getCollapseProps()}>
-      <button className={selectedNav === "Cancel Booking" ? `` : ``} onClick={navHandler} >
-        <p>Cancel Booking</p>
+    <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
+      <button className='collapse_list' onClick={navHandler} >
+        <p className={selectedNav === 'Cancel Booking' ? `text-primary` : ``}>Cancel Booking</p>
+        <TiCancel className={selectedNav === 'Cancel Booking' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === "Confirm Booking" ? `` : ``} onClick={navHandler} >
-        <p>Confirm Booking</p>
+      <button className="collapse_list" onClick={navHandler} >
+        <p className={selectedNav === 'Confirm Booking' ? `text-primary` : ``}>Confirm Booking</p>
+        <TiCancel className={selectedNav === 'Confirm Booking' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === "Checking Booking" ? `` : ``} onClick={navHandler} >
-        <p>Checking Booking</p>
+      <button className="collapse_list" onClick={navHandler} >
+        <p className={selectedNav === 'Checking Booking' ? `text-primary` : ``}>Checking Booking</p>
+        <TiCancel className={selectedNav === 'Checking Booking' ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === "Check Out Booking" ? `` : ``} onClick={navHandler} >
-        <p>Check Out Booking</p>
+      <button className="collapse_list" onClick={navHandler} >
+        <p className={selectedNav === "Check Out Booking" ? `text-primary` : ``}>Check Out Booking</p>
+        <TiCancel className={selectedNav === "Check Out Booking" ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === "NoShow Booking" ? `` : ``} onClick={navHandler} >
-        <p>NoShow Booking</p>
+      <button className="collapse_list" onClick={navHandler} >
+        <p className={selectedNav === "NoShow Booking" ? `text-primary` : ``}>NoShow Booking</p>
+        <TiCancel className={selectedNav === "NoShow Booking" ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
-      <button className={selectedNav === "Failed Booking" ? `` : ``} onClick={navHandler} >
-        <p>Failed Booking</p>
+      <button className="collapse_list" onClick={navHandler} >
+        <p className={selectedNav === "Failed Booking" ? `text-primary` : ``}>Failed Booking</p>
+        <TiCancel className={selectedNav === "Failed Booking" ? `text-primary` : ``} onMouseOver={hoverHandler} data-bs-toggle="tooltip" data-bs-placement="right" title={hoverText} />
       </button>
     </div>
     <div className='_underLine' />
@@ -83,13 +116,13 @@ function Payments() {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
   return (<>
-    <div className="payments_section" {...getToggleProps({
+    <div className="sideBar_options_section" {...getToggleProps({
       onClick: () => setExpanded((prevExpanded) => !prevExpanded),
     })}>
-      <RiWallet3Fill />
-      <h2 className="ml-2 text-base font-medium">Payments</h2>
+      <BsFillCreditCardFill className='svg_logo' />
+      <h2>Payments</h2>
     </div>
-    <div className="payments_section_collapse" {...getCollapseProps()}>
+    <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
       <button>
         <p>Gift Cards</p>
       </button>
@@ -109,8 +142,8 @@ function Payments() {
 function MyReviews({ navHandler }) {
 
   return (<>
-    <div className="myReviews_section" onClick={navHandler}>
-      <MdFolderShared />
+    <div className="sideBar_options_section" onClick={navHandler}>
+      <MdFolderShared className='svg_logo' />
       <h2>My Reviews</h2>
     </div>
 
@@ -121,8 +154,8 @@ function MyReviews({ navHandler }) {
 function Complains({ navHandler }) {
 
   return (<>
-    <div className="complains_section" onClick={navHandler}>
-      <MdFolderShared />
+    <div className="sideBar_options_section" onClick={navHandler}>
+      <MdFolderShared className='svg_logo' />
       <h2>Complains</h2>
     </div>
 
@@ -166,60 +199,137 @@ function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSe
 
 
 function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
+  const [isEditing, setIsEditing] = useState(false)
+
+  const [uname, setUName] = useState("");
+  const [email, setEmail] = useState("");
+  const [gender, setGender] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [uimages, setImages] = useState([]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append('name', uname !== "" ? uname : userData?.name);
+      formData.append('email', email !== "" ? email : userData?.email);
+      formData.append('gender', gender !== "" ? gender : userData?.gender);
+      formData.append('mobile', mobile !== "" ? mobile : userData?.mobile);
+      // formData.append('address', address !== "" ? address : userData?.address);
+
+      // Append the image only if it is provided by the user
+      if (uimages.length > 0) {
+        formData.append('images', uimages[0] !== "" ? uimages[0] : userData?.images[0]); // Assuming only one image is selected
+      }
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (response.ok) {
+        // Call the onUpdateDone callback
+        window.location.reload()
+      } else {
+        throw new Error('Failed to update profile');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle error state
+    }
+  };
+
+  console.log(userDetails, userData, "--------------------------------")
+  console.log(isEditing, "IS EDITING")
   return (
     <>
       <>
-        <div className="profile_information_title">
+        <div className="_title">
           <h1>
             Personal Information
           </h1>
-          <input type="button" value="Edit" />
+          <input type="button" value="Edit" onClick={() => setIsEditing(true)} />
         </div>
-        <div className="flex mt-4">
-          <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name} className='p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-          <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} className='ml-2 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        <div className="_fields">
+          <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name) : uname} onChange={(e) => setUName(e.target.value)}
+
+            placeholder={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name}
+          />
+          {/* <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} /> */}
         </div>
       </>
       <>
-        <h4 className='text-left mt-4 text-sm font-medium'>Your Gender</h4>
-        <div className='flex mt-4'>
-          {userData?.gender === "Male" ? <>
+        <h4 className='sub_Title'>Your Gender</h4>
+        <div className='profile_information_gender'>
+          {!isEditing ? (userData?.gender === "Male" ? <>
             <input type="radio" id="male" name="gender" value="Male" checked />
-            <label for="male" className='ml-2'>{userData?.gender}</label>
+            <label for="male" className='ml-2'>{userData?.gender}
+            </label>
           </>
             :
             <>
               <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
-              <label for="female" className='ml-2'>{userData?.gender}</label>
+              <label for="female" className='ml-2'>{userData?.gender}
+              </label>
+            </>) : (
+            <>
+              <input type="radio" id="male" name="gender" value="Male" onChange={(e) => setGender(e.target.value)} />
+              <label for="male" className='ml-2'>Male
+              </label>
+              <input type="radio" id="female" name="gender" value="Female" className='ms-4' onChange={(e) => setGender(e.target.value)} />
+              <label for="female" className='ml-2'>Female
+              </label>
             </>
+          )
           }
         </div>
       </>
       <>
-        <div className="flex">
-          <h1 className="text-lg font-semibold mt-4">
+        <div className="_title">
+          <h1>
             Email Address
           </h1>
-          <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+          {/* <input type="button" value="Edit" /> */}
         </div>
-        <div className="flex mt-4">
-          <input type="email" value={!isSignedIn && userDetails ? userDetails?.email : userData?.email} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        <div className="_fields">
+          <input type="email" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.email : userData?.email) : email} onChange={(e) => setEmail(e.target.value)}
+            placeholder={!isSignedIn && userDetails ? userDetails?.email : userData?.email}
+          />
         </div>
       </>
       <>
-        <div className="flex">
-          <h1 className="text-lg font-semibold mt-4">
+        <div className="_title">
+          <h1>
             Mobile Number
           </h1>
-          <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' />
+          {/* <input type="button" value="Edit" /> */}
         </div>
-        <div className="flex mt-4">
-          <input type="text" value={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+        <div className="_fields">
+          <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile) : mobile} onChange={(e) => setMobile(e.target.value)}
+            placeholder={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile}
+          />
         </div>
       </>
-        <button onClick={handleShow} className="float-left py-3 px-4 bg-blue-500 mt-4 border-0 rounded-md text-white font-bold">
+      {isEditing && <>
+        <div className="_title">
+          <h1>
+            Profile Image
+          </h1>
+          {/* <input type="button" value="Edit" /> */}
+        </div>
+        <div className="_fields">
+          <input
+            type="file"
+            id="images"
+            accept="image/*"
+            onChange={(e) => setImages(e.target.files)}
+          />
+        </div>
+      </>}
+      {isEditing && <button onClick={handleUpdate} className="profile_body_button">
         Update Profile
-      </button>
+      </button>}
     </>
   );
 }
@@ -243,7 +353,7 @@ function AddressInformation({ userData }) {
         body: formData,
       });
 
-      if (response.ok) {
+      if (!response.error) {
         // setProfileUpdated(true);// Call the onUpdateDone callback
         // handleClose()
       } else {
@@ -258,36 +368,18 @@ function AddressInformation({ userData }) {
 
   return (<div>
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
-          Current Address
+      <div className="_title">
+        <h1>
+          Address
         </h1>
-        {
-          /* <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' /> */
-        }
       </div>
-      <div className="flex mt-4">
-        <textarea type="text" rows="5" value={userData?.address} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
+      <div className="_fields">
+        <textarea type="text" rows="1" value={userData?.address} />
+        <textarea placeholder='Enter New Address' type="text" rows="1" value={address} onChange={(e) => setAddress(e.target.value)} />
       </div>
     </>
-    <form onSubmit={handleUpdate}>
 
-      <>
-        <div className="flex">
-          <h1 className="text-lg font-semibold">
-            New Address
-          </h1>
-          {
-            /* <input type="button" value="Edit" className='ml-4 text-base font-medium text-blue-500' /> */
-          }
-        </div>
-        <div className="flex mt-4">
-          <textarea type="text" rows="5" value={address} onChange={(e) => setAddress(e.target.value)} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' />
-        </div>
-      </>
-
-      <button type="submit">Update Address</button>
-    </form>
+    <button className="profile_body_button" onClick={handleUpdate}>Update Address</button>
   </div>);
 }
 
@@ -301,33 +393,33 @@ function GovernmentIdInformation() {
   console.log(selectGID)
   return (<div>
 
-    <div className="flex">
-      <h1 className="text-lg font-semibold">
+    <div className="_title">
+      <h1>
         Government Id
       </h1>
     </div>
 
 
-    <div className='flex mt-4'>
+    <div className='d-flex flex-row gap-3'>
       <input type="radio" id="adhaar" name="govid" value="Adhaar" onChange={e => setSelectGID(e.target.value)} />
-      <label for="adhaar" className='ml-4'>Adhaar Card</label>
-      <input type="radio" id="pan" name="govid" value="PAN" className='ml-4' onChange={e => setSelectGID(e.target.value)} />
-      <label for="pan" className='ml-4'>PAN Card</label>
-      <input type="radio" id="dl" name="govid" value="Driving Licence" className='ml-4' onChange={e => setSelectGID(e.target.value)} />
-      <label for="dl" className='ml-4'>Driving Licence</label>
+      <label for="adhaar" >Adhaar Card</label>
+      <input type="radio" id="pan" name="govid" value="PAN" onChange={e => setSelectGID(e.target.value)} />
+      <label for="pan">PAN Card</label>
+      <input type="radio" id="dl" name="govid" value="Driving Licence" onChange={e => setSelectGID(e.target.value)} />
+      <label for="dl">Driving Licence</label>
     </div>
 
-    <div className="flex mt-4">
+    <div className="_fields">
       {selectGID === "Adhaar" && (gID === "" || gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm
       ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Adhaar Number</p>)}
       {selectGID === "PAN" && (gID === "" || gID.match(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/
       ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid PAN ID</p>)}
       {selectGID === "Driving Licence" && (gID === "" || gID.match(/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
       ) ? null : <p className="text-xs font-semibold text-red-700">Please Provide a Valid Driving License Number</p>)}
-      <input type="text" value={gID} className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]' onChange={e => setGID(e.target.value)} />
+      <input type="text" value={gID} onChange={e => setGID(e.target.value)} />
     </div>
 
-    <button className='float-left mt-4 bg-blue-500 py-2 px-4 rounded-md text-white' onClick={handleIdSubmit}>
+    <button className='profile_body_button' onClick={handleIdSubmit}>
       Add Government Id
     </button>
   </div>);
@@ -339,21 +431,23 @@ function CancelBooking() {
   return (
     <>
 
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Cancel Booking
         </h1>
       </div>
 
-      <div className="flex flex-col mt-4">
-        <input type="text" className='w-80 p-2 outline-none border-2 rounded-sm  border-[#ccc]'
+      <div className="_fields_col">
+        <input type="text"
           onChange={(e) => setOrderId(e.target.value)}
-
         />
-        <span className="text-left mt-1">Provide the dummy id 123456 for cancellation</span>
+        <span>Provide the dummy id 123456 for cancellation</span>
       </div>
 
-      <button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
+      {/* <button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
+        Confirm Cancel
+      </button> */}
+      <button className="profile_body_button">
         Confirm Cancel
       </button>
 
@@ -364,45 +458,45 @@ function CancelBooking() {
 function ConfirmBooking() {
   return (
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Confirm Booking
         </h1>
       </div>
 
-      <div className="text-left text-slate-600 text-base font-bodyFont">We are pleased to inform that your Booking has been confirmed</div>
+      <div className="sub_Title">We are pleased to inform that your Booking has been confirmed</div>
 
-      <div className="flex my-4">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Booking Details
         </h1>
       </div>
 
       <div className="flex-col items-start text-left">
         <div className="flex-col">
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Name
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               Rahul Bose
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Email
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               boserahul@gmail.com
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Booking ID
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               654oiuyvgfi5
             </p>
           </div>
@@ -420,71 +514,71 @@ function CheckingBooking() {
   return (
 
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Checking Booking
         </h1>
       </div>
 
       {/* <div className="text-left text-slate-600 text-base font-bodyFont">We are pleased to inform that your Booking has been confirmed</div> */}
 
-      <div className="flex my-4">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Booking Details
         </h1>
       </div>
 
       <div className="flex-col items-start text-left">
         <div className="flex-col">
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Name
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               Rahul Bose
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Email
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               boserahul@gmail.com
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className='me-2'>
               Booking ID
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               654oiuyvgfi5
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Booking Start Date
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               09-06-23
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Booking End Date
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               12-06-23
             </p>
           </div>
 
         </div>
 
-        <div className="flex my-4">
-          <h1 className="text-lg font-semibold">
+        <div className="_title">
+          <h1>
             Checking Details
           </h1>
         </div>
@@ -492,21 +586,21 @@ function CheckingBooking() {
         <div className="flex-col items-start text-left">
           <div className="flex-col">
 
-            <div className="flex">
-              <h1 className="text-base font-semibold">
+            <div className="_title">
+              <h1 className="me-2">
                 Checked In at
               </h1>
-              <p className="text-slate-600 text-base font-bodyFont ml-6">
-                11:54 pm on <span className='text-slate-700 font-bold'>09-06-23</span>
+              <p>
+                11:54 pm on <span>09-06-23</span>
               </p>
             </div>
 
-            <div className="flex">
-              <h1 className="text-base font-semibold">
+            <div className="_title">
+              <h1 className="me-2">
                 Checked Out at
               </h1>
-              <p className="text-slate-600 text-base font-bodyFont ml-6">
-                8:00 am on <span className='text-slate-700 font-bold'>12-06-23</span>
+              <p>
+                8:00 am on <span>12-06-23</span>
               </p>
             </div>
 
@@ -523,71 +617,71 @@ function CheckingBooking() {
 function CheckOutBooking() {
   return (
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Checking Booking
         </h1>
       </div>
 
       {/* <div className="text-left text-slate-600 text-base font-bodyFont">We are pleased to inform that your Booking has been confirmed</div> */}
 
-      <div className="flex my-4">
-        <h1 className="text-lg font-semibold">
-          Booking Details
+      <div className="_title">
+        <h1>
+          Checking Details
         </h1>
       </div>
 
       <div className="flex-col items-start text-left">
         <div className="flex-col">
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Name
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               Rahul Bose
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Email
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               boserahul@gmail.com
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Booking ID
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               654oiuyvgfi5
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Booking Start Date
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               09-06-23
             </p>
           </div>
 
-          <div className="flex">
-            <h1 className="text-base font-semibold">
+          <div className="_title">
+            <h1 className="me-2">
               Booking End Date
             </h1>
-            <p className="text-slate-600 text-base font-bodyFont ml-6">
+            <p>
               12-06-23
             </p>
           </div>
 
         </div>
 
-        <div className="flex my-4">
-          <h1 className="text-lg font-semibold">
+        <div className="_title">
+          <h1>
             Checking Details
           </h1>
         </div>
@@ -595,21 +689,21 @@ function CheckOutBooking() {
         <div className="flex-col items-start text-left">
           <div className="flex-col">
 
-            <div className="flex">
-              <h1 className="text-base font-semibold">
+            <div className="_title">
+              <h1 className="me-2">
                 Checked In at
               </h1>
-              <p className="text-slate-600 text-base font-bodyFont ml-6">
-                11:54 pm on <span className='text-slate-700 font-bold'>09-06-23</span>
+              <p>
+                11:54 pm on <span>09-06-23</span>
               </p>
             </div>
 
-            <div className="flex">
-              <h1 className="text-base font-semibold">
+            <div className="_title">
+              <h1 className="me-2">
                 Checked Out at
               </h1>
-              <p className="text-slate-600 text-base font-bodyFont ml-6">
-                8:00 am on <span className='text-slate-700 font-bold'>12-06-23</span>
+              <p>
+                8:00 am on <span>12-06-23</span>
               </p>
             </div>
 
@@ -625,12 +719,12 @@ function CheckOutBooking() {
 function NoShowBooking() {
   return (
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           NoShow Booking
         </h1>
       </div>
-      <div className="text-left text-slate-600 text-base font-bodyFont">No Booking done yet</div>
+      <div className="sub_Title">No Booking done yet</div>
     </>
   );
 }
@@ -638,12 +732,12 @@ function NoShowBooking() {
 function FailedBooking() {
   return (
     <>
-      <div className="flex">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           Failed Booking
         </h1>
       </div>
-      <div className="text-left text-slate-600 text-base font-bodyFont">Booking failed. Please try again later</div>
+      <div className="sub_Title">Booking failed. Please try again later</div>
     </>
   );
 }
@@ -651,32 +745,32 @@ function FailedBooking() {
 function MyReviewSection() {
   return (
     <>
-      <div className="flex mb-4">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1>
           My Reviews
         </h1>
       </div>
       <>
 
-        <div className="flex mb-4 items-center">
-          <div className="w-40 h-auto">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" className='w-40 h-auto rounded-md' />
-          </div>
-          <div className="p-8">
-            <p className="text-left text-slate-600 text-base font-bodyFont">Grand Hotel</p>
-            <div className='text-left mt-2'>
+        <div className="review_card">
+
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
+
+          <div className="ms-4">
+            <p>Grand Hotel</p>
+            <div >
               ⭐⭐⭐⭐⭐
             </div>
           </div>
         </div>
 
-        <div className="flex mb-4 items-center">
-          <div className="w-40 h-auto">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" className='w-40 h-auto' />
-          </div>
-          <div className="p-8">
-            <p className="text-left text-slate-600 text-base font-bodyFont">Grand Hotel</p>
-            <div className='text-left mt-2'>
+        <div className="review_card">
+
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
+
+          <div className="ms-4">
+            <p>Grand Hotel</p>
+            <div >
               ⭐⭐⭐⭐⭐
             </div>
           </div>
@@ -687,42 +781,89 @@ function MyReviewSection() {
     </>)
 }
 
-function ComplainsSection() {
+function ComplainsSection({ isSignedIn, userDetails, userData }) {
+  const [raiseComplaint, setRaiseComplaint] = useState(false)
+  const [newComplaint, setNewComplaint] = useState("")
+  const [complaints, setComplaints] = useState([])
+
+  useEffect(() => {
+
+    axios.get(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`)
+      .then((response) => {
+        console.log(response.data.data, "RESPONSE COMPLAINT")
+        if (response.data.success) {
+          return response.data.data;
+        } else {
+          throw new Error('Failed to fetch user data');
+        }
+      })
+      .then((data) => {
+        console.log(data, ";iWDOUBwcjhvwivWCU")
+        setComplaints(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
+    ,
+    [userData]);
+
+
+  const postComplaintHandler = () => {
+    axios.post(`https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`, {
+      complaintDescription: newComplaint
+    }).then((response) => {
+      if (response.data.success) {
+        return response.data.message;
+      } else {
+        // throw new Error('Failed to fetch user data');
+        return response.data.error;
+      }
+    }).then((data) => {
+      console.log(data)
+      setNewComplaint("")
+      setRaiseComplaint(false)
+    }).catch((error) => {
+      console.log(error)
+    })
+
+  }
+
   return (
     <>
-      <div className="flex mb-4">
-        <h1 className="text-lg font-semibold">
+      <div className="_title">
+        <h1 className="flex-grow-1">
           Complains
         </h1>
+        <button className="raise_complaint" onClick={() => setRaiseComplaint(true)}>Raise Complaint</button>
       </div>
 
-      <>
 
-        <div className="flex mb-4 items-center">
-          <div>
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0l7k5zqRUVQ5Yq9eTpW2LgHaLJ%26pid%3DApi&f=1&ipt=868dcce95595400e343a3c29eb82c4e06a503f4d530c9fbdc70192753374e0bb&ipo=images" alt="Profile Pic" className='w-10 h-10 rounded-[50%]' />
-          </div>
-          <div className="p-8">
-            <p className="text-left text-slate-700 text-lg font-semibold">Grand Hotel</p>
-            <div className='text-left mt-2 text-sm font-bodyFont text-slate-500'>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-            </div>
-          </div>
+      {raiseComplaint && <div className="d-flex align-items-center">
+        <div className="_fields flex-grow-1" style={{ "width": "70%" }}>
+          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "70%" }} />
         </div>
+        <button className="post_complain_button" onClick={postComplaintHandler}>Post</button>
+      </div>}
 
-        <div className="flex mb-4 items-center">
-          <div>
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.0l7k5zqRUVQ5Yq9eTpW2LgHaLJ%26pid%3DApi&f=1&ipt=868dcce95595400e343a3c29eb82c4e06a503f4d530c9fbdc70192753374e0bb&ipo=images" alt="Profile Pic" className='w-10 h-10 rounded-[50%]' />
-          </div>
-          <div className="p-8">
-            <p className="text-left text-slate-700 text-lg font-semibold">Grand Hotel</p>
-            <div className='text-left mt-2 text-sm font-bodyFont text-slate-500'>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard
-            </div>
-          </div>
+      {complaints.map((complaint) => <div className="complains_section mt-4" key={complaint._id}>
+
+        {/* <img src={userData?.images[0]} alt="Profile Pic" /> */}
+
+        <Avatar name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
+        />
+
+        <div className="ms-4 me-4 text-wrap" style={{ "width": "80%" }}>
+          <p>Grand Hotel</p>
+          <p className="sub_Title">
+            {complaint.complaintDescription}
+          </p>
         </div>
+      </div>
+      )}
 
-      </>
+
     </>
   )
 }
@@ -753,6 +894,7 @@ const Profile = () => {
       const userId = localStorage.getItem('userId');
       fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
         .then((response) => {
+          console.log(response, "RESPONSE")
           if (response.ok) {
             return response.json();
           } else {
@@ -760,7 +902,8 @@ const Profile = () => {
           }
         })
         .then((data) => {
-          setUserData(data);
+          console.log(data, "API CHANGES NEW LOG")
+          setUserData(data.data);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -790,27 +933,28 @@ const Profile = () => {
 
   const navHandler = (e) => {
     setselectedNav("")
-    if (e.currentTarget.innerText === "Profile Information") {
+    console.log(e.currentTarget, "NAV HANDLER")
+    if (e.currentTarget.innerText === "Profile Information" || e.currentTarget.firstChild.innerText === "Profile Information") {
       setselectedNav("Profile Information")
-    } else if (e.currentTarget.innerText === "Mannage Addresses") {
+    } else if (e.currentTarget.innerText === "Mannage Addresses" || e.currentTarget.firstChild.innerText === "Mannage Addresses") {
       setselectedNav("Mannage Addresses")
-    } else if (e.currentTarget.innerText === "Add Government id") {
+    } else if (e.currentTarget.innerText === "Add Government id" || e.currentTarget.firstChild.innerText === "Add Government id") {
       setselectedNav("Add Government id")
-    } else if (e.currentTarget.innerText === "Cancel Booking") {
+    } else if (e.currentTarget.innerText === "Cancel Booking" || e.currentTarget.firstChild.innerText === "Cancel Booking") {
       setselectedNav("Cancel Booking")
-    } else if (e.currentTarget.innerText === "Confirm Booking") {
+    } else if (e.currentTarget.innerText === "Confirm Booking" || e.currentTarget.firstChild.innerText === "Confirm Booking") {
       setselectedNav("Confirm Booking")
-    } else if (e.currentTarget.innerText === "Checking Booking") {
+    } else if (e.currentTarget.innerText === "Checking Booking" || e.currentTarget.firstChild.innerText === "Checking Booking") {
       setselectedNav("Checking Booking")
-    } else if (e.currentTarget.innerText === "Check Out Booking") {
+    } else if (e.currentTarget.innerText === "Check Out Booking" || e.currentTarget.firstChild.innerText === "Check Out Booking") {
       setselectedNav("Check Out Booking")
-    } else if (e.currentTarget.innerText === "NoShow Booking") {
+    } else if (e.currentTarget.innerText === "NoShow Booking" || e.currentTarget.firstChild.innerText === "NoShow Booking") {
       setselectedNav("NoShow Booking")
-    } else if (e.currentTarget.innerText === "Failed Booking") {
+    } else if (e.currentTarget.innerText === "Failed Booking" || e.currentTarget.firstChild.innerText === "Failed Booking") {
       setselectedNav("Failed Booking")
-    } else if (e.currentTarget.innerText === "My Reviews") {
+    } else if (e.currentTarget.innerText === "My Reviews" || e.currentTarget.lastChild.innerText === "My Reviews") {
       setselectedNav("My Reviews")
-    } else if (e.currentTarget.innerText === "Complains") {
+    } else if (e.currentTarget.innerText === "Complains" || e.currentTarget.lastChild.innerText === "Complains") {
       setselectedNav("Complains")
     }
     else {
@@ -822,16 +966,14 @@ const Profile = () => {
   return (
     <>
 
-      {show && <UpdateProfile userData={userData} stShow={setShow} show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />}
+      {/* {show && <UpdateProfile userData={userData} stShow={setShow} show={show} handleClose={handleClose} setProfileUpdated={setProfileUpdated} />} */}
       <div className="profile_container">
         <div className="profile_sidebar">
           <Sidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
         </div>
         <div className='profile_body'>
-          {/*   {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}*/}
-          <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />
-
+          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
+            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
         </div>
       </div>
     </>
