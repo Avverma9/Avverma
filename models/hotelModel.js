@@ -9,11 +9,15 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  price: {
+  description: {
     type: String,
     required: true,
   },
   destination: {
+    type: String,
+    required: true,
+  },
+  price: {
     type: String,
     required: true,
   },
@@ -45,6 +49,10 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hotelsPolicy: {
+    type: String,
+    required: true,
+  },
   moreOptions: {
     type: [String],
     default: [],
@@ -56,6 +64,9 @@ const hotelsSchema = new mongoose.Schema({
   reviews: {
     type: String,
     default: '',
+  },
+  rating: {
+    type: Number,
   },
 });
 

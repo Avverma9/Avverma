@@ -4,9 +4,9 @@ const createHotel = async (req, res) => {
   try {
     const {
       hotelName,
+      description,
       destination,
       price,
-      rating,
       startDate,
       endDate,
       guests,
@@ -14,13 +14,18 @@ const createHotel = async (req, res) => {
       localId,
       maritalStatus,
       availability,
+      hotelsPolicy,
       moreOptions,
       amenities,
       reviews,
+      rating
     } = req.body;
+    const images = req.files.map((file) => file.location);
 
     const hotelData = {
+      images,
       hotelName,
+      description,
       destination,
       price,
       rating,
@@ -31,7 +36,8 @@ const createHotel = async (req, res) => {
       localId,
       maritalStatus,
       availability,
-      moreOptions,
+      hotelsPolicy,
+      moreOptions, 
       amenities,
       reviews,
     };
