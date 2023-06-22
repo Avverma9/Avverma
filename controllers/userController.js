@@ -112,31 +112,26 @@ const update = async (req, res) => {
   const { id } = req.params;
   const { name, address, gender, email, mobile, password } = req.body;
   let images = [];
-  // Retrieve existing user's image data
-  const existingUser = await userModel.findById(id);
-  const existingImages = existingUser.images;
 
   if (req.files.length > 0) {
-    images = req.files.map((file) => file.location);
+    images = req.files.map(file => file.location);
   }
 
-  // Concatenate existing and new images
-  images = [...existingImages, ...images];
-  try {
-    const user = await userModel.findByIdAndUpdate(
-      id,
-      { name, address, gender, email, mobile, password, images },
-      { new: true }
-    );
-
-    if (user) {
-      res.json(user); // Respond with the updated user
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error", error });
-  }
+  const user = await signUp.findByIdAndUpdate(
+    id,
+    { name, address, gender, email, mobile, password, images },
+    { new: true }
+  )
+    .then((user) => {
+      if (user) {
+        res.json(user);
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({ message: 'Internal server error', error });
+    });
 };
 
 
