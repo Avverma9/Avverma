@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './hotel.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr, faLocationDot, faHotel, faPerson } from '@fortawesome/free-solid-svg-icons';
-import Slider from 'react-slider';
+
 import RangeSlider from './Rangeslider/range';
 
 
@@ -12,6 +12,19 @@ function HotelList() {
   const [hotels, setHotels] = useState([]);
   const [expandedResultId, setExpandedResultId] = useState(null);
   const navigate = useNavigate();
+  const [minPrice, setMinPrice] = useState(100); // Default minimum price
+  const [maxPrice, setMaxPrice] = useState(800); // Default maximum price
+
+  useEffect(()=>{
+    fetch(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=100&maxPrice=1000`)
+    .then(result=>result.json())
+    .then (res=>{
+      console.log(res);
+      setHotels(res)
+    })
+    .catch(error => console.log(error));
+  }, [minPrice, maxPrice]);
+  
  
   
 
@@ -21,6 +34,7 @@ function HotelList() {
       .then(data => {
         console.log(data); // Logging the received data
         setHotels(data);
+        console.log(hotels);
       })
       .catch(error => console.log(error));
   }, []);
@@ -56,9 +70,47 @@ function HotelList() {
             <hr/>
             <div className='filt-2nd'>
               <h5 className='colle'>Collections</h5>
+              <label> <input type='checkbox'/>Family Oyo</label>
+              <label> <input type='checkbox'/>For Group Travellers</label>
+              <label> <input type='checkbox'/>Local ID Accepted</label>
+              <label> <input type='checkbox'/>Welcomes Couple</label>
+              <label> <input type='checkbox'/>International Guest</label>
+              
+            </div>
+            <hr/>
+            <div className='filt-3rd'>
+              <h5 className='colle'>Categroies</h5>
+              <label> <input type='checkbox'/>Family Oyo</label>
+              <label> <input type='checkbox'/>Family Oyo</label>
+              <label> <input type='checkbox'/>Family Oyo</label>
+              <label> <input type='checkbox'/>Family Oyo</label>
+              <label> <input type='checkbox'/>Family Oyo</label>
+
+            </div>
+            <hr/>
+            <div className='filt-4th'>
+              <h5 className='colle'>Accomodation Type</h5>
+              <label> <input type='checkbox'/>Hostel</label>
+              <label> <input type='checkbox'/>Hotel</label>
+            </div>
+            <hr/>
+            <div className='filt-5th'>
+              <h5 className='colle'>Hotel Facilities</h5>
+              <label> <input type='checkbox'/>Sitting Area</label>
+              <label> <input type='checkbox'/>Balcony</label>
+              <label> <input type='checkbox'/>Full Sized Bed</label>
+              <label> <input type='checkbox'/>King Sized Bed</label>
+              <label> <input type='checkbox'/>Queen Sized Bed</label>
+
+            </div>
+            <hr/>
+            <div className='filt-6th'>
+              <h5 className='colle'>Check In Feature</h5>
+              <label> <input type='checkbox'/>Pay At Hotel</label>
+
             </div>
           </div>
-      <div className="search-results" style={{flex:"0 0 75%"}}>
+      <div className="search-results" style={{flex:"0 0 70%"}}>
       
 
 
