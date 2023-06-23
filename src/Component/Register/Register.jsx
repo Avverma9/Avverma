@@ -15,6 +15,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const [adhaar, setAdhaar] = useState("")
+  const [pan, setPan] = useState("")
+  const [drivingLicence, setDrivingLicence] = useState("")
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -66,9 +70,25 @@ const Register = () => {
     navigate('/signin');
   };
 
+  const checkBoxHandler = (e) => {
+    if (e.target.value === "Adhaar" && e.target.checked === true) {
+      setAdhaar(e.target.value);
+    } else if (e.target.value === "PAN" && e.target.checked === true) {
+      setPan(e.target.value);
+    } else if (e.target.value === "Driving Licence" && e.target.checked === true) {
+      setDrivingLicence(e.target.value);
+    }
+  };
+
+
   return (
     <>
       <div className="card-signup">
+
+        {
+          console.log(drivingLicence, adhaar, pan)
+        }
+
         <form onSubmit={handleFormSubmit}>
           <input
             type="text"
@@ -118,6 +138,14 @@ const Register = () => {
             required
             className="input-field-signup"
           />
+          <div className='d-flex flex-row gap-3'>
+            <input type="checkbox" id="adhaar" name="govid" value="Adhaar" onChange={(e => checkBoxHandler(e))} />
+            <label for="adhaar" >Adhaar Card</label>
+            <input type="checkbox" id="pan" name="govid" value="PAN" onChange={(e => checkBoxHandler(e))} />
+            <label for="pan">PAN Card</label>
+            <input type="checkbox" id="dl" name="govid" value="Driving Licence" onChange={(e => checkBoxHandler(e))} />
+            <label for="dl">Driving Licence</label>
+          </div>
           <div className="profile-picture-wrapper-signup">
             {selectedImage ? (
               <div
