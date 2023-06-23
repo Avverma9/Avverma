@@ -18,7 +18,7 @@ const hotelsSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: String,
+    type: Number, 
     required: true,
   },
   startDate: {
@@ -70,5 +70,4 @@ const hotelsSchema = new mongoose.Schema({
   },
 });
 
-
-module.exports =  mongoose.model('Hotels', hotelsSchema);
+module.exports = mongoose.model('Hotels', hotelsSchema);

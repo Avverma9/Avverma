@@ -33,6 +33,7 @@ router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id",hotelController.getHotelsById);
 router.get("/hotels",hotelController.getHotelbyName);
+router.get("/hotels/price",hotelController.getHotelsByPrice);
 
 
 //==================================== STATE ========================================================== 

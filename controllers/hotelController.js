@@ -141,6 +141,27 @@ const getHotelbyName = async (req, res) => {
   }
  }
 
+//=============================================
+const getHotelsByPrice= async (req, res) => {
+  try {
+    const { minPrice, maxPrice } = req.query;
+
+    const filter = {};
+    if (minPrice && maxPrice) {
+      filter.price = { $gte: minPrice, $lte: maxPrice };
+    } else if (minPrice) {
+      filter.price = { $gte: minPrice };
+    } else if (maxPrice) {
+      filter.price = { $lte: maxPrice };
+    }
+    const hotels = await hotelModel.find(filter).exec();
+
+    res.json(hotels);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+}
 
 
 
@@ -153,6 +174,7 @@ const getHotelbyName = async (req, res) => {
    searchHotels,
    getAllHotels,
    getHotelbyName,
-   getHotelsById 
+   getHotelsById,
+   getHotelsByPrice
 
  };
