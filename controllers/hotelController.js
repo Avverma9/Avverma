@@ -142,23 +142,29 @@ const getHotelbyName = async (req, res) => {
  }
 
 //=============================================
-const getHotelsByPrice = async function (req,res) {
-  const minPrice = req.query.minPrice || 0;
-  const maxPrice = req.query.maxPrice || Number.MAX_SAFE_INTEGER;
+const getHotelsByPrice = async (req, res) => {
+  const { minPrice, maxPrice } = req.query;
 
   try {
-    const hotels = await hotelModel.find({
-      price: { $gt: minPrice, $lt: maxPrice },
-    });
+    const query = {};
+
+    if (minPrice !== undefined) {
+      query.price = { $gte: minPrice };
+    }
+
+    if (maxPrice !== undefined) {
+      query.price = { ...query.price, $lte: maxPrice };
+    }
+
+    const hotels = await Hotel.find(query);
 
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ error: 'An error occurred' });
   }
-}
+};
 
-
-
+module.exports = { getHotelsByPrice };
 
  module.exports = {
    createHotel,
