@@ -164,7 +164,7 @@ const getHotelsByPrice = async (req, res) => {
   }
 };
 
-module.exports = { getHotelsByPrice };
+
 
  module.exports = {
    createHotel,
