@@ -4,7 +4,7 @@ const upload = require("../aws/upload");
 //====================================================================================
 const createSignup = async function (req, res) {
   try {
-    const { name, gender, address, email, mobile, password } = req.body;
+    const { name, gender, address, email, mobile, password,gID } = req.body;
     const images = req.files.map((file) => file.location);
 
     const userData = {
@@ -15,6 +15,7 @@ const createSignup = async function (req, res) {
       mobile,
       password,
       images,
+      gID
     };
 
     const savedUser = await userModel.create(userData);
