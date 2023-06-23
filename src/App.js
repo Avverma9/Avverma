@@ -4,6 +4,7 @@ import Header from './Component/Header/Header';
 // import Home from './Component/Home/Home';
 // import About from './Component/About/About';
 // import Contact from './Component/Contact/Contact';
+// Code start from here
 import Register from './Component/Register/Register.jsx';
 import Login from './Component/Login/Login';
 import Profile from './Component/Profile/Profile.jsx';
