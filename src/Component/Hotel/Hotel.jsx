@@ -7,6 +7,7 @@ import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGl
 import RangeSlider from './Rangeslider/range';
 
 
+
 function HotelList() {
   const location = useLocation();
   const [hotels, setHotels] = useState([]);
@@ -99,6 +100,7 @@ function HotelList() {
 
             </div>
           </div>
+         
       <div className="search-results" style={{flex:"0 0 70%"}}>
       
 

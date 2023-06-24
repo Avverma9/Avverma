@@ -38,8 +38,9 @@ function RangeSlider() {
         }}
       />
       <ul>
-        {hotellist.map((hotel) => (
-          <li key={hotel.id}>{hotel.hotelName}</li>
+        {hotellist.map((result) => (
+			
+          <li key={result.id}>{result.hotelName}</li>
         ))}
       </ul>
     </div>
