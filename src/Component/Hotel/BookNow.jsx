@@ -22,6 +22,7 @@ export default function BookNow() {
     const params = useParams();
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
             .then((response) => {
                 if (response.ok) {

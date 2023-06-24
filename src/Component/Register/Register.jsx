@@ -31,6 +31,10 @@ const Register = () => {
     formData.append('mobile', mobile);
     formData.append('password', password);
     formData.append('images', selectedImage);
+    formData.append('gID', adhaar)
+    formData.append('gID', pan)
+    formData.append('gID', drivingLicence)
+
 
     try {
       const response = await fetch('https://hotel-backend-tge7.onrender.com/signup', {
@@ -39,7 +43,7 @@ const Register = () => {
       });
 
       if (response.ok) {
-        console.log('Signup successful');
+        console.log(response, 'Signup successful');
         // Reset form fields
         setName('');
         setGender('');
@@ -47,6 +51,9 @@ const Register = () => {
         setEmail('');
         setMobile('');
         setPassword('');
+        setAdhaar("");
+        setPan('');
+        setDrivingLicence('');
         setSelectedImage(null);
         navigate('/signin');
       } else {
@@ -71,12 +78,24 @@ const Register = () => {
   };
 
   const checkBoxHandler = (e) => {
-    if (e.target.value === "Adhaar" && e.target.checked === true) {
-      setAdhaar(e.target.value);
-    } else if (e.target.value === "PAN" && e.target.checked === true) {
-      setPan(e.target.value);
-    } else if (e.target.value === "Driving Licence" && e.target.checked === true) {
-      setDrivingLicence(e.target.value);
+    if (e.target.value === "Adhaar") {
+      if (e.target.checked === true) {
+        setAdhaar(e.target.value);
+      } else {
+        setAdhaar("");
+      }
+    } else if (e.target.value === "PAN") {
+      if (e.target.checked === true) {
+        setPan(e.target.value);
+      } else {
+        setPan("");
+      }
+    } else if (e.target.value === "Driving Licence") {
+      if (e.target.checked === true) {
+        setDrivingLicence(e.target.value);
+      } else {
+        setDrivingLicence(e.target.value);
+      }
     }
   };
 
