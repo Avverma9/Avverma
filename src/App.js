@@ -176,6 +176,7 @@ function App() {
           <Route path='cities/mussoorie' element={<Mussoorie/>}/>
           <Route path='cities/haridwar' element={<Haridwar/>}/>
           <Route path='cities/kolhapur' element={<Kolhapur/>}/>
+          
         </Routes>
         <Footer />
       </div>
