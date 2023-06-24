@@ -68,6 +68,21 @@ const hotelsSchema = new mongoose.Schema({
   rating: {
     type: Number,
   },
+  collections: {
+    type: [String],
+    required: true,
+  },
+  categories: {
+    type: [String],
+    required: true,
+  },
+  accommodationType: {
+    type: [String],
+    required: true,
+  },
+  checkInFeature: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);
