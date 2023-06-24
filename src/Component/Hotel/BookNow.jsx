@@ -22,6 +22,7 @@ export default function BookNow() {
     const params = useParams();
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
             .then((response) => {
                 if (response.ok) {
@@ -217,7 +218,11 @@ export default function BookNow() {
 
 
                         <div className='reviews'>
-                            <div className='reviewhead'>Reviews:<FontAwesomeIcon icon={faStar} className='star1' /><FontAwesomeIcon icon={faStar} className='star1' /><FontAwesomeIcon icon={faStar} className='star1' /></div>
+                            <div className='reviewhead'>Reviews:
+                                {/* <FontAwesomeIcon icon={faStar} className='star1' />
+                                <FontAwesomeIcon icon={faStar} className='star1' />
+                                <FontAwesomeIcon icon={faStar} className='star1' /> */}
+                            </div>
                             <p className='reviewdetail'>{bookingDetails.reviews}</p>
                         </div>
                         <CheckOut hotelId={bookingDetails._id} userId={userId} amount={Number(bookingDetails.price)} currency="INR" />

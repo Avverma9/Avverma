@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -15,6 +14,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const [adhaar, setAdhaar] = useState("")
+  const [pan, setPan] = useState("")
+  const [drivingLicence, setDrivingLicence] = useState("")
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -27,6 +30,10 @@ const Register = () => {
     formData.append('mobile', mobile);
     formData.append('password', password);
     formData.append('images', selectedImage);
+    formData.append('gID', adhaar)
+    formData.append('gID', pan)
+    formData.append('gID', drivingLicence)
+
 
     try {
       const response = await fetch('https://hotel-backend-tge7.onrender.com/signup', {
@@ -35,7 +42,7 @@ const Register = () => {
       });
 
       if (response.ok) {
-        console.log('Signup successful');
+        console.log(response, 'Signup successful');
         // Reset form fields
         setName('');
         setGender('');
@@ -43,6 +50,9 @@ const Register = () => {
         setEmail('');
         setMobile('');
         setPassword('');
+        setAdhaar("");
+        setPan('');
+        setDrivingLicence('');
         setSelectedImage(null);
         navigate('/signin');
       } else {
@@ -66,9 +76,37 @@ const Register = () => {
     navigate('/signin');
   };
 
+  const checkBoxHandler = (e) => {
+    if (e.target.value === "Adhaar") {
+      if (e.target.checked === true) {
+        setAdhaar(e.target.value);
+      } else {
+        setAdhaar("");
+      }
+    } else if (e.target.value === "PAN") {
+      if (e.target.checked === true) {
+        setPan(e.target.value);
+      } else {
+        setPan("");
+      }
+    } else if (e.target.value === "Driving Licence") {
+      if (e.target.checked === true) {
+        setDrivingLicence(e.target.value);
+      } else {
+        setDrivingLicence(e.target.value);
+      }
+    }
+  };
+
+
   return (
     <>
       <div className="card-signup">
+
+        {
+          console.log(drivingLicence, adhaar, pan)
+        }
+
         <form onSubmit={handleFormSubmit}>
           <input
             type="text"
@@ -118,30 +156,27 @@ const Register = () => {
             required
             className="input-field-signup"
           />
-          <div className="profile-picture-wrapper-signup">
-            {selectedImage ? (
-              <div
-                className="profile-picture-signup"
-                style={{
-                  backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
-                }}
-              ></div>
-            ) : (
-              <div className="profile-picture-signup"></div>
-            )}
-            <label className="upload-button-signup">
+          <div className="form-input-group">
+            <label htmlFor="profile-image" className="upload-button-signup">
               Select Profile Picture
+              <br />
               <input
                 type="file"
+                id="profile-image"
                 accept="image/*"
                 onChange={handleImageChange}
               />
             </label>
+            <div className="selected-image-preview">
+              {selectedImage && (
+                <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
+              )}
+            </div>
           </div>
           <button type="submit">Sign Up</button>
         </form>
       </div>
-      <div className="last-message">Already have an account? </div>
+      <div className="last-message">Already have an account?</div>
       <button type="submit-sign" onClick={handleSignInClick}>
         Sign in
       </button>
