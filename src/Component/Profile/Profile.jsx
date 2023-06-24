@@ -434,6 +434,35 @@ function GovernmentIdInformation() {
       <input type="text" value={gID} onChange={e => setGID(e.target.value)} />
     </div>
 
+
+    <div className="flex-col items-start text-left" style={{ marginTop: 50 }}>
+      <div className="flex-col">
+        <div className="_title">
+          <h1 className='me-2' style={{ width: "20%" }}>
+            Adhaar
+          </h1>
+          <input type="text" className='_gid_input' />
+        </div>
+
+        <div className="_title">
+          <h1 className='me-2' style={{ width: "20%" }}>
+            PAN Card
+          </h1>
+          <input type="text" className='_gid_input' />
+        </div>
+
+        <div className="_title">
+          <h1 className='me-2' style={{ width: "20%" }}>
+            Driving Licence
+          </h1>
+          <input type="text" className='_gid_input' />
+        </div>
+
+      </div>
+
+
+    </div>
+
     <button className='profile_body_button' onClick={handleIdSubmit}>
       Add Government Id
     </button>

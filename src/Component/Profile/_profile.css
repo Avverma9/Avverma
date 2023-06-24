@@ -183,6 +183,19 @@
   margin: 10px 0 0 0;
   gap: 5px;
 }
+._title ._gid_input {
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+  margin-left: 0;
+  background: #fff;
+  padding: 4px 8px;
+  width: 80%;
+}
 
 ._fields > input[type="text"] {
   padding: 8px;
@@ -496,6 +509,9 @@ input[type="radio"] {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+  ._title ._gid_input {
+    width: 59%;
+  }
   ._fields > input[type="text"] {
     width: 80%;
     height: 32px;
