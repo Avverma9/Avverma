@@ -1,6 +1,6 @@
 const hotelModel = require('../models/hotelModel');
 
-const createHotel = async (req, res) => {
+const createHotel = async function (req, res) {
   try {
     const {
       hotelName,
@@ -18,35 +18,38 @@ const createHotel = async (req, res) => {
       moreOptions,
       amenities,
       reviews,
-      rating
-    } = req.body;
+      rating } = req.body;
     const images = req.files.map((file) => file.location);
 
     const hotelData = {
       images,
-      hotelName,
-      description,
-      destination,
-      price,
-      rating,
-      startDate,
-      endDate,
-      guests,
-      numRooms,
-      localId,
-      maritalStatus,
-      availability,
-      hotelsPolicy,
-      moreOptions, 
-      amenities,
-      reviews,
+        hotelName,
+        description,
+        destination,
+        price,
+        startDate,
+        endDate,
+        guests,
+        numRooms,
+        localId,
+        maritalStatus,
+        availability,
+        hotelsPolicy,
+        moreOptions,
+        amenities,
+        reviews,
+        rating
     };
 
-    const newHotel = await hotelModel.create(hotelData);
-    return res.status(201).json({ hotelData: newHotel });
+    const savedHotel = await hotelModel.create(hotelData);
+
+    return res.status(201).send({
+      status: true,
+      data: savedHotel,
+    });
   } catch (error) {
-    console.error('Error creating hotel:', error);
-    return res.status(500).json({ error: 'Failed to create hotel' });
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
