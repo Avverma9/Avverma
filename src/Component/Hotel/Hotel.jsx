@@ -12,11 +12,11 @@ function HotelList() {
   const [hotels, setHotels] = useState([]);
   const [expandedResultId, setExpandedResultId] = useState(null);
   const navigate = useNavigate();
-  const [minPrice, setMinPrice] = useState(100); // Default minimum price
-  const [maxPrice, setMaxPrice] = useState(800); // Default maximum price
+  const [minPrice, setMinPrice] = useState(100); 
+  const [maxPrice, setMaxPrice] = useState(2000); 
 
   useEffect(()=>{
-    fetch(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=100&maxPrice=1000`)
+    fetch(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minPrice}&maxPrice=${maxPrice}`)
     .then(result=>result.json())
     .then (res=>{
       console.log(res);
