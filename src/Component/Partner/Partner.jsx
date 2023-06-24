@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import './partner.css';
 import { useLocation } from 'react-router-dom';
