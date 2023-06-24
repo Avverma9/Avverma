@@ -17,12 +17,12 @@
 /* Sidebar Component Styles */
 
 .sidebar_header {
-  background-color: #e2e8f0;
+  background-color: #ffffff;
   padding: 10px 15px;
   display: flex;
   align-items: center;
   justify-content: left;
-  border-radius: 5px;
+  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -42,10 +42,9 @@
 
 .sidebar_body {
   /* height: 460px; */
-  background-color: #e2e8f0;
+  background-color: #ffffff;
   padding: 10px 15px;
   margin: 25px 0 0 0;
-  border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -132,12 +131,12 @@
 /*  Right Side Container */
 
 .profile_body {
-  background-color: #e2e8f0;
+  background-color: #ffffff;
   width: 70%;
   position: relative;
   margin: 0 0 0 25px;
   padding: 10px 15px;
-  border-radius: 5px;
+  
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

@@ -31,10 +31,15 @@ const Header = () => {
     <BsBoxArrowInRight /> Register/Login
   </a>
 </li>
-<li>
-  <a href="/partner" class="no-underline text-black">
+
+<li className={styles.dropdown}>
+<a href="#" class="no-underline text-black">
     <BsPerson /> Become a Partner
   </a>
+  <div className={styles['dropdown-content']}>
+    <a href="/partner" class="text-black">Hotel Partner</a>
+    <a href="#" class="text-black">Tour Partner</a>
+  </div>
 </li>
 <li className={styles.dropdown}>
   <a href="#" class="no-underline text-black">

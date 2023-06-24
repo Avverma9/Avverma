@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -169,8 +170,9 @@ function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSe
   console.log(selectedNav)
   return (<>
     <div className="sidebar_header">
-      <Avatar name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
+      <Avatar  name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
       />
+      <h2>Hey,</h2>
       <h2 className=''>{!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}</h2>
     </div>
     <div className="sidebar_body">

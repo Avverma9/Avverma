@@ -1,9 +1,17 @@
-.footerContainer {
-  margin-top: 100px;
+.footerContainer { background-image: url(https://avvermabucket.s3.ap-south-1.amazonaws.com/1687596963439-pngegg%20%285%29.png);
+  background-image: url(https://avvermabucket.s3.ap-south-1.amazonaws.com/1687593974929-pngegg.png);
+ 
+ 
+  background-color: #ebecec;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  background: linear-gradient(to right, #dfe0e0,  #8fdbdb,#05c9ff);
+  flex-wrap: wrap;
+  max-width: auto;
+  margin: 0 auto;
+  padding: 20px; /* Example padding, adjust as needed */
 }
 
 .footerSection {

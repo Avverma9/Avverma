@@ -26,8 +26,27 @@ const Partnerpage = () => {
     setActiveTab(tabName);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+     // Create FormData object to send the form data
+     const formData = new FormData();
+     formData.append('hotelownerName', hotelownerName);
+     formData.append('ownercontact', ownercontact);
+     formData.append('receptioncontact', receptioncontact);
+     formData.append('hotelemail', hotelemail);
+     formData.append('hoteladdress', hoteladdress);
+     formData.append('hotelstate', hotelstate);
+     formData.append('zipcode', zipcode);
+     formData.append('citypartner', citypartner);
+     formData.append('landmark', landmark);
+     formData.append('selectedImage', selectedImage);
+    try {
+      const response = await fetch('https://hotel-backend-tge7.onrender.com/partner/create/new', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
     console.log("Submitted:", { hotelownerName, ownercontact, receptioncontact, hotelemail, gmcontact,salescontact, hotelName, hoteladdress, hotelstate, zipcode, citypartner, landmark, selectedImage });
 
     setHotelownerName("");
@@ -43,8 +62,13 @@ const Partnerpage = () => {
     setLandmark("");
     setSelectedImage("");
     setSalescontact("");
-
-  };
+  } else {
+    console.log('creation of partner details failed');
+  }
+} catch (error) {
+  console.log('Error:', error);
+}
+};
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file)
@@ -268,7 +292,7 @@ const Partnerpage = () => {
 
       )}
       {activeTab === "basic" && (
-        <div className="basic-container">
+         <div className="basic-container">
           <div className="imgupload"><p>1-Upload Image</p>
             {selectedImage && (
               <img
@@ -285,6 +309,128 @@ const Partnerpage = () => {
               onChange={handleImageUpload}
             />
           </div>
+          <div class="main">
+
+
+
+<div class="card">
+
+<div class="image">
+<img 
+          src="https://miro.medium.com/v2/resize:fit:8576/1*p1zBnv11CSx_EII8sB9Uaw.jpeg"
+          alt="Image 9"
+           />
+   {/* <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Gfp-missouri-st-louis-clubhouse-pond-and-scenery.jpg/1199px-Gfp-missouri-st-louis-clubhouse-pond-and-scenery.jpg"/> */}
+</div>
+<div class="des">
+ <p>Room-Image</p>
+<button>ChooseFile</button>
+</div>
+</div>
+
+
+
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i1.wp.com/i.pinimg.com/originals/19/f2/18/19f21857163adcee4349166af11ae145.jpg?w=1140&ssl=1"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2018/01/09/03/49/the-natural-scenery-3070808_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Bathroom-image</p>
+<button>Choosefile</button>
+</div>
+</div>
+
+
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i0.wp.com/www.designlike.com/wp-content/uploads/2018/03/restaurant-1948732_1920.jpg"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Resturant-Room</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i.nextmedia.com.au/News/crn-14_carpark_iStock-177136206.jpg"
+            alt="Image 9"
+          />
+   {/* <img src=""/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Parking-images</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://tse1.mm.bing.net/th?id=OIP.KwETv6vjh5rRMqzeQ-J5wAHaEJ&pid=Api&P=0&h=180"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Lane-Images</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://tse4.mm.bing.net/th?id=OIP.NScPnwpNJ1GuyeeKEqOBBAHaE7&pid=Api&P=0&h=180"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>HotelFront-View</p>
+<button>ChooseFile</button>
+</div>
+</div>
+</div>
+
+
+
           <div className="selectamenity">
             <p>Select Hotel Amenity</p>
             <div className="amenityitem4">
@@ -330,7 +476,6 @@ const Partnerpage = () => {
           <label><FontAwesomeIcon icon={faBrush} />House Keeping
           </label>
           </div>
-
           <div className="amenityclasses"> 
           <input type="checkbox" />
           <label><FontAwesomeIcon icon={faTrowel} />Towels
@@ -508,7 +653,6 @@ const Partnerpage = () => {
               <input type="checkbox" id="notAllowedCheckbox" />
               <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
             </div>
-
             <div className="policy-item">
               <label>2 - Cancellation:</label>
               <div className="allow">
@@ -719,7 +863,7 @@ const Partnerpage = () => {
 
         </div>
       )}
-    </div>
+     </div>
   );
 };
 
