@@ -202,6 +202,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   const [isEditing, setIsEditing] = useState(false)
 
   const [uname, setUName] = useState("");
+  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
@@ -213,6 +214,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
     try {
       const formData = new FormData();
       formData.append('name', uname !== "" ? uname : userData?.name);
+      formData.append('password', password !== "" ? password : userData?.password);
       formData.append('email', email !== "" ? email : userData?.email);
       formData.append('gender', gender !== "" ? gender : userData?.gender);
       formData.append('mobile', mobile !== "" ? mobile : userData?.mobile);
@@ -244,98 +246,111 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   console.log(isEditing, "IS EDITING")
   return (
     <>
-      <>
-        <div className="_title">
-          <h1>
-            Personal Information
-          </h1>
-          <input type="button" value="Edit" onClick={() => setIsEditing(true)} />
-        </div>
-        <div className="_fields">
-          <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name) : uname} onChange={(e) => setUName(e.target.value)}
+      <div className="_y-scroll">
+        <>
+          <div className="_title">
+            <h1>
+              Personal Information
+            </h1>
+            <input type="button" value="Edit" onClick={() => setIsEditing(true)} />
+          </div>
+          <div className="_fields">
+            <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name) : uname} onChange={(e) => setUName(e.target.value)}
 
-            placeholder={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name}
-          />
-          {/* <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} /> */}
-        </div>
-      </>
-      <>
-        <h4 className='sub_Title'>Your Gender</h4>
-        <div className='profile_information_gender'>
-          {!isEditing ? (userData?.gender === "Male" ? <>
-            <input type="radio" id="male" name="gender" value="Male" checked />
-            <label for="male" className='ml-2'>{userData?.gender}
-            </label>
-          </>
-            :
-            <>
-              <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
-              <label for="female" className='ml-2'>{userData?.gender}
-              </label>
-            </>) : (
-            <>
-              <input type="radio" id="male" name="gender" value="Male" onChange={(e) => setGender(e.target.value)} />
-              <label for="male" className='ml-2'>Male
-              </label>
-              <input type="radio" id="female" name="gender" value="Female" className='ms-4' onChange={(e) => setGender(e.target.value)} />
-              <label for="female" className='ml-2'>Female
+              placeholder={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name}
+            />
+            {/* <input type="text" value={!isSignedIn && userDetails ? userDetails?.displayName.split[userDetails?.displayName.split(" ").length - 1] : userData?.name} /> */}
+          </div>
+        </>
+        <>
+          <h4 className='sub_Title'>Your Gender</h4>
+          <div className='profile_information_gender'>
+            {!isEditing ? (userData?.gender === "Male" ? <>
+              <input type="radio" id="male" name="gender" value="Male" checked />
+              <label for="male" className='ml-2'>{userData?.gender}
               </label>
             </>
-          )
-          }
-        </div>
-      </>
-      <>
-        <div className="_title">
-          <h1>
-            Email Address
-          </h1>
-          {/* <input type="button" value="Edit" /> */}
-        </div>
-        <div className="_fields">
-          <input type="email" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.email : userData?.email) : email} onChange={(e) => setEmail(e.target.value)}
-            placeholder={!isSignedIn && userDetails ? userDetails?.email : userData?.email}
-          />
-        </div>
-      </>
-      <>
-        <div className="_title">
-          <h1>
-            Mobile Number
-          </h1>
-          {/* <input type="button" value="Edit" /> */}
-        </div>
-        <div className="_fields">
-          <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile) : mobile} onChange={(e) => setMobile(e.target.value)}
-            placeholder={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile}
-          />
-        </div>
-      </>
-      {isEditing && <>
-        <div className="_title">
-          <h1>
-            Profile Image
-          </h1>
-          {/* <input type="button" value="Edit" /> */}
-        </div>
-        <div className="_fields">
-          <input
-            type="file"
-            id="images"
-            accept="image/*"
-            onChange={(e) => setImages(e.target.files)}
-          />
-        </div>
-      </>}
+              :
+              <>
+                <input type="radio" id="female" name="gender" value="Female" className='ml-2' checked />
+                <label for="female" className='ml-2'>{userData?.gender}
+                </label>
+              </>) : (
+              <>
+                <input type="radio" id="male" name="gender" value="Male" onChange={(e) => setGender(e.target.value)} />
+                <label for="male" className='ml-2'>Male
+                </label>
+                <input type="radio" id="female" name="gender" value="Female" className='ms-4' onChange={(e) => setGender(e.target.value)} />
+                <label for="female" className='ml-2'>Female
+                </label>
+              </>
+            )
+            }
+          </div>
+        </>
+        <>
+          <div className="_title">
+            <h1>
+              Email Address
+            </h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields">
+            <input type="email" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.email : userData?.email) : email} onChange={(e) => setEmail(e.target.value)}
+              placeholder={!isSignedIn && userDetails ? userDetails?.email : userData?.email}
+            />
+          </div>
+        </>
+        <>
+          <div className="_title">
+            <h1>
+              Mobile Number
+            </h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields">
+            <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile) : mobile} onChange={(e) => setMobile(e.target.value)}
+              placeholder={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile}
+            />
+          </div>
+        </>
+        {isEditing && <>
+          <div className="_title">
+            <h1>
+              Password Changes
+            </h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields">
+            <input type="password" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.password : userData?.password) : password} onChange={(e) => setPassword(e.target.value)}
+              // placeholder={!isSignedIn && userDetails ? userDetails?.password : userData?.password}
+              placeholder='*************'
+            />
+          </div>
+        </>}
+        {isEditing && <>
+          <div className="_title">
+            <h1>
+              Profile Image
+            </h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields">
+            <input
+              type="file"
+              id="images"
+              accept="image/*"
+              onChange={(e) => setImages(e.target.files)}
+            />
+          </div>
+        </>}
+      </div>
       {isEditing && <button onClick={handleUpdate} className="profile_body_button">
         Update Profile
-      </button>}
+      </button >}
     </>
   );
 }
-
-
-
 
 function AddressInformation({ userData }) {
   const [address, setAddress] = useState("");
