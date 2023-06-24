@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -157,38 +156,27 @@ const Register = () => {
             required
             className="input-field-signup"
           />
-          <div className='d-flex flex-row gap-3'>
-            <input type="checkbox" id="adhaar" name="govid" value="Adhaar" onChange={(e => checkBoxHandler(e))} />
-            <label for="adhaar" >Adhaar Card</label>
-            <input type="checkbox" id="pan" name="govid" value="PAN" onChange={(e => checkBoxHandler(e))} />
-            <label for="pan">PAN Card</label>
-            <input type="checkbox" id="dl" name="govid" value="Driving Licence" onChange={(e => checkBoxHandler(e))} />
-            <label for="dl">Driving Licence</label>
-          </div>
-          <div className="profile-picture-wrapper-signup">
-            {selectedImage ? (
-              <div
-                className="profile-picture-signup"
-                style={{
-                  backgroundImage: `url(${URL.createObjectURL(selectedImage)})`,
-                }}
-              ></div>
-            ) : (
-              <div className="profile-picture-signup"></div>
-            )}
-            <label className="upload-button-signup">
+          <div className="form-input-group">
+            <label htmlFor="profile-image" className="upload-button-signup">
               Select Profile Picture
+              <br />
               <input
                 type="file"
+                id="profile-image"
                 accept="image/*"
                 onChange={handleImageChange}
               />
             </label>
+            <div className="selected-image-preview">
+              {selectedImage && (
+                <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
+              )}
+            </div>
           </div>
           <button type="submit">Sign Up</button>
         </form>
       </div>
-      <div className="last-message">Already have an account? </div>
+      <div className="last-message">Already have an account?</div>
       <button type="submit-sign" onClick={handleSignInClick}>
         Sign in
       </button>
