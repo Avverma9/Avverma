@@ -5,6 +5,7 @@ import Header from './Component/Header/Header';
 // import About from './Component/About/About';
 // import Contact from './Component/Contact/Contact';
 // Code start from here
+// Sourav Satpati
 import Register from './Component/Register/Register.jsx';
 import Login from './Component/Login/Login';
 import Profile from './Component/Profile/Profile.jsx';
@@ -132,51 +133,50 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route path="/hotels/:id" element={<BookNow />} />
-          <Route path="/cities/jaipur" element={<Jaipur/>}/>
-          <Route path="/cities/kota" element={<Kota/>}/>
-          <Route path="/cities/Sawai Madhopur" element={<Sawaimadhopur/>}/>
-          <Route path='cities/udaipur' element={<Udaipur/>}/>
-          <Route path='cities/bikaner' element={<Bikaner/>}/>
-          <Route path='cities/jodhpur' element={<Jodhpur/>}/>
-          <Route path='cities/noida' element={<Noida/>}/>
-          <Route path='cities/kanpur' element={<Kanpur/>}/>
-          <Route path='cities/prayagraj' element={<Prayagraj/>}/>
-          <Route path= 'cities/mathura' element={<Mathura/>}/>
-          <Route path= 'cities/lucknow' element={<Lucknow/>}/>
-          <Route path= 'cities/varanasi' element={<Varanasi/>}/>
-          <Route path= 'cities/agra' element={<Agra/>}/>
-          <Route path= 'cities/Indore' element={<Indore/>}/>
-          <Route path= 'cities/bhopal' element={<Bhopal/>}/>
-          <Route path= 'cities/jabalpur' element={<Jabalpur/>}/>
-          <Route path='cities/gwalior' element={<Gwalior/>}/>
-          <Route path='cities/ujjain' element={<Ujjain/>}/>
-          <Route path= 'cities/ratlam' element={<Ratlam/>}/>
-          <Route path= 'cities/surat' element={<Surat/>}/>
-          <Route path= 'cities/Ahmedabad' element={<Ahmedabad/>}/>
-          <Route path= 'cities/vadodara' element={<Vadodara/>}/>
-          <Route path= 'cities/porbandar' element={<Porbandar/>}/>
-          <Route path= 'cities/jamnagar' element={<Jamnagar/>}/>
-          <Route path = 'cities/patna' element={<Patna/>}/>
-          <Route path='cities/nalanda' element={<Nalanda/>}/>
-          <Route path= 'cities/bhagalpur' element={<Bhagalpur/>}/>
-          <Route path='cities/darbhanga' element={<Darbhanga/>}/>
-          <Route path='cities/gaya' element={<Gaya/>}/>
-          <Route path='cities/mumbai' element={<Mumbai/>}/>
-          <Route path='cities/pune' element={<Pune/>}/>
-          <Route path='cities/nagpur' element={<Nagpur/>}/>
-          <Route path= 'cities/nashik' element={<Nashik/>}/>
-          <Route path='cities/akola' element={<Akola/>}/>
-          <Route path='cities/ratnagiri' element={<Ratnagiri/>}/>
-          <Route path='cities/amravati' element={<Amravati/>}/>
-          <Route path='cities/latur' element={<Latur/>}/>
-          <Route path='cities/ahmadnagar' element={<Ahmadnagar/>}/>
-          <Route path='cities/dehradun' element={<Dehradun/>}/>
-          <Route path='cities/Nainital' element={<Nainital/>}/>
-          <Route path='cities/Rishikesh' element={<Rishikesh/>}/>
-          <Route path='cities/mussoorie' element={<Mussoorie/>}/>
-          <Route path='cities/haridwar' element={<Haridwar/>}/>
-          <Route path='cities/kolhapur' element={<Kolhapur/>}/>
-          
+          <Route path="/cities/jaipur" element={<Jaipur />} />
+          <Route path="/cities/kota" element={<Kota />} />
+          <Route path="/cities/Sawai Madhopur" element={<Sawaimadhopur />} />
+          <Route path='cities/udaipur' element={<Udaipur />} />
+          <Route path='cities/bikaner' element={<Bikaner />} />
+          <Route path='cities/jodhpur' element={<Jodhpur />} />
+          <Route path='cities/noida' element={<Noida />} />
+          <Route path='cities/kanpur' element={<Kanpur />} />
+          <Route path='cities/prayagraj' element={<Prayagraj />} />
+          <Route path='cities/mathura' element={<Mathura />} />
+          <Route path='cities/lucknow' element={<Lucknow />} />
+          <Route path='cities/varanasi' element={<Varanasi />} />
+          <Route path='cities/agra' element={<Agra />} />
+          <Route path='cities/Indore' element={<Indore />} />
+          <Route path='cities/bhopal' element={<Bhopal />} />
+          <Route path='cities/jabalpur' element={<Jabalpur />} />
+          <Route path='cities/gwalior' element={<Gwalior />} />
+          <Route path='cities/ujjain' element={<Ujjain />} />
+          <Route path='cities/ratlam' element={<Ratlam />} />
+          <Route path='cities/surat' element={<Surat />} />
+          <Route path='cities/Ahmedabad' element={<Ahmedabad />} />
+          <Route path='cities/vadodara' element={<Vadodara />} />
+          <Route path='cities/porbandar' element={<Porbandar />} />
+          <Route path='cities/jamnagar' element={<Jamnagar />} />
+          <Route path='cities/patna' element={<Patna />} />
+          <Route path='cities/nalanda' element={<Nalanda />} />
+          <Route path='cities/bhagalpur' element={<Bhagalpur />} />
+          <Route path='cities/darbhanga' element={<Darbhanga />} />
+          <Route path='cities/gaya' element={<Gaya />} />
+          <Route path='cities/mumbai' element={<Mumbai />} />
+          <Route path='cities/pune' element={<Pune />} />
+          <Route path='cities/nagpur' element={<Nagpur />} />
+          <Route path='cities/nashik' element={<Nashik />} />
+          <Route path='cities/akola' element={<Akola />} />
+          <Route path='cities/ratnagiri' element={<Ratnagiri />} />
+          <Route path='cities/amravati' element={<Amravati />} />
+          <Route path='cities/latur' element={<Latur />} />
+          <Route path='cities/ahmadnagar' element={<Ahmadnagar />} />
+          <Route path='cities/dehradun' element={<Dehradun />} />
+          <Route path='cities/Nainital' element={<Nainital />} />
+          <Route path='cities/Rishikesh' element={<Rishikesh />} />
+          <Route path='cities/mussoorie' element={<Mussoorie />} />
+          <Route path='cities/haridwar' element={<Haridwar />} />
+          <Route path='cities/kolhapur' element={<Kolhapur />} />
         </Routes>
         <Footer />
       </div>

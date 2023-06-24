@@ -182,8 +182,32 @@
   margin: 10px 0 0 0;
   gap: 5px;
 }
+._title ._gid_input {
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+  margin-left: 0;
+  background: #fff;
+  padding: 4px 8px;
+  width: 80%;
+}
 
 ._fields > input[type="text"] {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+._fields > input[type="password"] {
   padding: 8px;
   outline: none;
   border: 0.5px solid #ccc;
@@ -207,6 +231,18 @@
 }
 
 ._fields_col > input[type="text"] {
+  padding: 8px;
+  outline: none;
+  border: 0.5px solid #ccc;
+  border-radius: 5px;
+  width: 50%;
+  height: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #424554;
+}
+
+._fields_col > input[type="password"] {
   padding: 8px;
   outline: none;
   border: 0.5px solid #ccc;
@@ -291,6 +327,14 @@
 .profile_body_button:hover {
   background-color: #0056b3;
   transform: translateY(-3px);
+}
+
+._y-scroll {
+  height: 309px;
+  overflow-y: scroll;
+  padding: 1px 5px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .sub_Title {
@@ -399,6 +443,13 @@ input[type="radio"] {
     font-weight: 500;
     color: #424554;
   }
+  ._fields > input[type="password"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
   ._fields > input[type="email"] {
     width: 100%;
     height: 32px;
@@ -407,6 +458,13 @@ input[type="radio"] {
     color: #424554;
   }
   ._fields_col > input[type="text"] {
+    width: 100%;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #424554;
+  }
+  ._fields_col > input[type="password"] {
     width: 100%;
     height: 32px;
     font-size: 13px;
@@ -450,7 +508,14 @@ input[type="radio"] {
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+  ._title ._gid_input {
+    width: 59%;
+  }
   ._fields > input[type="text"] {
+    width: 80%;
+    height: 32px;
+  }
+  ._fields > input[type="password"] {
     width: 80%;
     height: 32px;
   }
@@ -459,6 +524,9 @@ input[type="radio"] {
     height: 32px;
   }
   ._fields_col > input[type="text"] {
+    width: 80%;
+  }
+  ._fields_col > input[type="password"] {
     width: 80%;
   }
   ._fields_col > input[type="email"] {
