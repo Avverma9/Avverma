@@ -37,12 +37,12 @@ function RangeSlider() {
           handleInput(e);
         }}
       />
-      <ul>
+ <ul>
         {hotellist.map((result) => (
 			
           <li key={result.id}>{result.hotelName}</li>
         ))}
-      </ul>
+      </ul>      
     </div>
   );
 }

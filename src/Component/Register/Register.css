@@ -1,3 +1,64 @@
+.form-input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.selected-image-preview,
+.upload-button-signup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+   
+  
+}
+
+.input-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+
+.button-block {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.input-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+.input-field input {
+  width: 200px;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.button-block {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+
+
+
+
 .card-signup {
   max-width: 800px;
   height: 600px;
@@ -6,6 +67,10 @@
   background-color: #f2f2f2;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-image: url(https://cdn.dribbble.com/users/1917942/screenshots/7139971/media/d802dc4eadb049f5a9684759cfdfbffa.gif);
+  background-size: cover;
+  background-position: center;
+  
 }
 
 .form-row {
@@ -53,6 +118,9 @@ button[type="submit"] {
   border-radius: 3px;
   cursor: pointer;
 }
+.card-signup button {
+  margin-top: auto;
+}
 
 .last-message {
   margin-bottom: 20px;
@@ -96,6 +164,9 @@ button[type="submit-sign"] {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.input-field{
+
 }
 
 @media (max-width: 768px) {

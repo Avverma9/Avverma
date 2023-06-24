@@ -107,7 +107,27 @@ const Register = () => {
           console.log(drivingLicence, adhaar, pan)
         }
 
-        <form onSubmit={handleFormSubmit}>
+        <form onSubmit={handleFormSubmit} className='form-container'>
+        <div className="form-input-group">
+            
+            <div className="selected-image-preview">
+              {selectedImage && (
+                <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
+              )}
+              
+            </div>
+            <label htmlFor="profile-image" className="upload-button-signup">
+              Select Profile Picture
+              <br />
+              <input
+                type="file"
+                id="profile-image"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
+          <div className='input-field'>
           <input
             type="text"
             placeholder="Name"
@@ -156,24 +176,10 @@ const Register = () => {
             required
             className="input-field-signup"
           />
-          <div className="form-input-group">
-            <label htmlFor="profile-image" className="upload-button-signup">
-              Select Profile Picture
-              <br />
-              <input
-                type="file"
-                id="profile-image"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-            </label>
-            <div className="selected-image-preview">
-              {selectedImage && (
-                <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
-              )}
-            </div>
+          
           </div>
-          <button type="submit">Sign Up</button>
+          <div className='button-block'>
+          <button type="submit">Sign Up</button></div>
         </form>
       </div>
       <div className="last-message">Already have an account?</div>
