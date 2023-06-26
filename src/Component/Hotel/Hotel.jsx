@@ -5,33 +5,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr, faLocationDot, faHotel, faPerson } from '@fortawesome/free-solid-svg-icons';
 
 import RangeSlider from './Rangeslider/range';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-
-
+import axios from 'axios';
 
 
 
 function HotelList() {
   const location = useLocation();
-  const [hotels, setHotels] = useState([]);
+  const [hotels, setHotels] = useState([]);  // list of hotels initially when page loaded
   const [expandedResultId, setExpandedResultId] = useState(null);
   const navigate = useNavigate();
 
-
-
+  const [minValue, set_minValue] = useState(400);
+  const [maxValue, set_maxValue] = useState(4000);
 
 
   useEffect(() => {
-    fetch('https://hotel-backend-tge7.onrender.com/get/all/hotels')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Logging the received data
-        setHotels(data);
-        console.log(hotels);
-      })
-      .catch(error => console.log(error));
-  }, []);
+    if (minValue > 400 || maxValue < 4000) {
+      axios.get(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`)
+        .then(data => {
+          if (data.status === 200) {
+            setHotels(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    } else {
+      axios.get('https://hotel-backend-tge7.onrender.com/get/all/hotels')
+        .then(data => {
+          if (data.status === 200) {
+            setHotels(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    }
+
+  }, [maxValue, minValue]);
 
   if (location.pathname !== '/') {
     return null;
@@ -59,7 +66,8 @@ function HotelList() {
             <h3 className='filterhead'>Filters</h3>
             <h5 className='filterprice'>price</h5>
 
-            {/* <RangeSlider/> */}
+            <RangeSlider minValue={minValue} maxValue={maxValue} set_minValue={set_minValue} set_maxValue={set_maxValue} />
+
           </div>
           <hr />
           <div className='filt-2nd'>
@@ -108,37 +116,10 @@ function HotelList() {
         <div className="search-results" style={{ flex: "0 0 70%" }}>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           {hotels.map((result) => (
             <div key={result._id} className={`${styles['search-result']} ${expandedResultId === result._id ? styles['expanded'] : ''}`}>
 
-            <Carousel showThumbs={true}>
-  {result.images.map((image, index) => (
-    <div key={index}>
-      <img
-        className={styles['search-result-image']} // Apply CSS class directly to the img element
-        src={image}
-        alt="hotel-pic"
-      />
-    </div>
-  ))}
-</Carousel>
-
-
+              <img src={result.images[0]} alt="hotel-pic" className={styles['search-result-image']} />
               <div className={styles['search-result-content']}>
                 <div className={styles['hotel-info']}>
                   <h3 className={styles['search-result-title']}>{result.hotelName}</h3>
