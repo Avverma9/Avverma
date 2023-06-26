@@ -35,6 +35,9 @@ router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id",hotelController.getHotelsById);
 router.get("/hotels",hotelController.getHotelbyName);
 router.get("/hotels/price/get/by",hotelController.getHotelsByPrice);
+router.get("/hotelsCategory",hotelController.getHotelsByCategory);
+router.get("/hotelsLocalId",hotelController.getHotelsByLocalID);
+router.get("/hotelsAccomodation",hotelController.getHotelsByAccommodation);
 
 
 //==================================== STATE ========================================================== 
@@ -46,9 +49,11 @@ router.get("/statesData", stateController.getStateData);
 router.post('/payments', paymentController.createPayment);
 
 //===================================== REVIEW =========================================================
-router.post('/review', reviewController.createReview);
-router.get("/reviewAllData", reviewController.getAllReviews);
-router.get("/reviewData/:id", reviewController.getReviewById);
+router.post('/reviews/:userId/:hotelId', reviewController.createReview);
+router.get("/getReviews/:userId/:hotelId", reviewController.getHotelByUserIdAndHotelId);
+router.get("/reviewData/:hotelId", reviewController.getReviewsByHotelId);
+router.put('/updateReview/:userId/:hotelId', reviewController.updateReview)
 
 
 module.exports = router;
+

@@ -37,6 +37,10 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  roomType: {
+    type: String,
+    required: true,
+  },
   localId: {
     type: Boolean,
     default: false,
