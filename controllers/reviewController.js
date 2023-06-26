@@ -59,6 +59,19 @@ const getReviewsByHotelId = async (req, res) => {
   }
 };
 
+//=======================================================================================================
+const getReviewsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const reviews = await reviewModel.find({ user: userId });
+
+    res.status(200).json({ reviews });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 //=================================================================================================
 const updateReview = async (req, res) => {
   try {
@@ -85,5 +98,6 @@ module.exports = {
   createReview,
   getHotelByUserIdAndHotelId,
   getReviewsByHotelId,
+  getReviewsByUserId,
   updateReview,
 };
