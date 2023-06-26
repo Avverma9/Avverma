@@ -1,17 +1,18 @@
 /* hotel.module.css */
 
 .search-results {
-  
+  width: 100%;
+  margin: 15px 30px 15px 15px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   flex-direction: column;
   align-items: flex-end;
-  
 }
 
 .search-result {
   width: 100%;
+  height: 325px;
   margin: 2px;
   padding: 5px;
   background-color: white;
@@ -19,17 +20,17 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 6%;
-  
 }
-.vertical-bar{
-  margin-left: 20px;
+.vertical-bar {
+  margin: 15px 15px 15px 30px;
+  flex: 0 0 20%;
 }
 
 .search-result-image {
-  width: 38%;
-height: auto;
-object-fit: cover;
-border-radius: 5px;
+  width: 45%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 5px;
 }
 
 .search-result-content {
@@ -55,42 +56,39 @@ border-radius: 5px;
 
 .search-result-destination {
   font-size: 18px;
-margin-bottom: 10px;
-color: #606060;
-font-weight: 501;
+  margin-bottom: 10px;
+  color: #606060;
+  font-weight: 501;
 }
 .search-result-destination .location {
   margin-right: 5px;
   color: rgb(227, 51, 51);
   font-size: 17px;
 }
-.search-result-rooms{
+.search-result-rooms {
   font-size: 14px;
   margin-bottom: 4px;
-  
+
   font-weight: 400;
 }
-.room{
+.room {
   margin-right: 10px;
 }
-.search-result-guests{
+.search-result-guests {
   font-size: 14px;
   margin-bottom: 4px;
-  
+
   font-weight: 400;
 }
-.guest{
+.guest {
   margin-right: 13px;
 }
-
-
 
 .search-result-price {
   font-size: 22px;
   color: red;
   font-weight: 700;
   margin: 0;
- 
 }
 .search-result-price .rupees {
   margin-right: 5px;
@@ -99,10 +97,9 @@ font-weight: 501;
 .search-result-price .detail {
   font-size: 14px;
   color: #393939;
-  margin:5px;
+  margin: 5px;
   font-weight: 400;
 }
-
 
 .detail {
   font-size: 10px;
@@ -116,7 +113,6 @@ font-weight: 501;
 
 .view-details-button,
 .book-now-button {
-  
   width: 20%;
   margin: 0;
   padding: 0;
@@ -127,10 +123,7 @@ font-weight: 501;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  
-  
 }
-
 
 .view-details-button:hover,
 .book-now-button:hover {
@@ -142,8 +135,6 @@ font-weight: 501;
 }
 
 .amenities h6 {
-  
-  
   font-size: 14px;
   color: #333333;
   margin: 0;
@@ -166,13 +157,12 @@ font-weight: 501;
   display: inline-block;
   color: #252525;
 }
-.moreame{
+.moreame {
   margin-bottom: 20px;
 }
 
 .fonticon {
   margin-right: 5px;
-  
 }
 
 hr {
@@ -182,33 +172,28 @@ hr {
   border-color: #151010;
 }
 
-
 .search-result-title {
   font-size: 22px;
-  color:black;
+  color: black;
   font-weight: bold;
   margin: 0;
-  
 }
 
 .hotel-rating {
   font-size: 12px;
-color: #ffffff;
-margin: 0px;
-display: flex;
-align-items: center;
-background-color:#3bc03b;;
-padding: 4px;
-border-radius: 3px;
-width:6%
+  color: #ffffff;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  background-color: #3bc03b;
+  padding: 4px;
+  border-radius: 3px;
+  width: 6%;
 }
 
 .fastar {
   margin-right: 5px;
 }
-
-
-
 
 .detail {
   font-size: 12px;
@@ -222,7 +207,7 @@ width:6%
 }
 
 .view-details-button {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -230,7 +215,7 @@ width:6%
   width: 53%;
 }
 .book-now-button {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
   margin: 0px;
   letter-spacing: 1px;
@@ -239,13 +224,23 @@ width:6%
   width: 53%;
 }
 
-
-
 .view-details-button:hover,
 .book-now-button:hover {
   /* ... previous styles ... */
   background-color: #0056b3;
   transform: translateY(-3px);
+}
+
+@media only screen and (max-width: 1010px) {
+  .search-result-title {
+    font-size: 18px;
+  }
+  .search-result-destination {
+    font-size: 16px;
+  }
+  .search-result-price .detail {
+    font-size: 12px;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -294,7 +289,7 @@ width:6%
     margin-right: 10px;
     margin-bottom: 10px;
   }
-  .button-block{
+  .button-block {
     display: flex;
     justify-content: space-between;
   }
@@ -306,14 +301,6 @@ width:6%
   }
 
   .search-result {
-    width: calc(25% );
+    width: calc(25%);
   }
 }
-
-
-
-
-
-
-
-
