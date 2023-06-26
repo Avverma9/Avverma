@@ -38,6 +38,10 @@ function HotelList() {
         .catch(error => console.log(error));
     }
 
+    document.getElementsByClassName("label")[0].textContent = `₹${minValue}`
+    document.getElementsByClassName("label")[1].textContent = `₹${maxValue}`
+
+
   }, [maxValue, minValue]);
 
   if (location.pathname !== '/') {
