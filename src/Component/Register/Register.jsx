@@ -36,7 +36,7 @@ const Register = () => {
 
 
     try {
-      const response = await fetch('https://hotel-backend-tge7.onrender.com/signup', {
+      const response = await fetch('https://hotel-backend-tge7.onrender.com/Signup', {
         method: 'POST',
         body: formData,
       });
