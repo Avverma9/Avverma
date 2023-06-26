@@ -2,12 +2,12 @@ import MultiRangeSlider from "multi-range-slider-react";
 import "./range.css";
 
 
-function RangeSlider({ minValue,maxValue,set_minValue,set_maxValue }) {
+function RangeSlider({ minValue, maxValue, set_minValue, set_maxValue }) {
 
   const handleInput = (e) => {
     set_minValue(e.minValue);
     set_maxValue(e.maxValue);
-  };    
+  };
 
   return (
     <div className="range">
