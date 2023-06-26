@@ -60,8 +60,8 @@ function HotelList() {
 
   return (
     <>
-      <div className='whole-data' style={{ display: "flex" }}>
-        <div className="vertical-bar" style={{ flex: "0 0 25%" }}>
+      <div className='whole-data d-flex'>
+        <div className={styles['vertical-bar']}>
           <div className='filt-1st'>
             <h3 className='filterhead'>Filters</h3>
             <h5 className='filterprice'>price</h5>
@@ -113,7 +113,7 @@ function HotelList() {
           </div>
         </div>
 
-        <div className="search-results" style={{ flex: "0 0 70%" }}>
+        <div className={styles['search-results']}>
 
 
           {hotels.map((result) => (
