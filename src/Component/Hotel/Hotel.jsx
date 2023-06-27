@@ -21,8 +21,14 @@ function HotelList() {
 
   useEffect(() => {
 
-    // document.getElementsByClassName("label")[0].textContent = `₹${minValue}`
-    // document.getElementsByClassName("label")[1].textContent = `₹${maxValue}`
+    const labels = document.getElementsByClassName("label");
+    Array.from(labels).forEach((label, index) => {
+      if (index === 0) {
+        label.textContent = `₹${minValue}`;
+      } else if (index === 1) {
+        label.textContent = `₹${maxValue}`;
+      }
+    });
 
     if (minValue > 400 || maxValue < 4000) {
       axios.get(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`)
