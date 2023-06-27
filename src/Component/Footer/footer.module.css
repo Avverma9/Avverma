@@ -1,8 +1,9 @@
-.footerContainer { background-image: url(https://avvermabucket.s3.ap-south-1.amazonaws.com/1687596963439-pngegg%20%285%29.png);
+.footerContainer {  
+
   background-image: url(https://avvermabucket.s3.ap-south-1.amazonaws.com/1687593974929-pngegg.png);
  
- 
-  background-color: #ebecec;
+ background-color: #70c2f1;
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

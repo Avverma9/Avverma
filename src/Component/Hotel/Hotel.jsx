@@ -74,8 +74,8 @@ function HotelList() {
         <div className={styles['vertical-bar']}>
           <div className='filt-1st'>
             <h3 className='filterhead'>Filters</h3>
-            <h5 className='filterprice'>price</h5>
-
+            <br />
+            <h5 className='filterprice'>Price</h5>
             <RangeSlider minValue={minValue} maxValue={maxValue} set_minValue={set_minValue} set_maxValue={set_maxValue} />
 
           </div>
