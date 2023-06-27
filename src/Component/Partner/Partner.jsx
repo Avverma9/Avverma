@@ -85,6 +85,7 @@ const Partner = () => {
         {activeNavItem === "Hotel Contact Information" && (
           <div>
             <h3>Hotel Listed Request</h3>
+            <div className="group1">
             <label htmlFor="hotelOwnerName">Hotel Owner Name</label>
             <input type="text" id="hotelOwnerName" />
 
@@ -95,7 +96,7 @@ const Partner = () => {
               Reception Contact Details:
             </label>
             <input type="text" id="receptionContactDetails" />
-
+            </div>
             <br />
             <label htmlFor="hotelEmail">Hotel Email Address:</label>
             <input type="email" id="hotelEmail" />
