@@ -6,6 +6,7 @@ import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGl
 
 import RangeSlider from './Rangeslider/range';
 import axios from 'axios';
+import Imgslide from './slider/sliderimage';
 
 
 
@@ -129,7 +130,7 @@ function HotelList() {
           {hotels.map((result) => (
             <div key={result._id} className={`${styles['search-result']} ${expandedResultId === result._id ? styles['expanded'] : ''}`}>
 
-              <img src={result.images[0]} alt="hotel-pic" className={styles['search-result-image']} />
+              <Imgslide/>
               <div className={styles['search-result-content']}>
                 <div className={styles['hotel-info']}>
                   <h3 className={styles['search-result-title']}>{result.hotelName}</h3>

@@ -3,9 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr, faLocationDot, faHotel, faPerson } from '@fortawesome/free-solid-svg-icons';
-
-// import RangeSlider from './Rangeslider/range';
+import axios from 'axios';
+ import RangeSlider from '../Rangeslider/range';
 import Imgslide from '../slider/sliderimage';
+
 
 
 
@@ -17,21 +18,45 @@ function Prayagraj() {
   const [hotels, setHotels] = useState([]);
   const [expandedResultId, setExpandedResultId] = useState(null);
   const navigate = useNavigate();
+  const [minValue, set_minValue] = useState(400);
+  const [maxValue, set_maxValue] = useState(4000);
  
   
  
   
 
+  
+
   useEffect(() => {
-    fetch('https://hotel-backend-tge7.onrender.com/hotels?destination=Prayagraj')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data); // Logging the received data
-        setHotels(data);
-        console.log(hotels);
-      })
-      .catch(error => console.log(error));
-  }, []);
+    if (minValue > 400 || maxValue < 4000) {
+      axios.get(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`)
+        .then(data => {
+          if (data.status === 200) {
+            setHotels(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    } else {
+      axios.get('https://hotel-backend-tge7.onrender.com/hotels?destination=Prayagraj')
+        .then(data => {
+          if (data.status === 200) {
+            setHotels(data.data);
+          }
+        })
+        .catch(error => console.log(error));
+    }
+
+    const labels = document.getElementsByClassName("label");
+    Array.from(labels).forEach((label, index) => {
+      if (index === 0) {
+        label.textContent = `₹${minValue}`;
+      } else if (index === 1) {
+        label.textContent = `₹${maxValue}`;
+      }
+    });
+    
+
+  }, [maxValue, minValue]);
 
   
 
@@ -49,7 +74,7 @@ function Prayagraj() {
     }
   };
  if (hotels.length === 0) {
-    return <div>Loading...</div>;
+    return <div>NO DATA FOUND</div>;
   }
 
   return (
@@ -59,8 +84,8 @@ function Prayagraj() {
     <div className='filt-1st'>
             <h3 className='filterhead'>Filters</h3>
             <h5 className='filterprice'>price</h5>
+            <RangeSlider minValue={minValue} maxValue={maxValue} set_minValue={set_minValue} set_maxValue={set_maxValue} />
             
-            {/* <RangeSlider/> */}
             </div>
             <hr/>
             <div className='filt-2nd'>
