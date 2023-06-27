@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: left;
-  
+
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -136,7 +136,7 @@
   position: relative;
   margin: 0 0 0 25px;
   padding: 10px 15px;
-  
+
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -347,14 +347,26 @@
 .review_card {
   display: flex;
   margin: 0 0 10px 0;
-  /* align-items: center;
-  justify-content: left; */
+  align-items: flex-start;
+  /* justify-content: left; */
 }
 
-.review_card img {
+.review_card_img {
+  flex: 1;
+}
+
+.review_card .review_card_img img {
   width: 200px;
   height: auto;
   border-radius: 5px;
+}
+
+.review_card_hotel_name {
+  flex: 1;
+}
+
+.review_card_post_date {
+  flex: 0;
 }
 
 .complains_section {
