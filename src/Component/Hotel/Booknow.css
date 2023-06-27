@@ -27,6 +27,7 @@
   height: 400px; /* Adjust the height as needed */
 }
 .hotel-details1 {
+  margin-bottom: 10px;
   margin-left: 10%;
 }
 
@@ -233,7 +234,7 @@
   font-weight: bold;
   color: black;
 }
-.reviewhead {
+.reviewhead h1 {
   font-size: 25px;
   font-weight: bold;
   color: rgb(103, 146, 255);
@@ -242,7 +243,72 @@
 .reviews {
   margin-top: 50px;
 }
+
+.review_container {
+  display: flex;
+  /* align-items: center; */
+  gap: 15px;
+}
+
+.comment_profile {
+  flex: 0;
+}
+
+.comment_profile_name {
+  flex: 2;
+  color: #1e293b;
+}
+.comment_profile_name h4 {
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+  word-spacing: 1.5px;
+  letter-spacing: 0.5px;
+}
+
+.comment_date {
+  flex: 0;
+  color: #6b7280;
+}
+.comment_date p {
+  text-align: left;
+  font: size 14px;
+  font-weight: 600;
+}
+.review_comment {
+  color: #94a3b8;
+}
+.review_comment p {
+  text-align: left;
+  font: size 16px;
+  font-weight: 500;
+}
 .star1 {
   font-size: 22px;
   margin-left: 20px;
+}
+
+.create_new_reviews {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 15px;
+}
+.create_new_reviews > textarea {
+  width: 60%;
+}
+.create_new_reviews .post_review_button {
+  width: 138px;
+  height: 29px;
+  background-color: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.create_new_reviews .post_review_button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
 }
