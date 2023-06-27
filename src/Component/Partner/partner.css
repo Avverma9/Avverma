@@ -1,6 +1,4 @@
-/* partner.css */
 
-/* Navbar */
 .navbar {
   list-style-type: none;
   display: flex;
@@ -20,7 +18,6 @@
   background-color: #ccc;
 }
 
-/* Button Container */
 .button-container {
   display: flex;
   justify-content: space-between;
@@ -46,38 +43,39 @@
   padding: 20px;
   border: 1px solid #ccc;
 }
-
 .content h3 {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: #333;
+  text-transform: uppercase;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
 }
+
 
 .content label {
-  display: block;
+ 
   margin-bottom: 10px;
   font-weight: bold;
+  
 }
 
-.content input,
 .content textarea {
-  width: 100%;
+  width: 20%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 .content textarea {
-  resize: vertical;
+  resize: horizontal;
 }
 
-/* Next and Previous Buttons */
 .button-container button:first-child {
   background-color: #f0f0f0;
   color: #555;
   font-weight: bold;
 }
-
-/* Hotel Contact Information */
 #hotelOwnerName,
 #ownerContactDetails,
 #receptionContactDetails,
@@ -90,8 +88,9 @@
 #state,
 #zip,
 #landmark {
-  width: 100%;
-  padding: 10px;
+ 
+  width: 20%;
+  padding: 5px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -101,7 +100,7 @@
   resize: vertical;
 }
 
-/* Hotel Star Rating */
+
 .star-rating {
   margin-top: 10px;
 }
@@ -110,27 +109,12 @@
   margin-right: 10px;
 }
 
-/* Your Property Type */
 .property-type {
   margin-top: 10px;
 }
 
 .property-type label {
   margin-right: 10px;
-}
-
-/* Additional Styling for Layout and Design */
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 30px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.container h3 {
-  color: #333;
-  margin-top: 0;
 }
 
 .container button:last-child {
@@ -142,7 +126,6 @@
   background-color: #0056b3;
 }
 
-/* Mobile Styles */
 
 @media (max-width: 768px) {
   .navbar {

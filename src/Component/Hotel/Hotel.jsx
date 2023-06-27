@@ -6,6 +6,7 @@ import { faWifi, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGl
 
 import RangeSlider from './Rangeslider/range';
 import axios from 'axios';
+import Imgslide from './slider/sliderimage';
 
 
 
@@ -20,16 +21,6 @@ function HotelList() {
 
 
   useEffect(() => {
-
-    const labels = document.getElementsByClassName("label");
-    Array.from(labels).forEach((label, index) => {
-      if (index === 0) {
-        label.textContent = `₹${minValue}`;
-      } else if (index === 1) {
-        label.textContent = `₹${maxValue}`;
-      }
-    });
-
     if (minValue > 400 || maxValue < 4000) {
       axios.get(`https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`)
         .then(data => {
@@ -47,6 +38,16 @@ function HotelList() {
         })
         .catch(error => console.log(error));
     }
+
+    const labels = document.getElementsByClassName("label");
+    Array.from(labels).forEach((label, index) => {
+      if (index === 0) {
+        label.textContent = `₹${minValue}`;
+      } else if (index === 1) {
+        label.textContent = `₹${maxValue}`;
+      }
+    });
+    
 
   }, [maxValue, minValue]);
 
@@ -74,8 +75,8 @@ function HotelList() {
         <div className={styles['vertical-bar']}>
           <div className='filt-1st'>
             <h3 className='filterhead'>Filters</h3>
-            <h5 className='filterprice'>price</h5>
-
+            <br />
+            <h5 className='filterprice'>Price</h5>
             <RangeSlider minValue={minValue} maxValue={maxValue} set_minValue={set_minValue} set_maxValue={set_maxValue} />
 
           </div>
@@ -129,7 +130,7 @@ function HotelList() {
           {hotels.map((result) => (
             <div key={result._id} className={`${styles['search-result']} ${expandedResultId === result._id ? styles['expanded'] : ''}`}>
 
-              <img src={result.images[0]} alt="hotel-pic" className={styles['search-result-image']} />
+              <Imgslide/>
               <div className={styles['search-result-content']}>
                 <div className={styles['hotel-info']}>
                   <h3 className={styles['search-result-title']}>{result.hotelName}</h3>

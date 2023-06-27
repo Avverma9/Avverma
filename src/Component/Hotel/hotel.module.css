@@ -1,4 +1,3 @@
-
 .search-results {
   width: 100%;
   margin: 15px 30px 15px 15px;
@@ -8,7 +7,10 @@
   flex-direction: column;
   align-items: flex-end;
 }
-
+.colle h5 {
+  text-decoration:#007bff;
+  font-size: 8px;
+}
 .search-result {
   width: 100%;
   height: 325px;
@@ -170,6 +172,97 @@ hr {
   border-top: 1px solid #dddddd;
   border-color: #151010;
 }
+/* Whole container */
+.whole-data {
+  display: flex;
+}
+
+/* Sidebar */
+.vertical-bar {
+  width: 300px;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+/* Filter section */
+.filterhead {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.filterprice {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.RangeSlider {
+  margin-bottom: 20px;
+}
+
+
+.filt-2nd label,
+.filt-3rd label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + span {
+  font-weight: bold;
+}
+
+/* Accommodation Type section */
+.filt-4th {
+  margin-bottom: 20px;
+}
+
+/* Hotel Facilities section */
+.filt-5th {
+  margin-bottom: 20px;
+}
+
+/* Check In Feature section */
+.filt-6th {
+  margin-bottom: 20px;
+}
+
+hr {
+  border: none;
+  border-top: 8px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Optional styles for the RangeSlider component */
+
+.RangeSlider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #4c8bf5;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.RangeSlider input[type="range"]:hover {
+  opacity: 1;
+}
+
+/* Optional styles for label and checkbox positioning */
+label {
+  display: flex;
+  align-items: center;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Add more custom styles as needed */
 
 .search-result-title {
   font-size: 22px;
