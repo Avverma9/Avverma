@@ -234,7 +234,7 @@
   font-weight: bold;
   color: black;
 }
-.reviewhead {
+.reviewhead h1 {
   font-size: 25px;
   font-weight: bold;
   color: rgb(103, 146, 255);
@@ -244,18 +244,45 @@
   margin-top: 50px;
 }
 
-.comment {
-  font-size: 16px;
-  font-weight: normal;
-  color: gray;
+.review_container {
+  display: flex;
+  /* align-items: center; */
+  gap: 15px;
 }
 
-.createdAt {
-  font-size: 16px;
+.comment_profile {
+  flex: 0;
+}
+
+.comment_profile_name {
+  flex: 2;
+  color: #1e293b;
+}
+.comment_profile_name h4 {
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+  word-spacing: 1.5px;
+  letter-spacing: 0.5px;
+}
+
+.comment_date {
+  flex: 0;
+  color: #6b7280;
+}
+.comment_date p {
+  text-align: left;
+  font: size 14px;
+  font-weight: 600;
+}
+.review_comment {
+  color: #94a3b8;
+}
+.review_comment p {
+  text-align: left;
+  font: size 16px;
   font-weight: 500;
-  color: rgb(64, 63, 63);
 }
-
 .star1 {
   font-size: 22px;
   margin-left: 20px;

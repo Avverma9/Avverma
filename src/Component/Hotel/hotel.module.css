@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 6%;
+  
 }
 .vertical-bar {
   margin: 15px 15px 15px 30px;
@@ -125,6 +126,7 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 
 .view-details-button:hover,
 .book-now-button:hover {
@@ -315,6 +317,8 @@ input[type="checkbox"] {
   padding: 8px;
   width: 53%;
 }
+
+
 
 .view-details-button:hover,
 .book-now-button:hover {
