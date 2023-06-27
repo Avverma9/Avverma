@@ -339,24 +339,53 @@
 
 .review_container {
   display: flex;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .hotel_image {
-  background-color: blue;
   flex: 1;
 }
 
 .review_content {
-  background-color: green;
   flex: 2;
+  position: relative;
 }
 
 .review_content_header {
-  background-color: orange;
+  display: flex;
+  align-items: center;
+}
+
+.review_content_header h4 {
+  flex: 1;
+  color: #1e293b;
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+  word-spacing: 1.5px;
+  letter-spacing: 0.5px;
+}
+
+.review_content_header p {
+  color: #6b7280;
+  text-align: left;
+  font: size 14px;
+  font-weight: 600;
 }
 
 .review_content_body {
-  background-color: aqua;
+  position: absolute;
+  bottom: 0;
+}
+
+.review_content_body p {
+  color: #94a3b8;
+  text-align: left;
+  font: size 16px;
+  font-weight: 500;
 }
 
 .sub_Title {

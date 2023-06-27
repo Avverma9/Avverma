@@ -817,10 +817,17 @@ function MyReviewSection() {
       <>
 
         <div className="review_container">
-          <div className="hotel_image">Image</div>
+          <div className="hotel_image">
+            <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fextranet.bigbreaks.in%2Fimages%2FWedding%2FTajMahalPalace_Bigbreaks.jpeg&f=1&nofb=1&ipt=39dbba057211de2bea81f367bccc122c2171a21f7efdc3345135302318cf7fe1&ipo=images" alt="" />
+          </div>
           <div className="review_content">
-            <div className="review_content_header">header</div>
-            <div className="review_content_body">body</div>
+            <div className="review_content_header">
+              <h4>Hotel Taj</h4>
+              <p>27/06/2023</p>
+            </div>
+            <div className="review_content_body">
+              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum sunt quo inventore odit et ut, ex ullam quia, dolores ad quos vel! Optio animi fuga maiores neque, sunt nostrum, mollitia ab omnis aliquam corrupti quas nisi dolorem earum vel cupiditate quibusdam distinctio labore porro! Nobis cum dignissimos itaque perspiciatis eius!</p>
+            </div>
           </div>
         </div>
 
