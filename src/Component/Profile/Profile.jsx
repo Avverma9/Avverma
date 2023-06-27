@@ -170,7 +170,7 @@ function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSe
   console.log(selectedNav)
   return (<>
     <div className="sidebar_header">
-      <Avatar  name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
+      <Avatar name={!isSignedIn && userDetails ? userDetails?.displayName : userData?.name} src={!isSignedIn && userDetails ? userDetails?.photoURL : userData?.images[0]} round={true} size="35" className="react-avatar" // onClick={editProfileHandler}
       />
       <h2>Hey,</h2>
       <h2 className=''>{!isSignedIn && userDetails ? userDetails?.displayName : userData?.name}</h2>
@@ -789,6 +789,23 @@ function FailedBooking() {
 }
 
 function MyReviewSection() {
+  const userId = localStorage.getItem('userId');
+  const [currentUserReviews, setCurrentUserReviews] = useState([])
+
+  useEffect(() => {
+    axios.get(`https://hotel-backend-tge7.onrender.com/reviewData/649684a30a05c75766669f6a`)
+      .then(response => {
+        try {
+          if (response.status === 200) {
+            setCurrentUserReviews(response.data.data)
+          }
+        } catch (error) {
+          console.log(error);
+        }
+        console.log(response, "FCCTCTYZEZCRXZERTXCTYOCTYO");
+      })
+  }, [userId])
+
   return (
     <>
       <div className="_title">
@@ -798,7 +815,7 @@ function MyReviewSection() {
       </div>
       <>
 
-        <div className="review_card">
+        {currentUserReviews.map((review, index) => <div className="review_card" key={index}>
 
           <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
 
@@ -807,21 +824,10 @@ function MyReviewSection() {
             <div >
               ⭐⭐⭐⭐⭐
             </div>
+            <p>{review.comment}</p>
           </div>
         </div>
-
-        <div className="review_card">
-
-          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
-
-          <div className="ms-4">
-            <p>Grand Hotel</p>
-            <div >
-              ⭐⭐⭐⭐⭐
-            </div>
-          </div>
-        </div>
-
+        )}
       </>
 
     </>)
