@@ -1,142 +1,145 @@
 /* hotel.module.css */
 
-.search-results0 {
+.search-results {
+  
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  align-items: flex-end;
   
 }
 
-.search-result0 {
-  width: 300px;
-  margin: 20px;
-  padding: 20px;
-  background-color: #f5f5f5;
+.search-result {
+  width: 100%;
+  margin: 2px;
+  padding: 5px;
+  background-color: white;
   border-radius: 5px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  
+  
 }
-.search-result0:first-child {
-  margin-left: 0;
-}
-.search-result0:not(:last-child) {
-  margin-right: 20px;
-}
-
-.search-result-image0 {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 5px;
+.vertical-bar{
+  margin-left: 20px;
 }
 
-.search-result-content0 {
+.search-result-image {
+  width: 35%;
+height: auto;
+object-fit: cover;
+border-radius: 5px;
+}
+
+.search-result-content {
   margin-top: 10px;
   flex-grow: 1;
+  margin-left: 15px;
 }
 
-.hotel-info0 {
+.hotel-info00 {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: start;
 }
 
-.search-result-title0 {
+.search-result-title {
   margin: 0;
 }
 
-.hotel-rating0 {
+.hotel-rating {
   font-size: 14px;
   color: #ffc107;
   margin: 0;
 }
 
-.search-result-destination0 {
-  font-size: 20px;
-  margin-bottom: 10px;
-  color:red;
-  font-weight: 700;
+.search-result-destination {
+  font-size: 18px;
+margin-bottom: 10px;
+color: #606060;
+font-weight: 501;
 }
-.search-result-destination .location0 {
+.search-result-destination .location {
   margin-right: 5px;
-  color: rgb(50, 75, 216);
-  font-size: 22px;
+  color: rgb(227, 51, 51);
+  font-size: 17px;
 }
-.search-result-rooms0{
+.search-result-rooms{
   font-size: 14px;
   margin-bottom: 4px;
   
   font-weight: 400;
 }
-.room0{
+.room{
   margin-right: 10px;
 }
-.search-result-guests0{
+.search-result-guests{
   font-size: 14px;
   margin-bottom: 4px;
   
   font-weight: 400;
 }
-.guest0{
+.guest{
   margin-right: 13px;
 }
 
 
 
-.search-result-price0 {
+.search-result-price {
   font-size: 22px;
   color: red;
   font-weight: 700;
+  margin: 0;
+ 
 }
-.search-result-price0 .rupees0 {
+.search-result-price .rupees {
   margin-right: 5px;
   color: red;
 }
-.search-result-price0 .detail0 {
+.search-result-price .detail {
   font-size: 14px;
-  color: #000000;
+  color: #393939;
   margin:5px;
   font-weight: 400;
 }
 
 
-.detail0 {
+.detail {
   font-size: 10px;
   color: #525252;
 }
 
-.search-result-availability0 {
+.search-result-availability {
   font-size: 12px;
   margin: 10px 0;
 }
 
-.view-details-button0,
-.book-now-button0 {
+.view-details-button,
+.book-now-button {
   
-  width: 40%;
-  margin: 10px 0;
-  padding: 10px;
-  font-size: 9px;
+  width: 20%;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
   text-align: center;
   background-color: #007bff;
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 2px;
   cursor: pointer;
   
   
 }
 
-.view-details-button0:hover,
-.book-now-button0:hover {
-  background-color: #0056b3;
-}
 
-.amenities0 {
+
+
+.amenities {
   margin-top: 10px;
 }
 
-.amenities0 h6 {
+.amenities h6 {
   
   
   font-size: 14px;
@@ -144,7 +147,7 @@
   margin: 0;
 }
 
-.amenities0 ul {
+.amenities ul {
   display: flex;
   flex-wrap: wrap;
   margin: 0;
@@ -152,145 +155,154 @@
   list-style: none;
 }
 
-.amenities0 li {
+.amenities li {
   font-size: 14px;
   display: flex;
   align-items: center;
-  margin-right: 20px;
-  margin-bottom: 20px;
+  margin-right: 25px;
+  margin-bottom: 18px;
   display: inline-block;
   color: #252525;
 }
+.moreame{
+  margin-bottom: 20px;
+}
 
-.fonticon0 {
+.fonticon {
   margin-right: 5px;
   
 }
 
 hr {
-  margin: 20px 0;
+
   border: none;
   border-top: 1px solid #dddddd;
   border-color: #151010;
 }
 
 
-.search-result-title0 {
-  font-size: 18px;
-  color: #333333;
+.search-result-title {
+  font-size: 22px;
+  color:black;
   font-weight: bold;
   margin: 0;
+  
 }
 
-.hotel-rating0 {
-  font-size: 20px;
+.hotel-rating {
+  font-size: 12px;
 color: #ffffff;
 margin: 0px;
 display: flex;
 align-items: center;
-background-color: green;
-padding: 8px;
+background-color:#3bc03b;;
+padding: 4px;
 border-radius: 3px;
+width:6%
 }
 
-.fastar0 {
+.fastar {
   margin-right: 5px;
 }
 
 
 
 
-.detail0 {
+.detail {
   font-size: 12px;
   color: #999999;
 }
 
-.search-result-availability0 {
+.search-result-availability {
   font-size: 12px;
   color: #666666;
   margin: 10px 0;
 }
 
-.view-details-button0 {
+.view-details-button {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
+  padding: 8px;
+  width: 53%;
+  color:black;
+  background-color: white;
+  border:1px solid black;
+  
 }
-.book-now-button0 {
+.book-now-button {
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  margin-left: 50px;
+  margin: 0px;
   letter-spacing: 1px;
   text-transform: uppercase;
+  padding: 8px;
+  width: 53%;
 }
 
 
-.view-details-button0:hover,
-.book-now-button0:hover {
-  /* ... previous styles ... */
-  background-color: #0056b3;
-  transform: translateY(-3px);
-}
+
+
 
 @media only screen and (max-width: 600px) {
-  .search-result0 {
+  .search-result {
     width: 100%;
   }
 
-  .search-result-image0 {
+  .search-result-image {
     height: 150px;
   }
 
-  .search-result-content0 {
+  .search-result-content {
     margin-top: 10px;
   }
 
-  .search-result-title0 {
+  .search-result-title {
     font-size: 16px;
   }
 
-  .hotel-rating0 {
+  .hotel-rating {
     font-size: 16px;
     padding: 6px;
   }
 
-  .detail0 {
+  .detail {
     font-size: 10px;
   }
 
-  .search-result-availability0 {
+  .search-result-availability {
     font-size: 10px;
     margin: 5px 0;
   }
 
-  .view-details-button0,
-  .book-now-button0 {
+  .view-details-button,
+  .book-now-button {
     font-size: 12px;
     padding: 8px;
   }
 
-  .amenities0 h6 {
+  .amenities h6 {
     font-size: 12px;
   }
 
-  .amenities0 li {
+  .amenities li {
     font-size: 12px;
     margin-right: 10px;
     margin-bottom: 10px;
   }
-  .button-block0{
+  .button-block{
     display: flex;
     justify-content: space-between;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .search-results0 {
+  .search-results {
     justify-content: flex-start;
   }
 
-  .search-result0 {
+  .search-result {
     width: calc(25% );
   }
 }
