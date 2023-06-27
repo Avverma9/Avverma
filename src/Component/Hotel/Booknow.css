@@ -27,6 +27,7 @@
   height: 400px; /* Adjust the height as needed */
 }
 .hotel-details1 {
+  margin-bottom: 10px;
   margin-left: 10%;
 }
 
@@ -242,7 +243,45 @@
 .reviews {
   margin-top: 50px;
 }
+
+.comment {
+  font-size: 16px;
+  font-weight: normal;
+  color: gray;
+}
+
+.createdAt {
+  font-size: 16px;
+  font-weight: 500;
+  color: rgb(64, 63, 63);
+}
+
 .star1 {
   font-size: 22px;
   margin-left: 20px;
+}
+
+.create_new_reviews {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 15px;
+}
+.create_new_reviews > textarea {
+  width: 60%;
+}
+.create_new_reviews .post_review_button {
+  width: 138px;
+  height: 29px;
+  background-color: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.create_new_reviews .post_review_button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
 }

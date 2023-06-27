@@ -8,14 +8,18 @@ import { faChevronLeft, faChevronRight, faStar, faPerson, faHotel, faPeopleArrow
 import './Booknow.css';
 import CheckOut from '../Payment/CheckOut';
 import { convertDate } from '../../utils/convertDate';
+import axios from 'axios';
 
 export default function BookNow() {
     const [bookingDetails, setBookingDetails] = useState({});
+    const [hotelID, setHotelID] = useState("");
     const [hotelImages, setHotelImages] = useState([]);
     const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
     const [hotelAmenities, setHotelAmenities] = useState([]);
     const [checkIN, setCheckIn] = useState("");
     const [checkOUT, setCheckOut] = useState("");
+    const [myReview, setMyReview] = useState("");
+    const [hotelReviews, setHotelReviews] = useState([]);
     const sliderRef = useRef(null);
     const userId = localStorage.getItem('userId');
 
@@ -33,7 +37,7 @@ export default function BookNow() {
             })
             .then((data) => {
                 setBookingDetails(data);
-
+                setHotelID(data._id)
                 setHotelImages(data.images);
                 setHotelAmenities(data.amenities);
                 setHotelMoreOpt(data.moreOptions);
@@ -44,6 +48,22 @@ export default function BookNow() {
                 console.log(error);
             });
     }, [params, bookingDetails.startDate, bookingDetails.endDate]);
+
+    useEffect(() => {
+        setHotelReviews([])
+        fetch(`https://hotel-backend-tge7.onrender.com/reviewData/${hotelID}`)
+            .then((response) => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    console.log(response)
+                }
+            })
+            .then((data) => {
+                setHotelReviews(data?.reviews)
+                console.log(data?.reviews, "JTRSLUYFI:UG")
+            })
+    }, [hotelID])
 
     const settings = {
         dots: false,
@@ -62,6 +82,21 @@ export default function BookNow() {
     };
 
     console.log(bookingDetails);
+
+    const postReviewHandler = () => {
+        axios.post(`https://hotel-backend-tge7.onrender.com/reviews/${userId}/${hotelID}`, {
+            comment: myReview
+        }).then((response) => {
+            try {
+                if (response?.status === 201) {
+                    setMyReview("")
+                }
+            } catch (error) {
+                console.log(error);
+            }
+            console.log(response)
+        })
+    }
 
     return (
         <>
@@ -217,11 +252,25 @@ export default function BookNow() {
                         </div>
 
 
+                        <div className="create_new_reviews">
+                            <textarea placeholder='Post New Review' type="text" rows="2" value={myReview} onChange={(e) => setMyReview(e.target.value)} />
+                            <button className='post_review_button' onClick={postReviewHandler}>Post</button>
+                        </div>
+
+
                         <div className='reviews'>
                             <div className='reviewhead'>Reviews:
                                 {/* <FontAwesomeIcon icon={faStar} className='star1' />
                                 <FontAwesomeIcon icon={faStar} className='star1' />
                                 <FontAwesomeIcon icon={faStar} className='star1' /> */}
+                                {hotelReviews ? hotelReviews.map((review) =>
+
+                                    <div className="d-flex w-75" key={review._id}>
+                                        <div className="flex-grow-1 comment">{review.comment}</div>
+                                        <div className='createdAt'>{convertDate(review.createdAt)}</div>
+                                    </div>
+
+                                ) : <>Loading....</>}
                             </div>
                             <p className='reviewdetail'>{bookingDetails.reviews}</p>
                         </div>
