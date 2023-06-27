@@ -813,24 +813,19 @@ function MyReviewSection() {
           My Reviews
         </h1>
       </div>
-      {currentUserReviews && currentUserReviews.map((review) => <>
+      {/* {currentUserReviews && currentUserReviews.map((review) => */}
+      <>
 
-        <div className="review_card">
-
-          <div className="review_card_img">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
-          </div>
-
-          <div className="review_card_hotel_name">
-            <h4>Hotel Taj</h4>
-          </div>
-
-          <div className="review_card_post_date">
-            <p>27/06/2023</p>
+        <div className="review_container">
+          <div className="hotel_image">Image</div>
+          <div className="review_content">
+            <div className="review_content_header">header</div>
+            <div className="review_content_body">body</div>
           </div>
         </div>
 
-      </>)}
+      </>
+      {/* )} */}
 
     </>)
 }

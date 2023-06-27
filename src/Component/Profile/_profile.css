@@ -337,36 +337,33 @@
   -ms-overflow-style: none;
 }
 
+.review_container {
+  display: flex;
+}
+
+.hotel_image {
+  background-color: blue;
+  flex: 1;
+}
+
+.review_content {
+  background-color: green;
+  flex: 2;
+}
+
+.review_content_header {
+  background-color: orange;
+}
+
+.review_content_body {
+  background-color: aqua;
+}
+
 .sub_Title {
   text-align: left;
   margin: 10px 0 0 0;
   font-size: small;
   font-weight: 500;
-}
-
-.review_card {
-  display: flex;
-  margin: 0 0 10px 0;
-  align-items: flex-start;
-  /* justify-content: left; */
-}
-
-.review_card_img {
-  flex: 1;
-}
-
-.review_card .review_card_img img {
-  width: 200px;
-  height: auto;
-  border-radius: 5px;
-}
-
-.review_card_hotel_name {
-  flex: 1;
-}
-
-.review_card_post_date {
-  flex: 0;
 }
 
 .complains_section {
