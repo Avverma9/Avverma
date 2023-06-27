@@ -815,7 +815,7 @@ function MyReviewSection() {
       </div>
       <>
 
-        {currentUserReviews.map((review, index) => <div className="review_card" key={index}>
+        <div className="review_card">
 
           <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
 
@@ -824,10 +824,10 @@ function MyReviewSection() {
             <div >
               ⭐⭐⭐⭐⭐
             </div>
-            <p>{review.comment}</p>
+            {/* <p>{review.comment}</p> */}
           </div>
         </div>
-        )}
+        
       </>
 
     </>)
