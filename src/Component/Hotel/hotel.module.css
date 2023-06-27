@@ -18,7 +18,7 @@
   border-radius: 5px;
   display: flex;
   flex-direction: row;
-  margin-bottom: 6%;
+  
   
 }
 .vertical-bar{
@@ -120,22 +120,19 @@ font-weight: 501;
   width: 20%;
   margin: 0;
   padding: 0;
-  font-size: 9px;
+  font-size: 12px;
   text-align: center;
   background-color: #007bff;
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 2px;
   cursor: pointer;
   
   
 }
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  background-color: #0056b3;
-}
+
 
 .amenities {
   margin-top: 10px;
@@ -176,7 +173,7 @@ font-weight: 501;
 }
 
 hr {
-  margin: 20px 0;
+
   border: none;
   border-top: 1px solid #dddddd;
   border-color: #151010;
@@ -228,6 +225,10 @@ width:6%
   text-transform: uppercase;
   padding: 8px;
   width: 53%;
+  color:black;
+  background-color: white;
+  border:1px solid black;
+  
 }
 .book-now-button {
   font-family: 'Roboto', sans-serif;
@@ -241,12 +242,7 @@ width:6%
 
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  /* ... previous styles ... */
-  background-color: #0056b3;
-  transform: translateY(-3px);
-}
+
 
 @media only screen and (max-width: 600px) {
   .search-result {
