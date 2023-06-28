@@ -60,19 +60,19 @@ const getHotelByUserIdAndHotelId = async (req, res) => {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    const user = await userModel.findOne({}).select(["name", "images"]);
+    const users = await userModel.find({}, "name images");
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!users) {
+      return res.status(404).json({ message: "No users found" });
     }
 
     res.status(200).json({
       hotel: hotel.hotelName,
       review,
-      user: {
+      users: users.map((user) => ({
         name: user.name,
         images: user.images
-      }
+      }))
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
