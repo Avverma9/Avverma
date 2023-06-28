@@ -1,4 +1,3 @@
-
 .search-results {
   width: 100%;
   margin: 15px 30px 15px 15px;
@@ -21,6 +20,7 @@
   border-radius: 5px;
   display: flex;
   flex-direction: row;
+  margin-bottom: 6%;
   
 }
 .vertical-bar {
@@ -118,20 +118,17 @@
   width: 20%;
   margin: 0;
   padding: 0;
-  font-size: 12px;
+  font-size: 9px;
   text-align: center;
   background-color: #007bff;
   color: #ffffff;
   border: none;
-  border-radius: 2px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  background-color: #0056b3;
-}
+
 
 .amenities {
   margin-top: 10px;
@@ -169,7 +166,7 @@
 }
 
 hr {
-
+  margin: 20px 0;
   border: none;
   border-top: 1px solid #dddddd;
   border-color: #151010;
@@ -307,10 +304,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 8px;
   width: 53%;
-  color:black;
-  background-color: white;
-  border:1px solid black;
-  
+  color: white;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -324,12 +318,7 @@ input[type="checkbox"] {
 
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  /* ... previous styles ... */
-  background-color: #0056b3;
-  transform: translateY(-3px);
-}
+
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {

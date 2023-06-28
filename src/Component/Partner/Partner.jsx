@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./partner.css";
 import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faAirFreshener, faBaby, faBars, faBath, faBathtub, faBottleWater, faBrush, faBusinessTime, faChair, faCheck, faCoffee, faDesktop, faHandsWash, faHeartCircleCheck, faHotel, faInr, faLock, faParking, faRestroom, faSchoolFlag, faShirt, faShoePrints, faShower, faSmokingBan, faSpa, faSwimmingPool, faTrowel, faTv, faUmbrellaBeach, faWater, faWifi} from '@fortawesome/free-solid-svg-icons';
 
 const Partner = () => {
   const location = useLocation();
@@ -9,12 +11,26 @@ const Partner = () => {
   );
   const [images, setImages] = useState([]);
 
+
+  
+  
+  
+
+
   const navItems = [
     "Hotel Contact Information",
     "Basic Information",
     "Hotel Policy",
     "Hotel Tariff",
   ];
+  
+
+
+
+const[uploadimage,setUploadimage]=useState("");
+
+
+
 
   const handleNavItemClick = (navItem) => {
     if (navItem === "Basic Information") {
@@ -85,97 +101,121 @@ const Partner = () => {
         {activeNavItem === "Hotel Contact Information" && (
           <div>
             <h3>Hotel Listed Request</h3>
+            <div className="group1">
+            <div className="hotelownername">
             <label htmlFor="hotelOwnerName">Hotel Owner Name</label>
             <input type="text" id="hotelOwnerName" />
-
+            </div>
+            <div className="ownercontactdetail">
             <label htmlFor="ownerContactDetails">Owner Contact Details:</label>
             <input type="text" id="ownerContactDetails" />
-
+            </div>
+            <div className="receptioncontactdetails">
             <label htmlFor="receptionContactDetails">
               Reception Contact Details:
             </label>
             <input type="text" id="receptionContactDetails" />
-
+            </div>
+            </div>
             <br />
+            <div className="group2">
+            <div className="hotelemailaddress">
             <label htmlFor="hotelEmail">Hotel Email Address:</label>
             <input type="email" id="hotelEmail" />
-
+            </div>
+            <div className="generalmanagercontact">
             <label htmlFor="generalManagerContact">
               General Manager Contact Details:
             </label>
             <input type="text" id="generalManagerContact" />
-
+            </div>
+            <div className="salesmanagercontact">
             <label htmlFor="salesManagerContact">
               Sales Manager Contact Details:
             </label>
             <input type="text" id="salesManagerContact" />
+            </div>
+            </div>
 
             <h3>Hotel Details & Location</h3>
-
+            <div className="group3">
+            <div className="hoteldetails">
             <label htmlFor="hotelDetails">Hotel Details:</label>
-            <input type="text" id="hotelDetails"></input>
-
+            <input type="text" id="hotelDetails" />
+            </div>
+            <div className="street">
             <label htmlFor="street">Street:</label>
             <input type="text" id="street" />
-
+            </div>
+            <div className="city">
             <label htmlFor="city">City:</label>
             <input type="text" id="city" />
+            </div>
+            </div>
             <br />
+            <div className="group4">
+            <div className="state">
             <label htmlFor="state">State:</label>
             <input type="text" id="state" />
+            </div>
+            <div className="zipcode">
             <label htmlFor="zip">ZIP Code:</label>
             <input type="text" id="zip" />
+            </div>
+            <div className="landmark">
             <label htmlFor="landmark">Landmark</label>
             <input type="text" id="landmark" />
+            </div>
+            </div>
 
             <h3>Hotel Star Rating</h3>
-            <input type="radio" id="starone" name="starType" value="type1" />
+            <input type="radio" id="starone" name="starType" value="1star" />
             <label htmlFor="starone">1 Star</label>
             <br />
-            <input type="radio" id="startwo" name="starType" value="type2" />
+            <input type="radio" id="startwo" name="starType" value="2star" />
             <label htmlFor="startwo">2 Star</label>
             <br />
-            <input type="radio" id="starthree" name="starType" value="type3" />
+            <input type="radio" id="starthree" name="starType" value="3star" />
             <label htmlFor="starthree">3 Star</label>
             <br />
-            <input type="radio" id="starfour" name="starType" value="type3" />
+            <input type="radio" id="starfour" name="starType" value="4star" />
             <label htmlFor="starfour">4 Star</label>
             <br />
-            <input type="radio" id="starfive" name="starType" value="type3" />
+            <input type="radio" id="starfive" name="starType" value="5star" />
             <label htmlFor="starfive">5 Star</label>
 
             <h3>Your Property Type</h3>
-            <input type="radio" id="apartment" name="propertyType" value="type1" />
+            <input type="radio" id="apartment" name="propertyType" value="apartment" />
             <label htmlFor="apartment">Apartment</label>
             <br />
-            <input type="radio" id="guesthouse" name="propertyType" value="type2" />
+            <input type="radio" id="guesthouse" name="propertyType" value="guesthouse" />
             <label htmlFor="guesthouse">Guest House</label>
             <br />
-            <input type="radio" id="holiday" name="propertyType" value="type3" />
+            <input type="radio" id="holiday" name="propertyType" value="holiday" />
             <label htmlFor="holiday">Holiday Home</label>
             <br />
-            <input type="radio" id="homestay" name="propertyType" value="type3" />
+            <input type="radio" id="homestay" name="propertyType" value="homestay" />
             <label htmlFor="homestay">Homestay</label>
             <br />
 
-            <input type="radio" id="hostel" name="propertyType" value="type3" />
+            <input type="radio" id="hostel" name="propertyType" value="hostel" />
             <label htmlFor="hostel">Hostel</label>
             <br />
-            <input type="radio" id="hotel" name="propertyType" value="type3" />
+            <input type="radio" id="hotel" name="propertyType" value="hotel" />
             <label htmlFor="hotel">Hotel</label>
             <br />
             <input
               type="radio"
               id="hotelapartment"
               name="propertyType"
-              value="type3"
+              value="hotelapartment"
             />
             <label htmlFor="hotelaprtment">Hotel Aprtment</label>
             <br />
-            <input type="radio" id="resort" name="propertyType" value="type3" />
+            <input type="radio" id="resort" name="propertyType" value="resort" />
             <label htmlFor="resort">Resort</label>
             <br />
-            <input type="radio" id="villa" name="propertyType" value="type3" />
+            <input type="radio" id="villa" name="propertyType" value="villa" />
             <label htmlFor="villa">Villa</label>
           </div>
         )}
@@ -183,33 +223,44 @@ const Partner = () => {
         {activeNavItem === "Basic Information" && (
           <div>
             <h3>Basic Information</h3>
-            <div>
+            <div className="uploadimages1">
               {[...Array(6)].map((_, index) => (
-                <div key={index}>
+                <div className="images" key={index}>
                   <label htmlFor={`imageUpload${index}`}>
                     Upload Image {index + 1}:
                   </label>
-                  <input
-                    type="file"
-                    id={`imageUpload${index}`}
-                    accept="image/*"
-                    onChange={(event) => handleImageUpload(event, index)}
-                  />
+                  <div className="image-container6">
+                 
                   {images[index] && (
                     // eslint-disable-next-line jsx-a11y/img-redundant-alt
-                    <img src={images[index]} alt={`Image ${index + 1}`} />
+                    <img className="imgset" src={images[index]} alt={`Image ${index + 1}`} />
                   )}
+                  <input
+
+                    type="file"
+                    id={`imageUpload${index}`}
+                    value={uploadimage}
+                    accept="image/*"
+                    onChange={(event) => handleImageUpload(event, index)}
+                    className="imgbutton"
+                  />
+                  
+                  </div>
                 </div>
+                
               ))}
+              
             </div>
-            <div>
+            <div className="amenity-container5">
               <h3>Amenities</h3>
+              <div className="amenities1">
               <label>
                 <input
                   type="checkbox"
                   onChange={handleCheckboxChange}
                   value="Free Wireless Internet"
                 />
+                <FontAwesomeIcon icon={faWifi} />
                 Free Wireless Internet
               </label>
               <br />
@@ -218,7 +269,7 @@ const Partner = () => {
                   type="checkbox"
                   onChange={handleCheckboxChange}
                   value="Air Conditioning"
-                />
+                /><FontAwesomeIcon icon={faAirFreshener}/>
                 Air Conditioning
               </label>
               <br />
@@ -227,10 +278,280 @@ const Partner = () => {
                   type="checkbox"
                   onChange={handleCheckboxChange}
                   value="Room Services"
-                />
+                /><FontAwesomeIcon icon={faRestroom}/>
                 Room Services
               </label>
-              
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Clean And Disinfect"
+                /><FontAwesomeIcon icon={faHandsWash}/>
+                Clean & Disinfect
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="School Diatacing"
+                /><FontAwesomeIcon icon={faSchoolFlag}/>
+                School Diatacing
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Free Parking"
+                /><FontAwesomeIcon icon={faParking}/>
+                Free Parking
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="House Keeping"
+                /><FontAwesomeIcon icon={faBrush}/>
+                House Keeping
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Towels"
+                /><FontAwesomeIcon icon={faTrowel}/>
+                Towels
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Complimentary Tolietries"
+                /><FontAwesomeIcon icon={faHandsWash}/>
+                Complimentary Tolietries
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Good Showers"
+                /><FontAwesomeIcon icon={faShower}/>
+                Good Showers
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Cable Tv"
+                /><FontAwesomeIcon icon={faTv}/>
+                Cable Tv
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Bottled Water"
+                /><FontAwesomeIcon icon={faBottleWater}/>
+                Complimentary Bottled Water
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Swimming Pool"
+                /><FontAwesomeIcon icon={faSwimmingPool}/>
+                Swimming Pool
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="On-site Restaurant"
+                /><FontAwesomeIcon icon={faHotel}/>
+                On-site Restaurant
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Hair Dryer"
+                /><FontAwesomeIcon icon={faAirFreshener}/>
+                Hair Dryer
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Fitness Center"
+                /><FontAwesomeIcon icon={faHeartCircleCheck}/>
+                Fitness Center
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Conclerge Desk"
+                /><FontAwesomeIcon icon={faDesktop}/>
+                Conclerge Desk
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Spa"
+                /><FontAwesomeIcon icon={faSpa}/>
+                Spa
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Dry Cleaning"
+                /><FontAwesomeIcon icon={faAirFreshener}/>
+                Dry Cleaning
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Bathrobe"
+                /><FontAwesomeIcon icon={faBathtub}/>
+                Bathrobe
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="24 Hour Front Desk Service"
+                /><FontAwesomeIcon icon={faCheck}/>
+                24 Hours Front Desk Service
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Bar"
+                /><FontAwesomeIcon icon={faBars}/>
+                Bar
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Coffee/Tea"
+                /><FontAwesomeIcon icon={faCoffee}/>
+                Coffee/Tea
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Non Smoking Rooms"
+                /><FontAwesomeIcon icon={faSmokingBan}/>
+                Non Smoking Rooms
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Baby Sitting"
+                /><FontAwesomeIcon icon={faBaby}/>
+                Baby Sitting
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Picnic Area"
+                /><FontAwesomeIcon icon={faUmbrellaBeach}/>
+                Picnic Area
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Currency Exchange"
+                /><FontAwesomeIcon icon={faInr}/>
+                Currency Exchange
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Indoor Pool"
+                /><FontAwesomeIcon icon={faSwimmingPool}/>
+                Indoor Pool
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Shoesshine"
+                /><FontAwesomeIcon icon={faShoePrints}/>
+                Shoesshine
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Tour Desk"
+                /><FontAwesomeIcon icon={faCheck}/>
+                Tour Desk
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Loundry"
+                /><FontAwesomeIcon icon={faShirt}/>
+                Loundry
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Lockers"
+                /><FontAwesomeIcon icon={faLock}/>
+                Lockers
+              </label>
+              <br/>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleCheckboxChange}
+                  value="Business Center"
+                /><FontAwesomeIcon icon={faBusinessTime}/>
+                Business Center
+              </label>
+              </div>
             </div>
           </div>
         )}
@@ -238,7 +559,205 @@ const Partner = () => {
 {activeNavItem === "Hotel Policy" && (
   <div>
     <h3>Hotel Policy</h3>
-    <div>
+    <div className="radioinputs">
+      <label>1-Outside Food</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="outsideFoodPolicy"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="outsideFoodPolicy"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>2-Cancellation</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="cancellationpolicy"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="cancellationpolicy"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>3-Select Your Payment Mode You Accepted</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="paymentmode"
+          value="online"
+        />
+       
+
+        Online
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="paymentmode"
+          value="offline"
+        />
+        Offline
+      </label>
+      <br />
+      <label>4-Pets Allowed</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="pets"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="pets"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>5-Bachelor Allowed</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="Bachelorallow"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="Bachelorallow"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>6-Smoking Allowed</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="smokingallow"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="smokingallow"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>7-Alcohol Allowed</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="Alcohol"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="Alcohol"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>8-Unmarried Couples</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="unmarriedcouples"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="unmarriedcouples"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
+      <label>9-International Guest Allowed</label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="internationalcouple"
+          value="allowed"
+        />
+       
+
+        Allowed
+      </label>
+      <br />
+      <label>
+        <input
+          type="radio"
+          name="internationalcouple"
+          value="notAllowed"
+        />
+        Not Allowed
+      </label>
+      <br />
       <label>Outside Food</label>
       <br />
       <label>
@@ -261,32 +780,132 @@ const Partner = () => {
         Not Allowed
       </label>
       <br />
+      <hr/>
       <label htmlFor="returnPolicy">Describe your return policy:</label>
       <input type="text" id="returnPolicy" />
 
       <label htmlFor="checkInOut">Check-In and Check-Out:</label>
       <input type="text" id="checkInOut" />
-    </div>
+    <hr/>
+    <div className="memo">
+            <p className="early-late">Early Check-in And Late Check-out</p>
+            <p className="checkin-rules">1-Early Check-in the Standard Check-in time in hotels is 12 noon unless mentioned otherwise in your Booking voucher Early Check in is Subject to availability Extra changes will usually apply as per below policy</p>
+          </div>
+          <div className="table-checkin">
+          <table>
+      <thead>
+        <tr>
+          <th>Check in Time</th>
+          <th>Early Check in Changes</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Before 6AM</td>
+          <td>100% Charges for one day payable as per room rates for the previous day</td>
+          
+        </tr>
+        <tr>
+          <td>Before 6AM and 10AM</td>
+          <td>0% to 30% charges payable as per room rates for the previous day</td>
+          
+        </tr>
+        <tr>
+          <td>Before 10AM and 12 Noon</td>
+          <td>Complimentary</td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <p>Complimentary breakfast will not be available to you for the day of early Check-in</p>
+          </div>
+          <div className="memo">
+            
+            <p className="checkin-rules">2-Late Check-out:The Standard Check-out times in hotel is 11AM Unless mentioned otherwise in your Booking Voucher.Late check-out is subjected to availability and can not be confirmed with the hotel in advance.Extra charges will usually apply per the below policy.</p>
+          </div>
+          <div className="table-checkin">
+          <table>
+      <thead>
+        <tr>
+          <th>Check in Time</th>
+          <th>Early Check in Changes</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Between 11AM to 1PM</td>
+          <td>Complimentary</td>
+          
+        </tr>
+        <tr>
+          <td>Between 1PM to 5PM</td>
+          <td>Upto 30% of the room rate for the day depending on hotel policy</td>
+          
+        </tr>
+        <tr>
+          <td>After 5 PM</td>
+          <td>100% of the room rate for the day</td>
+          
+        </tr>
+      </tbody>
+    </table>
+    
+          </div>
+        
+        </div>
   </div>
 )}
 {activeNavItem === "Hotel Tariff" && (
   <div>
+  <div className="tariff">
     <h3>Hotel Tariff</h3>
-    <div>
-      <label htmlFor="roomType">Room Type:</label>
-      <input type="text" id="roomType" />
-
-      <label htmlFor="roomRate">Room Rate:</label>
-      <input type="text" id="roomRate" />
-
-      <label htmlFor="discount">Discount:</label>
-      <input type="text" id="discount" />
-
-      <label htmlFor="availability">Availability:</label>
-      <input type="text" id="availability" />
-    </div>
+    <h6>On-season</h6>
+    <br/>
     
+    
+    <div className="tariff-container1">
+      <label htmlFor="ondoublesharing">Double Sharing
+      <input type="text" id="ondoublesharing"/></label>
+
+      <label htmlFor="onquadsharing">Quad Sharing
+      <input type="text" id="onquadsharing"/></label>
+
+      <label htmlFor="onbulkbooking">Bulk Booking more then 20-30people
+      <input type="text" id="onbulkbooking" /></label>
+
+      <label htmlFor="ontripplesharing">Tripple Sharing
+      <input type="text" id="ontripplesharing" /></label>
+      <label htmlFor="ontripplesharing">More then four rooms:
+      <input type="text" id="onmore4rooms" /></label>
+    </div>
+    </div>
+
+    <div className="tariff">
+    <h3>Hotel Tariff</h3>
+    <h6>Off-season</h6>
+    <br/>
+    <div className="tariff-container1">
+      <label htmlFor="offdoublesharing">Double Sharing:
+      <input type="text" id="offdoublesharing"  /></label>
+
+      <label htmlFor="offquadsharing">Quad Sharing:
+      <input type="text" id="offquadsharing" /></label>
+
+      <label htmlFor="offbulkbooking">Bulk Booking more then 20-30people:
+      <input type="text" id="offbulkbooking"  /></label>
+
+      <label htmlFor="offtripplesharing">Tripple Sharing:
+      <input type="text" id="offtripplesharing" /></label>
+      <label htmlFor="offtripplesharing">More then four rooms:
+      <input type="text" id="offmore4rooms" /></label>
+    </div>
+    </div>
   </div>
+
+  
+  
 )}
 
 

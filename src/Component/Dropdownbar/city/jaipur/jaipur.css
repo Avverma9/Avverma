@@ -240,7 +240,85 @@ width:6%
   padding: 8px;
   width: 53%;
 }
+.RangeSlider input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background-color: #4c8bf5;
+  border-radius: 50%;
+  cursor: pointer;
+}
 
+.RangeSlider input[type="range"]:hover {
+  opacity: 1;
+}
+.whole-data {
+  display: flex;
+}
+
+/* Sidebar */
+.vertical-bar {
+  width: 300px;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+/* Filter section */
+.filterhead {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.filterprice {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.RangeSlider {
+  margin-bottom: 20px;
+}
+
+
+.filt-2nd label,
+.filt-3rd label {
+  display: block;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+input[type="checkbox"]:checked + span {
+  font-weight: bold;
+}
+
+/* Accommodation Type section */
+.filt-4th {
+  margin-bottom: 20px;
+}
+
+/* Hotel Facilities section */
+.filt-5th {
+  margin-bottom: 20px;
+}
+
+/* Check In Feature section */
+.filt-6th {
+  margin-bottom: 20px;
+}
+
+hr {
+  border: none;
+  border-top: 8px solid #ddd;
+  margin: 20px 0;
+}
+.vertical-bar {
+  margin: 15px 15px 15px 30px;
+  flex: 0 0 20%;
+}
 
 
 
