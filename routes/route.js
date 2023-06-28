@@ -50,9 +50,9 @@ router.post("/payments", paymentController.createPayment);
 router.post("/reviews/:userId/:hotelId", reviewController.createReview);
 router.get(
   "/getReviews/:hotelId",
-  reviewController.getHotelByUserIdAndHotelId
+  reviewController.getReviewsByHotelId
 );
-router.get("/reviewData/:hotelId", reviewController.getReviewsByHotelId);
+
 router.get("/reviewDatas/:userId", reviewController.getReviewsByUserId);
 router.put("/updateReview/:userId/:hotelId", reviewController.updateReview);
 router.delete("/deleteReview/:userId/:hotelId", reviewController.deleteReview);
