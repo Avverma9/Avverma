@@ -60,7 +60,7 @@ const getHotelByUserIdAndHotelId = async (req, res) => {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    const user = await userModel.findOne({ /* Your user search condition here */ }).select(["name", "images"]);
+    const user = await userModel.findOne({}).select(["name", "images"]);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
