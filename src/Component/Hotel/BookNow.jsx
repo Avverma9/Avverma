@@ -29,6 +29,7 @@ import {
     faGlassMartini,
     faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
+import { BiEdit, BiTrash } from 'react-icons/bi';
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
@@ -76,7 +77,7 @@ export default function BookNow() {
 
     useEffect(() => {
         setHotelReviews([]);
-        fetch(`https://hotel-backend-tge7.onrender.com/reviewData/${hotelID}`)
+        fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotelID}`)
             .then((response) => {
                 if (response.status === 200) {
                     return response.json();
@@ -86,7 +87,7 @@ export default function BookNow() {
             })
             .then((data) => {
                 setHotelReviews(data?.reviews);
-                console.log(data?.reviews, "JTRSLUYFI:UG");
+                console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
             });
     }, [hotelID]);
 
@@ -127,6 +128,14 @@ export default function BookNow() {
                 console.log(response);
             });
     };
+
+    const deleteReviewHandler = (hId) => {
+        axios.delete(`https://hotel-backend-tge7.onrender.com/deleteReview/${userId}/${hId}`)
+            .then((response) => {
+                console.log(response);
+            })
+        // console.log(hId)
+    }
 
     return (
         <>
@@ -324,54 +333,48 @@ export default function BookNow() {
                         <div className="reviews">
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
-                                <div className="d-flex flex-column gap-3" style={{
-                                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                    padding: "20px",
-                                    marginRight: "10%",
-                                    marginBottom: "20px",
-                                    width: "75%",
-                                    height: "auto"
-                                }}>
-                                    <div className="review_container">
-                                        <div className="comment_profile">
-                                            <Avatar
-                                                name="Anna Kendrick"
-                                                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcelebmafia.com%2Fwp-content%2Fuploads%2F2019%2F01%2Fanna-kendrick-personal-pics-01-06-2019-5.jpg&f=1&nofb=1&ipt=922df56b5c100652a713c26d29bd9ba409d08d2eefc06d2bb3ab6822cb5180ff&ipo=images"
-                                                round={true}
-                                                size="35"
-                                                style={{
-                                                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                                }}
-                                            />
+                                {hotelReviews ? hotelReviews.map((rev) => (
+                                    <div className="d-flex flex-column gap-3" style={{
+                                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                        padding: "20px",
+                                        marginRight: "10%",
+                                        marginBottom: "20px",
+                                        width: "75%",
+                                        height: "auto"
+                                    }} key={rev?._id}>
+                                        <div className="review_container">
+                                            <div className="comment_profile">
+                                                <Avatar
+                                                    name={rev.user.name}
+                                                    src={rev.user.images[0]}
+                                                    round={true}
+                                                    size="35"
+                                                    style={{
+                                                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                                                    }}
+                                                />
+                                            </div>
+
+                                            <div className="comment_profile_name">
+                                                <h4>{rev.user.name}</h4>
+                                            </div>
+
+                                            {rev.review.user === userId && <div className="comment_update_del">
+                                                <BiEdit color="#2563eb" size={24} />
+                                                <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review.hotel)} />
+                                            </div>}
                                         </div>
 
-                                        <div className="comment_profile_name">
-                                            <h4>Anna Kendrick</h4>
+                                        <div className="review_comment">
+                                            <p>
+                                                {rev.review.comment}
+                                            </p>
+                                            <div className="comment_date">
+                                                <p>{convertDate(rev.review.createdAt)}</p>
+                                            </div>
                                         </div>
-
-                                        <div className="comment_date">
-                                            <p>27/06/2023</p>
-                                        </div>
                                     </div>
-
-                                    <div className="review_comment">
-                                        <p>
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit maiores mollitia porro est voluptate, voluptates doloribus dolorem aut sequi sit? Aspernatur minima, dolore dolor ipsam sed ut non maiores! Dolorum, natus. Harum ipsa, iure officia tenetur cumque odio eaque excepturi optio officiis exercitationem qui cupiditate eveniet? Pariatur provident adipisci architecto error, ut repudiandae. Incidunt atque repudiandae rem itaque consequatur officiis.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* <FontAwesomeIcon icon={faStar} className='star1' />
-                                <FontAwesomeIcon icon={faStar} className='star1' />
-                                <FontAwesomeIcon icon={faStar} className='star1' /> */}
-                                {/* {hotelReviews ? hotelReviews.map((review) =>
-
-                                    <div className="d-flex w-75" key={review._id}>
-                                        <div className="flex-grow-1 comment">{review.comment}</div>
-                                        <div className='createdAt'>{convertDate(review.createdAt)}</div>
-                                    </div>
-
-                                ) : <>Loading....</>} */}
+                                )) : null}
                             </div>
                             {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
                         </div>
