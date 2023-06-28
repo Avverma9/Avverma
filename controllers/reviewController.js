@@ -28,7 +28,7 @@ const createReview = async (req, res) => {
       user: {
         _id: user._id,
         name: user.name,
-        image: user.image,
+        images: user.images,
       },
       comment: savedReview.comment,
       createdAt: savedReview.createdAt,
