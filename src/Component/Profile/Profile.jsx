@@ -818,7 +818,7 @@ function MyReviewSection() {
 
       <>
 
-        {currentUserReviews ? currentUserReviews.map((review) => (<div className="review_container" key={review.review._id}>
+        {currentUserReviews ? [...currentUserReviews].reverse().map((review) => (<div className="review_container" key={review.review._id}>
           <div className="hotel_image">
             <img src={review.hotelImages} alt={review.hotelName} />
           </div>
