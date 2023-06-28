@@ -11,6 +11,7 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
+      roomType,
       localId,
       maritalStatus,
       availability,
@@ -36,6 +37,7 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
+      roomType, 
       localId,
       maritalStatus,
       availability,
@@ -179,6 +181,48 @@ const getHotelsByPrice = async function (req, res) {
 }
 
 
+//=====================================================================================================
+
+const getHotelsByAccommodation = async (req, res) => {
+  const { type } = req.params;
+
+  try {
+    const hotels = await hotelModel.find({ accommodationType: type });
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch hotels' });
+  }
+};
+
+
+//==================================================================================
+
+const getHotelsByLocalID = async (req, res) => {
+  const { localId } = req.params;
+
+  try {
+    const hotels = await hotelModel.find({ 'location.localId': localId });
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch hotels' });
+  }
+};
+
+
+//========================================================================================
+
+const getHotelsByCategory = async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const hotels = await hotelModel.find({ categories: category });
+    res.json(hotels);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch hotels' });
+  }
+};
+
+
 module.exports = {
   createHotel,
   searchHotels,
@@ -186,4 +230,7 @@ module.exports = {
   getHotelbyName,
   getHotelsById,
   getHotelsByPrice,
+  getHotelsByAccommodation,
+  getHotelsByLocalID,
+  getHotelsByCategory
 };
