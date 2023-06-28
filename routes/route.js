@@ -7,6 +7,7 @@ const welcomeController = require("../controllers/welcomeController");
 const hotelController = require("../controllers/hotelController");
 const stateController = require("../controllers/stateController");
 const paymentController = require('../controllers/paymentController');
+const reviewController = require('../controllers/reviewController');
 
 
 //================================== COMPLAINT ============================================================
@@ -43,4 +44,11 @@ router.get("/statesData", stateController.getStateData);
 
 //==================================== PAYMENT ==========================================================
 router.post('/payments', paymentController.createPayment);
+
+//===================================== REVIEW =========================================================
+router.post('/review', reviewController.createReview);
+router.get("/reviewAllData", reviewController.getAllReviews);
+router.get("/reviewData/:id", reviewController.getReviewById);
+
+
 module.exports = router;

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const hotelsSchema = new mongoose.Schema({
   images: {
@@ -18,7 +18,7 @@ const hotelsSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: Number, 
+    type: Number,
     required: true,
   },
   startDate: {
@@ -63,11 +63,26 @@ const hotelsSchema = new mongoose.Schema({
   },
   reviews: {
     type: String,
-    default: '',
+    default: "",
   },
   rating: {
     type: Number,
   },
+  collections: {
+    type: [String],
+    required: true,
+  },
+  categories: {
+    type: [String],
+    required: true,
+  },
+  accommodationType: {
+    type: [String],
+    required: true,
+  },
+  checkInFeature: {
+    type: Boolean,
+  },
 });
 
-module.exports = mongoose.model('Hotels', hotelsSchema);
+module.exports = mongoose.model("Hotels", hotelsSchema);

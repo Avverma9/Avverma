@@ -8,7 +8,14 @@ const UserSchema = new mongoose.Schema({
     mobile: { type: String, required: false },
     password: { type: String, required: false },
     images: { type: [String], required: false },
-    gID:{type: [String], required: false }
+    gID: [{
+      type: {
+        Adhaar: { type: String, required: false },
+        PAN: { type: String, required: false }, 
+        drivingLicence: { type: String, required: false }
+      },
+      required: false
+    }]
   });
   
-  module.exports= mongoose.model("user", UserSchema);
+  module.exports= mongoose.model("user", UserSchema); 

@@ -1,5 +1,5 @@
 const userModel = require("../models/userModel");
-const upload = require("../aws/upload");
+
 
 //====================================================================================
 const createSignup = async function (req, res) {
@@ -29,7 +29,7 @@ const createSignup = async function (req, res) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}; 
 
 //======================================================
 const getUserById = async function (req, res) {
