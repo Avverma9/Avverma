@@ -56,9 +56,11 @@
 .content label {
  
   margin-bottom: 10px;
-  font-weight: bold;
+  font-weight: 501;
+  font-size: 14px;
   
 }
+
 
 .content textarea {
   width: 20%;
@@ -89,7 +91,7 @@
 #zip,
 #landmark {
  
-  width: 20%;
+  width: 100%;
   padding: 5px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -126,6 +128,122 @@
 .container button:last-child:hover {
   background-color: #0056b3;
 }
+input[type="text"] {
+  display: block;
+}
+input[type='email']{
+  display: block;
+}
+.group1{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:20%;
+}
+.group2{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:20%;
+}
+.group3{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:20%;
+}
+.group4{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:20%;
+}
+.uploadimages1 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.uploadimages1 .images {
+  flex-basis: calc(33.33% - 10px);
+  margin-right: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.uploadimages1 label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.uploadimages1 .image-container6 {
+  position: relative;
+}
+
+.uploadimages1 .image-container6 img {
+  width: 400px;
+  height: 300px;
+}
+
+.uploadimages1 .image-container6 .imgbutton {
+  position: absolute;
+  top: 83%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+
+ 
+th{
+  padding: 20px;
+  color:white;
+  background-color: #3a3a3a;
+}
+td{
+  padding: 12px;
+  padding-left: 20px;
+}
+table{
+  width:70%;
+}
+.radio-inputs{
+  margin: 10px;
+}
+.tariff-container1{
+  display: flex;
+  flex-wrap: wrap;
+  gap:20%;
+  line-height: 2.5;
+}
+
+
+.amenities1{
+  display: flex;
+flex-wrap: wrap;
+gap: 10px;
+
+padding: 9px;
+margin-left: 121px;
+line-height: 4;
+}
+
+.amenities1 label {
+  display: flex;
+  align-items: center;
+  flex-basis: calc(33.33% - 20px);
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 501;
+}
+
+.amenities1 input[type="checkbox"] {
+  margin-right: 10px;
+}
+.amenity-container5{
+  margin-top: 20px;
+}
+
 
 
 @media (max-width: 768px) {

@@ -128,10 +128,7 @@
 }
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  background-color: #0056b3;
-}
+
 
 .amenities {
   margin-top: 10px;
@@ -307,6 +304,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 8px;
   width: 53%;
+  color: white;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -320,12 +318,7 @@ input[type="checkbox"] {
 
 
 
-.view-details-button:hover,
-.book-now-button:hover {
-  /* ... previous styles ... */
-  background-color: #0056b3;
-  transform: translateY(-3px);
-}
+
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {
