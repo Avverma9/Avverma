@@ -46,9 +46,9 @@ const createReview = async (req, res) => {
 //===============================================================================================
 const getHotelByUserIdAndHotelId = async (req, res) => {
   try {
-    const { userId, hotelId } = req.params;
+    const { hotelId } = req.params;
 
-    const review = await reviewModel.findOne({ user: userId, hotel: hotelId });
+    const review = await reviewModel.findOne({ hotel: hotelId });
 
     if (!review) {
       return res.status(404).json({ message: "Review not found" });
@@ -60,8 +60,7 @@ const getHotelByUserIdAndHotelId = async (req, res) => {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    const user = await userModel.findById(userId).select(["name", "images"]);
-
+    const user = await userModel.findOne({ /* Your user search condition here */ }).select(["name", "images"]);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -79,6 +78,7 @@ const getHotelByUserIdAndHotelId = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 //===================================================================================================
 const getReviewsByHotelId = async (req, res) => {

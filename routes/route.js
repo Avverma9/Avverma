@@ -49,7 +49,7 @@ router.post("/payments", paymentController.createPayment);
 //===================================== REVIEW =========================================================
 router.post("/reviews/:userId/:hotelId", reviewController.createReview);
 router.get(
-  "/getReviews/:userId/:hotelId",
+  "/getReviews/:hotelId",
   reviewController.getHotelByUserIdAndHotelId
 );
 router.get("/reviewData/:hotelId", reviewController.getReviewsByHotelId);
