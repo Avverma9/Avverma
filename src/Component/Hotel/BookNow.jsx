@@ -46,6 +46,9 @@ export default function BookNow() {
     const [checkOUT, setCheckOut] = useState("");
     const [myReview, setMyReview] = useState("");
     const [hotelReviews, setHotelReviews] = useState([]);
+
+    const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+
     const sliderRef = useRef(null);
     const userId = localStorage.getItem("userId");
 
@@ -129,12 +132,15 @@ export default function BookNow() {
             });
     };
 
-    const deleteReviewHandler = (hId) => {
-        axios.delete(`https://hotel-backend-tge7.onrender.com/deleteReview/${userId}/${hId}`)
+    const deleteReviewHandler = () => {
+        axios.delete(`https://hotel-backend-tge7.onrender.com/deleteReview/${userId}/${hotelID}`)
             .then((response) => {
                 console.log(response);
             })
-        // console.log(hId)
+    }
+
+    const updateReviewHandler = () => {
+
     }
 
     return (
@@ -333,7 +339,7 @@ export default function BookNow() {
                         <div className="reviews">
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
-                                {hotelReviews ? [...hotelReviews].reverse().map((rev) => (
+                                {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
                                     <div className="d-flex flex-column gap-3" style={{
                                         boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                                         padding: "20px",
@@ -341,7 +347,7 @@ export default function BookNow() {
                                         marginBottom: "20px",
                                         width: "75%",
                                         height: "auto"
-                                    }} key={rev?._id}>
+                                    }} key={i}>
                                         <div className="review_container">
                                             <div className="comment_profile">
                                                 <Avatar
@@ -360,21 +366,39 @@ export default function BookNow() {
                                             </div>
 
                                             {rev.review.user === userId && <div className="comment_update_del">
-                                                <BiEdit color="#2563eb" size={24} />
-                                                <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review.hotel)} />
+                                                <BiEdit color="#2563eb" size={24} onClick={() => setIsUpdatingReview(true)} />
+                                                <BiTrash color="#dc3545" size={24} onClick={deleteReviewHandler} />
                                             </div>}
                                         </div>
 
-                                        <div className="review_comment">
+                                        {isUpdatingReview === false ? <div className="review_comment">
                                             <p>
                                                 {rev.review.comment}
                                             </p>
+
                                             <div className="comment_date">
                                                 <p>{convertDate(rev.review.createdAt)}</p>
                                             </div>
                                         </div>
+                                            :
+                                            <div>
+                                                <textarea
+                                                    placeholder="Update Review"
+                                                    type="text"
+                                                    rows="2"
+                                                    value=""
+                                                // onChange={(e) => setMyReview(e.target.value)}
+                                                />
+                                                <button
+                                                    className="update_review_button"
+                                                // onClick={postReviewHandler}
+                                                >
+                                                    Post
+                                                </button>
+                                            </div>
+                                        }
                                     </div>
-                                )) : null}
+                                )) : "Still No Posts Yet....."}
                             </div>
                             {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
                         </div>
