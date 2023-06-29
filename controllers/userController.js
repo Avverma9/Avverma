@@ -15,7 +15,9 @@ const createSignup = async function (req, res) {
       mobile,
       password,
       images,
-      gID
+      adhar,
+      pan,
+      dl
     };
 
     const savedUser = await userModel.create(userData);
@@ -72,7 +74,7 @@ const signIn = async function (req, res) {
 //=====================================================================
 const update = async (req, res) => {
   const { id } = req.params;
-  const { name, address, gender, email, mobile, password } = req.body;
+  const { name, address, gender, email, mobile, password,adhar,pan,dl } = req.body;
   let images = [];
 
   if (req.files.length > 0) {
@@ -82,7 +84,7 @@ const update = async (req, res) => {
   const user = await userModel
     .findByIdAndUpdate(
       id,
-      { name, address, gender, email, mobile, password, images },
+      { name, address, gender, email, mobile, password, images,adhar,pan,dl },
       { new: true }
     )
     .then((user) => {
