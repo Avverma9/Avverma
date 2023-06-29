@@ -337,63 +337,6 @@
   -ms-overflow-style: none;
 }
 
-.review_container {
-  display: flex;
-  background-color: #f2f2f2;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.hotel_image {
-  flex: 1;
-}
-
-.review_content {
-  flex: 2;
-  position: relative;
-}
-
-.review_content_header {
-  display: flex;
-  align-items: center;
-}
-
-.review_content_header h4 {
-  flex: 1;
-  color: #1e293b;
-  text-align: left;
-  font-size: 20px;
-  font-weight: bold;
-  word-spacing: 1.5px;
-  letter-spacing: 0.5px;
-}
-
-.review_content_header p {
-  color: #6b7280;
-  text-align: left;
-  font: size 14px;
-  font-weight: 600;
-}
-
-.review_content_body {
-  position: absolute;
-  bottom: 0;
-}
-
-.review_content_body p {
-  color: #94a3b8;
-  text-align: left;
-  font: size 16px;
-  font-weight: 500;
-}
-
-.sub_Title {
-  text-align: left;
-  margin: 10px 0 0 0;
-  font-size: small;
-  font-weight: 500;
-}
 
 .complains_section {
   display: flex;
@@ -417,6 +360,67 @@ input[type="radio"] {
   width: 16px;
   margin-right: 8px;
 }
+._title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.review_container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.hotel_image img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.review_content {
+  margin-left: 10px;
+  flex-grow: 1;
+}
+
+.review_content_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review_content_header h4 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.review_content_header p {
+  margin: 0;
+  font-size: 14px;
+  color: gray;
+}
+
+.review_content_body p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.review_content_body p:first-of-type {
+  margin-top: 0;
+}
+
+.review_content_body p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Optional styling for the "NO Reviews Posted Yet" message */
+.review_empty_message {
+  text-align: center;
+  color: gray;
+  font-size: 16px;
+}
+
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -464,6 +468,71 @@ input[type="radio"] {
   .collapse_list svg {
     color: #334155;
   }
+  ._title {
+    text-align: center;
+    margin-bottom: 10px;
+    }
+    
+    .review_container {
+    display: block;
+    margin-bottom: 20px;
+    }
+    
+    .hotel_image img {
+    width: 50px;
+    height: 40px;
+    border-radius: 4px;
+    }
+    
+    .review_content {
+    margin-left: 0;
+    }
+    
+    .review_content_header {
+    display: block;
+    margin-bottom: 10px;
+    }
+    
+    .review_content_header h4 {
+    font-size: 12px;
+    }
+    
+    .review_content_header p {
+
+      margin-top: 1px;
+    font-size: 8px;
+    }
+    
+    .review_content_body p {
+      margin-top: 1px;
+    font-size: 12px;
+    line-height: 1.5;
+    }
+    
+    .review_content_body p:first-of-type {
+    margin-top: -10px;
+    }
+   
+    .review_content_body p:last-of-type {
+    margin-bottom: 5px;
+    }
+    
+    /* Optional styling for the "NO Reviews Posted Yet" message */
+    .review_empty_message {
+    text-align: center;
+    color: gray;
+    font-size: 14px;
+    }
+    .raise_complaint {
+      background-color: #e43b3c;
+      padding: 2px 10px;
+      border: none;
+      font-size: 10px;
+      color: #fff;
+      font-weight: 600;
+      transition: 0.3s all ease-in-out;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
 }
 
 /* Medium devices (landscape tablets, 768px and down) */
@@ -584,5 +653,3 @@ input[type="radio"] {
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-}

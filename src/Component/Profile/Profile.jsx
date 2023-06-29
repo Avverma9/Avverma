@@ -2,24 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Location } from 'react-router-dom';
-import { BsPencilSquare } from 'react-icons/bs';
-import { FaSignOutAlt } from 'react-icons/fa';
-import { BsGearFill } from 'react-icons/bs'
+
 import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
-import { TbFolderFilled } from "react-icons/tb"
 import { FaUser, FaAddressBook } from "react-icons/fa"
-import { RiWallet3Fill } from "react-icons/ri"
 import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
 import { AiOutlinePoweroff } from "react-icons/ai"
 import { ImProfile } from 'react-icons/im';
 import { HiIdentification } from 'react-icons/hi'
 import { BsFillCalendarCheckFill, BsFillCreditCardFill } from 'react-icons/bs'
 import { TiCancel } from 'react-icons/ti'
-import { Button } from 'react-bootstrap';
-import UpdateProfile from './UpdateProfile';
 import { useCollapse } from 'react-collapsed'
 import { convertDate } from '../../utils/convertDate';
 

@@ -24,7 +24,7 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  height: 400px; /* Adjust the height as needed */
+  height: 400px; 
 }
 .hotel-details1 {
   margin-bottom: 10px;
@@ -246,17 +246,21 @@
 
 .review_container {
   display: flex;
-  /* align-items: center; */
-  gap: 15px;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
+
 
 .comment_profile {
   flex: 0;
+  min-width: 50px; /* Adjust the width as needed */
 }
 
 .comment_profile_name {
   text-align: center;
-  /* align-content: center; */
+ 
   align-items: center;
   display: flex;
   flex: 2;
@@ -314,7 +318,7 @@
   width: 60%;
 }
 .create_new_reviews .post_review_button {
-  width: 138px;
+  width: 108px;
   height: 29px;
   background-color: #2563eb;
   border: none;

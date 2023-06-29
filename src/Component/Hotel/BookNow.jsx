@@ -51,6 +51,7 @@ export default function BookNow() {
 
     const [updatedReview, setUpdatedReview] = useState("")
 
+
     const sliderRef = useRef(null);
     const userId = localStorage.getItem("userId");
 
@@ -100,8 +101,8 @@ export default function BookNow() {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 3, // Display 3 images at a time
-        slidesToScroll: 3, // Navigate by 3 images
+        slidesToShow: 3, 
+        slidesToScroll: 3, 
     };
 
     const slideToPrev = () => {
@@ -129,34 +130,35 @@ export default function BookNow() {
                     if (response?.status === 201) {
                         const data = response.json();
                         console.log(data)
-                        window.alert("New Reviw Posted")
+                       
                         setMyReview("");
+                        window.location.reload(); // Reload the page
                     }
                 } catch (error) {
                     console.log(error);
                 }
             });
     };
-
+    
     const deleteReviewHandler = (revId) => {
         fetch(`https://hotel-backend-tge7.onrender.com/delete/${userId}/${hotelID}/${revId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          }
         })
-            .then((response) => {
-                try {
-                    if (response.status === 200) {
-                        const data = response.json();
-                        window.alert(data.value.message);
-                    }
-                } catch (error) {
-                    console.log(error)
-                }
-            })
-    }
-
+          .then((response) => {
+            try {
+              if (response.status === 200) {
+                const data = response.json();
+                window.location.reload();
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          });
+      };
+      
     const updateReviewHandler = () => {
         fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
             method: 'PUT',
@@ -171,6 +173,7 @@ export default function BookNow() {
                 try {
                     if (response?.status === 200) {
                         const data = response.json();
+                        window.location.reload();
                         console.log(data);
                         window.alert(data.value.message)
                         setIsUpdatingReview(false)

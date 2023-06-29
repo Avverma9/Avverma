@@ -126,6 +126,47 @@
 .nodata {
   width: 500px;
 }
+._title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.review_container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.hotel_image img {
+  width: 150px;
+  height: 100px;
+  object-fit: cover;
+}
+
+.review_content {
+  margin-left: 10px;
+}
+
+.review_content_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review_content_header h4 {
+  margin: 0;
+}
+
+.review_content_header p {
+  margin: 0;
+  font-size: 14px;
+  color: gray;
+}
+
+.review_content_body p {
+  margin: 0;
+  font-size: 16px;
+}
 
 @media (max-width: 480px) {
   .profile-container {
