@@ -121,10 +121,10 @@ const getReviewsByUserId = async (req, res) => {
 //=================================================================================================
 const updateReview = async (req, res) => {
   try {
-    const { userId, hotelId } = req.params;
+    const { userId, hotelId, reviewId } = req.params;
     const { comment } = req.body;
 
-    const review = await reviewModel.findOne({ user: userId, hotel: hotelId });
+    const review = await reviewModel.findOne({ user: userId, hotel: hotelId, _id: reviewId });
 
     if (!review) {
       return res.status(404).json({ message: "Review not found" });
@@ -136,23 +136,23 @@ const updateReview = async (req, res) => {
 
     res.status(200).json({ message: "Review updated successfully", review });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
+
 //==========================================================================================================
 
 const deleteReview = async (req, res) => {
-  const { userId, hotelId } = req.params;
+  const { userId, hotelId, reviewId } = req.params;
 
   try {
-
-    const result = await reviewModel.deleteOne({ user: userId, hotel: hotelId });
+    const result = await reviewModel.deleteOne({ user: userId, hotel: hotelId, _id: reviewId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Review not found' });
     }
-
 
     return res.status(200).json({ message: 'Review deleted successfully' });
   } catch (error) {
