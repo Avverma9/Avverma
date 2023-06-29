@@ -21,7 +21,6 @@ import { TiCancel } from 'react-icons/ti'
 import { Button } from 'react-bootstrap';
 import UpdateProfile from './UpdateProfile';
 import { useCollapse } from 'react-collapsed'
-import axios from 'axios';
 import { convertDate } from '../../utils/convertDate';
 
 
@@ -794,12 +793,14 @@ function MyReviewSection() {
   const [currentUserReviews, setCurrentUserReviews] = useState([])
 
   useEffect(() => {
-    axios.get(`https://hotel-backend-tge7.onrender.com/reviewDatas/${userId}`)
+    fetch(`https://hotel-backend-tge7.onrender.com/reviewDatas/${userId}`, {
+      method: 'GET',
+    })
       .then(response => {
         try {
           if (response.status === 200) {
-            setCurrentUserReviews(response.data.reviews)
-            console.log(response)
+            const data = response.json()
+            data.then(res => setCurrentUserReviews(res.reviews))
           }
         } catch (error) {
           console.log(error);
@@ -831,7 +832,7 @@ function MyReviewSection() {
               <p>{review.review.comment}</p>
             </div>
           </div>
-        </div>)) : null}
+        </div>)) : "NO Reviews Posted Yet"}
 
       </>
 
@@ -845,22 +846,19 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
   useEffect(() => {
 
-    axios.get(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`)
+    fetch(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`, {
+      method: 'GET'
+    })
       .then((response) => {
-        console.log(response.data.data, "RESPONSE COMPLAINT")
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          throw new Error('Failed to fetch user data');
+        try {
+          if (response.status === 200) {
+            const data = response.json()
+            data.then(res => setComplaints(res.data))
+          }
+        } catch (error) {
+          console.log(error);
         }
       })
-      .then((data) => {
-        console.log(data, ";iWDOUBwcjhvwivWCU")
-        setComplaints(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
   }
 
     ,
@@ -868,22 +866,27 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
 
   const postComplaintHandler = () => {
-    axios.post(`https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`, {
-      complaintDescription: newComplaint
-    }).then((response) => {
-      if (response.data.success) {
-        return response.data.message;
-      } else {
-        // throw new Error('Failed to fetch user data');
-        return response.data.error;
-      }
-    }).then((data) => {
-      console.log(data)
-      setNewComplaint("")
-      setRaiseComplaint(false)
-    }).catch((error) => {
-      console.log(error)
+    fetch(`https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        complaintDescription: newComplaint
+      }),
     })
+
+      .then((response) => {
+
+        try {
+          if (response.status === 200) {
+            const data = response.json()
+            data.then(res => window.alert(res.message))
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })
 
   }
 

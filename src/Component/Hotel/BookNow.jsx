@@ -33,7 +33,6 @@ import { BiEdit, BiTrash } from 'react-icons/bi';
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
-import axios from "axios";
 import Avatar from "react-avatar";
 
 export default function BookNow() {
@@ -48,6 +47,9 @@ export default function BookNow() {
     const [hotelReviews, setHotelReviews] = useState([]);
 
     const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+    const [reviewId, setReviewId] = useState("");
+
+    const [updatedReview, setUpdatedReview] = useState("")
 
     const sliderRef = useRef(null);
     const userId = localStorage.getItem("userId");
@@ -113,34 +115,78 @@ export default function BookNow() {
     console.log(bookingDetails);
 
     const postReviewHandler = () => {
-        axios
-            .post(
-                `https://hotel-backend-tge7.onrender.com/reviews/${userId}/${hotelID}`,
-                {
-                    comment: myReview,
-                }
-            )
+        fetch(`https://hotel-backend-tge7.onrender.com/reviews/${userId}/${hotelID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comment: myReview,
+            }),
+        })
             .then((response) => {
                 try {
                     if (response?.status === 201) {
+                        const data = response.json();
+                        console.log(data)
+                        window.alert("New Reviw Posted")
                         setMyReview("");
                     }
                 } catch (error) {
                     console.log(error);
                 }
-                console.log(response);
             });
     };
 
-    const deleteReviewHandler = () => {
-        axios.delete(`https://hotel-backend-tge7.onrender.com/deleteReview/${userId}/${hotelID}`)
+    const deleteReviewHandler = (revId) => {
+        fetch(`https://hotel-backend-tge7.onrender.com/delete/${userId}/${hotelID}/${revId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
             .then((response) => {
-                console.log(response);
+                try {
+                    if (response.status === 200) {
+                        const data = response.json();
+                        window.alert(data.value.message);
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
             })
     }
 
     const updateReviewHandler = () => {
+        fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comment: updatedReview,
+            }),
+        })
+            .then((response) => {
+                try {
+                    if (response?.status === 200) {
+                        const data = response.json();
+                        console.log(data);
+                        window.alert(data.value.message)
+                        setIsUpdatingReview(false)
+                        setReviewId("");
+                        setUpdatedReview("")
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    }
 
+    const toggleUpdateReview = (rev) => {
+        setIsUpdatingReview(true)
+        setReviewId(rev.review._id);
+        setUpdatedReview(rev.review.comment)
     }
 
     return (
@@ -366,35 +412,36 @@ export default function BookNow() {
                                             </div>
 
                                             {rev.review.user === userId && <div className="comment_update_del">
-                                                <BiEdit color="#2563eb" size={24} onClick={() => setIsUpdatingReview(true)} />
-                                                <BiTrash color="#dc3545" size={24} onClick={deleteReviewHandler} />
+                                                <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
+                                                <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />
                                             </div>}
                                         </div>
 
-                                        {isUpdatingReview === false ? <div className="review_comment">
-                                            <p>
-                                                {rev.review.comment}
-                                            </p>
-
-                                            <div className="comment_date">
-                                                <p>{convertDate(rev.review.createdAt)}</p>
-                                            </div>
-                                        </div>
-                                            :
+                                        {isUpdatingReview && reviewId === rev.review._id ?
                                             <div>
                                                 <textarea
                                                     placeholder="Update Review"
                                                     type="text"
                                                     rows="2"
-                                                    value=""
-                                                // onChange={(e) => setMyReview(e.target.value)}
+                                                    value={updatedReview}
+                                                    onChange={(e) => setUpdatedReview(e.target.value)}
                                                 />
                                                 <button
                                                     className="update_review_button"
-                                                // onClick={postReviewHandler}
+                                                    onClick={updateReviewHandler}
                                                 >
-                                                    Post
+                                                    Update
                                                 </button>
+                                            </div>
+                                            :
+                                            <div className="review_comment">
+                                                <p>
+                                                    {rev.review.comment}
+                                                </p>
+
+                                                <div className="comment_date">
+                                                    <p>{convertDate(rev.review.createdAt)}</p>
+                                                </div>
                                             </div>
                                         }
                                     </div>
