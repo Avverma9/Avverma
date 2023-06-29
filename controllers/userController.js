@@ -72,40 +72,25 @@ const signIn = async function (req, res) {
   }
 };
 //=====================================================================
-// const update = async (req, res) => {
-//   const { id } = req.params;
-//   const { name, address, gender, email, mobile, password,adhar,pan,dl } = req.body;
-//   let images = [];
-
-//   if (req.files.length > 0) {
-//     images = req.files.map((file) => file.location);
-//   }
-
-//   const user = await userModel
-//     .findByIdAndUpdate(
-//       id,
-//       { name, address, gender, email, mobile, password, images,adhar,pan,dl },
-//       { new: true }
-//     )
-//     .then((user) => {
-//       if (user) {
-//         res.json(user);
-//       } else {
-//         res.status(404).json({ message: "User not found" });
-//       }
-//     })
-//     .catch((error) => {
-//       res.status(500).json({ message: "Internal server error", error });
-//     });
-// };
 const update = async (req, res) => {
   const { id } = req.params;
   const { name, address, gender, email, mobile, password, adhar, pan, dl } = req.body;
+  let images = [];
+
+  if (req.files && req.files.length > 0) {
+    images = req.files.map((file) => file.location);
+  } else {
+    // Retrieve the existing images and assign them to the `images` variable
+    const user = await userModel.findById(id);
+    if (user) {
+      images = user.images;
+    }
+  }
 
   const user = await userModel
     .findByIdAndUpdate(
       id,
-      { name, address, gender, email, mobile, password, adhar, pan, dl },
+      { name, address, gender, email, mobile, password, adhar, pan, dl, images },
       { new: true }
     )
     .then((user) => {
