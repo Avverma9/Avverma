@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import "./partner.css";
 import { useLocation } from "react-router-dom";
@@ -25,7 +26,15 @@ const Partner = () => {
   ];
   
 
-
+  const defaultImages = [
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022019310-Room.jpg",
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022443531-bathroom.jpeg",
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022416654-parking.jpg",
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022425620-Lane.jpg",
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022404482-resturant.jpg",
+    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022435744-Front.jpg",
+  ];
+  
 
 const[uploadimage,setUploadimage]=useState("");
 
@@ -219,22 +228,27 @@ const[uploadimage,setUploadimage]=useState("");
             <label htmlFor="villa">Villa</label>
           </div>
         )}
+        
 
         {activeNavItem === "Basic Information" && (
           <div>
             <h3>Basic Information</h3>
             <div className="uploadimages1">
+
               {[...Array(6)].map((_, index) => (
                 <div className="images" key={index}>
                   <label htmlFor={`imageUpload${index}`}>
-                    Upload Image {index + 1}:
+                    
                   </label>
                   <div className="image-container6">
                  
-                  {images[index] && (
-                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
-                    <img className="imgset" src={images[index]} alt={`Image ${index + 1}`} />
-                  )}
+                  {!images[index] && (
+        <img
+          className="default-image"
+          src={defaultImages[index]}
+          alt={`Default Image ${index + 1}`}
+        />
+      )}
                   <input
 
                     type="file"
