@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: row;
   margin-bottom: 6%;
+  
 }
 .vertical-bar {
   margin: 15px 15px 15px 30px;
@@ -126,6 +127,10 @@
   cursor: pointer;
 }
 
+<<<<<<<<< Temporary merge branch 1
+=========
+
+>>>>>>>>> Temporary merge branch 2
 .view-details-button:hover,
 .book-now-button:hover {
   background-color: #0056b3;
@@ -305,6 +310,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 8px;
   width: 53%;
+  color: white;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -316,6 +322,11 @@ input[type="checkbox"] {
   width: 53%;
 }
 
+<<<<<<<<< Temporary merge branch 1
+=========
+
+
+>>>>>>>>> Temporary merge branch 2
 .view-details-button:hover,
 .book-now-button:hover {
   /* ... previous styles ... */
