@@ -24,7 +24,7 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  height: 400px; 
+  height: 400px;
 }
 .hotel-details1 {
   margin-bottom: 10px;
@@ -180,7 +180,7 @@
   background-color: #f2f2f2;
   padding: 20px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   width: 50%;
 }
 
@@ -252,7 +252,6 @@
   align-items: flex-start;
 }
 
-
 .comment_profile {
   flex: 0;
   min-width: 50px; /* Adjust the width as needed */
@@ -260,7 +259,7 @@
 
 .comment_profile_name {
   text-align: center;
- 
+
   align-items: center;
   display: flex;
   flex: 2;
@@ -315,20 +314,77 @@
   gap: 15px;
 }
 .create_new_reviews > textarea {
-  width: 60%;
+  width: 75%;
+  padding: 5px 10px;
+  border: 0.5px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  resize: none;
 }
 .create_new_reviews .post_review_button {
-  width: 108px;
-  height: 29px;
+  width: 30px;
+  height: 30px;
   background-color: #2563eb;
   border: none;
+  border-radius: 50%;
   color: #fff;
   font-weight: 600;
   transition: 0.3s all ease-in-out;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  left: -50px;
+  bottom: -25px;
+}
+
+.post_review_button svg {
+  position: relative;
+  top: -3px;
+  left: -1px;
 }
 
 .create_new_reviews .post_review_button:hover {
   background-color: #0056b3;
   transform: translateY(-3px);
+}
+
+.update_review {
+  width: 100%;
+}
+
+.update_review textarea {
+  width: inherit;
+  padding: 5px 10px;
+  border: 0.5px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  resize: none;
+}
+
+.update_review button {
+  width: 30px;
+  height: 30px;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19);
+  margin-left: auto;
+  float: right;
+  display: block;
+  position: relative;
+  top: -34px;
+  margin-right: 3px;
+}
+
+.update_review button:hover {
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
+
+.update_review button svg {
+  position: relative;
+  top: -3px;
+  left: -1px;
 }
