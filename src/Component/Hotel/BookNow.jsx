@@ -36,7 +36,7 @@ import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
-export default function BookNow() {
+export default function BookNow({ refresh, reset }) {
     const [bookingDetails, setBookingDetails] = useState({});
     const [hotelID, setHotelID] = useState("");
     const [hotelImages, setHotelImages] = useState([]);
@@ -61,6 +61,9 @@ export default function BookNow() {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+    }, [])
+
+    useEffect(() => {
         fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
             .then((response) => {
                 if (response.ok) {
@@ -99,7 +102,7 @@ export default function BookNow() {
                 setHotelReviews(data?.reviews);
                 console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
             });
-    }, [hotelID]);
+    }, [hotelID, reset]);
 
     const settings = {
         dots: false,
@@ -136,7 +139,8 @@ export default function BookNow() {
                         console.log(data)
 
                         setMyReview("");
-                        window.location.reload(); // Reload the page
+                        // window.location.reload(); 
+                        reset()
                     }
                 } catch (error) {
                     console.log(error);
@@ -154,8 +158,9 @@ export default function BookNow() {
             .then((response) => {
                 try {
                     if (response.status === 200) {
-                        const data = response.json();
-                        window.location.reload();
+                        // const data = response.json();
+                        // window.location.reload();
+                        reset()
                     }
                 } catch (error) {
                     console.log(error);
@@ -177,12 +182,13 @@ export default function BookNow() {
                 try {
                     if (response?.status === 200) {
                         const data = response.json();
-                        window.location.reload();
+                        // window.location.reload();
                         console.log(data);
-                        window.alert(data.value.message)
+                        // window.alert(data.value.message)
                         setIsUpdatingReview(false)
                         setReviewId("");
                         setUpdatedReview("")
+                        reset()
                     }
                 } catch (error) {
                     console.log(error);
@@ -389,7 +395,7 @@ export default function BookNow() {
                             </button>
                         </div>
 
-                        <div className="reviews">
+                        <div className="reviews" key={refresh}>
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
                                 {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
