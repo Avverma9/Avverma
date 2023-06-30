@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
-import { FaUser, FaAddressBook } from "react-icons/fa"
+import { FaUser, FaAddressBook, FaTelegramPlane } from "react-icons/fa"
 import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
 import { AiOutlinePoweroff } from "react-icons/ai"
 import { ImProfile } from 'react-icons/im';
@@ -393,9 +393,13 @@ function AddressInformation({ userData }) {
   </div>);
 }
 
-function GovernmentIdInformation() {
+function GovernmentIdInformation({ userData }) {
   const [gID, setGID] = useState("")  //Sets Government ID Input Field Value
   const [selectGID, setSelectGID] = useState("") // Sets Type of Gov Id Selected
+
+  const [adhaar, setAdhaar] = useState(userData?.adhar)
+  const [pan, setpan] = useState(userData?.pan)
+  const [drivingLsc, setDrivingLsc] = useState(userData?.dl)
 
   const handleIdSubmit = () => {
     console.log("ID SUBMITTED")
@@ -436,21 +440,21 @@ function GovernmentIdInformation() {
           <h1 className='me-2' style={{ width: "20%" }}>
             Adhaar
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={adhaar && adhaar !== "" ? adhaar : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             PAN Card
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={pan && pan !== "" ? pan : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             Driving Licence
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={drivingLsc && drivingLsc !== "" ? drivingLsc : ""} />
         </div>
 
       </div>
@@ -894,13 +898,13 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
 
       {raiseComplaint && <div className="d-flex align-items-center">
-        <div className="_fields flex-grow-1" style={{ "width": "70%" }}>
-          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "70%" }} />
+        <div className="_fields flex-grow-1" style={{ "width": "calc(100% + 138px)" }}>
+          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "inherit" }} />
         </div>
-        <button className="post_complain_button" onClick={postComplaintHandler}>Post</button>
+        <button className="post_complain_button" onClick={postComplaintHandler}><FaTelegramPlane /></button>
       </div>}
 
-      {complaints.map((complaint) => <div className="complains_section mt-4" key={complaint._id}>
+      {complaints.map((complaint) => <><div className="complains_section mt-4" key={complaint._id}>
 
         {/* <img src={userData?.images[0]} alt="Profile Pic" /> */}
 
@@ -914,6 +918,8 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
           </p>
         </div>
       </div>
+        <div style={{ border: "1px solid #94a3b8" }}></div>
+      </>
       )}
 
 
@@ -1026,7 +1032,7 @@ const Profile = () => {
         </div>
         <div className='profile_body'>
           {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
         </div>
       </div>
     </>
