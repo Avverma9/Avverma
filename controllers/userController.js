@@ -4,7 +4,7 @@ const userModel = require("../models/userModel");
 //====================================================================================
 const createSignup = async function (req, res) {
   try {
-    const { name, gender, address, email, mobile, password,gID } = req.body;
+    const { name, gender, address, email, mobile, password,adhar,pan,dl } = req.body;
     const images = req.files.map((file) => file.location);
 
     const userData = {
@@ -80,7 +80,7 @@ const update = async (req, res) => {
   if (req.files && req.files.length > 0) {
     images = req.files.map((file) => file.location);
   } else {
-    // Retrieve the existing images and assign them to the `images` variable
+  
     const user = await userModel.findById(id);
     if (user) {
       images = user.images;

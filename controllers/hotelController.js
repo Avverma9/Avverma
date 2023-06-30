@@ -30,6 +30,7 @@ const createHotel = async function (req, res) {
     const hotelData = {
       images,
       hotelName,
+      roomType,
       description,
       destination,
       price,
