@@ -11,7 +11,7 @@ const createPartner = async (req, res) => {
       salescontact,
       hotelName,
       hoteladdress,
-      hotelstate,
+      hotelstate,   
       zipcode,
       citypartner,
       landmark,
