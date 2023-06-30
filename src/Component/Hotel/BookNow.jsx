@@ -450,7 +450,7 @@ export default function BookNow() {
                                                     </p>
 
                                                     <div className="comment_date">
-                                                        <p>{convertDate(rev.review.createdAt)}</p>
+                                                        <h6>{convertDate(rev.review.createdAt)}</h6>
                                                     </div>
                                                 </div>
                                             }

@@ -287,10 +287,12 @@
   flex: 0;
   color: #6b7280;
 }
-.comment_date p {
+.comment_date h6 {
   text-align: left;
-  font: size 14px;
-  font-weight: 600;
+  margin-top: 35px;
+  margin-left: -60px;
+ font-size: 12px;
+  font-weight: 100;
 }
 .review_comment {
   color: #94a3b8;
