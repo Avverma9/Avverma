@@ -394,7 +394,7 @@ export default function BookNow() {
                                         <div className="d-flex flex-column gap-3" style={{
                                             padding: "20px",
                                             marginRight: "10%",
-                                            marginBottom: "20px",
+                                            // marginBottom: "20px",
                                             width: "75%",
                                             height: "auto",
                                             display: "flex",
@@ -469,4 +469,5 @@ export default function BookNow() {
             </div>
         </>
     );
+
 }
