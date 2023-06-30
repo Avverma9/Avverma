@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
-import { FaUser, FaAddressBook } from "react-icons/fa"
+import { FaUser, FaAddressBook, FaTelegramPlane } from "react-icons/fa"
 import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
 import { AiOutlinePoweroff } from "react-icons/ai"
 import { ImProfile } from 'react-icons/im';
@@ -894,13 +894,13 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
 
       {raiseComplaint && <div className="d-flex align-items-center">
-        <div className="_fields flex-grow-1" style={{ "width": "70%" }}>
-          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "70%" }} />
+        <div className="_fields flex-grow-1" style={{ "width": "calc(100% + 138px)" }}>
+          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "inherit" }} />
         </div>
-        <button className="post_complain_button" onClick={postComplaintHandler}>Post</button>
+        <button className="post_complain_button" onClick={postComplaintHandler}><FaTelegramPlane /></button>
       </div>}
 
-      {complaints.map((complaint) => <div className="complains_section mt-4" key={complaint._id}>
+      {complaints.map((complaint) => <><div className="complains_section mt-4" key={complaint._id}>
 
         {/* <img src={userData?.images[0]} alt="Profile Pic" /> */}
 
@@ -914,6 +914,8 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
           </p>
         </div>
       </div>
+        <div style={{ border: "1px solid #94a3b8" }}></div>
+      </>
       )}
 
 
