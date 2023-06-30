@@ -42,6 +42,7 @@ export default function BookNow() {
     const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
     const [hotelAmenities, setHotelAmenities] = useState([]);
     const [checkIN, setCheckIn] = useState("");
+    const [localid, setLocalid] = useState("")
     const [checkOUT, setCheckOut] = useState("");
     const [myReview, setMyReview] = useState("");
     const [hotelReviews, setHotelReviews] = useState([]);
@@ -73,8 +74,10 @@ export default function BookNow() {
                 setHotelImages(data.images);
                 setHotelAmenities(data.amenities);
                 setHotelMoreOpt(data.moreOptions);
+                setLocalid(data.localId)
                 setCheckIn(convertDate(bookingDetails.startDate));
                 setCheckOut(convertDate(bookingDetails.endDate));
+
             })
             .catch((error) => {
                 console.log(error);
@@ -344,7 +347,7 @@ export default function BookNow() {
                         <div className="card">
                             <p className="id">
                                 <FontAwesomeIcon icon={faIdCard} className="icon" />
-                                LocalID: {bookingDetails.localId}
+                                LocalID: {bookingDetails.availability}
                             </p>
                             <p className="noofroom">
                                 <FontAwesomeIcon icon={faRestroom} className="icon" />
@@ -356,7 +359,7 @@ export default function BookNow() {
                             </p>
                             <p className="roomtype">
                                 <FontAwesomeIcon icon={faHotel} className="icon" />
-                                Room Type: {bookingDetails.roomType}
+                                Room Type: {bookingDetails.roomtype}
                             </p>
                             <p className="maritalstatus">
                                 <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
