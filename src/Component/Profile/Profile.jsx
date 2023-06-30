@@ -17,8 +17,6 @@ import { useCollapse } from 'react-collapsed'
 import { convertDate } from '../../utils/convertDate';
 
 
-
-
 function AccountSettings({ selectedNav, navHandler }) {
   const [isExpanded, setExpanded] = useState(false)
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded })
@@ -227,7 +225,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
 
       if (response.ok) {
         // Call the onUpdateDone callback
-        window.location.reload()
+        // window.location.reload()
       } else {
         throw new Error('Failed to update profile');
       }
@@ -352,7 +350,6 @@ function AddressInformation({ userData }) {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     try {
       const formData = new FormData();
       formData.append('address', address !== "" ? address : userData?.address);
@@ -362,10 +359,11 @@ function AddressInformation({ userData }) {
         method: 'PUT',
         body: formData,
       });
-
-      if (!response.error) {
+      console.log(response)
+      if (response.ok) {
         // setProfileUpdated(true);// Call the onUpdateDone callback
         // handleClose()
+        setAddress("")
       } else {
         throw new Error('Failed to update profile');
       }
@@ -836,13 +834,12 @@ function MyReviewSection() {
     </>)
 }
 
-function ComplainsSection({ isSignedIn, userDetails, userData }) {
+function ComplainsSection({ isSignedIn, userDetails, userData, reset }) {
   const [raiseComplaint, setRaiseComplaint] = useState(false)
   const [newComplaint, setNewComplaint] = useState("")
   const [complaints, setComplaints] = useState([])
 
   useEffect(() => {
-
     fetch(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`, {
       method: 'GET'
     })
@@ -874,11 +871,12 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
     })
 
       .then((response) => {
-
         try {
           if (response.status === 200) {
             const data = response.json()
-            data.then(res => window.alert(res.message))
+            // data.then(res => window.alert(res.message))
+            setRaiseComplaint(false)
+            reset()
           }
         } catch (error) {
           console.log(error);
@@ -927,7 +925,7 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
   )
 }
 
-const Profile = () => {
+const Profile = ({ reset, refresh }) => {
 
   const [show, setShow] = useState(false);
 
@@ -941,6 +939,9 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(true);
 
   const [profileUpdated, setProfileUpdated] = useState(false);
+
+
+
 
 
   useEffect(() => {
@@ -1032,7 +1033,7 @@ const Profile = () => {
         </div>
         <div className='profile_body'>
           {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+            <AddressInformation userData={userData} reset={reset} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} key={refresh} reset={reset} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
         </div>
       </div>
     </>
