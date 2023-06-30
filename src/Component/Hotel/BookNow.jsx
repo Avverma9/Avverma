@@ -30,6 +30,7 @@ import {
     faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from 'react-icons/bi';
+import { FaTelegramPlane } from "react-icons/fa"
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
@@ -104,8 +105,8 @@ export default function BookNow() {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 3, 
-        slidesToScroll: 3, 
+        slidesToShow: 3,
+        slidesToScroll: 3,
     };
 
     const slideToPrev = () => {
@@ -133,7 +134,7 @@ export default function BookNow() {
                     if (response?.status === 201) {
                         const data = response.json();
                         console.log(data)
-                       
+
                         setMyReview("");
                         window.location.reload(); // Reload the page
                     }
@@ -142,26 +143,26 @@ export default function BookNow() {
                 }
             });
     };
-    
+
     const deleteReviewHandler = (revId) => {
         fetch(`https://hotel-backend-tge7.onrender.com/delete/${userId}/${hotelID}/${revId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-          .then((response) => {
-            try {
-              if (response.status === 200) {
-                const data = response.json();
-                window.location.reload();
-              }
-            } catch (error) {
-              console.log(error);
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
             }
-          });
-      };
-      
+        })
+            .then((response) => {
+                try {
+                    if (response.status === 200) {
+                        const data = response.json();
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    };
+
     const updateReviewHandler = () => {
         fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
             method: 'PUT',
@@ -374,7 +375,7 @@ export default function BookNow() {
 
                         <div className="create_new_reviews">
                             <textarea
-                                placeholder="Post New Review"
+                                placeholder="Write a new review"
                                 type="text"
                                 rows="2"
                                 value={myReview}
@@ -384,7 +385,7 @@ export default function BookNow() {
                                 className="post_review_button"
                                 onClick={postReviewHandler}
                             >
-                                Post
+                                <FaTelegramPlane />
                             </button>
                         </div>
 
@@ -392,66 +393,71 @@ export default function BookNow() {
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
                                 {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
-                                    <div className="d-flex flex-column gap-3" style={{
-                                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                        padding: "20px",
-                                        marginRight: "10%",
-                                        marginBottom: "20px",
-                                        width: "75%",
-                                        height: "auto"
-                                    }} key={i}>
-                                        <div className="review_container">
-                                            <div className="comment_profile">
-                                                <Avatar
-                                                    name={rev.user.name}
-                                                    src={rev.user.images[0]}
-                                                    round={true}
-                                                    size="35"
-                                                    style={{
-                                                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                                    }}
-                                                />
-                                            </div>
-
-                                            <div className="comment_profile_name">
-                                                <h4>{rev.user.name}</h4>
-                                            </div>
-
-                                            {rev.review.user === userId && <div className="comment_update_del">
-                                                <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
-                                                <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />
-                                            </div>}
-                                        </div>
-
-                                        {isUpdatingReview && reviewId === rev.review._id ?
-                                            <div>
-                                                <textarea
-                                                    placeholder="Update Review"
-                                                    type="text"
-                                                    rows="2"
-                                                    value={updatedReview}
-                                                    onChange={(e) => setUpdatedReview(e.target.value)}
-                                                />
-                                                <button
-                                                    className="update_review_button"
-                                                    onClick={updateReviewHandler}
-                                                >
-                                                    Update
-                                                </button>
-                                            </div>
-                                            :
-                                            <div className="review_comment">
-                                                <p>
-                                                    {rev.review.comment}
-                                                </p>
-
-                                                <div className="comment_date">
-                                                    <p>{convertDate(rev.review.createdAt)}</p>
+                                    <>
+                                        <div className="d-flex flex-column gap-3" style={{
+                                            padding: "20px",
+                                            marginRight: "10%",
+                                            // marginBottom: "20px",
+                                            width: "75%",
+                                            height: "auto",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "1",
+                                        }} key={i}>
+                                            <div className="review_container">
+                                                <div className="comment_profile">
+                                                    <Avatar
+                                                        name={rev.user.name}
+                                                        src={rev.user.images[0]}
+                                                        round={true}
+                                                        size="35"
+                                                        style={{
+                                                            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                                        }}
+                                                    />
                                                 </div>
+
+                                                <div className="comment_profile_name">
+                                                    <h4>{rev.user.name}</h4>
+                                                </div>
+
+                                                {rev.review.user === userId && <div className="comment_update_del">
+                                                    <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
+                                                    <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />
+                                                </div>}
                                             </div>
-                                        }
-                                    </div>
-                                )) : "Still No Posts Yet....."}
+
+                                            {isUpdatingReview && reviewId === rev.review._id ?
+                                                <div className="update_review">
+                                                    <textarea
+                                                        placeholder="Update Review"
+                                                        type="text"
+                                                        rows="2"
+                                                        value={updatedReview}
+                                                        onChange={(e) => setUpdatedReview(e.target.value)}
+                                                    />
+                                                    <button
+                                                        className="update_review_button"
+                                                        onClick={updateReviewHandler}
+                                                    >
+                                                        <FaTelegramPlane />
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div className="review_comment">
+                                                    <p>
+                                                        {rev.review.comment}
+                                                    </p>
+
+                                                    <div className="comment_date">
+                                                        <p>{convertDate(rev.review.createdAt)}</p>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div style={{ border: "1px solid #94a3b8 " }}></div>
+                                        </div>
+                                    </>
+                                )) : null}
                             </div>
                             {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
                         </div>
@@ -466,4 +472,5 @@ export default function BookNow() {
             </div>
         </>
     );
+
 }
