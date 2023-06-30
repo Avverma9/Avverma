@@ -393,9 +393,13 @@ function AddressInformation({ userData }) {
   </div>);
 }
 
-function GovernmentIdInformation() {
+function GovernmentIdInformation({ userData }) {
   const [gID, setGID] = useState("")  //Sets Government ID Input Field Value
   const [selectGID, setSelectGID] = useState("") // Sets Type of Gov Id Selected
+
+  const [adhaar, setAdhaar] = useState(userData?.adhar)
+  const [pan, setpan] = useState(userData?.pan)
+  const [drivingLsc, setDrivingLsc] = useState(userData?.dl)
 
   const handleIdSubmit = () => {
     console.log("ID SUBMITTED")
@@ -436,21 +440,21 @@ function GovernmentIdInformation() {
           <h1 className='me-2' style={{ width: "20%" }}>
             Adhaar
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={adhaar && adhaar !== "" ? adhaar : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             PAN Card
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={pan && pan !== "" ? pan : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             Driving Licence
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={drivingLsc && drivingLsc !== "" ? drivingLsc : ""} />
         </div>
 
       </div>
@@ -1028,7 +1032,7 @@ const Profile = () => {
         </div>
         <div className='profile_body'>
           {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
         </div>
       </div>
     </>
