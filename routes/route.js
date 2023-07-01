@@ -8,7 +8,7 @@ const hotelController = require("../controllers/hotelController");
 const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
-const partnerController=require("../controllers/partnerController")
+const partnerController = require("../controllers/partnerController");
 
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
@@ -49,15 +49,15 @@ router.post("/payments", paymentController.createPayment);
 
 //===================================== REVIEW =========================================================
 router.post("/reviews/:userId/:hotelId", reviewController.createReview);
-router.get(
-  "/getReviews/:hotelId",
-  reviewController.getReviewsByHotelId
-);
+router.get("/getReviews/:hotelId", reviewController.getReviewsByHotelId);
 
 router.get("/reviewDatas/:userId", reviewController.getReviewsByUserId);
 router.put("/update/:userId/:hotelId/:reviewId", reviewController.updateReview);
-router.delete("/delete/:userId/:hotelId/:reviewId", reviewController.deleteReview);
+router.delete(
+  "/delete/:userId/:hotelId/:reviewId",
+  reviewController.deleteReview
+);
 //=============================PARTNER=========================================//
-router.post("/create/partner",partnerController.createPartner)
+router.post("/create/partner", upload, partnerController.createPartner);
 
 module.exports = router;

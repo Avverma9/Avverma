@@ -24,7 +24,7 @@ const PartnerSchema = new mongoose.Schema({
     "School Diatacing": Boolean,
     "Free Parking": Boolean,
     "House Keeping": Boolean,
-    "Towels": Boolean,
+    "Towels": Boolean, 
     "Complimentary Tolietries": Boolean,
     "Good Showers": Boolean,
     "Cable Tv": Boolean,
