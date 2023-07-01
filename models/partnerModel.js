@@ -1,90 +1,45 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const partnerSchema = new mongoose.Schema({
-  hotelownerName: {
-    type: String,
-    required: true,
-  },
-  ownercontact: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /^\d{10}$/.test(value);
-      },
-      message: "Please provide a valid 10-digit owner contact number",
-    },
-  },
-  receptioncontact: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /^\d{10}$/.test(value);
-      },
-      message: "Please provide a valid 10-digit reception contact number",
-    },
-  },
-  hotelemail: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /\S+@\S+\.\S+/.test(value);
-      },
-      message: "Please provide a valid hotel email address",
-    },
-  },
-  gmcontact: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /^\d{10}$/.test(value);
-      },
-      message: "Please provide a valid 10-digit general manager contact number",
-    },
-  },
-  salescontact: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /^\d{10}$/.test(value);
-      },
-      message: "Please provide a valid 10-digit sales contact number",
-    },
-  },
-  hotelName: {
-    type: String,
-    required: true,
-  },
-  hoteladdress: {
-    type: String,
-    required: true,
-  },
-  hotelstate: {
-    type: String,
-    required: true,
-  },
-  zipcode: {
-    type: String,
-    required: true,
-    validate: {
-      validator: function (value) {
-        return /^\d{5}$/.test(value);
-      },
-      message: "Please provide a valid 5-digit zipcode",
-    },
-  },
-  citypartner: {
-    type: String,
-    required: true,
-  },
-  landmark: {
-    type: String,
-    required: true,
-  },
+const PartnerSchema = new mongoose.Schema({
+  hotelOwnerName: String,
+  ownerContactDetails: String,
+  receptionContactDetails: String,
+  hotelEmail: String,
+  generalManagerContact: String,
+  salesManagerContact: String,
+  hotelDetails: String,
+  street: String,
+  city: String,
+  state: String,
+  zip: String,
+  landmark: String,
+  starType: String,
+  propertyType: String,
+  images: [String],
+  amenities: {
+    "Free Wireless Internet": Boolean,
+    "Air Conditioning": Boolean,
+    "Room Services": Boolean,
+    "Clean And Disinfect": Boolean,
+    "School Diatacing": Boolean,
+    "Free Parking": Boolean,
+    "House Keeping": Boolean,
+    "Towels": Boolean,
+    "Complimentary Tolietries": Boolean,
+    "Good Showers": Boolean,
+    "Cable Tv": Boolean,
+    "Bottled Water": Boolean,
+    "Swimming Pool": Boolean,
+    "On-site Restaurant": Boolean,
+    "Hair Dryer": Boolean,
+    "Fitness Center": Boolean,
+    "Conclerge Desk": Boolean,
+    "Spa": Boolean,
+    "Dry Cleaning": Boolean,
+    "Bathrobe": Boolean,
+    "24 Hour Front Desk Service": Boolean
+  }
 });
 
-module.exports = mongoose.model("Partner", partnerSchema);
+
+module.exports =mongoose.model('Partner', PartnerSchema);
