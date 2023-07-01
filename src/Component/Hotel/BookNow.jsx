@@ -52,6 +52,7 @@ export default function BookNow({ refresh, reset }) {
     const [reviewId, setReviewId] = useState("");
 
     const [updatedReview, setUpdatedReview] = useState("")
+    const [fieldFocus, setFieldFocus] = useState("")
 
 
     const sliderRef = useRef(null);
@@ -200,6 +201,23 @@ export default function BookNow({ refresh, reset }) {
         setIsUpdatingReview(true)
         setReviewId(rev.review._id);
         setUpdatedReview(rev.review.comment)
+    }
+
+    const keyPressHandler = event => {
+        if (event.key === 'Enter' && event.ctrlKey && (fieldFocus === "post_review_button" || fieldFocus === "update_review_button")) {
+            // Next Line when the `ctrl` + `enter` key is pressed
+            event.target.value += '\n';
+        }
+        else if (event.key === 'Enter' && fieldFocus === "post_review_button") {
+            // Call Post Handler Func when the `enter` key is pressed
+            postReviewHandler()
+            setFieldFocus("")
+        } else if (event.key === 'Enter' && fieldFocus === "update_review_button") {
+            // Call Post Handler Func when the `enter` key is pressed
+            updateReviewHandler()
+            // console.log(fieldFocus)
+            setFieldFocus("")
+        }
     }
 
     return (
@@ -386,6 +404,8 @@ export default function BookNow({ refresh, reset }) {
                                 rows="2"
                                 value={myReview}
                                 onChange={(e) => setMyReview(e.target.value)}
+                                onKeyUp={keyPressHandler}
+                                onFocus={(e) => setFieldFocus(e.target.nextElementSibling.className)}
                             />
                             <button
                                 className="post_review_button"
@@ -441,6 +461,8 @@ export default function BookNow({ refresh, reset }) {
                                                         rows="2"
                                                         value={updatedReview}
                                                         onChange={(e) => setUpdatedReview(e.target.value)}
+                                                        onKeyUp={keyPressHandler}
+                                                        onFocus={(e) => setFieldFocus(e.target.nextElementSibling.className)}
                                                     />
                                                     <button
                                                         className="update_review_button"
