@@ -59,5 +59,8 @@ router.delete(
 );
 //=============================PARTNER=========================================//
 router.post("/create/partner", upload, partnerController.createPartner);
+router.get('/partners/:partnerId', partnerController.getHotelPartner);
+
+
 
 module.exports = router;

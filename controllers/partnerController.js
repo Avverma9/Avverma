@@ -48,11 +48,33 @@ const createPartner = async (req, res) => {
       data: savedPartner,
     });
   } catch (error) {
-    console.error(error); // Log the error for debugging purposes
+    console.error(error); 
     res.status(500).json({ error: 'An error occurred while creating the partner.' });
   }
 };
 
+//=============================================================================================================
+const getHotelPartner = async (req, res) => {
+  try {
+    const partnerId = req.params.partnerId;
+
+    const partner = await partnerModel.findById(partnerId);
+
+    if (!partner) {
+      return res.status(404).json({ error: "Hotel partner not found." });
+    }
+
+    return res.status(200).json({
+      status: true,
+      data: partner,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while retrieving the hotel partner." });
+  }
+};
+
 module.exports = {
-  createPartner
+  createPartner,
+  getHotelPartner
 };
