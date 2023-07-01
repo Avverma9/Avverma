@@ -43,4 +43,6 @@ router.get("/statesData", stateController.getStateData);
 
 //==================================== PAYMENT ==========================================================
 router.post('/payments', paymentController.createPayment);
+router.get('/partners/:partnerId', partnerController.getHotelPartner);
+
 module.exports = router;

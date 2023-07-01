@@ -6,7 +6,7 @@ const createPartner = async (req, res) => {
       hotelownerName,
       ownercontact,
       receptioncontact,
-      hotelemail,
+      hotelemail,    
       gmcontact,
       salescontact,
       hotelName,
@@ -41,6 +41,29 @@ const createPartner = async (req, res) => {
   }
 };
 
+///=============================================================================================================
+const getHotelPartner = async (req, res) => {
+  try {
+    const partnerId = req.params.partnerId;
+
+    const partner = await partnerModel.findById(partnerId);
+
+    if (!partner) {
+      return res.status(404).json({ error: "Hotel partner not found." });
+    }
+
+    return res.status(200).json({
+      status: true,
+      data: partner,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "An error occurred while retrieving the hotel partner." });
+  }
+};
+
+
 module.exports = {
   createPartner,
+  getHotelPartner
 };
