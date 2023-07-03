@@ -39,6 +39,8 @@ router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
 router.get("/hotelsCategory", hotelController.getHotelsByCategory);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotelsAccomodation", hotelController.getHotelsByAccommodation);
+router.get('/hotels/filters', hotelController.getHotelsByFilters);
+
 
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);

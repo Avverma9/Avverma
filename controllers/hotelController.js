@@ -223,6 +223,40 @@ const getHotelsByCategory = async (req, res) => {
   }
 };
 
+//=============================================================================================
+const getHotelsByFilters = async (req, res) => {
+  try {
+    const { collections, categories, accommodationTypes, hotelFacilities, checkInFeatures } = req.query;
+
+    const filters = {};
+
+    if (collections) {
+      filters.collections = { $in: collections.split(',') };
+    }
+
+    if (categories) {
+      filters.categories = { $in: categories.split(',') };
+    }
+
+    if (accommodationTypes) {
+      filters.accommodationType = { $in: accommodationTypes.split(',') };
+    }
+
+    if (checkInFeatures) {
+      filters.checkInFeatures = { $in: checkInFeatures.split(',') };
+    }
+
+    const Hotels = await hotelModel.find(filters);
+
+    res.status(200).json({
+      status: true,
+      data: Hotels,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while retrieving the hotels.' });
+  }
+};
 
 module.exports = {
   createHotel,
@@ -233,5 +267,6 @@ module.exports = {
   getHotelsByPrice,
   getHotelsByAccommodation,
   getHotelsByLocalID,
-  getHotelsByCategory
+  getHotelsByCategory,
+  getHotelsByFilters
 };
