@@ -228,12 +228,12 @@ export default function BookNow() {
 
                                 <p className="location-booknow">{bookingDetails.destination}</p>
                             </div>
-                            <p className="rating0">
-                                <p className="staricon">
+                            <div className="rating0">
+                                <p className="staricons">
                                     {bookingDetails.rating}
                                     <FontAwesomeIcon icon={faStar} className="staricon" />
                                 </p>
-                            </p>
+                            </div>
                         </div>
                         <div className="pricing">
                             <FontAwesomeIcon icon={faInr} className="indianrupee" />
@@ -395,10 +395,10 @@ export default function BookNow() {
                                 {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
                                     <>
                                         <div className="d-flex flex-column gap-3" style={{
-                                            padding: "20px",
-                                            marginRight: "10%",
+                                            padding: "7px",
+                                            marginRight: "5%",
                                             // marginBottom: "20px",
-                                            width: "75%",
+                                            width: "100%",
                                             height: "auto",
                                             display: "flex",
                                             flexDirection: "column",
@@ -410,7 +410,7 @@ export default function BookNow() {
                                                         name={rev.user.name}
                                                         src={rev.user.images[0]}
                                                         round={true}
-                                                        size="35"
+                                                        size="25"
                                                         style={{
                                                             boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
                                                         }}

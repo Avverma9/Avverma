@@ -471,7 +471,7 @@
   
   .slider-navigation {
     position: absolute;
-    top: 50%;
+    top: 30%;
     transform: translateY(-50%);
     display: flex;
     justify-content: space-between;
@@ -496,11 +496,13 @@
   .slider-navigation .slider-prev {
     position: absolute;
     left: 10px;
+    color: white;
   }
   
   .slider-navigation .slider-next {
     position: absolute;
     right: 10px;
+    color: white;
   }
   .booking-card {
     border: 1px solid #ccc;
@@ -536,17 +538,17 @@
   }
   .rating0 {
     background-color: green;
-    width: 15%;
+    
     color: white;
-    border-radius: 5px;
+    border-radius: 1px;
     justify-content: center;
     display: flex;
     align-items: center;
-    height: 50px;
+    
   }
   
-  .staricon {
-    font-size: 10px;
+  .staricons {
+    font-size: 25px;
   }
   .booking-card-content {
     color: gray;
@@ -657,7 +659,7 @@
   
   .comment_profile {
     flex: 0;
-    min-width: 50px; /* Adjust the width as needed */
+    min-width: 30px; /* Adjust the width as needed */
   }
   
   .comment_profile_name {
@@ -674,6 +676,7 @@
     font-weight: bold;
     word-spacing: 1.5px;
     letter-spacing: 0.5px;
+    margin-top: 7px;
   }
   
   .comment_update_del {
@@ -692,7 +695,7 @@
   }
   .comment_date h6 {
     text-align: left;
-    margin-top: 35px;
+    margin-top: 20px;
     margin-left: -60px;
    font-size: 12px;
     font-weight: 100;
@@ -703,9 +706,10 @@
   }
   .review_comment p {
     text-align: left;
-    font: size 16px;
+    
     font-weight: 500;
     flex: 1;
+    font-size: 12px;
   }
   .star1 {
     font-size: 22px;

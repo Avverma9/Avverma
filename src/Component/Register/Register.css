@@ -16,9 +16,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-   
-  
 }
 
 .input-field {
@@ -26,8 +23,6 @@
   flex-wrap: wrap;
   justify-content: center;
 }
-
-
 
 .button-block {
   display: flex;
@@ -55,10 +50,6 @@
   margin-top: 10px;
 }
 
-
-
-
-
 .card-signup {
   max-width: 800px;
   height: 600px;
@@ -70,7 +61,6 @@
   background-image: url(https://cdn.dribbble.com/users/1917942/screenshots/7139971/media/d802dc4eadb049f5a9684759cfdfbffa.gif);
   background-size: cover;
   background-position: center;
-  
 }
 
 .form-row {
@@ -165,8 +155,7 @@ button[type="submit-sign"] {
   height: 100%;
   object-fit: cover;
 }
-.input-field{
-
+.input-field {
 }
 
 @media (max-width: 768px) {
@@ -255,6 +244,26 @@ button[type="submit-sign"] {
   .selected-image-preview {
     width: 100px;
     height: 100px;
+  }
+}
+
+@media only screen and (max-width: 456px) {
+  .input-field input {
+    width: 158px;
+    padding: 10px;
+    margin: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
+
+@media only screen and (max-width: 344px) {
+  .input-field input {
+    width: 260px;
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
   }
 }
 
