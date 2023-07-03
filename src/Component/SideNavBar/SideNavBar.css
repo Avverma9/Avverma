@@ -1,7 +1,7 @@
 .side_nav_container {
   background-color: #fbbc05;
   width: 25%;
-  padding: 8px 16px;
+  padding: 18px 16px;
 }
 
 .side_nav_header {
@@ -14,10 +14,23 @@
 .side_nav_header h1 {
   text-align: center;
   color: #fff;
+  font-weight: 600;
 }
 
 .side_nav_body ul {
   list-style: none;
+}
+
+.side_nav_body ul li {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.side_nav_body ul li p {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
   color: #fff;
 }
 
