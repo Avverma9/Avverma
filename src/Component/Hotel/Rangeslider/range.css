@@ -164,9 +164,22 @@
 
 /* Additional styles for specific breakpoints */
 @media (max-width: 768px) {
+  
   .multi-range-slider {
     /* Modify the styles for mobile */
     border-radius: 3px;
+    width:70px;
+  }
+  .multi-range-slider .labels{
+    font-size: 12px;
+    margin-bottom: -15px;
+  }
+  .multi-range-slider .ruler .ruler-rule {
+    border: solid 1px #ccc;
+    display: none;
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #eee;
   }
 
   .range input[type="range"] {

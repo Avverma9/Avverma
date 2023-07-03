@@ -29,10 +29,11 @@ import {
     faGlassMartini,
     faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
+import { BiEdit, BiTrash } from 'react-icons/bi';
+import { FaTelegramPlane } from "react-icons/fa"
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
-import axios from "axios";
 import Avatar from "react-avatar";
 
 export default function BookNow() {
@@ -42,9 +43,17 @@ export default function BookNow() {
     const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
     const [hotelAmenities, setHotelAmenities] = useState([]);
     const [checkIN, setCheckIn] = useState("");
+    const [localid, setLocalid] = useState("")
     const [checkOUT, setCheckOut] = useState("");
     const [myReview, setMyReview] = useState("");
     const [hotelReviews, setHotelReviews] = useState([]);
+
+    const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+    const [reviewId, setReviewId] = useState("");
+
+    const [updatedReview, setUpdatedReview] = useState("")
+
+
     const sliderRef = useRef(null);
     const userId = localStorage.getItem("userId");
 
@@ -66,8 +75,10 @@ export default function BookNow() {
                 setHotelImages(data.images);
                 setHotelAmenities(data.amenities);
                 setHotelMoreOpt(data.moreOptions);
+                setLocalid(data.localId)
                 setCheckIn(convertDate(bookingDetails.startDate));
                 setCheckOut(convertDate(bookingDetails.endDate));
+
             })
             .catch((error) => {
                 console.log(error);
@@ -76,7 +87,7 @@ export default function BookNow() {
 
     useEffect(() => {
         setHotelReviews([]);
-        fetch(`https://hotel-backend-tge7.onrender.com/reviewData/${hotelID}`)
+        fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotelID}`)
             .then((response) => {
                 if (response.status === 200) {
                     return response.json();
@@ -86,7 +97,7 @@ export default function BookNow() {
             })
             .then((data) => {
                 setHotelReviews(data?.reviews);
-                console.log(data?.reviews, "JTRSLUYFI:UG");
+                console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
             });
     }, [hotelID]);
 
@@ -94,8 +105,8 @@ export default function BookNow() {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 3, // Display 3 images at a time
-        slidesToScroll: 3, // Navigate by 3 images
+        slidesToShow: 3,
+        slidesToScroll: 3,
     };
 
     const slideToPrev = () => {
@@ -109,24 +120,81 @@ export default function BookNow() {
     console.log(bookingDetails);
 
     const postReviewHandler = () => {
-        axios
-            .post(
-                `https://hotel-backend-tge7.onrender.com/reviews/${userId}/${hotelID}`,
-                {
-                    comment: myReview,
-                }
-            )
+        fetch(`https://hotel-backend-tge7.onrender.com/reviews/${userId}/${hotelID}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comment: myReview,
+            }),
+        })
             .then((response) => {
                 try {
                     if (response?.status === 201) {
+                        const data = response.json();
+                        console.log(data)
+
                         setMyReview("");
+                        window.location.reload(); // Reload the page
                     }
                 } catch (error) {
                     console.log(error);
                 }
-                console.log(response);
             });
     };
+
+    const deleteReviewHandler = (revId) => {
+        fetch(`https://hotel-backend-tge7.onrender.com/delete/${userId}/${hotelID}/${revId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((response) => {
+                try {
+                    if (response.status === 200) {
+                        const data = response.json();
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    };
+
+    const updateReviewHandler = () => {
+        fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comment: updatedReview,
+            }),
+        })
+            .then((response) => {
+                try {
+                    if (response?.status === 200) {
+                        const data = response.json();
+                        window.location.reload();
+                        console.log(data);
+                        window.alert(data.value.message)
+                        setIsUpdatingReview(false)
+                        setReviewId("");
+                        setUpdatedReview("")
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    }
+
+    const toggleUpdateReview = (rev) => {
+        setIsUpdatingReview(true)
+        setReviewId(rev.review._id);
+        setUpdatedReview(rev.review.comment)
+    }
 
     return (
         <>
@@ -173,7 +241,7 @@ export default function BookNow() {
                         </div>
                         <p className="hotel-descrip">
                             <p className="description1">Description:</p>{" "}
-                            {bookingDetails.description}
+                           <p className="detaildescrip"> {bookingDetails.description}</p>
                         </p>
                         <p className="amenity-section">
                             <p className="amenity-word">Amenities: </p>
@@ -280,7 +348,7 @@ export default function BookNow() {
                         <div className="card">
                             <p className="id">
                                 <FontAwesomeIcon icon={faIdCard} className="icon" />
-                                LocalID: {bookingDetails.localId}
+                                LocalID: {bookingDetails.availability}
                             </p>
                             <p className="noofroom">
                                 <FontAwesomeIcon icon={faRestroom} className="icon" />
@@ -292,7 +360,7 @@ export default function BookNow() {
                             </p>
                             <p className="roomtype">
                                 <FontAwesomeIcon icon={faHotel} className="icon" />
-                                Room Type: {bookingDetails.roomType}
+                                Room Type: {bookingDetails.roomtype}
                             </p>
                             <p className="maritalstatus">
                                 <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
@@ -307,7 +375,7 @@ export default function BookNow() {
 
                         <div className="create_new_reviews">
                             <textarea
-                                placeholder="Post New Review"
+                                placeholder="Write a new review"
                                 type="text"
                                 rows="2"
                                 value={myReview}
@@ -317,61 +385,79 @@ export default function BookNow() {
                                 className="post_review_button"
                                 onClick={postReviewHandler}
                             >
-                                Post
+                                <FaTelegramPlane />
                             </button>
                         </div>
 
                         <div className="reviews">
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
-                                <div className="d-flex flex-column gap-3" style={{
-                                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                    padding: "20px",
-                                    marginRight: "10%",
-                                    marginBottom: "20px",
-                                    width: "75%",
-                                    height: "auto"
-                                }}>
-                                    <div className="review_container">
-                                        <div className="comment_profile">
-                                            <Avatar
-                                                name="Anna Kendrick"
-                                                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcelebmafia.com%2Fwp-content%2Fuploads%2F2019%2F01%2Fanna-kendrick-personal-pics-01-06-2019-5.jpg&f=1&nofb=1&ipt=922df56b5c100652a713c26d29bd9ba409d08d2eefc06d2bb3ab6822cb5180ff&ipo=images"
-                                                round={true}
-                                                size="35"
-                                                style={{
-                                                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                                                }}
-                                            />
+                                {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
+                                    <>
+                                        <div className="d-flex flex-column gap-3" style={{
+                                            padding: "20px",
+                                            marginRight: "10%",
+                                            // marginBottom: "20px",
+                                            width: "75%",
+                                            height: "auto",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "1",
+                                        }} key={i}>
+                                            <div className="review_container">
+                                                <div className="comment_profile">
+                                                    <Avatar
+                                                        name={rev.user.name}
+                                                        src={rev.user.images[0]}
+                                                        round={true}
+                                                        size="35"
+                                                        style={{
+                                                            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                <div className="comment_profile_name">
+                                                    <h4>{rev.user.name}</h4>
+                                                </div>
+
+                                                {rev.review.user === userId && <div className="comment_update_del">
+                                                    <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
+                                                    <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />
+                                                </div>}
+                                            </div>
+
+                                            {isUpdatingReview && reviewId === rev.review._id ?
+                                                <div className="update_review">
+                                                    <textarea
+                                                        placeholder="Update Review"
+                                                        type="text"
+                                                        rows="2"
+                                                        value={updatedReview}
+                                                        onChange={(e) => setUpdatedReview(e.target.value)}
+                                                    />
+                                                    <button
+                                                        className="update_review_button"
+                                                        onClick={updateReviewHandler}
+                                                    >
+                                                        <FaTelegramPlane />
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div className="review_comment">
+                                                    <p>
+                                                        {rev.review.comment}
+                                                    </p>
+
+                                                    <div className="comment_date">
+                                                        <h6>{convertDate(rev.review.createdAt)}</h6>
+                                                    </div>
+                                                </div>
+                                            }
+                                            <div style={{ border: "1px solid #94a3b8 " }}></div>
                                         </div>
-
-                                        <div className="comment_profile_name">
-                                            <h4>Anna Kendrick</h4>
-                                        </div>
-
-                                        <div className="comment_date">
-                                            <p>27/06/2023</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="review_comment">
-                                        <p>
-                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit maiores mollitia porro est voluptate, voluptates doloribus dolorem aut sequi sit? Aspernatur minima, dolore dolor ipsam sed ut non maiores! Dolorum, natus. Harum ipsa, iure officia tenetur cumque odio eaque excepturi optio officiis exercitationem qui cupiditate eveniet? Pariatur provident adipisci architecto error, ut repudiandae. Incidunt atque repudiandae rem itaque consequatur officiis.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* <FontAwesomeIcon icon={faStar} className='star1' />
-                                <FontAwesomeIcon icon={faStar} className='star1' />
-                                <FontAwesomeIcon icon={faStar} className='star1' /> */}
-                                {/* {hotelReviews ? hotelReviews.map((review) =>
-
-                                    <div className="d-flex w-75" key={review._id}>
-                                        <div className="flex-grow-1 comment">{review.comment}</div>
-                                        <div className='createdAt'>{convertDate(review.createdAt)}</div>
-                                    </div>
-
-                                ) : <>Loading....</>} */}
+                                    </>
+                                )) : null}
                             </div>
                             {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
                         </div>
@@ -386,4 +472,5 @@ export default function BookNow() {
             </div>
         </>
     );
+
 }

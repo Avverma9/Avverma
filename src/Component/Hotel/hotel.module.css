@@ -127,8 +127,14 @@
   cursor: pointer;
 }
 
+<<<<<<<<< Temporary merge branch 1
+=========
 
-
+>>>>>>>>> Temporary merge branch 2
+.view-details-button:hover,
+.book-now-button:hover {
+  background-color: #0056b3;
+}
 
 .amenities {
   margin-top: 10px;
@@ -316,16 +322,24 @@ input[type="checkbox"] {
   width: 53%;
 }
 
+<<<<<<<<< Temporary merge branch 1
+=========
 
 
-
+>>>>>>>>> Temporary merge branch 2
+.view-details-button:hover,
+.book-now-button:hover {
+  /* ... previous styles ... */
+  background-color: #0056b3;
+  transform: translateY(-3px);
+}
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {
     font-size: 18px;
   }
   .search-result-destination {
-    font-size: 16px;
+    font-size: 10px;
   }
   .search-result-price .detail {
     font-size: 12px;
@@ -351,18 +365,60 @@ input[type="checkbox"] {
     flex-direction: row;
     flex-wrap: nowrap;
   }
+  .amenities {
+    margin-top: 10px;
+  }
+  .amenities ul li{
+    font-size: 8px;
+    margin-bottom:0 ;
+  }
 }
 
 @media only screen and (max-width: 768px) {
   .search-result {
     display: flex;
     flex-direction: column;
-    margin-top: 100px;
+    margin-top: 0;
   }
   .search-result img {
-    height: 145px;
-    width: 60%;
+    height: auto;
+    width: 100%;
   }
+  .vertical-bar{
+    width:120px;
+    margin: 5px;
+    padding: 10px;
+  }
+ .vertical-bar h5{
+  font-size: 10px;
+ }
+ .search-results{
+  overflow-x: hidden;
+  width:100vw;
+  max-width: 100%;
+  margin: 0 auto;
+ }
+ .search-result-destination .location {
+  
+  font-size: 10px;
+}
+.hotel-rating {
+  font-size: 10px;
+  width: 12%;
+}
+.hotel-rating h5{
+  font-size: 10px;
+}
+.search-result-price {
+  font-size: 12px;
+  color: red;
+  font-weight: 701;
+  margin: 0;
+}
+.search-result{
+  width: 100%;
+  height: auto;
+}
 }
 
 @media only screen and (max-width: 600px) {
@@ -379,12 +435,12 @@ input[type="checkbox"] {
   }
 
   .search-result-title {
-    font-size: 16px;
+    font-size: 10px;
   }
 
   .hotel-rating {
-    font-size: 16px;
-    padding: 6px;
+    font-size: 10px;
+    padding: 2px;
   }
 
   .detail {
@@ -392,14 +448,14 @@ input[type="checkbox"] {
   }
 
   .search-result-availability {
-    font-size: 10px;
-    margin: 5px 0;
+    font-size: 6px;
+    margin: 3px ;
   }
 
   .view-details-button,
   .book-now-button {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 6px;
+    padding: 3px;
   }
 
   .amenities h6 {
