@@ -1,0 +1,26 @@
+.side_nav_container {
+  background-color: #fbbc05;
+  width: 25%;
+  padding: 8px 16px;
+}
+
+.side_nav_header {
+  padding: 10px 15px;
+  border: 2px solid #171717;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.side_nav_header h1 {
+  text-align: center;
+  color: #fff;
+}
+
+.side_nav_body ul {
+  list-style: none;
+  color: #fff;
+}
+
+.side_nav_body ul li:not(:last-child) {
+  margin-bottom: 30px;
+}

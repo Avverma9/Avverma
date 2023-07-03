@@ -1,0 +1,52 @@
+.page_container {
+  background-color: #b02c2c;
+  width: 75%;
+  padding: 8px 32px;
+}
+
+.page_header {
+  margin-bottom: 30px;
+}
+
+.page_header h1 {
+  text-align: left;
+  color: #000;
+}
+.user_avatar {
+  padding: 8px 0;
+}
+
+.user_avatar img {
+  width: 75px !important;
+  height: 75px !important;
+  border-radius: 50%;
+  margin-left: 18%;
+}
+
+.user_avatar svg {
+  font-size: 22px;
+  position: relative;
+  right: 23px;
+  top: 12px;
+}
+
+.page_body {
+  background-color: aquamarine;
+  height: calc(100% - 160px);
+}
+
+.input_field {
+}
+
+.input_field_header {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.input_field_header > input[type="button"] {
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #758af7;
+}
