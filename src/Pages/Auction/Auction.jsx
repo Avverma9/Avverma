@@ -1,4 +1,5 @@
 import React from 'react'
+import "./Auction.css"
 import { GoClock } from "react-icons/go"
 import { VscLocation } from "react-icons/vsc"
 import { IoMdLock } from "react-icons/io"
