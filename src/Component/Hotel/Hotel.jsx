@@ -178,12 +178,12 @@ function HotelList() {
 
 
 
-                <div className='mixrupeebutton' style={{ display: 'flex', justifyContent: 'space-between', marginTop: "60px" }}>
+                <div className='mixrupeebutton' style={{ display: 'flex', justifyContent: 'space-between', marginTop: "6px" }}>
                   <div className='rupeedetail'>
 
                     <p className={styles['search-result-price']}><FontAwesomeIcon icon={faInr} className={styles['rupees']} /> {result.price}<span className={styles['detail']}>per room per night</span></p></div>
                   <div className='flex-button' style={{ display: "flex", flexDirection: "row", gap: "15%" }}>
-                    <button className={styles['view-details-button']} onClick={() => toggleDetails(result._id)}>
+                    <button className={styles['view-details-button']} onClick={() => handleBuy(result._id)}>
                       View Details
                     </button>
                     <button className={styles['book-now-button']} onClick={() => handleBuy(result._id)}>
