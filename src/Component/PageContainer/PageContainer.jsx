@@ -6,8 +6,8 @@ import { Auction } from "../../Pages/Auction/Auction";
 export const PageContainer = () => {
     return (
         <div className="page_container">
-            <Profile />
-            {/* <Auction /> */}
+            {/* <Profile /> */}
+            <Auction />
         </div>
     );
 };
