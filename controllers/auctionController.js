@@ -1,6 +1,5 @@
-
+ 
 const auctionModel = require('../models/auctionModel');
-const Auction = require('../models/auctionModel');
 
 const createAuction = async (req, res) => {
   try {
