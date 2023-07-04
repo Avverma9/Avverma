@@ -7,6 +7,7 @@ import { TiTick } from "react-icons/ti"
 import { BsHammer } from "react-icons/bs"
 import { PiMotorcycleFill, PiCarProfileBold } from "react-icons/pi"
 
+
 function Auctioncard() {
   return (
     <div className="auction_body">
