@@ -1,0 +1,49 @@
+.filter-auction-heading{
+    display: flex;
+flex-direction: row;
+align-items: center;
+gap: 50%;
+}
+.heading-icon{
+    display: flex;
+flex-direction: row;
+align-items: center;
+gap: 8px;
+font-size: 20px;
+}
+.filter-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    top: 100px;
+    
+    
+}
+.filter-inputs input[type="text"]{
+    width:30%;
+    height: 40px;
+}
+.filter-buttons input[type="button"]{
+    width:100px;
+    height: 50px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px;
+    
+    font-size: 14px;
+    font-weight: 501;
+}
+.filter-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    top: 150px;   
+}
+
+
+  
+
+  
