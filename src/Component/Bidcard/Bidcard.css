@@ -10,6 +10,26 @@
   gap: 15px;
   align-items: center;
   justify-content: left;
+  width: 68%;
+font-size: 12px;
+margin-top: 15px;
+}
+.edit_bid_view{
+  display: flex;
+border: 2px solid #e5e5e5;
+gap: 20px;
+align-items: center;
+}
+.edit_bid_section{
+  display: flex;
+  gap: 20px;
+}
+.edit_bid_section input[type='button']{
+  background: red;
+border: none;
+color: white;
+width: 100px;
+border-radius: 4px;
 }
 
 .bid_container p {
@@ -24,16 +44,17 @@
   display: flex;
   align-items: center;
   gap: 30px;
+  width: 50%;
 }
 
 .bid_body img {
-  width: 135px;
-  height: 100px;
+  width: 120px;
+  height: 85px;
 }
 
 .bid_detail_table {
   flex: 1;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .bid_detail_table svg,
