@@ -11,9 +11,10 @@ function Auctioncard() {
   return (
     <div className="auction_body">
     <div className='auction-timing'>
-    
+    <div className='clock-time'>
         <GoClock />
         <p>Ends in 6 h 80 min</p>
+        </div>
         <IoMdLock />
     </div>
     <div className="auction_party">
