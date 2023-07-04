@@ -20,10 +20,10 @@ export const PageContainer = () => {
           <Route path="/" element={<Profile />} />
           <Route path="/auction" element={<Auction />} />
           <Route path="/user" element={<User />} />
-                    <Route path="/live-auction" element={<Liveauction/>}/>
-                    <Route path="/upcoming-auction" element={<Upcoming/>}/>
-                    <Route path="/live-auction/filter" element={<Filter/>}/>
-                    <Route path="/live-auction/sort" element={<Sort/>}/>
+          <Route path="/live-auction" element={<Liveauction />} />
+          <Route path="/upcoming-auction" element={<Upcoming />} />
+          <Route path="/live-auction/filter" element={<Filter />} />
+          <Route path="/live-auction/sort" element={<Sort />} />
           <Route path="/wins" element={<YourWins />} />
           <Route path="bidding-status" element={<BiddingStatus />} />
         </Routes>
