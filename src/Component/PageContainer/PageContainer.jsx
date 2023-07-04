@@ -6,6 +6,7 @@ import { Profile } from "../../Pages/Profile/Profile";
 import { Auction } from "../../Pages/Auction/Auction";
 import { User } from "../../Pages/User/User";
 import { YourWins } from "../../Pages/Wins/YourWins";
+import { BiddingStatus } from "../../Pages/BiddingStatus/BiddingStatus";
 
 export const PageContainer = () => {
   return (
@@ -16,6 +17,7 @@ export const PageContainer = () => {
           <Route path="/auction" element={<Auction />} />
           <Route path="/user" element={<User />} />
           <Route path="/wins" element={<YourWins />} />
+          <Route path="bidding-status" element={<BiddingStatus />} />
         </Routes>
       </BrowserRouter>
     </div>
