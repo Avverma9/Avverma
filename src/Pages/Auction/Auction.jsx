@@ -15,6 +15,17 @@ export const Auction = () => {
                     </div>
                 </div>
                 <Auctioncard />
+                <Auctioncard />
+            </div>
+            <div className='section1'>
+                <div className="auction_type_header">
+                    <h1>Upcoming Auctions <span>(311)</span></h1>
+                    <div className='button1'>
+                        <input type="button" value="View All" />
+                    </div>
+                </div>
+                <Auctioncard />
+                <Auctioncard />
             </div>
             <Footer/>
         </div>
