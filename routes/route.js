@@ -9,6 +9,9 @@ const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const partnerController = require("../controllers/partnerController");
+const bookingController = require("../controllers/bookingController");
+
+
 
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
@@ -59,10 +62,14 @@ router.delete(
   "/delete/:userId/:hotelId/:reviewId",
   reviewController.deleteReview
 );
-//=============================PARTNER=========================================//
+//=============================PARTNER=========================================
 router.post("/create/partner", upload, partnerController.createPartner);
 router.get('/partners/:partnerId', partnerController.getHotelPartner);
 
+//============================= BOOKING =======================================
+router.post('/booking/:userId/:hotelId', bookingController.createBooking);
+router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
+router.get('/bookingFailed', bookingController.getFailedBookings);
 
 
 module.exports = router;
