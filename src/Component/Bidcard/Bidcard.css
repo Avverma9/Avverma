@@ -1,0 +1,43 @@
+.bid_container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bid_header {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: left;
+}
+
+.bid_container p {
+  flex: 1;
+}
+
+.bid_header .bid_status {
+  flex: 1;
+}
+
+.bid_body {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.bid_body img {
+  width: 135px;
+  height: 100px;
+}
+
+.bid_detail_table {
+  flex: 1;
+}
+
+.bid_detail_table svg,
+.bid_detail_table img {
+  width: 16px;
+  height: 16px;
+  margin-right: 15px;
+}

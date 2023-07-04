@@ -1,6 +1,7 @@
 import React from 'react'
 import "./User.css"
 import { BsTrash } from "react-icons/bs"
+import { MdBlock } from "react-icons/md"
 
 export const User = () => {
     return (
@@ -16,7 +17,13 @@ export const User = () => {
                 </div>
                 <input type="text" name="" id="" />
             </div>
-            <div className="user_blocked"></div>
+            <div className="user_blocked">
+                <div className="user_blocked_header">
+                    <h1>Suspended-Block User</h1>
+                    <MdBlock />
+                </div>
+                <input type="text" name="" id="" />
+            </div>
         </div>
     )
 }
