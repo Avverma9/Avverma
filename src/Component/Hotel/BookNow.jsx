@@ -31,6 +31,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from 'react-icons/bi';
 import { FaTelegramPlane } from "react-icons/fa"
+import { BiEdit, BiTrash } from 'react-icons/bi';
+import { FaTelegramPlane } from "react-icons/fa"
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
@@ -43,6 +45,7 @@ export default function BookNow({ refresh, reset }) {
     const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
     const [hotelAmenities, setHotelAmenities] = useState([]);
     const [checkIN, setCheckIn] = useState("");
+    const [localid, setLocalid] = useState("")
     const [localid, setLocalid] = useState("")
     const [checkOUT, setCheckOut] = useState("");
     const [myReview, setMyReview] = useState("");
@@ -80,8 +83,10 @@ export default function BookNow({ refresh, reset }) {
                 setHotelAmenities(data.amenities);
                 setHotelMoreOpt(data.moreOptions);
                 setLocalid(data.localId)
+                setLocalid(data.localId)
                 setCheckIn(convertDate(bookingDetails.startDate));
                 setCheckOut(convertDate(bookingDetails.endDate));
+
 
             })
             .catch((error) => {
@@ -91,6 +96,7 @@ export default function BookNow({ refresh, reset }) {
 
     useEffect(() => {
         setHotelReviews([]);
+        fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotelID}`)
         fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotelID}`)
             .then((response) => {
                 if (response.status === 200) {
@@ -102,6 +108,7 @@ export default function BookNow({ refresh, reset }) {
             .then((data) => {
                 setHotelReviews(data?.reviews);
                 console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
+                console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
             });
     }, [hotelID, reset]);
 
@@ -109,6 +116,8 @@ export default function BookNow({ refresh, reset }) {
         dots: false,
         infinite: true,
         speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 3,
         slidesToShow: 3,
         slidesToScroll: 3,
     };
@@ -139,6 +148,9 @@ export default function BookNow({ refresh, reset }) {
                         const data = response.json();
                         console.log(data)
 
+                        const data = response.json();
+                        console.log(data)
+
                         setMyReview("");
                         // window.location.reload(); 
                         reset()
@@ -162,12 +174,65 @@ export default function BookNow({ refresh, reset }) {
                         // const data = response.json();
                         // window.location.reload();
                         reset()
+                        window.location.reload(); // Reload the page
                     }
                 } catch (error) {
                     console.log(error);
                 }
             });
     };
+
+    const deleteReviewHandler = (revId) => {
+        fetch(`https://hotel-backend-tge7.onrender.com/delete/${userId}/${hotelID}/${revId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then((response) => {
+                try {
+                    if (response.status === 200) {
+                        const data = response.json();
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    };
+
+    const updateReviewHandler = () => {
+        fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                comment: updatedReview,
+            }),
+        })
+            .then((response) => {
+                try {
+                    if (response?.status === 200) {
+                        const data = response.json();
+                        window.location.reload();
+                        console.log(data);
+                        window.alert(data.value.message)
+                        setIsUpdatingReview(false)
+                        setReviewId("");
+                        setUpdatedReview("")
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+    }
+
+    const toggleUpdateReview = (rev) => {
+        setIsUpdatingReview(true)
+        setReviewId(rev.review._id);
+        setUpdatedReview(rev.review.comment)
+    }
 
     const updateReviewHandler = () => {
         fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}/${hotelID}/${reviewId}`, {
@@ -252,12 +317,12 @@ export default function BookNow({ refresh, reset }) {
 
                                 <p className="location-booknow">{bookingDetails.destination}</p>
                             </div>
-                            <p className="rating0">
-                                <p className="staricon">
+                            <div className="rating0">
+                                <p className="staricons">
                                     {bookingDetails.rating}
                                     <FontAwesomeIcon icon={faStar} className="staricon" />
                                 </p>
-                            </p>
+                            </div>
                         </div>
                         <div className="pricing">
                             <FontAwesomeIcon icon={faInr} className="indianrupee" />
@@ -265,7 +330,7 @@ export default function BookNow({ refresh, reset }) {
                         </div>
                         <p className="hotel-descrip">
                             <p className="description1">Description:</p>{" "}
-                            {bookingDetails.description}
+                           <p className="detaildescrip"> {bookingDetails.description}</p>
                         </p>
                         <p className="amenity-section">
                             <p className="amenity-word">Amenities: </p>
@@ -373,6 +438,7 @@ export default function BookNow({ refresh, reset }) {
                             <p className="id">
                                 <FontAwesomeIcon icon={faIdCard} className="icon" />
                                 LocalID: {bookingDetails.availability}
+                                LocalID: {bookingDetails.availability}
                             </p>
                             <p className="noofroom">
                                 <FontAwesomeIcon icon={faRestroom} className="icon" />
@@ -384,6 +450,7 @@ export default function BookNow({ refresh, reset }) {
                             </p>
                             <p className="roomtype">
                                 <FontAwesomeIcon icon={faHotel} className="icon" />
+                                Room Type: {bookingDetails.roomtype}
                                 Room Type: {bookingDetails.roomtype}
                             </p>
                             <p className="maritalstatus">
@@ -400,6 +467,7 @@ export default function BookNow({ refresh, reset }) {
                         <div className="create_new_reviews">
                             <textarea
                                 placeholder="Write a new review"
+                                placeholder="Write a new review"
                                 type="text"
                                 rows="2"
                                 value={myReview}
@@ -412,12 +480,37 @@ export default function BookNow({ refresh, reset }) {
                                 onClick={postReviewHandler}
                             >
                                 <FaTelegramPlane />
+                                <FaTelegramPlane />
                             </button>
                         </div>
 
                         <div className="reviews" key={refresh}>
                             <div className="reviewhead">
                                 <h1>Reviews:</h1>
+                                {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
+                                    <>
+                                        <div className="d-flex flex-column gap-3" style={{
+                                            padding: "7px",
+                                            marginRight: "5%",
+                                            // marginBottom: "20px",
+                                            width: "100%",
+                                            height: "auto",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: "1",
+                                        }} key={i}>
+                                            <div className="review_container">
+                                                <div className="comment_profile">
+                                                    <Avatar
+                                                        name={rev.user.name}
+                                                        src={rev.user.images[0]}
+                                                        round={true}
+                                                        size="25"
+                                                        style={{
+                                                            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                                        }}
+                                                    />
+                                                </div>
                                 {hotelReviews ? [...hotelReviews].reverse().map((rev, i) => (
                                     <>
                                         <div className="d-flex flex-column gap-3" style={{
@@ -446,7 +539,15 @@ export default function BookNow({ refresh, reset }) {
                                                 <div className="comment_profile_name">
                                                     <h4>{rev.user.name}</h4>
                                                 </div>
+                                                <div className="comment_profile_name">
+                                                    <h4>{rev.user.name}</h4>
+                                                </div>
 
+                                                {rev.review.user === userId && <div className="comment_update_del">
+                                                    <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
+                                                    <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />
+                                                </div>}
+                                            </div>
                                                 {rev.review.user === userId && <div className="comment_update_del">
                                                     <BiEdit color="#2563eb" size={24} onClick={() => toggleUpdateReview(rev)} />
                                                     <BiTrash color="#dc3545" size={24} onClick={() => deleteReviewHandler(rev.review._id)} />

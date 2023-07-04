@@ -260,6 +260,9 @@ const Partnerpage = () => {
             <label htmlFor="2prop">Guest House</label>
             <input type="checkbox" name="2prop" id="2prop" />
             </div>
+            <div className="cities">
+            <label htmlFor="city">City:</label>
+            <input type="text" id="city" />
             <div className="panch-one">
             <label htmlFor="3prop">Holiday Home</label>
             <input type="checkbox" name="3prop" id="3prop" />
@@ -312,6 +315,29 @@ const Partnerpage = () => {
               onChange={handleImageUpload}
             />
           </div>
+        )}
+        
+
+        {activeNavItem === "Basic Information" && (
+          <div>
+            <h3>Basic Information</h3>
+            <div className="uploadimages1">
+
+              {[...Array(6)].map((_, index) => (
+                <div className="images" key={index}>
+                  <label htmlFor={`imageUpload${index}`}>
+                    
+                  </label>
+                  <div className="image-container6">
+                 
+                  {!images[index] && (
+        <img
+          className="default-image"
+          src={defaultImages[index]}
+          alt={`Default Image ${index + 1}`}
+        />
+      )}
+                  <input
           <div class="main">
 
 
