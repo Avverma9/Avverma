@@ -191,7 +191,7 @@ function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSe
 
 
 
-function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
+function ProfileInformation({ isSignedIn, userDetails, userData, handleShow, reset, refresh }) {
   const [isEditing, setIsEditing] = useState(false)
 
   const [uname, setUName] = useState("");
@@ -200,6 +200,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
   const [uimages, setImages] = useState([]);
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -226,6 +227,8 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
       if (response.ok) {
         // Call the onUpdateDone callback
         // window.location.reload()
+        setIsEditing(false)
+        reset()
       } else {
         throw new Error('Failed to update profile');
       }
@@ -247,7 +250,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             <input type="button" value="Edit" onClick={() => setIsEditing(true)} />
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name) : uname} onChange={(e) => setUName(e.target.value)}
 
               placeholder={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name}
@@ -257,7 +260,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
         </>
         <>
           <h4 className='sub_Title'>Your Gender</h4>
-          <div className='profile_information_gender'>
+          <div className='profile_information_gender' key={refresh}>
             {!isEditing ? (userData?.gender === "Male" ? <>
               <input type="radio" id="male" name="gender" value="Male" checked />
               <label for="male" className='ml-2'>{userData?.gender}
@@ -288,7 +291,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="email" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.email : userData?.email) : email} onChange={(e) => setEmail(e.target.value)}
               placeholder={!isSignedIn && userDetails ? userDetails?.email : userData?.email}
             />
@@ -301,7 +304,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile) : mobile} onChange={(e) => setMobile(e.target.value)}
               placeholder={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile}
             />
@@ -345,7 +348,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   );
 }
 
-function AddressInformation({ userData }) {
+function AddressInformation({ userData, reset, refresh }) {
   const [address, setAddress] = useState("");
 
   const handleUpdate = async (e) => {
@@ -364,6 +367,7 @@ function AddressInformation({ userData }) {
         // setProfileUpdated(true);// Call the onUpdateDone callback
         // handleClose()
         setAddress("")
+        reset()
       } else {
         throw new Error('Failed to update profile');
       }
@@ -381,7 +385,7 @@ function AddressInformation({ userData }) {
           Address
         </h1>
       </div>
-      <div className="_fields">
+      <div className="_fields" key={refresh}>
         <textarea type="text" rows="1" value={userData?.address} />
         <textarea placeholder='Enter New Address' type="text" rows="1" value={address} onChange={(e) => setAddress(e.target.value)} />
       </div>
@@ -834,7 +838,7 @@ function MyReviewSection() {
     </>)
 }
 
-function ComplainsSection({ isSignedIn, userDetails, userData, reset }) {
+function ComplainsSection({ isSignedIn, userDetails, userData, reset, refresh }) {
   const [raiseComplaint, setRaiseComplaint] = useState(false)
   const [newComplaint, setNewComplaint] = useState("")
   const [complaints, setComplaints] = useState([])
@@ -911,7 +915,7 @@ function ComplainsSection({ isSignedIn, userDetails, userData, reset }) {
 
         <div className="ms-4 me-4 text-wrap" style={{ "width": "80%" }}>
           <p>Grand Hotel</p>
-          <p className="sub_Title">
+          <p className="sub_Title" key={refresh}>
             {complaint.complaintDescription}
           </p>
         </div>
@@ -973,7 +977,7 @@ const Profile = ({ reset, refresh }) => {
     }
   }
     ,
-    [navigate]);
+    [navigate, reset]);
 
 
   const userDetails = getLocalStorage("loggedUser");
@@ -1032,8 +1036,8 @@ const Profile = ({ reset, refresh }) => {
           <Sidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
         </div>
         <div className='profile_body'>
-          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} reset={reset} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} key={refresh} reset={reset} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} reset={reset} refresh={refresh} /> : selectedNav === "Mannage Addresses" ?
+            <AddressInformation userData={userData} reset={reset} refresh={refresh} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} reset={reset} refresh={refresh} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} reset={reset} refresh={refresh} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} reset={reset} refresh={refresh} />}
         </div>
       </div>
     </>

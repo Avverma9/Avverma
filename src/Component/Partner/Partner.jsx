@@ -1,807 +1,744 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import "./partner.css";
-import { useLocation } from "react-router-dom";
+import './partner.css';
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faAirFreshener, faBaby, faBars, faBath, faBathtub, faBottleWater, faBrush, faBusinessTime, faChair, faCheck, faCoffee, faDesktop, faHandsWash, faHeartCircleCheck, faHotel, faInr, faLock, faParking, faRestroom, faSchoolFlag, faShirt, faShoePrints, faShower, faSmokingBan, faSpa, faSwimmingPool, faTrowel, faTv, faUmbrellaBeach, faWater, faWifi} from '@fortawesome/free-solid-svg-icons';
+import { faInr, faStar, faLocationDot, faPerson, faHotel, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faFire, faParking, faWifi, faPaw, faKitchenSet, faCheck, faGlassMartini, faPeopleGroup, faAirFreshener, faRestroom, faHandsWash, faSchoolFlag, faCar, faBrush, faTrowel, faShower, faWater, faSwimmingPool, faHeartCircleCheck, faDesktop, faSpa, faBathtub, faBars, faCoffee, faSmoking, faBanSmoking, faBabyCarriage, faUmbrellaBeach, faShoePrints, faShirt, faLock, faBusinessTime } from '@fortawesome/free-solid-svg-icons';
 
-const Partner = () => {
+const Partnerpage = () => {
+  const [activeTab, setActiveTab] = useState(null);
+  const [hotelownerName, setHotelownerName] = useState("");
+  const [ownercontact, setOwnercontact] = useState("");
+  const [receptioncontact, setReceptioncontact] = useState("");
+  const [hotelemail, setHotelEmail] = useState("");
+  const [gmcontact, setGmcontact] = useState("");
+  const [salescontact,setSalescontact]= useState("");
+  const [hotelName, setHotelName] = useState("");
+  const [hoteladdress, setHoteladdress] = useState("");
+  const [hotelstate, setHotelstate] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [citypartner, setCitypartner] = useState("");
+  const [landmark, setLandmark] = useState("");
+  const [selectedImage, setSelectedImage] = useState("")
+
   const location = useLocation();
-  const [activeNavItem, setActiveNavItem] = useState(
-    "Hotel Contact Information"
-  );
-  const [images, setImages] = useState([]);
 
-
-  
-  
-  
-
-
-  const navItems = [
-    "Hotel Contact Information",
-    "Basic Information",
-    "Hotel Policy",
-    "Hotel Tariff",
-  ];
-  
-
-  const defaultImages = [
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022019310-Room.jpg",
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022443531-bathroom.jpeg",
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022416654-parking.jpg",
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022425620-Lane.jpg",
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022404482-resturant.jpg",
-    "https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022435744-Front.jpg",
-  ];
-  
-
-const[uploadimage,setUploadimage]=useState("");
-
-
-
-
-  const handleNavItemClick = (navItem) => {
-    if (navItem === "Basic Information") {
-      setActiveNavItem(navItem);
-      setImages([]);
-    } else {
-      setActiveNavItem(navItem);
-    }
+  const openTab = (tabName) => {
+    setActiveTab(tabName);
   };
 
-  const handleNextClick = () => {
-    const currentIndex = navItems.indexOf(activeNavItem);
-    const nextIndex = currentIndex + 1;
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+     // Create FormData object to send the form data
+     const formData = new FormData();
+     formData.append('hotelownerName', hotelownerName);
+     formData.append('ownercontact', ownercontact);
+     formData.append('receptioncontact', receptioncontact);
+     formData.append('hotelemail', hotelemail);
+     formData.append('hoteladdress', hoteladdress);
+     formData.append('hotelstate', hotelstate);
+     formData.append('zipcode', zipcode);
+     formData.append('citypartner', citypartner);
+     formData.append('landmark', landmark);
+     formData.append('selectedImage', selectedImage);
+    try {
+      const response = await fetch('https://hotel-backend-tge7.onrender.com/partner/create/new', {
+        method: 'POST',
+        body: formData,
+      });
 
-    if (nextIndex < navItems.length) {
-      setActiveNavItem(navItems[nextIndex]);
-    }
-  };
+      if (response.ok) {
+    console.log("Submitted:", { hotelownerName, ownercontact, receptioncontact, hotelemail, gmcontact,salescontact, hotelName, hoteladdress, hotelstate, zipcode, citypartner, landmark, selectedImage });
 
-  const handlePrevClick = () => {
-    const currentIndex = navItems.indexOf(activeNavItem);
-    const prevIndex = currentIndex - 1;
-
-    if (prevIndex >= 0) {
-      setActiveNavItem(navItems[prevIndex]);
-    }
-  };
-
-  const handleImageUpload = (event, index) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const image = e.target.result;
-      const updatedImages = [...images];
-      updatedImages[index] = image;
-      setImages(updatedImages.slice(0, 6));
-    };
-
-    reader.readAsDataURL(file);
-  };
-
-  const handleCheckboxChange = (event) => {
-    // Handle checkbox change logic here
-  };
-
-  if (location.pathname !== "/partner") {
-    return null;
+    setHotelownerName("");
+    setOwnercontact("");
+    setReceptioncontact("");
+    setHotelEmail("");
+    setGmcontact("");
+    setHotelName("");
+    setHoteladdress("");
+    setHotelstate("");
+    setZipcode("");
+    setCitypartner("");
+    setLandmark("");
+    setSelectedImage("");
+    setSalescontact("");
+  } else {
+    console.log('creation of partner details failed');
   }
+} catch (error) {
+  console.log('Error:', error);
+}
+};
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    setSelectedImage(file)
+  }
+  if (location.pathname!=="/partner"){
+    return null
+  };
 
   return (
     <div>
-      <nav>
-        <ul className="navbar">
-          {navItems.map((navItem) => (
-            <li
-              key={navItem}
-              className={activeNavItem === navItem ? "active" : ""}
-              onClick={() => handleNavItemClick(navItem)}
-            >
-              {navItem}
-            </li>
-          ))}
+
+      <nav className="navbarparner">
+        <ul>
+          <li>
+            <a href="#" onClick={() => openTab("contact")} className={activeTab === 'contact' ? 'active' : ''}>
+              Hotel Contact Information
+            </a>
+          </li>
+          <li>
+            <a href="#" onClick={() => openTab("basic")} className={activeTab === 'basic' ? 'active' : ''}>
+              Basic Information
+            </a>
+          </li>
+          <li>
+            <a href="#" onClick={() => openTab("policy")} className={activeTab === 'policy' ? 'active' : ''}>
+              Hotel Policy
+            </a>
+          </li>
+          <li>
+            <a href="#" onClick={() => openTab("tariff")} className={activeTab === 'tariff' ? 'active' : ''}>
+              Hotel Tariff
+            </a>
+          </li>
         </ul>
+
       </nav>
-
-      <div className="content">
-        {activeNavItem === "Hotel Contact Information" && (
-          <div>
-            <h3>Hotel Listed Request</h3>
-            <div className="group1">
-            <div className="hotelownername">
-            <label htmlFor="hotelOwnerName">Hotel Owner Name</label>
-            <input type="text" id="hotelOwnerName" />
-            </div>
-            <div className="ownercontactdetail">
-            <label htmlFor="ownerContactDetails">Owner Contact Details:</label>
-            <input type="text" id="ownerContactDetails" />
-            </div>
-            <div className="receptioncontactdetails">
-            <label htmlFor="receptionContactDetails">
-              Reception Contact Details:
-            </label>
-            <input type="text" id="receptionContactDetails" />
-            </div>
-            </div>
-            <br />
-            <div className="group2">
-            <div className="hotelemailaddress">
-            <label htmlFor="hotelEmail">Hotel Email Address:</label>
-            <input type="email" id="hotelEmail" />
-            </div>
-            <div className="generalmanagercontact">
-            <label htmlFor="generalManagerContact">
-              General Manager Contact Details:
-            </label>
-            <input type="text" id="generalManagerContact" />
-            </div>
-            <div className="salesmanagercontact">
-            <label htmlFor="salesManagerContact">
-              Sales Manager Contact Details:
-            </label>
-            <input type="text" id="salesManagerContact" />
-            </div>
-            </div>
-
-            <h3>Hotel Details & Location</h3>
-            <div className="group3">
-            <div className="hoteldetails">
-            <label htmlFor="hotelDetails">Hotel Details:</label>
-            <input type="text" id="hotelDetails" />
-            </div>
-            <div className="street">
-            <label htmlFor="street">Street:</label>
-            <input type="text" id="street" />
-            </div>
-            <div className="city">
-            <label htmlFor="city">City:</label>
-            <input type="text" id="city" />
-            </div>
-            </div>
-            <br />
-            <div className="group4">
-            <div className="state">
-            <label htmlFor="state">State:</label>
-            <input type="text" id="state" />
-            </div>
-            <div className="zipcode">
-            <label htmlFor="zip">ZIP Code:</label>
-            <input type="text" id="zip" />
-            </div>
-            <div className="landmark">
-            <label htmlFor="landmark">Landmark</label>
-            <input type="text" id="landmark" />
-            </div>
-            </div>
-
-            <h3>Hotel Star Rating</h3>
-            <input type="radio" id="starone" name="starType" value="1star" />
-            <label htmlFor="starone">1 Star</label>
-            <br />
-            <input type="radio" id="startwo" name="starType" value="2star" />
-            <label htmlFor="startwo">2 Star</label>
-            <br />
-            <input type="radio" id="starthree" name="starType" value="3star" />
-            <label htmlFor="starthree">3 Star</label>
-            <br />
-            <input type="radio" id="starfour" name="starType" value="4star" />
-            <label htmlFor="starfour">4 Star</label>
-            <br />
-            <input type="radio" id="starfive" name="starType" value="5star" />
-            <label htmlFor="starfive">5 Star</label>
-
-            <h3>Your Property Type</h3>
-            <input type="radio" id="apartment" name="propertyType" value="apartment" />
-            <label htmlFor="apartment">Apartment</label>
-            <br />
-            <input type="radio" id="guesthouse" name="propertyType" value="guesthouse" />
-            <label htmlFor="guesthouse">Guest House</label>
-            <br />
-            <input type="radio" id="holiday" name="propertyType" value="holiday" />
-            <label htmlFor="holiday">Holiday Home</label>
-            <br />
-            <input type="radio" id="homestay" name="propertyType" value="homestay" />
-            <label htmlFor="homestay">Homestay</label>
-            <br />
-
-            <input type="radio" id="hostel" name="propertyType" value="hostel" />
-            <label htmlFor="hostel">Hostel</label>
-            <br />
-            <input type="radio" id="hotel" name="propertyType" value="hotel" />
-            <label htmlFor="hotel">Hotel</label>
-            <br />
+      {activeTab === "contact" && (
+        <form className="form1" onSubmit={handleSubmit}>
+          <h3 className="partner-title">Hotel Listed Request</h3>
+          <div className="section1st"> 
+          <div className="1st-pehla">
+          <label htmlFor="hotelownerName">Hotel Owner Name:</label>
             <input
-              type="radio"
-              id="hotelapartment"
-              name="propertyType"
-              value="hotelapartment"
-            />
-            <label htmlFor="hotelaprtment">Hotel Aprtment</label>
-            <br />
-            <input type="radio" id="resort" name="propertyType" value="resort" />
-            <label htmlFor="resort">Resort</label>
-            <br />
-            <input type="radio" id="villa" name="propertyType" value="villa" />
-            <label htmlFor="villa">Villa</label>
+              type="text"
+              id="hotelownerName"
+              value={hotelownerName}
+              onChange={(e) => setHotelownerName(e.target.value)}
+              required
+            /></div>
+            <div className="1st-dusra">
+            <label htmlFor="ownercontact">Owner Contact Detail:</label>
+            <input
+              type="text"
+              id="ownercontact"
+              value={ownercontact}
+              onChange={(e) => setOwnercontact(e.target.value)}
+              required
+            /></div>
+            <div className="1st-tisra">
+            <label htmlFor="receptioncontact">Reception Contact Detail:</label>
+            <input
+              type="text"
+              id="receptioncontact"
+              value={receptioncontact}
+              onChange={(e) => setReceptioncontact(e.target.value)}
+              required
+            /></div>
+
+
+            <div className="1st-chotha">
+            <label htmlFor="hotelemail">Hotel Email Address:</label>
+            <input
+              type="email"
+              id="hotelemail"
+              value={hotelemail}
+              onChange={(e) => setHotelEmail(e.target.value)}
+              required
+            /></div>
+            <div className="1st-panchwa">
+            <label htmlFor="gmcontact">GM Contact Details:</label>
+            <input
+              type="tel"
+              id="gmcontact"
+              value={gmcontact}
+              onChange={(e) => setGmcontact(e.target.value)}
+              required
+            /></div>
+            <div className="1st-chatha">
+            <label htmlFor="gmcontact">Sales Manager Contact Detail:</label>
+            <input
+              type="tel"
+              id="salesmanacontact"
+              value={salescontact}
+              onChange={(e) => setSalescontact(e.target.value)}
+              required
+            /></div>
           </div>
-        )}
-        
+          <div className="section2nd">
+            <h3 className="partner-title">Hotel Details&Location</h3>
+            <label htmlFor="hotelname">Hotel Name:</label>
+            <input
+              type="text"
+              id="hotelName"
+              value={hotelName}
+              onChange={(e) => setHotelName(e.target.value)}
+              required
+            /></div>
+              <h3 className="partner-title">Hotel Complete Address</h3>
+          <div className="section3rd">
+            
+            <div className="3rd-pehla">
+            <label htmlFor="comaddress">Address</label>
+            <input
+              type="text"
+              id='compaddress'
+              value={hoteladdress}
+              onChange={(e) => setHoteladdress(e.target.value)}
+              required /></div>
+              <div className="3rd-dusra">
+            <label htmlFor="hotelstate">State</label>
+            <input
+              type="text"
+              id='state'
+              value={hotelstate}
+              onChange={(e) => setHotelstate(e.target.value)}
+              required /></div>
+              <div className="3rd-tisra">
+            <label htmlFor="zipcode">Post Code/Zip Code</label>
+            <input
+              type="text"
+              id='zipcode'
+              value={zipcode}
+              onChange={(e) => setZipcode(e.target.value)}
+              required /></div>
+              <div className="3rd-chitha">
+            <label htmlFor="city-partner">City</label>
+            <input
+              type="text"
+              id='citypartner'
+              value={citypartner}
+              onChange={(e) => setCitypartner(e.target.value)}
+              required /></div>
+              <div className="3rd-pachwa">
+            <label htmlFor="landmark">Landmark</label>
+            <input
+              type="text"
+              id='landmark'
+              value={landmark}
+              onChange={(e) => setLandmark(e.target.value)}
+              required /></div>
+          </div>
+          <div className="section4">
+            <h3 className="partner-title">Hotel Star Rating</h3>
+            
+            <div className="starrat">
+            <label htmlFor="1checkbox">1 star</label>
+            <input type="checkbox" name="1checkbox" id="1checkbox" />
+            </div>
+            <div className="starrat">
+            <label htmlFor="2checkbox">2 star</label>
+            <input type="checkbox" name="2checkbox" id="2checkbox" />
+            </div>
+            <div className="starrat">
+            <label htmlFor="3checkbox">3 star</label>
+            <input type="checkbox" name="3checkbox" id="3checkbox" />
+            </div>
+            <div className="starrat">
+            <label htmlFor="4checkbox">4 star</label>
+            <input type="checkbox" name="4checkbox" id="4checkbox" />
+            </div>
+            <div className="starrat">
+            <label htmlFor="5checkbox">5 star</label>
+            <input type="checkbox" name="5checkbox" id="5checkbox" />
+            </div>
+            
 
-        {activeNavItem === "Basic Information" && (
-          <div>
-            <h3>Basic Information</h3>
-            <div className="uploadimages1">
+          </div>
+          
+            <h3 className="partner-title">Your Property Type</h3>
+            <div className="section5">
+            <div className="panch-one">
+            <label htmlFor="1prop">Apartment</label>
+            <input type="checkbox" name="1prop" id="1prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="2prop">Guest House</label>
+            <input type="checkbox" name="2prop" id="2prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="3prop">Holiday Home</label>
+            <input type="checkbox" name="3prop" id="3prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="4prop">Homestay</label>
+            <input type="checkbox" name="4prop" id="4prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="5prop">Hostel</label>
+            <input type="checkbox" name="5prop" id="5prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="6prop">Hotel</label>
+            <input type="checkbox" name="6prop" id="6prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="7prop">Hotel Apartment</label>
+            <input type="checkbox" name="7prop" id="7prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="8prop">Resort</label>
+            <input type="checkbox" name="8prop" id="8prop" />
+            </div>
+            <div className="panch-one">
+            <label htmlFor="9prop">Villa</label>
+            <input type="checkbox" name="9prop" id="9prop" />
+            </div>
 
-              {[...Array(6)].map((_, index) => (
-                <div className="images" key={index}>
-                  <label htmlFor={`imageUpload${index}`}>
-                    
-                  </label>
-                  <div className="image-container6">
-                 
-                  {!images[index] && (
-        <img
-          className="default-image"
-          src={defaultImages[index]}
-          alt={`Default Image ${index + 1}`}
-        />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+
       )}
-                  <input
+      {activeTab === "basic" && (
+         <div className="basic-container">
+          <div className="imgupload"><p>1-Upload Image</p>
+            {selectedImage && (
+              <img
+                src={URL.createObjectURL(selectedImage)}
+                alt="Uploaded"
+                style={{ maxWidth: "300px" }}
+              />
+            )}
+            
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+          </div>
+          <div class="main">
 
-                    type="file"
-                    id={`imageUpload${index}`}
-                    value={uploadimage}
-                    accept="image/*"
-                    onChange={(event) => handleImageUpload(event, index)}
-                    className="imgbutton"
-                  />
-                  
-                  </div>
-                </div>
-                
-              ))}
-              
-            </div>
-            <div className="amenity-container5">
-              <h3>Amenities</h3>
-              <div className="amenities1">
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Free Wireless Internet"
-                />
-                <FontAwesomeIcon icon={faWifi} />
-                Free Wireless Internet
-              </label>
-              <br />
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Air Conditioning"
-                /><FontAwesomeIcon icon={faAirFreshener}/>
-                Air Conditioning
-              </label>
-              <br />
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Room Services"
-                /><FontAwesomeIcon icon={faRestroom}/>
-                Room Services
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Clean And Disinfect"
-                /><FontAwesomeIcon icon={faHandsWash}/>
-                Clean & Disinfect
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="School Diatacing"
-                /><FontAwesomeIcon icon={faSchoolFlag}/>
-                School Diatacing
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Free Parking"
-                /><FontAwesomeIcon icon={faParking}/>
-                Free Parking
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="House Keeping"
-                /><FontAwesomeIcon icon={faBrush}/>
-                House Keeping
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Towels"
-                /><FontAwesomeIcon icon={faTrowel}/>
-                Towels
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Complimentary Tolietries"
-                /><FontAwesomeIcon icon={faHandsWash}/>
-                Complimentary Tolietries
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Good Showers"
-                /><FontAwesomeIcon icon={faShower}/>
-                Good Showers
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Cable Tv"
-                /><FontAwesomeIcon icon={faTv}/>
-                Cable Tv
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Bottled Water"
-                /><FontAwesomeIcon icon={faBottleWater}/>
-                Complimentary Bottled Water
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Swimming Pool"
-                /><FontAwesomeIcon icon={faSwimmingPool}/>
-                Swimming Pool
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="On-site Restaurant"
-                /><FontAwesomeIcon icon={faHotel}/>
-                On-site Restaurant
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Hair Dryer"
-                /><FontAwesomeIcon icon={faAirFreshener}/>
-                Hair Dryer
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Fitness Center"
-                /><FontAwesomeIcon icon={faHeartCircleCheck}/>
-                Fitness Center
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Conclerge Desk"
-                /><FontAwesomeIcon icon={faDesktop}/>
-                Conclerge Desk
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Spa"
-                /><FontAwesomeIcon icon={faSpa}/>
-                Spa
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Dry Cleaning"
-                /><FontAwesomeIcon icon={faAirFreshener}/>
-                Dry Cleaning
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Bathrobe"
-                /><FontAwesomeIcon icon={faBathtub}/>
-                Bathrobe
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="24 Hour Front Desk Service"
-                /><FontAwesomeIcon icon={faCheck}/>
-                24 Hours Front Desk Service
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Bar"
-                /><FontAwesomeIcon icon={faBars}/>
-                Bar
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Coffee/Tea"
-                /><FontAwesomeIcon icon={faCoffee}/>
-                Coffee/Tea
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Non Smoking Rooms"
-                /><FontAwesomeIcon icon={faSmokingBan}/>
-                Non Smoking Rooms
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Baby Sitting"
-                /><FontAwesomeIcon icon={faBaby}/>
-                Baby Sitting
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Picnic Area"
-                /><FontAwesomeIcon icon={faUmbrellaBeach}/>
-                Picnic Area
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Currency Exchange"
-                /><FontAwesomeIcon icon={faInr}/>
-                Currency Exchange
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Indoor Pool"
-                /><FontAwesomeIcon icon={faSwimmingPool}/>
-                Indoor Pool
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Shoesshine"
-                /><FontAwesomeIcon icon={faShoePrints}/>
-                Shoesshine
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Tour Desk"
-                /><FontAwesomeIcon icon={faCheck}/>
-                Tour Desk
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Loundry"
-                /><FontAwesomeIcon icon={faShirt}/>
-                Loundry
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Lockers"
-                /><FontAwesomeIcon icon={faLock}/>
-                Lockers
-              </label>
-              <br/>
-              <label>
-                <input
-                  type="checkbox"
-                  onChange={handleCheckboxChange}
-                  value="Business Center"
-                /><FontAwesomeIcon icon={faBusinessTime}/>
-                Business Center
-              </label>
-              </div>
+
+
+<div class="card">
+
+<div class="image">
+<img 
+          src="https://miro.medium.com/v2/resize:fit:8576/1*p1zBnv11CSx_EII8sB9Uaw.jpeg"
+          alt="Image 9"
+           />
+   {/* <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Gfp-missouri-st-louis-clubhouse-pond-and-scenery.jpg/1199px-Gfp-missouri-st-louis-clubhouse-pond-and-scenery.jpg"/> */}
+</div>
+<div class="des">
+ <p>Room-Image</p>
+<button>ChooseFile</button>
+</div>
+</div>
+
+
+
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i1.wp.com/i.pinimg.com/originals/19/f2/18/19f21857163adcee4349166af11ae145.jpg?w=1140&ssl=1"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2018/01/09/03/49/the-natural-scenery-3070808_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Bathroom-image</p>
+<button>Choosefile</button>
+</div>
+</div>
+
+
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i0.wp.com/www.designlike.com/wp-content/uploads/2018/03/restaurant-1948732_1920.jpg"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Resturant-Room</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://i.nextmedia.com.au/News/crn-14_carpark_iStock-177136206.jpg"
+            alt="Image 9"
+          />
+   {/* <img src=""/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Parking-images</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://tse1.mm.bing.net/th?id=OIP.KwETv6vjh5rRMqzeQ-J5wAHaEJ&pid=Api&P=0&h=180"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>Lane-Images</p>
+<button>ChooseFile</button>
+</div>
+</div>
+<div class="card">
+
+<div class="image">
+<img
+            className="chat-icon"
+            src="https://tse4.mm.bing.net/th?id=OIP.NScPnwpNJ1GuyeeKEqOBBAHaE7&pid=Api&P=0&h=180"
+            alt="Image 9"
+          />
+   {/* <img src="https://cdn.pixabay.com/photo/2015/11/07/11/41/lake-1031405_1280.jpg"/> */}
+</div>
+{/* <div class="title">
+ <h1>
+Write title Here</h1>
+</div> */}
+<div class="des">
+ <p>HotelFront-View</p>
+<button>ChooseFile</button>
+</div>
+</div>
+</div>
+
+
+
+          <div className="selectamenity">
+            <p>Select Hotel Amenity</p>
+            <div className="amenityitem4">
+           <div className="amenityclasses"> 
+          <input type="checkbox" />
+          
+          <label><FontAwesomeIcon icon={faWifi} />Free Wireless Internet
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faAirFreshener} />Air Conditioning
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faRestroom} />Room Service
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faHandsWash} />Clean and Disinfect
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faSchoolFlag} />School Diatacing
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faCar} />Free Parking
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBrush} />House Keeping
+          </label>
+          </div>
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faTrowel} />Towels
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faHandsWash} />Complimentary Tolietries
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faShower} />Good Showers
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faTv} />Cabel TV
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faWater} />Complimentary Battled Water
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faSwimmingPool} />Swimming Pool
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faHotel} />On-site Restaurant
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faAirFreshener} />Hair Dryer
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faHeartCircleCheck} />Fitness Center
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faDesktop} />Conclerge Desk
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faSpa} />Spa
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faAirFreshener} />Dry Cleaning
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBathtub} />Bathrobe
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faCheck} />24 hour front desk service
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBars} />Bar
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faCoffee} />Coffee/Tea
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBanSmoking} />Non smoking rooms
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBabyCarriage} />Baby Sitting
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faUmbrellaBeach} />Picnic Area
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faInr} />Currency Exchange
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faSwimmingPool} />Indoor Pool
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faShoePrints} />Shoesshine
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faCheck} />Tour Desk
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faShirt} />Loundery
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faLock} />Lockers
+          </label>
+          </div>
+
+          <div className="amenityclasses"> 
+          <input type="checkbox" />
+          <label><FontAwesomeIcon icon={faBusinessTime} />Business center
+          </label>
+          </div>
+
+          
+
             </div>
           </div>
-        )}
+        </div>
 
-{activeNavItem === "Hotel Policy" && (
-  <div>
-    <h3>Hotel Policy</h3>
-    <div className="radioinputs">
-      <label>1-Outside Food</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="outsideFoodPolicy"
-          value="allowed"
-        />
-       
+      )}
+      {activeTab === "policy" && (
+        <div className="policy-section">
+          <div className="policy-heading">
+            <h3 className="poli-head">Your Hostel Policy</h3>
 
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="outsideFoodPolicy"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>2-Cancellation</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="cancellationpolicy"
-          value="allowed"
-        />
-       
+            <div className="policy-item">
+              <label>1 - Outside Food:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>2 - Cancellation:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>3 - Select Your Payment Mode You Accepted:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>4 - Pets Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>5 - Bachelors Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>6 - Smoking Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>7 - Alcohol Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>8 - Unmarried Couples Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
+            <div className="policy-item">
+              <label>9 - International Guest Allowed:</label>
+              <div className="allow">
+              <input type="checkbox" id="allowedCheckbox" />
+              <label htmlFor="allowedCheckbox">Allowed</label></div>
+              <div className="allow">
+              <input type="checkbox" id="notAllowedCheckbox" />
+              <label htmlFor="notAllowedCheckbox">Not Allowed</label></div>
+            </div>
 
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="cancellationpolicy"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>3-Select Your Payment Mode You Accepted</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="paymentmode"
-          value="online"
-        />
-       
-
-        Online
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="paymentmode"
-          value="offline"
-        />
-        Offline
-      </label>
-      <br />
-      <label>4-Pets Allowed</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="pets"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="pets"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>5-Bachelor Allowed</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="Bachelorallow"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="Bachelorallow"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>6-Smoking Allowed</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="smokingallow"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="smokingallow"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>7-Alcohol Allowed</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="Alcohol"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="Alcohol"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>8-Unmarried Couples</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="unmarriedcouples"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="unmarriedcouples"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>9-International Guest Allowed</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="internationalcouple"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="internationalcouple"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <label>Outside Food</label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="outsideFoodPolicy"
-          value="allowed"
-        />
-       
-
-        Allowed
-      </label>
-      <br />
-      <label>
-        <input
-          type="radio"
-          name="outsideFoodPolicy"
-          value="notAllowed"
-        />
-        Not Allowed
-      </label>
-      <br />
-      <hr/>
-      <label htmlFor="returnPolicy">Describe your return policy:</label>
-      <input type="text" id="returnPolicy" />
-
-      <label htmlFor="checkInOut">Check-In and Check-Out:</label>
-      <input type="text" id="checkInOut" />
-    <hr/>
-    <div className="memo">
+          </div>
+          <div className="policy-partner">
+            <label>Describe Your Return Policy Here</label>
+            <input type="text"/>
+          </div>
+          <div className="check-in-out">
+            <label>Check-in - Check-out</label>
+            <input type="text"/>
+          </div>
+          <div className="memo">
             <p className="early-late">Early Check-in And Late Check-out</p>
             <p className="checkin-rules">1-Early Check-in the Standard Check-in time in hotels is 12 noon unless mentioned otherwise in your Booking voucher Early Check in is Subject to availability Extra changes will usually apply as per below policy</p>
           </div>
@@ -868,77 +805,69 @@ const[uploadimage,setUploadimage]=useState("");
     
           </div>
         
+        </div> 
+      )}
+      {activeTab === "tariff" && (
+        <div className="hotel-terrif">
+          <h3 className="terrif-heading">Hotel Tarrif</h3>
+          <div className="terrif-class">
+          <div className="terii">
+          <label>Double Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Quad Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk booking more then 20 to 30 people with(Maplan)</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Triple Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk booking more then 20 to 30 people with(Maplan)</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk Booking more then four room</label>
+              <input type="text"  />
+              </div>
+          </div>
+          <h3 className="terrif-heading">Hotel Tarrif</h3>
+          <div className="terrif-class">
+          <div className="terii">
+          <label>Double Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Quad Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk booking more then 20 to 30 people with(Maplan)</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Triple Sharing</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk booking more then 20 to 30 people with(Maplan)</label>
+              <input type="text"  />
+              </div>
+              <div className="terii">
+              <label>Bulk Booking more then four room</label>
+              <input type="text"  />
+              </div>
+              </div>
+
         </div>
-  </div>
-)}
-{activeNavItem === "Hotel Tariff" && (
-  <div>
-  <div className="tariff">
-    <h3>Hotel Tariff</h3>
-    <h6>On-season</h6>
-    <br/>
-    
-    
-    <div className="tariff-container1">
-      <label htmlFor="ondoublesharing">Double Sharing
-      <input type="text" id="ondoublesharing"/></label>
-
-      <label htmlFor="onquadsharing">Quad Sharing
-      <input type="text" id="onquadsharing"/></label>
-
-      <label htmlFor="onbulkbooking">Bulk Booking more then 20-30people
-      <input type="text" id="onbulkbooking" /></label>
-
-      <label htmlFor="ontripplesharing">Tripple Sharing
-      <input type="text" id="ontripplesharing" /></label>
-      <label htmlFor="ontripplesharing">More then four rooms:
-      <input type="text" id="onmore4rooms" /></label>
-    </div>
-    </div>
-
-    <div className="tariff">
-    <h3>Hotel Tariff</h3>
-    <h6>Off-season</h6>
-    <br/>
-    <div className="tariff-container1">
-      <label htmlFor="offdoublesharing">Double Sharing:
-      <input type="text" id="offdoublesharing"  /></label>
-
-      <label htmlFor="offquadsharing">Quad Sharing:
-      <input type="text" id="offquadsharing" /></label>
-
-      <label htmlFor="offbulkbooking">Bulk Booking more then 20-30people:
-      <input type="text" id="offbulkbooking"  /></label>
-
-      <label htmlFor="offtripplesharing">Tripple Sharing:
-      <input type="text" id="offtripplesharing" /></label>
-      <label htmlFor="offtripplesharing">More then four rooms:
-      <input type="text" id="offmore4rooms" /></label>
-    </div>
-    </div>
-  </div>
-
-  
-  
-)}
-
-
-
-
-        <div className="button-container">
-          {activeNavItem !== navItems[0] && (
-            <button onClick={handlePrevClick}>Previous</button>
-          )}
-          {activeNavItem !== navItems[navItems.length - 1] && (
-            <button onClick={handleNextClick}>Next</button>
-          )}
-          {activeNavItem === "Hotel Tariff" && (
-  <button onClick={""}>Submit</button>
-)}
-        </div>
-      </div>
-    </div>
+      )}
+     </div>
   );
 };
 
-export default Partner;
+export default Partnerpage;
