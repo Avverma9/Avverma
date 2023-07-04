@@ -9,6 +9,10 @@ import { PiMotorcycleFill, PiCarProfileBold } from "react-icons/pi"
 
 
 function Auctioncard() {
+
+    const handleLockClick=()=>{
+        alert("Selected Auction has not assigned to you.please Contact Us at 6375360267 for more details.");
+    };
   return (
     <div className="auction_body">
     <div className='auction-timing'>
@@ -16,7 +20,7 @@ function Auctioncard() {
         <GoClock />
         <p>Ends in 6 h 80 min</p>
         </div>
-        <IoMdLock />
+        <IoMdLock onClick={handleLockClick}/>
     </div>
     <div className="auction_party">
         <h1>Exclusive Bajaj Salvage Auction <span>20 jun 23</span></h1>

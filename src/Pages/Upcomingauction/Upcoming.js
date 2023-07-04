@@ -18,7 +18,7 @@ function Upcoming() {
                     
                 </div>
                 <div className='live-header'>
-                    <h1> <span>311</span>Auctions</h1>
+                    <h1> <span>288</span>Auctions</h1>
                     <div className='live-icons'>
                     <FiSearch/>
                     <BsFilter/>

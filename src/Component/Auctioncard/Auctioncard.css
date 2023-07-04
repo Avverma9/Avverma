@@ -36,14 +36,18 @@ gap: 5px;
     flex-direction: row;
     gap:5%;
     margin-top: 10px;
+   
     
 }
 .motorcycle-pic,.car-pic{
-    font-size: 15px;
-    background: grey;
+    font-size: 18px;
+    background: #d5d5d5;
     width: 45px;
     height: 20px;
     border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    
   }
     
     
