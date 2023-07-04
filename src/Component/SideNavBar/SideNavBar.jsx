@@ -1,10 +1,21 @@
-import React from 'react'
-import { FaUserCircle } from "react-icons/fa"
-import "./SideNavBar.css"
+import React from "react";
+import { FaUserCircle } from "react-icons/fa";
+import "./SideNavBar.css";
 
 export const SideNavBar = () => {
-
-    const navLists = [{ "name": "Profile", "icon": <FaUserCircle /> }, { "name": "Live Auction", "icon": <FaUserCircle /> }, { "name": "Upcoming Auction", "icon": <FaUserCircle /> }, { "name": "User", "icon": <FaUserCircle /> }, { "name": "Auction", "icon": <FaUserCircle /> }, { "name": "Your Wins", "icon": <FaUserCircle /> }, { "name": "Bidding Status", "icon": <FaUserCircle /> }]
+    const navLists = [
+        { name: "Profile", icon: <FaUserCircle />, path: "/" },
+        { name: "Live Auction", icon: <FaUserCircle />, path: "/live-auction" },
+        {
+            name: "Upcoming Auction",
+            icon: <FaUserCircle />,
+            path: "/upcoming-auction",
+        },
+        { name: "User", icon: <FaUserCircle />, path: "/user" },
+        { name: "Auction", icon: <FaUserCircle />, path: "/auction" },
+        { name: "Your Wins", icon: <FaUserCircle />, path: "/wins" },
+        { name: "Bidding Status", icon: <FaUserCircle />, path: "/bidding-status" },
+    ];
 
     return (
         <section className="side_nav_container">
@@ -16,11 +27,14 @@ export const SideNavBar = () => {
                     {navLists.map((item, index) => (
                         <li key={index}>
                             {item.icon}
-                            <p>{item.name}</p>
+                            <p>
+                                {" "}
+                                <a href={`${item.path}`}>{item.name}</a>
+                            </p>
                         </li>
                     ))}
                 </ul>
             </div>
         </section>
-    )
-}
+    );
+};
