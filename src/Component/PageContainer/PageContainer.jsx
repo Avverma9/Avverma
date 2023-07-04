@@ -9,7 +9,7 @@ import Liveauction from "../../Pages/Liveauction/Liveauction";
 import Upcoming from "../../Pages/Upcomingauction/Upcoming";
 import Filter from "../../Pages/Liveauction/Filter/Filter";
 import Sort from "../../Pages/Liveauction/Sort/Sort";
-import { YourWins } from "../../Pages/Wins/YourWins";
+import {YourWins} from '../../Pages/Wins/YourWins';
 import { BiddingStatus } from "../../Pages/BiddingStatus/BiddingStatus";
 
 export const PageContainer = () => {
