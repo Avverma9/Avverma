@@ -178,7 +178,7 @@ function HotelList() {
 
 
 
-                <div className='mixrupeebutton' style={{ display: 'flex', justifyContent: 'space-between', marginTop: "60px" }}>
+                <div className='mixrupeebutton' style={{ display: 'flex', justifyContent: 'space-between', marginTop: "6px" }}>
                   <div className='rupeedetail'>
 
                     <p className={styles['search-result-price']}><FontAwesomeIcon icon={faInr} className={styles['rupees']} /> {result.price}<span className={styles['detail']}>per room per night</span></p></div>

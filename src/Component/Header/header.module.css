@@ -138,21 +138,23 @@ a {
 
 @media (max-width: 768px) {
   .menu-toggle {
-    margin-left: 330px;
+    margin-left: 310px;
     position: absolute;
-    display:flex;
+    display: flex;
     align-items: center;
     cursor: pointer;
   }
 
   ul {
+    font-size: 10px;
     display: none;
-    flex-direction:column-reverse;
-    align-items: flex;
+    flex-direction: row;
     padding: 0;
   }
 
   ul.show {
+    margin-top: 60px;
+    margin-left: -160px;
     display: flex;
   }
 
@@ -164,4 +166,12 @@ a {
     padding: 5px 10px;
     border-radius: 5px;
   }
+}
+.show {
+  display: flex;
+  flex-direction: row;
+}
+
+.hide {
+  display: none;
 }
