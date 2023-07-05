@@ -220,13 +220,17 @@ export default function BookNow({ refresh, reset }) {
       fieldFocus === "post_review_button" &&
       event.target.value !== ("" || "\n")
     ) {
+      event.target.value -= "\n";
       postReviewHandler();
+      event.target.value = "";
     } else if (
       event.key === "Enter" &&
       fieldFocus === "update_review_button" &&
       event.target.value !== ("" || "\n")
     ) {
+      event.target.value -= "\n";
       updateReviewHandler();
+      event.target.value = "";
     }
   };
 
