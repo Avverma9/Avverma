@@ -26,8 +26,7 @@
 }
 
 .profile_body {
-  height: calc(100% - 160px);
-  overflow: scroll;
+  height: 100%;
 }
 
 .profile_form_body {
