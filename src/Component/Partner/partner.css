@@ -234,13 +234,20 @@ table {
 
 @media (max-width: 768px) {
   .navbar {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     margin-bottom: 15px;
   }
 
   .navbar li {
-    padding: 5px;
+    padding: 0px;
+    font-size: 9px;
+  }
+  .content h3 {
+    font-size: 10px;
+  }
+  .content label {
+    font-size: 8px;
   }
 
   .button-container {
@@ -258,6 +265,115 @@ table {
 
   .content input,
   .content textarea {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+  }
+  .uploadimages1 .image-container6 img {
+    width: 100px;
+    height: 100px;
+  }
+  .uploadimages1 .image-container6 .imgbutton {
+    position: absolute;
+    top: 83%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    font-size: 3px;
+  }
+  .amenities1 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+  }
+  .amenities1 label {
+    flex-basis: calc(33.33% - 10px);
+  }
+  .amenities1 input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  .button-container {
+    flex-direction: row;
+    align-items: center;
+    font-size: 9px;
+  }
+  .content label {
+    margin-bottom: 0px;
+  }
+  .memo {
+    font-size: 10px;
+  }
+  .early-late {
+    font-weight: bold;
+  }
+  table {
+    width: 100%;
+    font-size: 10px;
+  }
+  .tariff h6 {
+    font-size: 10px;
+  }
+  .tariff-container1 {
+    gap: 1%;
+    line-height: 2.5;
+  }
+  .tariff {
+    margin-top: 25px;
+  }
+  #hotelOwnerName,
+  #ownerContactDetails,
+  #receptionContactDetails,
+  #hotelEmail,
+  #generalManagerContact,
+  #salesManagerContact,
+  #hotelDetails,
+  #street,
+  #city,
+  #state,
+  #zip,
+  #landmark {
+    width: 100%;
+    padding: 1px;
+    margin-bottom: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .group1 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1%;
+  }
+  .group2 {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1%;
+  }
+  .group3 {
+    gap: 1%;
+  }
+  .group4 {
+    gap: 1%;
+  }
+  .hotelownername,
+  .ownercontactdetail,
+  .receptioncontactdetails {
+    width: 30%;
+  }
+  .hotelemailaddress,
+  .generalmanagercontact,
+  .salesmanagercontact {
+    width: 30%;
+  }
+  .hoteldetails,
+  .cities,
+  .street {
+    width: 30%;
+  }
+  .state,
+  .zipcode,
+  .landmark {
+    width: 30%;
   }
 }
