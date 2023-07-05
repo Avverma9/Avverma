@@ -15,7 +15,7 @@ import { BiddingStatus } from "../../Pages/BiddingStatus/BiddingStatus";
 export const PageContainer = () => {
   return (
     <div className="page_container">
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
         <Routes>
           <Route path="/" element={<Profile />} />
           <Route path="/auction" element={<Auction />} />
@@ -27,7 +27,7 @@ export const PageContainer = () => {
           <Route path="/wins" element={<YourWins />} />
           <Route path="bidding-status" element={<BiddingStatus />} />
         </Routes>
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
     </div>
   );
 };
