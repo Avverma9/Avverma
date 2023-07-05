@@ -2,7 +2,11 @@
   background-color: #fbbc05;
   width: 25%;
   padding: 18px 16px;
-  
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .side_nav_header {
@@ -26,6 +30,11 @@
   display: flex;
   gap: 5px;
   align-items: center;
+}
+
+.side_nav_body ul li img {
+  width: 18px;
+  height: 18px;
 }
 
 .side_nav_body ul li p {
