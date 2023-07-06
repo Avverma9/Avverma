@@ -1,55 +1,192 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  auction,
-  bid,
-  liveauction,
-  upcomingauction,
-  profile,
-  win,
-  user,
+  homeIcon,
+  profileIcon,
+  notificationIcon,
+  mannageAuctionIcon,
+  mannageBuyerIcon,
+  dashboardIcon,
+  settingsIcon,
+  searchIcon,
+  filterIcon,
 } from "../../assets";
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
+import { useCollapse } from "react-collapsed";
+
+const Home = () => {
+  return (
+    <>
+      <li>
+        <Link to="/">
+          {" "}
+          <img src={homeIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/">
+          <p>Home</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const Profile = () => {
+  return (
+    <>
+      <li>
+        <Link to="/">
+          {" "}
+          <img src={profileIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/">
+          <p>Profile</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const PushNotification = () => {
+  return (
+    <>
+      <li>
+        <Link to="/">
+          {" "}
+          <img src={notificationIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/">
+          <p>Push Notification</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const Auction = () => {
+  const [isExpanded, setExpanded] = useState(false);
+  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  return (
+    <>
+      <li
+        {...getToggleProps({
+          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+        })}
+      >
+        <Link>
+          {" "}
+          <img src={mannageAuctionIcon} alt="icon" srcset="" />
+        </Link>
+        <Link>
+          <p>Auction</p>
+        </Link>
+      </li>
+      <div {...getCollapseProps()}>
+        <ul>
+          <li>
+            <Link to="/search">
+              {" "}
+              <img src={searchIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/search">
+              <p>Search</p>
+            </Link>
+          </li>
+          <li>
+            <Link to="/filter-auction">
+              {" "}
+              <img src={filterIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/filter-auction">
+              <p>Filter Auction</p>
+            </Link>
+          </li>
+          <li>
+            <Link to="/">
+              {" "}
+              <img src={mannageAuctionIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/">
+              <p>Add New Auction</p>
+            </Link>
+          </li>
+          <li>
+            <Link to="/import-auction">
+              {" "}
+              <img src={mannageAuctionIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/import-auction">
+              <p>Import Bulk Auction</p>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </>
+  );
+};
+
+const MannageAuction = () => {
+  const [isExpanded, setExpanded] = useState(false);
+  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+
+  return (
+    <>
+      <li
+        {...getToggleProps({
+          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+        })}
+      >
+        <Link>
+          {" "}
+          <img src={mannageAuctionIcon} alt="icon" srcset="" />
+        </Link>
+        <Link>
+          <p>Mannage Auction</p>
+        </Link>
+      </li>
+      <div {...getCollapseProps()}>
+        <ul>
+          <li>
+            <Link to="/dashboard">
+              {" "}
+              <img src={dashboardIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/dashboard">
+              <p>Dashboard</p>
+            </Link>
+          </li>
+          <Auction />
+          <li>
+            <Link to="/">
+              {" "}
+              <img src={settingsIcon} alt="icon" srcset="" />
+            </Link>
+            <Link to="/">
+              <p>Settings</p>
+            </Link>
+          </li>
+        </ul>
+      </div>
+    </>
+  );
+};
+
+const MannageBuyer = () => {
+  return (
+    <>
+      <li>
+        <Link to="/">
+          {" "}
+          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/">
+          <p>Mannage Buyer</p>
+        </Link>
+      </li>
+    </>
+  );
+};
 
 export const SideNavBar = () => {
-  const navLists = [
-    {
-      name: "Profile",
-      icon: <img src={user} alt="icon" srcset="" />,
-      path: "/",
-    },
-    {
-      name: "Live Auction",
-      icon: <img src={liveauction} alt="icon" srcset="" />,
-      path: "/live-auction",
-    },
-    {
-      name: "Upcoming Auction",
-      icon: <img src={upcomingauction} alt="icon" srcset="" />,
-      path: "/upcoming-auction",
-    },
-    {
-      name: "User",
-      icon: <img src={profile} alt="icon" srcset="" />,
-      path: "/user",
-    },
-    {
-      name: "Auction",
-      icon: <img src={auction} alt="icon" srcset="" />,
-      path: "/auction",
-    },
-    {
-      name: "Your Wins",
-      icon: <img src={win} alt="icon" srcset="" />,
-      path: "/wins",
-    },
-    {
-      name: "Bidding Status",
-      icon: <img src={bid} alt="icon" srcset="" />,
-      path: "/bidding-status",
-    },
-  ];
-
   return (
     <section className="side_nav_container">
       <div className="side_nav_header">
@@ -57,14 +194,11 @@ export const SideNavBar = () => {
       </div>
       <div className="side_nav_body">
         <ul>
-          {navLists.map((item, index) => (
-            <li key={index}>
-              <Link to={item.path}> {item.icon}</Link>
-              <Link to={item.path}>
-                <p>{item.name}</p>
-              </Link>
-            </li>
-          ))}
+          <Home />
+          <MannageAuction />
+          <MannageBuyer />
+          <Profile />
+          <PushNotification />
         </ul>
       </div>
     </section>

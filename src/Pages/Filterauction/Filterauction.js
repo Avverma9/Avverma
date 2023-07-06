@@ -3,10 +3,10 @@ import { GoClock } from "react-icons/go";
 import { VscLocation } from "react-icons/vsc";
 import { SlCalender } from "react-icons/sl";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
-import "./Bidcard.css";
+import "./Filterauction.css";
 import { dieselIcon } from "../../assets";
 
-export const Bidcard = () => {
+export const Filterauction = () => {
   return (
     <div className="bid_container">
       <div className="bid_header">
