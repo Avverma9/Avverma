@@ -7,6 +7,8 @@ import Biddingdetail from "../../Pages/Bidding_detail/Biddingdeatil";
 import Search from "../../Pages/Search/Search";
 import Importauction from "../../Pages/Importauction/Importauction";
 import { Filterauction } from "../../Pages/Filterauction/Filterauction";
+import { YourWins } from "../../Pages/Wins/YourWins";
+import { Addauction } from "../../Pages/Addauction/Addauction";
 
 export const PageContainer = () => {
   return (
@@ -19,6 +21,8 @@ export const PageContainer = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/import-auction" element={<Importauction />} />
         <Route path="/filter-auction" element={<Filterauction />} />
+        <Route path="/wins" element={<YourWins />} />
+        <Route path="/add-auction" element={<Addauction />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

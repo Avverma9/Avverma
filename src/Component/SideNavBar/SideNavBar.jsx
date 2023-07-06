@@ -101,11 +101,11 @@ const Auction = () => {
             </Link>
           </li>
           <li>
-            <Link to="/">
+            <Link to="/add-auction">
               {" "}
               <img src={mannageAuctionIcon} alt="icon" srcset="" />
             </Link>
-            <Link to="/">
+            <Link to="/add-auction">
               <p>Add New Auction</p>
             </Link>
           </li>
