@@ -9,6 +9,7 @@ import {
   user,
 } from "../../assets";
 import "./SideNavBar.css";
+import { Link } from "react-router-dom";
 
 export const SideNavBar = () => {
   const navLists = [
@@ -58,10 +59,10 @@ export const SideNavBar = () => {
         <ul>
           {navLists.map((item, index) => (
             <li key={index}>
-              {item.icon}
-              <p>
-                <a href={`${item.path}`}>{item.name}</a>
-              </p>
+              <Link to={item.path}> {item.icon}</Link>
+              <Link to={item.path}>
+                <p>{item.name}</p>
+              </Link>
             </li>
           ))}
         </ul>
