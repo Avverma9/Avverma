@@ -2,6 +2,10 @@
   margin-bottom: 30px;
   margin-top: 10px;
 }
+.input_field_header h1{
+  font-size: 16px;
+  font-weight: 501;
+}
 
 .profile_header h1 {
   text-align: left;
@@ -33,28 +37,30 @@
 .profile_form_body {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 15px;
-  column-gap: 15px;
+  row-gap: 10px;
+  column-gap: 10px;
 }
 
 .profile_form_body .input_field {
   flex-basis: 35%;
   flex-grow: 1;
+  margin-bottom:30px ;
 }
 
 .profile_form_body .input_field > input[type="text"] {
-  width: 100%;
+  width: 50%;
   padding: 10px 15px;
   border: 1px solid #ccc;
   outline: none;
 }
 
 .profile_form_body .input_field > textarea {
-  width: 100%;
-  padding: 10px 15px;
+  width: 50%;
+  height: 40px;
   border: 1px solid #ccc;
   outline: none;
   resize: none;
+
 }
 
 .profile_form_body .input_field .input_field_header {

@@ -28,7 +28,8 @@
 }
 .live-icons{
     display: flex;
-    gap: 10px;
+    gap: 15px;
+    font-size: 18px;
 }
 .live-auction_type_header h1:active{
     color:yellow;
