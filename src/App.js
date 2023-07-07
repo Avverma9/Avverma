@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './Component/Header/Header';
 // import Home from './Component/Home/Home';
@@ -93,6 +93,10 @@ import Kolhapur from './Component/Dropdownbar/city/kolhapur/kolhapur';
 
 function App() {
   // console.log(search)
+  const [refresh, setRefresh] = useState(1);
+  const reset = () => {
+    setRefresh(Math.random());
+  }
   return (
     <Router>
       <div>
@@ -130,9 +134,9 @@ function App() {
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile refresh={refresh} reset={reset} />} />
           <Route path="/search/results" element={<SearchResults />} />
-          <Route path="/hotels/:id" element={<BookNow />} />
+          <Route path="/hotels/:id" element={<BookNow refresh={refresh} reset={reset} />} />
           <Route path="/cities/jaipur" element={<Jaipur />} />
           <Route path="/cities/kota" element={<Kota />} />
           <Route path="/cities/Sawai Madhopur" element={<Sawaimadhopur />} />

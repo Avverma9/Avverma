@@ -2,28 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Location } from 'react-router-dom';
-import { BsPencilSquare } from 'react-icons/bs';
-import { FaSignOutAlt } from 'react-icons/fa';
-import { BsGearFill } from 'react-icons/bs'
+
 import './_profile.css';
 import { getLocalStorage } from '../../hooks/useLocalStorage';
 import Avatar from 'react-avatar';
-import { TbFolderFilled } from "react-icons/tb"
-import { FaUser, FaAddressBook } from "react-icons/fa"
-import { RiWallet3Fill } from "react-icons/ri"
+import { FaUser, FaAddressBook, FaTelegramPlane } from "react-icons/fa"
 import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md"
 import { AiOutlinePoweroff } from "react-icons/ai"
 import { ImProfile } from 'react-icons/im';
 import { HiIdentification } from 'react-icons/hi'
 import { BsFillCalendarCheckFill, BsFillCreditCardFill } from 'react-icons/bs'
 import { TiCancel } from 'react-icons/ti'
-import { Button } from 'react-bootstrap';
-import UpdateProfile from './UpdateProfile';
 import { useCollapse } from 'react-collapsed'
-import axios from 'axios';
-
-
+import { convertDate } from '../../utils/convertDate';
 
 
 function AccountSettings({ selectedNav, navHandler }) {
@@ -200,7 +191,7 @@ function Sidebar({ isSignedIn, userDetails, userData, logOut, selectedNav, setSe
 
 
 
-function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
+function ProfileInformation({ isSignedIn, userDetails, userData, handleShow, reset, refresh }) {
   const [isEditing, setIsEditing] = useState(false)
 
   const [uname, setUName] = useState("");
@@ -209,6 +200,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
   const [uimages, setImages] = useState([]);
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -234,7 +226,9 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
 
       if (response.ok) {
         // Call the onUpdateDone callback
-        window.location.reload()
+        // window.location.reload()
+        setIsEditing(false)
+        reset()
       } else {
         throw new Error('Failed to update profile');
       }
@@ -256,7 +250,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             <input type="button" value="Edit" onClick={() => setIsEditing(true)} />
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name) : uname} onChange={(e) => setUName(e.target.value)}
 
               placeholder={!isSignedIn && userDetails ? userDetails?.displayName.split[0] : userData?.name}
@@ -266,7 +260,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
         </>
         <>
           <h4 className='sub_Title'>Your Gender</h4>
-          <div className='profile_information_gender'>
+          <div className='profile_information_gender' key={refresh}>
             {!isEditing ? (userData?.gender === "Male" ? <>
               <input type="radio" id="male" name="gender" value="Male" checked />
               <label for="male" className='ml-2'>{userData?.gender}
@@ -297,7 +291,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="email" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.email : userData?.email) : email} onChange={(e) => setEmail(e.target.value)}
               placeholder={!isSignedIn && userDetails ? userDetails?.email : userData?.email}
             />
@@ -310,7 +304,7 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
             </h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields">
+          <div className="_fields" key={refresh}>
             <input type="text" value={!isEditing ? (!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile) : mobile} onChange={(e) => setMobile(e.target.value)}
               placeholder={!isSignedIn && userDetails ? userDetails?.providerData?.phoneNumber : userData?.mobile}
             />
@@ -354,12 +348,11 @@ function ProfileInformation({ isSignedIn, userDetails, userData, handleShow }) {
   );
 }
 
-function AddressInformation({ userData }) {
+function AddressInformation({ userData, reset, refresh }) {
   const [address, setAddress] = useState("");
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-
     try {
       const formData = new FormData();
       formData.append('address', address !== "" ? address : userData?.address);
@@ -369,10 +362,12 @@ function AddressInformation({ userData }) {
         method: 'PUT',
         body: formData,
       });
-
-      if (!response.error) {
+      console.log(response)
+      if (response.ok) {
         // setProfileUpdated(true);// Call the onUpdateDone callback
         // handleClose()
+        setAddress("")
+        reset()
       } else {
         throw new Error('Failed to update profile');
       }
@@ -390,7 +385,7 @@ function AddressInformation({ userData }) {
           Address
         </h1>
       </div>
-      <div className="_fields">
+      <div className="_fields" key={refresh}>
         <textarea type="text" rows="1" value={userData?.address} />
         <textarea placeholder='Enter New Address' type="text" rows="1" value={address} onChange={(e) => setAddress(e.target.value)} />
       </div>
@@ -400,9 +395,13 @@ function AddressInformation({ userData }) {
   </div>);
 }
 
-function GovernmentIdInformation() {
+function GovernmentIdInformation({ userData }) {
   const [gID, setGID] = useState("")  //Sets Government ID Input Field Value
   const [selectGID, setSelectGID] = useState("") // Sets Type of Gov Id Selected
+
+  const [adhaar, setAdhaar] = useState(userData?.adhar)
+  const [pan, setpan] = useState(userData?.pan)
+  const [drivingLsc, setDrivingLsc] = useState(userData?.dl)
 
   const handleIdSubmit = () => {
     console.log("ID SUBMITTED")
@@ -443,21 +442,21 @@ function GovernmentIdInformation() {
           <h1 className='me-2' style={{ width: "20%" }}>
             Adhaar
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={adhaar && adhaar !== "" ? adhaar : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             PAN Card
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={pan && pan !== "" ? pan : ""} />
         </div>
 
         <div className="_title">
           <h1 className='me-2' style={{ width: "20%" }}>
             Driving Licence
           </h1>
-          <input type="text" className='_gid_input' />
+          <input type="text" className='_gid_input' value={drivingLsc && drivingLsc !== "" ? drivingLsc : ""} />
         </div>
 
       </div>
@@ -793,11 +792,14 @@ function MyReviewSection() {
   const [currentUserReviews, setCurrentUserReviews] = useState([])
 
   useEffect(() => {
-    axios.get(`https://hotel-backend-tge7.onrender.com/reviewDatas/649670a7002cac21b898dae0`)
+    fetch(`https://hotel-backend-tge7.onrender.com/reviewDatas/${userId}`, {
+      method: 'GET',
+    })
       .then(response => {
         try {
           if (response.status === 200) {
-            setCurrentUserReviews(response.data.reviews)
+            const data = response.json()
+            data.then(res => setCurrentUserReviews(res.reviews))
           }
         } catch (error) {
           console.log(error);
@@ -813,51 +815,48 @@ function MyReviewSection() {
           My Reviews
         </h1>
       </div>
-      {currentUserReviews && currentUserReviews.map((review) => <>
 
-        <div className="review_card">
+      <>
 
-          <div className="review_card_img">
-            <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.cntraveler.com%2Fphotos%2F5841fe31e186e2555afdd5ca%2Fmaster%2Fpass%2Falfond-inn-cr-courtesy.jpg&f=1&nofb=1&ipt=a455777198bccf68713f4c2c6b4fe4c5962b238f72f24394d751ebdc56b388f8&ipo=images" alt="Hotel Pic" />
+        {currentUserReviews ? [...currentUserReviews].reverse().map((review) => (<div className="review_container" key={review.review._id}>
+          <div className="hotel_image">
+            <img src={review.hotelImages} alt={review.hotelName} />
           </div>
-
-          <div className="review_card_hotel_name">
-            <h4>Hotel Taj</h4>
+          <div className="review_content">
+            <div className="review_content_header">
+              <h4>{review.hotelName}</h4>
+              <p>{convertDate(review.review.createdAt)}</p>
+            </div>
+            <div className="review_content_body">
+              <p>{review.review.comment}</p>
+            </div>
           </div>
+        </div>)) : "NO Reviews Posted Yet"}
 
-          <div className="review_card_post_date">
-            <p>27/06/2023</p>
-          </div>
-        </div>
-
-      </>)}
+      </>
 
     </>)
 }
 
-function ComplainsSection({ isSignedIn, userDetails, userData }) {
+function ComplainsSection({ isSignedIn, userDetails, userData, reset, refresh }) {
   const [raiseComplaint, setRaiseComplaint] = useState(false)
   const [newComplaint, setNewComplaint] = useState("")
   const [complaints, setComplaints] = useState([])
 
   useEffect(() => {
-
-    axios.get(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`)
+    fetch(`https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`, {
+      method: 'GET'
+    })
       .then((response) => {
-        console.log(response.data.data, "RESPONSE COMPLAINT")
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          throw new Error('Failed to fetch user data');
+        try {
+          if (response.status === 200) {
+            const data = response.json()
+            data.then(res => setComplaints(res.data))
+          }
+        } catch (error) {
+          console.log(error);
         }
       })
-      .then((data) => {
-        console.log(data, ";iWDOUBwcjhvwivWCU")
-        setComplaints(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      });
   }
 
     ,
@@ -865,22 +864,28 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
 
   const postComplaintHandler = () => {
-    axios.post(`https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`, {
-      complaintDescription: newComplaint
-    }).then((response) => {
-      if (response.data.success) {
-        return response.data.message;
-      } else {
-        // throw new Error('Failed to fetch user data');
-        return response.data.error;
-      }
-    }).then((data) => {
-      console.log(data)
-      setNewComplaint("")
-      setRaiseComplaint(false)
-    }).catch((error) => {
-      console.log(error)
+    fetch(`https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        complaintDescription: newComplaint
+      }),
     })
+
+      .then((response) => {
+        try {
+          if (response.status === 200) {
+            const data = response.json()
+            // data.then(res => window.alert(res.message))
+            setRaiseComplaint(false)
+            reset()
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      })
 
   }
 
@@ -895,13 +900,13 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
 
       {raiseComplaint && <div className="d-flex align-items-center">
-        <div className="_fields flex-grow-1" style={{ "width": "70%" }}>
-          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "70%" }} />
+        <div className="_fields flex-grow-1" style={{ "width": "calc(100% + 138px)" }}>
+          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "inherit" }} />
         </div>
-        <button className="post_complain_button" onClick={postComplaintHandler}>Post</button>
+        <button className="post_complain_button" onClick={postComplaintHandler}><FaTelegramPlane /></button>
       </div>}
 
-      {complaints.map((complaint) => <div className="complains_section mt-4" key={complaint._id}>
+      {complaints.map((complaint) => <><div className="complains_section mt-4" key={complaint._id}>
 
         {/* <img src={userData?.images[0]} alt="Profile Pic" /> */}
 
@@ -910,11 +915,13 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
 
         <div className="ms-4 me-4 text-wrap" style={{ "width": "80%" }}>
           <p>Grand Hotel</p>
-          <p className="sub_Title">
+          <p className="sub_Title" key={refresh}>
             {complaint.complaintDescription}
           </p>
         </div>
       </div>
+        <div style={{ border: "1px solid #94a3b8" }}></div>
+      </>
       )}
 
 
@@ -922,7 +929,7 @@ function ComplainsSection({ isSignedIn, userDetails, userData }) {
   )
 }
 
-const Profile = () => {
+const Profile = ({ reset, refresh }) => {
 
   const [show, setShow] = useState(false);
 
@@ -936,6 +943,9 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(true);
 
   const [profileUpdated, setProfileUpdated] = useState(false);
+
+
+
 
 
   useEffect(() => {
@@ -967,7 +977,7 @@ const Profile = () => {
     }
   }
     ,
-    [navigate]);
+    [navigate, reset]);
 
 
   const userDetails = getLocalStorage("loggedUser");
@@ -1026,8 +1036,8 @@ const Profile = () => {
           <Sidebar userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} logOut={logOut} selectedNav={selectedNav} setSelectedNav={setselectedNav} navHandler={navHandler} />
         </div>
         <div className='profile_body'>
-          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} /> : selectedNav === "Mannage Addresses" ?
-            <AddressInformation userData={userData} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} />}
+          {selectedNav === "Profile Information" ? <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} reset={reset} refresh={refresh} /> : selectedNav === "Mannage Addresses" ?
+            <AddressInformation userData={userData} reset={reset} refresh={refresh} /> : selectedNav === "Add Government id" ? <GovernmentIdInformation userData={userData} reset={reset} refresh={refresh} /> : selectedNav === "Cancel Booking" ? <CancelBooking /> : selectedNav === "Confirm Booking" ? <ConfirmBooking /> : selectedNav === "Checking Booking" ? <CheckingBooking /> : selectedNav === "Check Out Booking" ? <CheckOutBooking /> : selectedNav === "NoShow Booking" ? <NoShowBooking /> : selectedNav === "Failed Booking" ? <FailedBooking /> : selectedNav === "My Reviews" ? <MyReviewSection /> : selectedNav === "Complains" ? <ComplainsSection userData={userData} reset={reset} refresh={refresh} /> : <ProfileInformation handleShow={handleShow} userData={userData} isSignedIn={isSignedIn} userDetails={userDetails} reset={reset} refresh={refresh} />}
         </div>
       </div>
     </>

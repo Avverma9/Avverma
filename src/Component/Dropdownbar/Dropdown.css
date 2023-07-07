@@ -98,6 +98,46 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+@media (max-width: 480px) {
+ 
+  .stateItem {
+ 
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .stateName {
+   
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .arrow {
+  
+    display: none;
+  }
+
+  .open {
+  
+  }
+
+  .cityDropdown {
+   
+    display: none;
+ 
+  }
+
+  .cityName {
+  
+    display: block;
+    font-size: 14px;
+    padding: 10px;
+    background-color: #f0f0f0;
+  
+  }
+
+
+}
 @media (max-width:768px){
   .arrow{
     width: 5px;
