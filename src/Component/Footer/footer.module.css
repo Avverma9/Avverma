@@ -432,5 +432,9 @@
   .footerSection .ctaButton:hover {
     background-color: #0b99f8;
   }
+  .footerSection ul {
+    
+    line-height: 2;
+  }
 }
   
