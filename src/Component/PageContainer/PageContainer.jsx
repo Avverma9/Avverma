@@ -27,6 +27,7 @@ export const PageContainer = () => {
         <Route path="/add-auction" element={<Addauction />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/set-timing" element={<Settiming />} />
+        <Route path="/update-start-price" element={<>Update</>} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

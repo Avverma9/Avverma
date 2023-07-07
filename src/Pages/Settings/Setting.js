@@ -13,7 +13,7 @@ function Setting() {
         <span>
           <p
             className="_pointer"
-            onClick={navigate("/set-timing")}
+            onClick={() => navigate("/set-timing")}
             style={{ width: "200px" }}
           >
             Set Auction Timing
@@ -23,7 +23,12 @@ function Setting() {
         <span>
           <label>
             Start Price{" "}
-            <input type="button" className="update-button" value="Update" />
+            <input
+              type="button"
+              className="update-button _pointer"
+              value="Update"
+              onClick={() => navigate("/update-start-price")}
+            />
           </label>
           <input type="text" />
         </span>
