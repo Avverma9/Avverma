@@ -1,0 +1,41 @@
+.dashboard-section-head{
+    display: flex;
+    flex-direction: row;
+    gap: 20%;
+    justify-content: center;
+    margin-top: 70px;
+    
+}
+.dashboard-items-b li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 3;
+}
+.dashboard-items li{
+    list-style: none;
+    line-height: 3;
+}
+.dashboard-items .heading-vehicle{
+    font-weight: bold;
+}
+.dashboard-items-b .heading-vehicle{
+    font-weight: bold;
+}
+.dashboard-section input[type="search"] {
+    width: 300px;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 30px;
+  }
+  
+  .dashboard-section input[type="search"]::placeholder {
+    /* Add styles for the placeholder text */
+    /* For example: */
+    color: #999;
+  }
+  .dashboard-section{
+    display: flex;
+    justify-content: center;
+  }
+  

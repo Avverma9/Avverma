@@ -1,0 +1,50 @@
+.import-auction-heading{
+    display: flex;
+flex-direction: row;
+align-items: center;
+font-size: 24px;
+font-weight: bold;
+
+}
+.import-auction{
+    padding: 10px;
+}
+
+.import-inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    top: 100px;
+    
+    
+    
+}
+.import-inputs input[type="text"]{
+    width:30%;
+    height: 40px;
+    border: 1px solid black;
+}
+.import-buttons input[type="button"]{
+    width:100px;
+    height: 50px;
+    background-color: rgb(255, 255, 255);
+    color: rgb(59, 59, 59);
+    border: 2px solid black;
+    padding: 10px;
+    
+    font-size: 14px;
+    font-weight: 501;
+}
+.import-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10%;
+    position: relative;
+    top: 150px;   
+}
+
+
+  
+
+  

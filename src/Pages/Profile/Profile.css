@@ -2,10 +2,6 @@
   margin-bottom: 30px;
   margin-top: 10px;
 }
-.input_field_header h1{
-  font-size: 16px;
-  font-weight: 501;
-}
 
 .profile_header h1 {
   text-align: left;
@@ -30,37 +26,34 @@
 }
 
 .profile_body {
-  height: calc(100% - 160px);
-  overflow: scroll;
+  height: 100%;
 }
 
 .profile_form_body {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 10px;
-  column-gap: 10px;
+  row-gap: 15px;
+  column-gap: 15px;
 }
 
 .profile_form_body .input_field {
   flex-basis: 35%;
   flex-grow: 1;
-  margin-bottom:30px ;
 }
 
 .profile_form_body .input_field > input[type="text"] {
-  width: 50%;
+  width: 100%;
   padding: 10px 15px;
   border: 1px solid #ccc;
   outline: none;
 }
 
 .profile_form_body .input_field > textarea {
-  width: 50%;
-  height: 40px;
+  width: 100%;
+  padding: 10px 15px;
   border: 1px solid #ccc;
   outline: none;
   resize: none;
-
 }
 
 .profile_form_body .input_field .input_field_header {
