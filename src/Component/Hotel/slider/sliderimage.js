@@ -38,10 +38,10 @@ function Imgslide() {
             style={{ display: 'block' }}
           />
           <div className="slider-arrows01">
-            <div className="slider-arrow-left01" onClick={goToPreviousSlide}>
+            <div className="slider-arrow-left-arrow" onClick={goToPreviousSlide}>
               &lt;
             </div>
-            <div className="slider-arrow-right01" onClick={goToNextSlide}>
+            <div className="slider-arrow-right-arrow" onClick={goToNextSlide}>
               &gt;
             </div>
           </div>

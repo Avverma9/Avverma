@@ -43,8 +43,8 @@
   height: 290px; 
   object-fit: cover; 
 }
-.slider-arrow-left01,
-.slider-arrow-right01 {
+.slider-arrow-left-arrow,
+.slider-arrow-right-arrow {
   font-size: 25px;
   background-color: rgb(104, 104, 104);
   border-radius: 50%;
@@ -52,11 +52,11 @@
   height: 35px;
 }
 
-.slider-arrow-right01:hover {
+.slider-arrow-right-arrow:hover {
   background-color: rgba(28, 28, 28);
 }
 
-.slider-arrow-left01:hover {
+.slider-arrow-left-arrow:hover {
   background-color: rgb(26, 26, 26);
 }
 @media (max-width: 768px) {
@@ -67,8 +67,8 @@
     object-fit: cover;
     margin-bottom: 0;
   }
-  .slider-arrow-left01,
-.slider-arrow-right01 {
+  .slider-arrow-left-arrow,
+.slider-arrow-right-arrow {
   font-size: 10px;
   background-color: rgb(104, 104, 104);
   border-radius: 50%;
