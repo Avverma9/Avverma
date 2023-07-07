@@ -156,11 +156,11 @@ const MannageAuction = () => {
           </li>
           <Auction />
           <li>
-            <Link to="/">
+            <Link to="/settings">
               {" "}
               <img src={settingsIcon} alt="icon" srcset="" />
             </Link>
-            <Link to="/">
+            <Link to="/settings">
               <p>Settings</p>
             </Link>
           </li>
