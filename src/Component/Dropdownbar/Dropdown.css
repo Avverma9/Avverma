@@ -98,3 +98,14 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+@media (max-width:768px){
+  .arrow{
+    width: 5px;
+    height: 5px;
+  }
+  .stateName{
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+  }
+}

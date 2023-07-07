@@ -29,7 +29,7 @@ function Imgslide() {
   };
 
   return (
-    <div className="slider01">
+    <div className="slider-img">
       {images.length > 0 && (
         <div className="slider-container01">
           <img
