@@ -37,7 +37,9 @@ const PartnerSchema = new mongoose.Schema({
     "Spa": Boolean,
     "Dry Cleaning": Boolean,
     "Bathrobe": Boolean,
-    "24 Hour Front Desk Service": Boolean
+    "24 Hour Front Desk Service": Boolean,
+    "onDoubleSharing" : String,
+    "offDoubleSharing" : String
   }
 });
 
