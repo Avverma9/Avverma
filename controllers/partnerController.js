@@ -17,28 +17,7 @@ const createPartner = async (req, res) => {
       landmark,
       starType,
       propertyType,
-      amenities,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      checkInOut,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour
+      amenities
     } = req.body;
 
     const images = req.files.map((file) => file.location);
@@ -59,28 +38,7 @@ const createPartner = async (req, res) => {
       starType,
       propertyType,
       images,
-      amenities,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      checkInOut,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour
+      amenities
     };
 
     const savedPartner = await partnerModel.create(newPartner);
@@ -94,7 +52,6 @@ const createPartner = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while creating the partner.' });
   }
 };
-
 
 //=============================================================================================================
 const getHotelPartner = async (req, res) => {
