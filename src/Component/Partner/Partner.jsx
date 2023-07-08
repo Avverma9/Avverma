@@ -80,6 +80,8 @@ const Partner = () => {
   const [dryClean, setDryClean] = useState(false);
   const [bathrobe, setBathrobe] = useState(false);
   const [frontDeskService, setFrontDeskService] = useState(false);
+  const [onDoubleSharing, setOnDoubleSharing] = useState("");
+  const [offDoubleSharing, setOffDoubleSharing] = useState("");
 
   const handlePartnerSubmit = async (event) => {
     event.preventDefault();
@@ -121,6 +123,23 @@ const Partner = () => {
     formData.append("amenities[Dry Cleaning]", dryClean);
     formData.append("amenities[Bathrobe]", bathrobe);
     formData.append("amenities[24 Hour Front Desk Service]", frontDeskService);
+    formData.append("outsideFoodPolicy", event.target.outsideFoodPolicy.value);
+    formData.append("cancellationPolicy", event.target.cancellationpolicy.value);
+    formData.append("paymentMode", event.target.paymentmode.value);
+    formData.append("petsAllowed", event.target.pets.value);
+    formData.append("bachelorAllowed", event.target.Bachelorallow.value);
+    formData.append("smokingAllowed", event.target.smokingallow.value);
+    formData.append("alcoholAllowed", event.target.Alcohol.value);
+    formData.append("unmarriedCouplesAllowed", event.target.unmarriedcouples.value);
+    formData.append("internationalGuestAllowed", event.target.internationalcouple.value);
+    formData.append("returnPolicy", event.target.returnPolicy.value);
+    formData.append("checkInOut", event.target.checkInOut.value);
+    formData.append("onDoubleSharing", onDoubleSharing);
+    formData.append("offDoubleSharing", offDoubleSharing);
+
+    
+  
+  
 
     try {
       const response = await fetch(
@@ -891,6 +910,7 @@ const Partner = () => {
         {activeNavItem === "Hotel Policy" && (
           <div>
             <h3>Hotel Policy</h3>
+            <form onSubmit={handlePartnerSubmit}>
             <div className="radioinputs">
               <label>1-Outside Food</label>
               <br />
@@ -1123,7 +1143,9 @@ const Partner = () => {
                 </table>
               </div>
             </div>
+            </form>
           </div>
+          
         )}
         {activeNavItem === "Hotel Tariff" && (
           <div>
