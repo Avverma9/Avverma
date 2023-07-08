@@ -17,7 +17,20 @@ const createPartner = async (req, res) => {
       landmark,
       starType,
       propertyType,
-      amenities
+      amenities,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      checkInOut,
+      onDoubleSharing,
+      offDoubleSharing
     } = req.body;
 
     const images = req.files.map((file) => file.location);
@@ -38,7 +51,20 @@ const createPartner = async (req, res) => {
       starType,
       propertyType,
       images,
-      amenities
+      amenities,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      checkInOut,
+      onDoubleSharing,
+      offDoubleSharing
     };
 
     const savedPartner = await partnerModel.create(newPartner);
@@ -52,6 +78,7 @@ const createPartner = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while creating the partner.' });
   }
 };
+
 
 //=============================================================================================================
 const getHotelPartner = async (req, res) => {
