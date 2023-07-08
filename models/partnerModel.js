@@ -37,10 +37,29 @@ const PartnerSchema = new mongoose.Schema({
     "Spa": Boolean,
     "Dry Cleaning": Boolean,
     "Bathrobe": Boolean,
-    "24 Hour Front Desk Service": Boolean,
+    "24 Hour Front Desk Service": Boolean, 
+  },
+    "outsideFoodPolicy":String,
+      "cancellationPolicy":String,
+      "paymentMode":String,
+      "petsAllowed":String,
+      "bachelorAllowed":String,
+      "smokingAllowed":String,
+      "alcoholAllowed":String,
+      "unmarriedCouplesAllowed":String,
+      "internationalGuestAllowed":String,
+      "returnPolicy":String,
+      "checkInOut":String,
     "onDoubleSharing" : String,
-    "offDoubleSharing" : String
-  }
+    "onQuadSharing" : String,
+    "onBulkBooking" : String,
+    "onTrippleSharing" : String,
+    "onMoreThanFour" : String,
+    "offDoubleSharing" : String,
+    "offQuadSharing" : String,
+    "offBulkBooking" : String,
+    "offTrippleSharing" : String,
+    "offMoreThanFour" : String
 });
 
 

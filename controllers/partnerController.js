@@ -30,7 +30,15 @@ const createPartner = async (req, res) => {
       returnPolicy,
       checkInOut,
       onDoubleSharing,
-      offDoubleSharing
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour
     } = req.body;
 
     const images = req.files.map((file) => file.location);
@@ -64,7 +72,15 @@ const createPartner = async (req, res) => {
       returnPolicy,
       checkInOut,
       onDoubleSharing,
-      offDoubleSharing
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour
     };
 
     const savedPartner = await partnerModel.create(newPartner);
