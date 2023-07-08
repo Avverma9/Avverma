@@ -901,7 +901,7 @@ function ComplainsSection({ isSignedIn, userDetails, userData, reset, refresh })
 
       {raiseComplaint && <div className="d-flex align-items-center">
         <div className="_fields flex-grow-1" style={{ "width": "calc(100% + 138px)" }}>
-          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "inherit" }} />
+          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "100%" }} />
         </div>
         <button className="post_complain_button" onClick={postComplaintHandler}><FaTelegramPlane /></button>
       </div>}

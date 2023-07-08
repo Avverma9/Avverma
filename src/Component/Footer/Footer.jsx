@@ -17,38 +17,38 @@ function Footer() {
         </div>
         <div className={styles.footerSection}>
           <h3>Services</h3>
-          <div className='footer-compo'>
-          <ul className='li-space'>
-            <li><a href="/cities/jaipur" class="no-underline text-black">Hotels in Jaipur</a></li>
-            <li><a href="/cities/agra" class="no-underline text-black">Hotels in Agra</a></li>
-            <li><a href="/cities/kota" class="no-underline text-black">Hotels in Kota</a></li>
-            <li><a href="/cities/mumbai" class="no-underline text-black">Hotels in Mumbai</a></li>
-            <li><a href="/cities/jodhpur" class="no-underline text-black">Hotels in Jodhpur</a></li>
-            <li><a href="/cities/Ahmedabad" class="no-underline text-black">Hotels in Ahmedabad</a></li>
+          <div className='city-container'>
+          <ul className='city-list'>
+            <li className='citylist-name'><a href="/cities/jaipur" class="no-underline text-black">Hotels in Jaipur</a></li>
+            <li className='citylist-name'><a href="/cities/agra" class="no-underline text-black">Hotels in Agra</a></li>
+            <li className='citylist-name'><a href="/cities/kota" class="no-underline text-black">Hotels in Kota</a></li>
+            <li className='citylist-name'><a href="/cities/mumbai" class="no-underline text-black">Hotels in Mumbai</a></li>
+            <li className='citylist-name'><a href="/cities/jodhpur" class="no-underline text-black">Hotels in Jodhpur</a></li>
+            <li className='citylist-name'><a href="/cities/Ahmedabad" class="no-underline text-black">Hotels in Ahmedabad</a></li>
           </ul>
           <ul>
-            <li><a href="/cities/dehradun" class="no-underline text-black">Hotels in Dehradun</a></li>
-            <li><a href="/cities/patna" class="no-underline text-black">Hotels in Patna</a></li>
-            <li><a href="/cities/vadodara" class="no-underline text-black">Hotels in Vadodara</a></li>
-            <li><a href="/cities/surat" class="no-underline text-black">Hotels in Surat</a></li>
-            <li><a href="/cities/ratlam" class="no-underline text-black">Hotels in Ratlam</a></li>
-            <li><a href="/cities/gwalior" class="no-underline text-black">Hotels in Gwalior</a></li>
+            <li className='citylist-name'><a href="/cities/dehradun" class="no-underline text-black">Hotels in Dehradun</a></li>
+            <li className='citylist-name'><a href="/cities/patna" class="no-underline text-black">Hotels in Patna</a></li>
+            <li className='citylist-name'><a href="/cities/vadodara" class="no-underline text-black">Hotels in Vadodara</a></li>
+            <li className='citylist-name'><a href="/cities/surat" class="no-underline text-black">Hotels in Surat</a></li>
+            <li className='citylist-name'><a href="/cities/ratlam" class="no-underline text-black">Hotels in Ratlam</a></li>
+            <li className='citylist-name'><a href="/cities/gwalior" class="no-underline text-black">Hotels in Gwalior</a></li>
           </ul>
           <ul>
-            <li><a href="/cities/rishikesh" class="no-underline text-black">Hotels in Rishikesh</a></li>
-            <li><a href="/cities/nainital" class="no-underline text-black">Hotels in Nainital</a></li>
-            <li><a href="/cities/mussoorie" class="no-underline text-black">Hotels in Mussoorie</a></li>
-            <li><a href="/cities/haridwar" class="no-underline text-black">Hotels in Haridwar</a></li>
-            <li><a href="/cities/jamnagar" class="no-underline text-black">Hotels in Jamnagar</a></li>
-            <li><a href="/cities/bhopal" class="no-underline text-black">Hotels in Bhopal</a></li>
+            <li className='citylist-name'><a href="/cities/rishikesh" class="no-underline text-black">Hotels in Rishikesh</a></li>
+            <li className='citylist-name'><a href="/cities/nainital" class="no-underline text-black">Hotels in Nainital</a></li>
+            <li className='citylist-name'><a href="/cities/mussoorie" class="no-underline text-black">Hotels in Mussoorie</a></li>
+            <li className='citylist-name'><a href="/cities/haridwar" class="no-underline text-black">Hotels in Haridwar</a></li>
+            <li className='citylist-name'><a href="/cities/jamnagar" class="no-underline text-black">Hotels in Jamnagar</a></li>
+            <li className='citylist-name'><a href="/cities/bhopal" class="no-underline text-black">Hotels in Bhopal</a></li>
           </ul>
           <ul>
-            <li><a href="/cities/noida" class="no-underline text-black">Hotels in Noida</a></li>
-            <li><a href="/cities/lucknow" class="no-underline text-black">Hotels in Lucknow</a></li>
-            <li><a href="/cities/jabalpur" class="no-underline text-black">Hotels in Jabalpur</a></li>
-            <li><a href="/cities/indore" class="no-underline text-black">Hotels in Indore</a></li>
-            <li><a href="/cities/nalanda" class="no-underline text-black">Hotels in Nalanda</a></li>
-            <li><a href="/cities/gaya" class="no-underline text-black">Hotels in Gaya</a></li>
+            <li className='citylist-name'><a href="/cities/noida" class="no-underline text-black">Hotels in Noida</a></li>
+            <li className='citylist-name'><a href="/cities/lucknow" class="no-underline text-black">Hotels in Lucknow</a></li>
+            <li className='citylist-name'><a href="/cities/jabalpur" class="no-underline text-black">Hotels in Jabalpur</a></li>
+            <li className='citylist-name'><a href="/cities/indore" class="no-underline text-black">Hotels in Indore</a></li>
+            <li className='citylist-name'><a href="/cities/nalanda" class="no-underline text-black">Hotels in Nalanda</a></li>
+            <li className='citylist-name'><a href="/cities/gaya" class="no-underline text-black">Hotels in Gaya</a></li>
           </ul>
           </div>
         </div>
