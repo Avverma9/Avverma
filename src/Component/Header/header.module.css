@@ -159,7 +159,8 @@ a {
   }
 
   ul li {
-    margin: 10px 9px;
+    margin: 20px -2px;
+    width: 100%;
   }
 
   ul li a {
