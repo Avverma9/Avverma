@@ -17,7 +17,28 @@ const createPartner = async (req, res) => {
       landmark,
       starType,
       propertyType,
-      amenities
+      amenities,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      checkInOut,
+      onDoubleSharing,
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour
     } = req.body;
 
     const images = req.files.map((file) => file.location);
@@ -38,7 +59,28 @@ const createPartner = async (req, res) => {
       starType,
       propertyType,
       images,
-      amenities
+      amenities,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      checkInOut,
+      onDoubleSharing,
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour
     };
 
     const savedPartner = await partnerModel.create(newPartner);
