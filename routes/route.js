@@ -10,6 +10,7 @@ const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
+const offersController = require("../controllers/offersController")
 
 
 
@@ -71,5 +72,8 @@ router.post('/booking/:userId/:hotelId', bookingController.createBooking);
 router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
 
+//============================offers==============================================//
+router.post("/create/offers",upload,offersController.createOffers)
+router.get("/offers",offersController.getOffers)
 
 module.exports = router;
