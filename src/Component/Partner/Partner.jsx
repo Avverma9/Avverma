@@ -81,7 +81,33 @@ const Partner = () => {
   const [bathrobe, setBathrobe] = useState(false);
   const [frontDeskService, setFrontDeskService] = useState(false);
   const [onDoubleSharing, setOnDoubleSharing] = useState("");
+  const [onquadsharing,setOnquadsharing] = useState("");
+  const [onbulkbooking,setOnbulkbooking] = useState("");
+  const [ontripplesharing,setOntripplesharing] = useState("");
+  const [onmore4room,setOnmore4room] = useState("");
+  
   const [offDoubleSharing, setOffDoubleSharing] = useState("");
+  const [offtripplesharing,setOfftripplesharing] = useState("");
+  const [offquadsharing,setOffquadsharing] = useState("");
+  const [offbulkbooking,setOffbulkbooking] = useState("");
+  const [offmore4room,setOffmore4room] = useState("");
+  const [outsideFoodPolicy, setOutsideFoodPolicy] = useState("");
+  const [cancellationpolicy, setCancellationpolicy] = useState("");
+  const [paymentMode,setPaymentMode]= useState("");
+  const [pets,setPets] = useState("");
+  const[bachelor,setBachelor]=useState("");
+  const[smoking,setSmoking]=useState("");
+  const[alcohol,setAlcohol]=useState("");
+  const[unmarriedcouples,setUnmarriedcouples]=useState("");
+  const[internationalcouple,setInternationalcouple]=useState("");
+  const[returnPolicy,setReturnPolicy]= useState("");
+  const[checkInOut,setCheckInOut]=useState("");
+
+
+  
+
+  
+  
 
   const handlePartnerSubmit = async (event) => {
     event.preventDefault();
@@ -123,19 +149,28 @@ const Partner = () => {
     formData.append("amenities[Dry Cleaning]", dryClean);
     formData.append("amenities[Bathrobe]", bathrobe);
     formData.append("amenities[24 Hour Front Desk Service]", frontDeskService);
-    formData.append("outsideFoodPolicy", event.target.outsideFoodPolicy.value);
-    formData.append("cancellationPolicy", event.target.cancellationpolicy.value);
-    formData.append("paymentMode", event.target.paymentmode.value);
-    formData.append("petsAllowed", event.target.pets.value);
-    formData.append("bachelorAllowed", event.target.Bachelorallow.value);
-    formData.append("smokingAllowed", event.target.smokingallow.value);
-    formData.append("alcoholAllowed", event.target.Alcohol.value);
-    formData.append("unmarriedCouplesAllowed", event.target.unmarriedcouples.value);
-    formData.append("internationalGuestAllowed", event.target.internationalcouple.value);
-    formData.append("returnPolicy", event.target.returnPolicy.value);
-    formData.append("checkInOut", event.target.checkInOut.value);
+    formData.append("outsideFoodPolicy", outsideFoodPolicy);
+    formData.append("cancellationPolicy", cancellationpolicy);
+    formData.append("paymentMode", paymentMode);
+    formData.append("petsAllowed", pets);
+    formData.append("bachelorAllowed", bachelor);
+    formData.append("smokingAllowed", smoking);
+    formData.append("alcoholAllowed", alcohol);
+    formData.append("unmarriedCouplesAllowed",unmarriedcouples);
+    formData.append("internationalGuestAllowed", internationalcouple);
+    formData.append("returnPolicy", returnPolicy);
+    formData.append("checkInOut", checkInOut);
     formData.append("onDoubleSharing", onDoubleSharing);
+    formData.append("onquadsharing",onquadsharing);
+    formData.append("onbulkbooking",onbulkbooking);
+    formData.append("onmore4room",onmore4room);
+    formData.append("ontripplesharing",ontripplesharing);
+
     formData.append("offDoubleSharing", offDoubleSharing);
+    formData.append("offquadsharing",offquadsharing);
+    formData.append("offbulkbooking",offbulkbooking);
+    formData.append("offmore4room",offmore4room);
+    
 
     
   
@@ -167,6 +202,7 @@ const Partner = () => {
         setLandmark("");
         setStarType("");
         setPropertyType("");
+        
         setFreeWifi(false);
         setAc(false);
         setRoomService(false);
@@ -915,7 +951,14 @@ const Partner = () => {
               <label>1-Outside Food</label>
               <br />
               <label>
-                <input type="radio" name="outsideFoodPolicy" value="allowed" />
+                <input type="radio" 
+                name="outsideFoodPolicy" 
+                value="allowed"
+                onChange={(e) => setOutsideFoodPolicy(e.target.value)}
+        checked={outsideFoodPolicy === "allowed"} 
+               
+                  
+                />
                 Allowed
               </label>
               <br />
@@ -924,6 +967,11 @@ const Partner = () => {
                   type="radio"
                   name="outsideFoodPolicy"
                   value="notAllowed"
+                  checked={outsideFoodPolicy === "notAllowed"}
+                  onChange={(e) => setOutsideFoodPolicy(e.target.value)}
+        
+
+                  
                 />
                 Not Allowed
               </label>
@@ -931,7 +979,12 @@ const Partner = () => {
               <label>2-Cancellation</label>
               <br />
               <label>
-                <input type="radio" name="cancellationpolicy" value="allowed" />
+                <input type="radio"
+                 name="cancellationpolicy"
+                  value="allowed"
+                  checked={cancellationpolicy === "allowed"}
+                  onChange={(e)=>setCancellationpolicy(e.target.value)}
+                   />
                 Allowed
               </label>
               <br />
@@ -940,6 +993,8 @@ const Partner = () => {
                   type="radio"
                   name="cancellationpolicy"
                   value="notAllowed"
+                  checked={cancellationpolicy === "notAllowed"}
+                  onChange={(e)=>setCancellationpolicy(e.target.value)}
                 />
                 Not Allowed
               </label>
@@ -947,67 +1002,100 @@ const Partner = () => {
               <label>3-Select Your Payment Mode You Accepted</label>
               <br />
               <label>
-                <input type="radio" name="paymentmode" value="online" />
+                <input type="radio"
+                 name="paymentmode"
+                  value="online"
+                  checked={paymentMode === "online"}
+                  onChange={(e)=>setPaymentMode(e.target.value)} />
                 Online
               </label>
               <br />
               <label>
-                <input type="radio" name="paymentmode" value="offline" />
+                <input type="radio" name="paymentmode" value="offline"
+                checked={paymentMode === "offline"}
+                  onChange={(e)=>setPaymentMode(e.target.value)} />
                 Offline
               </label>
               <br />
               <label>4-Pets Allowed</label>
               <br />
               <label>
-                <input type="radio" name="pets" value="allowed" />
+                <input type="radio"
+                 name="pets"
+                  value="allowed"
+                  checked={pets === "allowed"} 
+                    onChange={(e)=>setPets(e.target.value)}
+                  />
                 Allowed
               </label>
               <br />
               <label>
-                <input type="radio" name="pets" value="notAllowed" />
+                <input type="radio" name="pets" value="notAllowed" 
+                   checked={pets === "notAllowed"} 
+                    onChange={(e)=>setPets(e.target.value)}
+                />
                 Not Allowed
               </label>
               <br />
               <label>5-Bachelor Allowed</label>
               <br />
               <label>
-                <input type="radio" name="Bachelorallow" value="allowed" />
+                <input type="radio"
+                 name="Bachelorallow"
+                  value="allowed"
+                  checked={bachelor === "allowed"} 
+                    onChange={(e)=>setBachelor(e.target.value)} />
                 Allowed
               </label>
               <br />
               <label>
-                <input type="radio" name="Bachelorallow" value="notAllowed" />
+                <input type="radio" name="Bachelorallow" value="notAllowed"
+                 checked={bachelor === "notAllowed"} 
+                    onChange={(e)=>setBachelor(e.target.value)} />
                 Not Allowed
               </label>
               <br />
               <label>6-Smoking Allowed</label>
               <br />
               <label>
-                <input type="radio" name="smokingallow" value="allowed" />
+                <input type="radio" name="smokingallow" value="allowed" 
+                  checked={smoking === "allowed"} 
+                    onChange={(e)=>setSmoking(e.target.value)}
+                />
                 Allowed
               </label>
               <br />
               <label>
-                <input type="radio" name="smokingallow" value="notAllowed" />
+                <input type="radio" name="smokingallow" value="notAllowed"
+                 checked={smoking === "notAllowed"} 
+                    onChange={(e)=>setSmoking(e.target.value)} />
                 Not Allowed
               </label>
               <br />
               <label>7-Alcohol Allowed</label>
               <br />
               <label>
-                <input type="radio" name="Alcohol" value="allowed" />
+                <input type="radio" name="Alcohol" value="allowed" 
+                   checked={alcohol === "allowed"} 
+                    onChange={(e)=>setAlcohol(e.target.value)}
+                />
                 Allowed
               </label>
               <br />
               <label>
-                <input type="radio" name="Alcohol" value="notAllowed" />
+                <input type="radio" name="Alcohol" value="notAllowed"
+                checked={alcohol === "notAllowed"} 
+                    onChange={(e)=>setAlcohol(e.target.value)} />
                 Not Allowed
               </label>
               <br />
               <label>8-Unmarried Couples</label>
               <br />
               <label>
-                <input type="radio" name="unmarriedcouples" value="allowed" />
+                <input type="radio" name="unmarriedcouples" value="allowed" 
+                  checked={unmarriedcouples === "allowed"} 
+                    onChange={(e)=>setUnmarriedcouples(e.target.value)}
+                />
                 Allowed
               </label>
               <br />
@@ -1016,6 +1104,8 @@ const Partner = () => {
                   type="radio"
                   name="unmarriedcouples"
                   value="notAllowed"
+                  checked={unmarriedcouples === "notAllowed"} 
+                    onChange={(e)=>setUnmarriedcouples(e.target.value)}
                 />
                 Not Allowed
               </label>
@@ -1027,6 +1117,8 @@ const Partner = () => {
                   type="radio"
                   name="internationalcouple"
                   value="allowed"
+                  checked={internationalcouple === "allowed"} 
+                    onChange={(e)=>setInternationalcouple(e.target.value)}
                 />
                 Allowed
               </label>
@@ -1036,32 +1128,24 @@ const Partner = () => {
                   type="radio"
                   name="internationalcouple"
                   value="notAllowed"
+                  checked={internationalcouple === "notAllowed"} 
+                    onChange={(e)=>setInternationalcouple(e.target.value)}
                 />
                 Not Allowed
               </label>
               <br />
-              <label>Outside Food</label>
-              <br />
-              <label>
-                <input type="radio" name="outsideFoodPolicy" value="allowed" />
-                Allowed
-              </label>
-              <br />
-              <label>
-                <input
-                  type="radio"
-                  name="outsideFoodPolicy"
-                  value="notAllowed"
-                />
-                Not Allowed
-              </label>
-              <br />
+             
               <hr />
               <label htmlFor="returnPolicy">Describe your return policy:</label>
-              <input type="text" id="returnPolicy" />
+              <input type="text" id="returnPolicy" 
+              value={returnPolicy}
+                onChange={(e)=>setReturnPolicy(e.target.value)}
+              />
 
               <label htmlFor="checkInOut">Check-In and Check-Out:</label>
-              <input type="text" id="checkInOut" />
+              <input type="text" id="checkInOut" value={checkInOut}
+                onChange={(e)=>setCheckInOut(e.target.value)}
+              />
               <hr />
               <div className="memo">
                 <p className="early-late">Early Check-in And Late Check-out</p>
@@ -1157,26 +1241,36 @@ const Partner = () => {
               <div className="tariff-container1">
                 <label htmlFor="ondoublesharing">
                   Double Sharing
-                  <input type="text" id="ondoublesharing" />
+                  <input type="text" id="ondoublesharing" value={onDoubleSharing}
+                    onChange={(e)=>setOnDoubleSharing(e.target.value)}
+                  />
                 </label>
 
                 <label htmlFor="onquadsharing">
                   Quad Sharing
-                  <input type="text" id="onquadsharing" />
+                  <input type="text" id="onquadsharing" value={onquadsharing}
+                    onChange={(e)=>setOnquadsharing(e.target.value)}
+                  />
                 </label>
 
                 <label htmlFor="onbulkbooking">
                   Bulk Booking more then 20-30people
-                  <input type="text" id="onbulkbooking" />
+                  <input type="text" id="onbulkbooking" value={onbulkbooking}
+                    onChange={(e)=>setOnbulkbooking(e.target.value)}
+                  />
                 </label>
 
                 <label htmlFor="ontripplesharing">
                   Tripple Sharing
-                  <input type="text" id="ontripplesharing" />
+                  <input type="text" id="ontripplesharing" value={ontripplesharing}
+                    onChange={(e)=>setOntripplesharing(e.target.value)}
+                  />
                 </label>
-                <label htmlFor="ontripplesharing">
+                <label htmlFor="onmorerooms">
                   More then four rooms:
-                  <input type="text" id="onmore4rooms" />
+                  <input type="text" id="onmore4rooms" value={onmore4room}
+                    onChange={(e)=>setOnmore4room(e.target.value)}
+                  />
                 </label>
               </div>
             </div>
@@ -1188,17 +1282,22 @@ const Partner = () => {
               <div className="tariff-container1">
                 <label htmlFor="offdoublesharing">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" />
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
                 </label>
 
                 <label htmlFor="offquadsharing">
                   Quad Sharing:
-                  <input type="text" id="offquadsharing" />
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
                 </label>
 
                 <label htmlFor="offbulkbooking">
                   Bulk Booking more then 20-30people:
-                  <input type="text" id="offbulkbooking" />
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
                 </label>
 
                 <label htmlFor="offtripplesharing">
@@ -1207,7 +1306,9 @@ const Partner = () => {
                 </label>
                 <label htmlFor="offtripplesharing">
                   More then four rooms:
-                  <input type="text" id="offmore4rooms" />
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
                 </label>
               </div>
             </div>
