@@ -310,7 +310,9 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 8px;
   width: 53%;
-  color: white;
+  color: rgb(2, 2, 2);
+  border: 1px solid black;
+  background: white;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;

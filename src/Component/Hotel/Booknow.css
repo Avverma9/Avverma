@@ -146,6 +146,14 @@
   align-items: center;
   height: 50px;
 }
+.viewMoreBtn,.viewLessBtn{
+  border: none;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+  color: blue;
+
+}
 
 .staricon {
   font-size: 23px;

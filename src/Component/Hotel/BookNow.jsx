@@ -59,6 +59,18 @@ export default function BookNow({ refresh, reset }) {
   const userId = localStorage.getItem("userId");
 
   const params = useParams();
+  const [expand,setExpand] = useState(false);
+
+const expanddescription=()=>{
+  setExpand(!expand);
+};
+
+const truncateText = (text, maxLength) => {
+  if (!expand && text.length > maxLength) {
+    return text.substring(0, maxLength) + '...';
+  }
+  return text;
+};
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -280,10 +292,22 @@ export default function BookNow({ refresh, reset }) {
               <FontAwesomeIcon icon={faInr} className="indianrupee" />
               {bookingDetails.price}
             </div>
-            <p className="hotel-descrip">
-              <p className="description1">Description:</p>{" "}
-              {bookingDetails.description}
-            </p>
+            <div className="hotel-descrip">
+      <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
+      <p className={`description-content ${expand ? 'expanded' : ''}`}>
+      {bookingDetails.description && truncateText(bookingDetails.description, 100)}
+      </p>
+      {!expand && (
+        <button className="viewMoreBtn" onClick={expanddescription}>
+          View More
+        </button>
+      )}
+      {expand && (
+        <button className="viewLessBtn" onClick={expanddescription}>
+          View Less
+        </button>
+      )}
+    </div>
             <p className="amenity-section">
               <p className="amenity-word">Amenities: </p>
               <div className="amenityclass">
