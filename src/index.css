@@ -32,4 +32,15 @@ h1 {
 a {
   text-decoration: none;
   color: inherit;
+<<<<<<< HEAD
+=======
+}
+
+input {
+  padding: 5px;
+}
+
+._pointer {
+  cursor: pointer;
+>>>>>>> origin/car_sourav_admin
 }

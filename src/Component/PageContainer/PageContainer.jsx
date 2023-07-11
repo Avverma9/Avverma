@@ -10,6 +10,12 @@ import Importauction from "../../Pages/Importauction/Importauction";
 import { Filterauction } from "../../Pages/Filterauction/Filterauction";
 import { YourWins } from "../../Pages/Wins/YourWins";
 import { Addauction } from "../../Pages/Addauction/Addauction";
+<<<<<<< HEAD
+=======
+import Setting from "../../Pages/Settings/Setting";
+import Settiming from "../../Pages/SetTiming/Settiming";
+import Update from "../../Pages/Updateauction/Update";
+>>>>>>> origin/car_sourav_admin
 
 export const PageContainer = () => {
   return (
@@ -24,6 +30,9 @@ export const PageContainer = () => {
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
         <Route path="/add-auction" element={<Addauction />} />
+        <Route path="/settings" element={<Setting />} />
+        <Route path="/set-timing" element={<Settiming />} />
+        <Route path="/update-start-price" element={<Update/>} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>
