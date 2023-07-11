@@ -1,0 +1,55 @@
+.filter_container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .filter_container p{
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .filter_body {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 50%;
+  }
+  
+  .filter_body img {
+    width: 120px;
+    height: 85px;
+  }
+  .auction-details-a{
+
+    display: flex;
+    gap: 1%;
+    font-size: 12px;
+    font-weight: 501;
+    line-height: 2;
+  
+  }
+  .auction-details-a li{
+    list-style: none;
+  }
+  .auction-details-b{
+
+    display: flex;
+    gap: 1%;
+    font-size: 12px;
+    font-weight: 501;
+    line-height: 2;
+  
+  }
+  .auction-details-b li{
+    list-style: none;
+  }
+  .auction-detail{
+    display: flex;
+    gap: 20px;
+  }
+  .filter-value{
+    color: rgb(82, 82, 82);
+  }
+  
+  
+  
+  
