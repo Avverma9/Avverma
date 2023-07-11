@@ -174,12 +174,28 @@ const MannageBuyer = () => {
   return (
     <>
       <li>
+        <Link to="/mannage-buyer">
+          {" "}
+          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/mannage-buyer">
+          <p>Mannage Buyer</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const MannageAdmin = () => {
+  return (
+    <>
+      <li>
         <Link to="/">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Mannage Buyer</p>
+          <p>Mannage Admin</p>
         </Link>
       </li>
     </>
@@ -196,6 +212,7 @@ export const SideNavBar = () => {
         <ul>
           <Home />
           <MannageAuction />
+          <MannageAdmin />
           <MannageBuyer />
           <Profile />
           <PushNotification />

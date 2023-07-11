@@ -12,6 +12,7 @@ import { Addauction } from "../../Pages/Addauction/Addauction";
 import Setting from "../../Pages/Settings/Setting";
 import Settiming from "../../Pages/SetTiming/Settiming";
 import Update from "../../Pages/Updateauction/Update";
+import { Mannagebuyer } from "../../Pages/Mannagebuyer/Mannagebuyer";
 
 export const PageContainer = () => {
   return (
@@ -28,7 +29,8 @@ export const PageContainer = () => {
         <Route path="/add-auction" element={<Addauction />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/set-timing" element={<Settiming />} />
-        <Route path="/update-start-price" element={<Update/>} />
+        <Route path="/update-start-price" element={<Update />} />
+        <Route path="/mannage-buyer" element={<Mannagebuyer />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>
