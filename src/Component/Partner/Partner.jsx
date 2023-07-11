@@ -81,7 +81,7 @@ const Partner = () => {
   const [bathrobe, setBathrobe] = useState(false);
   const [frontDeskService, setFrontDeskService] = useState(false);
   const [onDoubleSharing, setOnDoubleSharing] = useState("");
-  const [onquadsharing,setOnquadsharing] = useState("");
+  const [onQuadSharing,setOnQuadSharing] = useState("");
   const [onbulkbooking,setOnbulkbooking] = useState("");
   const [ontripplesharing,setOntripplesharing] = useState("");
   const [onmore4room,setOnmore4room] = useState("");
@@ -161,15 +161,17 @@ const Partner = () => {
     formData.append("returnPolicy", returnPolicy);
     formData.append("checkInOut", checkInOut);
     formData.append("onDoubleSharing", onDoubleSharing);
-    formData.append("onquadsharing",onquadsharing);
-    formData.append("onbulkbooking",onbulkbooking);
-    formData.append("onmore4room",onmore4room);
-    formData.append("ontripplesharing",ontripplesharing);
+    formData.append("onQuadSharing",onQuadSharing);
+    formData.append("onBulkBooking",onbulkbooking);
+    formData.append("onMoreThanFour",onmore4room);
+    formData.append("onTrippleSharing",ontripplesharing);
 
     formData.append("offDoubleSharing", offDoubleSharing);
-    formData.append("offquadsharing",offquadsharing);
-    formData.append("offbulkbooking",offbulkbooking);
-    formData.append("offmore4room",offmore4room);
+    formData.append("offQuadSharing",offquadsharing);
+    formData.append("offBulkBooking",offbulkbooking);
+    formData.append("offMoreThanFour",offmore4room);
+    
+
     
 
     
@@ -202,6 +204,7 @@ const Partner = () => {
         setLandmark("");
         setStarType("");
         setPropertyType("");
+        setImages("");
         
         setFreeWifi(false);
         setAc(false);
@@ -224,6 +227,27 @@ const Partner = () => {
         setDryClean(false);
         setBathrobe(false);
         setFrontDeskService(false);
+        setOutsideFoodPolicy("");
+        setCancellationpolicy("");
+        setPaymentMode("");
+        setPets("");
+        setBachelor("");
+        setSmoking("");
+        setAlcohol("");
+        setUnmarriedcouples("");
+        setInternationalcouple("");
+        setReturnPolicy("");
+        setCheckInOut("");
+        setOnDoubleSharing("");
+        setOnQuadSharing("");
+        setOnbulkbooking("");
+        setOntripplesharing("");
+        setOnmore4room("");
+        setOffDoubleSharing("");
+        setOffbulkbooking("");
+        setOffmore4room("");
+        setOffquadsharing("");
+        setOfftripplesharing("");
       } else {
         console.log("failed");
       }
@@ -583,29 +607,33 @@ const Partner = () => {
           <div>
             <h3>Basic Information</h3>
             <div className="uploadimages1">
-              {[...Array(6)].map((_, index) => (
-                <div className="images" key={index}>
-                  <label htmlFor={`imageUpload${index}`}></label>
-                  <div className="image-container6">
-                    {!images[index] && (
-                      <img
-                        className="default-image"
-                        src={defaultImages[index]}
-                        alt={`Default Image ${index + 1}`}
-                      />
-                    )}
-                    <input
-                      type="file"
-                      id={`imageUpload${index}`}
-                      value={uploadimage}
-                      accept="image/*"
-                      onChange={(event) => handleImageUpload(event, index)}
-                      className="imgbutton"
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+  {[...Array(6)].map((_, index) => (
+    <div className="images" key={index}>
+      <label htmlFor={`imageUpload${index}`}>
+        {images[index] ? (
+          <img src={images[index]} alt={`Selected Image ${index + 1}`} />
+        ) : (
+          <img
+            className="default-image"
+            src={defaultImages[index]}
+            alt={`Default Image ${index + 1}`}
+          />
+        )}
+      </label>
+      <div className="image-container6">
+        <input
+          type="file"
+          id={`imageUpload${index}`}
+          value={uploadimage}
+          accept="image/*"
+          onChange={(event) => handleImageUpload(event, index)}
+          className="imgbutton"
+        />
+      </div>
+    </div>
+  ))}
+</div>
+
             <div className="amenity-container5">
               <h3>Amenities</h3>
               <div className="amenities1">
@@ -1248,8 +1276,8 @@ const Partner = () => {
 
                 <label htmlFor="onquadsharing">
                   Quad Sharing
-                  <input type="text" id="onquadsharing" value={onquadsharing}
-                    onChange={(e)=>setOnquadsharing(e.target.value)}
+                  <input type="text" id="onquadsharing" value={onQuadSharing}
+                    onChange={(e)=>setOnQuadSharing(e.target.value)}
                   />
                 </label>
 
