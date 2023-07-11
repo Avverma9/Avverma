@@ -94,6 +94,7 @@ import Haridwar from "./Component/Dropdownbar/city/Haridwar/haridwar";
 import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 
+
 function App() {
   // console.log(search)
   const [refresh, setRefresh] = useState(1);
