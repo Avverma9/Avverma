@@ -37,7 +37,7 @@ import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
-export default function BookNow({ refresh, reset }) {
+export default function BookNow({ refresh, reset, userData }) {
   const [bookingDetails, setBookingDetails] = useState({});
   const [hotelID, setHotelID] = useState("");
   const [hotelImages, setHotelImages] = useState([]);
@@ -560,6 +560,7 @@ const truncateText = (text, maxLength) => {
               userId={userId}
               amount={Number(bookingDetails.price)}
               currency="INR"
+              userData={userData}
             />
           </div>
         </div>

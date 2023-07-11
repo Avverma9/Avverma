@@ -52,7 +52,7 @@ const Header = () => {
   </div>
 </li>
 <li>
-  <a href="/" class="text-black">
+  <a href="/home" class="text-black">
     <BsHouse /> Home
   </a>
 </li>
