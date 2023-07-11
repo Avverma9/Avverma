@@ -138,13 +138,13 @@
 }
 .rating0 {
   background-color: green;
-  width: 15%;
+  width: 10%;
   color: white;
   border-radius: 5px;
   justify-content: center;
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 30px;
 }
 
 .staricon {

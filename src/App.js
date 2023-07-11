@@ -92,6 +92,7 @@ import Rishikesh from "./Component/Dropdownbar/city/rishikesh/rishikesh";
 import Mussoorie from "./Component/Dropdownbar/city/mussoorie/mussoorie";
 import Haridwar from "./Component/Dropdownbar/city/Haridwar/haridwar";
 import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
+import Offers from "./Component/Offers/Offers";
 
 function App() {
   // console.log(search)
@@ -128,12 +129,14 @@ function App() {
     <Router>
       <div>
         <Header />
-
+<Offers/>
         <HeaderImage />
         <Dropdownbar />
+       
         <Carousel />
 
-        <Home />
+        <Home /> 
+        
         <Hotel />
         <ChatBox />
         <PopupCard />
