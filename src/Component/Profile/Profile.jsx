@@ -18,8 +18,8 @@ import { useCollapse } from "react-collapsed";
 import { convertDate } from "../../utils/convertDate";
 
 function AccountSettings({ selectedNav, navHandler }) {
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  // const [isExpanded, setExpanded] = useState(false);
+  // const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   const [hoverText, setHoverText] = useState("");
 
   const hoverHandler = (e) => {
@@ -31,18 +31,19 @@ function AccountSettings({ selectedNav, navHandler }) {
     <>
       <div
         className="sideBar_options_section"
-        {...getToggleProps({
-          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        })}
+        // {...getToggleProps({
+        //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+        // })}
+        onClick={navHandler}
       >
         <FaUser className="svg_logo" />
         <h2>Profile Information</h2>
       </div>
-      <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
-        {/* <button className={selectedNav === 'Profile Information' ? `` : ``} onClick={navHandler}>
-        <p>Profile Information</p>
-      </button> */}
-        <button className="collapse_list" onClick={navHandler}>
+      <div
+        className="sideBar_options_section_collapse"
+        // {...getCollapseProps()}
+      >
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Profile Information" ? `text-primary` : ``
@@ -59,9 +60,8 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-          {/* <div>Profile Information</div> */}
-        </button>
-        <button className="collapse_list" onClick={navHandler}>
+        </button> */}
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Mannage Addresses" ? `text-primary` : ``
@@ -78,8 +78,8 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-        </button>
-        <button className="collapse_list" onClick={navHandler}>
+        </button> */}
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Add Government id" ? `text-primary` : ``
@@ -96,7 +96,7 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-        </button>
+        </button> */}
       </div>
       <div className="_underLine" />
     </>
