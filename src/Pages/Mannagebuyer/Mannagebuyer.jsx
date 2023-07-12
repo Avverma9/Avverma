@@ -1,15 +1,21 @@
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./Mannagebuyer.css";
+import { useNavigate } from "react-router-dom";
 
 export const Mannagebuyer = () => {
+  const navigate = useNavigate();
   return (
     <div className="_mannage_buyer_container">
       <div className="_mannage_buyer_header">
         <h1>Mannage Buyer</h1>
         <span>
           <p>Registration of a buyer : 768794562</p>
-          <input type="button" value="View" />
+          <input
+            type="button"
+            value="View"
+            onClick={() => navigate("/buyer-details")}
+          />
         </span>
       </div>
       <div className="_mannage_buyer_body">
@@ -27,16 +33,33 @@ export const Mannagebuyer = () => {
         </div>
       </div>
       <div className="_sorted_option_list">
-        <div className="_sorted_option_list_header">
-          <h1>Buyer Name</h1>
-          <h1>Phone No</h1>
-          <h1>Status</h1>
-        </div>
-        <div className="_sorted_option_list_body">
-          <p>Raju Kar</p>
-          <p>8562788914</p>
-          <p>Active</p>
-        </div>
+        <table>
+          <tr className="table_head">
+            <th>Buyer Name</th>
+            <th>Phone No</th>
+            <th>Status</th>
+          </tr>
+          <tr>
+            <td>Raju Kar</td>
+            <td>8562788914</td>
+            <td>In Active</td>
+          </tr>
+          <tr>
+            <td>Raju Kar</td>
+            <td>8562788914</td>
+            <td>Active</td>
+          </tr>
+          <tr>
+            <td>Raju Kar</td>
+            <td>8562788914</td>
+            <td>Active</td>
+          </tr>
+          <tr>
+            <td>Raju Kar</td>
+            <td>8562788914</td>
+            <td>In Active</td>
+          </tr>
+        </table>
       </div>
     </div>
   );

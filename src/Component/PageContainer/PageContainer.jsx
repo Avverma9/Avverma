@@ -13,6 +13,12 @@ import Setting from "../../Pages/Settings/Setting";
 import Settiming from "../../Pages/SetTiming/Settiming";
 import Update from "../../Pages/Updateauction/Update";
 import { Mannagebuyer } from "../../Pages/Mannagebuyer/Mannagebuyer";
+import { Buyerdetails } from "../../Pages/Buyerdetails/Buyerdetails";
+import { Emdaccount } from "../../Pages/Emdaccount/Emdaccount";
+import { Debitemd } from "../../Pages/Debitemd/Debitemd";
+import { Updatevehicle } from "../../Pages/Updatevehicle/Updatevehicle";
+import { Assignauction } from "../../Pages/Assignauction/Assignauction";
+import { Assignnewauction } from "../../Pages/Assignnewauction/Assignnewauction";
 
 export const PageContainer = () => {
   return (
@@ -31,6 +37,12 @@ export const PageContainer = () => {
         <Route path="/set-timing" element={<Settiming />} />
         <Route path="/update-start-price" element={<Update />} />
         <Route path="/mannage-buyer" element={<Mannagebuyer />} />
+        <Route path="/buyer-details" element={<Buyerdetails />} />
+        <Route path="/emd-account" element={<Emdaccount />} />
+        <Route path="/debit-emd" element={<Debitemd />} />
+        <Route path="/vehicle-update" element={<Updatevehicle />} />
+        <Route path="/assign-auction" element={<Assignauction />} />
+        <Route path="/assign-new-auction" element={<Assignnewauction />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

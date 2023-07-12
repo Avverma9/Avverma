@@ -34,8 +34,14 @@ a {
   color: inherit;
 }
 
+textarea {
+  padding: 5px;
+  outline: none;
+}
+
 input {
   padding: 5px;
+  outline: none;
 }
 
 ._pointer {
