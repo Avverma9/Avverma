@@ -5,6 +5,11 @@ offerSchema = new mongoose.Schema({
         type: [String],
         required: false,
       },
+      userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        required: true,
+      },
       hotelName: {
         type: String,
         required: false,
