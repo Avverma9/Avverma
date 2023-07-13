@@ -93,6 +93,7 @@ import Mussoorie from "./Component/Dropdownbar/city/mussoorie/mussoorie";
 import Haridwar from "./Component/Dropdownbar/city/Haridwar/haridwar";
 import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
+import BookNowPage from "./Component/Booknowpage/Booknowpage";
 
 
 function App() {
@@ -218,6 +219,7 @@ function App() {
           <Route path="cities/mussoorie" element={<Mussoorie />} />
           <Route path="cities/haridwar" element={<Haridwar />} />
           <Route path="cities/kolhapur" element={<Kolhapur />} />
+          <Route path="/book-now/:offerId" element={<BookNowPage/>} />
         </Routes>
         <Footer />
       </div>

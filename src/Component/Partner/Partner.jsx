@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import "./partner.css";
 import { useLocation } from "react-router-dom";
@@ -103,7 +101,12 @@ const Partner = () => {
   const[returnPolicy,setReturnPolicy]= useState("");
   const[checkInOut,setCheckInOut]=useState("");
 
-
+  const handleImageUpload = (event, index) => {
+    const file = event.target.files[0];
+    const updatedImages = [...images];
+    updatedImages[index] = file;
+    setImages(updatedImages.slice(0, 6));
+  };
   
 
   
@@ -170,7 +173,10 @@ const Partner = () => {
     formData.append("offQuadSharing",offquadsharing);
     formData.append("offBulkBooking",offbulkbooking);
     formData.append("offMoreThanFour",offmore4room);
-    
+    images.forEach((image, index) => {
+      formData.append(`image${index}`, image);
+    });
+
 
     
 
@@ -204,7 +210,7 @@ const Partner = () => {
         setLandmark("");
         setStarType("");
         setPropertyType("");
-        setImages("");
+        setImages([]);
         
         setFreeWifi(false);
         setAc(false);
@@ -301,19 +307,7 @@ const Partner = () => {
     }
   };
 
-  const handleImageUpload = (event, index) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const image = e.target.result;
-      const updatedImages = [...images];
-      updatedImages[index] = image;
-      setImages(updatedImages.slice(0, 6));
-    };
-
-    reader.readAsDataURL(file);
-  };
+  
 
   const handleCheckboxChange = (event) => {
     // Handle checkbox change logic here
@@ -607,32 +601,33 @@ const Partner = () => {
           <div>
             <h3>Basic Information</h3>
             <div className="uploadimages1">
-  {[...Array(6)].map((_, index) => (
-    <div className="images" key={index}>
-      <label htmlFor={`imageUpload${index}`}>
-        {images[index] ? (
-          <img src={images[index]} alt={`Selected Image ${index + 1}`} />
-        ) : (
-          <img
-            className="default-image"
-            src={defaultImages[index]}
-            alt={`Default Image ${index + 1}`}
-          />
-        )}
-      </label>
-      <div className="image-container6">
-        <input
-          type="file"
-          id={`imageUpload${index}`}
-          value={uploadimage}
-          accept="image/*"
-          onChange={(event) => handleImageUpload(event, index)}
-          className="imgbutton"
-        />
-      </div>
+      {[...Array(6)].map((_, index) => (
+        <div className="images" key={index}>
+          <label htmlFor={`imageUpload${index}`}>
+            {images[index] ? (
+              <img src={URL.createObjectURL(images[index])} alt={`Selected Image ${index + 1}`} />
+            ) : (
+              <img
+                className="default-image"
+                src={defaultImages[index]}
+                alt={`Default Image ${index + 1}`}
+              />
+            )}
+          </label>
+          <div className="image-container6">
+            <input
+              type="file"
+              id={`imageUpload${index}`}
+              accept="image/*"
+              onChange={(event) => handleImageUpload(event, index)}
+              className="imgbutton"
+            />
+          </div>
+        </div>
+      ))}
+
+      
     </div>
-  ))}
-</div>
 
             <div className="amenity-container5">
               <h3>Amenities</h3>
@@ -1261,6 +1256,110 @@ const Partner = () => {
         )}
         {activeNavItem === "Hotel Tariff" && (
           <div>
+<div className="tariff-contain-all">
+
+          <div className="tariff">
+              <h3>Hotel Tariff</h3>
+              <h6>Off-season</h6>
+              <br />
+              <div className="tariff-container1">
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                <h6>AP Plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                <h6>Map plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                
+                  
+                
+              </div>
+            </div>
             <div className="tariff">
               <h3>Hotel Tariff</h3>
               <h6>On-season</h6>
@@ -1300,14 +1399,38 @@ const Partner = () => {
                     onChange={(e)=>setOnmore4room(e.target.value)}
                   />
                 </label>
-              </div>
-            </div>
+                <h6>AP Plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
 
-            <div className="tariff">
-              <h3>Hotel Tariff</h3>
-              <h6>Off-season</h6>
-              <br />
-              <div className="tariff-container1">
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                <h6>Map plan</h6>
                 <label htmlFor="offdoublesharing">
                   Double Sharing:
                   <input type="text" id="offdoublesharing" value={offDoubleSharing}
@@ -1340,6 +1463,9 @@ const Partner = () => {
                 </label>
               </div>
             </div>
+
+            
+          </div>
           </div>
         )}
 
