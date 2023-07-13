@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Mannageadmin.css";
 
 export const Mannageadmin = () => {
+  const navigate = useNavigate();
   return (
     <div className="_mannage_buyer_container">
       <div className="_mannage_buyer_header">
@@ -16,7 +17,11 @@ export const Mannageadmin = () => {
         </div>
         <span>
           <p>Registration of a buyer : 768794562</p>
-          <input type="button" value="View" />
+          <input
+            type="button"
+            value="View"
+            onClick={() => navigate("/register-admin")}
+          />
         </span>
       </div>
       <div className="_sorted_option_list">
@@ -26,15 +31,15 @@ export const Mannageadmin = () => {
             <th>Email Id</th>
           </tr>
           <tr>
-            <td>Raju Kar</td>
+            <td onClick={() => navigate("/row-box")}>Raju Kar</td>
             <td>example@example.com</td>
           </tr>
           <tr>
-            <td>Raju Kar</td>
+            <td onClick={() => navigate("/row-box")}>Raju Kar</td>
             <td>example@example.com</td>
           </tr>
           <tr>
-            <td>Raju Kar</td>
+            <td onClick={() => navigate("/row-box")}>Raju Kar</td>
             <td>example@example.com</td>
           </tr>
         </table>

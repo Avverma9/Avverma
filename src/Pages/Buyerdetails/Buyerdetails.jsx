@@ -30,6 +30,10 @@ export const Buyerdetails = () => {
       <div className="_input_fields">
         <h1>End Balance</h1>
         <input type="text" value="Rs.100000" />
+        <BsFillArrowRightSquareFill
+          className="_navigation_arrow"
+          onClick={() => navigate("/edit-emd")}
+        />
       </div>
       <div className="_input_fields">
         <h1>Mail Id</h1>
