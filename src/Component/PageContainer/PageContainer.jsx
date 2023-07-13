@@ -13,6 +13,19 @@ import { Addauction } from "../../Pages/Addauction/Addauction";
 import Setting from "../../Pages/Settings/Setting";
 import Settiming from "../../Pages/SetTiming/Settiming";
 import Update from "../../Pages/Updateauction/Update";
+import { Mannagebuyer } from "../../Pages/Mannagebuyer/Mannagebuyer";
+import { Buyerdetails } from "../../Pages/Buyerdetails/Buyerdetails";
+import { Emdaccount } from "../../Pages/Emdaccount/Emdaccount";
+import { Debitemd } from "../../Pages/Debitemd/Debitemd";
+import { Updatevehicle } from "../../Pages/Updatevehicle/Updatevehicle";
+import { Assignauction } from "../../Pages/Assignauction/Assignauction";
+import { Assignnewauction } from "../../Pages/Assignnewauction/Assignnewauction";
+import { Autonotification } from "../../Pages/Autonotification/Autonotification";
+import { Registeradmin } from "../../Pages/Registeradmin/Registeradmin";
+import { Pushnotification } from "../../Pages/Pushnotification/Pushnotification";
+import { Rowbox } from "../../Pages/Rowbox/Rowbox";
+import { Mannageadmin } from "../../Pages/Mannageadmin/Mannageadmin";
+import { Editemd } from "../../Pages/Editemd/Editemd";
 
 export const PageContainer = () => {
   return (
@@ -29,7 +42,20 @@ export const PageContainer = () => {
         <Route path="/add-auction" element={<Addauction />} />
         <Route path="/settings" element={<Setting />} />
         <Route path="/set-timing" element={<Settiming />} />
-        <Route path="/update-start-price" element={<Update/>} />
+        <Route path="/update-start-price" element={<Update />} />
+        <Route path="/mannage-buyer" element={<Mannagebuyer />} />
+        <Route path="/buyer-details" element={<Buyerdetails />} />
+        <Route path="/emd-account" element={<Emdaccount />} />
+        <Route path="/debit-emd" element={<Debitemd />} />
+        <Route path="/vehicle-update" element={<Updatevehicle />} />
+        <Route path="/assign-auction" element={<Assignauction />} />
+        <Route path="/assign-new-auction" element={<Assignnewauction />} />
+        <Route path="/push-notification" element={<Pushnotification />} />
+        <Route path="/auto-notification" element={<Autonotification />} />
+        <Route path="/register-admin" element={<Registeradmin />} />
+        <Route path="/row-box" element={<Rowbox />} />
+        <Route path="/mannage-admin" element={<Mannageadmin />} />
+        <Route path="/edit-emd" element={<Editemd />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

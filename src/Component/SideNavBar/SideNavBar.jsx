@@ -50,11 +50,11 @@ const PushNotification = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/push-notification">
           {" "}
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/push-notification">
           <p>Push Notification</p>
         </Link>
       </li>
@@ -174,12 +174,28 @@ const MannageBuyer = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/mannage-buyer">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/mannage-buyer">
           <p>Mannage Buyer</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const MannageAdmin = () => {
+  return (
+    <>
+      <li>
+        <Link to="/mannage-admin">
+          {" "}
+          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/mannage-admin">
+          <p>Mannage Admin</p>
         </Link>
       </li>
     </>
@@ -196,6 +212,7 @@ export const SideNavBar = () => {
         <ul>
           <Home />
           <MannageAuction />
+          <MannageAdmin />
           <MannageBuyer />
           <Profile />
           <PushNotification />
