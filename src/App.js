@@ -130,14 +130,14 @@ function App() {
     <Router>
       <div>
         <Header />
-<Offers/>
+
         <HeaderImage />
         <Dropdownbar />
        
         <Carousel />
 
         <Home /> 
-        
+        <Offers/>
         <Hotel />
         <ChatBox />
         <PopupCard />
