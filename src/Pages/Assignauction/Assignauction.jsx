@@ -1,7 +1,9 @@
 import React from "react";
 import "./Assignauction.css";
+import { useNavigate } from "react-router-dom";
 
 export const Assignauction = () => {
+  const navigate = useNavigate()
   return (
     <div className="assign_auction_container">
       <div className="assign_auction_table">
@@ -34,7 +36,12 @@ export const Assignauction = () => {
           </tr>
         </table>
       </div>
-      <button className="_assign_auction_btn">Assign New Auction</button>
+      <button
+        className="_assign_auction_btn"
+        onClick={() => navigate("/assign-new-auction")}
+      >
+        Assign New Auction
+      </button>
     </div>
   );
 };

@@ -50,11 +50,11 @@ const PushNotification = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/push-notification">
           {" "}
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/push-notification">
           <p>Push Notification</p>
         </Link>
       </li>
@@ -190,11 +190,11 @@ const MannageAdmin = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/mannage-admin">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/mannage-admin">
           <p>Mannage Admin</p>
         </Link>
       </li>

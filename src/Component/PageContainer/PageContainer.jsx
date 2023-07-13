@@ -19,6 +19,11 @@ import { Debitemd } from "../../Pages/Debitemd/Debitemd";
 import { Updatevehicle } from "../../Pages/Updatevehicle/Updatevehicle";
 import { Assignauction } from "../../Pages/Assignauction/Assignauction";
 import { Assignnewauction } from "../../Pages/Assignnewauction/Assignnewauction";
+import { Autonotification } from "../../Pages/Autonotification/Autonotification";
+import { Registeradmin } from "../../Pages/Registeradmin/Registeradmin";
+import { Pushnotification } from "../../Pages/Pushnotification/Pushnotification";
+import { Rowbox } from "../../Pages/Rowbox/Rowbox";
+import { Mannageadmin } from "../../Pages/Mannageadmin/Mannageadmin";
 
 export const PageContainer = () => {
   return (
@@ -36,13 +41,45 @@ export const PageContainer = () => {
         <Route path="/settings" element={<Setting />} />
         <Route path="/set-timing" element={<Settiming />} />
         <Route path="/update-start-price" element={<Update />} />
-        <Route path="/mannage-buyer" element={<Mannagebuyer />} />
-        <Route path="/buyer-details" element={<Buyerdetails />} />
+        <Route
+          path="/mannage-buyer"
+          element={<Mannagebuyer />} // routed
+        />
+        <Route
+          path="/buyer-details"
+          element={<Buyerdetails />}
+          // routed
+        />
         <Route path="/emd-account" element={<Emdaccount />} />
         <Route path="/debit-emd" element={<Debitemd />} />
-        <Route path="/vehicle-update" element={<Updatevehicle />} />
-        <Route path="/assign-auction" element={<Assignauction />} />
-        <Route path="/assign-new-auction" element={<Assignnewauction />} />
+        <Route
+          path="/vehicle-update"
+          element={<Updatevehicle />}
+          // routed
+        />
+        <Route
+          path="/assign-auction"
+          element={<Assignauction />}
+          // routed
+        />
+        <Route
+          path="/assign-new-auction"
+          element={<Assignnewauction />}
+          // routed
+        />
+        <Route
+          path="/push-notification"
+          element={<Pushnotification />}
+          // routed
+        />
+        <Route path="/auto-notification" element={<Autonotification />} />
+        <Route path="/register-admin" element={<Registeradmin />} />
+        <Route path="/row-box" element={<Rowbox />} />
+        <Route
+          path="/mannage-admin"
+          element={<Mannageadmin />}
+          // routed
+        />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

@@ -1,7 +1,10 @@
 import React from "react";
+import { BsFillArrowRightSquareFill } from "react-icons/bs";
 import "./Buyerdetails.css";
+import { useNavigate } from "react-router-dom";
 
 export const Buyerdetails = () => {
+  const navigate = useNavigate()
   return (
     <div className="buyer_details_container">
       <div className="_input_fields">
@@ -35,6 +38,10 @@ export const Buyerdetails = () => {
       <div className="_input_fields">
         <h1>Vehicle Limit</h1>
         <input type="text" value="10 vehicle" />
+        <BsFillArrowRightSquareFill
+          className="_navigation_arrow"
+          onClick={() => navigate("/vehicle-update")}
+        />
       </div>
       <div className="_input_fields">
         <h1>Address</h1>
@@ -55,6 +62,10 @@ export const Buyerdetails = () => {
       <div className="_input_fields">
         <h1>Assign for Auction</h1>
         <input type="text" value="abcd" />
+        <BsFillArrowRightSquareFill
+          className="_navigation_arrow"
+          onClick={() => navigate("/assign-auction")}
+        />
       </div>
       <div className="_input_fields"></div>
       <div className="_input_fields">
