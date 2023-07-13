@@ -142,7 +142,7 @@ function HotelList() {
 
 
 
-                <div className={styles['amenities']}>
+                <div className={styles['amenities']} >
 
                   <ul>
                     {result.amenities.slice(0, 3).map((amenity) => (

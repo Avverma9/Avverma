@@ -1256,7 +1256,7 @@ const Partner = () => {
         )}
         {activeNavItem === "Hotel Tariff" && (
           <div>
-
+<div className="tariff-contain-all">
 
           <div className="tariff">
               <h3>Hotel Tariff</h3>
@@ -1293,6 +1293,71 @@ const Partner = () => {
                     onChange={(e)=>setOffmore4room(e.target.value)}
                   />
                 </label>
+                <h6>AP Plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                <h6>Map plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                
+                  
+                
               </div>
             </div>
             <div className="tariff">
@@ -1334,10 +1399,73 @@ const Partner = () => {
                     onChange={(e)=>setOnmore4room(e.target.value)}
                   />
                 </label>
+                <h6>AP Plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
+                <h6>Map plan</h6>
+                <label htmlFor="offdoublesharing">
+                  Double Sharing:
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offquadsharing">
+                  Quad Sharing:
+                  <input type="text" id="offquadsharing" value={offquadsharing}
+                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                </label>
+
+                <label htmlFor="offbulkbooking">
+                  Bulk Booking more then 20-30people:
+                  <input type="text" id="offbulkbooking" value={offbulkbooking}
+                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  />
+                </label>
+
+                <label htmlFor="offtripplesharing">
+                  Tripple Sharing:
+                  <input type="text" id="offtripplesharing" />
+                </label>
+                <label htmlFor="offtripplesharing">
+                  More then four rooms:
+                  <input type="text" id="offmore4rooms" value={offmore4room}
+                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  />
+                </label>
               </div>
             </div>
 
             
+          </div>
           </div>
         )}
 
