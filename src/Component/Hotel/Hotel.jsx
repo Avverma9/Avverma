@@ -75,7 +75,7 @@ function HotelList() {
     });
   }, [maxValue, minValue]);
 
-  if (location.pathname !== "/") {
+  if (location.pathname !== "/home") {
     return null;
   }
 
