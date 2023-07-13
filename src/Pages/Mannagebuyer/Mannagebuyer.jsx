@@ -33,7 +33,7 @@ export const Mannagebuyer = () => {
         </div>
       </div>
       <div className="_sorted_option_list">
-        <table>
+        <table className="_w-100">
           <tr className="table_head">
             <th>Buyer Name</th>
             <th>Phone No</th>

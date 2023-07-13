@@ -47,3 +47,11 @@ input {
 ._pointer {
   cursor: pointer;
 }
+
+._w-100 {
+  width: 100%;
+}
+
+._w-50 {
+  width: 50%;
+}

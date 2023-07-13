@@ -20,7 +20,7 @@ export const Mannageadmin = () => {
         </span>
       </div>
       <div className="_sorted_option_list">
-        <table>
+        <table className="_w-50">
           <tr className="table_head">
             <th>Name</th>
             <th>Email Id</th>
