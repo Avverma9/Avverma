@@ -34,12 +34,12 @@ const Offers = () => {
   };
 
   const goToPrevSlide = () => {
-    const prevSlide = (currentSlide - 1 + data.length) % data.length;
+    const prevSlide = (currentSlide - 1 + 6) % 6;
     setCurrentSlide(prevSlide);
   };
 
   const goToNextSlide = () => {
-    const nextSlide = (currentSlide + 1) % data.length;
+    const nextSlide = (currentSlide + 1) % 6;
     setCurrentSlide(nextSlide);
   };
 
