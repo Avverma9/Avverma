@@ -13,12 +13,13 @@ import { ImProfile } from "react-icons/im";
 import { HiIdentification } from "react-icons/hi";
 import { BsFillCalendarCheckFill, BsFillCreditCardFill } from "react-icons/bs";
 import { TiCancel } from "react-icons/ti";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { useCollapse } from "react-collapsed";
 import { convertDate } from "../../utils/convertDate";
 
 function AccountSettings({ selectedNav, navHandler }) {
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  // const [isExpanded, setExpanded] = useState(false);
+  // const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   const [hoverText, setHoverText] = useState("");
 
   const hoverHandler = (e) => {
@@ -30,18 +31,19 @@ function AccountSettings({ selectedNav, navHandler }) {
     <>
       <div
         className="sideBar_options_section"
-        {...getToggleProps({
-          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        })}
+        // {...getToggleProps({
+        //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+        // })}
+        onClick={navHandler}
       >
         <FaUser className="svg_logo" />
-        <h2>Account Settings</h2>
+        <h2>Profile Information</h2>
       </div>
-      <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
-        {/* <button className={selectedNav === 'Profile Information' ? `` : ``} onClick={navHandler}>
-        <p>Profile Information</p>
-      </button> */}
-        <button className="collapse_list" onClick={navHandler}>
+      <div
+        className="sideBar_options_section_collapse"
+        // {...getCollapseProps()}
+      >
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Profile Information" ? `text-primary` : ``
@@ -58,9 +60,8 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-          {/* <div>Profile Information</div> */}
-        </button>
-        <button className="collapse_list" onClick={navHandler}>
+        </button> */}
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Mannage Addresses" ? `text-primary` : ``
@@ -77,8 +78,8 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-        </button>
-        <button className="collapse_list" onClick={navHandler}>
+        </button> */}
+        {/* <button className="collapse_list" onClick={navHandler}>
           <p
             className={
               selectedNav === "Add Government id" ? `text-primary` : ``
@@ -95,7 +96,7 @@ function AccountSettings({ selectedNav, navHandler }) {
             data-bs-placement="right"
             title={hoverText}
           />
-        </button>
+        </button> */}
       </div>
       <div className="_underLine" />
     </>
@@ -341,6 +342,10 @@ function ProfileInformation({
   const [gender, setGender] = useState("");
   const [mobile, setMobile] = useState("");
   const [uimages, setImages] = useState([]);
+  const [address, setAddress] = useState("");
+  const [adhaar, setAdhaar] = useState("");
+  const [pan, setPan] = useState("");
+  const [drivingLsc, setDrivingLsc] = useState("");
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -355,7 +360,7 @@ function ProfileInformation({
       formData.append("email", email !== "" ? email : userData?.email);
       formData.append("gender", gender !== "" ? gender : userData?.gender);
       formData.append("mobile", mobile !== "" ? mobile : userData?.mobile);
-      // formData.append('address', address !== "" ? address : userData?.address);
+      formData.append("address", address !== "" ? address : userData?.address);
 
       // Append the image only if it is provided by the user
       if (uimages.length > 0) {
@@ -395,11 +400,13 @@ function ProfileInformation({
         <>
           <div className="_title">
             <h1>Personal Information</h1>
-            <input
-              type="button"
-              value="Edit"
-              onClick={() => setIsEditing(true)}
-            />
+            {!isEditing && (
+              <input
+                type="button"
+                value="Edit"
+                onClick={() => setIsEditing(true)}
+              />
+            )}
           </div>
           <div className="_fields" key={refresh}>
             <input
@@ -422,7 +429,7 @@ function ProfileInformation({
           </div>
         </>
         <>
-          <h4 className="sub_Title">Your Gender</h4>
+          <h1 className="sub_Title">Your Gender</h1>
           <div className="profile_information_gender" key={refresh}>
             {!isEditing ? (
               userData?.gender === "Male" ? (
@@ -528,6 +535,92 @@ function ProfileInformation({
             />
           </div>
         </>
+        <>
+          <div className="_title">
+            <h1>Address</h1>
+          </div>
+          <div className="_fields" key={refresh}>
+            <textarea
+              placeholder={userData?.address}
+              type="text"
+              rows="1"
+              value={userData ? userData?.address : address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
+        </>
+        <>
+          <div className="_title">
+            <h1>Adhaar</h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields" key={refresh}>
+            <input
+              type="text"
+              // value={
+              //   !isEditing
+              //     ? !isSignedIn && userDetails
+              //       ? userDetails?.providerData?.phoneNumber
+              //       : userData?.mobile
+              //     : mobile
+              // }
+              onChange={(e) => setAdhaar(e.target.value)}
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
+            />
+          </div>
+        </>
+        <>
+          <div className="_title">
+            <h1>PAN Card</h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields" key={refresh}>
+            <input
+              type="text"
+              // value={
+              //   !isEditing
+              //     ? !isSignedIn && userDetails
+              //       ? userDetails?.providerData?.phoneNumber
+              //       : userData?.mobile
+              //     : mobile
+              // }
+              onChange={(e) => setPan(e.target.value)}
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
+            />
+          </div>
+        </>
+        <>
+          <div className="_title">
+            <h1>Driving License</h1>
+            {/* <input type="button" value="Edit" /> */}
+          </div>
+          <div className="_fields" key={refresh}>
+            <input
+              type="text"
+              // value={
+              //   !isEditing
+              //     ? !isSignedIn && userDetails
+              //       ? userDetails?.providerData?.phoneNumber
+              //       : userData?.mobile
+              //     : mobile
+              // }
+              onChange={(e) => setDrivingLsc(e.target.value)}
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
+            />
+          </div>
+        </>
         {isEditing && (
           <>
             <div className="_title">
@@ -569,9 +662,17 @@ function ProfileInformation({
         )}
       </div>
       {isEditing && (
-        <button onClick={handleUpdate} className="profile_body_button">
-          Update Profile
-        </button>
+        <div className="button_container">
+          <button onClick={handleUpdate} className="profile_body_button">
+            Update Profile
+          </button>
+          <button
+            onClick={() => setIsEditing(false)}
+            className="profile_cancel_button"
+          >
+            Cancel <AiFillCloseCircle style={{ marginLeft: "5px" }} />
+          </button>
+        </div>
       )}
     </>
   );
@@ -1085,13 +1186,28 @@ function ComplainsSection({
         </button>
       </div>
 
-
-      {raiseComplaint && <div className="d-flex align-items-center">
-        <div className="_fields flex-grow-1" style={{ "width": "calc(100% + 138px)" }}>
-          <textarea type="text" rows="1" value={newComplaint} onChange={(e) => setNewComplaint(e.target.value)} style={{ "width": "100%" }} />
+      {raiseComplaint && (
+        <div className="d-flex align-items-center">
+          <div
+            className="_fields flex-grow-1"
+            style={{ width: "calc(100% + 138px)" }}
+          >
+            <textarea
+              type="text"
+              rows="1"
+              value={newComplaint}
+              onChange={(e) => setNewComplaint(e.target.value)}
+              style={{ width: "100%" }}
+            />
+          </div>
+          <button
+            className="post_complain_button"
+            onClick={postComplaintHandler}
+          >
+            <FaTelegramPlane />
+          </button>
         </div>
-        <button className="post_complain_button" onClick={postComplaintHandler}><FaTelegramPlane /></button>
-      </div>}
+      )}
 
       {complaints.map((complaint) => (
         <>

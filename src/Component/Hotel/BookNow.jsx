@@ -38,6 +38,10 @@ import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
 export default function BookNow({ refresh, reset, userData }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxVisiblePages = 6;
+
   const [bookingDetails, setBookingDetails] = useState({});
   const [hotelID, setHotelID] = useState("");
   const [hotelImages, setHotelImages] = useState([]);
@@ -50,6 +54,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [hotelReviews, setHotelReviews] = useState([]);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+
   const [reviewId, setReviewId] = useState("");
 
   const [updatedReview, setUpdatedReview] = useState("");
@@ -115,6 +120,45 @@ const truncateText = (text, maxLength) => {
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
+
+  // Pagination for Reviews
+
+  const totalItems = hotelReviews && hotelReviews.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = hotelReviews && hotelReviews.slice(startIndex, endIndex);
+
+  const visiblePages = [];
+  const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
+  let startPage = 1;
+  let endPage = totalPagesToDisplay;
+
+  if (currentPage > Math.floor(maxVisiblePages / 2)) {
+    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+    endPage = startPage + totalPagesToDisplay - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = endPage - totalPagesToDisplay + 1;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
 
   const settings = {
     dots: false,
@@ -461,8 +505,8 @@ const truncateText = (text, maxLength) => {
             <div className="reviews" key={refresh}>
               <div className="reviewhead">
                 <h1>Reviews:</h1>
-                {hotelReviews
-                  ? [...hotelReviews].reverse().map((rev, i) => (
+                {currentData
+                  ? [...currentData].reverse().map((rev, i) => (
                       <>
                         <div
                           className="d-flex flex-column gap-3"
@@ -554,6 +598,33 @@ const truncateText = (text, maxLength) => {
                   : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
+              <div className="_pagination">
+                <button
+                  className="_pagination-button"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                {visiblePages.map((page) => (
+                  <button
+                    key={page}
+                    className={`_pagination-button ${
+                      page === currentPage ? "_pagination-active" : ""
+                    }`}
+                    onClick={() => handlePageClick(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  className="_pagination-button"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
             </div>
             <CheckOut
               hotelId={bookingDetails._id}

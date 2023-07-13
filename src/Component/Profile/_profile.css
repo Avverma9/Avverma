@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: left;
 
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .sidebar_header .react-avatar div span {
@@ -45,7 +45,7 @@
   background-color: #ffffff;
   padding: 10px 15px;
   margin: 25px 0 0 0;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 .sidebar_body .user_logout {
@@ -137,7 +137,7 @@
   margin: 0 0 0 25px;
   padding: 10px 15px;
 
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
 }
 
 /* Profile Information  */
@@ -168,6 +168,17 @@
   border: none;
   outline: none;
   background-color: transparent;
+}
+
+._title svg {
+  margin: 0 0 0 auto;
+  font-size: 18px;
+  font-weight: 500;
+  color: #424554;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 ._fields {
@@ -276,22 +287,38 @@
   margin: 10px 0 0 0;
 }
 
+.button_container {
+  width: 80%;
+  position: relative;
+  bottom: -39px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .profile_body_button {
-  float: left;
   padding: 6px 8px;
   background-color: #2563eb;
   border: none;
   color: #fff;
   font-weight: 600;
   width: 30%;
-  margin: 15px 0 15px 16px;
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   transition: 0.3s all ease-in-out;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.profile_cancel_button {
+  padding: 6px 8px;
+  background-color: #e43b3c;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  width: 22%;
+  transition: 0.3s all ease-in-out;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .raise_complaint {
@@ -430,6 +457,12 @@ input[type="radio"] {
   font-size: 16px;
 }
 
+.sub_Title {
+  margin: 14px 0 0 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .profile_container {
@@ -544,6 +577,9 @@ input[type="radio"] {
 
 /* Medium devices (landscape tablets, 768px and down) */
 @media only screen and (max-width: 768px) {
+  .sub_Title {
+    font-size: 14px;
+  }
   ._title h1 {
     font-size: 14px;
   }
@@ -594,19 +630,13 @@ input[type="radio"] {
   }
   ._fields > textarea {
     width: 100%;
+    height: 32px;
     font-size: 13px;
     font-weight: 500;
     color: #424554;
   }
   .profile_body_button {
-    float: none;
     width: 70%;
-    margin: 15px auto;
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
   }
 }
 
@@ -634,6 +664,10 @@ input[type="radio"] {
     height: 32px;
   }
   ._fields > input[type="email"] {
+    width: 80%;
+    height: 32px;
+  }
+  ._fields > textarea {
     width: 80%;
     height: 32px;
   }
