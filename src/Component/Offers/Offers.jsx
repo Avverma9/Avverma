@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faWifi, faChevronLeft, faChevronRight, faSnowflake, faDumbbell, faParking, faSwimmingPool, faPaw, faGlassMartini, faSmoking, faStar, faKitchenSet, faTv, faFire, faPowerOff, faCamera, faElevator, faCreditCard, faCheck, faInr, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { MdLocationOn } from "react-icons/md";
-import { BiSolidOffer } from "react-icons/bi";
+// import { BiSolidOffer } from "react-icons/bi";
 import { useNavigate } from 'react-router-dom';
 import './Offers.css';
 
@@ -91,7 +91,7 @@ const navigate=useNavigate();
               <MdLocationOn /> {offer.destination}
             </p>
             <p>
-              <BiSolidOffer />Offers:{offer.offers}
+             Offers:{offer.offers}
             </p>
           </div>
           <hr />
