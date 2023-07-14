@@ -18,18 +18,21 @@ const server = createServer(app);
 const io = new Server(server);
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URI =
-  "mongodb+srv://Avverma:Avverma95766@avverma.2g4orpk.mongodb.net/Hotel";
+const MONGO_URI = 
+"mongodb+srv://Avverma:Avverma95766@avverma.2g4orpk.mongodb.net/Hotel";
+// Tested By Hardik on Localhost  :  "mongodb://127.0.0.1:27017/Hotel"
 
 
-
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
-
   app.use("/", route)
+
+  //////
+  const paymentRoutes = require("./routes/hardik.js") ; 
+  app.use("/hardik/api/payment/", paymentRoutes);
+  ///////
 
   app.use((req, res) => {
       return res.status(400).send({ status: false, message: "End point is incorrect" })

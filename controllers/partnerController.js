@@ -38,27 +38,7 @@ const createPartner = async (req, res) => {
       offQuadSharing,
       offBulkBooking,
       offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingapplans,
-      onQuadSharingapplans,
-      onBulkBookingapplans,
-      onTrippleSharingapplans,
-      onMoreThanFourapplans,
-      offDoubleSharingapplans,
-      offQuadSharingapplans,
-      offBulkBookingapplans,
-      offTrippleSharingapplans,
-      offMoreThanFourapplans,
-      onDoubleSharingmaplans,
-      onQuadSharingmaplans,
-      onBulkBookingmaplans,
-      onTrippleSharingmaplans,
-      onMoreThanFourmaplans,
-      offDoubleSharingmaplans,
-      offQuadSharingmaplans,
-      offBulkBookingmaplans,
-      offTrippleSharingmaplans,
-      offMoreThanFourmaplans
+      offMoreThanFour
     } = req.body;
 
     const images = req.files.map((file) => file.location);
@@ -78,6 +58,7 @@ const createPartner = async (req, res) => {
       landmark,
       starType,
       propertyType,
+      images,
       amenities,
       outsideFoodPolicy,
       cancellationPolicy,
@@ -99,28 +80,7 @@ const createPartner = async (req, res) => {
       offQuadSharing,
       offBulkBooking,
       offTrippleSharing,
-      offMoreThanFour,
-      images,
-      onDoubleSharingapplans,
-      onQuadSharingapplans,
-      onBulkBookingapplans,
-      onTrippleSharingapplans,
-      onMoreThanFourapplans,
-      offDoubleSharingapplans,
-      offQuadSharingapplans,
-      offBulkBookingapplans,
-      offTrippleSharingapplans,
-      offMoreThanFourapplans,
-      onDoubleSharingmaplans,
-      onQuadSharingmaplans,
-      onBulkBookingmaplans,
-      onTrippleSharingmaplans,
-      onMoreThanFourmaplans,
-      offDoubleSharingmaplans,
-      offQuadSharingmaplans,
-      offBulkBookingmaplans,
-      offTrippleSharingmaplans,
-      offMoreThanFourmaplans
+      offMoreThanFour
     };
 
     const savedPartner = await partnerModel.create(newPartner);

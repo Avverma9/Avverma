@@ -12,12 +12,7 @@ const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
 
-const {orders , verify , bookingDetails , cancelBooking}  = require("../controllers/bookingController") ; 
 
-router.post("/orders", orders); 
-router.post("/verify", verify);
-router.get("/bookingDetails/:id", bookingDetails); 
-router.post("/cancelBooking",cancelBooking)
 
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
@@ -81,5 +76,7 @@ router.get('/bookingFailed', bookingController.getFailedBookings);
 router.post("/create/offers",upload,offersController.createOffers)
 router.get("/offers",offersController.getOffers)
 router.get("/offers/:offerId",offersController.getOffersById)
+
+
 
 module.exports = router;
