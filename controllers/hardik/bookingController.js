@@ -30,7 +30,6 @@ const orders = async (req, res) => {
             });
         }
 
-        //dhyan dena ispe // it can accept data directly without coverting to string 
         const instance = new Razorpay({
             key_id: "rzp_test_CE1nBQFs6SwXnC",
             key_secret: "PTYR3RDbVaNrpkmRqMhX7CKA"
@@ -49,7 +48,7 @@ const orders = async (req, res) => {
             }
 
             fillStatus(order);
-            // console.log(order);
+            
 
             res.status(200).json({ data: order });
         });
@@ -60,7 +59,7 @@ const orders = async (req, res) => {
 }
 
 const verify = async (req, res) => {
-    // console.log("verify page par aagya hu") ; 
+  
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
             req.body;
@@ -74,7 +73,7 @@ const verify = async (req, res) => {
 
             const filter = { orderId: razorpay_order_id };
 
-            //try it in sigle without copying 
+           
             const update = {
                 paymentId: razorpay_payment_id,
                 bookingStatus: "confirmed"
@@ -84,28 +83,22 @@ const verify = async (req, res) => {
                 new: true
             });
 
-            // alert("Payment verified successfully") ;
-            // console.log("Payment verified successfully");
+           
             return res.status(200).json({ "success": true, message: "Payment verified successfully" });
         } else {
             return res.status(400).json({ "success": true, message: "Invalid signature sent!" });
         }
     } catch (error) {
-        // alert("Internal Server Error!") ; 
+      
         res.status(500).json({ message: "Internal Server Error!" });
-        // console.log(error);
+       
     }
 }
 
 const bookingDetails = async (req, res) => {
-    //booking details of the logged In user only
+    
     const userId = req.params.id;
-    // console.log("inside the new route ", userId);
-
-    const data = await booking.find();
-
-    // console.log(data);
-
+    const data = await booking.find(userId);
     res.status(200).json({ "success": true, data });
 
 }
