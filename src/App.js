@@ -125,7 +125,6 @@ function App() {
     <Router>
       <div>
         <Header />
-        {/* <Cards /> */}
         <HeaderImage />
         <Dropdownbar />
 
