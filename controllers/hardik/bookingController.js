@@ -97,9 +97,16 @@ const verify = async (req, res) => {
 
 const bookingDetails = async (req, res) => {
     
-    const userId = req.params.id;
-    const data = await booking.find(userId);
-    res.status(200).json({ "success": true, data });
+    try {
+        const userId = req.query.userId; 
+        const orders = await booking.find({ userId: userId });
+    
+        res.status(200).json({ data: orders });
+      } catch (error) {
+        res.status(500).json({ success: false, message: "Internal Server Error!" });
+        console.error(error);
+      }
+    
 
 }
 
