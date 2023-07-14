@@ -1,0 +1,23 @@
+._card {
+  width: 280px;
+  display: block;
+  margin: 60px auto;
+  background-color: aquamarine;
+  /* box-shadow: 10px 5px 40px 20px #a7a5af; */
+  transition: 0.25s;
+}
+
+._card-header {
+  background-image: url("https://source.unsplash.com/user/erondu/600x400");
+  height: 150px;
+  width: 100%;
+  padding: 15px;
+  width: 100%;
+  background-size: cover;
+  color: #fff;
+}
+
+._card-header--title {
+  text-transform: uppercase;
+  margin: 0;
+}

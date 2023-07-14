@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./Component/Header/Header";
 // import Home from './Component/Home/Home';
 // import About from './Component/About/About';
@@ -94,7 +90,7 @@ import Haridwar from "./Component/Dropdownbar/city/Haridwar/haridwar";
 import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
-
+import { Cards } from "./Component/Cards/Cards";
 
 function App() {
   // console.log(search)
@@ -106,41 +102,39 @@ function App() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-
-      const userId = localStorage.getItem("userId");
-      fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
-        .then((response) => {
-          console.log(response, "RESPONSE");
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch user data");
-          }
-        })
-        .then((data) => {
-          console.log(data, "API CHANGES NEW LOG");
-          setUserData(data.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  , []);
+    const userId = localStorage.getItem("userId");
+    fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
+      .then((response) => {
+        console.log(response, "RESPONSE");
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      })
+      .then((data) => {
+        console.log(data, "API CHANGES NEW LOG");
+        setUserData(data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <Router>
       <div>
         <Header />
-
+        {/* <Cards /> */}
         <HeaderImage />
         <Dropdownbar />
-       
+
         <Carousel />
 
-        <Home /> 
-        <Offers/>
+        <Home />
+        <Offers />
         <Hotel />
-        <ChatBox />
+        {/* <ChatBox /> */}
         <PopupCard />
 
         <UserSettings />
@@ -219,7 +213,7 @@ function App() {
           <Route path="cities/mussoorie" element={<Mussoorie />} />
           <Route path="cities/haridwar" element={<Haridwar />} />
           <Route path="cities/kolhapur" element={<Kolhapur />} />
-          <Route path="/book-now/:offerId" element={<BookNowPage/>} />
+          <Route path="/book-now/:offerId" element={<BookNowPage />} />
         </Routes>
         <Footer />
       </div>
