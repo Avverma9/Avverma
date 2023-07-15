@@ -19,7 +19,7 @@ import Home from "./Component/Home/Home.jsx";
 
 import ChatBox from "./Component/Chatbot/Chatbot";
 import PopupCard from "./Component/Welcome/Welcome";
-import Footer from "./Component/Footer/Footer";
+
 import Hotel from "./Component/Hotel/Hotel.jsx";
 
 import UserSettings from "./Component/Profile/UserAction";
@@ -91,6 +91,8 @@ import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
 import { Cards } from "./Component/Cards/Cards";
+import Footer from "./Component/Footer/Footer";
+
 
 function App() {
   // console.log(search)
@@ -214,7 +216,8 @@ function App() {
           <Route path="cities/kolhapur" element={<Kolhapur />} />
           <Route path="/book-now/:offerId" element={<BookNowPage />} />
         </Routes>
-        <Footer />
+        <Footer/>
+   
       </div>
     </Router>
   );
