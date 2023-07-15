@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   faChevronLeft,
   faChevronRight, faStar,
@@ -28,6 +29,7 @@ import {
   faGlassMartini,
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
+import { convertDate } from '../../utils/convertDate';
 
 
 const BookNowPage = () => {
@@ -36,6 +38,8 @@ const BookNowPage = () => {
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
+  const [checkin,setCheckIn]= useState("");
+  const [checkout,setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
 
   const sliderRef = useRef(null);
@@ -48,6 +52,8 @@ const BookNowPage = () => {
         setHotelImages(data.images);
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
+        setCheckIn(convertDate(data.startDate));
+        setCheckout(convertDate(data.endDate));
 
       })
       .catch(error => console.error(error));
@@ -159,7 +165,7 @@ const BookNowPage = () => {
                     case "GYM":
                       icon = faDumbbell;
                       break;
-                    case "Free WIFI":
+                    case "Wifi":
                       icon = faWifi;
                       break;
                     case "Parking":
@@ -234,21 +240,22 @@ const BookNowPage = () => {
 
             <div className="bookcardmain">
               <div className="booking-card">
-                <h2 className="booking-card-title">Check in</h2>
+                <h2 className="booking-card-title">Check-IN</h2>
                 <div className="booking-card-content">
                   <p>
                     <span className="booking-label"></span>{" "}
-                    <span className="booking-date">{offerData.startDate}</span>
+                    <span className="booking-date">{checkin}</span>
+                    
                   </p>
                 </div>
               </div>
 
               <div className="booking-card">
-                <h2 className="booking-card-title">Check out</h2>
+                <h2 className="booking-card-title">Check-Out</h2>
                 <div className="booking-card-content">
                   <p>
                     <span className="booking-label"></span>{" "}
-                    <span className="booking-date">{offerData.endDate}</span>
+                    <span className="booking-date">{checkout}</span>
                   </p>
                 </div>
               </div>
