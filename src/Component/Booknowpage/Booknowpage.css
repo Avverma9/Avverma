@@ -117,6 +117,9 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
+.offer-data p{
+font-size: 20px;
+}
 
 .booking-card-content {
   font-size: 15px;
@@ -140,11 +143,11 @@
   background-color: green;
   width: 10%;
   color: white;
-  border-radius: 5px;
+  border-radius: 1px;
   justify-content: center;
   display: flex;
   align-items: center;
-  height: 30px;
+  height: 35px;
 }
 .viewMoreBtn,.viewLessBtn{
   border: none;
@@ -156,7 +159,10 @@
 }
 
 .staricon {
-  font-size: 23px;
+  font-size: 15px;
+  font-weight: 501;
+  display: flex;
+  align-items: center;
 }
 .booking-card-content {
   color: gray;

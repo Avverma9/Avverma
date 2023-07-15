@@ -140,7 +140,7 @@
   background-color: green;
   width: 10%;
   color: white;
-  border-radius: 5px;
+  border-radius: 1px;
   justify-content: center;
   display: flex;
   align-items: center;
@@ -156,7 +156,10 @@
 }
 
 .staricon {
-  font-size: 23px;
+  font-size: 15px;
+font-weight: 501;
+display: flex;
+align-items: center;
 }
 .booking-card-content {
   color: gray;

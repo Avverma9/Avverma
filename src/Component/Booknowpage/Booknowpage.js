@@ -5,112 +5,112 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faChevronLeft,
-    faChevronRight,faStar,
-    faPerson,
-    faHotel,
-    faPeopleArrows,
-    faIdCard,
-    faRestroom,
-    faInr,
-    faWifi,
-    faParking,
-    faDumbbell,
-    faFire,
-    faTv,
-    faCamera,
-    faSnowflake,
-    faCreditCard,
-    faElevator,
-    faKitchenSet,
-    faCheck,
-    faPaw,
-    faGlassMartini,
-    faPeopleGroup,
+  faChevronLeft,
+  faChevronRight, faStar,
+  faPerson,
+  faHotel,
+  faPeopleArrows,
+  faIdCard,
+  faRestroom,
+  faInr,
+  faWifi,
+  faParking,
+  faDumbbell,
+  faFire,
+  faTv,
+  faCamera,
+  faSnowflake,
+  faCreditCard,
+  faElevator,
+  faKitchenSet,
+  faCheck,
+  faPaw,
+  faGlassMartini,
+  faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 
 
 const BookNowPage = () => {
-    const { offerId } = useParams();
-    const [offerData, setOfferData] = useState(null);
-    const [hotelImages, setHotelImages] = useState([]);
-    const [hotelAmenities, setHotelAmenities] = useState([]);
-    const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
-    const [expand, setExpand] = useState(false);
-    
-    const sliderRef = useRef(null);
+  const { offerId } = useParams();
+  const [offerData, setOfferData] = useState(null);
+  const [hotelImages, setHotelImages] = useState([]);
+  const [hotelAmenities, setHotelAmenities] = useState([]);
+  const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
+  const [expand, setExpand] = useState(false);
 
-    useEffect(() => {
-        fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
-            .then(response => response.json())
-            .then(data => {
-                setOfferData(data);
-                setHotelImages(data.images);
-                setHotelAmenities(data.amenities);
-                setHotelMoreOpt(data.moreOptions);
-                
-            })
-            .catch(error => console.error(error));
-    }, [offerId]);
+  const sliderRef = useRef(null);
 
-    if (!offerData) {
-        return <div>Loading...</div>;
+  useEffect(() => {
+    fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
+      .then(response => response.json())
+      .then(data => {
+        setOfferData(data);
+        setHotelImages(data.images);
+        setHotelAmenities(data.amenities);
+        setHotelMoreOpt(data.moreOptions);
+
+      })
+      .catch(error => console.error(error));
+  }, [offerId]);
+
+  if (!offerData) {
+    return <div>Loading...</div>;
+  }
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  };
+
+  const slideToPrev = () => {
+    sliderRef.current.slickPrev();
+  };
+
+  const slideToNext = () => {
+    sliderRef.current.slickNext();
+  };
+
+  const expanddescription = () => {
+    setExpand(!expand);
+  };
+
+  const truncateText = (text, maxLength) => {
+    if (!expand && text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
     }
-    const settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3,
-    };
-
-    const slideToPrev = () => {
-        sliderRef.current.slickPrev();
-    };
-
-    const slideToNext = () => {
-        sliderRef.current.slickNext();
-    };
-    
-    const expanddescription = () => {
-        setExpand(!expand);
-      };
-    
-      const truncateText = (text, maxLength) => {
-        if (!expand && text.length > maxLength) {
-          return text.substring(0, maxLength) + '...';
-        }
-        return text;
-      };
+    return text;
+  };
 
 
-    return (
+  return (
 
-        <div>
-            <div className="container-p-4">
-                <div className="flex">
-                    <div className="w-1/3 slider-container">
-                        <Slider ref={sliderRef} {...settings}>
-                            {hotelImages.map((photo, i) => (
-                                <div key={i} className="slider-slide">
-                                    <img
-                                        src={photo}
-                                        alt={offerData.hotelName}
-                                        className="my-1"
-                                    />
-                                </div>
-                            ))}
-                        </Slider>
-                        <div className="slider-navigation">
-                            <button className="slider-prev" onClick={slideToPrev}>
-                                <FontAwesomeIcon icon={faChevronLeft} />
-                            </button>
-                            <button className="slider-next" onClick={slideToNext}>
-                                <FontAwesomeIcon icon={faChevronRight} />
-                            </button>
-                        </div>
-                    </div>
-                    <div className="hotel-details1">
+    <div>
+      <div className="container-p-4">
+        <div className="flex">
+          <div className="w-1/3 slider-container">
+            <Slider ref={sliderRef} {...settings}>
+              {hotelImages.map((photo, i) => (
+                <div key={i} className="slider-slide">
+                  <img
+                    src={photo}
+                    alt={offerData.hotelName}
+                    className="my-1"
+                  />
+                </div>
+              ))}
+            </Slider>
+            <div className="slider-navigation">
+              <button className="slider-prev" onClick={slideToPrev}>
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </button>
+              <button className="slider-next" onClick={slideToNext}>
+                <FontAwesomeIcon icon={faChevronRight} />
+              </button>
+            </div>
+          </div>
+          <div className="hotel-details1">
             <div className="flex-rating">
               <div className="name-location">
                 <h2 className="hotel-name1">{offerData.hotelName}</h2>
@@ -118,15 +118,21 @@ const BookNowPage = () => {
                 <p className="location-booknow">{offerData.destination}</p>
               </div>
               <div className="rating0">
-                <p className="staricon">
+                <div className="staricon">
                   {offerData.rating}
                   <FontAwesomeIcon icon={faStar} className="staricon" />
-                </p>
+                </div>
               </div>
             </div>
             <div className="pricing">
               <FontAwesomeIcon icon={faInr} className="indianrupee" />
               {offerData.price}
+            </div>
+            <div className='offer-data'>
+              <p style={{ fontSize: '20px' }}>
+
+                Offer:{offerData.offers}
+              </p>
             </div>
             <div className="hotel-descrip">
               <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
@@ -144,8 +150,8 @@ const BookNowPage = () => {
                 </button>
               )}
             </div>
-            <p className="amenity-section">
-              <p className="amenity-word">Amenities: </p>
+            <div className="amenity-section">
+              <div className="amenity-word">Amenities:</div>
               <div className="amenityclass">
                 {hotelAmenities.map((option, index) => {
                   let icon;
@@ -156,7 +162,6 @@ const BookNowPage = () => {
                     case "Free WIFI":
                       icon = faWifi;
                       break;
-
                     case "Parking":
                       icon = faParking;
                       break;
@@ -185,16 +190,17 @@ const BookNowPage = () => {
                       icon = faCheck;
                   }
                   return (
-                    <p key={index}>
+                    <div key={index} className="amenity-item">
                       {icon && (
                         <FontAwesomeIcon icon={icon} className="amenity-icon" />
                       )}{" "}
                       {option}
-                    </p>
+                    </div>
                   );
                 })}
               </div>
-            </p>
+            </div>
+
             <div className="moreopt">
               <p className="morehead">More:</p>
               <div className="moreitem">
@@ -211,6 +217,8 @@ const BookNowPage = () => {
                     case "Bachelor Allowed":
                       icon = faPeopleGroup;
                       break;
+                    default:
+                      icon = faCheck;
                   }
                   return (
                     <p key={index}>
@@ -263,9 +271,17 @@ const BookNowPage = () => {
                 <FontAwesomeIcon icon={faHotel} className="icon" />
                 Room Type: {offerData.roomType}
               </p>
+              <p className="accomodation">
+                <FontAwesomeIcon icon={faHotel} className="icon" />
+                Accomodation: {offerData.accommodationType}
+              </p>
               <p className="maritalstatus">
                 <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
                 Marital Status: {offerData.maritalStatus}
+              </p>
+              <p className="collection">
+                <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
+                Collection:{offerData.collections}
               </p>
             </div>
 
@@ -273,36 +289,23 @@ const BookNowPage = () => {
               <div className="hotel-policyheading">Hotel Policies:</div>
               <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
             </div>
-
-           
-           
-          </div>
-                </div>
+            <div className='reviews'>
+              <div className='reviewhead'>
+                <h1>Reviews:</h1>
+              </div>
+              <p>{offerData.reviews}</p>
             </div>
-            <h2>{offerData.hotelName}</h2>
-            <p>offer:{offerData.offers}</p>
-            <p>Price: {offerData.price}</p>
-            <p>Destination:{offerData.destination}</p>
-            <p>Start Date: {new Date(offerData.startDate).toLocaleDateString()}</p>
-            <p>End Date: {new Date(offerData.endDate).toLocaleDateString()}</p>
-            <p>Description: {offerData.description}</p>
-            <p>Guests:{offerData.guests}</p>
-            <p>Rooms:{offerData.numRooms}</p>
-            <p>Roomtype:{offerData.roomType}</p>
-            <p>Localid:{offerData.localId}</p>
-            <p>Marital Status:{offerData.maritalStatus}</p>
-            <p>Availability:{offerData.availability}</p>
-            <p>Hotel policy:{offerData.hotelsPolicy}</p>
-            <p>More:{offerData.moreOptions}</p>
-            <p>Amenities:{offerData.amenities}</p>
-            <p>reviews:{offerData.reviews}</p>
-            <p>rating:{offerData.rating}</p>
-            <p>Collection:{offerData.collections}</p>
-            <p>Accomodation:{offerData.accommodationType}</p>
 
 
+
+          </div>
         </div>
-    );
+      </div>
+
+
+
+    </div>
+  );
 };
 
 export default BookNowPage;
