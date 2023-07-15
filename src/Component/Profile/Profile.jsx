@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+
 import "./_profile.css";
 import { getLocalStorage } from "../../hooks/useLocalStorage";
 import Avatar from "react-avatar";
@@ -41,7 +41,7 @@ function AccountSettings({ selectedNav, navHandler }) {
       </div>
       <div
         className="sideBar_options_section_collapse"
-      // {...getCollapseProps()}
+        // {...getCollapseProps()}
       >
         {/* <button className="collapse_list" onClick={navHandler}>
           <p
@@ -139,12 +139,12 @@ function MyBookings({ selectedNav, navHandler }) {
         </button>
         <button className="collapse_list" onClick={navHandler}>
           <p
-            className={selectedNav === "Confirmed Bookings" ? `text-primary` : ``}
+            className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
           >
-            Confirmed Bookings
+            Confirm Booking
           </p>
           <TiCancel
-            className={selectedNav === "Confirmed Bookings" ? `text-primary` : ``}
+            className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
             onMouseOver={hoverHandler}
             data-bs-toggle="tooltip"
             data-bs-placement="right"
@@ -565,11 +565,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setAdhaar(e.target.value)}
-            // placeholder={
-            //   !isSignedIn && userDetails
-            //     ? userDetails?.providerData?.phoneNumber
-            //     : userData?.mobile
-            // }
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
             />
           </div>
         </>
@@ -589,11 +589,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setPan(e.target.value)}
-            // placeholder={
-            //   !isSignedIn && userDetails
-            //     ? userDetails?.providerData?.phoneNumber
-            //     : userData?.mobile
-            // }
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
             />
           </div>
         </>
@@ -613,11 +613,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setDrivingLsc(e.target.value)}
-            // placeholder={
-            //   !isSignedIn && userDetails
-            //     ? userDetails?.providerData?.phoneNumber
-            //     : userData?.mobile
-            // }
+              // placeholder={
+              //   !isSignedIn && userDetails
+              //     ? userDetails?.providerData?.phoneNumber
+              //     : userData?.mobile
+              // }
             />
           </div>
         </>
@@ -783,7 +783,7 @@ function GovernmentIdInformation({ userData }) {
       <div className="_fields">
         {selectGID === "Adhaar" &&
           (gID === "" ||
-            gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm) ? null : (
+          gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm) ? null : (
             <p className="text-xs font-semibold text-red-700">
               Please Provide a Valid Adhaar Number
             </p>
@@ -796,9 +796,9 @@ function GovernmentIdInformation({ userData }) {
           ))}
         {selectGID === "Driving Licence" &&
           (gID === "" ||
-            gID.match(
-              /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
-            ) ? null : (
+          gID.match(
+            /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
+          ) ? null : (
             <p className="text-xs font-semibold text-red-700">
               Please Provide a Valid Driving License Number
             </p>
@@ -856,68 +856,6 @@ function GovernmentIdInformation({ userData }) {
 
 function CancelBooking() {
   const [orderId, setOrderId] = useState(null);
-  const navigate = useNavigate();
-
-  const cancelBooking = (e) => {
-    e.preventDefault();
-
-    const isSignedIn = localStorage.getItem("isSignedIn");
-    const userDetails = getLocalStorage("loggedUser");
-
-    if (!isSignedIn && !userDetails) {
-      navigate("/signin");
-    } else {
-      // const userId = localStorage.getItem("userId");
-      const cancel = async (getimage) => {
-        const response = await fetch(`https://hotel-backend-tge7.onrender.com/hardik/api/payment/cancelBooking`, {
-          "method": "POST",
-          "headers": {
-            "content-type": "application/json"
-          },
-          "body": JSON.stringify({ newbookingId: orderId })
-        })
-        const json = await response.json();
-
-        if (json.success) {
-          Swal.fire({
-            title: "Booking Cancelled !!",
-            icon: "success",
-          })
-        }
-        else {
-          if(json.status === "cancelled"){
-            Swal.fire({
-              title: "Error in Cancelling !",
-              text: "Booking is already Cancelled",
-              icon: "error",
-            })
-          }
-          else if(json.status === "failed"){
-            Swal.fire({
-              title: "Error in Cancelling !",
-              text: "Either you have not booked this hotel or your booking was failed.",
-              icon: "error",
-            })  
-          }
-
-          else{
-            Swal.fire({
-              title: "Invalid Booking Id !",
-              text: "Please enter a correct Booking ID.",
-              icon: "error",
-            })  
-          }
-          
-        }
-
-      }
-
-      cancel();
-    }
-
-  }
-
-
   console.log(orderId);
   return (
     <>
@@ -927,86 +865,49 @@ function CancelBooking() {
 
       <div className="_fields_col">
         <input type="text" onChange={(e) => setOrderId(e.target.value)} />
-        <span>Provide Booking Id for cancellation</span>
+        <span>Provide the dummy id 123456 for cancellation</span>
       </div>
-
-      <br />
 
       {/* <button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
         Confirm Cancel
       </button> */}
-      <button className="profile_body_button" onClick={cancelBooking}>Confirm Cancel</button>
+      <button className="profile_body_button">Confirm Cancel</button>
     </>
   );
 }
 
 function ConfirmBooking() {
-  const navigate = useNavigate();
-  const [bookingData, setBookingData] = useState([])
-  const [url, setUrl] = useState("");
-  useEffect(() => {
-    const isSignedIn = localStorage.getItem("isSignedIn");
-    const userDetails = getLocalStorage("loggedUser");
-
-    if (!isSignedIn && !userDetails) {
-      navigate("/signin");
-    } else {
-      const userId = localStorage.getItem("userId");
-      const getdata = async (getimage) => {
-        const response = await fetch(`https://hotel-backend-tge7.onrender.com/hardik/api/payment/bookingDetails/${userId}`)
-        const json = await response.json();
-        // setproducts(json.products.slice(0,3)); 
-        setBookingData(json.data);
-      }
-      getdata();
-    }
-  }, [navigate, setBookingData]);
-
-
-  const maincontainer = {
-    display: "flex",
-    justifyContent: "center",
-    margin: "auto",
-    width: "100%"
-  }
   return (
     <>
-      <h4><center>List of Your Confirmed Bookings</center></h4>
-      <br />
+      <div className="_title">
+        <h1>Confirm Booking</h1>
+      </div>
 
-      <div className="container row row-md-2" style={maincontainer}>
-        {/* {
-          (bookingData.length === 0) && <div><h5><br /><br /><br /><center>No Confirmed Bookings Till Now</center></h5></div>
-        } */}
-        {
-          bookingData.map((x) => {
-            return (
-              <>
-                {
-                  (x.bookingStatus === "confirmed")
-                  &&
-                  <div className="card my-3 mx-3 col-md-4" style={{ width: "30rem", backgroundColor: "#d3e5f0", border: "2px solid black", fontSize: "16px" }}>
-                    {/* <img src={`${userData.image}`} className="card-img-top my-3" alt="Profile" style={{ width: "50%", height: "50%", margin: "auto", borderRadius: "50%" }} /> */}
-                    <div className="card-body" >
-                      <center><h4 className="card-title">{x.hotelname}</h4></center>
-                      <p className="card-text"><b><u>Hotel ID</u></b> :  {x.hotelId}</p>
-                      <p className="card-text"><b><u>Booking ID</u></b> : {x.newuserId}</p>
-                    </div>
-                    <ul className="list-group list-group-flush" style={{ backgroundColor: "#d3e5f0", padding: "20px", display: "flex", justifyContent: "flex-start", float: "left", alignItems: "flex-start" }}>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>City</u></b> : {x.city}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>CheckIn</u></b> : {x.checkin.substr(0, x.checkin.indexOf('T'))}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>CheckOut</u></b> : {x.checkout.substr(0, x.checkout.indexOf('T'))}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>Guests</u></b> : {x.guests}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>Amount</u></b> : {x.amount}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>OrderId</u></b> : {x.orderId}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>PaymentId</u></b> : {x.paymentId}</li>
-                    </ul>
-                    <br />
-                  </div>
-                }
-              </>)
-          })
-        }
+      <div className="sub_Title">
+        We are pleased to inform that your Booking has been confirmed
+      </div>
+
+      <div className="_title">
+        <h1>Booking Details</h1>
+      </div>
+
+      <div className="flex-col items-start text-left">
+        <div className="flex-col">
+          <div className="_title">
+            <h1 className="me-2">Name</h1>
+            <p>Rahul Bose</p>
+          </div>
+
+          <div className="_title">
+            <h1 className="me-2">Email</h1>
+            <p>boserahul@gmail.com</p>
+          </div>
+
+          <div className="_title">
+            <h1 className="me-2">Booking ID</h1>
+            <p>654oiuyvgfi5</p>
+          </div>
+        </div>
       </div>
     </>
   );
@@ -1158,75 +1059,12 @@ function NoShowBooking() {
 }
 
 function FailedBooking() {
-  const navigate = useNavigate();
-  const [bookingData, setBookingData] = useState([])
-  const [url, setUrl] = useState("");
-  useEffect(() => {
-    const isSignedIn = localStorage.getItem("isSignedIn");
-    const userDetails = getLocalStorage("loggedUser");
-
-    if (!isSignedIn && !userDetails) {
-      navigate("/signin");
-    } else {
-      const userId = localStorage.getItem("userId");
-      const getdata = async (getimage) => {
-        const response = await fetch(`https://hotel-backend-tge7.onrender.com/hardik/api/payment/bookingDetails/${userId}`)
-        const json = await response.json();
-        // setproducts(json.products.slice(0,3)); 
-        setBookingData(json.data);
-      }
-
-      getdata();
-    }
-  }, [navigate, setBookingData]);
-
-
-  const maincontainer = {
-    display: "flex",
-    justifyContent: "center",
-    margin: "auto",
-    width: "100%"
-  }
   return (
     <>
-      <h4><center>List of Your Failed Bookings</center></h4>
-      <br />
-
-      <div className="container row row-md-2" style={maincontainer}>
-
-        {/* {
-          (bookingData.length === 0) && <div><br /><br /><br /><h5><center>No Failed Bookings Till Now</center></h5></div>
-        } */}
-        {
-          bookingData.map((x) => {
-            return (
-              <>
-                {
-                  (x.bookingStatus === "failed")
-                  &&
-                  <div className="card my-3 mx-3 col-md-2" style={{ width: "30rem", backgroundColor: "#d3e5f0", border: "2px solid black", fontSize: "16px" }}>
-                    {/* <img src={`${userData.image}`} className="card-img-top my-3" alt="Profile" style={{ width: "50%", height: "50%", margin: "auto", borderRadius: "50%" }} /> */}
-                    <div className="card-body" >
-                      <center><h4 className="card-title">{x.hotelname}</h4></center>
-                      <p className="card-text"><b><u>Hotel ID</u></b> :  {x.hotelId}</p>
-                      <p className="card-text"><b><u>Booking ID</u></b> : {x.newuserId}</p>
-                    </div>
-                    <ul className="list-group list-group-flush" style={{ backgroundColor: "#d3e5f0", padding: "20px", display: "flex", justifyContent: "flex-start", float: "left", alignItems: "flex-start" }}>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>City</u></b> : {x.city}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>CheckIn</u></b> : {x.checkin.substr(0, x.checkin.indexOf('T'))}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>CheckOut</u></b> : {x.checkout.substr(0, x.checkout.indexOf('T'))}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>Guests</u></b> : {x.guests}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>Amount</u></b> : {x.amount}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>OrderId</u></b> : {x.orderId}</li>
-                      <li className="list-group-item" style={{ backgroundColor: "#d3e5f0" }}><b><u>PaymentId</u></b> : {x.paymentId}</li>
-                    </ul>
-                    <br />
-                  </div>
-                }
-              </>)
-          })
-        }
+      <div className="_title">
+        <h1>Failed Booking</h1>
       </div>
+      <div className="sub_Title">Booking failed. Please try again later</div>
     </>
   );
 }
@@ -1260,21 +1098,21 @@ function MyReviewSection() {
       <>
         {currentUserReviews
           ? [...currentUserReviews].reverse().map((review) => (
-            <div className="review_container" key={review.review._id}>
-              <div className="hotel_image">
-                <img src={review.hotelImages} alt={review.hotelName} />
-              </div>
-              <div className="review_content">
-                <div className="review_content_header">
-                  <h4>{review.hotelName}</h4>
-                  <p>{convertDate(review.review.createdAt)}</p>
+              <div className="review_container" key={review.review._id}>
+                <div className="hotel_image">
+                  <img src={review.hotelImages} alt={review.hotelName} />
                 </div>
-                <div className="review_content_body">
-                  <p>{review.review.comment}</p>
+                <div className="review_content">
+                  <div className="review_content_header">
+                    <h4>{review.hotelName}</h4>
+                    <p>{convertDate(review.review.createdAt)}</p>
+                  </div>
+                  <div className="review_content_body">
+                    <p>{review.review.comment}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))
           : "NO Reviews Posted Yet"}
       </>
     </>
@@ -1291,9 +1129,6 @@ function ComplainsSection({
   const [raiseComplaint, setRaiseComplaint] = useState(false);
   const [newComplaint, setNewComplaint] = useState("");
   const [complaints, setComplaints] = useState([]);
-
-
-
 
   useEffect(() => {
     fetch(
@@ -1410,7 +1245,6 @@ function ComplainsSection({
 }
 
 const Profile = ({ reset, refresh }) => {
-
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -1423,7 +1257,6 @@ const Profile = ({ reset, refresh }) => {
   const [isEditing, setIsEditing] = useState(true);
 
   const [profileUpdated, setProfileUpdated] = useState(false);
-
 
   useEffect(() => {
     const isSignedIn = localStorage.getItem("isSignedIn");
@@ -1451,9 +1284,6 @@ const Profile = ({ reset, refresh }) => {
           console.log(error);
           setIsLoading(false);
         });
-
-
-
     }
   }, [navigate, reset]);
 
@@ -1496,10 +1326,10 @@ const Profile = ({ reset, refresh }) => {
     ) {
       setselectedNav("Cancel Booking");
     } else if (
-      e.currentTarget.innerText === "Confirmed Bookings" ||
-      e.currentTarget.firstChild.innerText === "Confirmed Bookings"
+      e.currentTarget.innerText === "Confirm Booking" ||
+      e.currentTarget.firstChild.innerText === "Confirm Booking"
     ) {
-      setselectedNav("Confirmed Bookings");
+      setselectedNav("Confirm Booking");
     } else if (
       e.currentTarget.innerText === "Checking Booking" ||
       e.currentTarget.firstChild.innerText === "Checking Booking"
@@ -1534,8 +1364,6 @@ const Profile = ({ reset, refresh }) => {
       setselectedNav("Profile Information");
     }
   };
-
-
 
   return (
     <>
@@ -1576,7 +1404,7 @@ const Profile = ({ reset, refresh }) => {
             />
           ) : selectedNav === "Cancel Booking" ? (
             <CancelBooking />
-          ) : selectedNav === "Confirmed Bookings" ? (
+          ) : selectedNav === "Confirm Booking" ? (
             <ConfirmBooking />
           ) : selectedNav === "Checking Booking" ? (
             <CheckingBooking />

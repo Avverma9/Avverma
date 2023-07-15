@@ -126,7 +126,6 @@
 .nodata {
   width: 500px;
 }
-
 ._title {
   text-align: center;
   margin-bottom: 20px;
@@ -270,7 +269,6 @@
     border-radius: 4px;
     cursor: pointer;
   }
-
   button[type="submit"] {
     padding: 8px 1px;
     margin-left: 210px;
@@ -280,7 +278,6 @@
     border-radius: 1px;
     cursor: pointer;
   }
-
   .update-profile-buttons button[type="submit"] {
     background-color: #4caf50;
     color: white;
@@ -309,9 +306,4 @@
   .nodata {
     width: 200px;
   }
-}
-
-
-.list-group-item {
-  background-color: #d3e5f0;
 }
