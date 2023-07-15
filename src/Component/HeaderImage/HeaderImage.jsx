@@ -3,7 +3,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import Slider from "react-slick";
 import "./HeaderImage.css";
 
 const HeaderImage = () => {
@@ -18,36 +17,8 @@ const HeaderImage = () => {
     return null;
   }
 
-  let settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 3,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
   return (
-    <Slider {...settings}>
+    <div className="header">
       <div className="city">
         <div className="dropdown">
           <div className="top-offers" onClick={toggleDropdown}>
@@ -216,7 +187,7 @@ const HeaderImage = () => {
           <p className="city-name">Haryana</p>
         </div>
       </a>
-    </Slider>
+    </div>
   );
 };
 
