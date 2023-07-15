@@ -1,21 +1,35 @@
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-  user: {
+  userId : {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
-  hotel: {
+  newuserId : {
+    type : String ,
+    required : true 
+  },
+  hotelId : {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hotel',
     required: true
   },
-  checkInDate: {
+  hotelname : {
+    type: String,
+    required: false,
+    default : "N/A"
+  },
+  city  : {
+    type: String,
+    required: false,
+    default : "N/A"
+  },
+  checkin: {
     type: Date,
     required: true
   },
-  checkOutDate: {
+  checkout: {
     type: Date,
     required: true
   },
@@ -23,14 +37,28 @@ const bookingSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  price: {
+  amount: {
     type: Number,
     required: true
   },
-  payment: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Payment',
-    required: true
+  currency: {
+    type: String,
+    required: true,
+    default: "INR",
+  },
+  bookingStatus : {
+    type : String , 
+    require : true , 
+    default : "failed" 
+  },
+  orderId : {
+    type : String , 
+    require : true , 
+  },
+  paymentId : {
+    type : String , 
+    require : true , 
+    default : "N/A" 
   },
   createdAt: {
     type: Date,
@@ -38,4 +66,4 @@ const bookingSchema = new mongoose.Schema({
   }
 });
 
-module.exports  = mongoose.model('Booking', bookingSchema);
+module.exports  = mongoose.model('booking', bookingSchema);

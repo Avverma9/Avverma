@@ -9,10 +9,13 @@ const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const partnerController = require("../controllers/partnerController");
-const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
-
-
+const bookingController  = require("../controllers/bookingController") ; 
+//====================================Bookings======================================//
+router.post("/orders",bookingController.orders); 
+router.post("/verify",bookingController.verify);
+router.get("/:id",bookingController.bookingDetails); 
+router.post("/cancelBooking",bookingController.cancelBooking)
 
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
@@ -67,10 +70,6 @@ router.delete(
 router.post("/create/partner", upload, partnerController.createPartner);
 router.get('/partners/:partnerId', partnerController.getHotelPartner);
 
-//============================= BOOKING =======================================
-router.post('/booking/:userId/:hotelId', bookingController.createBooking);
-router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
-router.get('/bookingFailed', bookingController.getFailedBookings);
 
 //============================offers==============================================//
 router.post("/create/offers",upload,offersController.createOffers)
