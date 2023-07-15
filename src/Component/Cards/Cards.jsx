@@ -4,7 +4,13 @@ import { IoIosArrowForward } from "react-icons/io";
 import { BiRupee } from "react-icons/bi";
 import { MdLocationOn, MdRoomPreferences } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
-export const Cards = ({ offer }) => {
+import { useNavigate } from "react-router-dom";
+export const Cards = ({offer }) => {
+  console.log(offer)
+ const navigate=useNavigate(); 
+  const handleBookNow = (offerId) => {
+    navigate(`/book-now/${offerId}`);
+  }; 
   return (
     <div className="_card">
       <header
@@ -33,7 +39,7 @@ export const Cards = ({ offer }) => {
         </p>
         <h2 style={{ color: "#3e4152" }}>{offer.offers}</h2>
         <p class="_body-content">{offer.description}</p>
-        <button className="_card-button">
+        <button className="_card-button" onClick={() => handleBookNow(offer._id)}>
           <IoIosArrowForward /> View Details
         </button>
       </div>

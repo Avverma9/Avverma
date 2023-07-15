@@ -64,18 +64,18 @@ export default function BookNow({ refresh, reset, userData }) {
   const userId = localStorage.getItem("userId");
 
   const params = useParams();
-  const [expand,setExpand] = useState(false);
+  const [expand, setExpand] = useState(false);
 
-const expanddescription=()=>{
-  setExpand(!expand);
-};
+  const expanddescription = () => {
+    setExpand(!expand);
+  };
 
-const truncateText = (text, maxLength) => {
-  if (!expand && text.length > maxLength) {
-    return text.substring(0, maxLength) + '...';
-  }
-  return text;
-};
+  const truncateText = (text, maxLength) => {
+    if (!expand && text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -337,21 +337,21 @@ const truncateText = (text, maxLength) => {
               {bookingDetails.price}
             </div>
             <div className="hotel-descrip">
-      <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
-      <p className={`description-content ${expand ? 'expanded' : ''}`}>
-      {bookingDetails.description && truncateText(bookingDetails.description, 100)}
-      </p>
-      {!expand && (
-        <button className="viewMoreBtn" onClick={expanddescription}>
-          View More
-        </button>
-      )}
-      {expand && (
-        <button className="viewLessBtn" onClick={expanddescription}>
-          View Less
-        </button>
-      )}
-    </div>
+              <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
+              <p className={`description-content ${expand ? 'expanded' : ''}`}>
+                {bookingDetails.description && truncateText(bookingDetails.description, 100)}
+              </p>
+              {!expand && (
+                <button className="viewMoreBtn" onClick={expanddescription}>
+                  View More
+                </button>
+              )}
+              {expand && (
+                <button className="viewLessBtn" onClick={expanddescription}>
+                  View Less
+                </button>
+              )}
+            </div>
             <p className="amenity-section">
               <p className="amenity-word">Amenities: </p>
               <div className="amenityclass">
@@ -536,65 +536,65 @@ const truncateText = (text, maxLength) => {
                               />
                             </div>
 
-                            <div className="comment_profile_name">
-                              <h4>{rev.user.name}</h4>
-                            </div>
-
-                            {rev.review.user === userId && (
-                              <div className="comment_update_del">
-                                <BiEdit
-                                  color="#2563eb"
-                                  size={24}
-                                  onClick={() => toggleUpdateReview(rev)}
-                                />
-                                <BiTrash
-                                  color="#dc3545"
-                                  size={24}
-                                  onClick={() =>
-                                    deleteReviewHandler(rev.review._id)
-                                  }
-                                />
-                              </div>
-                            )}
+                          <div className="comment_profile_name">
+                            <h4>{rev.user.name}</h4>
                           </div>
 
-                          {isUpdatingReview && reviewId === rev.review._id ? (
-                            <div className="update_review">
-                              <textarea
-                                placeholder="Update Review"
-                                type="text"
-                                rows="2"
-                                value={updatedReview}
-                                onChange={(e) =>
-                                  setUpdatedReview(e.target.value)
-                                }
-                                onKeyUp={keyPressHandler}
-                                onFocus={(e) =>
-                                  setFieldFocus(
-                                    e.target.nextElementSibling.className
-                                  )
+                          {rev.review.user === userId && (
+                            <div className="comment_update_del">
+                              <BiEdit
+                                color="#2563eb"
+                                size={24}
+                                onClick={() => toggleUpdateReview(rev)}
+                              />
+                              <BiTrash
+                                color="#dc3545"
+                                size={24}
+                                onClick={() =>
+                                  deleteReviewHandler(rev.review._id)
                                 }
                               />
-                              <button
-                                className="update_review_button"
-                                onClick={updateReviewHandler}
-                              >
-                                <FaTelegramPlane />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="review_comment">
-                              <p>{rev.review.comment}</p>
-
-                              <div className="comment_date">
-                                <h6>{convertDate(rev.review.createdAt)}</h6>
-                              </div>
                             </div>
                           )}
-                          <div style={{ border: "1px solid #94a3b8 " }}></div>
                         </div>
-                      </>
-                    ))
+
+                        {isUpdatingReview && reviewId === rev.review._id ? (
+                          <div className="update_review">
+                            <textarea
+                              placeholder="Update Review"
+                              type="text"
+                              rows="2"
+                              value={updatedReview}
+                              onChange={(e) =>
+                                setUpdatedReview(e.target.value)
+                              }
+                              onKeyUp={keyPressHandler}
+                              onFocus={(e) =>
+                                setFieldFocus(
+                                  e.target.nextElementSibling.className
+                                )
+                              }
+                            />
+                            <button
+                              className="update_review_button"
+                              onClick={updateReviewHandler}
+                            >
+                              <FaTelegramPlane />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="review_comment">
+                            <p>{rev.review.comment}</p>
+
+                            <div className="comment_date">
+                              <h6>{convertDate(rev.review.createdAt)}</h6>
+                            </div>
+                          </div>
+                        )}
+                        <div style={{ border: "1px solid #94a3b8 " }}></div>
+                      </div>
+                    </>
+                  ))
                   : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}

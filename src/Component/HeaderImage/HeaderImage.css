@@ -1,5 +1,12 @@
 /* HeaderImage.css */
 
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-content: space-between;
+}
+
 .city {
   position: relative;
   justify-content: space-between;
@@ -8,8 +15,6 @@
   align-items: center;
   margin: 5px;
   cursor: pointer;
-  width: 150px;
-  margin-left: 75px;
 }
 
 .circle {
@@ -23,8 +28,6 @@
 .city-name {
   margin-top: 5px;
   justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
 }
 
 .dropdown-menu {
@@ -54,59 +57,30 @@
   display: block;
 }
 
-.slick-slider {
-  width: 90%;
-  margin: 0 auto;
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -khtml-user-select: none;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.slick-prev::before,
-.slick-next::before {
-  font-family: "slick";
-  font-size: 20px;
-  line-height: 1;
-  opacity: 0.75;
-  color: #161414 !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* .slick-slide {
-  width: 195px !important;
-} */
-
 /* Media Queries */
 
-/* @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .city {
     margin: 10px;
   }
-
+  
   .circle {
     width: 50px;
     height: 50px;
   }
-} */
+}
 
-/* @media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) {
   .header {
-    justify-content: baseline;
+    justify-content:baseline;
   }
-
+  
   .city {
     margin: 18px;
   }
-
+  
   .circle {
     width: 35px;
     height: 35px;
   }
-} */
+}
