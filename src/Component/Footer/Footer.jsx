@@ -213,7 +213,7 @@ const Footer = () => {
       >
         Copyright © Shivila Technologies Private Limited, 2023<br />
          <a className="text-white" href="https://mdbootstrap.com/">
-      All Rights Reserved, Developed By Shivila Technologies pvt ltd
+      All Rights Reserved, Developed By Shivila Technologies Pvt Ltd.
 
         </a>
       </div>

@@ -90,9 +90,7 @@ import Haridwar from "./Component/Dropdownbar/city/Haridwar/haridwar";
 import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
-import { Cards } from "./Component/Cards/Cards";
 import Footer from "./Component/Footer/Footer";
-
 
 function App() {
   // console.log(search)
