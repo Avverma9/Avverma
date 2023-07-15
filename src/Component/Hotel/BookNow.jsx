@@ -38,6 +38,10 @@ import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
 export default function BookNow({ refresh, reset, userData }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxVisiblePages = 6;
+
   const [bookingDetails, setBookingDetails] = useState({});
   const [hotelID, setHotelID] = useState("");
   const [hotelImages, setHotelImages] = useState([]);
@@ -50,6 +54,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [hotelReviews, setHotelReviews] = useState([]);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+
   const [reviewId, setReviewId] = useState("");
 
   const [updatedReview, setUpdatedReview] = useState("");
@@ -115,6 +120,45 @@ export default function BookNow({ refresh, reset, userData }) {
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
+
+  // Pagination for Reviews
+
+  const totalItems = hotelReviews && hotelReviews.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = hotelReviews && hotelReviews.slice(startIndex, endIndex);
+
+  const visiblePages = [];
+  const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
+  let startPage = 1;
+  let endPage = totalPagesToDisplay;
+
+  if (currentPage > Math.floor(maxVisiblePages / 2)) {
+    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+    endPage = startPage + totalPagesToDisplay - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = endPage - totalPagesToDisplay + 1;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
 
   const settings = {
     dots: false,
@@ -461,36 +505,36 @@ export default function BookNow({ refresh, reset, userData }) {
             <div className="reviews" key={refresh}>
               <div className="reviewhead">
                 <h1>Reviews:</h1>
-                {hotelReviews
-                  ? [...hotelReviews].reverse().map((rev, i) => (
-                    <>
-                      <div
-                        className="d-flex flex-column gap-3"
-                        style={{
-                          padding: "20px",
-                          marginRight: "10%",
-                          // marginBottom: "20px",
-                          width: "75%",
-                          height: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "1",
-                        }}
-                        key={i}
-                      >
-                        <div className="review_container">
-                          <div className="comment_profile">
-                            <Avatar
-                              name={rev.user.name}
-                              src={rev.user.images[0]}
-                              round={true}
-                              size="35"
-                              style={{
-                                boxShadow:
-                                  "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                              }}
-                            />
-                          </div>
+                {currentData
+                  ? [...currentData].reverse().map((rev, i) => (
+                      <>
+                        <div
+                          className="d-flex flex-column gap-3"
+                          style={{
+                            padding: "20px",
+                            marginRight: "10%",
+                            // marginBottom: "20px",
+                            width: "75%",
+                            height: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1",
+                          }}
+                          key={i}
+                        >
+                          <div className="review_container">
+                            <div className="comment_profile">
+                              <Avatar
+                                name={rev.user.name}
+                                src={rev.user.images[0]}
+                                round={true}
+                                size="35"
+                                style={{
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                              />
+                            </div>
 
                           <div className="comment_profile_name">
                             <h4>{rev.user.name}</h4>
@@ -554,6 +598,33 @@ export default function BookNow({ refresh, reset, userData }) {
                   : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
+              <div className="_pagination">
+                <button
+                  className="_pagination-button"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                {visiblePages.map((page) => (
+                  <button
+                    key={page}
+                    className={`_pagination-button ${
+                      page === currentPage ? "_pagination-active" : ""
+                    }`}
+                    onClick={() => handlePageClick(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  className="_pagination-button"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
             </div>
             <CheckOut
               hotelId={bookingDetails._id}
