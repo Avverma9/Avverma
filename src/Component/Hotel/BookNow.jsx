@@ -632,7 +632,6 @@ const truncateText = (text, maxLength) => {
               amount={Number(bookingDetails.price)}
               currency="INR"
               userData={userData}
-              hotelData ={bookingDetails}
             />
           </div>
         </div>

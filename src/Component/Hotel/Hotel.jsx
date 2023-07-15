@@ -182,22 +182,22 @@ function HotelList() {
             <label>
               {" "}
               <input type="checkbox" />
-              Family Oyo
+              Townhouse
             </label>
             <label>
               {" "}
               <input type="checkbox" />
-              Family Oyo
+              Home
             </label>
             <label>
               {" "}
               <input type="checkbox" />
-              Family Oyo
+              Hotel
             </label>
             <label>
               {" "}
               <input type="checkbox" />
-              Family Oyo
+              Flagship
             </label>
             <label>
               {" "}
