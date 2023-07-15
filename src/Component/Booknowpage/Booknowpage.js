@@ -117,12 +117,12 @@ const BookNowPage = () => {
 
                 <p className="location-booknow">{offerData.destination}</p>
               </div>
-              <p className="rating0">
+              <div className="rating0">
                 <p className="staricon">
                   {offerData.rating}
                   <FontAwesomeIcon icon={faStar} className="staricon" />
                 </p>
-              </p>
+              </div>
             </div>
             <div className="pricing">
               <FontAwesomeIcon icon={faInr} className="indianrupee" />

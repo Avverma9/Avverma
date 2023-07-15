@@ -4,7 +4,10 @@ import { IoIosArrowForward } from "react-icons/io";
 import { BiRupee } from "react-icons/bi";
 import { MdLocationOn, MdRoomPreferences } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
-export const Cards = ({ offer }) => {
+export const Cards = ({offer }) => {
+  console.log(offer)
+  
+  
   return (
     <div className="_card">
       <header
