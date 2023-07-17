@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from 'react-slick';
+import React, { useEffect, useState, useRef } from "react";
+import "./Booknowpage.css";
+import { useParams } from "react-router-dom";
+import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   faChevronLeft,
-  faChevronRight, faStar,
+  faChevronRight,
+  faStar,
   faPerson,
   faHotel,
   faPeopleArrows,
@@ -29,8 +29,7 @@ import {
   faGlassMartini,
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import { convertDate } from '../../utils/convertDate';
-
+import { convertDate } from "../../utils/convertDate";
 
 const BookNowPage = () => {
   const { offerId } = useParams();
@@ -38,25 +37,24 @@ const BookNowPage = () => {
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
-  const [checkin,setCheckIn]= useState("");
-  const [checkout,setCheckout] = useState("");
+  const [checkin, setCheckIn] = useState("");
+  const [checkout, setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
 
   const sliderRef = useRef(null);
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         setOfferData(data);
         setHotelImages(data.images);
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setCheckIn(convertDate(data.startDate));
         setCheckout(convertDate(data.endDate));
-
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   }, [offerId]);
 
   if (!offerData) {
@@ -70,13 +68,13 @@ const BookNowPage = () => {
     slidesToScroll: 3,
   };
 
-  const slideToPrev = () => {
-    sliderRef.current.slickPrev();
-  };
+  // const slideToPrev = () => {
+  //   sliderRef.current.slickPrev();
+  // };
 
-  const slideToNext = () => {
-    sliderRef.current.slickNext();
-  };
+  // const slideToNext = () => {
+  //   sliderRef.current.slickNext();
+  // };
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -84,37 +82,31 @@ const BookNowPage = () => {
 
   const truncateText = (text, maxLength) => {
     if (!expand && text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
     return text;
   };
 
-
   return (
-
     <div>
       <div className="container-p-4">
         <div className="flex">
-          <div className="w-1/3 slider-container">
+          <div className="w-1/3 slider-container _book_now_page">
             <Slider ref={sliderRef} {...settings}>
               {hotelImages.map((photo, i) => (
                 <div key={i} className="slider-slide">
-                  <img
-                    src={photo}
-                    alt={offerData.hotelName}
-                    className="my-1"
-                  />
+                  <img src={photo} alt={offerData.hotelName} className="my-1" />
                 </div>
               ))}
             </Slider>
-            <div className="slider-navigation">
+            {/* <div className="slider-navigation">
               <button className="slider-prev" onClick={slideToPrev}>
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
               <button className="slider-next" onClick={slideToNext}>
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="hotel-details1">
             <div className="flex-rating">
@@ -134,16 +126,16 @@ const BookNowPage = () => {
               <FontAwesomeIcon icon={faInr} className="indianrupee" />
               {offerData.price}
             </div>
-            <div className='offer-data'>
-              <p style={{ fontSize: '20px' }}>
-
-                Offer:{offerData.offers}
-              </p>
+            <div className="offer-data">
+              <p style={{ fontSize: "20px" }}>Offer:{offerData.offers}</p>
             </div>
             <div className="hotel-descrip">
-              <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
-              <p className={`description-content ${expand ? 'expanded' : ''}`}>
-                {offerData.description && truncateText(offerData.description, 100)}
+              <p className={`description1 ${expand ? "expanded" : ""}`}>
+                Description:
+              </p>{" "}
+              <p className={`description-content ${expand ? "expanded" : ""}`}>
+                {offerData.description &&
+                  truncateText(offerData.description, 100)}
               </p>
               {!expand && (
                 <button className="viewMoreBtn" onClick={expanddescription}>
@@ -245,7 +237,6 @@ const BookNowPage = () => {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">{checkin}</span>
-                    
                   </p>
                 </div>
               </div>
@@ -296,21 +287,15 @@ const BookNowPage = () => {
               <div className="hotel-policyheading">Hotel Policies:</div>
               <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
             </div>
-            <div className='reviews'>
-              <div className='reviewhead'>
+            <div className="reviews">
+              <div className="reviewhead">
                 <h1>Reviews:</h1>
               </div>
               <p>{offerData.reviews}</p>
             </div>
-
-
-
           </div>
         </div>
       </div>
-
-
-
     </div>
   );
 };

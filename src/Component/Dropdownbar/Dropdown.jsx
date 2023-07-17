@@ -150,10 +150,10 @@ const Dropdownbar = () => {
   if (!isHomePage) {
     return null;
   }
-
+  console.log(stateData.length);
   return (
     <div className="menu">
-      <div className="stateinrow">
+      <div className="stateinrow drop_down">
         <Slider {...settings}>
           {stateData.map((item, index) => (
             <StateItem key={index} state={item.state} cities={item.cities} />

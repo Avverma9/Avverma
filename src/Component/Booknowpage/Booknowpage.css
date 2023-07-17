@@ -104,6 +104,18 @@
   position: absolute;
   right: 10px;
 }
+._book_now_page .slick-slider .slick-next::before {
+  color: #1e293b !important;
+}
+._book_now_page .slick-prev::before {
+  color: #1e293b !important;
+}
+._book_now_page .slick-next {
+  right: -60px !important;
+}
+._book_now_page .slick-prev {
+  left: -60px !important;
+}
 .booking-card {
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -117,8 +129,8 @@
   font-weight: bold;
   margin-bottom: 5px;
 }
-.offer-data p{
-font-size: 20px;
+.offer-data p {
+  font-size: 20px;
 }
 
 .booking-card-content {
@@ -149,13 +161,13 @@ font-size: 20px;
   align-items: center;
   height: 35px;
 }
-.viewMoreBtn,.viewLessBtn{
+.viewMoreBtn,
+.viewLessBtn {
   border: none;
   background: white;
   display: flex;
   justify-content: flex-end;
   color: blue;
-
 }
 
 .staricon {
@@ -305,7 +317,7 @@ font-size: 20px;
   text-align: left;
   margin-top: 35px;
   margin-left: -60px;
- font-size: 12px;
+  font-size: 12px;
   font-weight: 100;
 }
 .review_comment {
@@ -402,7 +414,7 @@ font-size: 20px;
   top: -3px;
   left: -1px;
 }
-@media (max-width:768px){
+@media (max-width: 768px) {
   .container {
     padding: 10px;
   }
@@ -413,18 +425,18 @@ font-size: 20px;
     display: flex;
     flex-direction: column;
   }
-  
+
   .slider-container {
     width: 100%;
     overflow: hidden;
     position: relative;
   }
-  
+
   .slider-slide {
     display: flex;
     justify-content: center;
   }
-  
+
   .slider-slide img {
     width: 100%;
     height: auto;
@@ -435,7 +447,7 @@ font-size: 20px;
     margin-bottom: 5px;
     margin-left: 5%;
   }
-  
+
   .hotel-details1 .hotel-name1 {
     color: red;
     font-weight: bold;
@@ -452,13 +464,13 @@ font-size: 20px;
     margin-top: 20px;
     font-size: 12px;
   }
-  
+
   .description1 {
     font-size: 12px;
     color: black;
     font-weight: bold;
   }
-  .detaildescrip{
+  .detaildescrip {
     font-size: 10px;
   }
   .amenity-word {
@@ -466,7 +478,7 @@ font-size: 20px;
     color: black;
     font-weight: bold;
   }
-  
+
   .amenity-section {
     width: 100%;
   }
@@ -480,10 +492,10 @@ font-size: 20px;
     margin-bottom: 10px;
     font-size: 10px;
   }
-  .moreitem p{
+  .moreitem p {
     font-size: 10px;
   }
-  
+
   .slider-navigation {
     position: absolute;
     top: 50%;
@@ -495,7 +507,7 @@ font-size: 20px;
     color: white;
     background: transparent;
   }
-  
+
   .slider-navigation button {
     margin: 0 5px;
     padding: 5px;
@@ -503,16 +515,16 @@ font-size: 20px;
     border: none;
     cursor: pointer;
   }
-  
+
   .slider-navigation button:hover {
     color: #999;
   }
-  
+
   .slider-navigation .slider-prev {
     position: absolute;
     left: 10px;
   }
-  
+
   .slider-navigation .slider-next {
     position: absolute;
     right: 10px;
@@ -524,17 +536,17 @@ font-size: 20px;
     background-color: #f9f9f9;
     margin-bottom: 0px;
   }
-  
+
   .booking-card-title {
     font-size: 10px;
     font-weight: bold;
     margin-bottom: 5px;
   }
-  
+
   .booking-card-content {
     font-size: 15px;
   }
-  
+
   .booking-card-content p {
     margin-bottom: 0px;
   }
@@ -559,7 +571,7 @@ font-size: 20px;
     align-items: center;
     height: 30px;
   }
-  
+
   .staricon {
     font-size: 16px;
     margin-top: 7px;
@@ -570,15 +582,15 @@ font-size: 20px;
   }
   .noofguest {
     width: 50%;
-  
+
     font-size: 16px;
     margin-bottom: 10px;
     color: #333;
   }
-  
+
   .roomtype {
     width: 50%;
-  
+
     font-size: 16px;
     margin-bottom: 10px;
     color: #333;
@@ -598,26 +610,26 @@ font-size: 20px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
   }
-  
+
   .card p {
     margin-bottom: 5px;
     font-size: 10px;
     color: #333;
   }
-  
+
   .card .icon {
     margin-right: 10px;
   }
-  
+
   .card .noofguest .icon {
     color: #007bff;
     margin-right: 17px;
   }
-  
+
   .card .roomtype .icon {
     color: #28a745;
   }
-  
+
   .card .maritalstatus .icon {
     color: #dc3545;
   }
@@ -662,7 +674,7 @@ font-size: 20px;
   .reviews {
     margin-top: 50px;
   }
-  
+
   .review_container {
     display: flex;
     gap: 0px;
@@ -670,15 +682,15 @@ font-size: 20px;
     justify-content: flex-start;
     align-items: flex-start;
   }
-  
+
   .comment_profile {
     flex: 0;
     min-width: 50px; /* Adjust the width as needed */
   }
-  
+
   .comment_profile_name {
     text-align: center;
-  
+
     align-items: center;
     display: flex;
     flex: 2;
@@ -691,17 +703,17 @@ font-size: 20px;
     word-spacing: 1.5px;
     letter-spacing: 0.5px;
   }
-  
+
   .comment_update_del {
     display: flex;
     gap: 15px;
     align-self: center;
   }
-  
+
   .comment_update_del svg {
     cursor: pointer;
   }
-  
+
   .comment_date {
     flex: 0;
     color: #6b7280;
@@ -710,7 +722,7 @@ font-size: 20px;
     text-align: left;
     margin-top: 35px;
     margin-left: -60px;
-   font-size: 12px;
+    font-size: 12px;
     font-weight: 100;
   }
   .review_comment {
@@ -727,7 +739,7 @@ font-size: 20px;
     font-size: 22px;
     margin-left: 20px;
   }
-  
+
   .create_new_reviews {
     display: flex;
     flex-direction: row;
@@ -756,23 +768,23 @@ font-size: 20px;
     left: -37px;
     bottom: -30px;
   }
-  
+
   .post_review_button svg {
     position: relative;
     top: -3px;
     left: -1px;
   }
-  
+
   .create_new_reviews .post_review_button:hover {
     background-color: #0056b3;
     transform: translateY(-3px);
   }
-  
+
   .update_review {
     width: calc(100% + 30px);
     display: flex;
   }
-  
+
   .update_review textarea {
     width: inherit;
     padding: 5px 10px;
@@ -781,7 +793,7 @@ font-size: 20px;
     outline: none;
     resize: none;
   }
-  
+
   .update_review button {
     width: 30px;
     height: 30px;
@@ -796,16 +808,15 @@ font-size: 20px;
     right: 33px;
     top: 25px;
   }
-  
+
   .update_review button:hover {
     background-color: #0056b3;
     transform: translateY(-3px);
   }
-  
+
   .update_review button svg {
     position: relative;
     top: -3px;
     left: -1px;
   }
-  
 }
