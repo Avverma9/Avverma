@@ -100,12 +100,28 @@
 
 .slider-navigation .slider-prev {
   position: absolute;
-  left: 10px;
+left: 10px;
+background: black;
+border-radius: 50%;
+color: white;
+width: 2%;
+}
+.slider-navigation .slider-prev:hover{
+  background: grey;
+  color: black;
 }
 
 .slider-navigation .slider-next {
   position: absolute;
-  right: 10px;
+right: 10px;
+background: black;
+border-radius: 50%;
+color: white;
+width: 2%;
+}
+.slider-navigation .slider-next:hover{
+  background: grey;
+  color: black;
 }
 .booking-card {
   border: 1px solid #ccc;
