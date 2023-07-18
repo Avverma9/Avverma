@@ -100,24 +100,28 @@
 
 /* .slider-navigation .slider-prev {
   position: absolute;
-  left: 10px;
-} */
+left: 10px;
+background: black;
+border-radius: 50%;
+color: white;
+width: 2%;
+}
+.slider-navigation .slider-prev:hover{
+  background: grey;
+  color: black;
+}
 
 /* .slider-navigation .slider-next {
   position: absolute;
-  right: 10px;
-} */
-.book_now .slick-next::before {
-  color: #1e293b !important;
+right: 10px;
+background: black;
+border-radius: 50%;
+color: white;
+width: 2%;
 }
-.book_now .slick-prev::before {
-  color: #1e293b !important;
-}
-.book_now .slick-next {
-  right: -60px !important;
-}
-.book_now .slick-prev {
-  left: -60px !important;
+.slider-navigation .slider-next:hover{
+  background: grey;
+  color: black;
 }
 .booking-card {
   border: 1px solid #ccc;
