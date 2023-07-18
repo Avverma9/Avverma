@@ -1,8 +1,10 @@
 const hotelModel = require("../models/hotelModel");
 const reviewModel = require("../models/reviewModel");
 const userModel = require("../models/userModel");
+const offerModel = require("../controllers/offersController");
 
 
+//======================================hotel review============================================
 const createReview = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
@@ -42,7 +44,46 @@ const createReview = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+//==================================create review for offer================================================
+const createOfferReview = async (req, res) => {
+  try {
+    const { userId, hotelId } = req.params;
 
+    const { comment } = req.body;
+
+    const user = await offerModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const review = new reviewModel({
+      hotel: hotelId,
+      user: userId,
+      comment: comment,
+    });
+    const savedReview = await reviewModel.create(review);
+
+    const responseData = {
+      _id: savedReview._id,
+      hotel: savedReview.hotel,
+      user: {
+        _id: user._id,
+        name: user.name,
+        images: user.images,
+      },
+      comment: savedReview.comment,
+      createdAt: savedReview.createdAt,
+    };
+    return res.status(201).send({
+      status: true,
+      data: responseData,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 //===============================================================================================
 const  getReviewsByHotelId= async (req, res) => {
   try {
@@ -167,5 +208,6 @@ module.exports = {
   getReviewsByUserId,
   updateReview,
   deleteReview,
+  createOfferReview
 
 };
