@@ -5,6 +5,7 @@ import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
 import { Link } from "react-router-dom";
 // import styles from "./header.module.css";
+import "./Header.css";
 
 const Header = () => {
   // const [showMenu, setShowMenu] = useState(false);
