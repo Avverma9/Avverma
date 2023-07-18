@@ -16,7 +16,6 @@ const Header = () => {
 
   return (
     <>
-      
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
@@ -44,7 +43,7 @@ const Header = () => {
           >
             <ul className="navbar-nav">
               <li className="nav-item p-0">
-              <Link
+                <Link
                   className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
                   to="/home"
                 >
@@ -52,24 +51,12 @@ const Header = () => {
                 </Link>
               </li>
               <li className="nav-item dropdown p-0">
-              <Link
+                <Link
                   className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
                   to="/profile"
                 >
                   <BsPerson /> <>Profile</>
                 </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="/partner">
-                      Hotel Partner
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="">
-                      Tour Partner
-                    </Link>
-                  </li>
-                </ul>
               </li>
               <li className="nav-item dropdown p-0">
                 <Link
@@ -94,8 +81,8 @@ const Header = () => {
                   </li>
                 </ul>
               </li>
-              <li className="nav-item p-0">
-              <Link
+              <li className="nav-item dropdown p-0">
+                <Link
                   className="fw-normal nav-link dropdown-toggle d-flex justify-content-center-lg align-items-center p-0 gap-1"
                   role="button"
                   data-bs-toggle="dropdown"
@@ -104,9 +91,21 @@ const Header = () => {
                   <BsPerson />
                   <>Become a Partner</>
                 </Link>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="dropdown-item" to="/partner">
+                      Hotel Partner
+                    </Link>
+                  </li>
+                  <li>
+                    <a className="dropdown-item" href="#">
+                      Tour Partner
+                    </a>
+                  </li>
+                </ul>
               </li>
               <li className="nav-item p-0">
-              <Link
+                <Link
                   className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
                   to="/register"
                 >
