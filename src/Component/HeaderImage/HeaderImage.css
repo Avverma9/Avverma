@@ -1,5 +1,12 @@
 /* HeaderImage.css */
 
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  justify-content: space-between;
+}
+
 .city {
   position: relative;
   justify-content: space-between;
@@ -8,7 +15,6 @@
   align-items: center;
   margin: 5px;
   cursor: pointer;
-  width: 150px;
 }
 
 .circle {
@@ -22,8 +28,6 @@
 .city-name {
   margin-top: 5px;
   justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
 }
 
 .dropdown-menu {
@@ -53,66 +57,30 @@
   display: block;
 }
 
-.slick-slider {
-  width: 90%;
-  margin: 0 auto;
-  position: relative;
-  display: block;
-  box-sizing: border-box;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-  -khtml-user-select: none;
-  touch-action: pan-y;
-  -webkit-tap-highlight-color: transparent;
-}
-
-._header_image {
-  width: 100%;
-  margin: 0 auto;
-}
-._header_image .slick-next {
-  right: -90px !important;
-}
-._header_image .slick-prev {
-  left: -90px !important;
-}
-
-._header_image .slick-next::before {
-  color: #1e293b !important;
-}
-._header_image .slick-prev::before {
-  color: #1e293b !important;
-}
-
-._header_image .slick-slide {
-  width: 150px !important;
-}
-
 /* Media Queries */
 
-/* @media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .city {
     margin: 10px;
   }
-
+  
   .circle {
     width: 50px;
     height: 50px;
   }
-} */
+}
 
-/* @media screen and (max-width: 400px) {
+@media screen and (max-width: 400px) {
   .header {
-    justify-content: baseline;
+    justify-content:baseline;
   }
-
+  
   .city {
     margin: 18px;
   }
-
+  
   .circle {
     width: 35px;
     height: 35px;
   }
-} */
+}
