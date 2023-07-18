@@ -47,18 +47,18 @@ const createReview = async (req, res) => {
 //==================================create review for offer================================================
 const createOfferReview = async (req, res) => {
   try {
-    const { userId, hotelId } = req.params;
+    const { userId, offersId } = req.params;
 
     const { comment } = req.body;
 
-    const user = await offerModel.findById(userId);
+    const user = await userModel.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     const review = new reviewModel({
-      hotel: hotelId,
+      offers: offersId,
       user: userId,
       comment: comment,
     });
@@ -66,7 +66,7 @@ const createOfferReview = async (req, res) => {
 
     const responseData = {
       _id: savedReview._id,
-      hotel: savedReview.hotel,
+      offers: savedReview.offers,
       user: {
         _id: user._id,
         name: user.name,
