@@ -6,7 +6,6 @@ import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
 import { Link } from "react-router-dom";
 // import styles from "./header.module.css";
 
-
 const Header = () => {
   // const [showMenu, setShowMenu] = useState(false);
 
@@ -108,7 +107,7 @@ const Header = () => {
             className="collapse navbar-collapse flex-grow-0"
             id="navbarNavDropdown"
           >
-            <ul className="navbar-nav">
+            <ul className="navbar-nav gap-3">
               <li className="nav-item p-0">
                 <Link
                   className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
