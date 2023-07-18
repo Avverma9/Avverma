@@ -161,6 +161,7 @@ function App() {
             path="/profile"
             element={<Profile refresh={refresh} reset={reset} />}
           />
+        <Route path="state" element={HeaderImage} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"
