@@ -161,7 +161,7 @@ function App() {
             path="/profile"
             element={<Profile refresh={refresh} reset={reset} />}
           />
-        <Route path="#" element={HeaderImage} />
+          <Route path="state" element={HeaderImage} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"
@@ -213,10 +213,12 @@ function App() {
           <Route path="cities/mussoorie" element={<Mussoorie />} />
           <Route path="cities/haridwar" element={<Haridwar />} />
           <Route path="cities/kolhapur" element={<Kolhapur />} />
-          <Route path="/book-now/:offerId" element={<BookNowPage />} />
+          <Route
+            path="/book-now/:offerId"
+            element={<BookNowPage refresh={refresh} reset={reset} />}
+          />
         </Routes>
-        <Footer/>
-   
+        <Footer />
       </div>
     </Router>
   );

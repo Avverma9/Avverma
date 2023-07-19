@@ -166,13 +166,21 @@ export default function BookNow({ refresh, reset, userData }) {
     slidesToScroll: 3,
   };
 
-  // const slideToPrev = () => {
-  //   sliderRef.current.slickPrev();
-  // };
+  const slideToPrev = () => {
+    sliderRef.current.slickPrev();
+  };
 
-  // const slideToNext = () => {
-  //   sliderRef.current.slickNext();
-  // };
+  const slideToNext = () => {
+    sliderRef.current.slickNext();
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      slideToNext();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   console.log(bookingDetails);
 
@@ -307,14 +315,14 @@ export default function BookNow({ refresh, reset, userData }) {
                 </div>
               ))}
             </Slider>
-            {/* <div className="slider-navigation">
+            <div className="slider-navigation">
               <button className="slider-prev" onClick={slideToPrev}>
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
               <button className="slider-next" onClick={slideToNext}>
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-            </div> */}
+            </div>
           </div>
           <div className="hotel-details1">
             <div className="flex-rating">
@@ -628,6 +636,7 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
             </div>
             <CheckOut
+              hotelName={bookingDetails.hotelName}
               hotelId={bookingDetails._id}
               userId={userId}
               amount={Number(bookingDetails.price)}

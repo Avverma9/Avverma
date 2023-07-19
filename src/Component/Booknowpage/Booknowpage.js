@@ -31,7 +31,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { convertDate } from "../../utils/convertDate";
 
-const BookNowPage = () => {
+const BookNowPage = ({ refresh, reset }) => {
   const { offerId } = useParams();
   const [offerData, setOfferData] = useState(null);
   const [hotelImages, setHotelImages] = useState([]);
@@ -40,8 +40,25 @@ const BookNowPage = () => {
   const [checkin, setCheckIn] = useState("");
   const [checkout, setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
+  const [hotelReviews, setHotelReviews] = useState([]);
 
   const sliderRef = useRef(null);
+
+  const slideToPrev = () => {
+    sliderRef.current.slickPrev();
+  };
+
+  const slideToNext = () => {
+    sliderRef.current.slickNext();
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      slideToNext();
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
@@ -56,6 +73,20 @@ const BookNowPage = () => {
       })
       .catch((error) => console.error(error));
   }, [offerId]);
+  console.log(offerData);
+  // useEffect(() => {
+  //   fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${offerData._id}`)
+  //     .then((response) => {
+  //       if (response.status === 200) {
+  //         return response.json();
+  //       } else {
+  //         console.log(response);
+  //       }
+  //     })
+  //     .then((data) => {
+  //       console.log(data);
+  //     });
+  // }, [offerData._id]);
 
   if (!offerData) {
     return <div>Loading...</div>;
@@ -67,14 +98,6 @@ const BookNowPage = () => {
     slidesToShow: 3,
     slidesToScroll: 3,
   };
-
-  // const slideToPrev = () => {
-  //   sliderRef.current.slickPrev();
-  // };
-
-  // const slideToNext = () => {
-  //   sliderRef.current.slickNext();
-  // };
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -99,14 +122,14 @@ const BookNowPage = () => {
                 </div>
               ))}
             </Slider>
-            {/* <div className="slider-navigation">
+            <div className="slider-navigation">
               <button className="slider-prev" onClick={slideToPrev}>
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
               <button className="slider-next" onClick={slideToNext}>
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-            </div> */}
+            </div>
           </div>
           <div className="hotel-details1">
             <div className="flex-rating">
@@ -299,5 +322,4 @@ const BookNowPage = () => {
     </div>
   );
 };
-
 export default BookNowPage;

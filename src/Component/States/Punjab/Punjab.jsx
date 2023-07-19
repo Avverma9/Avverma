@@ -2,7 +2,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import "./Punjab.css";
-import axios from "axios"
+import axios from "axios";
 
 const PunjabPage = () => {
   const location = useLocation();

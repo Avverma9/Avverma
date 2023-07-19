@@ -2,6 +2,7 @@ import axios from "axios";
 import React from "react";
 
 export default function CheckOut({
+  hotelName,
   hotelId,
   userId,
   amount,
@@ -28,15 +29,16 @@ export default function CheckOut({
       key: "rzp_test_CE1nBQFs6SwXnC",
       amount: amount * 100,
       currency: data.currency,
+      name: hotelName,
       // order_id: "09i3979t12ruhvqdwo7t12r2",
       handler: function (response) {
         console.log(response, "27");
       },
-    //   prefill: {
-    //     name: userData.name,
-    //     email: userData.email,
-    //     contact: userData.mobile,
-    //   },
+      //   prefill: {
+      //     name: userData.name,
+      //     email: userData.email,
+      //     contact: userData.mobile,
+      //   },
       theme: {
         color: "#3399cc",
       },

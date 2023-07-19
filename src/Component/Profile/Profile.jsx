@@ -7,12 +7,19 @@ import "./_profile.css";
 import { getLocalStorage } from "../../hooks/useLocalStorage";
 import Avatar from "react-avatar";
 import { FaUser, FaAddressBook, FaTelegramPlane } from "react-icons/fa";
-import { MdFolderShared, MdKeyboardArrowRight } from "react-icons/md";
+import {
+  MdFolderShared,
+  MdKeyboardArrowRight,
+  MdOutlineError,
+  MdFactCheck,
+  MdCheckCircle,
+  MdClose,
+} from "react-icons/md";
 import { AiOutlinePoweroff } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { HiIdentification } from "react-icons/hi";
 import { BsFillCalendarCheckFill, BsFillCreditCardFill } from "react-icons/bs";
-import { TiCancel } from "react-icons/ti";
+import { TiCancel, TiTick } from "react-icons/ti";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useCollapse } from "react-collapsed";
 import { convertDate } from "../../utils/convertDate";
@@ -125,7 +132,7 @@ function MyBookings({ selectedNav, navHandler, reset, refresh }) {
       </div>
       <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
         <button className="collapse_list" onClick={navHandler}>
-          <TiCancel
+          <MdClose
             className={selectedNav === "Cancel Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
             onMouseEnter={hoverHandler}
@@ -138,7 +145,7 @@ function MyBookings({ selectedNav, navHandler, reset, refresh }) {
           </p>
         </button>
         <button className="collapse_list" onClick={navHandler}>
-          <TiCancel
+          <TiTick
             className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
             onMouseEnter={hoverHandler}
@@ -153,7 +160,7 @@ function MyBookings({ selectedNav, navHandler, reset, refresh }) {
           </p>
         </button>
         <button className="collapse_list" onClick={navHandler}>
-          <TiCancel
+          <MdCheckCircle
             className={selectedNav === "Checking Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
             onMouseEnter={hoverHandler}
@@ -168,7 +175,7 @@ function MyBookings({ selectedNav, navHandler, reset, refresh }) {
           </p>
         </button>
         <button className="collapse_list" onClick={navHandler}>
-          <TiCancel
+          <MdFactCheck
             className={
               selectedNav === "Check Out Booking" ? `text-primary` : ``
             }
@@ -200,7 +207,7 @@ function MyBookings({ selectedNav, navHandler, reset, refresh }) {
           </p>
         </button>
         <button className="collapse_list" onClick={navHandler}>
-          <TiCancel
+          <MdOutlineError
             className={selectedNav === "Failed Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
             onMouseEnter={hoverHandler}
