@@ -14,15 +14,10 @@ const HeaderImage = () => {
   };
 
 
-  if (location.pathname === "/profile") {
+  if (location.pathname !== "/home") {
     return null;
   }
-  if(location.pathname === "/signin"){
-    return null
-  }
-if(location.pathname === "/register"){
-  return null
-}
+
   return (
     <div className="header">
       <div className="city">
