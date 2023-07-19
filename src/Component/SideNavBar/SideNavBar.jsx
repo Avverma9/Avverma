@@ -13,6 +13,7 @@ import {
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
 import { useCollapse } from "react-collapsed";
+import { upperCase } from "../../utils";
 
 const Home = () => {
   return (
@@ -23,7 +24,7 @@ const Home = () => {
           <img src={homeIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Home</p>
+          <p>{upperCase("Home")}</p>
         </Link>
       </li>
     </>
@@ -39,7 +40,7 @@ const Profile = () => {
           <img src={profileIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Profile</p>
+          <p>{upperCase("Profile")}</p>
         </Link>
       </li>
     </>
@@ -140,11 +141,11 @@ const MannageAuction = () => {
           <img src={mannageAuctionIcon} alt="icon" srcset="" />
         </Link>
         <Link>
-          <p>Mannage Auction</p>
+          <p>{upperCase("Mannage Auction")}</p>
         </Link>
       </li>
       <div {...getCollapseProps()}>
-        <ul>
+        <ul className="sub_list-ul">
           <li>
             <Link to="/dashboard">
               {" "}
