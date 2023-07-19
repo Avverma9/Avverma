@@ -1,0 +1,56 @@
+/* Login.css */
+
+.container-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .heading-admin {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .form_container-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .right-admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form_heading-admin {
+    margin-bottom: 20px;
+  }
+  
+  .input-admin {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn-admin {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-admin:hover {
+    background-color: #0056b3;
+  }
+  
