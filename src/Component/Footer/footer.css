@@ -1,0 +1,12 @@
+.footer-container{
+    display: flex;
+flex-direction: row;
+gap: 5%;
+padding: 50px;
+font-size: 10px;
+position: relative;
+top:40%;
+}
+.foot-yello{
+    color: #ffcb00;
+}
