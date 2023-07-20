@@ -91,15 +91,8 @@ export const Bidcard = () => {
           </table>
         </div>
         <>
-          <p className="bid_amount">Your Bid ₹76,000</p>
-          <div className="edit_bid_section">
-            <div className="edit_bid_view">
-              <CiCircleMinus />
-              <p>₹76,000</p>
-              <CiCirclePlus />
-            </div>
-            <input type="button" value="BID" />
-          </div>
+        
+          
         </>
       </>
     </div>
