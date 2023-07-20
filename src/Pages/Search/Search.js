@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { BiExport } from "react-icons/bi";
 
 function Search() {
   const [click, setClick] = useState(false);
@@ -17,21 +18,21 @@ function Search() {
       </div>
       <div className="dashboard-section">
         <input type="search" placeholder="search" />
-        <BiSearchAlt2 />
+        <BiSearchAlt2 className="search-logo"/>
       </div>
       <div className="dashboard-section-head">
-        <ul className="dashboard-items">
+      <ul className="dashboard-items">
           <li className="heading-vehicle">VEHICLE NO</li>
-          <li>RJ25SD0188</li>
-          <li>RJ25SD4077</li>
-          <li>RJ25SA0000</li>
-          <li>RJ25SB0110</li>
-          <li>RJ25SB0111</li>
-          <li>RJ25SB1111</li>
-          <li>RJ25SB5115</li>
+          <li><input type='radio'/>RJ25SD0188</li>
+          <li><input type='radio'/>RJ25SD4077</li>
+          <li><input type='radio'/>RJ25SA0000</li>
+          <li><input type='radio'/>RJ25SB0110</li>
+          <li><input type='radio'/>RJ25SB0111</li>
+          <li><input type='radio'/>RJ25SB1111</li>
+          <li><input type='radio'/>RJ25SB5115</li>
         </ul>
         <ul className="dashboard-items-b">
-          <li className="heading-vehicle">D LOAN ASSIGNMENT NUMBER</li>
+          <li className="heading-vehicle">D LOAN ASSIGNMENT NUMBER<button className="btn-export">Export<BiExport className="export-icon"/></button></li>
           <li>
             M13765698765{" "}
             <AiOutlinePlusCircle
