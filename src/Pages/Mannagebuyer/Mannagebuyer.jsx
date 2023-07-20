@@ -26,9 +26,9 @@ export const Mannagebuyer = () => {
         <div className="sorted_option">
           <select name="sorted-option" id="sorted-option-select">
             <option value="">--Please choose an option--</option>
-            <option value="name">Name</option>
-            <option value="mobile">Mobile Number</option>
-            <option value="email">Email</option>
+            <option value="activebuyer">Active</option>
+            <option value="inactivebuyer">Inactive</option>
+            <option value="pendingbuyer">Pending for Aproval</option>
           </select>
         </div>
       </div>

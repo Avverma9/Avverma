@@ -43,7 +43,17 @@ font-weight: bold;
     position: relative;
     top: 150px;   
 }
-
+.cloud-icon{
+    position: absolute;
+font-size: 25px;
+top: 0px;
+left: 38px;
+}
+.cloud-icons{
+    position: relative;
+right: 16%;
+font-size: 25px;
+}
 
   
 
