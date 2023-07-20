@@ -23,3 +23,13 @@
   font-weight: bold;
   font-size: 24px;
 }
+.add-btn{
+  padding: 10px;
+  margin-left: 10px;
+  background:rgb(40, 40, 40);
+  color: white;
+  font-weight: 501;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+}

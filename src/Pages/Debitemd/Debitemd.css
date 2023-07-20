@@ -1,0 +1,15 @@
+.debit_emd_container h1 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.debit_emd_container input {
+  width: 35%;
+  margin: 10px 0 20px 0;
+}
+
+.debit_emd_container textarea {
+  width: 35%;
+  margin: 10px 0 20px 0;
+  resize: none;
+}

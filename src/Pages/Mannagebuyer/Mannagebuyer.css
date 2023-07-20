@@ -1,0 +1,88 @@
+._mannage_buyer_header > h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+._mannage_buyer_header span {
+  margin: 30px 0;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+._mannage_buyer_header span p {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+._mannage_buyer_header span input[type="button"] {
+  font-size: 16px;
+  font-weight: 500;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+._mannage_buyer_body {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+._search {
+  border: 1px solid #000;
+  width: 35%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 0 8px;
+}
+
+._search input[type="text"] {
+  width: 95%;
+  border: 0;
+  outline: 0;
+}
+
+._search svg {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.sorted_option {
+  border: 1px solid #000;
+  width: 35%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 0 8px;
+}
+
+.sorted_option select {
+  width: 95%;
+  height: 39px;
+  border: 0;
+  outline: 0;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+._sorted_option_list {
+  width: 80%;
+  margin-top: 30px;
+}
+
+._sorted_option_list > table {
+  text-align: left;
+}
+
+th,
+td {
+  padding: 8px 4px;
+}
+
+.table_head {
+  outline: 1px solid #000;
+}

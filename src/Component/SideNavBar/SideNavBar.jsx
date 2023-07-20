@@ -13,6 +13,7 @@ import {
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
 import { useCollapse } from "react-collapsed";
+import { upperCase } from "../../utils";
 
 const Home = () => {
   return (
@@ -23,7 +24,7 @@ const Home = () => {
           <img src={homeIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Home</p>
+          <p>{upperCase("Home")}</p>
         </Link>
       </li>
     </>
@@ -39,7 +40,7 @@ const Profile = () => {
           <img src={profileIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Profile</p>
+          <p>{upperCase("Profile")}</p>
         </Link>
       </li>
     </>
@@ -50,11 +51,11 @@ const PushNotification = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/push-notification">
           {" "}
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/push-notification">
           <p>Push Notification</p>
         </Link>
       </li>
@@ -140,11 +141,11 @@ const MannageAuction = () => {
           <img src={mannageAuctionIcon} alt="icon" srcset="" />
         </Link>
         <Link>
-          <p>Mannage Auction</p>
+          <p>{upperCase("Mannage Auction")}</p>
         </Link>
       </li>
       <div {...getCollapseProps()}>
-        <ul>
+        <ul className="sub_list-ul">
           <li>
             <Link to="/dashboard">
               {" "}
@@ -174,12 +175,28 @@ const MannageBuyer = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/mannage-buyer">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/mannage-buyer">
           <p>Mannage Buyer</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const MannageAdmin = () => {
+  return (
+    <>
+      <li>
+        <Link to="/mannage-admin">
+          {" "}
+          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/mannage-admin">
+          <p>Mannage Admin</p>
         </Link>
       </li>
     </>
@@ -196,6 +213,7 @@ export const SideNavBar = () => {
         <ul>
           <Home />
           <MannageAuction />
+          <MannageAdmin />
           <MannageBuyer />
           <Profile />
           <PushNotification />
