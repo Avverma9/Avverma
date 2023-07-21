@@ -7,7 +7,6 @@
   top: 0;
   left: 0;
   z-index: 1;
-  overflow-y: scroll;
 }
 
 .side_nav_header {
@@ -46,10 +45,6 @@
   color: #fff;
 }
 
-.side_nav_body ul li {
+.side_nav_body ul li:not(:last-child) {
   margin-bottom: 30px;
-}
-
-.sub_list-ul {
-  margin-left: 23px;
 }

@@ -4,7 +4,7 @@ import { VscLocation } from "react-icons/vsc";
 import { SlCalender } from "react-icons/sl";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import "./Bidcard.css";
-import { dieselIcon } from "../../assets";
+import { diesel } from "../../assets";
 
 export const Bidcard = () => {
   return (
@@ -46,7 +46,7 @@ export const Bidcard = () => {
               </td>
               <td>
                 <span>
-                  <img src={dieselIcon} alt="icon" />
+                  <img src={diesel} alt="icon" />
                 </span>
                 Diesel
               </td>
