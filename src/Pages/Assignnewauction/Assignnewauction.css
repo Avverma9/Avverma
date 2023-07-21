@@ -1,0 +1,26 @@
+._input_fields {
+  width: 45%;
+  margin-bottom: 15px;
+}
+
+.assign_new_auction :nth-child(3) {
+  width: calc(45% + 80px);
+}
+
+._flex-center {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+._bid_btn {
+  width: 80px;
+  background-color: red;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 0;
+  border: 0;
+  padding: 4px 0;
+  margin-top: 4px;
+}

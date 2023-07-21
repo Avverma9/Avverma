@@ -33,3 +33,25 @@ a {
   text-decoration: none;
   color: inherit;
 }
+
+textarea {
+  padding: 5px;
+  outline: none;
+}
+
+input {
+  padding: 5px;
+  outline: none;
+}
+
+._pointer {
+  cursor: pointer;
+}
+
+._w-100 {
+  width: 100%;
+}
+
+._w-50 {
+  width: 50%;
+}

@@ -1,0 +1,35 @@
+.setting-inputfield span {
+  display: flex;
+  flex-direction: column;
+  line-height: 3;
+}
+.setting-inputfield span input[type="text"] {
+  width: 30%;
+  height: 40px;
+  border: 1px solid black;
+}
+.update-button {
+  background: white;
+  width: auto;
+  padding: 10px;
+  color: black;
+  border: 1px solid black;
+}
+.setting-container {
+  padding: 10px;
+  margin-left: 10%;
+}
+.setting-heading h1 {
+  font-weight: bold;
+  font-size: 24px;
+}
+.add-btn{
+  padding: 10px;
+  margin-left: 10px;
+  background:rgb(40, 40, 40);
+  color: white;
+  font-weight: 501;
+  font-size: 14px;
+  border: none;
+  border-radius: 2px;
+}
