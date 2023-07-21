@@ -1,0 +1,14 @@
+.car-owner-detail{
+    display: flex;
+flex-direction: row;
+gap: 10%;
+line-height: 2;
+font-size: 13px;
+}
+.bidding-details{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.car-owner-detail li{
+    list-style: none;
+}

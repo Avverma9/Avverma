@@ -1,0 +1,126 @@
+.menu {
+  width: 100%;
+  height: 46px;
+  align-items: center;
+  background-color: #ebebeb;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  margin-top: 0;
+  padding: 2px 60px 0 !important;
+}
+
+.stateinrow {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stateItem {
+  display: flex;
+  flex-direction: column;
+  /* margin-right: 20px; */
+  align-items: center;
+  height: 100%;
+  margin-top: -3px;
+  position: relative;
+}
+
+.stateName {
+  cursor: pointer;
+}
+
+.arrow {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 5px;
+  border-top: 2px solid #626161;
+  border-right: 2px solid #626161;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+}
+
+.open {
+  transform: rotate(225deg);
+}
+
+.cityDropdown {
+  background: white;
+  position: absolute;
+  z-index: 2;
+  padding: 30px;
+}
+
+.cityName {
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+/* Additional styles to improve dropdown appearance */
+
+.stateItem:hover .cityDropdown {
+  display: block;
+  margin-top: 34px;
+  width: 200px;
+  position: absolute;
+  left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.cityDropdown {
+  margin-top: 20px;
+  border-radius: 4px;
+}
+
+.cityDropdown .cityName:hover {
+  background-color: #ffffff8c;
+  color: rgb(29, 62, 247);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stateItem:hover {
+  background-color: white;
+}
+
+.stateItem {
+  width: 175px;
+  position: relative;
+  border: none;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+  border-radius: 4px;
+}
+
+.cityDropdown {
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.drop_down {
+  width: 100%;
+  margin: 0 auto;
+}
+.drop_down .slick-slide {
+  width: 175px !important;
+}
+
+/* .drop_down .slick-slide > div {
+  width: 175px !important;
+} */
+
+.drop_down .slick-next {
+  right: -90px !important;
+}
+.drop_down .slick-prev {
+  left: -90px !important;
+}
+
+.drop_down .slick-next::before {
+  color: #1e293b !important;
+}
+.drop_down .slick-prev::before {
+  color: #1e293b !important;
+}

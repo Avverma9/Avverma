@@ -1,0 +1,30 @@
+.sort-auction-heading{
+    display: flex;
+flex-direction: row;
+align-items: center;
+gap: 50%;
+margin-bottom: 30px;
+}
+.sort-heading-icon{
+    display: flex;
+flex-direction: row;
+align-items: center;
+gap: 8px;
+font-size: 20px;
+}
+.sort-endtime{
+    display: flex;
+    align-items: center;
+    gap: 50%;
+    margin-bottom: 15px;
+    
+}
+.sort-endtime label{
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+}
+.sort-endtime h1{
+    font-size: 14px;
+    font-weight: 400;
+}

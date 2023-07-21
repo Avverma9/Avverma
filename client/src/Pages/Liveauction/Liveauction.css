@@ -1,0 +1,35 @@
+.live-auction_type_header h1 {
+  font-weight: bold;
+  font-size: 18px;
+  word-spacing: 3px;
+}
+.live-auction_type_header {
+  display: flex;
+  flex-direction: row;
+  gap: 30%;
+  margin-bottom: 15px;
+}
+
+.live-section1 {
+  padding: 60px;
+}
+.live-header {
+  display: flex;
+  flex-direction: row;
+  gap: 29%;
+}
+.live-header h1 {
+  font-size: 12px;
+  font-weight: 501;
+}
+.live-icons {
+  display: flex;
+  gap: 37px;
+}
+.live-auction_type_header h1:active {
+  color: yellow;
+}
+
+.live-icons svg {
+  font-size: 18px;
+}
