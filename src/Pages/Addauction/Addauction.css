@@ -1,0 +1,27 @@
+.addauction-new label{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.auction-detail{
+    display: flex;
+    flex-direction: column;
+}
+.dropdown-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+}
+.select-option{
+    width: 170px;
+    height: 40px;
+    padding: 5px;
+}
+.addauction-new label input{
+    margin-bottom: 20px;
+    width: 30%;
+}
+.addauction-new{
+    padding: 20px;
+}
