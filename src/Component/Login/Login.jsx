@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Login.css";
 import Google from "../SingGoogle/Google.jsx";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+
+
+
+
+
+///////////////////////////////////////////Implemented Hide/Show password Abdul////////////////////////////////////
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,7 +40,7 @@ const Login = () => {
 
         localStorage.setItem("isSignedIn", "true");
         localStorage.setItem("userId", userId);
-        navigate("/profile")
+        navigate("/profile");
       } else {
         console.log("Sign in failed");
       }
@@ -69,6 +76,7 @@ const Login = () => {
       <form onSubmit={handleSignIn}>
         <div className="form-group-signin">
           <input
+          style={{border:'2px solid black'}}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -79,6 +87,7 @@ const Login = () => {
         </div>
         <div className="form-group-signin">
           <input
+          style={{border:'2px solid black'}}
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -90,14 +99,30 @@ const Login = () => {
             type="button"
             className="show-password-button-signin"
             onClick={togglePasswordVisibility}
+            style={{ position: "relative", bottom: "35px", left: "250px" }}
           >
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? (
+              <AiFillEye
+              size={25}
+                alt="Toggle Password Visibility"
+                className="eye-icon"
+              />
+            ) : (
+              < AiFillEyeInvisible 
+              size={25}
+                alt="Toggle Password Visibility"
+                className="eye-icon"
+              />
+            )}
           </button>
+          Forgot Your Password ?
+          <button  className="signup-button">Click Here</button>
         </div>
         <button type="submit-login" disabled={isLoading}>
           Sign In
         </button>
         <Google />
+        
         <br />
 
         <div className="dhac">
@@ -110,6 +135,10 @@ const Login = () => {
             Click Here
           </button>
         </div>
+
+      
+         
+       
       </form>
       <br />
     </div>

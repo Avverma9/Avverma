@@ -36,6 +36,8 @@
 
 .form-group-signin {
   margin-bottom: 15px;
+  max-width: 300px;
+  min-width: 300px
 }
 
 .label {
