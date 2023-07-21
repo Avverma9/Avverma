@@ -12,7 +12,7 @@ const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
 const emailController = require("../controllers/emailController")
-const otpController = require("../controllers/otpController")
+// const otpController = require("../controllers/otpController")
 
 
 
@@ -89,10 +89,12 @@ router.get("/offers/review/:offersId",reviewController.getReviewsByOfferId)
 router.post("/SendBookingEmail", emailController.BookingMail)
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);
 router.post("/resetPassword/:token", emailController.resetPassword);
+router.post("/otplogin", emailController.sendOTPEmail)
+router.post("/verifyotp", emailController.verifyOtp)
 
 
 //================================OTP=====================================//
-router.post("/sendOtp",otpController.sendOtp)
+// router.post("/sendOtp",otpController.sendOtp)
 
 
 

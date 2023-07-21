@@ -108,4 +108,73 @@ const resetPassword = async (req, res) => {
 };
 
 
-module.exports = { BookingMail, resetPassword, sendPasswordMail }
+
+
+//Send OTP to email
+const sendOTPEmail = async (req, res) => {
+  const { email } = req.body;
+
+  const generateOTP = () => {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  };
+
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const otp = generateOTP();
+    const otpExpires = Date.now() + 300000; // 5 minutes
+
+    user.otp = otp;
+    user.otpExpires = otpExpires;
+    await user.save();
+
+    const mailOptions = {
+      from: "hotelbookingtesting@gmail.com",
+      to: email,
+      subject: "OTP for Login",
+      text: `Your OTP for login is: ${otp}\n\nThis OTP will expire in 5 minutes.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    return res.status(200).json({
+      message: "OTP sent successfully. Check your email.",
+      otpExpires: otpExpires,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (!user.otp || !user.otpExpires || user.otpExpires < Date.now()) {
+      return res.status(401).json({ error: "OTP is invalid or expired" });
+    }
+    if (user.otp !== otp) {
+      return res.status(401).json({ error: "Invalid OTP" });
+    }
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ message: "OTP verified. User can now log in." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+module.exports = { BookingMail, resetPassword, sendPasswordMail, sendOTPEmail,verifyOtp }
