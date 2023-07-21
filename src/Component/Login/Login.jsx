@@ -8,8 +8,6 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 
 
-///////////////////////////////////////////Implemented Hide/Show password Abdul////////////////////////////////////
-
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -59,9 +57,18 @@ const Login = () => {
     navigate("/register"); // Redirect to the signup page
   };
 
+  const handleOtplogin =()=>{
+    navigate("/otplogin")
+  }
+
   if (location.pathname !== "/signin") {
     return null;
   }
+
+  const handleForgotPassword = () => {
+    navigate("/passwordChangeMail"); 
+  };
+
 
   return (
     <div className="card-signin">
@@ -116,11 +123,14 @@ const Login = () => {
             )}
           </button>
           Forgot Your Password ?
-          <button  className="signup-button">Click Here</button>
+          <button onClick={handleForgotPassword} className="signup-button">Click Here</button>
         </div>
-        <button type="submit-login" disabled={isLoading}>
-          Sign In
-        </button>
+        <button type="submit-login" disabled={isLoading} className="signin-button">
+      Sign In
+    </button>
+    <button type="submit-otp" onClick={handleOtplogin} disabled={isLoading} className="signin-button">
+      OTP SignIn
+    </button>
         <Google />
         
         <br />
@@ -135,10 +145,6 @@ const Login = () => {
             Click Here
           </button>
         </div>
-
-      
-         
-       
       </form>
       <br />
     </div>

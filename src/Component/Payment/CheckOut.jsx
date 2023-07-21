@@ -45,7 +45,7 @@ export default function CheckOut({
     rzp.open();
   };
     
-  console.log(userData.email,"dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+  // console.log(userData.email,"dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
   const handlePayment = async () => {
     const data = {
@@ -84,7 +84,7 @@ export default function CheckOut({
           console.log(res.data, "Booking created successfully", bookingData);
   
           axios
-            .post("http://localhost:5000/send-booking-email", {
+            .post("http://localhost:5000/SendBookingEmail", {
               bookingData: bookingData,
               email: userData.email,
               
