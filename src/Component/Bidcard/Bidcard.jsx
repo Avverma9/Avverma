@@ -5,7 +5,7 @@ import { SlCalender } from "react-icons/sl";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import "./Bidcard.css";
 import { dieselIcon } from "../../assets";
-import {FiEdit} from "react-icons/fi";
+import { FiEdit } from "react-icons/fi";
 
 export const Bidcard = () => {
   const [isopen,setIsopen] = useState(false);

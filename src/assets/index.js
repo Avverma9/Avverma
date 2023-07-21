@@ -8,6 +8,7 @@ import settingsIcon from "./icons/_settings-icon.png";
 import dieselIcon from "./icons/_diesel-icon.png";
 import filterIcon from "./icons/_filter-icon.png";
 import searchIcon from "./icons/_search-icon.png";
+import mannageAdminIcon from "./icons/_mannageAdmin.png";
 
 export {
   homeIcon,
@@ -20,4 +21,5 @@ export {
   dieselIcon,
   filterIcon,
   searchIcon,
+  mannageAdminIcon,
 };

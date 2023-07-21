@@ -9,6 +9,7 @@ import {
   settingsIcon,
   searchIcon,
   filterIcon,
+  mannageAdminIcon,
 } from "../../assets";
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
@@ -56,7 +57,7 @@ const PushNotification = () => {
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/push-notification">
-          <p>Push Notification</p>
+          <p>{upperCase("Push Notification")}</p>
         </Link>
       </li>
     </>
@@ -78,18 +79,18 @@ const Auction = () => {
           <img src={mannageAuctionIcon} alt="icon" srcset="" />
         </Link>
         <Link>
-          <p>Auction</p>
+          <p>{upperCase("Auction")}</p>
         </Link>
       </li>
       <div {...getCollapseProps()}>
-        <ul>
+        <ul className="sub_list-ul">
           <li>
             <Link to="/search">
               {" "}
               <img src={searchIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/search">
-              <p>Search</p>
+              <p>{upperCase("Search")}</p>
             </Link>
           </li>
           <li>
@@ -98,7 +99,7 @@ const Auction = () => {
               <img src={filterIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/filter-auction">
-              <p>Filter Auction</p>
+              <p>{upperCase("Filter Auction")}</p>
             </Link>
           </li>
           <li>
@@ -107,7 +108,7 @@ const Auction = () => {
               <img src={mannageAuctionIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/add-auction">
-              <p>Add New Auction</p>
+              <p>{upperCase("Add New Auction")}</p>
             </Link>
           </li>
           <li>
@@ -116,7 +117,7 @@ const Auction = () => {
               <img src={mannageAuctionIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/import-auction">
-              <p>Import Bulk Auction</p>
+              <p>{upperCase("Import Bulk Auction")}</p>
             </Link>
           </li>
         </ul>
@@ -152,7 +153,7 @@ const MannageAuction = () => {
               <img src={dashboardIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/dashboard">
-              <p>Dashboard</p>
+              <p>{upperCase("Dashboard")}</p>
             </Link>
           </li>
           <Auction />
@@ -162,7 +163,7 @@ const MannageAuction = () => {
               <img src={settingsIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/settings">
-              <p>Settings</p>
+              <p>{upperCase("Settings")}</p>
             </Link>
           </li>
         </ul>
@@ -180,7 +181,7 @@ const MannageBuyer = () => {
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-buyer">
-          <p>Mannage Buyer</p>
+          <p>{upperCase("Mannage Buyer")}</p>
         </Link>
       </li>
     </>
@@ -193,10 +194,10 @@ const MannageAdmin = () => {
       <li>
         <Link to="/mannage-admin">
           {" "}
-          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+          <img src={mannageAdminIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-admin">
-          <p>Mannage Admin</p>
+          <p>{upperCase("Mannage Admin")}</p>
         </Link>
       </li>
     </>
@@ -207,14 +208,14 @@ export const SideNavBar = () => {
   return (
     <section className="side_nav_container">
       <div className="side_nav_header">
-        <h1>Dashboard</h1>
+        <h1>{upperCase("Dashboard")}</h1>
       </div>
       <div className="side_nav_body">
         <ul>
           <Home />
           <MannageAuction />
-          <MannageAdmin />
           <MannageBuyer />
+          <MannageAdmin />
           <Profile />
           <PushNotification />
         </ul>

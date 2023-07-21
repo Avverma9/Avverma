@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import {BiExport} from "react-icons/bi";
+import { BiExport } from "react-icons/bi";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
@@ -33,9 +33,7 @@ function Dashboard() {
           <li>RJ25SB5115</li>
         </ul>
         <ul className="dashboard-items-b">
-          <li className="heading-vehicle">D LOAN ASSIGNMENT NUMBER 
-          
-          </li>
+          <li className="heading-vehicle">D LOAN ASSIGNMENT NUMBER</li>
           <li>
             M13765698765{" "}
             <AiOutlinePlusCircle
