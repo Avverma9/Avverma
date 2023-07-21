@@ -94,3 +94,16 @@
   background: white;
   border: 1px solid #ccc;
 }
+.filter-logo img{
+  width: 20px;
+}
+.filter-logo{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+}
+.filter-logo p{
+  font-size: 22px;
+  font-weight: 501;
+}

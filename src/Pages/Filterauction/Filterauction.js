@@ -1,13 +1,16 @@
 import React from "react";
 import { Filterauctioncard } from "../../Component/Filterauctioncard/filterauctioncard";
 import "./Filterauction.css";
+import {filterIcon} from '../../assets/index';
 
 export const Filterauction = () => {
   return (
     <div className="filter-container">
       <div className="_filter_sidebar">
-        <form>
+        <form><div className="filter-logo">
+        <img src={filterIcon} alt="icon" srcset="" />
           <p>Filter Auction</p>
+          </div>
           <div className="_filter_checkbox">
             <input type="checkbox" id="filter1" name="filter1" />
             <label htmlFor="filter1">Running Auction</label>
