@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 import "./_profile.css";
 import { getLocalStorage } from "../../hooks/useLocalStorage";
 import Avatar from "react-avatar";
@@ -23,6 +24,17 @@ import { TiCancel, TiTick } from "react-icons/ti";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useCollapse } from "react-collapsed";
 import { convertDate } from "../../utils/convertDate";
+import { Button, Modal } from 'react-bootstrap'
+import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const styles = {
+  cell: {
+    padding: "0px 10px", 
+  },
+};
+
 
 function AccountSettings({ selectedNav, navHandler }) {
   // const [isExpanded, setExpanded] = useState(false);
@@ -874,8 +886,51 @@ function GovernmentIdInformation({ userData }) {
 }
 
 function CancelBooking() {
-  const [orderId, setOrderId] = useState(null);
-  console.log(orderId);
+  const [bookingId, setBookingId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [canceledBookings, setCanceledBookings] = useState([]);
+
+  const handleConfirmCancel = () => {
+    if (canceledBookings.some((booking) => booking.bookingId === bookingId)) {
+      toast.error('This booking has already been canceled.');
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  const handleCancel = () => {
+    axios
+      .put(`http://localhost:5000/booking/${bookingId}`)
+      .then((res) => {
+        console.log(res.data);
+        setShowModal(false);
+        toast.success('Booking cancellation successful');
+        fetchCanceledBookings();
+      })
+      .catch((err) => {
+        console.log(err);
+        setShowModal(false);
+        toast.error('Failed to cancel booking. Please check the booking ID.');
+      });
+  };
+
+  const fetchCanceledBookings = () => {
+    axios
+      .get('http://localhost:5000/booking/getCancelledBooking')
+      .then((res) => {
+        console.log(res.data, "CancelledData");
+        setCanceledBookings(res.data.canceledBookings);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error('Failed to fetch canceled bookings.');
+      });
+  };
+
+  useEffect(() => {
+    fetchCanceledBookings();
+  }, []);
+
   return (
     <>
       <div className="_title">
@@ -883,51 +938,155 @@ function CancelBooking() {
       </div>
 
       <div className="_fields_col">
-        <input type="text" onChange={(e) => setOrderId(e.target.value)} />
-        <span>Provide the dummy id 123456 for cancellation</span>
+        <input type="text" onChange={(e) => setBookingId(e.target.value)} />
+        <span>Provide the exact same booking ID from the database</span>
       </div>
 
-      {/* <button className={orderId === "123456" ? `float-left mt-4` : "float-left mt-4 !hidden"}>
+      <button className="profile_body_button" onClick={handleConfirmCancel}>
         Confirm Cancel
-      </button> */}
-      <button className="profile_body_button">Confirm Cancel</button>
+      </button>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Cancel Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to cancel the booking?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Close
+          </Button>
+          <Button variant="danger" onClick={handleCancel}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {canceledBookings.length > 0 && (
+        <>
+          <div className="_title">
+            <h1>Canceled Booking History</h1>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Hotel Image</th>
+                <th>Booking ID</th>
+                <th>Hotel Name</th>
+                <th>Destination</th>
+                {/* <th>Check-In Date</th>
+                <th>Check-Out Date</th> */}
+                <th>Cancelled at</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {canceledBookings.map((booking) => (
+                <tr key={booking._id}>
+                  <td>
+                    <img className="hotelimage" src={booking.images} alt="Hotel" />
+                  </td>
+                  <td>{booking.bookingId}</td>
+                  <td>{booking.hotelName}</td>
+                  <td>{booking.destination}</td>
+                  {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
+                  <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
+                  <td>{new Date(booking.cancelledAt).toLocaleDateString()}</td>
+                  <td style={{ color: 'red' }}>{booking.bookingStatus}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </>
   );
 }
 
+
 function ConfirmBooking() {
+  const [bookingDetails, setBookingDetails] = useState(null);
+
+  useEffect(() => {
+    fetchBookingDetails();
+  }, []);
+
+  const fetchBookingDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/bookingsConfirm');
+      const { bookings } = response.data;
+      console.log(bookings,"backend data")
+      setBookingDetails(bookings);
+    } catch (error) {
+      console.log(error);
+      toast.error('Error fetching booking details');
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <>
       <div className="_title">
-        <h1>Confirm Booking</h1>
+        <h1>Confirmed Booking</h1>
       </div>
 
       <div className="sub_Title">
-        We are pleased to inform that your Booking has been confirmed
+        We are pleased to inform you that your booking has been confirmed.
       </div>
 
       <div className="_title">
         <h1>Booking Details</h1>
       </div>
 
-      <div className="flex-col items-start text-left">
-        <div className="flex-col">
-          <div className="_title">
-            <h1 className="me-2">Name</h1>
-            <p>Rahul Bose</p>
-          </div>
-
-          <div className="_title">
-            <h1 className="me-2">Email</h1>
-            <p>boserahul@gmail.com</p>
-          </div>
-
-          <div className="_title">
-            <h1 className="me-2">Booking ID</h1>
-            <p>654oiuyvgfi5</p>
-          </div>
-        </div>
-      </div>
+      {bookingDetails ? (
+        <>
+           <table style={styles.table}>
+      <thead>
+        <tr>
+          <th style={styles.cell}>Image</th>
+          <th style={styles.cell}>Hotel Name</th>
+          <th style={styles.cell}>Booking ID</th>
+          <th style={styles.cell}>Destination</th>
+          <th style={styles.cell}>Check In</th>
+          <th style={styles.cell}>Check Out</th>
+          <th style={styles.cell}>Price</th>
+          <th style={styles.cell}>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {bookingDetails
+          .filter((booking) => booking.bookingStatus === "success")
+          .map((booking) => (
+            <tr key={booking.bookingId}>
+              <td>
+                <img
+                  className="hotelimage"
+                  src={booking.hotelimage}
+                  alt="Hotel"
+                />
+              </td>
+              <td style={styles.cell}>{booking.hotel.hotelName}</td>
+              <td style={styles.cell}>{booking.bookingId}</td>
+              <td style={styles.cell}>
+                {booking.destination ? booking.destination : "No data"}
+              </td>
+              <td style={styles.cell}>{formatDate(booking.checkInDate)}</td>
+              <td style={styles.cell}>{formatDate(booking.checkOutDate)}</td>
+              <td style={styles.cell}>{booking.price}</td>
+              <td style={{ ...styles.cell, color: "green" }}>
+                {booking.bookingStatus}
+              </td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
+        </>
+      ) : (
+        <p>Loading booking details...</p>
+      )}
     </>
   );
 }
@@ -1078,12 +1237,68 @@ function NoShowBooking() {
 }
 
 function FailedBooking() {
+  const [failedBookings, setFailedBookings] = useState([]);
+
+  useEffect(() => {
+    fetchFailedBookings();
+  }, []);
+
+  const fetchFailedBookings = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/bookingFailed');
+      
+      if (response.data.success) {
+        setFailedBookings(response.data.bookings);
+      } else {
+        console.error(response.data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const formatDate = (dateString) => {
+    const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+
   return (
     <>
       <div className="_title">
         <h1>Failed Booking</h1>
       </div>
-      <div className="sub_Title">Booking failed. Please try again later</div>
+      {failedBookings.length > 0 ? (
+         <table >
+         <thead >
+            <tr>
+              <th>Booking ID</th>
+              <th>User Email</th>
+              <th>Hotel Name</th>
+              <th>Price</th>
+              <th>Check-in Date</th>
+              <th>Check-out Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {failedBookings.map((booking) => (
+              <tr key={booking.bookingId}>
+                <td>{booking.bookingId}</td>
+                <td>{booking.user.email}</td>
+                <td>{booking.hotel.hotelName}</td>
+                <td>{booking.price}</td>
+                <td>{formatDate(booking.checkInDate)}</td>
+                <td>{formatDate(booking.checkOutDate)}</td>
+                <td style={{color:"red"}}>{booking.bookingStatus}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <div className="sub_Title">Booking failed. Please try again later</div>
+      )}
     </>
   );
 }

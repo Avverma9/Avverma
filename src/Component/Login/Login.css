@@ -5,15 +5,15 @@
   justify-content: center;
   width: 480px;
   height: 450px;
-  background-image: url(https://media.tenor.com/p0G_bmA2vSYAAAAd/login.gif);
+  /* background-image: url(https://media.tenor.com/p0G_bmA2vSYAAAAd/login.gif); */
   background-size: cover;
   background-position: center;
   margin-top: 45px;
-  margin-left: 495px;
   padding: auto;
   background-color: #fff;
   border-radius: 5px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  margin: 45px auto; 
 }
 
 .image-container-signin {
@@ -36,6 +36,9 @@
 
 .form-group-signin {
   margin-bottom: 15px;
+  max-width: 300px;
+  min-width: 300px;
+
 }
 
 .label {
@@ -120,6 +123,10 @@ button[type="submit-login"] {
 button[type="submit-login"]:hover {
   background-color: #0c0e0c;
 }
+button[type="submit-otp"]:hover {
+  background-color: #0c0e0c;
+}
+
 .dhac{
   margin-top: 130px;
 }
@@ -136,7 +143,7 @@ button[type="submit-login"]:hover {
     justify-content: center;
     width: 360px;
     height: 340px;
-    background-image: url(https://media.tenor.com/p0G_bmA2vSYAAAAd/login.gif);
+    /* background-image: url(https://media.tenor.com/p0G_bmA2vSYAAAAd/login.gif); */
     background-size: cover;
     background-position: center;
     margin-top: 35px;
@@ -221,3 +228,23 @@ button[type="submit-login"]:hover {
   }
   
 } 
+
+button[type="submit-login"],
+button[type="submit-otp"] {
+  width: 45%; /* Adjust the width as needed */
+  padding: 10px;
+  margin: 10px 5px; /* Add some gap between the buttons */
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[type="submit-login"]:disabled,
+button[type="submit-otp"]:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
