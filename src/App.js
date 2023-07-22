@@ -91,6 +91,11 @@ import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
 import Footer from "./Component/Footer/Footer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ResetPassword from "./Component/Login/ResetPassword";
+import ConfirmEmail from "./Component/Login/ConfirmEmail";
+import LoginWithOtp from "./Component/Login/LoginWithOtp";
 
 function App() {
   // console.log(search)
@@ -125,6 +130,7 @@ function App() {
     <Router>
       <div>
         <Header />
+        <ToastContainer/>
         <HeaderImage />
         <Dropdownbar />
 
@@ -161,6 +167,9 @@ function App() {
             path="/profile"
             element={<Profile refresh={refresh} reset={reset} />}
           />
+            <Route path="/resetPassword/:token" element={<ResetPassword/>} />
+            <Route path="/passwordChangeMail" element={<ConfirmEmail/>}/>
+            <Route path="/otplogin" element={<LoginWithOtp/>}/>
           <Route path="state" element={HeaderImage} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route

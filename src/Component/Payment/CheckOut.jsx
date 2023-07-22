@@ -8,64 +8,103 @@ export default function CheckOut({
   amount,
   currency,
   userData,
+  checkIn,
+  checkOut,
+  guests,
+  hotelName,
+  hotelimage,
+  destination,
 }) {
-  console.log(userData, "CHECK-OUT");
-  // const loadScript = (src) => {
-  //     return new Promise((resolve) => {
-  //         const script = document.createElement('script')
-  //         script.src = src;
-  //         script.onload = () => {
-  //             resolve(true);
-  //         }
-  //         script.onerror = () => {
-  //             resolve(false);
-  //         }
-  //         document.body.appendChild(script);
-  //     })
-  // }
-
   const handleOpenRazorpay = (data) => {
     const options = {
+      name: "Hotel Booking",
       key: "rzp_test_CE1nBQFs6SwXnC",
       amount: amount * 100,
       currency: data.currency,
-      name: hotelName,
-      // order_id: "09i3979t12ruhvqdwo7t12r2",
-      handler: function (response) {
-        console.log(response, "27");
+      prefill: {
+        name: userData.name,
+        email: userData.email,
       },
-      //   prefill: {
-      //     name: userData.name,
-      //     email: userData.email,
-      //     contact: userData.mobile,
-      //   },
+       remember: true,
+      handler: function (response) {
+        if (response.razorpay_payment_id) {
+          handleBooking("success");
+        } else {
+          handleBooking("failed");
+        }
+      },
       theme: {
         color: "#3399cc",
       },
     };
     const rzp = new window.Razorpay(options);
+
+    rzp.on("payment.failed", function (response) {
+      handleBooking("failed");
+    });
+
     rzp.open();
   };
+    
+  // console.log(userData.email,"dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
   const handlePayment = async () => {
-    // create api integration
     const data = {
       hotelId: hotelId,
       userId: userId,
       amount: amount,
       currency: currency,
     };
-    // console.log(data)
-    axios
-      .post("https://hotel-backend-tge7.onrender.com/payments", data)
-      .then((res) => {
-        console.log(res.data, "/api/payments");
-        handleOpenRazorpay(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    try {
+      const response = await axios.post("http://localhost:5000/payments", data);
+      handleOpenRazorpay(response.data);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
+  const handleBooking = (paymentStatus) => {
+    const bookingData = {
+      userId: userId,
+      hotelId: hotelId,
+      hotelName: hotelName,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      guests: guests,
+      price: amount,
+      paymentStatus: paymentStatus,
+      images: hotelimage,
+      destination: destination,
+    };
+
+    if (userData && userData.email) {
+      axios
+        .post(`http://localhost:5000/booking/${userId}/${hotelId}`, bookingData)
+        .then((res) => {
+          console.log(res.data, "Booking created successfully", bookingData);
+  
+          axios
+            .post("http://localhost:5000/SendBookingEmail", {
+              bookingData: bookingData,
+              email: userData.email,
+              
+            })
+            .then((res) => {
+              console.log("Email sent successfully");
+            })
+            .catch((err) => {
+              console.log("Failed to send email", err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("User data or email is not available");
+    }
+  };
+
   return (
     <>
       <button

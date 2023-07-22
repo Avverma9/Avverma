@@ -298,6 +298,10 @@ export default function BookNow({ refresh, reset, userData }) {
   };
 
   console.log(fieldFocus);
+  console.log(bookingDetails,"Bookigggggggggggggggggggggggggggggggggggggggggggg")
+  const firstImageURL = bookingDetails.images?.[0];
+  console.log(firstImageURL,"gggggggggggggggggggggggg")
+
 
   return (
     <>
@@ -642,6 +646,13 @@ export default function BookNow({ refresh, reset, userData }) {
               amount={Number(bookingDetails.price)}
               currency="INR"
               userData={userData}
+              checkIn={bookingDetails.startDate}
+              checkOut={bookingDetails.endDate}
+              guests = {bookingDetails.guests}
+              hotelName={bookingDetails.hotelName}
+              hotelimage={firstImageURL}
+              destination={bookingDetails.destination}
+              paymentMethod={bookingDetails.paymentMethod}
             />
           </div>
         </div>
