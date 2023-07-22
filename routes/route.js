@@ -11,6 +11,8 @@ const reviewController = require("../controllers/reviewController");
 const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
+const emailController = require("../controllers/emailController")
+// const otpController = require("../controllers/otpController")
 
 
 
@@ -71,6 +73,9 @@ router.get('/partners/:partnerId', partnerController.getHotelPartner);
 router.post('/booking/:userId/:hotelId', bookingController.createBooking);
 router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
+router.put('/booking/:bookingId', bookingController.cancelBooking);
+router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
+
 
 //============================offers==============================================//
 router.post("/create/offers",upload,offersController.createOffers)
@@ -78,4 +83,21 @@ router.get("/offers",offersController.getOffers)
 router.get("/offers/:offerId",offersController.getOffersById)
 router.post("/offers/review/:userId/:offersId",reviewController.createOfferReview)
 router.get("/offers/review/:offersId",reviewController.getReviewsByOfferId)
+
+
+//=================================Emails==============================================//
+router.post("/SendBookingEmail", emailController.BookingMail)
+router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);
+router.post("/resetPassword/:token", emailController.resetPassword);
+router.post("/otplogin", emailController.sendOTPEmail)
+router.post("/verifyotp", emailController.verifyOtp)
+
+
+//================================OTP=====================================//
+// router.post("/sendOtp",otpController.sendOtp)
+
+
+
+
+
 module.exports = router;

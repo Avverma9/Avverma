@@ -1,26 +1,35 @@
 const bookingModel = require('../models/bookingModel');
+const CanceledBooking = require('../models/cancelledModel');
 const paymentModel = require('../models/paymentModel');
 
 
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
-    const { checkIn, checkOut, guests, price } = req.body;
+    const { checkIn, checkOut, guests, price, paymentStatus,hotelName,images,destination } = req.body;
 
-   
+    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+  
     const booking = {
+      images,
+      bookingId,
       user: userId,
       hotel: hotelId,
-      checkIn,
-      checkOut,
+      hotelName,
+      checkInDate: checkIn, 
+      checkOutDate: checkOut, 
       guests,
-      price
+      price,
+      destination:destination,
+      bookingStatus: paymentStatus === "success" ? "success" : "failed"
     };
 
+    console.log(booking, "bookingggggggggggggggg");
+
     const savedBooking = await bookingModel.create(booking);
+    console.log(savedBooking, "savedBooking");
 
-
-    res.status(201).json({ success: true, data:savedBooking });
+    res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -29,28 +38,68 @@ const createBooking = async (req, res) => {
 
 //============================================================================================
 
- const getConfirmedBookings =async (req, res) => {
-    try {
-      const bookings = await bookingModel.find().populate({
-        path: 'payment',
-        match: { status: 'confirmed' }
-      }).exec();
-  
-      const confirmedBookings = bookings.filter(booking => booking.payment !== null);
-  
-      res.status(200).json({ success: true, bookings: confirmedBookings });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };
+const getConfirmedBookings = async (req, res) => {
+  try {
+    const bookings = await bookingModel
+      .find()
+      .populate('user')
+      .populate('hotel')
+      .exec();
+
+    const confirmedBookings = bookings.map((booking) => ({
+      bookingId: booking.bookingId,
+      user: {
+        name: booking.user?.name,
+        email: booking.user?.email
+      },
+      hotel: {
+        hotelName: booking.hotel?.hotelName, 
+      },
+      guests: booking.guests,
+      price: booking.price,
+      checkInDate : booking.checkInDate,
+      checkOutDate: booking.checkOutDate,
+      bookingStatus: booking.bookingStatus,
+      hotelimage: booking.images,
+      price:booking.price,
+      destination:booking.destination
+    }));
+
+    console.log(confirmedBookings,"Confirmed Booking............................")
+
+    res.status(200).json({ success: true, bookings: confirmedBookings });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
   //============================================================================================
 
-const getFailedBookings = async (req, res) => {
+  const getFailedBookings = async (req, res) => {
     try {
-      const failedPaymentIds = await paymentModel.find({ status: 'failed' }).distinct('booking');
+      const bookings = await bookingModel
+        .find({ bookingStatus: "failed" })
+        .populate('user')
+        .populate('hotel')
+        .exec();
   
-      const failedBookings = await bookingModel.find({ _id: { $in: failedPaymentIds } }).populate('user hotel');
-      
+      const failedBookings = bookings.map((booking) => ({
+        bookingId: booking.bookingId,
+        user: {
+          name: booking.user?.name,
+          email: booking.user?.email
+        },
+        hotel: {
+          hotelName: booking.hotel?.hotelName, 
+        },
+        guests: booking.guests,
+        price: booking.price,
+        checkInDate : booking.checkInDate,
+        checkOutDate: booking.checkOutDate,
+        bookingStatus: booking.bookingStatus
+      }));
+  
+      console.log(failedBookings, ".failed booking...........................")
+  
       res.status(200).json({ success: true, bookings: failedBookings });
     } catch (error) {
       res.status(500).json({ success: false, error: error.message });
@@ -58,5 +107,44 @@ const getFailedBookings = async (req, res) => {
   };
 
 
+//==================================================================================
 
-module.exports={createBooking,getConfirmedBookings,getFailedBookings}
+const cancelBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const cancelledAt = new Date();
+
+    const updatedBooking = await bookingModel.findOneAndUpdate(
+      { bookingId },
+      { $set: { bookingStatus: 'Cancelled', cancelledAt } },
+      { new: true }
+    );
+
+    console.log(updatedBooking);
+
+    if (!updatedBooking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    res.status(200).json({ success: true, message: 'Booking cancelled successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+//===================================================================================
+
+const getCancelledBooking = async (req, res) => {
+  try {
+    const canceledBookings = await bookingModel
+      .find({ bookingStatus: 'Cancelled' })
+      .populate('user');
+
+    res.status(200).json({ success: true, canceledBookings });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+
+module.exports={createBooking,getConfirmedBookings,getFailedBookings, cancelBooking, getCancelledBooking}

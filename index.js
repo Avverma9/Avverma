@@ -9,6 +9,7 @@ const multer = require("multer");
 const Razorpay = require("razorpay");
 
 const route = require("./routes/route.js")
+// const emailController = require("./controllers/emailController");
 
 const app = express();
 app.use(cors());
@@ -29,10 +30,14 @@ mongoose
   .catch((err) => console.log(err));
 
 
-  app.use("/", route)
+  app.use("/", route);
+  // app.use("/", emailController)
+  
 
   app.use((req, res) => {
       return res.status(400).send({ status: false, message: "End point is incorrect" })
   });
 
+
+  
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
