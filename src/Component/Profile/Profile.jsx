@@ -103,14 +103,13 @@ function AccountSettings({ selectedNav, navHandler }) {
   );
 }
 
-function MyBookings({ selectedNav, navHandler }) {
+function MyBookings({ selectedNav, navHandler, reset, refresh }) {
   const [isExpanded, setExpanded] = useState(false);
+  const [toolTip, setToolTip] = useState("");
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
-  const [hoverText, setHoverText] = useState("");
 
   const hoverHandler = (e) => {
-    setHoverText("");
-    setHoverText(e.target?.previousSibling?.innerText);
+    setToolTip(e.target.parentElement.lastChild.innerText);
   };
   return (
     <>
@@ -126,46 +125,59 @@ function MyBookings({ selectedNav, navHandler }) {
       </div>
       <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={selectedNav === "Cancel Booking" ? `text-primary` : ``}
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p className={selectedNav === "Cancel Booking" ? `text-primary` : ``}>
             Cancel Booking
           </p>
-          <TiCancel
-            className={selectedNav === "Cancel Booking" ? `text-primary` : ``}
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p
             className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
           >
             Confirm Booking
           </p>
-          <TiCancel
-            className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={selectedNav === "Checking Booking" ? `text-primary` : ``}
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p
             className={selectedNav === "Checking Booking" ? `text-primary` : ``}
           >
             Checking Booking
           </p>
-          <TiCancel
-            className={selectedNav === "Checking Booking" ? `text-primary` : ``}
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={
+              selectedNav === "Check Out Booking" ? `text-primary` : ``
+            }
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p
             className={
               selectedNav === "Check Out Booking" ? `text-primary` : ``
@@ -173,39 +185,32 @@ function MyBookings({ selectedNav, navHandler }) {
           >
             Check Out Booking
           </p>
-          <TiCancel
-            className={
-              selectedNav === "Check Out Booking" ? `text-primary` : ``
-            }
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={selectedNav === "NoShow Booking" ? `text-primary` : ``}
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p className={selectedNav === "NoShow Booking" ? `text-primary` : ``}>
             NoShow Booking
           </p>
-          <TiCancel
-            className={selectedNav === "NoShow Booking" ? `text-primary` : ``}
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
         <button className="collapse_list" onClick={navHandler}>
+          <TiCancel
+            className={selectedNav === "Failed Booking" ? `text-primary` : ``}
+            onMouseLeave={() => setToolTip("")}
+            onMouseEnter={hoverHandler}
+            data-bs-toggle="tooltip"
+            data-bs-placement="right"
+            title={toolTip}
+          />
           <p className={selectedNav === "Failed Booking" ? `text-primary` : ``}>
             Failed Booking
           </p>
-          <TiCancel
-            className={selectedNav === "Failed Booking" ? `text-primary` : ``}
-            onMouseOver={hoverHandler}
-            data-bs-toggle="tooltip"
-            data-bs-placement="right"
-            title={hoverText}
-          />
         </button>
       </div>
       <div className="_underLine" />
@@ -277,6 +282,8 @@ function Sidebar({
   selectedNav,
   setSelectednav,
   navHandler,
+  reset,
+  refresh,
 }) {
   console.log(selectedNav);
   return (
@@ -307,7 +314,12 @@ function Sidebar({
       <div className="sidebar_body">
         <AccountSettings selectedNav={selectedNav} navHandler={navHandler} />
 
-        <MyBookings selectedNav={selectedNav} navHandler={navHandler} />
+        <MyBookings
+          selectedNav={selectedNav}
+          navHandler={navHandler}
+          reset={reset}
+          refresh={refresh}
+        />
 
         <Payments />
 
@@ -1378,6 +1390,8 @@ const Profile = ({ reset, refresh }) => {
             selectedNav={selectedNav}
             setSelectedNav={setselectedNav}
             navHandler={navHandler}
+            reset={reset}
+            refresh={refresh}
           />
         </div>
         <div className="profile_body">

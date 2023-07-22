@@ -2,8 +2,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
@@ -72,7 +70,7 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const truncateText = (text, maxLength) => {
     if (!expand && text.length > maxLength) {
-      return text.substring(0, maxLength) + '...';
+      return text.substring(0, maxLength) + "...";
     }
     return text;
   };
@@ -168,13 +166,13 @@ export default function BookNow({ refresh, reset, userData }) {
     slidesToScroll: 3,
   };
 
-  const slideToPrev = () => {
-    sliderRef.current.slickPrev();
-  };
+  // const slideToPrev = () => {
+  //   sliderRef.current.slickPrev();
+  // };
 
-  const slideToNext = () => {
-    sliderRef.current.slickNext();
-  };
+  // const slideToNext = () => {
+  //   sliderRef.current.slickNext();
+  // };
 
   console.log(bookingDetails);
 
@@ -297,7 +295,7 @@ export default function BookNow({ refresh, reset, userData }) {
     <>
       <div className="container-p-4">
         <div className="flex">
-          <div className="w-1/3 slider-container">
+          <div className="w-1/3 slider-container book_now">
             <Slider ref={sliderRef} {...settings}>
               {hotelImages.map((photo, i) => (
                 <div key={i} className="slider-slide">
@@ -309,14 +307,14 @@ export default function BookNow({ refresh, reset, userData }) {
                 </div>
               ))}
             </Slider>
-            <div className="slider-navigation">
+            {/* <div className="slider-navigation">
               <button className="slider-prev" onClick={slideToPrev}>
                 <FontAwesomeIcon icon={faChevronLeft} />
               </button>
               <button className="slider-next" onClick={slideToNext}>
                 <FontAwesomeIcon icon={faChevronRight} />
               </button>
-            </div>
+            </div> */}
           </div>
           <div className="hotel-details1">
             <div className="flex-rating">
@@ -337,9 +335,12 @@ export default function BookNow({ refresh, reset, userData }) {
               {bookingDetails.price}
             </div>
             <div className="hotel-descrip">
-              <p className={`description1 ${expand ? 'expanded' : ''}`}>Description:</p>{" "}
-              <p className={`description-content ${expand ? 'expanded' : ''}`}>
-                {bookingDetails.description && truncateText(bookingDetails.description, 100)}
+              <p className={`description1 ${expand ? "expanded" : ""}`}>
+                Description:
+              </p>{" "}
+              <p className={`description-content ${expand ? "expanded" : ""}`}>
+                {bookingDetails.description &&
+                  truncateText(bookingDetails.description, 100)}
               </p>
               {!expand && (
                 <button className="viewMoreBtn" onClick={expanddescription}>
@@ -536,65 +537,65 @@ export default function BookNow({ refresh, reset, userData }) {
                               />
                             </div>
 
-                          <div className="comment_profile_name">
-                            <h4>{rev.user.name}</h4>
+                            <div className="comment_profile_name">
+                              <h4>{rev.user.name}</h4>
+                            </div>
+
+                            {rev.review.user === userId && (
+                              <div className="comment_update_del">
+                                <BiEdit
+                                  color="#2563eb"
+                                  size={24}
+                                  onClick={() => toggleUpdateReview(rev)}
+                                />
+                                <BiTrash
+                                  color="#dc3545"
+                                  size={24}
+                                  onClick={() =>
+                                    deleteReviewHandler(rev.review._id)
+                                  }
+                                />
+                              </div>
+                            )}
                           </div>
 
-                          {rev.review.user === userId && (
-                            <div className="comment_update_del">
-                              <BiEdit
-                                color="#2563eb"
-                                size={24}
-                                onClick={() => toggleUpdateReview(rev)}
-                              />
-                              <BiTrash
-                                color="#dc3545"
-                                size={24}
-                                onClick={() =>
-                                  deleteReviewHandler(rev.review._id)
+                          {isUpdatingReview && reviewId === rev.review._id ? (
+                            <div className="update_review">
+                              <textarea
+                                placeholder="Update Review"
+                                type="text"
+                                rows="2"
+                                value={updatedReview}
+                                onChange={(e) =>
+                                  setUpdatedReview(e.target.value)
+                                }
+                                onKeyUp={keyPressHandler}
+                                onFocus={(e) =>
+                                  setFieldFocus(
+                                    e.target.nextElementSibling.className
+                                  )
                                 }
                               />
+                              <button
+                                className="update_review_button"
+                                onClick={updateReviewHandler}
+                              >
+                                <FaTelegramPlane />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="review_comment">
+                              <p>{rev.review.comment}</p>
+
+                              <div className="comment_date">
+                                <h6>{convertDate(rev.review.createdAt)}</h6>
+                              </div>
                             </div>
                           )}
+                          <div style={{ border: "1px solid #94a3b8 " }}></div>
                         </div>
-
-                        {isUpdatingReview && reviewId === rev.review._id ? (
-                          <div className="update_review">
-                            <textarea
-                              placeholder="Update Review"
-                              type="text"
-                              rows="2"
-                              value={updatedReview}
-                              onChange={(e) =>
-                                setUpdatedReview(e.target.value)
-                              }
-                              onKeyUp={keyPressHandler}
-                              onFocus={(e) =>
-                                setFieldFocus(
-                                  e.target.nextElementSibling.className
-                                )
-                              }
-                            />
-                            <button
-                              className="update_review_button"
-                              onClick={updateReviewHandler}
-                            >
-                              <FaTelegramPlane />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="review_comment">
-                            <p>{rev.review.comment}</p>
-
-                            <div className="comment_date">
-                              <h6>{convertDate(rev.review.createdAt)}</h6>
-                            </div>
-                          </div>
-                        )}
-                        <div style={{ border: "1px solid #94a3b8 " }}></div>
-                      </div>
-                    </>
-                  ))
+                      </>
+                    ))
                   : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}

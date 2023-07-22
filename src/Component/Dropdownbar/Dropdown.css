@@ -4,7 +4,7 @@
   align-items: center;
   background-color: #ebebeb;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(0, 0, 0, .05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   margin-top: 0;
   padding: 2px 60px 0 !important;
 }
@@ -21,7 +21,7 @@
 .stateItem {
   display: flex;
   flex-direction: column;
-  margin-right: 20px;
+  /* margin-right: 20px; */
   align-items: center;
   height: 100%;
   margin-top: -3px;
@@ -86,6 +86,7 @@
 }
 
 .stateItem {
+  width: 175px;
   position: relative;
   border: none;
   padding: 10px;
@@ -97,4 +98,29 @@
   padding: 10px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+.drop_down {
+  width: 100%;
+  margin: 0 auto;
+}
+.drop_down .slick-slide {
+  width: 175px !important;
+}
+
+/* .drop_down .slick-slide > div {
+  width: 175px !important;
+} */
+
+.drop_down .slick-next {
+  right: -90px !important;
+}
+.drop_down .slick-prev {
+  left: -90px !important;
+}
+
+.drop_down .slick-next::before {
+  color: #1e293b !important;
+}
+.drop_down .slick-prev::before {
+  color: #1e293b !important;
 }
