@@ -75,6 +75,7 @@ router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
 router.put('/booking/:bookingId', bookingController.cancelBooking);
 router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
+router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)
 
 
 //============================offers==============================================//

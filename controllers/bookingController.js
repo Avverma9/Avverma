@@ -146,5 +146,27 @@ const getCancelledBooking = async (req, res) => {
   }
 };
 
+//====================================================================================
+const getCheckingBooking = async(req,res)=>{
+  try {
+    const {bookingId} = req.params;
+    const booking = await bookingModel.findOne({bookingId}).populate('user');
 
-module.exports={createBooking,getConfirmedBookings,getFailedBookings, cancelBooking, getCancelledBooking}
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+    res.status(200).json({ success: true, booking });
+  } catch (error) {
+    res.status(500).json({success:false, error: error.message})
+    
+  }
+}
+
+
+module.exports={createBooking,
+  getConfirmedBookings,
+  getFailedBookings,
+   cancelBooking,
+    getCancelledBooking,
+    getCheckingBooking
+  }
