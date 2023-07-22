@@ -58,10 +58,12 @@ const LoginWithOtp = () => {
 
     try {
       const response = await axios.post('http://localhost:5000/verifyotp', { email: email || null, mobileNumber: mobileNumber || null, otp });
-
+      console.log("Response from API:", response.data);
+      const {userId} =response.data
       if (response.status === 200) {
         toast.success('OTP verification successful. Logged in.');
         localStorage.setItem('isSignedIn', 'true');
+        localStorage.setItem("userId", userId);
         navigate('/'); 
       } else {
         toast.error(response.data.error || 'Invalid OTP. Please try again.');
