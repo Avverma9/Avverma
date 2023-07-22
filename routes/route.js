@@ -76,6 +76,6 @@ router.get('/bookingFailed', bookingController.getFailedBookings);
 router.post("/create/offers",upload,offersController.createOffers)
 router.get("/offers",offersController.getOffers)
 router.get("/offers/:offerId",offersController.getOffersById)
-router.post("/offers/review/:userId/:offerId",reviewController.createOfferReview)
-
+router.post("/offers/review/:userId/:offersId",reviewController.createOfferReview)
+router.get("/offers/review/:offersId",reviewController.getReviewsByOfferId)
 module.exports = router;

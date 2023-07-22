@@ -6,11 +6,6 @@ const reviewSchema = new mongoose.Schema({
     ref: 'Hotel',
     required: false
   },
-  offers: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Offers',
-    required: false
-  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

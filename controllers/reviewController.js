@@ -127,6 +127,49 @@ const  getReviewsByHotelId= async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+//====================================getOfferReview===========================================
+const  getReviewsByOfferId= async (req, res) => {
+  try {
+    const { offersId } = req.params;
+
+    const reviews = await reviewModel.find({ offers: offersId});
+
+    if (reviews.length === 0) {
+      return res.status(404).json({ message: "No reviews found" });
+    }
+
+    const offers = await offerModel.findById(offersId).select("hotelName");
+
+    if (!offers) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    const userIds = reviews.map((review) => review.user);
+    const users = await userModel.find({ _id: { $in: userIds } }).select(["name", "images"]);
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    const reviewData = reviews.map((review) => {
+      const user = users.find((user) => user._id.toString() === review.user.toString());
+      return {
+        review,
+        user: {
+          name: user.name,
+          images: user.images
+        }
+      };
+    });
+
+    res.status(200).json({
+      offers: offers.hotelName,
+      reviews: reviewData
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 
 
 
@@ -208,6 +251,7 @@ module.exports = {
   getReviewsByUserId,
   updateReview,
   deleteReview,
-  createOfferReview
+  createOfferReview,
+  getReviewsByOfferId
 
 };
