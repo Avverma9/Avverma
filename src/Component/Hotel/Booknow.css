@@ -285,7 +285,7 @@ width: 2%;
 .comment_profile {
   flex: 0;
   min-width: 50px; /* Adjust the width as needed */
-}
+/* } */
 
 .comment_profile_name {
   text-align: center;
