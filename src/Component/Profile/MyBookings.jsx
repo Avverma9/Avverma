@@ -9,6 +9,7 @@ import {
   MdCheckCircle,
   MdClose,
 } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
   const [isExpanded, setExpanded] = useState(false);
@@ -18,6 +19,7 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
   const hoverHandler = (e) => {
     setToolTip(e.target.parentElement.lastChild.innerText);
   };
+  const navigate = useNavigate("");
   return (
     <>
       <div
@@ -31,7 +33,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
         <MdKeyboardArrowRight className="arrow_right" />
       </div>
       <div className="sideBar_options_section_collapse" {...getCollapseProps()}>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("cancel-booking")}
+        >
           <MdClose
             className={selectedNav === "Cancel Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}

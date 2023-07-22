@@ -5,7 +5,6 @@ export const ProfileInformation = ({
   isSignedIn,
   userDetails,
   userData,
-  handleShow,
   reset,
   refresh,
 }) => {

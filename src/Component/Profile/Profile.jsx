@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import "./_profile.css";
 import { getLocalStorage } from "../../hooks/useLocalStorage";
@@ -94,68 +94,68 @@ const Profile = ({ reset, refresh }) => {
 
   const [selectedNav, setselectedNav] = useState("Profile Information");
 
-  const navHandler = (e) => {
-    setselectedNav("");
-    console.log(e.currentTarget, "NAV HANDLER");
-    if (
-      e.currentTarget.innerText === "Profile Information" ||
-      e.currentTarget.firstChild.innerText === "Profile Information"
-    ) {
-      setselectedNav("Profile Information");
-    } else if (
-      e.currentTarget.innerText === "Mannage Addresses" ||
-      e.currentTarget.firstChild.innerText === "Mannage Addresses"
-    ) {
-      setselectedNav("Mannage Addresses");
-    } else if (
-      e.currentTarget.innerText === "Add Government id" ||
-      e.currentTarget.firstChild.innerText === "Add Government id"
-    ) {
-      setselectedNav("Add Government id");
-    } else if (
-      e.currentTarget.innerText === "Cancel Booking" ||
-      e.currentTarget.firstChild.innerText === "Cancel Booking"
-    ) {
-      setselectedNav("Cancel Booking");
-    } else if (
-      e.currentTarget.innerText === "Confirm Booking" ||
-      e.currentTarget.firstChild.innerText === "Confirm Booking"
-    ) {
-      setselectedNav("Confirm Booking");
-    } else if (
-      e.currentTarget.innerText === "Checking Booking" ||
-      e.currentTarget.firstChild.innerText === "Checking Booking"
-    ) {
-      setselectedNav("Checking Booking");
-    } else if (
-      e.currentTarget.innerText === "Check Out Booking" ||
-      e.currentTarget.firstChild.innerText === "Check Out Booking"
-    ) {
-      setselectedNav("Check Out Booking");
-    } else if (
-      e.currentTarget.innerText === "NoShow Booking" ||
-      e.currentTarget.firstChild.innerText === "NoShow Booking"
-    ) {
-      setselectedNav("NoShow Booking");
-    } else if (
-      e.currentTarget.innerText === "Failed Booking" ||
-      e.currentTarget.firstChild.innerText === "Failed Booking"
-    ) {
-      setselectedNav("Failed Booking");
-    } else if (
-      e.currentTarget.innerText === "My Reviews" ||
-      e.currentTarget.lastChild.innerText === "My Reviews"
-    ) {
-      setselectedNav("My Reviews");
-    } else if (
-      e.currentTarget.innerText === "Complaints" ||
-      e.currentTarget.lastChild.innerText === "Complaints"
-    ) {
-      setselectedNav("Complaints");
-    } else {
-      setselectedNav("Profile Information");
-    }
-  };
+  // const navHandler = (e) => {
+  //   setselectedNav("");
+  //   console.log(e.currentTarget, "NAV HANDLER");
+  //   if (
+  //     e.currentTarget.innerText === "Profile Information" ||
+  //     e.currentTarget.firstChild.innerText === "Profile Information"
+  //   ) {
+  //     setselectedNav("Profile Information");
+  //   } else if (
+  //     e.currentTarget.innerText === "Mannage Addresses" ||
+  //     e.currentTarget.firstChild.innerText === "Mannage Addresses"
+  //   ) {
+  //     setselectedNav("Mannage Addresses");
+  //   } else if (
+  //     e.currentTarget.innerText === "Add Government id" ||
+  //     e.currentTarget.firstChild.innerText === "Add Government id"
+  //   ) {
+  //     setselectedNav("Add Government id");
+  //   } else if (
+  //     e.currentTarget.innerText === "Cancel Booking" ||
+  //     e.currentTarget.firstChild.innerText === "Cancel Booking"
+  //   ) {
+  //     setselectedNav("Cancel Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "Confirm Booking" ||
+  //     e.currentTarget.firstChild.innerText === "Confirm Booking"
+  //   ) {
+  //     setselectedNav("Confirm Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "Checking Booking" ||
+  //     e.currentTarget.firstChild.innerText === "Checking Booking"
+  //   ) {
+  //     setselectedNav("Checking Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "Check Out Booking" ||
+  //     e.currentTarget.firstChild.innerText === "Check Out Booking"
+  //   ) {
+  //     setselectedNav("Check Out Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "NoShow Booking" ||
+  //     e.currentTarget.firstChild.innerText === "NoShow Booking"
+  //   ) {
+  //     setselectedNav("NoShow Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "Failed Booking" ||
+  //     e.currentTarget.firstChild.innerText === "Failed Booking"
+  //   ) {
+  //     setselectedNav("Failed Booking");
+  //   } else if (
+  //     e.currentTarget.innerText === "My Reviews" ||
+  //     e.currentTarget.lastChild.innerText === "My Reviews"
+  //   ) {
+  //     setselectedNav("My Reviews");
+  //   } else if (
+  //     e.currentTarget.innerText === "Complaints" ||
+  //     e.currentTarget.lastChild.innerText === "Complaints"
+  //   ) {
+  //     setselectedNav("Complaints");
+  //   } else {
+  //     setselectedNav("Profile Information");
+  //   }
+  // };
 
   return (
     <>
@@ -169,64 +169,65 @@ const Profile = ({ reset, refresh }) => {
             logOut={logOut}
             selectedNav={selectedNav}
             setSelectedNav={setselectedNav}
-            navHandler={navHandler}
+            // navHandler={navHandler}
             reset={reset}
             refresh={refresh}
           />
         </div>
         <div className="profile_body">
-          {selectedNav === "Profile Information" ? (
-            <ProfileInformation
+          {/* {selectedNav === "Profile Information" ? ( */}
+          {/* <ProfileInformation
               handleShow={handleShow}
               userData={userData}
               isSignedIn={isSignedIn}
               userDetails={userDetails}
               reset={reset}
               refresh={refresh}
-            />
-          ) : selectedNav === "Mannage Addresses" ? (
-            <AddressInformation
+            /> */}
+          {/* ) : selectedNav === "Mannage Addresses" ? ( */}
+          {/* <AddressInformation
               userData={userData}
               reset={reset}
               refresh={refresh}
-            />
-          ) : selectedNav === "Add Government id" ? (
-            <GovernmentIdInformation
+            /> */}
+          {/* ) : selectedNav === "Add Government id" ? ( */}
+          {/* <GovernmentIdInformation
               userData={userData}
               reset={reset}
               refresh={refresh}
-            />
-          ) : selectedNav === "Cancel Booking" ? (
-            <CancelBooking />
-          ) : selectedNav === "Confirm Booking" ? (
-            <ConfirmBooking />
-          ) : selectedNav === "Checking Booking" ? (
-            <CheckingBooking />
-          ) : selectedNav === "Check Out Booking" ? (
-            <CheckOutBooking />
-          ) : selectedNav === "NoShow Booking" ? (
-            <NoShowBooking />
-          ) : selectedNav === "Failed Booking" ? (
-            <FailedBooking />
-          ) : selectedNav === "My Reviews" ? (
-            <MyReviewSection />
-          ) : selectedNav === "Complaints" ? (
-            <ComplaintsSection
+            /> */}
+          {/* ) : selectedNav === "Cancel Booking" ? ( */}
+          {/* <CancelBooking /> */}
+          {/* ) : selectedNav === "Confirm Booking" ? ( */}
+          {/* <ConfirmBooking /> */}
+          {/* ) : selectedNav === "Checking Booking" ? ( */}
+          {/* <CheckingBooking /> */}
+          {/* ) : selectedNav === "Check Out Booking" ? ( */}
+          {/* <CheckOutBooking /> */}
+          {/* ) : selectedNav === "NoShow Booking" ? ( */}
+          {/* <NoShowBooking /> */}
+          {/* ) : selectedNav === "Failed Booking" ? ( */}
+          {/* <FailedBooking /> */}
+          {/* ) : selectedNav === "My Reviews" ? ( */}
+          {/* <MyReviewSection /> */}
+          {/* ) : selectedNav === "Complaints" ? ( */}
+          {/* <ComplaintsSection
               userData={userData}
               reset={reset}
               refresh={refresh}
               isSignedIn={isSignedIn}
-            />
-          ) : (
-            <ProfileInformation
+            /> */}
+          {/* ) : ( */}
+          {/* <ProfileInformation
               handleShow={handleShow}
               userData={userData}
               isSignedIn={isSignedIn}
               userDetails={userDetails}
               reset={reset}
               refresh={refresh}
-            />
-          )}
+            /> */}
+          {/* )} */}
+          <Outlet />
         </div>
       </div>
     </>

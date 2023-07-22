@@ -91,6 +91,9 @@ import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
 import Footer from "./Component/Footer/Footer";
+import { ProfileInformation } from "./Component/Profile/ProfileInformation";
+import { getLocalStorage } from "./hooks/useLocalStorage";
+import { CancelBooking } from "./Component/Profile/CancelBooking";
 
 function App() {
   // console.log(search)
@@ -100,6 +103,9 @@ function App() {
   };
 
   const [userData, setUserData] = useState(null);
+
+  const userDetails = getLocalStorage("loggedUser");
+  const isSignedIn = getLocalStorage("isSignedIn");
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -160,7 +166,21 @@ function App() {
           <Route
             path="/profile"
             element={<Profile refresh={refresh} reset={reset} />}
-          />
+          >
+            <Route
+              index
+              element={
+                <ProfileInformation
+                  userData={userData}
+                  isSignedIn={isSignedIn}
+                  userDetails={userDetails}
+                  reset={reset}
+                  refresh={refresh}
+                />
+              }
+            />
+            <Route path="cancel-booking" element={<CancelBooking />} />
+          </Route>
           <Route path="state" element={HeaderImage} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route
