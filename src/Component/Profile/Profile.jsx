@@ -23,6 +23,15 @@ import { TiCancel, TiTick } from "react-icons/ti";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useCollapse } from "react-collapsed";
 import { convertDate } from "../../utils/convertDate";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const styles = {
+  cell: {
+    padding: "0px 10px",
+  },
+};
+
 import { Sidebar } from "./Sidebar";
 import { ProfileInformation } from "./ProfileInformation";
 import { AddressInformation } from "./AddressInformation";

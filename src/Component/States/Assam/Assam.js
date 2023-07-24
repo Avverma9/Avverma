@@ -17,6 +17,9 @@ const Assampage = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  if (location.pathname !== "/state/assam") {
+    return null;
+  }
 
   return (
     <div>

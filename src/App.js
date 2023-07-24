@@ -91,6 +91,11 @@ import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
 import Footer from "./Component/Footer/Footer";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ResetPassword from "./Component/Login/ResetPassword";
+import ConfirmEmail from "./Component/Login/ConfirmEmail";
+import LoginWithOtp from "./Component/Login/LoginWithOtp";
 import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
@@ -131,6 +136,7 @@ function App() {
     <Router>
       <div>
         <Header />
+        <ToastContainer/>
         <HeaderImage />
         <Dropdownbar />
 
@@ -179,6 +185,9 @@ function App() {
                 />
               }
             />
+            <Route path="/resetPassword/:token" element={<ResetPassword/>} />
+            <Route path="/passwordChangeMail" element={<ConfirmEmail/>}/>
+            <Route path="/otplogin" element={<LoginWithOtp/>}/>
             <Route path="cancel-booking" element={<CancelBooking />} />
           </Route>
           <Route path="state" element={HeaderImage} />

@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import styles from "./header.module.css";
 import "./Header.css";
 
 const Header = () => {
+  const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
+  const navigate = useNavigate()
   // const [showMenu, setShowMenu] = useState(false);
 
   // const toggleMenu = () => {
@@ -109,77 +111,92 @@ const Header = () => {
             id="navbarNavDropdown"
           >
             <ul className="navbar-nav gap-3">
-              <li className="nav-item p-0">
-                <Link
-                  className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                  to="/register"
-                >
-                  <BsBoxArrowInRight /> <>Register/Login</>
-                </Link>
-              </li>
-              <li className="nav-item dropdown p-0">
-                <Link
-                  className="fw-normal nav-link dropdown-toggle d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <BsPerson />
-                  <>Become a Partner</>
-                </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link className="dropdown-item" to="/partner">
-                      Hotel Partner
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="dropdown-item" to="">
-                      Tour Partner
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item dropdown p-0">
-                <Link
-                  className="fw-normal nav-link dropdown-toggle d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <MdOutlineUnfoldMoreDouble />
-                  <>More</>
-                </Link>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Complaints
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Option 2
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li className="nav-item p-0">
-                <Link
-                  className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                  to="/profile"
-                >
-                  <BsPerson /> <>Profile</>
-                </Link>
-              </li>
-              <li className="nav-item p-0">
-                <Link
-                  className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                  to="/home"
-                >
-                  <BsHouse /> <>Home</>
-                </Link>
-              </li>
-            </ul>
+            {!isSignedIn && (
+             <li className="nav-item p-0">
+             <div className="d-flex gap-3">
+               <Link
+                 className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                 to="/register"
+               >
+                 <BsBoxArrowInRight /> <>Register</>
+               </Link>
+               <Link
+                 className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                 to="/signin"
+               >
+                 <BsBoxArrowInRight /> <>Login</>
+               </Link>
+             </div>
+           </li>
+            )}
+
+            {isSignedIn && (
+              <>
+                <li className="nav-item dropdown p-0">
+                  <Link
+                    className="fw-normal nav-link dropdown-toggle d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <BsPerson />
+                    <>Become a Partner</>
+                  </Link>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <Link className="dropdown-item" to="/partner">
+                        Hotel Partner
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="">
+                        Tour Partner
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item dropdown p-0">
+                  <Link
+                    className="fw-normal nav-link dropdown-toggle d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <MdOutlineUnfoldMoreDouble />
+                    <>More</>
+                  </Link>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Complaints
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        Option 2
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li className="nav-item p-0">
+                  <Link
+                    className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                    to="/profile"
+                  >
+                    <BsPerson /> <>Profile</>
+                  </Link>
+                </li>
+                <li className="nav-item p-0">
+                  <Link
+                    className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                    to="/home"
+                  >
+                    <BsHouse /> <>Home</>
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
           </div>
         </div>
       </nav>
