@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 export const ProfileInformation = ({
+  toast,
   isSignedIn,
   userDetails,
   userData,
@@ -20,6 +22,7 @@ export const ProfileInformation = ({
   const [adhaar, setAdhaar] = useState("");
   const [pan, setPan] = useState("");
   const [drivingLsc, setDrivingLsc] = useState("");
+  const navigate = useNavigate("");
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -54,13 +57,16 @@ export const ProfileInformation = ({
 
       if (response.ok) {
         // Call the onUpdateDone callback
-        // window.location.reload()
-        setIsEditing(false);
+        window.location.reload()
+        toast.success("Profile Edited Successfully");
         reset();
+        setIsEditing(false);
+        navigate("/profile");
       } else {
         throw new Error("Failed to update profile");
       }
     } catch (error) {
+      toast.error(error);
       console.error(error);
       // Handle error state
     }

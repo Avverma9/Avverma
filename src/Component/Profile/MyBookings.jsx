@@ -49,7 +49,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             Cancel Booking
           </p>
         </button>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("confirm-booking")}
+        >
           <TiTick
             className={selectedNav === "Confirm Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
@@ -64,7 +67,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             Confirm Booking
           </p>
         </button>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("check-in-booking")}
+        >
           <MdCheckCircle
             className={selectedNav === "Checking Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
@@ -79,7 +85,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             Checking Booking
           </p>
         </button>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("check-out-booking")}
+        >
           <MdFactCheck
             className={
               selectedNav === "Check Out Booking" ? `text-primary` : ``
@@ -98,7 +107,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             Check Out Booking
           </p>
         </button>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("no-show-booking")}
+        >
           <TiCancel
             className={selectedNav === "NoShow Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
@@ -111,7 +123,10 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             NoShow Booking
           </p>
         </button>
-        <button className="collapse_list" onClick={navHandler}>
+        <button
+          className="collapse_list"
+          onClick={() => navigate("failed-booking")}
+        >
           <MdOutlineError
             className={selectedNav === "Failed Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}

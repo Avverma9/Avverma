@@ -2,7 +2,7 @@ export const CheckOutBooking = () => {
   return (
     <>
       <div className="_title">
-        <h1>Checking Booking</h1>
+        <h1>Checkout Booking</h1>
       </div>
 
       {/* <div className="text-left text-slate-600 text-base font-bodyFont">We are pleased to inform that your Booking has been confirmed</div> */}
