@@ -29,7 +29,7 @@ export const MyReviewSection = () => {
       </div>
 
       <>
-        {currentUserReviews
+        {currentUserReviews && currentUserReviews.length !== 0
           ? [...currentUserReviews].reverse().map((review) => (
               <div className="review_container" key={review.review._id}>
                 <div className="hotel_image">
