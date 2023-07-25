@@ -9,7 +9,7 @@ const ConfirmEmail = () => {
   const handleSendEmail = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/passwordChangeMail/${email}`, {
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/passwordChangeMail/${email}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -139,7 +139,7 @@ function App() {
         <Home />
         <Offers />
         <Hotel />
-        {/* <ChatBox /> */}
+        <ChatBox />
         <PopupCard />
 
         <UserSettings />

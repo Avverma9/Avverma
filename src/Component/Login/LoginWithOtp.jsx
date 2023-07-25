@@ -30,7 +30,7 @@ const LoginWithOtp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/otplogin', { email: email || null, mobileNumber: mobileNumber || null });
+      const response = await axios.post('https://hotel-backend-tge7.onrender.com/otplogin', { email: email || null, mobileNumber: mobileNumber || null });
 
       if (response.status === 200) {
         setOtpSent(true);
@@ -57,7 +57,7 @@ const LoginWithOtp = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/verifyotp', { email: email || null, mobileNumber: mobileNumber || null, otp });
+      const response = await axios.post('https://hotel-backend-tge7.onrender.com/verifyotp', { email: email || null, mobileNumber: mobileNumber || null, otp });
 
       if (response.status === 200) {
         toast.success('OTP verification successful. Logged in.');

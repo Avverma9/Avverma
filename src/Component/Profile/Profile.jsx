@@ -900,7 +900,7 @@ function CancelBooking() {
 
   const handleCancel = () => {
     axios
-      .put(`http://localhost:5000/booking/${bookingId}`)
+      .put(`https://hotel-backend-tge7.onrender.com/booking/${bookingId}`)
       .then((res) => {
         console.log(res.data);
         setShowModal(false);
@@ -916,7 +916,7 @@ function CancelBooking() {
 
   const fetchCanceledBookings = () => {
     axios
-      .get('http://localhost:5000/booking/getCancelledBooking')
+      .get('https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking')
       .then((res) => {
         console.log(res.data, "CancelledData");
         setCanceledBookings(res.data.canceledBookings);
@@ -1012,7 +1012,7 @@ function ConfirmBooking() {
 
   const fetchBookingDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookingsConfirm');
+      const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingsConfirm');
       const { bookings } = response.data;
       console.log(bookings,"backend data")
       setBookingDetails(bookings);
@@ -1245,7 +1245,7 @@ function FailedBooking() {
 
   const fetchFailedBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookingFailed');
+      const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingFailed');
       
       if (response.data.success) {
         setFailedBookings(response.data.bookings);
