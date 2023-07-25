@@ -92,6 +92,9 @@ const hotelsSchema = new mongoose.Schema({
   checkInFeature: {
     type: Boolean,
   },
+  // contact:{
+  //  type: Number,
+  // },
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);
