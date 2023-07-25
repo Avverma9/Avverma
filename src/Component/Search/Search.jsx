@@ -180,7 +180,7 @@ const SearchComponent = () => {
             required
             className="input-rooms"
           >
-            {renderOptions(1, 1000, 'Rooms')}
+            {renderOptions(1, 4, 'Rooms')}
           </select>
           
         </div>
@@ -231,6 +231,7 @@ const SearchComponent = () => {
             <img src={result.images} alt="hotel-pic" />
             <h3>{result.hotelName}</h3>
             <p>{result.destination}</p>
+            <p>{result.disclaimer}</p>
             <p>Price: {result.price}</p>
             <p>Rating: {result.rating}</p>
             <p>Guests: {result.guests}</p>
