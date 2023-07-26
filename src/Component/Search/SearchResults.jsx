@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import styles from './searchResult.css';
+import './searchResult.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInr, faStar, faLocationDot, faPerson, faHotel, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faFire, faParking, faWifi, faPaw, faKitchenSet, faCheck, faGlassMartini, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 export default function SearchResults() {
@@ -123,6 +123,7 @@ export default function SearchResults() {
                         <li key={amenity}>
                           {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {amenity}
                         </li>
+                        
                       );
                     })}
 
@@ -130,6 +131,13 @@ export default function SearchResults() {
                 </div>
               </div>
             )}
+            {result.disclaimer ? (
+                <div className="please-note-container">
+                  <p className="please-note-heading">Please Note !!!</p>
+                  <p className="please-note-text">{result.disclaimer}</p>
+                  <p className="please-note-contact">Contact Number: {result.contact}</p>
+                </div>
+              ) : null}
           </div>
         </div>
       ))}

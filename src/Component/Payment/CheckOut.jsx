@@ -45,7 +45,7 @@ export default function CheckOut({
     rzp.open();
   };
 
-  console.log(userData, "USERDATA CHECKOUTPAGE");
+  console.log(userData , "USERDATA CHECKOUTPAGE")
 
   const handlePayment = async () => {
     const data = {
@@ -76,16 +76,16 @@ export default function CheckOut({
       images: hotelimage,
       destination: destination,
     };
-
+  
     if (userData && userData.email && paymentStatus === "success") {
       axios
         .post(`https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`, bookingData)
         .then((res) => {
           console.log(res.data, "Booking created successfully", bookingData);
-
+  
           if (userData.email) {
             axios
-              .post("http://localhost:5000/SendBookingEmail", {
+              .post("https://hotel-backend-tge7.onrender.com/SendBookingEmail", {
                 bookingData: bookingData,
                 email: userData.email,
               })
@@ -105,8 +105,8 @@ export default function CheckOut({
     } else {
       console.log("User data, email, or payment status is not valid");
     }
-  };
-
+  }
+  
   return (
     <>
       <button
