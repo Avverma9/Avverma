@@ -81,18 +81,8 @@
 th,
 td {
   padding: 8px 4px;
-  width: 50%;
-  display: flex;
-  justify-content: flex-start;
 }
 
 .table_head {
   outline: 1px solid #000;
-  display: flex;
-  justify-content: space-between;
 }
-.table_head tr{
-  display: flex;
-  justify-content: space-between;
-}
-

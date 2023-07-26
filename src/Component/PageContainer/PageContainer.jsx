@@ -30,17 +30,32 @@ export const PageContainer = () => {
   return (
     <div className="page_container">
       {/* <BrowserRouter> */}
-        <Routes>
-          <Route path="/" element={<Profile />} />
-          <Route path="/auction" element={<Auction />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/live-auction" element={<Liveauction />} />
-          <Route path="/upcoming-auction" element={<Upcoming />} />
-          <Route path="/live-auction/filter" element={<Filter />} />
-          <Route path="/live-auction/sort" element={<Sort />} />
-          <Route path="/wins" element={<YourWins />} />
-          <Route path="bidding-status" element={<BiddingStatus />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Welcome />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="bidding-detail" element={<Biddingdetail />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/import-auction" element={<Importauction />} />
+        <Route path="/filter-auction" element={<Filterauction />} />
+        <Route path="/wins" element={<YourWins />} />
+        <Route path="/add-auction" element={<Addauction />} />
+        <Route path="/settings" element={<Setting />} />
+        <Route path="/set-timing" element={<Settiming />} />
+        <Route path="/update-start-price" element={<Update />} />
+        <Route path="/mannage-buyer" element={<Mannagebuyer />} />
+        <Route path="/buyer-details" element={<Buyerdetails />} />
+        <Route path="/emd-account" element={<Emdaccount />} />
+        <Route path="/debit-emd" element={<Debitemd />} />
+        <Route path="/vehicle-update" element={<Updatevehicle />} />
+        <Route path="/assign-auction" element={<Assignauction />} />
+        <Route path="/assign-new-auction" element={<Assignnewauction />} />
+        <Route path="/push-notification" element={<Pushnotification />} />
+        <Route path="/auto-notification" element={<Autonotification />} />
+        <Route path="/register-admin" element={<Registeradmin />} />
+        <Route path="/row-box" element={<Rowbox />} />
+        <Route path="/mannage-admin" element={<Mannageadmin />} />
+        <Route path="/edit-emd" element={<Editemd />} />
+      </Routes>
       {/* </BrowserRouter> */}
     </div>
   );
