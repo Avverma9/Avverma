@@ -218,6 +218,14 @@ export const SideNavBar = () => {
           <MannageAdmin />
           <Profile />
           <PushNotification />
+          {navLists.map((item, index) => (
+            <li key={index}>
+              <Link to={item.path}> {item.icon}</Link>
+              <Link to={item.path}>
+                <p>{item.name}</p>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </section>
