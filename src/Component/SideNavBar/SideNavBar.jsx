@@ -9,7 +9,6 @@ import {
   settingsIcon,
   searchIcon,
   filterIcon,
-  mannageAdminIcon,
 } from "../../assets";
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
@@ -57,7 +56,7 @@ const PushNotification = () => {
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/push-notification">
-          <p>{upperCase("Push Notification")}</p>
+          <p>Push Notification</p>
         </Link>
       </li>
     </>
@@ -79,18 +78,18 @@ const Auction = () => {
           <img src={mannageAuctionIcon} alt="icon" srcset="" />
         </Link>
         <Link>
-          <p>{upperCase("Auction")}</p>
+          <p>Auction</p>
         </Link>
       </li>
       <div {...getCollapseProps()}>
-        <ul className="sub_list-ul">
+        <ul>
           <li>
             <Link to="/search">
               {" "}
               <img src={searchIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/search">
-              <p>{upperCase("Search")}</p>
+              <p>Search</p>
             </Link>
           </li>
           <li>
@@ -99,7 +98,7 @@ const Auction = () => {
               <img src={filterIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/filter-auction">
-              <p>{upperCase("Filter Auction")}</p>
+              <p>Filter Auction</p>
             </Link>
           </li>
           <li>
@@ -108,7 +107,7 @@ const Auction = () => {
               <img src={mannageAuctionIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/add-auction">
-              <p>{upperCase("Add New Auction")}</p>
+              <p>Add New Auction</p>
             </Link>
           </li>
           <li>
@@ -117,7 +116,7 @@ const Auction = () => {
               <img src={mannageAuctionIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/import-auction">
-              <p>{upperCase("Import Bulk Auction")}</p>
+              <p>Import Bulk Auction</p>
             </Link>
           </li>
         </ul>
@@ -153,7 +152,7 @@ const MannageAuction = () => {
               <img src={dashboardIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/dashboard">
-              <p>{upperCase("Dashboard")}</p>
+              <p>Dashboard</p>
             </Link>
           </li>
           <Auction />
@@ -163,7 +162,7 @@ const MannageAuction = () => {
               <img src={settingsIcon} alt="icon" srcset="" />
             </Link>
             <Link to="/settings">
-              <p>{upperCase("Settings")}</p>
+              <p>Settings</p>
             </Link>
           </li>
         </ul>
@@ -181,7 +180,7 @@ const MannageBuyer = () => {
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-buyer">
-          <p>{upperCase("Mannage Buyer")}</p>
+          <p>Mannage Buyer</p>
         </Link>
       </li>
     </>
@@ -194,10 +193,10 @@ const MannageAdmin = () => {
       <li>
         <Link to="/mannage-admin">
           {" "}
-          <img src={mannageAdminIcon} alt="icon" srcset="" />
+          <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-admin">
-          <p>{upperCase("Mannage Admin")}</p>
+          <p>Mannage Admin</p>
         </Link>
       </li>
     </>
@@ -208,24 +207,16 @@ export const SideNavBar = () => {
   return (
     <section className="side_nav_container">
       <div className="side_nav_header">
-        <h1>{upperCase("Dashboard")}</h1>
+        <h1>Dashboard</h1>
       </div>
       <div className="side_nav_body">
         <ul>
           <Home />
           <MannageAuction />
-          <MannageBuyer />
           <MannageAdmin />
+          <MannageBuyer />
           <Profile />
           <PushNotification />
-          {navLists.map((item, index) => (
-            <li key={index}>
-              <Link to={item.path}> {item.icon}</Link>
-              <Link to={item.path}>
-                <p>{item.name}</p>
-              </Link>
-            </li>
-          ))}
         </ul>
       </div>
     </section>
