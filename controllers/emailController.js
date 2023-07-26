@@ -169,7 +169,7 @@ const verifyOtp = async (req, res) => {
     user.otpExpires = undefined;
     await user.save();
 
-    return res.status(200).json({ message: "OTP verified. User can now log in." });
+    return res.status(200).json({ message: "OTP verified. User can now log in.",userId: user._id });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

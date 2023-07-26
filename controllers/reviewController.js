@@ -85,7 +85,7 @@ const createOfferReview = async (req, res) => {
   }
 };
 //===============================================================================================
-const  getReviewsByHotelId= async (req, res) => {
+const getReviewsByHotelId = async (req, res) => {
   try {
     const { hotelId } = req.params;
 
@@ -94,6 +94,7 @@ const  getReviewsByHotelId= async (req, res) => {
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
+    reviews.sort((a, b) => b.createdAt - a.createdAt);
 
     const hotel = await hotelModel.findById(hotelId).select("hotelName");
 
@@ -126,7 +127,7 @@ const  getReviewsByHotelId= async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
-};
+}
 //====================================getOfferReview===========================================
 const  getReviewsByOfferId= async (req, res) => {
   try {
