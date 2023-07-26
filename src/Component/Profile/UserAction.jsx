@@ -36,7 +36,7 @@ class UserAccount extends React.Component {
       complaintDescription: complaintDescription
     };
     console.log(id);
-    fetch(`http://localhost:5000/post/complaint/${id}`, {
+    fetch(`https://hotel-backend-tge7.onrender.com/post/complaint/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ class UserAccount extends React.Component {
       feedbackText: feedbackText
     };
 
-    fetch(`http://localhost:5000/feedback/${id}`, {
+    fetch(`https://hotel-backend-tge7.onrender.com/feedback/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -96,7 +96,7 @@ class UserAccount extends React.Component {
       bookingId: bookingId
     };
 
-    fetch(`http://localhost:5000/cancel-booking/${id}`, {
+    fetch(`https://hotel-backend-tge7.onrender.com/cancel-booking/${id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

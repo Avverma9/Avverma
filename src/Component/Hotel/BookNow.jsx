@@ -126,7 +126,8 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = hotelReviews && hotelReviews.slice(startIndex, endIndex);
+  const currentData =
+    hotelReviews && [...hotelReviews].reverse().slice(startIndex, endIndex);
 
   const visiblePages = [];
   const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
@@ -298,10 +299,12 @@ export default function BookNow({ refresh, reset, userData }) {
   };
 
   console.log(fieldFocus);
-  console.log(bookingDetails,"Bookigggggggggggggggggggggggggggggggggggggggggggg")
+  console.log(
+    bookingDetails,
+    "Bookigggggggggggggggggggggggggggggggggggggggggggg"
+  );
   const firstImageURL = bookingDetails.images?.[0];
-  console.log(firstImageURL,"gggggggggggggggggggggggg")
-
+  console.log(firstImageURL, "gggggggggggggggggggggggg");
 
   return (
     <>
@@ -518,8 +521,8 @@ export default function BookNow({ refresh, reset, userData }) {
             <div className="reviews" key={refresh}>
               <div className="reviewhead">
                 <h1>Reviews:</h1>
-                {currentData
-                  ? [...currentData].reverse().map((rev, i) => (
+                {currentData && currentData.length !== 0
+                  ? currentData.map((rev, i) => (
                       <>
                         <div
                           className="d-flex flex-column gap-3"
@@ -608,7 +611,7 @@ export default function BookNow({ refresh, reset, userData }) {
                         </div>
                       </>
                     ))
-                  : null}
+                  : "Be the First to write a Review"}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
               <div className="_pagination">
@@ -647,7 +650,7 @@ export default function BookNow({ refresh, reset, userData }) {
               userData={userData}
               checkIn={bookingDetails.startDate}
               checkOut={bookingDetails.endDate}
-              guests = {bookingDetails.guests}
+              guests={bookingDetails.guests}
               hotelName={bookingDetails.hotelName}
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
