@@ -19,7 +19,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/resetPassword/${token}`, {
+      const response = await fetch(`https://hotel-backend-tge7.onrender.com/resetPassword/${token}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

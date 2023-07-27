@@ -1,90 +1,18 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 import React, { useState } from "react";
 import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-// import styles from "./header.module.css";
+
 import "./Header.css";
 
 const Header = () => {
   const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
   const navigate = useNavigate()
-  // const [showMenu, setShowMenu] = useState(false);
 
-  // const toggleMenu = () => {
-  //   setShowMenu(!showMenu);
-  // };
 
   return (
     <>
-      {/* <header>
-        <nav className={styles.nav}>
-          <div className={styles.logo}>
-            <img
-              src="https://www.freepnglogos.com/uploads/hotel-logo-png/download-building-hotel-clipart-png-33.png"
-              alt="Logo"
-            />
-          </div>
-
-          <div
-            className={`${styles["menu-toggle"]} ${
-              showMenu ? styles.active : ""
-            }`}
-            onClick={toggleMenu}
-          >
-            <div className={styles.hamburger}></div>
-          </div>
-
-          <ul className={`${styles.menu} ${showMenu ? styles.show : ""}`}>
-            <li>
-              <a
-                style={{ textDecoration: "none" }}
-                href="/register"
-                className="no-underline text-black"
-              >
-                <BsBoxArrowInRight /> Register/Login
-              </a>
-            </li>
-
-            <li className={styles.dropdown}>
-              <a href="#" className="no-underline text-black">
-                <BsPerson /> Become a Partner
-              </a>
-              <div className={styles["dropdown-content"]}>
-                <a href="/partner" className="text-black">
-                  Hotel Partner
-                </a>
-                <a href="#" className="text-black">
-                  Tour Partner
-                </a>
-              </div>
-            </li>
-            <li className={styles.dropdown}>
-              <a href="#" className="no-underline text-black">
-                <MdOutlineUnfoldMoreDouble />
-                More
-              </a>
-              <div className={styles["dropdown-content"]}>
-                <a href="#" className="text-black">
-                  Complaints
-                </a>
-                <a href="#">Option 2</a>
-              </div>
-            </li>
-            <li>
-              <a href="/home" className="text-black">
-                <BsHouse /> Home
-              </a>
-            </li>
-            <li>
-              <a href="/profile" className="text-black">
-                <BsPerson /> Profile
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </header> */}
+  
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">

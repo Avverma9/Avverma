@@ -900,7 +900,7 @@ function CancelBooking() {
 
   const handleCancel = () => {
     axios
-      .put(`http://localhost:5000/booking/${bookingId}`)
+    .put(`https://hotel-backend-tge7.onrender.com/booking/${bookingId}`)
       .then((res) => {
         console.log(res.data);
         setShowModal(false);
@@ -916,7 +916,7 @@ function CancelBooking() {
 
   const fetchCanceledBookings = () => {
     axios
-      .get('http://localhost:5000/booking/getCancelledBooking')
+      .get('https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking')
       .then((res) => {
         console.log(res.data, "CancelledData");
         setCanceledBookings(res.data.canceledBookings);
@@ -1012,7 +1012,7 @@ function ConfirmBooking() {
 
   const fetchBookingDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookingsConfirm');
+      const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingsConfirm');
       const { bookings } = response.data;
       console.log(bookings,"backend data")
       setBookingDetails(bookings);
@@ -1092,71 +1092,103 @@ function ConfirmBooking() {
 }
 
 function CheckingBooking() {
+  const [bookingId, setBookingId] = useState(null);
+  const [bookingDetails, setBookingDetails] = useState(null);
+
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`https://hotel-backend-tge7.onrender.com/getbooking/${bookingId}`);
+      console.log(response.data, "RESPONSE")
+
+      if (response.status === 200) {
+        setBookingDetails(response.data.booking);
+        toast.success('Successfully fetched booking data.');
+      } else {
+        toast.error('Booking not found.');
+      }
+    } catch (error) {
+      toast.error('Error occurred while fetching booking data.');
+    }
+  };
+
   return (
     <>
       <div className="_title">
         <h1>Checking Booking</h1>
       </div>
 
-      {/* <div className="text-left text-slate-600 text-base font-bodyFont">We are pleased to inform that your Booking has been confirmed</div> */}
-
-      <div className="_title">
-        <h1>Booking Details</h1>
+      <div className="_fields_col">
+        <input type="text" onChange={(e) => setBookingId(e.target.value)} />
+        <span>Provide the BookingId</span>
       </div>
 
-      <div className="flex-col items-start text-left">
-        <div className="flex-col">
+      <button className="profile_body_button" onClick={handleSearch}>
+        Check
+      </button>
+
+      {bookingDetails && (
+        <>
           <div className="_title">
-            <h1 className="me-2">Name</h1>
-            <p>Rahul Bose</p>
+            <h1>Booking Details</h1>
           </div>
 
-          <div className="_title">
-            <h1 className="me-2">Email</h1>
-            <p>boserahul@gmail.com</p>
-          </div>
+          <div className="flex-col items-start text-left">
+            <div className="flex-col">
+              <div className="_title">
+                <h1 className="me-2">Name</h1>
+                <p>{bookingDetails.user.name}</p>
+              </div>
 
-          <div className="_title">
-            <h1 className="me-2">Booking ID</h1>
-            <p>654oiuyvgfi5</p>
-          </div>
+              <div className="_title">
+                <h1 className="me-2">Email</h1>
+                <p>{bookingDetails.user.email}</p>
+              </div>
 
-          <div className="_title">
-            <h1 className="me-2">Booking Start Date</h1>
-            <p>09-06-23</p>
-          </div>
+              <div className="_title">
+                <h1 className="me-2">Booking ID</h1>
+                <p>{bookingDetails.bookingId}</p>
+              </div>
 
-          <div className="_title">
-            <h1 className="me-2">Booking End Date</h1>
-            <p>12-06-23</p>
-          </div>
-        </div>
+              <div className="_title">
+                <h1 className="me-2">Booking Start Date</h1>
+                <p>{new Date(bookingDetails.checkInDate).toLocaleDateString()}</p>
+              </div>
 
-        <div className="_title">
-          <h1>Checking Details</h1>
-        </div>
+              <div className="_title">
+                <h1 className="me-2">Booking End Date</h1>
+                <p>{new Date(bookingDetails.checkOutDate).toLocaleDateString()}</p>
+              </div>
 
-        <div className="flex-col items-start text-left">
-          <div className="flex-col">
-            <div className="_title">
-              <h1 className="me-2">Checked In at</h1>
-              <p>
-                11:54 pm on <span>09-06-23</span>
-              </p>
+              <div className="_title">
+                <h1 className="me-2">Booking Status</h1>
+                <p>{bookingDetails.bookingStatus}</p>
+              </div>
             </div>
 
-            <div className="_title">
-              <h1 className="me-2">Checked Out at</h1>
-              <p>
-                8:00 am on <span>12-06-23</span>
-              </p>
+            {/* <div className="_title">
+              <h1>Checking Details</h1>
             </div>
+
+            <div className="flex-col items-start text-left">
+              <div className="flex-col">
+                <div className="_title">
+                  <h1 className="me-2">Checked In at</h1>
+                  <p>{new Date(bookingDetails.checkInDate.$date).toLocaleTimeString()}</p>
+                </div>
+
+                <div className="_title">
+                  <h1 className="me-2">Checked Out at</h1>
+                  <p>{new Date(bookingDetails.checkOutDate.$date).toLocaleTimeString()}</p>
+                </div>
+              </div>
+            </div> */}
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 }
+
 
 function CheckOutBooking() {
   return (
@@ -1245,7 +1277,7 @@ function FailedBooking() {
 
   const fetchFailedBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/bookingFailed');
+      const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingFailed');
       
       if (response.data.success) {
         setFailedBookings(response.data.bookings);

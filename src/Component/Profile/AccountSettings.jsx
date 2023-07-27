@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const AccountSettings = ({ selectedNav, navHandler }) => {
   // const [isExpanded, setExpanded] = useState(false);
@@ -10,6 +11,7 @@ export const AccountSettings = ({ selectedNav, navHandler }) => {
     setHoverText("");
     setHoverText(e.target?.previousSibling?.innerText);
   };
+  const navigate = useNavigate("");
   return (
     <>
       <div
@@ -18,6 +20,7 @@ export const AccountSettings = ({ selectedNav, navHandler }) => {
         //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
         // })}
         onClick={navHandler}
+        onClick={() => navigate("/profile")}
       >
         <FaUser className="svg_logo" />
         <h2>Profile Information</h2>
