@@ -10,6 +10,7 @@ export default function CheckOut({
   checkIn,
   checkOut,
   guests,
+  rooms,
   hotelName,
   hotelimage,
   destination,
@@ -18,7 +19,7 @@ export default function CheckOut({
     const options = {
       name: "Hotel Booking",
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: amount * 100,
+      amount: amount * 100*rooms,
       currency: data.currency,
       prefill: {
         name: userData.name,
@@ -71,6 +72,7 @@ export default function CheckOut({
       checkIn: checkIn,
       checkOut: checkOut,
       guests: guests,
+      rooms:rooms,
       price: amount,
       paymentStatus: paymentStatus,
       images: hotelimage,
@@ -106,11 +108,19 @@ export default function CheckOut({
       console.log("User data, email, or payment status is not valid");
     }
   }
+
+  const handleBookNow = () => {
+    if (!checkIn || !checkOut || guests < 1 || rooms < 1) {
+      alert("Please fill in all the required information before booking.");
+    } else {
+      handlePayment();
+    }
+  };
   
   return (
     <>
       <button
-        onClick={handlePayment}
+        onClick={handleBookNow}
         style={{
           padding: "10px 15px",
           backgroundColor: "#0056b3",
