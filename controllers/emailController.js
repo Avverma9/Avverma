@@ -16,11 +16,14 @@ const transporter = nodemailer.createTransport({
 const BookingMail = async (req, res) => {
   const { bookingData, email } = req.body;
 
+  const totalprice = bookingData.price * bookingData.rooms 
+  console.log(totalprice)
+
   const mailOptions = {
     from: "hotelbookingtesting@gmail.com",
     to: email,
     subject: "Booking Confirmation",
-    text: `Dear ${bookingData.name},\n\nYour booking at ${bookingData.hotelName} has been confirmed.\n\nCheck-in date: ${bookingData.checkIn}\nCheck-out date: ${bookingData.checkOut}\nTotal guests: ${bookingData.guests}\n\nTotal price: ${bookingData.price}\n\nThank you for choosing our service.\n\nRegards,\nYour Hotel Team`,
+    text: `Dear User,\n\nYour booking at ${bookingData.hotelName} has been confirmed.\n\nCheck-in date: ${bookingData.checkIn}\nCheck-out date: ${bookingData.checkOut}\nTotal guests: ${bookingData.guests}\n\nTotal price: ${totalprice}\n\nThank you for choosing our service.\n\nRegards,\nYour Hotel Team`,
   };
 
 

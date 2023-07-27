@@ -6,9 +6,10 @@ const paymentModel = require('../models/paymentModel');
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
-    const { checkIn, checkOut, guests, price, paymentStatus,hotelName,images,destination } = req.body;
+    const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    const totalprice = price* rooms
   
     const booking = {
       images,
@@ -19,7 +20,8 @@ const createBooking = async (req, res) => {
       checkInDate: checkIn, 
       checkOutDate: checkOut, 
       guests,
-      price,
+      rooms,
+      price: totalprice,
       destination:destination,
       bookingStatus: paymentStatus === "success" ? "success" : "failed"
     };
