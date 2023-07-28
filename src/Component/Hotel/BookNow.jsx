@@ -45,9 +45,11 @@ export default function BookNow({ refresh, reset, userData }) {
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
-  const [checkIN, setCheckIn] = useState("");
+  const [checkInDate, setCheckInDate] = useState("");
+  const [checkOutDate, setCheckOutDate] = useState("");
+  const [selectedRooms, setSelectedRooms] = useState(1);
+  const [selectedGuests, setSelectedGuests] = useState(1);
   const [localid, setLocalid] = useState("");
-  const [checkOUT, setCheckOut] = useState("");
   const [myReview, setMyReview] = useState("");
   const [hotelReviews, setHotelReviews] = useState([]);
 
@@ -95,8 +97,8 @@ export default function BookNow({ refresh, reset, userData }) {
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
-        setCheckIn(convertDate(bookingDetails.startDate));
-        setCheckOut(convertDate(bookingDetails.endDate));
+        // setCheckIn(convertDate(bookingDetails.startDate));
+        // setCheckOut(convertDate(bookingDetails.endDate));
       })
       .catch((error) => {
         console.log(error);
@@ -299,12 +301,10 @@ export default function BookNow({ refresh, reset, userData }) {
   };
 
   console.log(fieldFocus);
-  console.log(
-    bookingDetails,
-    "Bookigggggggggggggggggggggggggggggggggggggggggggg"
-  );
+  console.log(bookingDetails, "Bookigggggggggggggggggggggggggggggggggggggggggggg")
   const firstImageURL = bookingDetails.images?.[0];
-  console.log(firstImageURL, "gggggggggggggggggggggggg");
+  console.log(firstImageURL, "gggggggggggggggggggggggg")
+
 
   return (
     <>
@@ -454,7 +454,9 @@ export default function BookNow({ refresh, reset, userData }) {
                 <div className="booking-card-content">
                   <p>
                     <span className="booking-label"></span>{" "}
-                    <span className="booking-date">{checkIN}</span>
+                    <span className="booking-date">
+                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} />
+                    </span>
                   </p>
                 </div>
               </div>
@@ -464,7 +466,9 @@ export default function BookNow({ refresh, reset, userData }) {
                 <div className="booking-card-content">
                   <p>
                     <span className="booking-label"></span>{" "}
-                    <span className="booking-date">{checkOUT}</span>
+                    <span className="booking-date">
+                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} />
+                    </span>
                   </p>
                 </div>
               </div>
@@ -477,11 +481,11 @@ export default function BookNow({ refresh, reset, userData }) {
               </p>
               <p className="noofroom">
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
-                Rooms:{bookingDetails.numRooms}
+                Rooms: <input type="number" value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} />
               </p>
               <p className="noofguest">
                 <FontAwesomeIcon icon={faPerson} className="icon" />
-                Guests: {bookingDetails.guests}
+                Guests: <input type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} />
               </p>
               <p className="roomtype">
                 <FontAwesomeIcon icon={faHotel} className="icon" />
@@ -552,9 +556,9 @@ export default function BookNow({ refresh, reset, userData }) {
                               />
                             </div>
 
-                            <div className="comment_profile_name">
-                              <h4>{rev.user.name}</h4>
-                            </div>
+                          <div className="comment_profile_name">
+                            <h4>{rev.user.name}</h4>
+                          </div>
 
                             {rev.review.user === userId && (
                               <div className="comment_update_del">
@@ -574,44 +578,44 @@ export default function BookNow({ refresh, reset, userData }) {
                             )}
                           </div>
 
-                          {isUpdatingReview && reviewId === rev.review._id ? (
-                            <div className="update_review">
-                              <textarea
-                                placeholder="Update Review"
-                                type="text"
-                                rows="2"
-                                value={updatedReview}
-                                onChange={(e) =>
-                                  setUpdatedReview(e.target.value)
-                                }
-                                onKeyUp={keyPressHandler}
-                                onFocus={(e) =>
-                                  setFieldFocus(
-                                    e.target.nextElementSibling.className
-                                  )
-                                }
-                              />
-                              <button
-                                className="update_review_button"
-                                onClick={updateReviewHandler}
-                              >
-                                <FaTelegramPlane />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="review_comment">
-                              <p>{rev.review.comment}</p>
+                        {isUpdatingReview && reviewId === rev.review._id ? (
+                          <div className="update_review">
+                            <textarea
+                              placeholder="Update Review"
+                              type="text"
+                              rows="2"
+                              value={updatedReview}
+                              onChange={(e) =>
+                                setUpdatedReview(e.target.value)
+                              }
+                              onKeyUp={keyPressHandler}
+                              onFocus={(e) =>
+                                setFieldFocus(
+                                  e.target.nextElementSibling.className
+                                )
+                              }
+                            />
+                            <button
+                              className="update_review_button"
+                              onClick={updateReviewHandler}
+                            >
+                              <FaTelegramPlane />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="review_comment">
+                            <p>{rev.review.comment}</p>
 
-                              <div className="comment_date">
-                                <h6>{convertDate(rev.review.createdAt)}</h6>
-                              </div>
+                            <div className="comment_date">
+                              <h6>{convertDate(rev.review.createdAt)}</h6>
                             </div>
-                          )}
-                          <div style={{ border: "1px solid #94a3b8 " }}></div>
-                        </div>
-                      </>
-                    ))
-                  : "Be the First to write a Review"}
+                          </div>
+                        )}
+                        <div style={{ border: "1px solid #94a3b8 " }}></div>
+                      </div>
+                    </>
+                  ))
+                  : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
               <div className="_pagination">
@@ -625,9 +629,8 @@ export default function BookNow({ refresh, reset, userData }) {
                 {visiblePages.map((page) => (
                   <button
                     key={page}
-                    className={`_pagination-button ${
-                      page === currentPage ? "_pagination-active" : ""
-                    }`}
+                    className={`_pagination-button ${page === currentPage ? "_pagination-active" : ""
+                      }`}
                     onClick={() => handlePageClick(page)}
                   >
                     {page}
@@ -648,9 +651,10 @@ export default function BookNow({ refresh, reset, userData }) {
               amount={Number(bookingDetails.price)}
               currency="INR"
               userData={userData}
-              checkIn={bookingDetails.startDate}
-              checkOut={bookingDetails.endDate}
-              guests={bookingDetails.guests}
+              checkIn={checkInDate}
+              checkOut={checkOutDate}
+              guests={selectedGuests}
+              rooms={selectedRooms}
               hotelName={bookingDetails.hotelName}
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
