@@ -596,11 +596,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setAdhaar(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
+            // placeholder={
+            //   !isSignedIn && userDetails
+            //     ? userDetails?.providerData?.phoneNumber
+            //     : userData?.mobile
+            // }
             />
           </div>
         </>
@@ -620,11 +620,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setPan(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
+            // placeholder={
+            //   !isSignedIn && userDetails
+            //     ? userDetails?.providerData?.phoneNumber
+            //     : userData?.mobile
+            // }
             />
           </div>
         </>
@@ -644,11 +644,11 @@ function ProfileInformation({
               //     : mobile
               // }
               onChange={(e) => setDrivingLsc(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
+            // placeholder={
+            //   !isSignedIn && userDetails
+            //     ? userDetails?.providerData?.phoneNumber
+            //     : userData?.mobile
+            // }
             />
           </div>
         </>
@@ -814,7 +814,7 @@ function GovernmentIdInformation({ userData }) {
       <div className="_fields">
         {selectGID === "Adhaar" &&
           (gID === "" ||
-          gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm) ? null : (
+            gID.match(/^[2-9]{1}[0-9]{3}\s[0-9]{4}\s[0-9]{4}$/gm) ? null : (
             <p className="text-xs font-semibold text-red-700">
               Please Provide a Valid Adhaar Number
             </p>
@@ -827,9 +827,9 @@ function GovernmentIdInformation({ userData }) {
           ))}
         {selectGID === "Driving Licence" &&
           (gID === "" ||
-          gID.match(
-            /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
-          ) ? null : (
+            gID.match(
+              /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/
+            ) ? null : (
             <p className="text-xs font-semibold text-red-700">
               Please Provide a Valid Driving License Number
             </p>
@@ -900,7 +900,7 @@ function CancelBooking() {
 
   const handleCancel = () => {
     axios
-    .put(`https://hotel-backend-tge7.onrender.com/booking/${bookingId}`)
+      .put(`https://hotel-backend-tge7.onrender.com/booking/${bookingId}`)
       .then((res) => {
         console.log(res.data);
         setShowModal(false);
@@ -1014,7 +1014,7 @@ function ConfirmBooking() {
     try {
       const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingsConfirm');
       const { bookings } = response.data;
-      console.log(bookings,"backend data")
+      console.log(bookings, "backend data")
       setBookingDetails(bookings);
     } catch (error) {
       console.log(error);
@@ -1043,46 +1043,46 @@ function ConfirmBooking() {
 
       {bookingDetails ? (
         <>
-           <table style={styles.table}>
-      <thead>
-        <tr>
-          <th style={styles.cell}>Image</th>
-          <th style={styles.cell}>Hotel Name</th>
-          <th style={styles.cell}>Booking ID</th>
-          <th style={styles.cell}>Destination</th>
-          <th style={styles.cell}>Check In</th>
-          <th style={styles.cell}>Check Out</th>
-          <th style={styles.cell}>Price</th>
-          <th style={styles.cell}>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {bookingDetails
-          .filter((booking) => booking.bookingStatus === "success")
-          .map((booking) => (
-            <tr key={booking.bookingId}>
-              <td>
-                <img
-                  className="hotelimage"
-                  src={booking.hotelimage}
-                  alt="Hotel"
-                />
-              </td>
-              <td style={styles.cell}>{booking.hotel.hotelName}</td>
-              <td style={styles.cell}>{booking.bookingId}</td>
-              <td style={styles.cell}>
-                {booking.destination ? booking.destination : "No data"}
-              </td>
-              <td style={styles.cell}>{formatDate(booking.checkInDate)}</td>
-              <td style={styles.cell}>{formatDate(booking.checkOutDate)}</td>
-              <td style={styles.cell}>{booking.price}</td>
-              <td style={{ ...styles.cell, color: "green" }}>
-                {booking.bookingStatus}
-              </td>
-            </tr>
-          ))}
-      </tbody>
-    </table>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.cell}>Image</th>
+                <th style={styles.cell}>Hotel Name</th>
+                <th style={styles.cell}>Booking ID</th>
+                <th style={styles.cell}>Destination</th>
+                <th style={styles.cell}>Check In</th>
+                <th style={styles.cell}>Check Out</th>
+                <th style={styles.cell}>Price</th>
+                <th style={styles.cell}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookingDetails
+                .filter((booking) => booking.bookingStatus === "success")
+                .map((booking) => (
+                  <tr key={booking.bookingId}>
+                    <td>
+                      <img
+                        className="hotelimage"
+                        src={booking.hotelimage}
+                        alt="Hotel"
+                      />
+                    </td>
+                    <td style={styles.cell}>{booking.hotel.hotelName}</td>
+                    <td style={styles.cell}>{booking.bookingId}</td>
+                    <td style={styles.cell}>
+                      {booking.destination ? booking.destination : "No data"}
+                    </td>
+                    <td style={styles.cell}>{formatDate(booking.checkInDate)}</td>
+                    <td style={styles.cell}>{formatDate(booking.checkOutDate)}</td>
+                    <td style={styles.cell}>{booking.price}</td>
+                    <td style={{ ...styles.cell, color: "green" }}>
+                      {booking.bookingStatus}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </>
       ) : (
         <p>Loading booking details...</p>
@@ -1094,20 +1094,48 @@ function ConfirmBooking() {
 function CheckingBooking() {
   const [bookingId, setBookingId] = useState(null);
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [checkInDate, setCheckInDate] = useState(null);
+  const [checkOutDate, setCheckOutDate] = useState(null);
+  const [isEditingCheckIn, setIsEditingCheckIn] = useState(false);
+  const [isEditingCheckOut, setIsEditingCheckOut] = useState(false);
+
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(`https://hotel-backend-tge7.onrender.com/getbooking/${bookingId}`);
+      const response = await axios.get(`http://localhost:5000/getbooking/${bookingId}`);
       console.log(response.data, "RESPONSE")
 
       if (response.status === 200) {
         setBookingDetails(response.data.booking);
+        setCheckInDate(new Date(response.data.booking.checkInDate).toISOString().slice(0, 10));
+        setCheckOutDate(new Date(response.data.booking.checkOutDate).toISOString().slice(0, 10));
         toast.success('Successfully fetched booking data.');
       } else {
         toast.error('Booking not found.');
       }
     } catch (error) {
       toast.error('Error occurred while fetching booking data.');
+    }
+  };
+
+  const handleUpdateDates = async () => {
+    try {
+      const response = await axios.put(`http://localhost:5000/updatebooking/${bookingId}`, {
+        checkInDate,
+        checkOutDate,
+      });
+      console.log(response.data)
+
+      if (response.status === 200) {
+        setBookingDetails(response.data.booking);
+        setIsEditingCheckIn(false);
+        setIsEditingCheckOut(false);
+        toast.success('Booking dates updated successfully.');
+      } else {
+        toast.error('Failed to update booking dates.');
+      }
+    } catch (error) {
+      toast.error('Error occurred while updating booking dates.');
     }
   };
 
@@ -1150,38 +1178,73 @@ function CheckingBooking() {
               </div>
 
               <div className="_title">
-                <h1 className="me-2">Booking Start Date</h1>
-                <p>{new Date(bookingDetails.checkInDate).toLocaleDateString()}</p>
+                <h1 className="me-2">Guest</h1>
+                <p>{bookingDetails.guests}</p>
               </div>
 
               <div className="_title">
-                <h1 className="me-2">Booking End Date</h1>
-                <p>{new Date(bookingDetails.checkOutDate).toLocaleDateString()}</p>
+                <h1 className="me-2">Rooms</h1>
+                <p>{bookingDetails.rooms}</p>
               </div>
+
+              <div className="_title">
+                <h1 className="me-2">Price</h1>
+                <p>{bookingDetails.price}</p>
+              </div>
+
+              <div className="flex-col items-start text-left">
+                {/* Check-In Date */}
+                <div className="">
+                  <div className="_title">
+                    <h1 className="me-2">Booking Start Date</h1>
+                    {isEditingCheckIn ? (
+                      <input
+                        type="date"
+                        value={checkInDate}
+                        onChange={(e) => setCheckInDate(e.target.value)}
+                        min={new Date().toISOString().slice(0, 10)}
+                        max={checkOutDate ? checkOutDate : undefined} // Set the max attribute to the selected checkout date
+                      />
+                    ) : (
+                      <p>{new Date(bookingDetails.checkInDate).toLocaleDateString()}</p>
+                    )}
+                    <button className="editbtn" onClick={() => setIsEditingCheckIn(!isEditingCheckIn)}>
+                      {isEditingCheckIn ? 'Cancel' : 'Edit'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Check-Out Date */}
+                <div className="flex-row">
+                  <div className="_title">
+                    <h1 className="me-2">Booking End Date</h1>
+                    {isEditingCheckOut ? (
+                      <input
+                        type="date"
+                        value={checkOutDate}
+                        onChange={(e) => setCheckOutDate(e.target.value)}
+                        min={checkInDate ? checkInDate : new Date().toISOString().slice(0, 10)} 
+                      />
+                    ) : (
+                      <p>{new Date(bookingDetails.checkOutDate).toLocaleDateString()}</p>
+                    )}
+                    <button className="editbtn" onClick={() => setIsEditingCheckOut(!isEditingCheckOut)}>
+                      {isEditingCheckOut ? 'Cancel' : 'Edit'}
+                    </button>
+                  </div>
+                </div>
+
+                {isEditingCheckIn || isEditingCheckOut ? (
+                  <button className="savebtn" onClick={handleUpdateDates}>Save Dates</button>
+                ) : null}
+              </div>
+
 
               <div className="_title">
                 <h1 className="me-2">Booking Status</h1>
                 <p>{bookingDetails.bookingStatus}</p>
               </div>
             </div>
-
-            {/* <div className="_title">
-              <h1>Checking Details</h1>
-            </div>
-
-            <div className="flex-col items-start text-left">
-              <div className="flex-col">
-                <div className="_title">
-                  <h1 className="me-2">Checked In at</h1>
-                  <p>{new Date(bookingDetails.checkInDate.$date).toLocaleTimeString()}</p>
-                </div>
-
-                <div className="_title">
-                  <h1 className="me-2">Checked Out at</h1>
-                  <p>{new Date(bookingDetails.checkOutDate.$date).toLocaleTimeString()}</p>
-                </div>
-              </div>
-            </div> */}
           </div>
         </>
       )}
@@ -1278,7 +1341,7 @@ function FailedBooking() {
   const fetchFailedBookings = async () => {
     try {
       const response = await axios.get('https://hotel-backend-tge7.onrender.com/bookingFailed');
-      
+
       if (response.data.success) {
         setFailedBookings(response.data.bookings);
       } else {
@@ -1302,8 +1365,8 @@ function FailedBooking() {
         <h1>Failed Booking</h1>
       </div>
       {failedBookings.length > 0 ? (
-         <table >
-         <thead >
+        <table >
+          <thead >
             <tr>
               <th>Booking ID</th>
               <th>User Email</th>
@@ -1323,7 +1386,7 @@ function FailedBooking() {
                 <td>{booking.price}</td>
                 <td>{formatDate(booking.checkInDate)}</td>
                 <td>{formatDate(booking.checkOutDate)}</td>
-                <td style={{color:"red"}}>{booking.bookingStatus}</td>
+                <td style={{ color: "red" }}>{booking.bookingStatus}</td>
               </tr>
             ))}
           </tbody>
@@ -1364,21 +1427,21 @@ function MyReviewSection() {
       <>
         {currentUserReviews
           ? [...currentUserReviews].reverse().map((review) => (
-              <div className="review_container" key={review.review._id}>
-                <div className="hotel_image">
-                  <img src={review.hotelImages} alt={review.hotelName} />
+            <div className="review_container" key={review.review._id}>
+              <div className="hotel_image">
+                <img src={review.hotelImages} alt={review.hotelName} />
+              </div>
+              <div className="review_content">
+                <div className="review_content_header">
+                  <h4>{review.hotelName}</h4>
+                  <p>{convertDate(review.review.createdAt)}</p>
                 </div>
-                <div className="review_content">
-                  <div className="review_content_header">
-                    <h4>{review.hotelName}</h4>
-                    <p>{convertDate(review.review.createdAt)}</p>
-                  </div>
-                  <div className="review_content_body">
-                    <p>{review.review.comment}</p>
-                  </div>
+                <div className="review_content_body">
+                  <p>{review.review.comment}</p>
                 </div>
               </div>
-            ))
+            </div>
+          ))
           : "NO Reviews Posted Yet"}
       </>
     </>

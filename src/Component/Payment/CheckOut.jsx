@@ -57,7 +57,7 @@ export default function CheckOut({
     };
 
     try {
-      const response = await axios.post("https://hotel-backend-tge7.onrender.com/payments", data);
+      const response = await axios.post("http://localhost:5000/payments", data);
       handleOpenRazorpay(response.data);
     } catch (err) {
       console.log(err);
@@ -81,13 +81,13 @@ export default function CheckOut({
   
     if (userData && userData.email && paymentStatus === "success") {
       axios
-        .post(`https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`, bookingData)
+        .post(`http://localhost:5000/booking/${userId}/${hotelId}`, bookingData)
         .then((res) => {
           console.log(res.data, "Booking created successfully", bookingData);
   
           if (userData.email) {
             axios
-              .post("https://hotel-backend-tge7.onrender.com/SendBookingEmail", {
+              .post("http://localhost:5000/SendBookingEmail", {
                 bookingData: bookingData,
                 email: userData.email,
               })
