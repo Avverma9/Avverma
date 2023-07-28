@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import styles from "./hotel.module.css";
+import styles from './hotel.module.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faWifi,
@@ -25,7 +25,7 @@ import {
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
 
-import RangeSlider from "./Rangeslider/range";
+import RangeSlider from "../Hotel/Rangeslider/range";
 import axios from "axios";
 import Imgslide from "./slider/sliderimage";
 

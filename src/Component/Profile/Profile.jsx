@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -1622,10 +1620,10 @@ const Profile = ({ reset, refresh }) => {
     ) {
       setselectedNav("My Reviews");
     } else if (
-      e.currentTarget.innerText === "Complaints" ||
-      e.currentTarget.lastChild.innerText === "Complaints"
+      e.currentTarget.innerText === "Complains" ||
+      e.currentTarget.lastChild.innerText === "Complains"
     ) {
-      setselectedNav("Complaints");
+      setselectedNav("Complains");
     } else {
       setselectedNav("Profile Information");
     }
@@ -1684,12 +1682,11 @@ const Profile = ({ reset, refresh }) => {
             <FailedBooking />
           ) : selectedNav === "My Reviews" ? (
             <MyReviewSection />
-          ) : selectedNav === "Complaints" ? (
-            <ComplaintsSection
+          ) : selectedNav === "Complains" ? (
+            <ComplainsSection
               userData={userData}
               reset={reset}
               refresh={refresh}
-              isSignedIn={isSignedIn}
             />
           ) : (
             <ProfileInformation
