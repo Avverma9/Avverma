@@ -54,28 +54,30 @@ const Profile = ({ reset, refresh }) => {
     const isSignedIn = localStorage.getItem("isSignedIn");
     const userDetails = getLocalStorage("loggedUser");
 
-    if (!isSignedIn && !userDetails) {
+    if (!isSignedIn) {
       navigate("/signin");
     } else {
-      const userId = localStorage.getItem("userId");
-      fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
-        .then((response) => {
-          console.log(response, "RESPONSE");
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error("Failed to fetch user data");
-          }
-        })
-        .then((data) => {
-          console.log(data, "API CHANGES NEW LOG");
-          setUserData(data.data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.log(error);
-          setIsLoading(false);
-        });
+      if (!userDetails) {
+        const userId = localStorage.getItem("userId");
+        fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`)
+          .then((response) => {
+            console.log(response, "RESPONSE");
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error("Failed to fetch user data");
+            }
+          })
+          .then((data) => {
+            console.log(data, "API CHANGES NEW LOG");
+            setUserData(data.data);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.log(error);
+            setIsLoading(false);
+          });
+      }
     }
   }, [navigate, reset]);
 

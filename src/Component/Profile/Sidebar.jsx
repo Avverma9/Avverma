@@ -16,20 +16,25 @@ export const Sidebar = ({
   reset,
   refresh,
 }) => {
-  console.log(selectedNav);
+  console.log(userData);
+  console.log(userDetails);
   return (
     <>
       <div className="sidebar_header">
         <Avatar
           name={
-            !isSignedIn && userDetails
-              ? userDetails?.displayName
-              : userData?.name
+            userData
+              ? userData?.name
+              : userDetails
+              ? userDetails.displayName
+              : ""
           }
           src={
-            !isSignedIn && userDetails
-              ? userDetails?.photoURL
-              : userData?.images[0]
+            userData
+              ? userData?.images[0]
+              : userDetails
+              ? userDetails.photoURL
+              : ""
           }
           round={true}
           size="35"
@@ -37,9 +42,11 @@ export const Sidebar = ({
         />
         <h2>Hey,</h2>
         <h2 className="">
-          {!isSignedIn && userDetails
-            ? userDetails?.displayName
-            : userData?.name}
+          {userData
+            ? userData?.name
+            : userDetails
+            ? userDetails.displayName
+            : ""}
         </h2>
       </div>
       <div className="sidebar_body">

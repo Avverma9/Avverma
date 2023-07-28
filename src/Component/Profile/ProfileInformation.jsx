@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { getAuth, updateCurrentUser } from "firebase/auth";
 
 export const ProfileInformation = ({
   toast,
@@ -25,51 +26,62 @@ export const ProfileInformation = ({
   const navigate = useNavigate("");
 
   const handleUpdate = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
-    try {
-      const formData = new FormData();
-      formData.append("name", uname !== "" ? uname : userData?.name);
-      formData.append(
-        "password",
-        password !== "" ? password : userData?.password
-      );
-      formData.append("email", email !== "" ? email : userData?.email);
-      formData.append("gender", gender !== "" ? gender : userData?.gender);
-      formData.append("mobile", mobile !== "" ? mobile : userData?.mobile);
-      formData.append("address", address !== "" ? address : userData?.address);
+    // try {
+    //   const formData = new FormData();
+    //   formData.append("name", uname !== "" ? uname : userData?.name);
+    //   formData.append(
+    //     "password",
+    //     password !== "" ? password : userData?.password
+    //   );
+    //   formData.append("email", email !== "" ? email : userData?.email);
+    //   formData.append("gender", gender !== "" ? gender : userData?.gender);
+    //   formData.append("mobile", mobile !== "" ? mobile : userData?.mobile);
+    //   formData.append("address", address !== "" ? address : userData?.address);
 
-      // Append the image only if it is provided by the user
-      if (uimages.length > 0) {
-        formData.append(
-          "images",
-          uimages[0] !== "" ? uimages[0] : userData?.images[0]
-        ); // Assuming only one image is selected
-      }
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(
-        `https://hotel-backend-tge7.onrender.com/update/${userId}`,
-        {
-          method: "PUT",
-          body: formData,
-        }
-      );
+    //   // Append the image only if it is provided by the user
+    //   if (uimages.length > 0) {
+    //     formData.append(
+    //       "images",
+    //       uimages[0] !== "" ? uimages[0] : userData?.images[0]
+    //     ); // Assuming only one image is selected
+    //   }
+    //   const userId = localStorage.getItem("userId");
+    //   const response = await fetch(
+    //     `https://hotel-backend-tge7.onrender.com/update/${userId}`,
+    //     {
+    //       method: "PUT",
+    //       body: formData,
+    //     }
+    //   );
 
-      if (response.ok) {
-        // Call the onUpdateDone callback
-        window.location.reload()
-        toast.success("Profile Edited Successfully");
-        reset();
-        setIsEditing(false);
-        navigate("/profile");
-      } else {
-        throw new Error("Failed to update profile");
-      }
-    } catch (error) {
-      toast.error(error);
-      console.error(error);
-      // Handle error state
-    }
+    //   if (response.ok) {
+    //     // Call the onUpdateDone callback
+    //     window.location.reload();
+    //     toast.success("Profile Edited Successfully");
+    //     reset();
+    //     setIsEditing(false);
+    //     navigate("/profile");
+    //   } else {
+    //     throw new Error("Failed to update profile");
+    //   }
+    // } catch (error) {
+    //   toast.error(error);
+    //   console.error(error);
+    //   // Handle error state
+    // }
+    getAuth()
+      .updateCurrentUser("sSjf8LBaB3TcnacrxeYabqTiKje2", {
+        displayName: "Jane Doe",
+      })
+      .then((userRecord) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        console.log("Successfully updated user", userRecord.toJSON());
+      })
+      .catch((error) => {
+        console.log("Error updating user:", error);
+      });
   };
 
   console.log(userDetails, userData, "--------------------------------");
@@ -92,10 +104,10 @@ export const ProfileInformation = ({
             <input
               type="text"
               value={
-                !isEditing
-                  ? !isSignedIn && userDetails
-                    ? userDetails?.displayName.split[0]
-                    : userData?.name
+                !isEditing && userDetails
+                  ? userDetails?.displayName
+                  : userData
+                  ? userData?.name
                   : uname
               }
               onChange={(e) => setUName(e.target.value)}
