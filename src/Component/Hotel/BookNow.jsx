@@ -32,8 +32,8 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
-import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
+import { formatDate } from "../../utils/_dateFuntions";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -97,8 +97,6 @@ export default function BookNow({ refresh, reset, userData }) {
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
-        // setCheckIn(convertDate(bookingDetails.startDate));
-        // setCheckOut(convertDate(bookingDetails.endDate));
       })
       .catch((error) => {
         console.log(error);
@@ -607,7 +605,7 @@ export default function BookNow({ refresh, reset, userData }) {
                             <p>{rev.review.comment}</p>
 
                             <div className="comment_date">
-                              <h6>{convertDate(rev.review.createdAt)}</h6>
+                              <h6>{formatDate(rev.review.createdAt)}</h6>
                             </div>
                           </div>
                         )}
