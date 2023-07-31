@@ -32,6 +32,7 @@ import Startprice from "../../Pages/Setting2/Startprice";
 import Addregion from "../../Pages/Setting2/Addregion";
 import Addseller from "../../Pages/Setting2/Addseller";
 import Addcategory from "../../Pages/Setting2/Addcategory";
+import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 
 export const PageContainer = () => {
   return (
@@ -69,6 +70,7 @@ export const PageContainer = () => {
         <Route path="/add-region" element={<Addregion/>}/>
         <Route path="/add-seller" element={<Addseller/>}/>
         <Route path="/add-category" element={<Addcategory/>}/>
+        <Route path="/mannage-auction" element={<MannageAuction/>}/>
         
 
       </Routes>

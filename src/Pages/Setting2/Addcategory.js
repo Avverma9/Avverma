@@ -16,7 +16,7 @@ function Addcategory() {
     </select>
     </label>
     </div>
-    <button>Submit</button>
+    <button className='sub-button'>Submit</button>
       
     </div>
   )

@@ -2,10 +2,23 @@
     list-style: none;
     border: 1px solid black;
     padding: 10px;
+    background: linear-gradient(to right,#ffc105, #fccb37, #ffdd78);
+
+border: 5px solid #fbbc05;
+margin-bottom: 40px;
+color: black;
+font-size: 18px;
+font-weight: 501;
     
 }
 .dashboard-content-value li{
     list-style: none;
     border: 1px solid black;
     padding: 10px;
+    background: linear-gradient(to right,#ffc105, #fccb37, #ffdd78);
+    border: 5px solid #fbbc05;
+    margin-bottom: 40px;
+    color: black;
+    font-size: 18px;
+    font-weight: 501;
 }

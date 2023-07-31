@@ -38,7 +38,7 @@ function Setauctiontime() {
     <input type='text' placeholder='Interval Time'/>
     </label>
     </div>
-    <button>Submit</button>
+    <button className='sub-button'>Submit</button>
       
     </div>
   )
