@@ -1,0 +1,11 @@
+.dashboard-content li{
+    list-style: none;
+    border: 1px solid black;
+    padding: 10px;
+    
+}
+.dashboard-content-value li{
+    list-style: none;
+    border: 1px solid black;
+    padding: 10px;
+}

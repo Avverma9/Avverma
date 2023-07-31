@@ -1,0 +1,11 @@
+.setting-item ul li{
+    list-style: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    
+    
+}
+.setting-item ul{
+    width: 25%;
+}
