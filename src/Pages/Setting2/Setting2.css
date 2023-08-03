@@ -10,7 +10,7 @@
 .setting-item ul li a{
     display: flex;
 align-items: center;
-justify-content: space-around;
+justify-content: space-between;
 }
 .setting-item ul{
     width: 25%;
@@ -56,4 +56,8 @@ height: 49px;
     color: white;
     width: 190px;
     box-shadow: 0 0 35px #fbbc05 ;
+}
+.first2{
+    display: flex;
+    gap: 10px;
 }

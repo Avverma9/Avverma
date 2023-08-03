@@ -8,12 +8,7 @@ function Addcategory() {
     </div>
     <div className='setting-dropdown'>
     <label>Add Category
-    <select name="_filter-select" id="_filter-select">
-              <option value="">Add Category</option>
-              <option value="name">Category 1</option>
-              <option value="mobile">Category 2</option>
-              <option value="email">Category 3</option>
-    </select>
+    <input type='text'/>
     </label>
     </div>
     <button className='sub-button'>Submit</button>

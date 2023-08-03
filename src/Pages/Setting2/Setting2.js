@@ -17,19 +17,19 @@ function Setting2() {
         <div className='setting-item'>
           <ul>
             <li>
-              <Link to='/set-auction-timing'><AiOutlineClockCircle/>Set Auction Timing<RiArrowDropDownLine/></Link>
+              <Link to='/set-auction-timing'><div className='first2'><AiOutlineClockCircle/><h5>Set Auction Timing</h5></div><RiArrowDropDownLine/></Link>
             </li>
             <li>
-              <Link to='/start-price'><CiMoneyCheck1/>Start Price<RiArrowDropDownLine/></Link>
+              <Link to='/start-price'><div className='first2'><CiMoneyCheck1/><h5>Start Price</h5></div><RiArrowDropDownLine/></Link>
             </li>
             <li>
-              <Link to='/add-region'><PiTrainRegionalThin/>Add Region<RiArrowDropDownLine/></Link>
+              <Link to='/add-region'><div className='first2'><PiTrainRegionalThin/><h5>Add Region</h5></div><RiArrowDropDownLine/></Link>
             </li>
             <li>
-              <Link to='/add-seller'><CgProfile/>Add Seller<RiArrowDropDownLine/></Link>
+              <Link to='/add-seller'><div className='first2'><CgProfile/><h5>Add Seller</h5></div><RiArrowDropDownLine/></Link>
             </li>
             <li>
-              <Link to='/add-category'><TbCategory/>Add Category<RiArrowDropDownLine/></Link>
+              <Link to='/add-category'><div className='first2'><TbCategory/><h5>Add Category</h5></div><RiArrowDropDownLine/></Link>
             </li>
           </ul>
         </div>

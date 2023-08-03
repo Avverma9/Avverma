@@ -13,19 +13,12 @@ function Dashboard2() {
       
       <div className="dashboard-section-head">
         <ul className="dashboard-content">
-            <li>Live Auction</li>
-            <li>Pending Auction</li>
-            <li>Complete Auction</li>
-            <li>Buyer List</li>
-            <li>Freez User</li>
+            <li className="dashboard-b">Live Auction 256</li>
+            <li className="dashboard-bu">Pending Auction 56</li>
+            <li className="dashboard-but">Complete Auction 85</li>
+            <li className="dashboard-butt">Buyer List 78</li>
+            <li className="dashboard-butto">Freez User 53</li>
             
-        </ul>
-        <ul className="dashboard-content-value">
-          <li>256</li>
-          <li>25</li>
-          <li>231</li>
-          <li>5</li>
-          <li>4</li>
         </ul>
       </div>
     </div>

@@ -55,3 +55,9 @@ input {
 ._w-50 {
   width: 50%;
 }
+._flex_center_between {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
