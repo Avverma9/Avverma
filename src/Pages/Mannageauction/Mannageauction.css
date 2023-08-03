@@ -57,16 +57,16 @@
 .search-icon{
   position: absolute;
   left: 167px;
-  top: 25px;
+  top: 28px;
 }
 .buttons-header button{
   border: none;
-  background: rgb(255, 210, 9);
+  
   
 padding: 10px;
+font-weight: 900;
 
 
-border-radius: 5px;
 }
 .export-butto{
   background: black;
@@ -110,3 +110,33 @@ input:checked::before
  ._edit svg {
    cursor: pointer;
  }
+ 
+ .filter-button p{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  
+  
+ }
+ .buttons-header .filter-button{
+  background-color: rgb(136, 0, 255);
+  color: white;
+ }
+ .addnew-button p{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+ }
+ .buttons-header .addnew-button{
+background: green;
+color: white;
+ }
+ .buttons-header .upload-button{
+ background: skyblue;
+ color: white;
+ }
+.buttons-header .refresh-button{
+  background: #fbbc05;
+  color: white;
+ }
+ 

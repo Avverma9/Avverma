@@ -5,6 +5,7 @@ import {
   notificationIcon,
   mannageAuctionIcon,
   mannageBuyerIcon,
+  mannageAdminIcon,
   dashboardIcon,
   settingsIcon,
   searchIcon,
@@ -208,7 +209,7 @@ const MannageBuyer = () => {
       <li>
         <Link to="/mannage-buyer">
           {" "}
-          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+          <img src={mannageAdminIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-buyer">
           <p>{upperCase("Mannage Buyer")}</p>

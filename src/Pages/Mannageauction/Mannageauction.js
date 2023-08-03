@@ -3,6 +3,11 @@ import DataTable from "react-data-table-component";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import {AiOutlineSearch } from 'react-icons/ai';
+import {BsFilter} from "react-icons/bs";
+import {GrAddCircle} from "react-icons/gr";
+import {FiUpload} from "react-icons/fi";
+import {FiRefreshCcw} from "react-icons/fi";
+import {TfiExport} from "react-icons/tfi";
 import "./Mannageauction.css";
 import { useNavigate } from "react-router-dom";
 
@@ -263,10 +268,10 @@ export const MannageAuction = () => {
             <div className="buttons-header">
             
               <input type="text" placeholder="Search here" /><AiOutlineSearch className="search-icon" />
-              <button className="filter-button">Filter</button>
-              <button className="addnew-button">Add New Auction</button>
-              <button className="upload-button">Upload Bulk</button>
-              <button className="refresh-button">Refresh</button>
+              <button className="filter-button"><p><BsFilter/>Filter</p></button>
+              <button className="addnew-button"><p><GrAddCircle className="add-circle"/>Add New Auction</p></button>
+              <button className="upload-button"><p><FiUpload/>Upload Bulk</p></button>
+              <button className="refresh-button"><p><FiRefreshCcw/>Refresh</p></button>
             </div>
             </div>
             <div>
@@ -371,14 +376,17 @@ export const MannageAuction = () => {
           className="export-butto"
             style={{
               padding: "10px",
-              backgroundColor: "rgba(44, 44, 44, 0.8)",
-              border: "none",
-              borderRadius: "3px",
-              color:"white",
-              cursor:"pointer",
+backgroundcolor: "rgba(44, 44, 44, 0.8)",
+border: "medium",
+color: "white",
+cursor: "pointer",
+display: "flex",
+alignitems: "center",
+gap: "5px",
+fontWeight:"800",
             }}
           >
-            Export
+            Export<TfiExport/>
           </button>
         }
       />
