@@ -3,3 +3,11 @@
   padding: 18px 32px;
   margin-left: 18%;
 }
+
+.page_container_background-img {
+  background-image: url("https://wallpapers.com/images/hd/hd-yellow-abstract-ybhkrapksq6zaies.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 100%;
+}

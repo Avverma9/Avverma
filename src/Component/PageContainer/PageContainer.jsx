@@ -36,7 +36,7 @@ import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 
 export const PageContainer = () => {
   return (
-    <div className="page_container">
+    <div className="page_container page_container_background-img">
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Welcome />} />
@@ -63,16 +63,14 @@ export const PageContainer = () => {
         <Route path="/row-box" element={<Rowbox />} />
         <Route path="/mannage-admin" element={<Mannageadmin />} />
         <Route path="/edit-emd" element={<Editemd />} />
-        <Route path="/dashboard" element={<Dashboard2/>}/>
+        <Route path="/dashboard" element={<Dashboard2 />} />
         <Route path="/settings" element={<Setting2 />} />
-        <Route path="/set-auction-timing" element={<Setauctiontime/>}/>
-        <Route path="/start-price" element={<Startprice/>}/>
-        <Route path="/add-region" element={<Addregion/>}/>
-        <Route path="/add-seller" element={<Addseller/>}/>
-        <Route path="/add-category" element={<Addcategory/>}/>
-        <Route path="/mannage-auction" element={<MannageAuction/>}/>
-        
-
+        <Route path="/set-auction-timing" element={<Setauctiontime />} />
+        <Route path="/start-price" element={<Startprice />} />
+        <Route path="/add-region" element={<Addregion />} />
+        <Route path="/add-seller" element={<Addseller />} />
+        <Route path="/add-category" element={<Addcategory />} />
+        <Route path="/mannage-auction" element={<MannageAuction />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>
