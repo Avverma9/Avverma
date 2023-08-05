@@ -8,7 +8,7 @@ import Search from "../../Pages/Search/Search";
 import Importauction from "../../Pages/Importauction/Importauction";
 import { Filterauction } from "../../Pages/Filterauction/Filterauction";
 import { YourWins } from "../../Pages/Wins/YourWins";
-import { Addauction } from "../../Pages/Addauction/Addauction";
+import { Viewauction } from "../../Pages/Viewauction/Viewauction";
 import Setting from "../../Pages/Settings/Setting";
 import Settiming from "../../Pages/SetTiming/Settiming";
 import Update from "../../Pages/Updateauction/Update";
@@ -33,6 +33,7 @@ import Addregion from "../../Pages/Setting2/Addregion";
 import Addseller from "../../Pages/Setting2/Addseller";
 import Addcategory from "../../Pages/Setting2/Addcategory";
 import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
+import { Addauction } from "../../Pages/Addauction/Addauction";
 
 export const PageContainer = () => {
   return (
@@ -46,7 +47,8 @@ export const PageContainer = () => {
         <Route path="/import-auction" element={<Importauction />} />
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
-        <Route path="/add-auction" element={<Addauction />} />
+        <Route path="/view-auction" element={<Viewauction />} />
+        <Route path="/add-new-auction" element={<Addauction />} />
         {/* <Route path="/settings" element={<Setting />} /> */}
         <Route path="/set-timing" element={<Settiming />} />
         <Route path="/update-start-price" element={<Update />} />

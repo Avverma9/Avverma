@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
-import {AiOutlineSearch } from 'react-icons/ai';
-import {BsFilter} from "react-icons/bs";
-import {GrAddCircle} from "react-icons/gr";
-import {FiUpload} from "react-icons/fi";
-import {FiRefreshCcw} from "react-icons/fi";
-import {TfiExport} from "react-icons/tfi";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BsFilter } from "react-icons/bs";
+import { GrAddCircle } from "react-icons/gr";
+import { FiUpload } from "react-icons/fi";
+import { FiRefreshCcw } from "react-icons/fi";
+import { TfiExport } from "react-icons/tfi";
 import "./Mannageauction.css";
 import { useNavigate } from "react-router-dom";
 
@@ -229,17 +229,17 @@ export const MannageAuction = () => {
           <MdOutlineRemoveRedEye
             size="18"
             color="#1a2333"
-            onClick={() => navigate("/add-auction")}
+            onClick={() => navigate("/view-auction")}
           />
           <BiEdit
             size="18"
             color="#1b3ea9"
-            onClick={() => window.alert(row.productAuctionName)}
+            onClick={() => navigate("/edit-view-auction")}
           />
           <MdDeleteOutline
             size="18"
             color="#ff0000"
-            onClick={() => window.alert(row.productAuctionName)}
+            onClick={() => window.alert("DELETE")}
           />
         </div>
       ),
@@ -265,14 +265,46 @@ export const MannageAuction = () => {
                 margin: "15px 0",
               }}
             >
-            <div className="buttons-header">
-            
-              <input type="text" placeholder="Search here" /><AiOutlineSearch className="search-icon" />
-              <button className="filter-button"><p><BsFilter/>Filter</p></button>
-              <button className="addnew-button"><p><GrAddCircle className="add-circle"/>Add New Auction</p></button>
-              <button className="upload-button"><p><FiUpload/>Upload Bulk</p></button>
-              <button className="refresh-button"><p><FiRefreshCcw/>Refresh</p></button>
-            </div>
+              <div className="buttons-header">
+                <input type="text" placeholder="Search here" />
+                <AiOutlineSearch className="search-icon" />
+                <button className="export-button">
+                  <p>
+                    <TfiExport style={{ marginRight: "5px" }} />
+                    Export
+                  </p>
+                </button>
+                <button className="filter-button">
+                  <p>
+                    <BsFilter style={{ marginRight: "5px" }} />
+                    Filter
+                  </p>
+                </button>
+                <button
+                  className="addnew-button"
+                  onClick={() => navigate("/add-new-auction")}
+                >
+                  <p>
+                    <GrAddCircle
+                      className="add-circle"
+                      style={{ marginRight: "5px" }}
+                    />
+                    Add New Auction
+                  </p>
+                </button>
+                <button className="upload-button">
+                  <p>
+                    <FiUpload style={{ marginRight: "5px" }} />
+                    Upload Bulk
+                  </p>
+                </button>
+                <button className="refresh-button">
+                  <p>
+                    <FiRefreshCcw style={{ marginRight: "5px" }} />
+                    Refresh
+                  </p>
+                </button>
+              </div>
             </div>
             <div>
               <div className="_flex_center_between">
@@ -371,24 +403,25 @@ export const MannageAuction = () => {
             </div>
           </>
         }
-        actions={
-          <button
-          className="export-butto"
-            style={{
-              padding: "10px",
-backgroundcolor: "rgba(44, 44, 44, 0.8)",
-border: "medium",
-color: "white",
-cursor: "pointer",
-display: "flex",
-alignitems: "center",
-gap: "5px",
-fontWeight:"800",
-            }}
-          >
-            Export<TfiExport/>
-          </button>
-        }
+        // actions={
+        //   <button
+        //     className="export-butto"
+        //     style={{
+        //       padding: "10px",
+        //       backgroundcolor: "rgba(44, 44, 44, 0.8)",
+        //       border: "medium",
+        //       color: "white",
+        //       cursor: "pointer",
+        //       display: "flex",
+        //       alignitems: "center",
+        //       gap: "5px",
+        //       fontWeight: "800",
+        //     }}
+        //   >
+        //     Export
+        //     <TfiExport />
+        //   </button>
+        // }
       />
     </>
   );
