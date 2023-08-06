@@ -1,3 +1,12 @@
-/* .multi-select {
-  width: 30%;
-} */
+.add-new-auction-fields {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 15px;
+  column-gap: 15px;
+}
+
+.add-new-auction-fields .basic-multi-select {
+  flex-basis: 30%;
+  flex-grow: 1;
+  width: 100%;
+}
