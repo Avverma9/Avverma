@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
+import RegisterBuyer from "../RegisterBuyer/RegisterBuyer";
 
 export const Mannagebuyer = () => {
   const navigate = useNavigate();
@@ -60,6 +61,8 @@ export const Mannagebuyer = () => {
             <td>In Active</td>
           </tr>
         </table>
+        <button  onClick={() => navigate("/register-buyer")} className="btn-click">Click me</button>
+        <button onClick={()=>navigate("/register-sub-admin")} className="btn-click">Click again</button>
       </div>
     </div>
   );

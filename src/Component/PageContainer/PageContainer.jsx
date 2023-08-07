@@ -34,6 +34,8 @@ import Addseller from "../../Pages/Setting2/Addseller";
 import Addcategory from "../../Pages/Setting2/Addcategory";
 import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 import { Addauction } from "../../Pages/Addauction/Addauction";
+import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
+import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 
 export const PageContainer = () => {
   return (
@@ -73,6 +75,8 @@ export const PageContainer = () => {
         <Route path="/add-seller" element={<Addseller />} />
         <Route path="/add-category" element={<Addcategory />} />
         <Route path="/mannage-auction" element={<MannageAuction />} />
+        <Route path="register-buyer" element={<RegisterBuyer/>}/>
+        <Route path="register-sub-admin" element={<RegisterSubAdmin/>}/>
       </Routes>
       {/* </BrowserRouter> */}
     </div>
