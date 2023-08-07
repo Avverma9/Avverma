@@ -4,7 +4,7 @@ import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { GrAddCircle } from "react-icons/gr";
-import "./Mannagebuyer.css"
+import "./Mannagebuyer.css";
 
 const data = [
   {
@@ -33,22 +33,22 @@ const data = [
 export const Mannagebuyer = () => {
   const columns = [
     {
-      name: "Sl. No.",
+      name: "Sl.No",
       selector: (row) => row.sl,
       sortable: true,
     },
     {
-      name: "Name",
+      name: "Buyer Name",
       selector: (row) => row.name,
       sortable: true,
     },
     {
-      name: "Phone Number",
+      name: "Buyer Phone",
       selector: (row) => row.phno,
       sortable: true,
     },
     {
-      name: "Email",
+      name: "Buyer Email",
       selector: (row) => row.email,
       sortable: true,
     },
@@ -82,11 +82,12 @@ export const Mannagebuyer = () => {
         subHeaderComponent={
           <div className="_mannage-buyer-sub-header">
             <div className="_search-component">
-              <input type="text" name="" id="" />
+              <input type="text" name="" id="" placeholder="Search" />
               <AiOutlineSearch />
             </div>
             <div className="_filter-dropdown">
               <select name="" id="">
+                <option>Filter</option>
                 <option value="">Pending</option>
                 <option value="">Active</option>
                 <option value="">InActive</option>
@@ -94,7 +95,7 @@ export const Mannagebuyer = () => {
             </div>
             <div className="_register-buyer-btn">
               <button>
-                <GrAddCircle />
+                <GrAddCircle color="#fff" />
                 <span>Register a Buyer</span>
               </button>
             </div>

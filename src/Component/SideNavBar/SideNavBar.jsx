@@ -36,11 +36,11 @@ const Profile = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/profile">
           {" "}
           <img src={profileIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
+        <Link to="/profile">
           <p>{upperCase("Profile")}</p>
         </Link>
       </li>
@@ -65,7 +65,7 @@ const PushNotification = () => {
 };
 
 const Dashboard2 = () => {
-  return(
+  return (
     <>
       <li>
         <Link to="/">
@@ -77,10 +77,10 @@ const Dashboard2 = () => {
         </Link>
       </li>
     </>
-  )
-}
-const Setting2 = ()=>{
-  return(
+  );
+};
+const Setting2 = () => {
+  return (
     <>
       <li>
         <Link to="/settings">
@@ -92,8 +92,8 @@ const Setting2 = ()=>{
         </Link>
       </li>
     </>
-  )
-}
+  );
+};
 
 const Auction = () => {
   // const [isExpanded, setExpanded] = useState(false);
@@ -101,9 +101,9 @@ const Auction = () => {
   return (
     <>
       <li
-        // {...getToggleProps({
-        //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        // })}
+      // {...getToggleProps({
+      //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+      // })}
       >
         <Link>
           {" "}
@@ -164,9 +164,9 @@ const MannageAuction = () => {
   return (
     <>
       <li
-        // {...getToggleProps({
-        //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        // })}
+      // {...getToggleProps({
+      //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+      // })}
       >
         <Link to="/mannage-auction">
           {" "}
@@ -244,12 +244,12 @@ export const SideNavBar = () => {
       <div className="side_nav_body">
         <ul>
           <Home />
-          <Dashboard2/>
+          <Dashboard2 />
           <MannageAuction />
-          <Setting2/>
+          <Setting2 />
           <MannageBuyer />
           <MannageAdmin />
-          
+
           <Profile />
           <PushNotification />
         </ul>

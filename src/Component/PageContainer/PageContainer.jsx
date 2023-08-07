@@ -34,6 +34,7 @@ import Addseller from "../../Pages/Setting2/Addseller";
 import Addcategory from "../../Pages/Setting2/Addcategory";
 import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 import { Addauction } from "../../Pages/Addauction/Addauction";
+import { Profile } from "../../Pages/Profile/Profile";
 
 export const PageContainer = () => {
   return (
@@ -73,6 +74,7 @@ export const PageContainer = () => {
         <Route path="/add-seller" element={<Addseller />} />
         <Route path="/add-category" element={<Addcategory />} />
         <Route path="/mannage-auction" element={<MannageAuction />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>
