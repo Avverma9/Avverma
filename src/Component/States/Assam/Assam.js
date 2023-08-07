@@ -47,6 +47,7 @@ const Assampage = () => {
         </div>
         <div className="text">
           <h2>Majuli</h2>
+          
           <p>{data[0]?.text[2]}</p>
         </div>
       </div>

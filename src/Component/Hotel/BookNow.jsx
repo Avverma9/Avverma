@@ -32,7 +32,7 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
-import { convertDate } from "../../utils/convertDate";
+import { convertDate, getCurrentDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
 export default function BookNow({ refresh, reset, userData }) {
@@ -49,6 +49,8 @@ export default function BookNow({ refresh, reset, userData }) {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
+
+
   const [localid, setLocalid] = useState("");
   const [myReview, setMyReview] = useState("");
   const [hotelReviews, setHotelReviews] = useState([]);
@@ -80,6 +82,13 @@ export default function BookNow({ refresh, reset, userData }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleRoomChange = (e) => {
+    let value = parseInt(e.target.value, 10);
+    value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
+    setSelectedRooms(value);
+  };
+
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
@@ -455,7 +464,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} />
+                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} min={getCurrentDate()} />
                     </span>
                   </p>
                 </div>
@@ -467,7 +476,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} />
+                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} min={checkInDate} disabled={!checkInDate} />
                     </span>
                   </p>
                 </div>
@@ -479,14 +488,37 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faIdCard} className="icon" />
                 LocalID: {bookingDetails.availability}
               </p>
-              <p className="noofroom">
+              <div className="noofroom input-container">
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
-                Rooms: <input type="number" value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} />
-              </p>
-              <p className="noofguest">
+                Rooms:
+                <button className="negposbtn" onClick={() => setSelectedRooms(Math.max(selectedRooms - 1, 1))}>
+                  -
+                </button>
+                <input className="inputbutton" type="number" value={selectedRooms} onChange={handleRoomChange} min="1" max="4" />
+                <button className="negposbtn" onClick={() => setSelectedRooms(Math.min(selectedRooms + 1, 4))}>
+                  +
+                </button>
+              </div>
+
+              <div className="noofguest input-container">
                 <FontAwesomeIcon icon={faPerson} className="icon" />
-                Guests: <input type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} />
-              </p>
+                Guests :
+                <button className="negposbtn" onClick={() => setSelectedGuests(Math.max(selectedGuests - 1, 1))}>
+                  -
+                </button>
+                <input className="inputbutton" type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} min="1" />
+                <button className="negposbtn" onClick={() => setSelectedGuests(selectedGuests + 1)}>
+                  +
+                </button>
+              </div>
+              {bookingDetails.disclaimer && (
+                <>
+                  <p>{bookingDetails.disclaimer}</p>
+                  {bookingDetails.contact && (
+                    <p>Hotel Contact: {bookingDetails.contact}</p>
+                  )}
+                </>
+              )}
               <p className="roomtype">
                 <FontAwesomeIcon icon={faHotel} className="icon" />
                 Room Type: {bookingDetails.roomtype}

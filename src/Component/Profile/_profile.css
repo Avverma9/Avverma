@@ -472,6 +472,24 @@ input[type="radio"] {
   border-radius: 10px;
 }
 
+.savebtn{
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+}
+
+.editbtn{
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #2563eb;
+  color: white;
+  margin-left: 5px;
+}
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .profile_container {

@@ -16,3 +16,22 @@ export function convertDate(dateString) {
     // Return the date in the DD-MM-YYYY format.
     return `${day}-${month}-${year}`;
 }
+
+
+//Get current Date
+export function getCurrentDate() {
+    const today = new Date();
+    let month = (today.getMonth() + 1).toString();
+    let day = today.getDate().toString();
+  
+    if (month.length === 1) {
+      month = '0' + month;
+    }
+    if (day.length === 1) {
+      day = '0' + day;
+    }
+  
+    return `${today.getFullYear()}-${month}-${day}`;
+  }
+
+  
