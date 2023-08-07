@@ -9,12 +9,14 @@ const createBooking = async (req, res) => {
     let totalFoodPrice=0
     for(const foodItem of foodItems){
       const food= await foodModel.findById(foodItem._id)
-      totalFoodPrice += food
+      totalFoodPrice += food.price
     }
+
     const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price* rooms
+    const foodPrice= totalprice + totalFoodPrice
   
     const booking = {
       images,
@@ -26,7 +28,7 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut, 
       guests,
       rooms,
-      price: totalprice,
+      price: foodPrice,
       destination:destination,
       bookingStatus: paymentStatus === "success" ? "success" : "failed"
     };
