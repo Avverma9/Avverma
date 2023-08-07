@@ -78,6 +78,10 @@ const searchHotels = async (req, res) => {
       moreOptions,
     } = req.query;
 
+    // if (numRooms && Number(numRooms) > 4) {
+    //   return res.status(400).json({ message: "User cannot book more than 4 rooms, please contact the hotel" });
+    // }
+    
     const searchQuery = {};
 
     if (destination) {
