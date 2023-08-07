@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckOut({
   hotelId,
@@ -15,6 +16,7 @@ export default function CheckOut({
   hotelimage,
   destination,
 }) {
+  const navigate = useNavigate();
   const handleOpenRazorpay = (data) => {
     const options = {
       name: "Hotel Booking",
@@ -49,19 +51,19 @@ export default function CheckOut({
   console.log(userData, "USERDATA CHECKOUTPAGE");
 
   const handlePayment = async () => {
-    const data = {
-      hotelId: hotelId,
-      userId: userId,
-      amount: amount,
-      currency: currency,
-    };
-
-    try {
-      const response = await axios.post("http://localhost:5000/payments", data);
-      handleOpenRazorpay(response.data);
-    } catch (err) {
-      console.log(err);
-    }
+    // const data = {
+    //   hotelId: hotelId,
+    //   userId: userId,
+    //   amount: amount,
+    //   currency: currency,
+    // };
+    // try {
+    //   const response = await axios.post("http://localhost:5000/payments", data);
+    //   handleOpenRazorpay(response.data);
+    // } catch (err) {
+    //   console.log(err);
+    // }
+    navigate("/customize-booking")
   };
 
   const handleBooking = (paymentStatus) => {
