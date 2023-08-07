@@ -101,7 +101,7 @@ router.post("/verifyotp", emailController.verifyOtp)
 
 //===============================food==========================================//
 router.post("/create",upload,foodController.createFood)
-router.get("/get/food",foodController.getFood)
+router.get("/get/latest/food",foodController.getFood)
 
 
 
