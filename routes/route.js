@@ -12,6 +12,7 @@ const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
 const emailController = require("../controllers/emailController")
+const foodController = require("../controllers/foodController")
 // const otpController = require("../controllers/otpController")
 
 
@@ -98,6 +99,9 @@ router.post("/verifyotp", emailController.verifyOtp)
 //================================OTP=====================================//
 // router.post("/sendOtp",otpController.sendOtp)
 
+//===============================food==========================================//
+router.post("/create",upload,foodController.createFood)
+router.get("/get/food",foodController.getFood)
 
 
 
