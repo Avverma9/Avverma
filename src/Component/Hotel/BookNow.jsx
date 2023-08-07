@@ -32,8 +32,8 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
+import { convertDate, getCurrentDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
-import { getCurrentDate } from "../../utils/_dateFuntions";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
