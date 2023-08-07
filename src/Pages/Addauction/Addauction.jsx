@@ -329,6 +329,9 @@ export const Addauction = () => {
           <input type="file" placeholder="" className="basic-multi-select-inputs"/>
         </label>
       </div>
+      <div className="submit-btn-1">
+        <button className="submit-btn">Submit</button>
+      </div>
     </>
   );
 };
