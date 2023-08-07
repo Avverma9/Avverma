@@ -29,7 +29,7 @@ import {
   faGlassMartini,
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
-import { convertDate } from "../../utils/convertDate";
+import { formatDate } from "../../utils/_dateFuntions";
 
 const BookNowPage = ({ refresh, reset }) => {
   const { offerId } = useParams();
@@ -68,8 +68,8 @@ const BookNowPage = ({ refresh, reset }) => {
         setHotelImages(data.images);
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
-        setCheckIn(convertDate(data.startDate));
-        setCheckout(convertDate(data.endDate));
+        setCheckIn(formatDate(data.startDate));
+        setCheckout(formatDate(data.endDate));
       })
       .catch((error) => console.error(error));
   }, [offerId]);

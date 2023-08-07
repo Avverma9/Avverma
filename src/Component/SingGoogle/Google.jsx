@@ -1,11 +1,8 @@
 import React from "react";
-import './Google.css';
+import "./Google.css";
 
-import { addUser } from "../redux/bazarSlice";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup,  } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-
-import { getLocalStorage } from "../../hooks/useLocalStorage"
 
 const Google = () => {
   const navigate = useNavigate();
@@ -16,19 +13,14 @@ const Google = () => {
     e.preventDefault();
     signInWithPopup(auth, provider)
       .then((result) => {
-        const user = result.user;
-        // addUser({
-        // _id: user.uid,
-        // name: user.displayName,
-        // email: user.email,
-        // image: user.photoURL,
-        // });
-        localStorage.setItem("loggedUser", JSON.stringify(user))
-        // const userDetails = getLocalStorage("loggedUser");
-        // console.log(userDetails);
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
+        if (result.user) {
+          const user = result.user;
+          localStorage.setItem("isSignedIn", "true");
+          localStorage.setItem("loggedUser", JSON.stringify(user));
+          setTimeout(() => {
+            navigate("/profile");
+          }, 500);
+        }
       })
       .catch((error) => {
         console.log(error);

@@ -1433,8 +1433,8 @@ const Partner = () => {
                 <h6>Map plan</h6>
                 <label htmlFor="offdoublesharing">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
-                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  <input type="text" id="offdoublesharing" value={offDoubleSharing} //offDoubleSharingMapPlan
+                    onChange={(e)=>setOffDoubleSharing(e.target.value)} //offDoubleSharingApPlan
                   />
                 </label>
 
