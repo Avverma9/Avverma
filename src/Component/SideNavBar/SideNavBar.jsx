@@ -223,11 +223,11 @@ const MannageAdmin = () => {
   return (
     <>
       <li>
-        <Link to="/mannage-admin">
+        <Link to="/register-sub-admin">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/mannage-admin">
+        <Link to="/register-sub-admin">
           <p>{upperCase("Mannage Admin")}</p>
         </Link>
       </li>
