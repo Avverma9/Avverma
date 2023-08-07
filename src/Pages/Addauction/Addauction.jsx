@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import {LiaRupeeSignSolid} from 'react-icons/lia';
+import { IoMdArrowDropdown } from 'react-icons/io';
 import "./Addauction.css";
 
 const category = [
@@ -182,10 +184,15 @@ export const Addauction = () => {
   const [selectedSeller, setSelectedSeller] = useState(null);
 
   // console.log(selectedOption);
+  const [selectedOption, setSelectedOption] = useState(''); // State to track selected option
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
   return (
     <>
       <div className="dashboard-header">
-        <h1>Add Auction</h1>
+        <h1>Add new Auction</h1>
       </div>
       <div className="add-new-auction-fields">
         <Select
@@ -218,15 +225,108 @@ export const Addauction = () => {
 
         <label htmlFor="nameofproduct">
           <p>Name of the product</p>
-          <input type="text" placeholder="name" />
+          <input type="text" placeholder="name" className="basic-multi-select-inputs"/>
         </label>
         <label htmlFor="Registration Number">
           <p>Registration Number</p>
-          <input type="number" placeholder="name" />
+          <input type="number" placeholder="name" className="basic-multi-select-inputs"/>
         </label>
         <label htmlFor="Agreement Number">
           <p> Agreement Number</p>
-          <input type="number" placeholder="name" />
+          <input type="number" placeholder="name" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="RC">
+          <p>RC</p>
+          <div className="rc-input">
+          <input type="radio" id="yes" name="rc"/><label for="yes">Yes</label>
+          <input type="radio" id="no" name="rc"/><label for="no">No</label>
+          </div>
+        </label>
+        <label htmlFor="start-price">
+          <p>Start Price</p>
+          <input type="text" placeholder=<LiaRupeeSignSolid/> className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="reserve-price">
+          <p>Reserve Price</p>
+          <input type="text" placeholder=<LiaRupeeSignSolid/> className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="start-time">
+          <p>Start Time</p>
+          <input type="text" placeholder="Start Time" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="start-date">
+          <p>Start Date</p>
+          <input type="text" placeholder="Start Date" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="end-time">
+          <p>End Time</p>
+          <input type="text" placeholder="End Time" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="end-date">
+          <p>End Date</p>
+          <input type="text" placeholder="End Date" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="fuel-type">
+          <p>RC</p>
+          <div className="fuel-type">
+          <input type="radio" id="petrol" name="fuel"/><label for="petrol">P</label>
+          <input type="radio" id="diesel" name="fuel"/><label for="diesel">D</label>
+          <input type="radio" id="gas" name="fuel"/><label for="gas">G</label>
+          <input type="radio" id="e" name="fuel"/><label for="e">E</label>
+          </div>
+        </label>
+        <label htmlFor="parking-name">
+          <p>Parking Name</p>
+          <input type="text" placeholder="Parking Name" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="parking-address">
+          <p>Parking Address</p>
+          <input type="text" placeholder="Address" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="menufecture-year">
+          <p>Year of Menufecture</p>
+          <input type="text" placeholder="Year" className="basic-multi-select-inputs"/>
+        </label>
+        
+      <label htmlFor="payment-mode">
+      <p>Payment Term</p>
+      <select className="basic-multi-select-inputs" value={selectedOption} onChange={handleOptionChange}>
+        <option value="" disabled>Select an option</option>
+        <option value="online">Online</option>
+        <option value="offline">Offline</option>
+        <option value="upi">UPI</option>
+        <option value="net-banking">Net Banking</option>
+      </select>
+      
+    </label>
+    <label htmlFor="quatation-validity">
+          <p>Quatation Validity</p>
+          <input type="text" placeholder="" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="auction-fees">
+          <p>Auction Fees</p>
+          <input type="text" placeholder="Auction-fees" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="auction-term">
+          <p>Auction Term</p>
+          <input type="text" placeholder="Auction-term" className="basic-multi-select-inputs"/>
+        </label>
+        <div className="textarea">
+        <label htmlFor="text-area">
+          <p>Other Information </p>
+          
+        </label>
+      </div>
+      
+      </div>
+      <div className="cont-2">
+      <label htmlFor="add-video">
+          <p>Upload Photo/Video</p>
+          <input type="file" placeholder="" className="basic-multi-select-inputs"/>
+        </label>
+        <label htmlFor="add-file">
+          <p>Add Valuation File</p>
+          <input type="file" placeholder="" className="basic-multi-select-inputs"/>
         </label>
       </div>
     </>
