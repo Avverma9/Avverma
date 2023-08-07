@@ -35,6 +35,8 @@ import Addcategory from "../../Pages/Setting2/Addcategory";
 import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 import { Addauction } from "../../Pages/Addauction/Addauction";
 import { Profile } from "../../Pages/Profile/Profile";
+import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
+import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 
 export const PageContainer = () => {
   return (
@@ -75,6 +77,8 @@ export const PageContainer = () => {
         <Route path="/add-category" element={<Addcategory />} />
         <Route path="/mannage-auction" element={<MannageAuction />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="register-buyer" element={<RegisterBuyer/>}/>
+        <Route path="register-sub-admin" element={<RegisterSubAdmin/>}/>
       </Routes>
       {/* </BrowserRouter> */}
     </div>

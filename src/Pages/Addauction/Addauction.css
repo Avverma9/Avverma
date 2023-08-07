@@ -52,6 +52,7 @@ height: 40px;
   width: 25%;
   margin-top: 20px;
   background: rgb(66, 216, 66);
+  cursor: pointer;
 }
 .submit-btn-1{
   display: flex;

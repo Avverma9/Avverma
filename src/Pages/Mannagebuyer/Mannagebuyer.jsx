@@ -29,6 +29,7 @@ const data = [
     status: "pending", // default pending, deactive,active
   },
 ];
+import RegisterBuyer from "../RegisterBuyer/RegisterBuyer";
 
 export const Mannagebuyer = () => {
   const columns = [
@@ -98,7 +99,9 @@ export const Mannagebuyer = () => {
                 <GrAddCircle color="#fff" />
                 <span>Register a Buyer</span>
               </button>
-            </div>
+              <button  onClick={() => navigate("/register-buyer")} className="btn-click">Click me</button>
+        <button onClick={()=>navigate("/register-sub-admin")} className="btn-click">Click again</button>
+      </div>
           </div>
         }
       />
