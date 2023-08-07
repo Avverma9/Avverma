@@ -12,7 +12,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
-  position: relative;
+  /* position: relative; */
 }
 ._profile-body ._input-fields {
   flex-basis: 33%;
