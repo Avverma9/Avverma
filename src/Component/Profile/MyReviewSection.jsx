@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { convertDate } from "../../utils/convertDate";
+import { formatDate } from "../../utils/_dateFuntions";
 
 export const MyReviewSection = () => {
   const userId = localStorage.getItem("userId");
@@ -38,7 +38,7 @@ export const MyReviewSection = () => {
                 <div className="review_content">
                   <div className="review_content_header">
                     <h4>{review.hotelName}</h4>
-                    <p>{convertDate(review.review.createdAt)}</p>
+                    <p>{formatDate(review.review.createdAt)}</p>
                   </div>
                   <div className="review_content_body">
                     <p>{review.review.comment}</p>

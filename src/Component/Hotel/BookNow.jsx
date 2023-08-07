@@ -50,7 +50,6 @@ export default function BookNow({ refresh, reset, userData }) {
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
 
-
   const [localid, setLocalid] = useState("");
   const [myReview, setMyReview] = useState("");
   const [hotelReviews, setHotelReviews] = useState([]);
@@ -88,7 +87,6 @@ export default function BookNow({ refresh, reset, userData }) {
     value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
     setSelectedRooms(value);
   };
-
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
@@ -137,8 +135,7 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData =
-    hotelReviews && [...hotelReviews].reverse().slice(startIndex, endIndex);
+  const currentData = hotelReviews && hotelReviews.slice(startIndex, endIndex);
 
   const visiblePages = [];
   const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
@@ -310,10 +307,12 @@ export default function BookNow({ refresh, reset, userData }) {
   };
 
   console.log(fieldFocus);
-  console.log(bookingDetails, "Bookigggggggggggggggggggggggggggggggggggggggggggg")
+  console.log(
+    bookingDetails,
+    "Bookigggggggggggggggggggggggggggggggggggggggggggg"
+  );
   const firstImageURL = bookingDetails.images?.[0];
-  console.log(firstImageURL, "gggggggggggggggggggggggg")
-
+  console.log(firstImageURL, "gggggggggggggggggggggggg");
 
   return (
     <>
@@ -464,7 +463,12 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} min={getCurrentDate()} />
+                      <input
+                        type="date"
+                        value={checkInDate}
+                        onChange={(e) => setCheckInDate(e.target.value)}
+                        min={getCurrentDate()}
+                      />
                     </span>
                   </p>
                 </div>
@@ -476,7 +480,13 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} min={checkInDate} disabled={!checkInDate} />
+                      <input
+                        type="date"
+                        value={checkOutDate}
+                        onChange={(e) => setCheckOutDate(e.target.value)}
+                        min={checkInDate}
+                        disabled={!checkInDate}
+                      />
                     </span>
                   </p>
                 </div>
@@ -491,11 +501,28 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="noofroom input-container">
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
-                <button className="negposbtn" onClick={() => setSelectedRooms(Math.max(selectedRooms - 1, 1))}>
+                <button
+                  className="negposbtn"
+                  onClick={() =>
+                    setSelectedRooms(Math.max(selectedRooms - 1, 1))
+                  }
+                >
                   -
                 </button>
-                <input className="inputbutton" type="number" value={selectedRooms} onChange={handleRoomChange} min="1" max="4" />
-                <button className="negposbtn" onClick={() => setSelectedRooms(Math.min(selectedRooms + 1, 4))}>
+                <input
+                  className="inputbutton"
+                  type="number"
+                  value={selectedRooms}
+                  onChange={handleRoomChange}
+                  min="1"
+                  max="4"
+                />
+                <button
+                  className="negposbtn"
+                  onClick={() =>
+                    setSelectedRooms(Math.min(selectedRooms + 1, 4))
+                  }
+                >
                   +
                 </button>
               </div>
@@ -503,11 +530,25 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="noofguest input-container">
                 <FontAwesomeIcon icon={faPerson} className="icon" />
                 Guests :
-                <button className="negposbtn" onClick={() => setSelectedGuests(Math.max(selectedGuests - 1, 1))}>
+                <button
+                  className="negposbtn"
+                  onClick={() =>
+                    setSelectedGuests(Math.max(selectedGuests - 1, 1))
+                  }
+                >
                   -
                 </button>
-                <input className="inputbutton" type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} min="1" />
-                <button className="negposbtn" onClick={() => setSelectedGuests(selectedGuests + 1)}>
+                <input
+                  className="inputbutton"
+                  type="number"
+                  value={selectedGuests}
+                  onChange={(e) => setSelectedGuests(e.target.value)}
+                  min="1"
+                />
+                <button
+                  className="negposbtn"
+                  onClick={() => setSelectedGuests(selectedGuests + 1)}
+                >
                   +
                 </button>
               </div>
@@ -557,8 +598,8 @@ export default function BookNow({ refresh, reset, userData }) {
             <div className="reviews" key={refresh}>
               <div className="reviewhead">
                 <h1>Reviews:</h1>
-                {currentData && currentData.length !== 0
-                  ? currentData.map((rev, i) => (
+                {currentData
+                  ? [...currentData].reverse().map((rev, i) => (
                       <>
                         <div
                           className="d-flex flex-column gap-3"
@@ -588,9 +629,9 @@ export default function BookNow({ refresh, reset, userData }) {
                               />
                             </div>
 
-                          <div className="comment_profile_name">
-                            <h4>{rev.user.name}</h4>
-                          </div>
+                            <div className="comment_profile_name">
+                              <h4>{rev.user.name}</h4>
+                            </div>
 
                             {rev.review.user === userId && (
                               <div className="comment_update_del">
@@ -610,43 +651,43 @@ export default function BookNow({ refresh, reset, userData }) {
                             )}
                           </div>
 
-                        {isUpdatingReview && reviewId === rev.review._id ? (
-                          <div className="update_review">
-                            <textarea
-                              placeholder="Update Review"
-                              type="text"
-                              rows="2"
-                              value={updatedReview}
-                              onChange={(e) =>
-                                setUpdatedReview(e.target.value)
-                              }
-                              onKeyUp={keyPressHandler}
-                              onFocus={(e) =>
-                                setFieldFocus(
-                                  e.target.nextElementSibling.className
-                                )
-                              }
-                            />
-                            <button
-                              className="update_review_button"
-                              onClick={updateReviewHandler}
-                            >
-                              <FaTelegramPlane />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="review_comment">
-                            <p>{rev.review.comment}</p>
-
-                            <div className="comment_date">
-                              <h6>{convertDate(rev.review.createdAt)}</h6>
+                          {isUpdatingReview && reviewId === rev.review._id ? (
+                            <div className="update_review">
+                              <textarea
+                                placeholder="Update Review"
+                                type="text"
+                                rows="2"
+                                value={updatedReview}
+                                onChange={(e) =>
+                                  setUpdatedReview(e.target.value)
+                                }
+                                onKeyUp={keyPressHandler}
+                                onFocus={(e) =>
+                                  setFieldFocus(
+                                    e.target.nextElementSibling.className
+                                  )
+                                }
+                              />
+                              <button
+                                className="update_review_button"
+                                onClick={updateReviewHandler}
+                              >
+                                <FaTelegramPlane />
+                              </button>
                             </div>
-                          </div>
-                        )}
-                        <div style={{ border: "1px solid #94a3b8 " }}></div>
-                      </div>
-                    </>
-                  ))
+                          ) : (
+                            <div className="review_comment">
+                              <p>{rev.review.comment}</p>
+
+                              <div className="comment_date">
+                                <h6>{convertDate(rev.review.createdAt)}</h6>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{ border: "1px solid #94a3b8 " }}></div>
+                        </div>
+                      </>
+                    ))
                   : null}
               </div>
               {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
@@ -661,8 +702,9 @@ export default function BookNow({ refresh, reset, userData }) {
                 {visiblePages.map((page) => (
                   <button
                     key={page}
-                    className={`_pagination-button ${page === currentPage ? "_pagination-active" : ""
-                      }`}
+                    className={`_pagination-button ${
+                      page === currentPage ? "_pagination-active" : ""
+                    }`}
                     onClick={() => handlePageClick(page)}
                   >
                     {page}
