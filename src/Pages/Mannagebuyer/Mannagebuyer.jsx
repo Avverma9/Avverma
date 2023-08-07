@@ -5,6 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { GrAddCircle } from "react-icons/gr";
 import "./Mannagebuyer.css";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -29,9 +30,9 @@ const data = [
     status: "pending", // default pending, deactive,active
   },
 ];
-import RegisterBuyer from "../RegisterBuyer/RegisterBuyer";
 
 export const Mannagebuyer = () => {
+  const navigate = useNavigate();
   const columns = [
     {
       name: "Sl.No",
@@ -95,13 +96,11 @@ export const Mannagebuyer = () => {
               </select>
             </div>
             <div className="_register-buyer-btn">
-              <button>
+              <button onClick={() => navigate("/register-buyer")}>
                 <GrAddCircle color="#fff" />
                 <span>Register a Buyer</span>
               </button>
-              <button  onClick={() => navigate("/register-buyer")} className="btn-click">Click me</button>
-        <button onClick={()=>navigate("/register-sub-admin")} className="btn-click">Click again</button>
-      </div>
+            </div>
           </div>
         }
       />
