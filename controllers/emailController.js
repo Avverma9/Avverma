@@ -54,7 +54,7 @@ const sendPasswordMail = async (req, res) => {
     await user.save();
 
 
-    const resetLink = `http://localhost:3000/resetPassword/${token}`;
+    const resetLink = `https://youtube-bbrv.onrender.com/resetPassword/${token}`;
     const mailOptions = {
       from: "hotelbookingtesting@gmail.com",
       to: email,
