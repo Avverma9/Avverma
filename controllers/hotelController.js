@@ -140,7 +140,13 @@ const getAllHotels = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+//============================get by city============================================//
+const getCity = async function(req,res){
+ const {destination} = req.body
+  const hotels= await hotelModel.findOne({destination:destination})
+ 
+  res.json(hotels)
+}
 //==========================================================================
 
 const getHotelbyName = async (req, res) => {
@@ -268,5 +274,6 @@ module.exports = {
   getHotelsByAccommodation,
   getHotelsByLocalID,
   getHotelsByCategory,
-  getHotelsByFilters
+  getHotelsByFilters,
+  getCity
 };
