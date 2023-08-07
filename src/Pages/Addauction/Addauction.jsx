@@ -403,6 +403,9 @@ export const Addauction = () => {
           />
         </label>
       </div>
+      <div className="submit-btn-1">
+        <button className="submit-btn">Submit</button>
+      </div>
     </>
   );
 };
