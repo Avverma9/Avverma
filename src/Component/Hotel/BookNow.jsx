@@ -346,12 +346,12 @@ export default function BookNow({ refresh, reset, userData }) {
 
                 <p className="location-booknow">{bookingDetails.destination}</p>
               </div>
-              <p className="rating0">
-                <p className="staricon">
+              <div className="rating0">
+                <div className="staricon">
                   {bookingDetails.rating}
                   <FontAwesomeIcon icon={faStar} className="staricon" />
-                </p>
-              </p>
+                </div>
+              </div>
             </div>
             <div className="pricing">
               <FontAwesomeIcon icon={faInr} className="indianrupee" />
@@ -720,6 +720,7 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
             </div>
             <CheckOut
+              hotelName={bookingDetails.hotelName}
               hotelId={bookingDetails._id}
               userId={userId}
               amount={Number(bookingDetails.price)}
