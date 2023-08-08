@@ -76,6 +76,21 @@ const BookNowPage = () => {
       })
       .catch((error) => console.error(error));
   }, [offerId]);
+
+  useEffect(() => {
+    fetch(`https://hotel-backend-tge7.onrender.com/offers/review/${offerId}`)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          console.log(response);
+        }
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }, [offerId]);
+
   console.log(offerData);
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${offerData._id}`)
