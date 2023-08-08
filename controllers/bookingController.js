@@ -88,19 +88,23 @@ const createBooking = async (req, res) => {
     const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
 
     let totalFoodPrice = 0;
-    let foodData = []; // To store food data for the booking
+    let foodData = []; 
 
     if (Array.isArray(foodItems) && foodItems.length > 0) {
       for (const foodItem of foodItems) {
         const food = await foodModel.findById(foodItem._id);
-        totalFoodPrice += food.price;
-        foodData.push({ name: food.name, price: food.price }); // Adding food data
+        totalFoodPrice += food.price * foodItem.quantity; 
+        foodData.push({
+          name: food.name,
+          price: food.price,
+          quantity: foodItem.quantity 
+        });
       }
     }
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const totalprice = price * rooms;
-    const foodPrice = totalprice + totalFoodPrice;
+    const totalPrice = price * rooms;
+    const foodPrice = totalPrice + totalFoodPrice;
 
     const booking = {
       images,
@@ -115,7 +119,7 @@ const createBooking = async (req, res) => {
       price: foodPrice,
       destination,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      foodItems: foodData // Adding the extracted food data to the booking
+      foodItems: foodData
     };
 
     const savedBooking = await bookingModel.create(booking);
@@ -126,6 +130,7 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
