@@ -720,6 +720,8 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
             </div>
             <CheckOut
+            rating={bookingDetails.rating}
+             hoteldescription={bookingDetails.description}
               hotelName={bookingDetails.hotelName}
               hotelId={bookingDetails._id}
               userId={userId}
