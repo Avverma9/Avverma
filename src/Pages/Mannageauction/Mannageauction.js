@@ -178,6 +178,22 @@ export const MannageAuction = () => {
   const [showRegion, setShowRegion] = useState(false);
   const [showSeller, setShowSeller] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
+  const [filterView, setFilterView] = useState(false);
+  const [exportView, setExportView] = useState([]);
+  const [filterText, setFilterText] = useState("");
+  const filteredItems = data.filter(
+    (item) =>
+      item.registrationNo
+        .toLowerCase()
+        .includes(filterText.toLocaleLowerCase()) ||
+      item.agreementNumber
+        .toLowerCase()
+        .includes(filterText.toLocaleLowerCase()) ||
+      item.category.toLowerCase().includes(filterText.toLocaleLowerCase()) ||
+      item.productAuctionName
+        .toLowerCase()
+        .includes(filterText.toLocaleLowerCase())
+  );
 
   const navigate = useNavigate();
 
@@ -245,16 +261,21 @@ export const MannageAuction = () => {
       ),
     },
   ];
+  const handleRowSelected = (state) => {
+    setExportView(state.selectedRows);
+  };
+  console.log(exportView.length);
   return (
     <>
       <DataTable
         title="Mannage Auction"
         columns={columns}
-        data={data}
+        data={filteredItems}
         pagination
         fixedHeader
         fixedHeaderScrollHeight="75vh"
         selectableRows
+        onSelectedRowsChange={handleRowSelected}
         subHeader
         subHeaderAlign="left"
         subHeaderComponent={
@@ -266,15 +287,24 @@ export const MannageAuction = () => {
               }}
             >
               <div className="buttons-header">
-                <input type="text" placeholder="Search here" />
+                <input
+                  type="text"
+                  placeholder="Search here"
+                  onChange={(e) => setFilterText(e.target.value)}
+                />
                 <AiOutlineSearch className="search-icon" />
-                <button className="export-button">
-                  <p>
-                    <TfiExport style={{ marginRight: "5px" }} />
-                    Export
-                  </p>
-                </button>
-                <button className="filter-button">
+                {exportView.length !== 0 && (
+                  <button className="export-button">
+                    <p>
+                      <TfiExport style={{ marginRight: "5px" }} />
+                      Export
+                    </p>
+                  </button>
+                )}
+                <button
+                  className="filter-button"
+                  onClick={() => setFilterView(!filterView)}
+                >
                   <p>
                     <BsFilter style={{ marginRight: "5px" }} />
                     Filter
@@ -306,101 +336,103 @@ export const MannageAuction = () => {
                 </button>
               </div>
             </div>
-            <div>
-              <div className="_flex_center_between">
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input type="checkbox" id="filter1" name="filter1"></input>
-                  <label for="filter1">Running Auction</label>
+            {filterView && (
+              <div>
+                <div className="_flex_center_between">
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input type="checkbox" id="filter1" name="filter1"></input>
+                    <label for="filter1">Running Auction</label>
+                  </div>
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input type="checkbox" id="filter2" name="filter2"></input>
+                    <label for="filter2">Awaiting Status Declaration</label>
+                  </div>
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input type="checkbox" id="filter3" name="filter3"></input>
+                    <label for="filter3">Awaiting Payment Approval</label>
+                  </div>
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input type="checkbox" id="filter4" name="filter4"></input>
+                    <label for="filter4">Expired</label>
+                  </div>
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input type="checkbox" id="filter4" name="filter4"></input>
+                    <label for="filter4">Complete</label>
+                  </div>
                 </div>
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input type="checkbox" id="filter2" name="filter2"></input>
-                  <label for="filter2">Awaiting Status Declaration</label>
-                </div>
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input type="checkbox" id="filter3" name="filter3"></input>
-                  <label for="filter3">Awaiting Payment Approval</label>
-                </div>
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input type="checkbox" id="filter4" name="filter4"></input>
-                  <label for="filter4">Expired</label>
-                </div>
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input type="checkbox" id="filter4" name="filter4"></input>
-                  <label for="filter4">Complete</label>
+                <div
+                  className="_flex_center_between"
+                  style={{ marginTop: "15px" }}
+                >
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input
+                      type="checkbox"
+                      id="filter5"
+                      name="filter5"
+                      onChange={(e) => setShowRegion(e.target.checked)}
+                    ></input>
+                    <label for="filter5">Region</label>
+                  </div>
+                  {showRegion && (
+                    <div className="filter-auction-select">
+                      <select
+                        name="filter-auction-select"
+                        id="filter-auction-select"
+                      >
+                        <option value="">-- Please choose an option --</option>
+                        <option value="name">Kolkata</option>
+                        <option value="mobile">Jaipur</option>
+                        <option value="email">Patna</option>
+                      </select>
+                    </div>
+                  )}
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input
+                      type="checkbox"
+                      id="filter6"
+                      name="filter6"
+                      onChange={(e) => setShowSeller(e.target.checked)}
+                    ></input>
+                    <label for="filter6">Seller Name</label>
+                  </div>
+                  {showSeller && (
+                    <div className="filter-auction-select">
+                      <select
+                        name="filter-auction-select"
+                        id="filter-auction-select"
+                      >
+                        <option value="">-- Please choose an option --</option>
+                        <option value="name">Raju</option>
+                        <option value="mobile">Shyam</option>
+                        <option value="email">Ram</option>
+                      </select>
+                    </div>
+                  )}
+                  <div className="filter-auction-checkbox _flex_center_between">
+                    <input
+                      type="checkbox"
+                      id="filter7"
+                      name="filter7"
+                      onChange={(e) => setShowCategory(e.target.checked)}
+                    ></input>
+                    <label for="filter7">Category</label>
+                  </div>
+                  {showCategory && (
+                    <div className="filter-auction-select">
+                      <select
+                        name="filter-auction-select"
+                        id="filter-auction-select"
+                      >
+                        <option value="">-- Please choose an option --</option>
+                        <option value="name">Category 1</option>
+                        <option value="mobile">Category 2</option>
+                        <option value="email">Category 3</option>
+                      </select>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div
-                className="_flex_center_between"
-                style={{ marginTop: "15px" }}
-              >
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input
-                    type="checkbox"
-                    id="filter5"
-                    name="filter5"
-                    onChange={(e) => setShowRegion(e.target.checked)}
-                  ></input>
-                  <label for="filter5">Region</label>
-                </div>
-                {showRegion && (
-                  <div className="filter-auction-select">
-                    <select
-                      name="filter-auction-select"
-                      id="filter-auction-select"
-                    >
-                      <option value="">-- Please choose an option --</option>
-                      <option value="name">Kolkata</option>
-                      <option value="mobile">Jaipur</option>
-                      <option value="email">Patna</option>
-                    </select>
-                  </div>
-                )}
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input
-                    type="checkbox"
-                    id="filter6"
-                    name="filter6"
-                    onChange={(e) => setShowSeller(e.target.checked)}
-                  ></input>
-                  <label for="filter6">Seller Name</label>
-                </div>
-                {showSeller && (
-                  <div className="filter-auction-select">
-                    <select
-                      name="filter-auction-select"
-                      id="filter-auction-select"
-                    >
-                      <option value="">-- Please choose an option --</option>
-                      <option value="name">Raju</option>
-                      <option value="mobile">Shyam</option>
-                      <option value="email">Ram</option>
-                    </select>
-                  </div>
-                )}
-                <div className="filter-auction-checkbox _flex_center_between">
-                  <input
-                    type="checkbox"
-                    id="filter7"
-                    name="filter7"
-                    onChange={(e) => setShowCategory(e.target.checked)}
-                  ></input>
-                  <label for="filter7">Category</label>
-                </div>
-                {showCategory && (
-                  <div className="filter-auction-select">
-                    <select
-                      name="filter-auction-select"
-                      id="filter-auction-select"
-                    >
-                      <option value="">-- Please choose an option --</option>
-                      <option value="name">Category 1</option>
-                      <option value="mobile">Category 2</option>
-                      <option value="email">Category 3</option>
-                    </select>
-                  </div>
-                )}
-              </div>
-            </div>
+            )}
           </>
         }
         // actions={

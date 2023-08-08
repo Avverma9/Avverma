@@ -57,7 +57,7 @@ function Dashboard2() {
               name="freeze-action1"
               defaultValue="freeze"
             />
-            <label htmlFor="vehicle1">Freeze Account</label>
+            <label htmlFor="vehicle1">Freeze</label>
           </>
           <>
             <input
@@ -66,7 +66,7 @@ function Dashboard2() {
               name="freeze-action2"
               defaultValue="unfreeze"
             />
-            <label htmlFor="vehicle2">Unfreeze Account</label>
+            <label htmlFor="vehicle2">Unfreeze</label>
           </>
         </div>
       ),
@@ -99,7 +99,39 @@ function Dashboard2() {
             <BsCheckAll />
             <span>Total Buyers:</span> 78
           </li>
-          <li className="dashboard-butto">
+          <li className="dashboard-b">
+            <BsCheckAll />
+            <span>Total Regions:</span> 78
+          </li>
+          <li className="dashboard-bu">
+            <BsCheckAll />
+            <span>Total Sellers:</span> 78
+          </li>
+          <li className="dashboard-but">
+            <BsCheckAll />
+            <span>Total Categories:</span> 78
+          </li>
+          <li className="dashboard-butt">
+            <BsCheckAll />
+            <span>Pending Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-b">
+            <BsCheckAll />
+            <span>Active Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-bu">
+            <BsCheckAll />
+            <span>Inactive Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-but">
+            <BsCheckAll />
+            <span>Total Sub Admin:</span> 78
+          </li>
+          <li className="dashboard-butt">
+            <BsCheckAll />
+            <span>Total Active Sub Admin:</span> 78
+          </li>
+          <li className="dashboard-butto" >
             <BsSnow2 />
             <span>Freezed Users:</span> 53
           </li>
