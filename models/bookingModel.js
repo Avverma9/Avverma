@@ -67,8 +67,8 @@ const bookingSchema = new mongoose.Schema({
   },
   foodItems: [
     {
-      name: { type: String, required: true },
-      price: { type: Number, required: true },
+      name: String,
+      price: Number,
     }
   ]
 });
