@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { formatDate } from "../../utils/_dateFuntions";
 import {
   faChevronLeft,
   faChevronRight,
@@ -32,9 +33,8 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
+import { convertDate, getCurrentDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
-import { getCurrentDate,formatDate  } from "../../utils/_dateFuntions";
-
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -347,12 +347,12 @@ export default function BookNow({ refresh, reset, userData }) {
 
                 <p className="location-booknow">{bookingDetails.destination}</p>
               </div>
-              <p className="rating0">
-                <p className="staricon">
+              <div className="rating0">
+                <div className="staricon">
                   {bookingDetails.rating}
                   <FontAwesomeIcon icon={faStar} className="staricon" />
-                </p>
-              </p>
+                </div>
+              </div>
             </div>
             <div className="pricing">
               <FontAwesomeIcon icon={faInr} className="indianrupee" />
@@ -721,6 +721,9 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
             </div>
             <CheckOut
+            rating={bookingDetails.rating}
+             hoteldescription={bookingDetails.description}
+              hotelName={bookingDetails.hotelName}
               hotelId={bookingDetails._id}
               userId={userId}
               amount={Number(bookingDetails.price)}
@@ -730,7 +733,6 @@ export default function BookNow({ refresh, reset, userData }) {
               checkOut={checkOutDate}
               guests={selectedGuests}
               rooms={selectedRooms}
-              hotelName={bookingDetails.hotelName}
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
               paymentMethod={bookingDetails.paymentMethod}
