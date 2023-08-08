@@ -27,7 +27,7 @@
 
 .search-result-image {
   width: 35%;
-height: auto;
+
 object-fit: cover;
 border-radius: 5px;
 }

@@ -19,6 +19,7 @@ export const AccountSettings = ({ selectedNav, navHandler }) => {
         // {...getToggleProps({
         //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
         // })}
+        onClick={navHandler}
         onClick={() => navigate("/profile")}
       >
         <FaUser className="svg_logo" />
