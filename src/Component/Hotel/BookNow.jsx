@@ -730,7 +730,6 @@ export default function BookNow({ refresh, reset, userData }) {
               checkOut={checkOutDate}
               guests={selectedGuests}
               rooms={selectedRooms}
-              hotelName={bookingDetails.hotelName}
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
               paymentMethod={bookingDetails.paymentMethod}
