@@ -157,10 +157,26 @@ export const Customizebooking = ({
                   <h6>Description</h6>
                   <p className="detail-hotel">{hoteldescription}</p>
                   </div>
+                  <div className="date-room">
                   <div className="checkinout">
                     <p>{checkIn}</p>
+                    <p>-</p>
                     <p>{checkOut}</p>
+                    </div>
+                    <div className="room-guest">
+                      <p>{rooms}<span>Room</span></p>
+                      <p>{guests}<span>Guests</span></p>
+
+                    </div>
+                    </div>
+                    <div className="checkinouttime">
+                  <div className="checkin">
+                    <p>Check In</p><p>12:00pm</p>
                   </div>
+                  <div className="checkout">
+                    <p>Check Out</p><p>11:00AM</p>
+                  </div>
+                </div>
                 </div>
               </div>
             </>

@@ -10,30 +10,34 @@
 }
 .btn-div h1{
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 600;
 }
 .btn-div button{
     padding: 5px;
     background: #0d6efd;
     border: none;
     height: auto;
-    width: 20px;
+    width: 35px;
     color: white;
-    font-weight: 501;
-    font-size: 18px;
+    font-weight: 801;
+    font-size: 20px;
 }
 .booking-details-preview{
     
-    box-shadow: 0px 0px 7px 1px grey;
+    
     border-radius: 5px;
 }
 .booking-details-preview .hotelname{
     display: flex;
     justify-content: center;
+    background: linear-gradient(265deg,#ef4123,#ee3f25 48%,#d11450);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
 }
 .hotelname h4{
     font-weight: 501;
-    color: red;
+    color:white;
     font-family: cursive;
 }
 .booking-details-preview .destination{
@@ -43,6 +47,7 @@
     margin-left: 15px;
     display: flex;
     align-items: center;
+    gap: 5px;
 }
 .booking-details-preview .rate{
     font-weight: 501;
@@ -50,11 +55,7 @@
     color:red;
     margin-left: 15px;
 }
-.booking-details-preview img{
-    width: 95%;
-margin-left: 2.5%;
-border-radius: 5px;
-}
+
 .name-rating-flex{
     display: flex;
     justify-content: space-between;
@@ -87,4 +88,43 @@ font-family: cursive;
     font-weight: 501;
     font-size: 14px;
     font-family: cursive;
+}
+.meals-container >div{
+    border:none;
+}
+.checkinout{
+    display: flex;
+    gap: 10px;
+}
+.date-room{
+    display: flex;
+gap: 20px;
+border: 1px solid #f1f1f1;
+padding: 10px;
+font-family: cursive;
+font-weight: 600;
+}
+.room-guest {
+    display: flex;
+    gap: 10px;
+}
+.room-guest p{
+    display: flex;
+    gap: 5px;
+}
+.checkinouttime{
+    
+    display: flex;
+justify-content: center;
+font-family: cursive;
+font-weight: 600;
+min-width: 100%;
+}
+.checkinouttime .checkin,.checkinouttime .checkout{
+    border: 1px solid rgb(234, 234, 234);
+    width: 100%;
+}
+.checkin p, .checkout p{
+    display: flex;
+    justify-content: center;
 }

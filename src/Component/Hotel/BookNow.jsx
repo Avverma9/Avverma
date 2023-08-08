@@ -104,8 +104,9 @@ export default function BookNow({ refresh, reset, userData }) {
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
-        // setCheckIn(convertDate(bookingDetails.startDate));
-        // setCheckOut(convertDate(bookingDetails.endDate));
+        // setCheckInDate(data.checkInDate);
+        //  setCheckIn(convertDate(bookingDetails.startDate));
+        //  setCheckOut(convertDate(bookingDetails.endDate));
       })
       .catch((error) => {
         console.log(error);
@@ -732,7 +733,7 @@ export default function BookNow({ refresh, reset, userData }) {
               checkOut={checkOutDate}
               guests={selectedGuests}
               rooms={selectedRooms}
-              hotelName={bookingDetails.hotelName}
+              
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
               paymentMethod={bookingDetails.paymentMethod}

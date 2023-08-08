@@ -957,3 +957,8 @@
 .icon {
   margin-right: 10px;
 }
+.booking-card-content input{
+  border: none;
+  color: grey;
+  background: transparent;
+}

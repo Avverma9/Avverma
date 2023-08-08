@@ -51,6 +51,7 @@ export default function CheckOut({
 
   console.log(userData, "USERDATA CHECKOUTPAGE");
   console.log(hoteldescription);
+  console.log(checkIn);
 
   // const handlePayment = async () => {
   //   const data = {
@@ -143,6 +144,8 @@ export default function CheckOut({
         destination={destination}
         checkIn={checkIn}
         checkOut={checkOut}
+        rooms={rooms}
+        guests={guests}
       />
       <button
         // onClick={handleBookNow}
