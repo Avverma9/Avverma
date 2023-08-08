@@ -4,129 +4,45 @@ const paymentModel = require('../models/paymentModel');
 const foodModel= require("../models/foodModel")
 
 
-//   try {
-//     const { userId, hotelId } = req.params;
-//     const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
-
-//     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-//     const totalprice = price* rooms
-  
-//     const booking = {
-//       images,
-//       bookingId,
-//       user: userId,
-//       hotel: hotelId,
-//       hotelName,
-//       checkInDate: checkIn, 
-//       checkOutDate: checkOut, 
-//       guests,
-//       rooms,
-//       price: totalprice,
-//       destination:destination,
-//       bookingStatus: paymentStatus === "success" ? "success" : "failed"
-//     };
-
-//     console.log(booking, "bookingggggggggggggggg");
-
-//     const savedBooking = await bookingModel.create(booking);
-//     console.log(savedBooking, "savedBooking");
-
-//     res.status(201).json({ success: true, data: savedBooking });
-//   } catch (error) {
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };
-
-
-//============================================================================================
-// const createBooking = async (req, res) => {
-//   try {
-//     const { userId, hotelId } = req.params;
-//     const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
-
-//     let totalFoodPrice = 0;
-
-//     if (Array.isArray(foodItems) && foodItems.length > 0) {
-//       for (const foodItem of foodItems) {
-//         const food = await foodModel.findById(foodItem._id);
-//         totalFoodPrice += food.price;
-//       }
-//     }
-
-//     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-//     const totalprice = price * rooms;
-//     const foodPrice = totalprice + totalFoodPrice;
-
-//     const booking = {
-//       images,
-//       bookingId,
-//       user: userId,
-//       hotel: hotelId,
-//       hotelName,
-//       checkInDate: checkIn,
-//       checkOutDate: checkOut,
-//       guests,
-//       rooms,
-//       price: foodPrice,
-//       destination,
-//       bookingStatus: paymentStatus === "success" ? "success" : "failed",
-//       foodItems: foodItems || [] // If no food items provided, default to an empty array
-//     };
-
-//     const savedBooking = await bookingModel.create(booking);
-
-//     res.status(201).json({ success: true, data: savedBooking });
-//   } catch (error) {
-//     console.error("Error creating booking:", error);
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };
 //==================================================================================================================================================
+
 const createBooking = async (req, res) => {
   try {
-    const { userId, hotelId } = req.params;
-    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
-
-    let totalFoodPrice = 0;
-    let foodData = []; 
-
-    if (Array.isArray(foodItems) && foodItems.length > 0) {
-      for (const foodItem of foodItems) {
-        const food = await foodModel.findById(foodItem._id);
-        totalFoodPrice += food.price * foodItem.quantity; 
-        foodData.push({
-          name: food.name,
-          price: food.price,
-          quantity: foodItem.quantity 
-        });
-      }
+    const { userId, hotelId, foodItems } = req.params;
+    let totalFoodPrice=0
+    for(const foodItem of foodItems){
+      const food= await foodModel.findById(foodItem._id)
+      totalFoodPrice += food.price
     }
 
-    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const totalPrice = price * rooms;
-    const foodPrice = totalPrice + totalFoodPrice;
+    const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
 
+    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    const totalprice = price* rooms
+    const foodPrice= totalprice + totalFoodPrice
+  
     const booking = {
       images,
       bookingId,
       user: userId,
       hotel: hotelId,
       hotelName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
+      checkInDate: checkIn, 
+      checkOutDate: checkOut, 
       guests,
       rooms,
       price: foodPrice,
-      destination,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      foodItems: foodData
+      destination:destination,
+      bookingStatus: paymentStatus === "success" ? "success" : "failed"
     };
 
+    console.log(booking, "bookingggggggggggggggg");
+
     const savedBooking = await bookingModel.create(booking);
+    console.log(savedBooking, "savedBooking");
 
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
-    console.error("Error creating booking:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
