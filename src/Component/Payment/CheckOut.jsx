@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Customizebooking } from "./Customizebooking";
 
 export default function CheckOut({
   hotelId,
@@ -16,55 +16,56 @@ export default function CheckOut({
   hotelimage,
   destination,
 }) {
-  const navigate = useNavigate();
-  const handleOpenRazorpay = (data) => {
-    const options = {
-      name: "Hotel Booking",
-      key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: amount * 100 * rooms,
-      currency: data.currency,
-      prefill: {
-        name: userData.name,
-        email: userData.email,
-      },
-      remember: true,
-      handler: function (response) {
-        if (response.razorpay_payment_id) {
-          handleBooking("success");
-        } else {
-          handleBooking("failed");
-        }
-      },
-      theme: {
-        color: "#3399cc",
-      },
-    };
-    const rzp = new window.Razorpay(options);
+  // const handleOpenRazorpay = (data) => {
+  //   const options = {
+  //     name: "Hotel Booking",
+  //     key: "rzp_test_CE1nBQFs6SwXnC",
+  //     amount: amount * 100 * rooms,
+  //     currency: data.currency,
+  //     prefill: {
+  //       name: userData.name,
+  //       email: userData.email,
+  //     },
+  //     remember: true,
+  //     handler: function (response) {
+  //       if (response.razorpay_payment_id) {
+  //         handleBooking("success");
+  //       } else {
+  //         handleBooking("failed");
+  //       }
+  //     },
+  //     theme: {
+  //       color: "#3399cc",
+  //     },
+  //   };
+  //   const rzp = new window.Razorpay(options);
 
-    rzp.on("payment.failed", function (response) {
-      handleBooking("failed");
-    });
+  //   rzp.on("payment.failed", function (response) {
+  //     handleBooking("failed");
+  //   });
 
-    rzp.open();
-  };
+  //   rzp.open();
+  // };
 
   console.log(userData, "USERDATA CHECKOUTPAGE");
 
-  const handlePayment = async () => {
-    // const data = {
-    //   hotelId: hotelId,
-    //   userId: userId,
-    //   amount: amount,
-    //   currency: currency,
-    // };
-    // try {
-    //   const response = await axios.post("http://localhost:5000/payments", data);
-    //   handleOpenRazorpay(response.data);
-    // } catch (err) {
-    //   console.log(err);
-    // }
-    navigate("/customize-booking")
-  };
+  // const handlePayment = async () => {
+  //   const data = {
+  //     hotelId: hotelId,
+  //     userId: userId,
+  //     amount: amount,
+  //     currency: currency,
+  //   };
+  //   try {
+  //     const response = await axios.post(
+  //       "https://hotel-backend-tge7.onrender.com/payments",
+  //       data
+  //     );
+  //     handleOpenRazorpay(response.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleBooking = (paymentStatus) => {
     const bookingData = {
@@ -83,16 +84,22 @@ export default function CheckOut({
 
     if (userData && userData.email && paymentStatus === "success") {
       axios
-        .post(`http://localhost:5000/booking/${userId}/${hotelId}`, bookingData)
+        .post(
+          `https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`,
+          bookingData
+        )
         .then((res) => {
           console.log(res.data, "Booking created successfully", bookingData);
 
           if (userData.email) {
             axios
-              .post("http://localhost:5000/SendBookingEmail", {
-                bookingData: bookingData,
-                email: userData.email,
-              })
+              .post(
+                "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
+                {
+                  bookingData: bookingData,
+                  email: userData.email,
+                }
+              )
               .then((res) => {
                 console.log("Email sent successfully");
               })
@@ -111,18 +118,27 @@ export default function CheckOut({
     }
   };
 
-  const handleBookNow = () => {
-    if (!checkIn || !checkOut || guests < 1 || rooms < 1) {
-      alert("Please fill in all the required information before booking.");
-    } else {
-      handlePayment();
-    }
-  };
+  // const handleBookNow = () => {
+  //   if (!checkIn || !checkOut || guests < 1 || rooms < 1) {
+  //     alert("Please fill in all the required information before booking.");
+  //   } else {
+  //     handlePayment();
+  //   }
+  // };
 
   return (
     <>
+      <Customizebooking
+        hotelId={hotelId}
+        userId={userId}
+        amount={amount}
+        currency={currency}
+        hotelName={hotelName}
+        hotelimage={hotelimage}
+        destination={destination}
+      />
       <button
-        onClick={handleBookNow}
+        // onClick={handleBookNow}
         style={{
           padding: "10px 15px",
           backgroundColor: "#0056b3",
@@ -132,6 +148,8 @@ export default function CheckOut({
           boxShadow:
             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
         }}
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
       >
         Book Now
       </button>

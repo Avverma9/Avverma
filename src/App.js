@@ -278,7 +278,6 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
-          <Route path="/customize-booking" element={<Customizebooking />} />
         </Routes>
         <Footer />
       </div>
