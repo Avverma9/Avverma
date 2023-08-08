@@ -3,7 +3,7 @@ const CanceledBooking = require('../models/cancelledModel');
 const paymentModel = require('../models/paymentModel');
 const foodModel= require("../models/foodModel")
 
-// const createBooking = async (req, res) => {
+
 //   try {
 //     const { userId, hotelId } = req.params;
 //     const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
@@ -39,17 +39,62 @@ const foodModel= require("../models/foodModel")
 
 
 //============================================================================================
+// const createBooking = async (req, res) => {
+//   try {
+//     const { userId, hotelId } = req.params;
+//     const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
+
+//     let totalFoodPrice = 0;
+
+//     if (Array.isArray(foodItems) && foodItems.length > 0) {
+//       for (const foodItem of foodItems) {
+//         const food = await foodModel.findById(foodItem._id);
+//         totalFoodPrice += food.price;
+//       }
+//     }
+
+//     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+//     const totalprice = price * rooms;
+//     const foodPrice = totalprice + totalFoodPrice;
+
+//     const booking = {
+//       images,
+//       bookingId,
+//       user: userId,
+//       hotel: hotelId,
+//       hotelName,
+//       checkInDate: checkIn,
+//       checkOutDate: checkOut,
+//       guests,
+//       rooms,
+//       price: foodPrice,
+//       destination,
+//       bookingStatus: paymentStatus === "success" ? "success" : "failed",
+//       foodItems: foodItems || [] // If no food items provided, default to an empty array
+//     };
+
+//     const savedBooking = await bookingModel.create(booking);
+
+//     res.status(201).json({ success: true, data: savedBooking });
+//   } catch (error) {
+//     console.error("Error creating booking:", error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
+//==================================================================================================================================================
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
 
     let totalFoodPrice = 0;
+    let foodData = []; // To store food data for the booking
 
     if (Array.isArray(foodItems) && foodItems.length > 0) {
       for (const foodItem of foodItems) {
         const food = await foodModel.findById(foodItem._id);
         totalFoodPrice += food.price;
+        foodData.push({ name: food.name, price: food.price }); // Adding food data
       }
     }
 
@@ -70,7 +115,7 @@ const createBooking = async (req, res) => {
       price: foodPrice,
       destination,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      foodItems: foodItems || [] // If no food items provided, default to an empty array
+      foodItems: foodData // Adding the extracted food data to the booking
     };
 
     const savedBooking = await bookingModel.create(booking);
@@ -81,7 +126,7 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
+//================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
   try {
