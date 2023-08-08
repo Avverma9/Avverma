@@ -15,6 +15,8 @@ export default function CheckOut({
   hotelName,
   hotelimage,
   destination,
+  hoteldescription,
+  rating,
 }) {
   // const handleOpenRazorpay = (data) => {
   //   const options = {
@@ -48,6 +50,7 @@ export default function CheckOut({
   // };
 
   console.log(userData, "USERDATA CHECKOUTPAGE");
+  console.log(hoteldescription);
 
   // const handlePayment = async () => {
   //   const data = {
@@ -129,6 +132,8 @@ export default function CheckOut({
   return (
     <>
       <Customizebooking
+      rating={rating}
+      hoteldescription={hoteldescription}
         hotelId={hotelId}
         userId={userId}
         amount={amount}
@@ -136,6 +141,8 @@ export default function CheckOut({
         hotelName={hotelName}
         hotelimage={hotelimage}
         destination={destination}
+        checkIn={checkIn}
+        checkOut={checkOut}
       />
       <button
         // onClick={handleBookNow}

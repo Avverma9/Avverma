@@ -1,6 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Plusminus from '../Payment/Plusminus';
+import './Plusminus.css';
+import { FaStar,FaRupeeSign } from "react-icons/fa";
+import {GoLocation} from "react-icons/go";
 export const Customizebooking = ({
+  rating,
+  hoteldescription,
   hotelId,
   userId,
   amount,
@@ -108,6 +114,7 @@ export const Customizebooking = ({
                                 {m.price}
                               </small>
                             </p>
+                            <div className="btn-flex">
                             <button
                               type="button"
                               className="btn btn-primary"
@@ -120,6 +127,8 @@ export const Customizebooking = ({
                             >
                               Add
                             </button>
+                            <Plusminus/>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -130,13 +139,28 @@ export const Customizebooking = ({
                   className="booking-details-preview"
                   style={{ width: "40%" }}
                 >
+                <div className="hotelname">
                   <h4>{hotelName}</h4>
+                  </div>
                   <img src={hotelimage} alt="hotelimage" />
-                  <p>{destination}</p>
-                  <p>
-                    <span>{currency}</span>
+                  <div className="name-rating-flex">
+                  <p className="destination"><span><GoLocation/></span>{destination}</p>
+                  <p className="rating12">
+                    {rating}<FaStar/>
+                  </p>
+                  </div>
+                  <p className="rate">
+                    <span><FaRupeeSign/></span>
                     {updatePrice}
                   </p>
+                  <div className="detail-head">
+                  <h6>Description</h6>
+                  <p className="detail-hotel">{hoteldescription}</p>
+                  </div>
+                  <div className="checkinout">
+                    <p>{checkIn}</p>
+                    <p>{checkOut}</p>
+                  </div>
                 </div>
               </div>
             </>
