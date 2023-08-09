@@ -399,7 +399,7 @@ function HotelList() {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    marginTop: "6px",
+                    marginTop: "13px",
                   }}
                 >
                   <div className="rupeedetail">

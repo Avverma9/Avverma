@@ -4,6 +4,7 @@ import Plusminus from '../Payment/Plusminus';
 import './Plusminus.css';
 import { FaStar,FaRupeeSign } from "react-icons/fa";
 import {GoLocation} from "react-icons/go";
+import moment from 'moment';
 export const Customizebooking = ({
   rating,
   hoteldescription,
