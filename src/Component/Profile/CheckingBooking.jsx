@@ -124,7 +124,7 @@ export const CheckingBooking = () => {
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
                         min={new Date().toISOString().slice(0, 10)}
-                        max={checkOutDate ? checkOutDate : undefined} // Set the max attribute to the selected checkout date
+                        max={checkOutDate ? checkOutDate : undefined} 
                       />
                     ) : (
                       <p>
