@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
-import Header from './Components/Header/Header';
+import Header from '../src/Admin/Header/Header';
+import Partner from './Admin/AddHotel/AddHotel.jsx';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
    <div className='content p-4'>
    <Routes>
     {/* <Route path='/' element={<SideBar/>}/> */}
+    <Route path='/gethotels' element={<Partner/>}/>
    </Routes>
    </div>
    </div>
