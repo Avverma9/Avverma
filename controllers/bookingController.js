@@ -51,8 +51,9 @@ const createBooking = async (req, res) => {
 
 const getConfirmedBookings = async (req, res) => {
   try {
+    const userId = req.params.id;
     const bookings = await bookingModel
-      .find()
+      .find({ user: userId})
       .populate('user')
       .populate('hotel')
       .exec();
@@ -87,8 +88,9 @@ const getConfirmedBookings = async (req, res) => {
 
   const getFailedBookings = async (req, res) => {
     try {
+      const userId = req.params.id;
       const bookings = await bookingModel
-        .find({ bookingStatus: "failed" })
+        .find({ bookingStatus: "failed",user:userId })
         .populate('user')
         .populate('hotel')
         .exec();
@@ -147,10 +149,10 @@ const cancelBooking = async (req, res) => {
 
 const getCancelledBooking = async (req, res) => {
   try {
+    const userId = req.params.id;
     const canceledBookings = await bookingModel
-      .find({ bookingStatus: 'Cancelled' })
+      .find({ bookingStatus: 'Cancelled', user: userId })
       .populate('user');
-
     res.status(200).json({ success: true, canceledBookings });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
