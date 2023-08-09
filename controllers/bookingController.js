@@ -8,44 +8,44 @@ const foodModel= require("../models/foodModel")
 
 const createBooking = async (req, res) => {
   try {
-    const { userId, hotelId, foodItems } = req.params;
-    let totalFoodPrice=0
-    for(const foodItem of foodItems){
-      const food= await foodModel.findById(foodItem._id)
-      totalFoodPrice += food.price
-    }
-
-    const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
+    const { userId, hotelId } = req.params;
+    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination, foodItems } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const totalprice = price* rooms
-    const foodPrice= totalprice + totalFoodPrice
-  
+    const totalprice = price * rooms;
+
+    let totalFoodPrice = 0;
+    for (const foodItem of foodItems) {
+      const food = await foodModel.findById(foodItem._id);
+      totalFoodPrice += food.price;
+    }
+
+    const totalPriceWithFood = totalprice + totalFoodPrice;
+
     const booking = {
       images,
       bookingId,
       user: userId,
       hotel: hotelId,
       hotelName,
-      checkInDate: checkIn, 
-      checkOutDate: checkOut, 
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
       guests,
       rooms,
-      price: foodPrice,
-      destination:destination,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed"
+      price: totalPriceWithFood, 
+      destination,
+      bookingStatus: paymentStatus === "success" ? "success" : "failed",
+      foodItems: foodItems 
     };
 
-    console.log(booking, "bookingggggggggggggggg");
-
     const savedBooking = await bookingModel.create(booking);
-    console.log(savedBooking, "savedBooking");
 
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 //================================================================================================================================================
 
