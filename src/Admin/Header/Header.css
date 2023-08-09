@@ -1,0 +1,72 @@
+/* Header.css */
+
+/* Custom styles for the header */
+.header {
+    background-color: #fff; /* Set your desired background color for the header */
+    border-bottom: 1px solid #ccc; /* Add a border at the bottom of the header */
+  }
+  
+  /* Logo styles */
+  .navbar-brand img {
+    margin-right: 10px; /* Add some space between the logo and the brand text */
+  }
+  
+  /* Navigation links styles */
+  .navbar-nav .nav-link {
+    color: #333; /* Set the color for the navigation links */
+    font-size: 16px; /* Set the font size for the navigation links */
+    font-weight: bold; /* Set the font weight for the navigation links */
+    margin-right: 10px; /* Add some space between the navigation links */
+  }
+  
+  /* Active users icon styles */
+  .active-users-icon {
+    font-size: 20px; /* Set the font size for the active users icon */
+    margin-right: 5px; /* Add some space between the icon and the active users count */
+  }
+  
+  /* Custom styles for the dropdown menu */
+  .drop-menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Custom styles for the home logo, video logo, and link logo */
+  .home-logo,
+  .video-logo,
+  .link-logo {
+    font-size: 24px; /* Set the font size for the home, video, and link logos */
+    margin-right: 5px; /* Add some space between the icon and the text */
+  }
+  
+  /* Sticky header */
+  .fixed-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Set the z-index to keep the header above other content */
+  }
+  
+@media (max-width: 468px) {
+     @keyframes pulse {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .active-users-icon {
+    animation: blink 1s infinite, pulse 3s infinite;
+    color: red;
+    font-size: 30px; 
+  }
+}  
