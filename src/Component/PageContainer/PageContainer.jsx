@@ -38,6 +38,7 @@ import { Profile } from "../../Pages/Profile/Profile";
 import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
 import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
+import Login from "../Login/Login";
 
 export const PageContainer = () => {
   return (
@@ -45,6 +46,8 @@ export const PageContainer = () => {
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/sign-in" element={<Login />} />
+
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="bidding-detail" element={<Biddingdetail />} />
         <Route path="/search" element={<Search />} />

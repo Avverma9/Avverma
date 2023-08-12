@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useCallback } from "react";
 import DataTable from "react-data-table-component";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
@@ -181,6 +182,37 @@ export const MannageAuction = () => {
   const [filterView, setFilterView] = useState(false);
   const [exportView, setExportView] = useState([]);
   const [filterText, setFilterText] = useState("");
+
+  const [auctions, setAuctions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchAuctions = async () => {
+    try {
+      const response = await fetch(
+        "http://13.233.229.68:4008/admin/auction/getAll",
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      const data = await response.json();
+      setAuctions(data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log(auctions);
+  useEffect(() => {
+    fetchAuctions();
+  }, []);
+
+  const handleClick = () => {
+    setIsLoading(true);
+    fetchAuctions();
+  };
+
   const filteredItems = data.filter(
     (item) =>
       item.registrationNo
@@ -328,7 +360,7 @@ export const MannageAuction = () => {
                     Upload Bulk
                   </p>
                 </button>
-                <button className="refresh-button">
+                <button className="refresh-button" onClick={handleClick}>
                   <p>
                     <FiRefreshCcw style={{ marginRight: "5px" }} />
                     Refresh
