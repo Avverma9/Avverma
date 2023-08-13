@@ -5,7 +5,7 @@ function Setauctiontime() {
   const [regions, setRegions] = useState([]);
 
   useEffect(() => {
-    fetch("http://13.233.229.68:4008/admin/region/getAll")
+    fetch("http://13.48.45.18:4008/admin/region/getAll")
       .then(response => response.json())
       .then(data => {
         setData(data);

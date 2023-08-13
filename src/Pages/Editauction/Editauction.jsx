@@ -2,24 +2,10 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { useParams } from "react-router-dom";
 // import "./Addauction.css";
 
-const BASE_URL = "http://13.233.229.68:4008";
-
-const seller = [
-  {
-    label: "Amar",
-    value: "Amar",
-  },
-  {
-    label: "Akbar",
-    value: "Akbar",
-  },
-  {
-    label: "Anthony",
-    value: "Anthony",
-  },
-];
+const BASE_URL = "http://13.48.45.18:4008";
 
 export const Editauction = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
@@ -29,6 +15,34 @@ export const Editauction = () => {
 
   const [uploadPVFile, setUploadPVFile] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
+
+  const urlId = useParams();
+  const winId = localStorage.getItem("winId");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(
+        `${BASE_URL}/admin/auction/update/${urlId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            winner: winId,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log(JSON.stringify(response));
+        alert("User Found By Id");
+      }
+    };
+
+    fetchData();
+  }, [urlId, winId]);
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];

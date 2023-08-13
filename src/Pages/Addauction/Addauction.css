@@ -61,3 +61,12 @@ input[type="file"] {
 .dashboard-header h1 {
   margin-bottom: 30px;
 }
+
+.quill {
+  margin: 20px auto;
+  background-color: #fff;
+}
+
+.quill .ql-container {
+  height: 130px;
+}

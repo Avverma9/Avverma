@@ -25,7 +25,7 @@ export const MannageAuction = () => {
   const fetchAuctions = async () => {
     try {
       const response = await fetch(
-        "http://13.233.229.68:4008/admin/auction/getAll",
+        "http://13.48.45.18:4008/admin/auction/getAll",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -66,7 +66,7 @@ export const MannageAuction = () => {
 
   const deleteAuction = async (id) => {
     const response = await fetch(
-      `http://13.233.229.68:4008/auction/delete/${id}`,
+      `http://13.48.45.18:4008/auction/delete/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -77,6 +77,11 @@ export const MannageAuction = () => {
     if (response.ok) {
       fetchAuctions();
     }
+  };
+
+  const editHandler = (id, winId) => {
+    navigate(`/edit-view-auction/${id}`);
+    localStorage.setItem("winId", winId);
   };
 
   const columns = [
@@ -144,7 +149,7 @@ export const MannageAuction = () => {
           <BiEdit
             size="18"
             color="#1b3ea9"
-            onClick={() => navigate(`/edit-view-auction/${row._id}`)}
+            onClick={() => editHandler(row._id, row.winner)}
           />
           <MdDeleteOutline
             size="18"
