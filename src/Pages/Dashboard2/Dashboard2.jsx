@@ -5,6 +5,15 @@ import { CgStopwatch } from "react-icons/cg";
 import { MdIncompleteCircle } from "react-icons/md";
 import { BsCheckAll } from "react-icons/bs";
 import { BsSnow2 } from "react-icons/bs";
+import {BsFillPersonFill} from "react-icons/bs";
+import {TbBuildingEstate} from "react-icons/tb";
+import {FcSalesPerformance} from "react-icons/fc";
+import {BiSolidCategory} from "react-icons/bi";
+import {MdOutlinePending} from "react-icons/md";
+import {GrWheelchairActive} from "react-icons/gr";
+import {MdNoAccounts} from "react-icons/md";
+import {RiAdminLine} from "react-icons/ri";
+import {GrUserAdmin} from "react-icons/gr";
 
 import "./Dashboard2.css";
 import { useNavigate } from "react-router-dom";
@@ -132,39 +141,39 @@ function Dashboard2() {
             <span>Complete Auctions:</span> {dashboard.totalAuction?.length || 0}
           </li>
           <li className="dashboard-butt">
-            <BsCheckAll />
-            <span>Total Buyers:</span>
+            <BsFillPersonFill/>
+            <span>Total Buyers:</span>NA
           </li>
           <li className="dashboard-b">
-            <BsCheckAll />
+            <TbBuildingEstate />
             <span>Total Regions:</span> {dashboard.totalregionn}
           </li>
           <li className="dashboard-bu">
-            <BsCheckAll />
+            <FcSalesPerformance />
             <span>Total Sellers:</span> {dashboard.totalSeller}
           </li>
           <li className="dashboard-but">
-            <BsCheckAll />
+            <BiSolidCategory />
             <span>Total Categories:</span> {dashboard.totalCategory}
           </li>
           <li className="dashboard-butt">
-            <BsCheckAll />
+            <MdOutlinePending/>
             <span>Pending Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-b">
-            <BsCheckAll />
+            <GrWheelchairActive />
             <span>Active Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-bu">
-            <BsCheckAll />
+            <MdNoAccounts/>
             <span>Inactive Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-but">
-            <BsCheckAll />
+            <RiAdminLine />
             <span>Total Sub Admin:</span> {dashboard.totalSubAdmin}
           </li>
           <li className="dashboard-butt">
-            <BsCheckAll />
+            <GrUserAdmin />
             <span>Total Active Sub Admin:</span> {dashboard.totalActiveSubAdmin}
           </li>
           <li className="dashboard-butto" >
