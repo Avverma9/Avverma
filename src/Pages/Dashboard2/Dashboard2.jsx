@@ -88,7 +88,7 @@ function Dashboard2() {
  const Token=localStorage.getItem("token");
  const fetchdashboard = async()=>{
   try{
-    const response = await fetch("http://13.233.229.68:4008/admin/getCount",{
+    const response = await fetch("http://13.48.45.18:4008/admin/getCount",{
       headers:{
         Authorization:`Bearer ${Token}`,
       },

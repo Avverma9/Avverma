@@ -5,7 +5,7 @@ function Addcategory() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://13.233.229.68:4008/admin/category/add", {
+      const response = await fetch("http://13.48.45.18:4008/admin/category/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
