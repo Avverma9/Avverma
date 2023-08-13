@@ -20,7 +20,7 @@ import { Updatevehicle } from "../../Pages/Updatevehicle/Updatevehicle";
 import { Assignauction } from "../../Pages/Assignauction/Assignauction";
 import { Assignnewauction } from "../../Pages/Assignnewauction/Assignnewauction";
 import { Autonotification } from "../../Pages/Autonotification/Autonotification";
-import { Registeradmin } from "../../Pages/Registeradmin/Registeradmin";
+import {Registeradmin} from "../../Pages/Registeradmin/Registeradmin"
 import { Pushnotification } from "../../Pages/Pushnotification/Pushnotification";
 import { Rowbox } from "../../Pages/Rowbox/Rowbox";
 import { Mannageadmin } from "../../Pages/Mannageadmin/Mannageadmin";
