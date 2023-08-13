@@ -2,6 +2,8 @@ import React from 'react'
 import './Settiming.css';
 
 function Settiming() {
+
+
   return (
     <div className='setting-container'>
     <div className='setting-heading'>
@@ -21,7 +23,7 @@ function Settiming() {
         <input type="submit" value="Submit"/>
     </div>
       
-
+    
     </div>
   )
 }
