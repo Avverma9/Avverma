@@ -1,40 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { ImExit } from "react-icons/im";
 import "./Profile.css";
 import DataTable from "react-data-table-component";
 
-const data = [
-  {
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    region: "WB",
-  },
-  {
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    region: "WB",
-  },
-  {
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    region: "WB",
-  },
-];
-
 export const Profile = () => {
+  const [data, setData] = useState([]);
+
   const columns = [
     {
       name: "Username",
-      selector: (row) => row.name,
+      selector: (row) => row.full_name,
       sortable: true,
     },
     {
-      name: "Ph No",
-      selector: (row) => row.phno,
+      name: "Mobile No",
+      selector: (row) => row.mobile,
       sortable: true,
     },
     {
@@ -44,10 +25,26 @@ export const Profile = () => {
     },
     {
       name: "Region",
-      selector: (row) => row.region,
+      selector: (row) => row.regions[0]?.name || "N/A",
       sortable: true,
     },
   ];
+
+  useEffect(() => {
+    fetch("http://13.48.45.18:4008/user/getAll")
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.success) {
+          setData(responseData.data);
+        } else {
+          console.error("Error fetching user data:", responseData.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+  }, []);
+
   return (
     <>
       <div className="_profile-header">
