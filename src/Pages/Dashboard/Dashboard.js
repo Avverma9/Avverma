@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { BiExport } from "react-icons/bi";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +19,7 @@ function Dashboard() {
       </div>
       <div className="dashboard-section">
         <input type="search" placeholder="search" />
-        <BiSearchAlt2 />
+        <BiSearchAlt2 className="search-logo" />
       </div>
       <div className="dashboard-section-head">
         <ul className="dashboard-items">

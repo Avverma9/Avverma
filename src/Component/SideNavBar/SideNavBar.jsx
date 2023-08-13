@@ -5,6 +5,7 @@ import {
   notificationIcon,
   mannageAuctionIcon,
   mannageBuyerIcon,
+  mannageAdminIcon,
   dashboardIcon,
   settingsIcon,
   searchIcon,
@@ -13,6 +14,7 @@ import {
 import "./SideNavBar.css";
 import { Link } from "react-router-dom";
 import { useCollapse } from "react-collapsed";
+import { upperCase } from "../../utils";
 
 const Home = () => {
   return (
@@ -23,7 +25,7 @@ const Home = () => {
           <img src={homeIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/">
-          <p>Home</p>
+          <p>{upperCase("Home")}</p>
         </Link>
       </li>
     </>
@@ -34,12 +36,12 @@ const Profile = () => {
   return (
     <>
       <li>
-        <Link to="/">
+        <Link to="/profile">
           {" "}
           <img src={profileIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/">
-          <p>Profile</p>
+        <Link to="/profile">
+          <p>{upperCase("Profile")}</p>
         </Link>
       </li>
     </>
@@ -55,7 +57,38 @@ const PushNotification = () => {
           <img src={notificationIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/push-notification">
-          <p>Push Notification</p>
+          <p>{upperCase("Push Notification")}</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+
+const Dashboard2 = () => {
+  return (
+    <>
+      <li>
+        <Link to="/">
+          {" "}
+          <img src={dashboardIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/dashboard">
+          <p>{upperCase("Dashboard")}</p>
+        </Link>
+      </li>
+    </>
+  );
+};
+const Setting2 = () => {
+  return (
+    <>
+      <li>
+        <Link to="/settings">
+          {" "}
+          <img src={settingsIcon} alt="icon" srcset="" />
+        </Link>
+        <Link to="/settings">
+          <p>{upperCase("Settings")}</p>
         </Link>
       </li>
     </>
@@ -63,14 +96,14 @@ const PushNotification = () => {
 };
 
 const Auction = () => {
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  // const [isExpanded, setExpanded] = useState(false);
+  // const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
   return (
     <>
       <li
-        {...getToggleProps({
-          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        })}
+      // {...getToggleProps({
+      //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+      // })}
       >
         <Link>
           {" "}
@@ -80,7 +113,7 @@ const Auction = () => {
           <p>Auction</p>
         </Link>
       </li>
-      <div {...getCollapseProps()}>
+      {/* <div {...getCollapseProps()}>
         <ul>
           <li>
             <Link to="/search">
@@ -119,32 +152,32 @@ const Auction = () => {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
     </>
   );
 };
 
 const MannageAuction = () => {
-  const [isExpanded, setExpanded] = useState(false);
-  const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
+  // const [isExpanded, setExpanded] = useState(false);
+  // const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });
 
   return (
     <>
       <li
-        {...getToggleProps({
-          onClick: () => setExpanded((prevExpanded) => !prevExpanded),
-        })}
+      // {...getToggleProps({
+      //   onClick: () => setExpanded((prevExpanded) => !prevExpanded),
+      // })}
       >
-        <Link>
+        <Link to="/mannage-auction">
           {" "}
           <img src={mannageAuctionIcon} alt="icon" srcset="" />
         </Link>
-        <Link>
-          <p>Mannage Auction</p>
+        <Link to="/mannage-auction">
+          <p>{upperCase("Mannage Auction")}</p>
         </Link>
       </li>
-      <div {...getCollapseProps()}>
-        <ul>
+      {/* <div {...getCollapseProps()}>
+        <ul className="sub_list-ul">
           <li>
             <Link to="/dashboard">
               {" "}
@@ -165,7 +198,7 @@ const MannageAuction = () => {
             </Link>
           </li>
         </ul>
-      </div>
+      </div> */}
     </>
   );
 };
@@ -176,10 +209,10 @@ const MannageBuyer = () => {
       <li>
         <Link to="/mannage-buyer">
           {" "}
-          <img src={mannageBuyerIcon} alt="icon" srcset="" />
+          <img src={mannageAdminIcon} alt="icon" srcset="" />
         </Link>
         <Link to="/mannage-buyer">
-          <p>Mannage Buyer</p>
+          <p>{upperCase("Mannage Buyer")}</p>
         </Link>
       </li>
     </>
@@ -190,12 +223,12 @@ const MannageAdmin = () => {
   return (
     <>
       <li>
-        <Link to="/mannage-admin">
+        <Link to="/register-sub-admin">
           {" "}
           <img src={mannageBuyerIcon} alt="icon" srcset="" />
         </Link>
-        <Link to="/mannage-admin">
-          <p>Mannage Admin</p>
+        <Link to="/register-sub-admin">
+          <p>{upperCase("Mannage Admin")}</p>
         </Link>
       </li>
     </>
@@ -211,9 +244,12 @@ export const SideNavBar = () => {
       <div className="side_nav_body">
         <ul>
           <Home />
+          <Dashboard2 />
           <MannageAuction />
-          <MannageAdmin />
+          <Setting2 />
           <MannageBuyer />
+          <MannageAdmin />
+
           <Profile />
           <PushNotification />
         </ul>

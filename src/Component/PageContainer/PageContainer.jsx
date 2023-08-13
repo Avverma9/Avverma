@@ -9,7 +9,7 @@ import Search from "../../Pages/Search/Search";
 import Importauction from "../../Pages/Importauction/Importauction";
 import { Filterauction } from "../../Pages/Filterauction/Filterauction";
 import { YourWins } from "../../Pages/Wins/YourWins";
-import { Addauction } from "../../Pages/Addauction/Addauction";
+import { Viewauction } from "../../Pages/Viewauction/Viewauction";
 import Setting from "../../Pages/Settings/Setting";
 import Settiming from "../../Pages/SetTiming/Settiming";
 import Update from "../../Pages/Updateauction/Update";
@@ -26,21 +26,38 @@ import { Pushnotification } from "../../Pages/Pushnotification/Pushnotification"
 import { Rowbox } from "../../Pages/Rowbox/Rowbox";
 import { Mannageadmin } from "../../Pages/Mannageadmin/Mannageadmin";
 import { Editemd } from "../../Pages/Editemd/Editemd";
+import Dashboard2 from "../../Pages/Dashboard2/Dashboard2";
+import Setting2 from "../../Pages/Setting2/Setting2";
+import Setauctiontime from "../../Pages/Setting2/Setauctiontime";
+import Startprice from "../../Pages/Setting2/Startprice";
+import Addregion from "../../Pages/Setting2/Addregion";
+import Addseller from "../../Pages/Setting2/Addseller";
+import Addcategory from "../../Pages/Setting2/Addcategory";
+import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
+import { Addauction } from "../../Pages/Addauction/Addauction";
+import { Profile } from "../../Pages/Profile/Profile";
+import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
+import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
+import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
+import Login from "../Login/Login";
 
 export const PageContainer = () => {
   return (
-    <div className="page_container">
+    <div className="page_container page_container_background-img">
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Welcome />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/sign-in" element={<Login />} />
+
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="bidding-detail" element={<Biddingdetail />} />
         <Route path="/search" element={<Search />} />
         <Route path="/import-auction" element={<Importauction />} />
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
-        <Route path="/add-auction" element={<Addauction />} />
-        <Route path="/settings" element={<Setting />} />
+        <Route path="/view-auction" element={<Viewauction />} />
+        <Route path="/add-new-auction" element={<Addauction />} />
+        {/* <Route path="/settings" element={<Setting />} /> */}
         <Route path="/set-timing" element={<Settiming />} />
         <Route path="/update-start-price" element={<Update />} />
         <Route path="/mannage-buyer" element={<Mannagebuyer />} />
@@ -56,6 +73,18 @@ export const PageContainer = () => {
         <Route path="/row-box" element={<Rowbox />} />
         <Route path="/mannage-admin" element={<Mannageadmin />} />
         <Route path="/edit-emd" element={<Editemd />} />
+        <Route path="/dashboard" element={<Dashboard2 />} />
+        <Route path="/settings" element={<Setting2 />} />
+        <Route path="/set-auction-timing" element={<Setauctiontime />} />
+        <Route path="/start-price" element={<Startprice />} />
+        <Route path="/add-region" element={<Addregion />} />
+        <Route path="/add-seller" element={<Addseller />} />
+        <Route path="/add-category" element={<Addcategory />} />
+        <Route path="/mannage-auction" element={<MannageAuction />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/register-buyer" element={<RegisterBuyer />} />
+        <Route path="/register-sub-admin" element={<RegisterSubAdmin />} />
+        <Route path="/assign-buyer" element={<Assignbuyer />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

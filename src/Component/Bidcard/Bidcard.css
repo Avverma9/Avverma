@@ -64,4 +64,62 @@ border-radius: 4px;
   margin-right: 10px;
 
 }
+/* styles.css (or any other CSS file you are using) */
+
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-btn {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: 1px solid black;
+  cursor: pointer;
+  width:200px
+}
+
+ul.dropdownmenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  position: absolute;
+  background-color: #3f3f3f;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+ul.dropdownmenu li {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: white;
+  width: 200px;
+}
+
+ul.dropdownmenu li:hover {
+  background-color: #fffdfd;
+  color: black;
+}
+td{
+  display: flex;
+  width: 50%;
+}
+tr{
+  display: flex;
+}
+td span{
+  display: flex;
+}
+.flex-btn{
+  display: flex;
+justify-content: space-between;
+width: 44%;
+}
+.edit-btn{
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 

@@ -4,10 +4,13 @@ flex-direction: row;
 align-items: center;
 justify-content: center;
 
-position: relative;
+position: absolute;
 top: 50%;
+left: 40%;
 
 }
 .welcome-text h1{
   font-size: 40px;
+  font-weight: 501;
+  color: rgb(36, 32, 32);
 }

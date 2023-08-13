@@ -18,7 +18,10 @@ function Setting() {
           >
             Set Auction Timing
           </p>
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
         <span>
           <label>
@@ -30,23 +33,38 @@ function Setting() {
               onClick={() => navigate("/update-start-price")}
             />
           </label>
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
         <span>
           Add Region
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
         <span>
           Add State
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
         <span>
           Add Seller
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
         <span>
           Add category
+          <div className="flex-addbtn">
           <input type="text" />
+          <button className="add-btn">Add</button>
+          </div>
         </span>
       </div>
     </div>
