@@ -57,7 +57,7 @@ export const PageContainer = () => {
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
         
-        <Route path="/view-auction" element={<Viewauction />} />
+        <Route path="/view-auction/:id" element={<Viewauction />} />
         <Route path="/edit-view-auction/:id" element={<Editauction />} />
         <Route path="/add-new-auction" element={<Addauction />} />
         {/* <Route path="/settings" element={<Setting />} /> */}

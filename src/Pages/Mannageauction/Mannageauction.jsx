@@ -124,7 +124,7 @@ export const MannageAuction = () => {
     },
     {
       name: "Total Bid",
-      selector: (row) => "A",
+      selector: (row) => "5000",
       sortable: true,
     },
     {
