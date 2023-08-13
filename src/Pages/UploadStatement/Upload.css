@@ -1,0 +1,42 @@
+.btn-newer{
+    padding: 10px;
+    color: white;
+    background: blue;
+    border: none;
+    width: 100px;
+    margin-top: 20px;
+    
+  }
+  .btn_btn{
+    display: flex;
+    justify-content: flex-end;
+    width: 30%;
+  }
+  .upload-statement{
+    display: flex;
+flex-direction: column;
+line-height: 4;
+  }
+  .text-c p{
+    font-size: 24px;
+    font-weight: 401;
+  }
+  .file-upload-a input{
+    
+    display: none;
+  }
+.file-upload-a{
+    padding: 15px;
+    width: 30%;
+    border: 1px solid black;
+    background: white;
+}
+.file-upload-a label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 501;
+    cursor: pointer;
+    gap: 10px;
+}

@@ -13,3 +13,16 @@
   margin: 10px 0 20px 0;
   resize: none;
 }
+.save-button{
+  padding: 10px;
+  color: white;
+  background: blue;
+  border: none;
+  width: 100px;
+  
+}
+.button-btn{
+  display: flex;
+  justify-content: flex-end;
+  width: 35%;
+}

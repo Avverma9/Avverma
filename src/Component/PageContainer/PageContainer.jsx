@@ -40,6 +40,7 @@ import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
 import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
 import Login from "../Login/Login";
+import Upload from "../../Pages/UploadStatement/Upload";
 import { Editauction } from "../../Pages/Editauction/Editauction";
 
 export const PageContainer = () => {
@@ -58,7 +59,7 @@ export const PageContainer = () => {
         <Route path="/wins" element={<YourWins />} />
         
         <Route path="/view-auction" element={<Viewauction />} />
-        <Route path="/edit-view-auction/:id" element={<Editauction />} />
+        <Route path="/edit-view-auction/:id" element={<Editauction/>} />
         <Route path="/add-new-auction" element={<Addauction />} />
         {/* <Route path="/settings" element={<Setting />} /> */}
         <Route path="/set-timing" element={<Settiming />} />
@@ -88,6 +89,7 @@ export const PageContainer = () => {
         <Route path="/register-buyer" element={<RegisterBuyer />} />
         <Route path="/register-sub-admin" element={<RegisterSubAdmin />} />
         <Route path="/assign-buyer" element={<Assignbuyer />} />
+        <Route path="/upload-statement" element={<Upload/>}/>
       </Routes>
       {/* </BrowserRouter> */}
     </div>
