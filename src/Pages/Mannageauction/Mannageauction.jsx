@@ -25,7 +25,7 @@ export const MannageAuction = () => {
   const fetchAuctions = async () => {
     try {
       const response = await fetch(
-        "http://13.233.229.68:4008/admin/auction/getAll",
+        "http://13.48.45.18:4008/admin/auction/getAll",
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -66,7 +66,7 @@ export const MannageAuction = () => {
 
   const deleteAuction = async (id) => {
     const response = await fetch(
-      `http://13.233.229.68:4008/auction/delete/${id}`,
+      `http://13.48.45.18:4008/auction/delete/${id}`,
       {
         method: "DELETE",
         headers: {

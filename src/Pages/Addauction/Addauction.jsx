@@ -4,7 +4,7 @@ import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "./Addauction.css";
 
-const BASE_URL = "http://13.233.229.68:4008";
+const BASE_URL = "http://13.48.45.18:4008";
 
 const seller = [
 	{

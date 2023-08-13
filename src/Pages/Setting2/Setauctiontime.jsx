@@ -9,7 +9,7 @@ function Setauctiontime() {
   const [selectedSeller, setSelectedSeller] = useState('');
   const [selectedDate, setSelectedDate] = useState(null); 
   useEffect(() => {
-    fetch("http://13.233.229.68:4008/admin/region/getAll")
+    fetch("http://13.48.45.18:4008/admin/region/getAll")
       .then(response => response.json())
       .then(data => {
         if (data && data.data) {
@@ -23,7 +23,7 @@ function Setauctiontime() {
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-    fetch("http://13.233.229.68:4008/admin/seller/getAll",{
+    fetch("http://13.48.45.18:4008/admin/seller/getAll",{
  headers : {
   'Authorization': `Bearer ${token}`
  }
