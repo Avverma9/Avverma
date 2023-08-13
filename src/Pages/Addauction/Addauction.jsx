@@ -7,20 +7,6 @@ import {GrUpload} from 'react-icons/gr';
 
 const BASE_URL = "http://13.48.45.18:4008";
 
-const seller = [
-	{
-		label: "Amar",
-		value: "Amar",
-	},
-	{
-		label: "Akbar",
-		value: "Akbar",
-	},
-	{
-		label: "Anthony",
-		value: "Anthony",
-	},
-];
 
 export const Addauction = () => {
 	const [selectedRegion, setSelectedRegion] = useState(null);
@@ -28,12 +14,18 @@ export const Addauction = () => {
 	const [selectedSeller, setSelectedSeller] = useState(null);
 	const [selectedOption, setSelectedOption] = useState(""); // State to track selected option
 
-	const [uploadPVFile, setUploadPVFile] = useState(null);
+	const [photoVideo, setphotoVideo] = useState(null);
 	const [valuationFile, setValuationFile] = useState(null);
+	const [rcValue, setRcValue] = useState(true); 
+
+
+	const handleRCChange = (e) => {
+		setRcValue(e.target.value === "true");
+	  };
 
 	const handleUploadPVChange = (e) => {
 		const file = e.target.files[0];
-		setUploadPVFile(file);
+		setphotoVideo(file);
 	};
 
 	const handleValuationFileChange = (e) => {
@@ -55,7 +47,7 @@ export const Addauction = () => {
 		const { data } = await response.json();
 
 		setSelectedRegion(data);
-		// console.log(data);
+		console.log(data, "REGION DATA");
 	};
 	const getSeller = async () => {
 		const response = await fetch(`${BASE_URL}/admin/seller/getAll`, {
@@ -101,18 +93,19 @@ export const Addauction = () => {
 			region: event.target.region.value,
 			category: event.target.category.value,
 			seller: event.target.seller.value,
-			nameOfProduct: event.target.nameOfProduct.value,
+			productName: event.target.productName.value,
 			registrationNumber: event.target.registrationNumber.value,
 			agreementNumber: event.target.agreementNumber.value,
-			rc: document.querySelector('input[name="rc"]:checked')?.value || "",
+			rc: rcValue,
+			rc_name: event.target.rc_name.value,
 			startPrice: event.target.startPrice.value,
 			reservePrice: event.target.reservePrice.value,
 			startTime: event.target.startTime.value,
 			startDate: event.target.startDate.value,
 			endTime: event.target.endTime.value,
 			endDate: event.target.endDate.value,
-			fuelType:
-				document.querySelector('input[name="fuel"]:checked')?.value || "",
+			// fuelType:
+			// 	document.querySelector('input[name="fuel"]:checked')?.value || "",
 			parkingName: event.target.parkingName.value,
 			parkingAddress: event.target.parkingAddress.value,
 			yearOfManufacture: event.target.yearOfManufacture.value,
@@ -120,7 +113,7 @@ export const Addauction = () => {
 			quotationValidity: event.target.quotationValidity.value,
 			auctionFees: event.target.auctionFees.value,
 			auctionTerm: event.target.auctionTerm.value,
-			uploadPV: uploadPVFile,
+			photoVideo: photoVideo,
 			valuationFile: valuationFile,
 		};
 
@@ -136,7 +129,8 @@ export const Addauction = () => {
 
 		// Check the response status and handle accordingly
 		if (response.ok) {
-			alert("Zishan Not Found mob-6375360267")
+			console.log(response)
+			console.log(response.data)
 			console.log("Auction successfully added.");
 		} else {
 			// Error handling
@@ -179,7 +173,7 @@ export const Addauction = () => {
 					<p>Name of the product</p>
 					<input
 						type='text'
-						name='nameOfProduct'
+						name='productName'
 						placeholder='Name of the product'
 						className='basic-multi-select-inputs'
 					/>
@@ -202,39 +196,61 @@ export const Addauction = () => {
 						className='basic-multi-select-inputs'
 					/>
 				</label>
-				<label htmlFor='RC'>
-					<p>RC</p>
-					<div className='rc-input'>
-						<input type='radio' id='yes' name='rc' />
-						<label for='yes'>Yes</label>
-						<input type='radio' id='no' name='rc' />
-						<label for='no'>No</label>
-					</div>
+					
+				<div className='rc-input'>
+					<label htmlFor="">RC</label>
+					<input
+						type='radio'
+						id='yes'
+						name='rc'
+						value={true}
+						checked={rcValue === true}
+						onChange={handleRCChange}
+					/>
+					<label htmlFor='yes'>Yes</label>
+					<input
+						type='radio'
+						id='no'
+						name='rc'
+						value={false}
+						checked={rcValue === false}
+						onChange={handleRCChange}
+					/>
+					<label htmlFor='no'>No</label>
+				</div>
+				<label htmlFor='nameofproduct'>
+					<p>RC Name</p>
+					<input
+						type='text'
+						name='rc_name'
+						placeholder='RC name'
+						className='basic-multi-select-inputs'
+					/>
 				</label>
 				<label htmlFor='start-price'>
 					<p>Start Price</p>
 					<span class="price-icon">₹</span>
 					<input
-						type='text'
+						type='number'
 						name='startPrice'
-						placeholder="Enter price"
-						className='basic-multi-select-inputs'
-					/>
+						placeholder="Start Price"
+						className='basic-multi-select-inputs' />
+
 				</label>
 				<label htmlFor='reserve-price'>
 					<p>Reserve Price</p>
 					<span class="price-icon">₹</span>
 					<input
-						type='text'
+						type='number'
 						name='reservePrice'
-						placeholder="Enter price"
+						placeholder="Reserve Price"
 						className='basic-multi-select-inputs'
 					/>
 				</label>
 				<label htmlFor='start-time'>
 					<p>Start Time</p>
 					<input
-						type='text'
+						type='date'
 						name='startTime'
 						placeholder='Start Time'
 						className='basic-multi-select-inputs'
@@ -243,7 +259,7 @@ export const Addauction = () => {
 				<label htmlFor='start-date'>
 					<p>Start Date</p>
 					<input
-						type='text'
+						type='date'
 						name='startDate'
 						placeholder='Start Date'
 						className='basic-multi-select-inputs'
@@ -252,7 +268,7 @@ export const Addauction = () => {
 				<label htmlFor='end-time'>
 					<p>End Time</p>
 					<input
-						type='text'
+						type='date'
 						name='endTime'
 						placeholder='End Time'
 						className='basic-multi-select-inputs'
@@ -261,13 +277,13 @@ export const Addauction = () => {
 				<label htmlFor='end-date'>
 					<p>End Date</p>
 					<input
-						type='text'
+						type='date'
 						name='endDate'
 						placeholder='End Date'
 						className='basic-multi-select-inputs'
 					/>
 				</label>
-				<label htmlFor='fuel-type'>
+				{/* <label htmlFor='fuel-type'>
 					<p>RC</p>
 					<div className='fuel-type'>
 						<input type='radio' id='petrol' name='fuel' />
@@ -279,7 +295,7 @@ export const Addauction = () => {
 						<input type='radio' id='e' name='fuel' />
 						<label for='e'>E</label>
 					</div>
-				</label>
+				</label> */}
 				<label htmlFor='parking-name'>
 					<p>Parking Name</p>
 					<input
@@ -299,9 +315,9 @@ export const Addauction = () => {
 					/>
 				</label>
 				<label htmlFor='menufecture-year'>
-					<p>Year of Manufacturer</p>
+					<p>Year of Manufacture</p>
 					<input
-						type='text'
+						type='number'
 						name='yearOfManufacture'
 						placeholder='Year'
 						className='basic-multi-select-inputs'
@@ -328,7 +344,7 @@ export const Addauction = () => {
 				<label htmlFor='quatation-validity'>
 					<p>Quatation Validity</p>
 					<input
-						type='text'
+						type='date'
 						name='quotationValidity'
 						placeholder=''
 						className='basic-multi-select-inputs'
@@ -337,7 +353,7 @@ export const Addauction = () => {
 				<label htmlFor='auction-fees'>
 					<p>Auction Fees</p>
 					<input
-						type='text'
+						type='number'
 						name='auctionFees'
 						placeholder='Auction-fees'
 						className='basic-multi-select-inputs'
@@ -364,8 +380,7 @@ export const Addauction = () => {
 					<p><GrUpload/>Upload Photo/Video</p>
 					<input
 						type='file'
-						id="add-video"
-						name='uploadPV'
+						name='photoVideo'
 						placeholder=''
 						onChange={handleUploadPVChange}
 						className='basic-multi-select-inputs'
