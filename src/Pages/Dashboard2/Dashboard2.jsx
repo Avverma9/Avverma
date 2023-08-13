@@ -25,7 +25,8 @@ import { useNavigate } from "react-router-dom";
 // ];
 
 function Dashboard2() {
-  const[dashboard,setDashboard] = useState([]);
+  const [dashboard,setDashboard] = useState([])
+  
   // const columns = [
   //   {
   //     name: "User Name",
@@ -75,36 +76,52 @@ function Dashboard2() {
   //     grow: 2,
   //   },
   // ];
-const fetchdashboard=async()=>{
-try{
-  const response = await fetch("http://13.233.229.68:4008/admin/getCount",
-  {
-    headers:{
-      Authorization: "Bearer"+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDY0MmI0ODQ4MmIzNWRlYzcyZTY0NiIsInJvbGUiOjEsImlhdCI6MTY5MTkxMzQyMiwiZXhwIjoxMDMzMTkxMzQyMn0.CdcTq9_PAJ3PHBRiIS4y8MDm2ulFLGB5c8F-xudBElI",
-    },
-  }
-  );
-  const data = await response.json()
-  setDashboard(data.data);
+ const Token=localStorage.getItem("token");
+ const fetchdashboard = async()=>{
+  try{
+    const response = await fetch("http://13.233.229.68:4008/admin/getCount",{
+      headers:{
+        Authorization:`Bearer ${Token}`,
+      },
 
-}catch(error){
-  console.error(error)
-}
-}
-useEffect(()=>{
-fetchdashboard();
-},[])
+  })
+    const data =await response.json()
+    console.log(data)
+    
+    setDashboard(data.data.count)
+    
+    
+    
+
+  }catch(error){
+    console.error(error)
+  }
+ }
+ console.log(dashboard)
+ useEffect(()=>{
+  fetchdashboard();
+  
+ },[])
   return (
+    
     <div className="dashboard">
+    
+      
+    
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>
 
       <div className="dashboard-section-head">
+      
         <ul className="dashboard-content">
+        
+        
+          
+        
           <li className="dashboard-b">
             <GiOlive />
-            <span>Live Auctions:</span> 256
+            <span>Live Auctions:</span> 125
           </li>
           <li className="dashboard-bu">
             <CgStopwatch />
@@ -112,49 +129,52 @@ fetchdashboard();
           </li>
           <li className="dashboard-but">
             <MdIncompleteCircle />
-            <span>Complete Auctions:</span> 85
+            <span>Complete Auctions:</span> {dashboard.totalAuction?.length || 0}
           </li>
           <li className="dashboard-butt">
             <BsCheckAll />
-            <span>Total Buyers:</span> 78
+            <span>Total Buyers:</span>
           </li>
           <li className="dashboard-b">
             <BsCheckAll />
-            <span>Total Regions:</span> 78
+            <span>Total Regions:</span> {dashboard.totalregionn}
           </li>
           <li className="dashboard-bu">
             <BsCheckAll />
-            <span>Total Sellers:</span> 78
+            <span>Total Sellers:</span> {dashboard.totalSeller}
           </li>
           <li className="dashboard-but">
             <BsCheckAll />
-            <span>Total Categories:</span> 78
+            <span>Total Categories:</span> {dashboard.totalCategory}
           </li>
           <li className="dashboard-butt">
             <BsCheckAll />
-            <span>Pending Buyer Accounts:</span> 78
+            <span>Pending Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-b">
             <BsCheckAll />
-            <span>Active Buyer Accounts:</span> 78
+            <span>Active Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-bu">
             <BsCheckAll />
-            <span>Inactive Buyer Accounts:</span> 78
+            <span>Inactive Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-but">
             <BsCheckAll />
-            <span>Total Sub Admin:</span> 78
+            <span>Total Sub Admin:</span> {dashboard.totalSubAdmin}
           </li>
           <li className="dashboard-butt">
             <BsCheckAll />
-            <span>Total Active Sub Admin:</span> 78
+            <span>Total Active Sub Admin:</span> {dashboard.totalActiveSubAdmin}
           </li>
           <li className="dashboard-butto" >
             <BsSnow2 />
-            <span>Freezed Users:</span> 53
+            <span>Freezed Users:</span> NA
           </li>
+          
+        
         </ul>
+      
       </div>
       <DataTable
         title="List of User Accounts Freezed"
@@ -166,6 +186,7 @@ fetchdashboard();
         dense
       />
     </div>
+    
   );
 }
 
