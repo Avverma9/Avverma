@@ -36,7 +36,7 @@ background: white;
 .submit-btn{
     padding: 10px;
   border: none;
-  width: 20%;
+  width: 100%;
   margin-top: 20px;
   background: rgb(66, 216, 66);
   cursor: pointer;
