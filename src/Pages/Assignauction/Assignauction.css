@@ -1,0 +1,33 @@
+.assign_auction_table {
+  flex: 3;
+}
+
+.assign_auction_table table {
+  text-align: left;
+  width: 100%;
+}
+
+._auction_table_head {
+  outline: 1px solid #000;
+}
+
+.assign_auction_container {
+  display: flex;
+  gap: 30px;
+}
+
+._assign_auction_btn {
+  flex: 1;
+  width: 30px;
+  height: 40px;
+  border: 1px solid #000;
+  background: transparent;
+  border-radius: 0;
+}
+
+._cancel_auction_btn {
+  width: 100%;
+  padding: 5px 0;
+  border: 1px solid;
+  border-radius: 0;
+}

@@ -1,0 +1,13 @@
+._edit-emd-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+._edit-emd-container input[type="button"] {
+  width: 200px;
+  border: 1px solid #000;
+  border-radius: 0;
+  cursor: pointer;
+  background-color: #fff;
+}
