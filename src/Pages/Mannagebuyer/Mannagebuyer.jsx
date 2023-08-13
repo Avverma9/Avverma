@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,27 @@ import RegisterBuyer from "../RegisterBuyer/RegisterBuyer";
 
 export const Mannagebuyer = () => {
   const navigate = useNavigate();
+  const API= ("http://13.233.229.68:4008/admin/seller/getAll");
+  const[name,setName] = useState(null)
+  const fetchdata = async (url) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`API Error: ${res.status} - ${res.statusText}`);
+      }
+      const data = await res.json();
+      console.log("API Response Data:", data);
+      setName(data);
+    } catch (e) {
+      console.error("Fetch Error:", e);
+    }
+  };
+  useEffect(()=>{
+    fetchdata(API);
+  },[]);
+    
+
+  
   return (
     <div className="_mannage_buyer_container">
       <div className="_mannage_buyer_header">
@@ -40,26 +61,19 @@ export const Mannagebuyer = () => {
             <th>Phone No</th>
             <th>Status</th>
           </tr>
-          <tr>
-            <td>Raju Kar</td>
-            <td>8562788914</td>
-            <td>In Active</td>
+          {name && name.map((item,index)=>(
+          <tr key={index}>
+          
+            <td>{item.name}</td>
+            <td>{item.mobile}</td>
+            <td>{item.status}</td>
+
+          
           </tr>
-          <tr>
-            <td>Raju Kar</td>
-            <td>8562788914</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>Raju Kar</td>
-            <td>8562788914</td>
-            <td>Active</td>
-          </tr>
-          <tr>
-            <td>Raju Kar</td>
-            <td>8562788914</td>
-            <td>In Active</td>
-          </tr>
+          ))}
+         
+            
+         
         </table>
         <button  onClick={() => navigate("/register-buyer")} className="btn-click">Click me</button>
         <button onClick={()=>navigate("/register-sub-admin")} className="btn-click">Click again</button>
