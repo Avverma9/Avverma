@@ -125,13 +125,10 @@ export const Addauction = () => {
 		});
 		console.log("Form Data:", formData);
 
-		// Check the response status and handle accordingly
 		if (response.ok) {
-			console.log(response)
-			console.log(response.data)
 			console.log("Auction successfully added.");
+			alert("Auction Data Added Successfully")
 		} else {
-			// Error handling
 			console.error("Error adding auction:", response.statusText);
 		}
 	};
