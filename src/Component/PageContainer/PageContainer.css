@@ -1,0 +1,14 @@
+.page_container {
+  width: 82%;
+  padding: 18px 32px;
+  margin-left: 18%;
+}
+
+.page_container_background-img {
+  background-image: url("../../assets/bgimage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100%;
+  height: max-content;
+}

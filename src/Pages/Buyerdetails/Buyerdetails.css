@@ -1,0 +1,28 @@
+.buyer_details_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+._input_fields {
+  flex-basis: 45%;
+  margin: 5px;
+}
+
+._input_fields h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+._input_fields input {
+  width: 100%;
+  margin-top: 5px;
+  outline: 0;
+}
+
+._navigation_arrow {
+  position: relative;
+  left: 92%;
+  bottom: 24px;
+  cursor: pointer;
+}

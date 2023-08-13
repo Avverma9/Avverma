@@ -1,0 +1,57 @@
+.user_wrapper {
+}
+
+.user_create {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_create h1 {
+  margin-bottom: 15px;
+}
+
+.user_create > input {
+  width: 50%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.user_delete {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_delete .user_del_header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.user_delete input {
+  width: 50%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+.user_blocked {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_blocked .user_blocked_header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+.user_blocked input {
+  width: 50%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 15px;
+}

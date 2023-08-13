@@ -1,0 +1,15 @@
+.emd_account_container h1 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.emd_account_container input {
+  width: 35%;
+  margin: 10px 0 20px 0;
+}
+
+.emd_account_container textarea {
+  width: 35%;
+  margin: 10px 0 20px 0;
+  resize: none;
+}

@@ -1,0 +1,21 @@
+._mannage_buyer_body span {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+._mannage_buyer_body span input {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+._mannage_buyer_body {
+  margin-top: 15px;
+}
+
+._sorted_option_list table {
+  text-align: center;
+}
