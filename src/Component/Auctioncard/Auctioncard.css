@@ -1,0 +1,59 @@
+.auction-timing{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    color: rgb(83, 82, 82);
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    gap:200px;
+}
+.auction_party h1{
+    font-size: 14px;
+    font-weight: 501;
+}
+.auction_party{
+    margin-bottom: 10px;
+}
+.car-location,.car-insurance,.close-auction{
+display: flex;
+flex-direction: row;
+gap: 5px;
+}
+.location,.tick,.hammer{
+    font-size: 20px;
+}
+.auction_icons{
+    display: flex;
+    flex-direction: row;
+    gap:5%;
+    color: rgb(74, 74, 74);
+
+}
+ .auction_vehicle_count{
+    display: flex;
+    flex-direction: row;
+    gap:5%;
+    margin-top: 10px;
+   
+    
+}
+.motorcycle-pic,.car-pic{
+    font-size: 18px;
+    background: #d5d5d5;
+    width: 45px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    
+  }
+    
+    
+    
+
+.clock-time{
+    display: flex;
+    align-items: center;
+}
