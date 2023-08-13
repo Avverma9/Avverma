@@ -14,3 +14,21 @@ left: 40%;
   font-weight: 501;
   color: rgb(36, 32, 32);
 }
+.start-btn{
+  padding: 10px;
+border: none;
+width: 170px;
+background: blue;
+color: white;
+font-size: 18px;
+font-weight: 801;
+box-shadow: 5px 5px 7px #cfc8ff;
+cursor: pointer;
+}
+.btn-start{
+  height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-top: 100px;
+}

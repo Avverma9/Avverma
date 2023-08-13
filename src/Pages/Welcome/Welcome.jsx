@@ -9,9 +9,11 @@ export const Welcome = () => {
       <div className="welcome-text">
         <h1>{upperCase("Welcome to Admin Portal")}</h1>
       </div>
-  <button color="black" size="50px">
+      <div className="btn-start">
+  <button className="start-btn">
       <a href="/login">Let's GO</a>
       </button>
+      </div>
     </>
   );
 };

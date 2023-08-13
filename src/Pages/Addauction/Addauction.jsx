@@ -3,6 +3,7 @@ import Select from "react-select";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "./Addauction.css";
+import {GrUpload} from 'react-icons/gr';
 
 const BASE_URL = "http://13.48.45.18:4008";
 
@@ -135,7 +136,7 @@ export const Addauction = () => {
 
 		// Check the response status and handle accordingly
 		if (response.ok) {
-			alert("Zishan Not Found")
+			alert("Zishan Not Found mob-6375360267")
 			console.log("Auction successfully added.");
 		} else {
 			// Error handling
@@ -212,19 +213,21 @@ export const Addauction = () => {
 				</label>
 				<label htmlFor='start-price'>
 					<p>Start Price</p>
+					<span class="price-icon">₹</span>
 					<input
 						type='text'
 						name='startPrice'
-						placeholder=<LiaRupeeSignSolid />
+						placeholder="Enter price"
 						className='basic-multi-select-inputs'
 					/>
 				</label>
 				<label htmlFor='reserve-price'>
 					<p>Reserve Price</p>
+					<span class="price-icon">₹</span>
 					<input
 						type='text'
 						name='reservePrice'
-						placeholder=<LiaRupeeSignSolid />
+						placeholder="Enter price"
 						className='basic-multi-select-inputs'
 					/>
 				</label>
@@ -352,14 +355,16 @@ export const Addauction = () => {
 				<div className='textarea'>
 					<label htmlFor='text-area'>
 						<p>Other Information </p>
+						<textarea name="" id="" cols="30" rows="10"></textarea>
 					</label>
 				</div>
 			</div>
 			<div className='cont-2'>
 				<label htmlFor='add-video'>
-					<p>Upload Photo/Video</p>
+					<p><GrUpload/>Upload Photo/Video</p>
 					<input
 						type='file'
+						id="add-video"
 						name='uploadPV'
 						placeholder=''
 						onChange={handleUploadPVChange}
@@ -367,9 +372,10 @@ export const Addauction = () => {
 					/>
 				</label>
 				<label htmlFor='add-file'>
-					<p>Add Valuation File</p>
+					<p><GrUpload/>Add Valuation File</p>
 					<input
 						type='file'
+						id="add-file"
 						name='valuationFile'
 						placeholder=''
 						onChange={handleValuationFileChange}
