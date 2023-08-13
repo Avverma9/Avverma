@@ -1,0 +1,9 @@
+.row-box-fields {
+  width: calc(100% + 251px);
+}
+
+._region-btn {
+  width: 170px;
+  padding: 4px 0;
+  margin-top: 4px;
+}
