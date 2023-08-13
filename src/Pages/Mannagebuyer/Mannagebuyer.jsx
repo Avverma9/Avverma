@@ -1,83 +1,109 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import DataTable from "react-data-table-component";
+import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
+import { BiEdit } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
+import { GrAddCircle } from "react-icons/gr";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
-import RegisterBuyer from "../RegisterBuyer/RegisterBuyer";
+
+const data = [
+  {
+    sl: 1,
+    name: "abc",
+    phno: "8668190986",
+    email: "example@example.com",
+    status: "pending", // default pending, deactive,active
+  },
+  {
+    sl: 2,
+    name: "abc",
+    phno: "8668190986",
+    email: "example@example.com",
+    status: "pending", // default pending, deactive,active
+  },
+  {
+    sl: 3,
+    name: "abc",
+    phno: "8668190986",
+    email: "example@example.com",
+    status: "pending", // default pending, deactive,active
+  },
+];
 
 export const Mannagebuyer = () => {
   const navigate = useNavigate();
-  const API= ("http://13.233.229.68:4008/admin/seller/getAll");
-  const[name,setName] = useState(null)
-  const fetchdata = async (url) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) {
-        throw new Error(`API Error: ${res.status} - ${res.statusText}`);
-      }
-      const data = await res.json();
-      console.log("API Response Data:", data);
-      setName(data);
-    } catch (e) {
-      console.error("Fetch Error:", e);
-    }
-  };
-  useEffect(()=>{
-    fetchdata(API);
-  },[]);
-    
-
-  
+  const columns = [
+    {
+      name: "Sl.No",
+      selector: (row) => row.sl,
+      sortable: true,
+    },
+    {
+      name: "Buyer Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Buyer Phone",
+      selector: (row) => row.phno,
+      sortable: true,
+    },
+    {
+      name: "Buyer Email",
+      selector: (row) => row.email,
+      sortable: true,
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      sortable: true,
+    },
+    {
+      name: "Action",
+      selector: (row) => (
+        <div className="_edit">
+          <MdOutlineRemoveRedEye size="18" color="#1a2333" />
+          <BiEdit size="18" color="#1b3ea9" />
+          <MdDeleteOutline size="18" color="#ff0000" />
+        </div>
+      ),
+    },
+  ];
   return (
-    <div className="_mannage_buyer_container">
-      <div className="_mannage_buyer_header">
-        <h1>Mannage Buyer</h1>
-        <span>
-          <p>Registration of a buyer : 768794562</p>
-          <input
-            type="button"
-            value="View"
-            onClick={() => navigate("/buyer-details")}
-          />
-        </span>
-      </div>
-      <div className="_mannage_buyer_body">
-        <div className="_search">
-          <input type="text" name="" id="" />
-          <AiOutlineSearch />
-        </div>
-        <div className="sorted_option">
-          <select name="sorted-option" id="sorted-option-select">
-            <option value="">--Please choose an option--</option>
-            <option value="name">Name</option>
-            <option value="mobile">Mobile Number</option>
-            <option value="email">Email</option>
-          </select>
-        </div>
-      </div>
-      <div className="_sorted_option_list">
-        <table className="_w-100">
-          <tr className="table_head">
-            <th>Buyer Name</th>
-            <th>Phone No</th>
-            <th>Status</th>
-          </tr>
-          {name && name.map((item,index)=>(
-          <tr key={index}>
-          
-            <td>{item.name}</td>
-            <td>{item.mobile}</td>
-            <td>{item.status}</td>
-
-          
-          </tr>
-          ))}
-         
-            
-         
-        </table>
-        <button  onClick={() => navigate("/register-buyer")} className="btn-click">Click me</button>
-        <button onClick={()=>navigate("/register-sub-admin")} className="btn-click">Click again</button>
-      </div>
-    </div>
+    <>
+      <DataTable
+        title="Mannage Buyer"
+        columns={columns}
+        data={data}
+        pagination
+        fixedHeader
+        fixedHeaderScrollHeight="75vh"
+        subHeader
+        subHeaderAlign="left"
+        subHeaderComponent={
+          <div className="_mannage-buyer-sub-header">
+            <div className="_search-component">
+              <input type="text" name="" id="" placeholder="Search" />
+              <AiOutlineSearch />
+            </div>
+            <div className="_filter-dropdown">
+              <select name="" id="">
+                <option>Filter</option>
+                <option value="">Pending</option>
+                <option value="">Active</option>
+                <option value="">InActive</option>
+              </select>
+            </div>
+            <div className="_register-buyer-btn">
+              <button onClick={() => navigate("/register-buyer")}>
+                <GrAddCircle color="#fff" />
+                <span>Register a Buyer</span>
+              </button>
+            </div>
+          </div>
+        }
+      />
+    </>
   );
 };

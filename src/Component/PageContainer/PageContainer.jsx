@@ -34,8 +34,11 @@ import Addseller from "../../Pages/Setting2/Addseller";
 import Addcategory from "../../Pages/Setting2/Addcategory";
 import { MannageAuction } from "../../Pages/Mannageauction/Mannageauction";
 import { Addauction } from "../../Pages/Addauction/Addauction";
+import { Profile } from "../../Pages/Profile/Profile";
 import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
 import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
+import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
+import Login from "../Login/Login";
 
 export const PageContainer = () => {
   return (
@@ -43,6 +46,8 @@ export const PageContainer = () => {
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/sign-in" element={<Login />} />
+
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="bidding-detail" element={<Biddingdetail />} />
         <Route path="/search" element={<Search />} />
@@ -75,8 +80,10 @@ export const PageContainer = () => {
         <Route path="/add-seller" element={<Addseller />} />
         <Route path="/add-category" element={<Addcategory />} />
         <Route path="/mannage-auction" element={<MannageAuction />} />
-        <Route path="register-buyer" element={<RegisterBuyer/>}/>
-        <Route path="register-sub-admin" element={<RegisterSubAdmin/>}/>
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/register-buyer" element={<RegisterBuyer />} />
+        <Route path="/register-sub-admin" element={<RegisterSubAdmin />} />
+        <Route path="/assign-buyer" element={<Assignbuyer />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

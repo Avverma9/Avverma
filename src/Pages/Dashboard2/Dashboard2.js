@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { GiOlive } from "react-icons/gi";
 import { CgStopwatch } from "react-icons/cg";
@@ -9,72 +9,91 @@ import { BsSnow2 } from "react-icons/bs";
 import "./Dashboard2.css";
 import { useNavigate } from "react-router-dom";
 
-const data = [
-  {
-    username: "Sourav",
-    email: "example@example",
-    phno: "5768696969",
-    region: "Kolkata",
-  },
-  {
-    username: "Zishan",
-    email: "example@example",
-    phno: "4068496996",
-    region: "Jaipur",
-  },
-];
+// const data = [
+//   {
+//     username: "Sourav",
+//     email: "example@example",
+//     phno: "5768696969",
+//     region: "Kolkata",
+//   },
+//   {
+//     username: "Zishan",
+//     email: "example@example",
+//     phno: "4068496996",
+//     region: "Jaipur",
+//   },
+// ];
 
 function Dashboard2() {
-  const columns = [
-    {
-      name: "User Name",
-      selector: (row) => row.username,
-      sortable: true,
+  const[dashboard,setDashboard] = useState([]);
+  // const columns = [
+  //   {
+  //     name: "User Name",
+  //     selector: (row) => row.username,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "User Email",
+  //     selector: (row) => row.email,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "Ph. No.",
+  //     selector: (row) => row.phno,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "Region",
+  //     selector: (row) => row.region,
+  //     sortable: true,
+  //   },
+  //   {
+  //     name: "Action",
+  //     selector: (row) => (
+  //       <div className="freeze-action">
+  //         <>
+  //           <input
+  //             type="checkbox"
+  //             id="freeze-action"
+  //             name="freeze-action1"
+  //             defaultValue="freeze"
+  //           />
+  //           <label htmlFor="vehicle1">Freeze</label>
+  //         </>
+  //         <>
+  //           <input
+  //             type="checkbox"
+  //             id="freeze-action"
+  //             name="freeze-action2"
+  //             defaultValue="unfreeze"
+  //           />
+  //           <label htmlFor="vehicle2">Unfreeze</label>
+  //         </>
+  //       </div>
+  //     ),
+  //     // allowOverflow: true,
+  //     grow: 2,
+  //   },
+  // ];
+const fetchdashboard=async()=>{
+try{
+  const response = await fetch("http://13.233.229.68:4008/admin/getCount",
+  {
+    headers:{
+      Authorization: "Bearer"+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ZDY0MmI0ODQ4MmIzNWRlYzcyZTY0NiIsInJvbGUiOjEsImlhdCI6MTY5MTkxMzQyMiwiZXhwIjoxMDMzMTkxMzQyMn0.CdcTq9_PAJ3PHBRiIS4y8MDm2ulFLGB5c8F-xudBElI",
     },
-    {
-      name: "User Email",
-      selector: (row) => row.email,
-      sortable: true,
-    },
-    {
-      name: "Ph. No.",
-      selector: (row) => row.phno,
-      sortable: true,
-    },
-    {
-      name: "Region",
-      selector: (row) => row.region,
-      sortable: true,
-    },
-    {
-      name: "Action",
-      selector: (row) => (
-        <div className="freeze-action">
-          <>
-            <input
-              type="checkbox"
-              id="freeze-action"
-              name="freeze-action1"
-              defaultValue="freeze"
-            />
-            <label htmlFor="vehicle1">Freeze Account</label>
-          </>
-          <>
-            <input
-              type="checkbox"
-              id="freeze-action"
-              name="freeze-action2"
-              defaultValue="unfreeze"
-            />
-            <label htmlFor="vehicle2">Unfreeze Account</label>
-          </>
-        </div>
-      ),
-      // allowOverflow: true,
-      grow: 2,
-    },
-  ];
+  }
+  );
+  const data = await response.json()
+  setDashboard(data.data);
 
+}catch(error){
+  console.error(error)
+}
+}
+useEffect(()=>{
+fetchdashboard();
+},[])
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -99,7 +118,39 @@ function Dashboard2() {
             <BsCheckAll />
             <span>Total Buyers:</span> 78
           </li>
-          <li className="dashboard-butto">
+          <li className="dashboard-b">
+            <BsCheckAll />
+            <span>Total Regions:</span> 78
+          </li>
+          <li className="dashboard-bu">
+            <BsCheckAll />
+            <span>Total Sellers:</span> 78
+          </li>
+          <li className="dashboard-but">
+            <BsCheckAll />
+            <span>Total Categories:</span> 78
+          </li>
+          <li className="dashboard-butt">
+            <BsCheckAll />
+            <span>Pending Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-b">
+            <BsCheckAll />
+            <span>Active Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-bu">
+            <BsCheckAll />
+            <span>Inactive Buyer Accounts:</span> 78
+          </li>
+          <li className="dashboard-but">
+            <BsCheckAll />
+            <span>Total Sub Admin:</span> 78
+          </li>
+          <li className="dashboard-butt">
+            <BsCheckAll />
+            <span>Total Active Sub Admin:</span> 78
+          </li>
+          <li className="dashboard-butto" >
             <BsSnow2 />
             <span>Freezed Users:</span> 53
           </li>
@@ -107,8 +158,8 @@ function Dashboard2() {
       </div>
       <DataTable
         title="List of User Accounts Freezed"
-        columns={columns}
-        data={data}
+        // columns={columns}
+        // data={data}
         pagination
         fixedHeader
         fixedHeaderScrollHeight="25vh"

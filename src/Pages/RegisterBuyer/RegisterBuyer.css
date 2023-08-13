@@ -30,7 +30,7 @@
     display: flex;
 flex-direction: row;
 align-items: center;
-width: 30%;
+width: 100%;
 background: white;
   }
 .submit-btn{
@@ -47,18 +47,7 @@ background: white;
     display: flex;
     justify-content: flex-end;
 }
-.kyc-varify{
-    width: 100%;
-}
 #account-status{
-    padding: 10px;
-width: 100%;
-height: 40px;
-font-size: 16px;
-background: white;
-border: 1px solid black;
-}
-#region{
     padding: 10px;
 width: 100%;
 height: 40px;
