@@ -1,0 +1,19 @@
+._update_vehicle_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 25%;
+  margin-bottom: 15px;
+}
+
+._update_vehicle_header input {
+  padding: 2px 20px;
+  border-radius: none;
+  border-radius: 0;
+  border: 1px solid #000;
+  background: transparent;
+}
+
+.update_vehicle_container > input {
+  width: 25%;
+}

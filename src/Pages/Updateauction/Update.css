@@ -1,0 +1,32 @@
+.update-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 30px;
+    position: relative;
+    top: 15%;
+
+    height: 100vh;
+  }
+  .update-butt{
+    width: 20%;
+    background: white;
+    padding: 10px;
+    border: 1px solid black;
+    margin: 10px;
+    font-size: 18px;
+  }
+  
+  .update-dropdown {
+    margin: 10px;
+  }
+  
+  select {
+    padding: 10px;
+    width: 300px;
+    height: 50px;
+    font-size: 16px;
+    background: white;
+    border: 1px solid black;
+  }
+  

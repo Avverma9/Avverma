@@ -1,0 +1,125 @@
+.bid_container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bid_header {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  align-items: center;
+  justify-content: left;
+  width: 68%;
+font-size: 12px;
+margin-top: 15px;
+}
+.edit_bid_view{
+  display: flex;
+border: 2px solid #e5e5e5;
+gap: 20px;
+align-items: center;
+}
+.edit_bid_section{
+  display: flex;
+  gap: 20px;
+}
+.edit_bid_section input[type='button']{
+  background: red;
+border: none;
+color: white;
+width: 100px;
+border-radius: 4px;
+}
+
+.bid_container p {
+  flex: 1;
+}
+
+.bid_header .bid_status {
+  flex: 1;
+}
+
+.bid_body {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  width: 50%;
+}
+
+.bid_body img {
+  width: 120px;
+  height: 85px;
+}
+
+.bid_detail_table {
+  flex: 1;
+  font-size: 12px;
+}
+
+.bid_detail_table svg,
+.bid_detail_table img {
+  width: 14px;
+  height: 12px;
+  margin-right: 10px;
+
+}
+/* styles.css (or any other CSS file you are using) */
+
+.status-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.status-btn {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: 1px solid black;
+  cursor: pointer;
+  width:200px
+}
+
+ul.dropdownmenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  position: absolute;
+  background-color: #3f3f3f;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+ul.dropdownmenu li {
+  padding: 12px 16px;
+  cursor: pointer;
+  color: white;
+  width: 200px;
+}
+
+ul.dropdownmenu li:hover {
+  background-color: #fffdfd;
+  color: black;
+}
+td{
+  display: flex;
+  width: 50%;
+}
+tr{
+  display: flex;
+}
+td span{
+  display: flex;
+}
+.flex-btn{
+  display: flex;
+justify-content: space-between;
+width: 44%;
+}
+.edit-btn{
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+
