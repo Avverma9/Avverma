@@ -40,6 +40,7 @@ import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
 import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
 import Login from "../Login/Login";
+import { Editauction } from "../../Pages/Editauction/Editauction";
 
 export const PageContainer = () => {
   return (
@@ -56,6 +57,7 @@ export const PageContainer = () => {
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
         <Route path="/view-auction" element={<Viewauction />} />
+        <Route path="/edit-view-auction/:id" element={<Editauction />} />
         <Route path="/add-new-auction" element={<Addauction />} />
         {/* <Route path="/settings" element={<Setting />} /> */}
         <Route path="/set-timing" element={<Settiming />} />
