@@ -39,6 +39,7 @@ import RegisterBuyer from "../../Pages/RegisterBuyer/RegisterBuyer";
 import RegisterSubAdmin from "../../Pages/Registeradmin/RegisterSubAdmin";
 import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
 import Login from "../Login/Login";
+import Upload from "../../Pages/UploadStatement/Upload";
 
 export const PageContainer = () => {
   return (
@@ -84,6 +85,7 @@ export const PageContainer = () => {
         <Route path="/register-buyer" element={<RegisterBuyer />} />
         <Route path="/register-sub-admin" element={<RegisterSubAdmin />} />
         <Route path="/assign-buyer" element={<Assignbuyer />} />
+        <Route path="/upload-statement" element={<Upload/>}/>
       </Routes>
       {/* </BrowserRouter> */}
     </div>
