@@ -13,37 +13,41 @@
 .add-new-auction-fields .basic-multi-select-inputs {
   height: 40px;
   width: 100%;
-  border-radius: 5px;
+  
 }
 .add-new-auction-fields label {
   flex-basis: 30%;
   flex-grow: 1;
   width: 100%;
+  
 }
 .add-new-auction-fields input{
-  border-radius: 5px;
+margin-top: 10px;
 }
 .rc-input {
   background: white;
-  border: 1px solid #cacaca;
+  border: 1px solid grey;
   height: 40px;
-  display: flex;
-  align-items: center;
+  
+  
+  margin-top: 10px;
 }
 .rc-input input{
   margin-left: 15px;
+  
 }
 
 .fuel-type {
   background: white;
-  border: 1px solid #cacaca;
+  border: 1px solid grey;
   height: 40px;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
+  
+
+  margin-top: 10px;
+  
 }
 .fuel-type input{
-  margin-left: 15px;
+  margin-left: 30px;
   
 }
 input[type="file"] {
@@ -53,10 +57,12 @@ input[type="file"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 20px;
 }
 .cont-2 input {
   width: 100%;
   height: 40px;
+  display: none;
 }
 .submit-btn {
   padding: 10px;
@@ -72,4 +78,31 @@ input[type="file"] {
 }
 .dashboard-header h1 {
   margin-bottom: 30px;
+}
+.cont-2 label{
+  background: white;
+  border: 1px solid grey;
+  font-size: 14px;
+  font-weight: normal;
+  width: 389px;
+  padding: 10px;
+}
+.cont-2 label p{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: grey;
+}
+.textarea{
+  width: 100%;
+}
+.textarea label textarea{
+  width: 100%;
+  resize: none;
+}
+.price-icon {
+  position: absolute;
+  
+  top: 64%;
+  color: grey;
 }

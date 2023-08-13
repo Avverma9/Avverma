@@ -3,6 +3,7 @@ import Select from "react-select";
 import {LiaRupeeSignSolid} from 'react-icons/lia';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import "./Addauction.css";
+import {GrUpload} from 'react-icons/gr';
 
 const category = [
   {
@@ -255,17 +256,20 @@ export const Addauction = () => {
         </label>
         <label htmlFor="start-price">
           <p>Start Price</p>
+          <span class="price-icon">₹</span>
           <input
             type="text"
-            placeholder=<LiaRupeeSignSolid />
+            placeholder=""
             className="basic-multi-select-inputs"
           />
         </label>
         <label htmlFor="reserve-price">
+        
           <p>Reserve Price</p>
+          <span class="price-icon">₹</span>
           <input
             type="text"
-            placeholder=<LiaRupeeSignSolid />
+            placeholder=""
             className="basic-multi-select-inputs"
           />
         </label>
@@ -382,22 +386,25 @@ export const Addauction = () => {
         <div className="textarea">
           <label htmlFor="text-area">
             <p>Other Information </p>
+            <textarea name="" id="" cols="30" rows="10"></textarea>
           </label>
         </div>
       </div>
       <div className="cont-2">
         <label htmlFor="add-video">
-          <p>Upload Photo/Video</p>
+          <p><GrUpload/>Upload Photo/Video</p>
           <input
             type="file"
+            id="add-video"
             placeholder=""
             className="basic-multi-select-inputs"
           />
         </label>
         <label htmlFor="add-file">
-          <p>Add Valuation File</p>
+          <p><GrUpload/>Add Valuation File</p>
           <input
             type="file"
+            id="add-file"
             placeholder=""
             className="basic-multi-select-inputs"
           />

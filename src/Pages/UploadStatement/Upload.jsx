@@ -9,7 +9,7 @@ function Upload() {
         <p>Upload Statement</p>
     </div>
     <div className='file-upload-a'>
-    <label for="upload-btnr"><GrUpload/>Upload</label>
+    <label for="upload-btnr"><GrUpload/>Upload File</label>
         <input type='file' id='upload-btnr'/>
     </div>
     <div className='btn_btn'>
