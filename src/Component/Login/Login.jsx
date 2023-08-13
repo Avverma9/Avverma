@@ -22,6 +22,7 @@ const Login = () => {
       });
       const data = await response.json();
       console.log(data);
+      alert("Logged In ")
       localStorage.setItem("token", data.token);
       // navigate("/");
     } catch (error) {

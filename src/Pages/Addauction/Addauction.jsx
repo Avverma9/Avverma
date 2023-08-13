@@ -45,6 +45,7 @@ export const Addauction = () => {
 
 		const { data } = await response.json();
 		// console.log(data);
+
 		setSelectedCategory(data);
 	};
 	const getRegions = async () => {
@@ -134,7 +135,7 @@ export const Addauction = () => {
 
 		// Check the response status and handle accordingly
 		if (response.ok) {
-			// Successful response handling
+			alert("Zishan Not Found")
 			console.log("Auction successfully added.");
 		} else {
 			// Error handling
@@ -295,7 +296,7 @@ export const Addauction = () => {
 					/>
 				</label>
 				<label htmlFor='menufecture-year'>
-					<p>Year of Menufecture</p>
+					<p>Year of Manufacturer</p>
 					<input
 						type='text'
 						name='yearOfManufacture'

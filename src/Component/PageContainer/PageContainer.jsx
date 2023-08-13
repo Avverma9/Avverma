@@ -48,7 +48,7 @@ export const PageContainer = () => {
       {/* <BrowserRouter> */}
       <Routes>
         <Route path="/" element={<Welcome />} />
-        <Route path="/sign-in" element={<Login />} />
+        <Route path="/login" element={<Login />} />
 
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="bidding-detail" element={<Biddingdetail />} />
