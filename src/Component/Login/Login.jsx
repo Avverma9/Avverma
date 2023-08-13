@@ -34,6 +34,7 @@ const Login = () => {
         <label>
           Username:
           <input
+            style={{ border: '2px solid black' }}
             type="email"
             placeholder="admin@gmail.com"
             value={username}
