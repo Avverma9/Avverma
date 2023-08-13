@@ -89,12 +89,12 @@ function RegisterSubAdmin() {
   return (
     <div className='main-container'>
       <div className='page-heading'>
-        <h1>Register Admin</h1>
+        <h1>Register</h1>
       </div>
       <form className='form-container' onSubmit={handleSubmit}>
 
         <label htmlFor='sub-admin-name'>
-          <p> Name</p>
+          <p>Name</p>
           <input
             type='text'
             name='name'
