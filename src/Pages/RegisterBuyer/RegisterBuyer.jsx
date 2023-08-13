@@ -46,6 +46,7 @@ function RegisterBuyer() {
         address: '',
         kycVerification: 'notverified',
       });
+      alert("Data submitted")
   };
 
   return (
