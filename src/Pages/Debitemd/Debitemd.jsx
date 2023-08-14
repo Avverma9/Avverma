@@ -10,6 +10,9 @@ export const Debitemd = () => {
       <textarea cols="30" rows="5">
         abcd
       </textarea>
+      <div className='button-btn'>
+            <button className='save-button'>Save</button>
+          </div>
     </div>
   );
 };

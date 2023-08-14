@@ -32,6 +32,7 @@ function Setauctiontime() {
       .then(data => {
         if (data && data.data) {
           setSellers(data.data);
+          alert("data recieved")
         }
       })
       .catch(error => {

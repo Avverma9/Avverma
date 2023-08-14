@@ -11,6 +11,10 @@ export const Emdaccount = () => {
           <input type="text" value="abcd" />
           <h1>Credit Notes</h1>
           <textarea  cols="30" rows="5">abcd</textarea>
+          <div className='button-btn'>
+            <button className='save-button'>Save</button>
+          </div>
     </div>
+    
   )
 }

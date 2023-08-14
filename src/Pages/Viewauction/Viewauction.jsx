@@ -66,12 +66,12 @@ export const Viewauction = () => {
     },
     {
       name: "Bid Date",
-      selector: (row) => row.bidDate,
+      selector: (row) => row.startTime,
       sortable: true,
     },
     {
       name: "Bid Time",
-      selector: (row) => row.bidTime,
+      selector: (row) => row.endTime,
       sortable: true,
     },
   ];
