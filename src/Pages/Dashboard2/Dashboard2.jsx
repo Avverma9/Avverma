@@ -19,6 +19,7 @@ import "./Dashboard2.css";
 import { useNavigate } from "react-router-dom";
 import { RegionTable } from "./RegionTable";
 import { SellerTable } from "./SellerTable";
+import { CategoryTable } from "./CategoryTable";
 
 // const data = [
 //   {
@@ -146,7 +147,7 @@ function Dashboard2() {
             <FcSalesPerformance />
             <span>Total Sellers:</span> {dashboard.totalSeller}
           </li>
-          <li className="dashboard-but">
+          <li className="dashboard-but" onClick={(e) => handleSwitch(e)}>
             <BiSolidCategory />
             <span>Total Categories:</span> {dashboard.totalCategory}
           </li>
@@ -189,6 +190,8 @@ function Dashboard2() {
         <RegionTable />
       ) : target === "Total Sellers:" ? (
         <SellerTable />
+      ) : target === "Total Categories:" ? (
+        <CategoryTable />
       ) : null}
     </div>
   );
