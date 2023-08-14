@@ -36,8 +36,8 @@ export const Editauction = () => {
       );
 
       if (response.ok) {
-        console.log(JSON.stringify(response));
-        alert("User Found By Id");
+        console.log(JSON.stringify(response.body));
+        // alert("User Found By Id");
       }
     };
 
