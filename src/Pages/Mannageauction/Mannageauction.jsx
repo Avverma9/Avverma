@@ -159,7 +159,7 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => row.status ? "Live": "Ended",
       sortable: true,
     },
     {
