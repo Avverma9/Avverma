@@ -7,7 +7,6 @@ function App() {
 	return (
 		<div className='app_container'>
 			<BrowserRouter>
-			
 				<SideNavBar />
 				<PageContainer />
 			</BrowserRouter>

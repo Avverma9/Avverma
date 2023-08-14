@@ -5,6 +5,14 @@ import "./Profile.css";
 import DataTable from "react-data-table-component";
 
 export const Profile = () => {
+  const [formData, setFormData] = useState({
+    name: "Shivila",
+    mobile: "79504865954",
+    email: "test@gmail.com",
+    password: "**************",
+  });
+
+
   const [data, setData] = useState([]);
 
   const columns = [
@@ -45,6 +53,11 @@ export const Profile = () => {
       });
   }, []);
 
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   return (
     <>
       <div className="_profile-header">
@@ -53,21 +66,49 @@ export const Profile = () => {
         <ImExit size={18} />
       </div>
       <div className="_profile-body">
-        <div className="_input-fields">
+      <div className="_input-fields">
           <label htmlFor="">Name</label>
-          <input type="text" name="" id="" placeholder="abcd" />
+          <input
+            type="text"
+            name="name"
+            id=""
+            placeholder="abcd"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
         </div>
         <div className="_input-fields">
           <label htmlFor="">Mobile No</label>
-          <input type="number" name="" id="" placeholder="0000000000" />
+          <input
+            type="number"
+            name="mobile"
+            id=""
+            placeholder="0000000000"
+            value={formData.mobile}
+            onChange={handleInputChange}
+          />
         </div>
         <div className="_input-fields">
           <label htmlFor="">Mail ID/Username</label>
-          <input type="email" name="" id="" placeholder="example@example.com" />
+          <input
+            type="email"
+            name="email"
+            id=""
+            placeholder="example@example.com"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
         </div>
         <div className="_input-fields">
           <label htmlFor="">Password</label>
-          <input type="password" name="" id="" placeholder="**************" />
+          <input
+            type="password"
+            name="password"
+            id=""
+            placeholder="**************"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
         </div>
       </div>
       <button className="_profile-btn">Update</button>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { LiaRupeeSignSolid } from "react-icons/lia";
-import { IoMdArrowDropdown } from "react-icons/io";
+
+
 import "./Addauction.css";
 import {GrUpload} from 'react-icons/gr';
 
@@ -226,7 +226,7 @@ export const Addauction = () => {
 				</label>
 				<label htmlFor='start-price'>
 					<p>Start Price</p>
-					<span class="price-icon">₹</span>
+						{/* <span class="price-icon">₹</span> */}
 					<input
 						type='number'
 						name='startPrice'
@@ -236,7 +236,7 @@ export const Addauction = () => {
 				</label>
 				<label htmlFor='reserve-price'>
 					<p>Reserve Price</p>
-					<span class="price-icon">₹</span>
+					{/* <span class="price-icon">₹</span> */}
 					<input
 						type='number'
 						name='reservePrice'

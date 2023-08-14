@@ -2,24 +2,10 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { useNavigate, useParams } from "react-router-dom";
 // import "./Addauction.css";
 
 const BASE_URL = "http://13.48.45.18:4008";
-
-const seller = [
-  {
-    label: "Amar",
-    value: "Amar",
-  },
-  {
-    label: "Akbar",
-    value: "Akbar",
-  },
-  {
-    label: "Anthony",
-    value: "Anthony",
-  },
-];
 
 export const Editauction = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
@@ -29,6 +15,10 @@ export const Editauction = () => {
 
   const [uploadPVFile, setUploadPVFile] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
+
+  const urlId = useParams();
+  const navigate = useNavigate();
+  localStorage.setItem("auctionId", JSON.stringify(urlId));
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];
@@ -95,6 +85,7 @@ export const Editauction = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const formData = {
       region: event.target.region.value,
       category: event.target.category.value,
@@ -122,8 +113,8 @@ export const Editauction = () => {
       valuationFile: valuationFile,
     };
 
-    const response = await fetch(`${BASE_URL}/admin/auction/add`, {
-      method: "POST",
+    const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId}`, {
+      method: "PUT",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
@@ -136,6 +127,7 @@ export const Editauction = () => {
     if (response.ok) {
       // Successful response handling
       console.log("Auction successfully added.");
+      navigate("/settings");
     } else {
       // Error handling
       console.error("Error adding auction:", response.statusText);
@@ -145,7 +137,7 @@ export const Editauction = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="dashboard-header">
-        <h1>Add new Auction</h1>
+        <h1>Update Auction Details</h1>
       </div>
       <div className="add-new-auction-fields">
         <Select
