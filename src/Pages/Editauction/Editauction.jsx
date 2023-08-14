@@ -17,32 +17,6 @@ export const Editauction = () => {
   const [valuationFile, setValuationFile] = useState(null);
 
   const urlId = useParams();
-  const winId = localStorage.getItem("winId");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        `${BASE_URL}/admin/auction/update/${urlId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-          body: JSON.stringify({
-            winner: winId,
-          }),
-        }
-      );
-
-      if (response.ok) {
-        console.log(JSON.stringify(response.body));
-        // alert("User Found By Id");
-      }
-    };
-
-    fetchData();
-  }, [urlId, winId]);
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];
@@ -109,6 +83,16 @@ export const Editauction = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // const response = await fetch(`${`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: "Bearer " + localStorage.getItem("token"),
+    //   },
+    //   body: JSON.stringify({}),
+    // });
+
     const formData = {
       region: event.target.region.value,
       category: event.target.category.value,
@@ -136,8 +120,8 @@ export const Editauction = () => {
       valuationFile: valuationFile,
     };
 
-    const response = await fetch(`${BASE_URL}/admin/auction/add`, {
-      method: "POST",
+    const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId}`, {
+      method: "PUT",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
         "Content-Type": "application/json",
