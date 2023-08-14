@@ -111,12 +111,10 @@ function Dashboard2() {
   }, []);
 
   const handleSwitch = (e) => {
-    const targetInnerText = e.nativeEvent.currentTarget.innerText;
-    console.log("Target Inner Text:", targetInnerText);
-    
-    setTarget(targetInnerText);
+    console.log(e.nativeEvent.originalTarget.innerText);
+    setTarget(e.nativeEvent.originalTarget.innerText);
   };
-  
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
