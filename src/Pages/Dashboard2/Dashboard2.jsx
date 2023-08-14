@@ -111,7 +111,7 @@ function Dashboard2() {
   }, []);
 
   const handleSwitch = (e) => {
-    const targetInnerText = e.nativeEvent.currentTarget.innerText;*****
+    const targetInnerText = e.nativeEvent.currentTarget.innerText;
     console.log("Target Inner Text:", targetInnerText);
     
     setTarget(targetInnerText);
