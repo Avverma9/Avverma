@@ -137,7 +137,7 @@ export const Editauction = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="dashboard-header">
-        <h1>Add new Auction</h1>
+        <h1>Update Auction Details</h1>
       </div>
       <div className="add-new-auction-fields">
         <Select
