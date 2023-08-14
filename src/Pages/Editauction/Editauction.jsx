@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import "./Addauction.css";
 
 const BASE_URL = "http://13.48.45.18:4008";
@@ -17,6 +17,8 @@ export const Editauction = () => {
   const [valuationFile, setValuationFile] = useState(null);
 
   const urlId = useParams();
+  const navigate = useNavigate();
+  localStorage.setItem("auctionId", JSON.stringify(urlId));
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];
@@ -84,15 +86,6 @@ export const Editauction = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // const response = await fetch(`${`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: "Bearer " + localStorage.getItem("token"),
-    //   },
-    //   body: JSON.stringify({}),
-    // });
-
     const formData = {
       region: event.target.region.value,
       category: event.target.category.value,
@@ -134,6 +127,7 @@ export const Editauction = () => {
     if (response.ok) {
       // Successful response handling
       console.log("Auction successfully added.");
+      navigate("/settings");
     } else {
       // Error handling
       console.error("Error adding auction:", response.statusText);

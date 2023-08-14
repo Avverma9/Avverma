@@ -5,18 +5,21 @@ import { CgStopwatch } from "react-icons/cg";
 import { MdIncompleteCircle } from "react-icons/md";
 import { BsCheckAll } from "react-icons/bs";
 import { BsSnow2 } from "react-icons/bs";
-import {BsFillPersonFill} from "react-icons/bs";
-import {TbBuildingEstate} from "react-icons/tb";
-import {FcSalesPerformance} from "react-icons/fc";
-import {BiSolidCategory} from "react-icons/bi";
-import {MdOutlinePending} from "react-icons/md";
-import {GrWheelchairActive} from "react-icons/gr";
-import {MdNoAccounts} from "react-icons/md";
-import {RiAdminLine} from "react-icons/ri";
-import {GrUserAdmin} from "react-icons/gr";
+import { BsFillPersonFill } from "react-icons/bs";
+import { TbBuildingEstate } from "react-icons/tb";
+import { FcSalesPerformance } from "react-icons/fc";
+import { BiSolidCategory } from "react-icons/bi";
+import { MdOutlinePending } from "react-icons/md";
+import { GrWheelchairActive } from "react-icons/gr";
+import { MdNoAccounts } from "react-icons/md";
+import { RiAdminLine } from "react-icons/ri";
+import { GrUserAdmin } from "react-icons/gr";
 
 import "./Dashboard2.css";
 import { useNavigate } from "react-router-dom";
+import { RegionTable } from "./RegionTable";
+import { SellerTable } from "./SellerTable";
+import { CategoryTable } from "./CategoryTable";
 
 // const data = [
 //   {
@@ -34,8 +37,9 @@ import { useNavigate } from "react-router-dom";
 // ];
 
 function Dashboard2() {
-  const [dashboard,setDashboard] = useState([])
-  
+  const [dashboard, setDashboard] = useState([]);
+  const [target, setTarget] = useState(null);
+
   // const columns = [
   //   {
   //     name: "User Name",
@@ -85,49 +89,39 @@ function Dashboard2() {
   //     grow: 2,
   //   },
   // ];
- const Token=localStorage.getItem("token");
- const fetchdashboard = async()=>{
-  try{
-    const response = await fetch("http://13.48.45.18:4008/admin/getCount",{
-      headers:{
-        Authorization:`Bearer ${Token}`,
-      },
+  const Token = localStorage.getItem("token");
+  const fetchdashboard = async () => {
+    try {
+      const response = await fetch("http://13.48.45.18:4008/admin/getCount", {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
 
-  })
-    const data =await response.json()
-    console.log(data)
-    
-    setDashboard(data.data.count)
-    
-    
-    
+      setDashboard(data.data.count);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  console.log(dashboard);
+  useEffect(() => {
+    fetchdashboard();
+  }, []);
 
-  }catch(error){
-    console.error(error)
-  }
- }
- console.log(dashboard)
- useEffect(()=>{
-  fetchdashboard();
-  
- },[])
+  const handleSwitch = (e) => {
+    console.log(e.nativeEvent.originalTarget.innerText);
+    setTarget(e.nativeEvent.originalTarget.innerText);
+  };
+
   return (
-    
     <div className="dashboard">
-    
-      
-    
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>
-
       <div className="dashboard-section-head">
-      
         <ul className="dashboard-content">
-        
-        
-          
-        
           <li className="dashboard-b">
             <GiOlive />
             <span>Live Auctions:</span> 125
@@ -138,26 +132,27 @@ function Dashboard2() {
           </li>
           <li className="dashboard-but">
             <MdIncompleteCircle />
-            <span>Complete Auctions:</span> {dashboard.totalAuction?.length || 0}
+            <span>Complete Auctions:</span>{" "}
+            {dashboard.totalAuction?.length || 0}
           </li>
-          <li className="dashboard-butt">
-            <BsFillPersonFill/>
+          <li className="dashboard-butt" onClick={(e) => handleSwitch(e)}>
+            <BsFillPersonFill />
             <span>Total Buyers:</span>NA
           </li>
-          <li className="dashboard-b">
+          <li className="dashboard-b" onClick={(e) => handleSwitch(e)}>
             <TbBuildingEstate />
             <span>Total Regions:</span> {dashboard.totalregionn}
           </li>
-          <li className="dashboard-bu">
+          <li className="dashboard-bu" onClick={(e) => handleSwitch(e)}>
             <FcSalesPerformance />
             <span>Total Sellers:</span> {dashboard.totalSeller}
           </li>
-          <li className="dashboard-but">
+          <li className="dashboard-but" onClick={(e) => handleSwitch(e)}>
             <BiSolidCategory />
             <span>Total Categories:</span> {dashboard.totalCategory}
           </li>
           <li className="dashboard-butt">
-            <MdOutlinePending/>
+            <MdOutlinePending />
             <span>Pending Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-b">
@@ -165,7 +160,7 @@ function Dashboard2() {
             <span>Active Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-bu">
-            <MdNoAccounts/>
+            <MdNoAccounts />
             <span>Inactive Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-but">
@@ -176,16 +171,13 @@ function Dashboard2() {
             <GrUserAdmin />
             <span>Total Active Sub Admin:</span> {dashboard.totalActiveSubAdmin}
           </li>
-          <li className="dashboard-butto" >
+          <li className="dashboard-butto">
             <BsSnow2 />
             <span>Freezed Users:</span> NA
           </li>
-          
-        
         </ul>
-      
       </div>
-      <DataTable
+      {/* <DataTable
         title="List of User Accounts Freezed"
         // columns={columns}
         // data={data}
@@ -193,9 +185,15 @@ function Dashboard2() {
         fixedHeader
         fixedHeaderScrollHeight="25vh"
         dense
-      />
+      /> */}
+      {target === "Total Regions:" ? (
+        <RegionTable />
+      ) : target === "Total Sellers:" ? (
+        <SellerTable />
+      ) : target === "Total Categories:" ? (
+        <CategoryTable />
+      ) : null}
     </div>
-    
   );
 }
 
