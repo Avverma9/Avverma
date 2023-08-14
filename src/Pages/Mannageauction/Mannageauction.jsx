@@ -7,6 +7,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { BsFilter } from "react-icons/bs";
 import { GrAddCircle } from "react-icons/gr";
 import { FiUpload } from "react-icons/fi";
+import XLSX from "xlsx/dist/xlsx.full.min";
 import { FiRefreshCcw } from "react-icons/fi";
 import { TfiExport } from "react-icons/tfi";
 import "./Mannageauction.css";
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 export const MannageAuction = () => {
   const [showRegion, setShowRegion] = useState(false);
+  const [filterRegion,setFilterRegion]=useState([])
   const [showSeller, setShowSeller] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [filterView, setFilterView] = useState(false);
@@ -21,7 +23,21 @@ export const MannageAuction = () => {
   const [filterText, setFilterText] = useState("");
 
   const [auctions, setAuctions] = useState([]);
-
+  const exportToExcel = () => {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(exportView);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Buyer_Data");
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array",
+    });
+    const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const downloadLink = URL.createObjectURL(data);
+    const link = document.createElement("a");
+    link.href = downloadLink;
+    link.download = "Buyer_Data.xlsx";
+    link.click();
+  };
   const fetchAuctions = async () => {
     try {
       const response = await fetch(
@@ -42,11 +58,20 @@ export const MannageAuction = () => {
   useEffect(() => {
     fetchAuctions();
   }, []);
+//=============================================filter by region=======================================//
 
+useEffect(()=>{
+fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be")
+},[]
+)
+//===================================================================================================//
   const handleClick = () => {
     fetchAuctions();
   };
-
+  // const handleRowSelected = (state) => {
+  //   setExportView(state.selectedRows);
+  // };
+  
   const filteredItems = auctions?.filter((item) => {
     if (!item) {
       return false;
@@ -193,13 +218,13 @@ export const MannageAuction = () => {
                 />
                 <AiOutlineSearch className="search-icon" />
                 {exportView.length !== 0 && (
-                  <button className="export-button">
-                    <p>
-                      <TfiExport style={{ marginRight: "5px" }} />
-                      Export
-                    </p>
-                  </button>
-                )}
+            <button className="export-button" onClick={exportToExcel}>
+              <p>
+                <TfiExport style={{ marginRight: "5px" }} />
+                Export
+              </p>
+            </button>
+          )}
                 <button
                   className="filter-button"
                   onClick={() => setFilterView(!filterView)}
@@ -279,8 +304,8 @@ export const MannageAuction = () => {
                         id="filter-auction-select"
                       >
                         <option value="">-- Please choose an option --</option>
-                        <option value="name">Kolkata</option>
-                        <option value="mobile">Jaipur</option>
+                        <option value="name">uttar predesh</option>
+                        <option value="mobile">kolkata</option>
                         <option value="email">Patna</option>
                       </select>
                     </div>
@@ -301,9 +326,10 @@ export const MannageAuction = () => {
                         id="filter-auction-select"
                       >
                         <option value="">-- Please choose an option --</option>
-                        <option value="name">Raju</option>
-                        <option value="mobile">Shyam</option>
-                        <option value="email">Ram</option>
+                        <option value="name">Ankit</option>
+                        <option value="mobile">Zishan</option>
+                        <option value="email">Abdul</option>
+                        <option value="email">Sourav</option>
                       </select>
                     </div>
                   )}
@@ -322,10 +348,10 @@ export const MannageAuction = () => {
                         name="filter-auction-select"
                         id="filter-auction-select"
                       >
-                        <option value="">-- Please choose an option --</option>
-                        <option value="name">Category 1</option>
-                        <option value="mobile">Category 2</option>
-                        <option value="email">Category 3</option>
+                        <option value="">--Select Any--</option>
+                        <option value="name">Car</option>
+                        <option value="mobile">Bike</option>
+                        <option value="email">test</option>
                       </select>
                     </div>
                   )}
@@ -334,25 +360,7 @@ export const MannageAuction = () => {
             )}
           </>
         }
-        // actions={
-        //   <button
-        //     className="export-butto"
-        //     style={{
-        //       padding: "10px",
-        //       backgroundcolor: "rgba(44, 44, 44, 0.8)",
-        //       border: "medium",
-        //       color: "white",
-        //       cursor: "pointer",
-        //       display: "flex",
-        //       alignitems: "center",
-        //       gap: "5px",
-        //       fontWeight: "800",
-        //     }}
-        //   >
-        //     Export
-        //     <TfiExport />
-        //   </button>
-        // }
+       
       />
     </>
   );
