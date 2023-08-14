@@ -36,8 +36,8 @@ background: white;
 .submit-btn{
     padding: 10px;
   border: none;
-  width: 20%;
-  margin-top: 20px;
+  width: 100%;
+  margin-top: 30px;
   background: rgb(66, 216, 66);
   cursor: pointer;
   display: flex;

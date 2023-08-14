@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {AiOutlineLogout} from "react-icons/ai"
+
 import {
   homeIcon,
   profileIcon,
@@ -15,6 +17,7 @@ import "./SideNavBar.css";
 import { Link } from "react-router-dom";
 import { useCollapse } from "react-collapsed";
 import { upperCase } from "../../utils";
+
 
 const Home = () => {
   return (
@@ -63,6 +66,17 @@ const PushNotification = () => {
     </>
   );
 };
+const Logout=()=>{
+  return (
+    <>
+    <li>
+      <Link to="/">
+        <p ><AiOutlineLogout color="black" size="22px"/> Logout </p>
+      </Link>
+    </li>
+    </>
+  )
+}
 
 const Dashboard2 = () => {
   return (
@@ -244,14 +258,17 @@ export const SideNavBar = () => {
       <div className="side_nav_body">
         <ul>
           <Home />
+          
           <Dashboard2 />
           <MannageAuction />
           <Setting2 />
           <MannageBuyer />
           <MannageAdmin />
-
+           
           <Profile />
           <PushNotification />
+          <Logout/>
+        
         </ul>
       </div>
     </section>

@@ -18,7 +18,7 @@ function Addregion() {
       });
       console.log(response);
       if (response && response.ok === true) {
-        window.alert("Added successfully")
+        alert("Added successfully")
         setName("")
       }
 

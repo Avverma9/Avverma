@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { MdOutlineRemoveRedEye, MdDeleteOutline } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
@@ -7,32 +7,62 @@ import { GrAddCircle } from "react-icons/gr";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
 
-const data = [
-  {
-    sl: 1,
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    status: "pending", // default pending, deactive,active
-  },
-  {
-    sl: 2,
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    status: "pending", // default pending, deactive,active
-  },
-  {
-    sl: 3,
-    name: "abc",
-    phno: "8668190986",
-    email: "example@example.com",
-    status: "pending", // default pending, deactive,active
-  },
-];
+
 
 export const Mannagebuyer = () => {
   const navigate = useNavigate();
+  const [managebuyer,setManagebuyer] = useState([])
+  const Token=localStorage.getItem("token");
+  const fetchmanagebuyer=async()=>{
+          try{
+            const response= await fetch("http://13.233.229.68:4008/admin/seller/getAll",
+            {
+              headers:{
+                Authorization:`Bearer ${Token}`,
+              },
+            }
+            );
+            const res = await response.json();
+            setManagebuyer(res.data)
+
+
+          }catch(error){
+            console.error(error)
+          }
+  }
+  console.log(managebuyer)
+  useEffect(()=>{
+    fetchmanagebuyer();
+  },[])
+
+
+
+  const data = [
+    {
+      sl: 1,
+      name: "abc",
+      phno: "8668190986",
+      email: "example@example.com",
+      status: "pending", // default pending, deactive,active
+    },
+    {
+      sl: 2,
+      name: "abc",
+      phno: "8668190986",
+      email: "example@example.com",
+      status: "pending", // default pending, deactive,active
+    },
+    {
+      sl: 3,
+      name: "abc",
+      phno: "8668190986",
+      email: "example@example.com",
+      status: "pending", // default pending, deactive,active
+    },
+  ];
+
+
+
   const columns = [
     {
       name: "Sl.No",
@@ -100,7 +130,9 @@ export const Mannagebuyer = () => {
                 <GrAddCircle color="#fff" />
                 <span>Register a Buyer</span>
               </button>
+              
             </div>
+            
           </div>
         }
       />
