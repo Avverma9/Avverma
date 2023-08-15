@@ -2,6 +2,33 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
+
+const styles = {
+  tableContainer: {
+    maxHeight: "400px", 
+    overflowY: "auto",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+  },
+  cell: {
+    padding: "10px",
+    border: "1px solid #ccc",
+  },
+  circularImage: {
+    width: "50px", 
+    height: "50px",
+    borderRadius: "50%", 
+    overflow: "hidden", 
+  },
+  circularImageImg: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover", 
+  },
+};
+
 export const CancelBooking = ({ toast }) => {
   const [bookingId, setBookingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -45,9 +72,11 @@ export const CancelBooking = ({ toast }) => {
   // };
 
   const fetchCanceledBookings = useCallback(() => {
+    const id = localStorage.getItem("userId")
+    console.log(id, "myId")
     axios
       .get(
-        "https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking"
+        `http://localhost:5000/booking/getCancelledBooking/${id}`
       )
       .then((res) => {
         console.log(res.data, "CancelledData");
@@ -94,44 +123,55 @@ export const CancelBooking = ({ toast }) => {
       </Modal>
 
       {canceledBookings.length > 0 && (
-        <>
-          <div className="_title">
-            <h1>Canceled Booking History</h1>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Hotel Image</th>
-                <th>Booking ID</th>
-                <th>Hotel Name</th>
-                <th>Destination</th>
-                {/* <th>Check-In Date</th>
-                <th>Check-Out Date</th> */}
-                <th>Cancelled at</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {canceledBookings.map((booking) => (
-                <tr key={booking._id}>
-                  <td>
-                    <img
-                      className="hotelimage"
-                      src={booking.images}
-                      alt="Hotel"
-                    />
-                  </td>
-                  <td>{booking.bookingId}</td>
-                  <td>{booking.hotelName}</td>
-                  <td>{booking.destination}</td>
-                  {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
-                  <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
-                  <td>{new Date(booking.cancelledAt).toLocaleDateString()}</td>
-                  <td style={{ color: "red" }}>{booking.bookingStatus}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <>
+         <div className="_title">
+  <h1>Canceled Booking History</h1>
+</div>
+<div style={styles.tableContainer}>
+  <table style={styles.table}>
+    <thead>
+      <tr>
+        <th style={styles.cell}>Sr</th>
+        <th style={styles.cell}>Hotel Image</th>
+        <th style={styles.cell}>Booking ID</th>
+        <th style={styles.cell}>Hotel Name</th>
+        <th style={styles.cell}>Destination</th>
+        {/* <th>Check-In Date</th>
+        <th>Check-Out Date</th> */}
+        <th style={styles.cell}>Cancelled at</th>
+        <th style={styles.cell}>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {canceledBookings.map((booking,index) => (
+        <tr key={booking._id}>
+            <td style={styles.cell}>{index+1}</td>
+          <td style={styles.cell}>
+            <div style={styles.circularImage}>
+              <img
+                className="hotelimage"
+                src={booking.images}
+                alt="Hotel"
+                style={styles.circularImageImg}
+              />
+            </div>
+          </td>
+          <td style={styles.cell}>{booking.bookingId}</td>
+          <td style={styles.cell}>{booking.hotelName}</td>
+          <td style={styles.cell}>{booking.destination}</td>
+          {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
+          <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
+          <td style={styles.cell}>
+            {new Date(booking.cancelledAt).toLocaleDateString()}
+          </td>
+          <td style={{ ...styles.cell, color: "red" }}>
+            {booking.bookingStatus}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
         </>
       )}
     </>

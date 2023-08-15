@@ -8,6 +8,42 @@ const Assampage = () => {
   const [data, setData] = useState({});
   const location = useLocation();
 
+
+
+// fetch nearby hotels ---------
+const fetchNearbyHotels = (destination) => {
+  const nearbyHotelsEndpoint = 'https://hotel-backend-tge7.onrender.com/hotels/destination/get/all';
+
+  fetch(nearbyHotelsEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      destination: destination,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+      
+    })
+    
+    .then((data) => {
+      console.log(data);
+      
+    })
+    .catch((error) => {
+      console.error('Error fetching nearby hotels:', error);
+    });
+};
+
+
+
+
+
   useEffect(() => {
     fetch(URL)
       .then((response) => response.json())
@@ -16,6 +52,8 @@ const Assampage = () => {
       })
       .catch((error) => console.log(error));
   }, []);
+
+  
 
   if (location.pathname !== "/state/assam") {
     return null;
@@ -29,6 +67,7 @@ const Assampage = () => {
         </div>
         <div className="text">
           <p>{data[0]?.text[0]}</p>
+          <button onClick={() => fetchNearbyHotels('Patna')}>get nearby hotels</button>
         </div>
       </div>
 

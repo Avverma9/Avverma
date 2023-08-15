@@ -1,0 +1,90 @@
+.btn-div{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.btn-flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-div h1{
+    font-size: 14px;
+    font-weight: 400;
+}
+.btn-div button{
+    padding: 5px;
+    background: #0d6efd;
+    border: none;
+    height: auto;
+    width: 20px;
+    color: white;
+    font-weight: 501;
+    font-size: 18px;
+}
+.booking-details-preview{
+    
+    box-shadow: 0px 0px 7px 1px grey;
+    border-radius: 5px;
+}
+.booking-details-preview .hotelname{
+    display: flex;
+    justify-content: center;
+}
+.hotelname h4{
+    font-weight: 501;
+    color: red;
+    font-family: cursive;
+}
+.booking-details-preview .destination{
+    font-weight: 501;
+    font-size: 1.2rem;
+    color:rgb(75, 75, 75);
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+}
+.booking-details-preview .rate{
+    font-weight: 501;
+    font-size: 1.2rem;
+    color:red;
+    margin-left: 15px;
+}
+.booking-details-preview img{
+    width: 95%;
+margin-left: 2.5%;
+border-radius: 5px;
+}
+.name-rating-flex{
+    display: flex;
+    justify-content: space-between;
+}
+.rating12{
+    background-color: green;
+width: 10%;
+color: white;
+border-radius: 1px;
+justify-content: center;
+display: flex;
+align-items: center;
+height: 30px;
+margin-top: 5px;
+margin-right: 10px;
+border-radius: 3px;
+cursor: pointer;
+font-weight: 601;
+font-family: cursive;
+}
+.detail-hotel{
+    
+    font-size: 12px;
+    font-weight: 501;
+    color: grey;
+    font-family: cursive;
+}
+.detail-head{
+    margin-left: 15px;
+    font-weight: 501;
+    font-size: 14px;
+    font-family: cursive;
+}

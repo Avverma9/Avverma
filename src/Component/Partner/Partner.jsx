@@ -83,12 +83,38 @@ const Partner = () => {
   const [onbulkbooking,setOnbulkbooking] = useState("");
   const [ontripplesharing,setOntripplesharing] = useState("");
   const [onmore4room,setOnmore4room] = useState("");
+
+  const [onDoubleSharingap, setOnDoubleSharingap] = useState("");
+  const [onQuadSharingap,setOnQuadSharingap] = useState("");
+  const [onbulkbookingap,setOnbulkbookingap] = useState("");
+  const [ontripplesharingap,setOntripplesharingap] = useState("");
+  const [onmore4roomap,setOnmore4roomap] = useState("");
+
+  const [onDoubleSharingmap, setOnDoubleSharingmap] = useState("");
+  const [onQuadSharingmap,setOnQuadSharingmap] = useState("");
+  const [onbulkbookingmap,setOnbulkbookingmap] = useState("");
+  const [ontripplesharingmap,setOntripplesharingmap] = useState("");
+  const [onmore4roommap,setOnmore4roommap] = useState("");
+
   
   const [offDoubleSharing, setOffDoubleSharing] = useState("");
   const [offtripplesharing,setOfftripplesharing] = useState("");
   const [offquadsharing,setOffquadsharing] = useState("");
   const [offbulkbooking,setOffbulkbooking] = useState("");
   const [offmore4room,setOffmore4room] = useState("");
+
+  const [offDoubleSharingApPlan, setOffDoubleSharingApPlan] = useState("");
+  const [offtripplesharingap,setOfftripplesharingap] = useState("");
+  const [offquadsharingap,setOffquadsharingap] = useState("");
+  const [offbulkbookingap,setOffbulkbookingap] = useState("");
+  const [offmore4roomap,setOffmore4roomap] = useState("");
+
+  const [offDoubleSharingmap, setOffDoubleSharingmap] = useState("");
+  const [offtripplesharingmap,setOfftripplesharingmap] = useState("");
+  const [offquadsharingmap,setOffquadsharingmap] = useState("");
+  const [offbulkbookingmap,setOffbulkbookingmap] = useState("");
+  const [offmore4roommap,setOffmore4roommap] = useState("");
+
   const [outsideFoodPolicy, setOutsideFoodPolicy] = useState("");
   const [cancellationpolicy, setCancellationpolicy] = useState("");
   const [paymentMode,setPaymentMode]= useState("");
@@ -163,16 +189,43 @@ const Partner = () => {
     formData.append("internationalGuestAllowed", internationalcouple);
     formData.append("returnPolicy", returnPolicy);
     formData.append("checkInOut", checkInOut);
+
+
     formData.append("onDoubleSharing", onDoubleSharing);
     formData.append("onQuadSharing",onQuadSharing);
     formData.append("onBulkBooking",onbulkbooking);
     formData.append("onMoreThanFour",onmore4room);
     formData.append("onTrippleSharing",ontripplesharing);
 
+    formData.append("onDoubleSharingap", onDoubleSharingap);
+    formData.append("onQuadSharingap",onQuadSharingap);
+    formData.append("onBulkBookingap",onbulkbookingap);
+    formData.append("onMoreThanFourap",onmore4roomap);
+    formData.append("onTrippleSharingap",ontripplesharingap);
+
+    formData.append("onDoubleSharingmap", onDoubleSharingmap);
+    formData.append("onQuadSharingmap",onQuadSharingmap);
+    formData.append("onBulkBookingmap",onbulkbookingmap);
+    formData.append("onMoreThanFourmap",onmore4roommap);
+    formData.append("onTrippleSharingmap",ontripplesharingmap);
+
     formData.append("offDoubleSharing", offDoubleSharing);
+    formData.append("offTrippleSharing", offtripplesharing)
     formData.append("offQuadSharing",offquadsharing);
     formData.append("offBulkBooking",offbulkbooking);
     formData.append("offMoreThanFour",offmore4room);
+
+    formData.append("offDoubleSharingApPlan", offDoubleSharingApPlan);
+    formData.append("offtripplesharingap", offtripplesharingap)
+    formData.append("offQuadSharingap",offquadsharingap);
+    formData.append("offBulkBookingap",offbulkbookingap);
+    formData.append("offMoreThanFourap",offmore4roomap);
+
+    formData.append("offDoubleSharingmap", offDoubleSharingmap);
+    formData.append("offtripplesharingmap", offtripplesharingmap)
+    formData.append("offQuadSharingmap",offquadsharingmap);
+    formData.append("offBulkBookingmap",offbulkbookingmap);
+    formData.append("offMoreThanFourmap",offmore4roommap);
     images.forEach((image, index) => {
       formData.append(`image${index}`, image);
     });
@@ -254,6 +307,7 @@ const Partner = () => {
         setOffmore4room("");
         setOffquadsharing("");
         setOfftripplesharing("");
+        setOffDoubleSharingApPlan("");
       } else {
         console.log("failed");
       }
@@ -1285,74 +1339,79 @@ const Partner = () => {
 
                 <label htmlFor="offtripplesharing">
                   Tripple Sharing:
-                  <input type="text" id="offtripplesharing" />
+                  <input type="text" id="offtripplesharing" 
+                    onChange={(e)=>setOfftripplesharing(e.target.value)}
+                  />
                 </label>
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="offmore4room">
                   More then four rooms:
                   <input type="text" id="offmore4rooms" value={offmore4room}
                     onChange={(e)=>setOffmore4room(e.target.value)}
                   />
                 </label>
                 <h6>AP Plan</h6>
-                <label htmlFor="offdoublesharing">
+                <label htmlFor="offDoubleSharingApPlan">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
-                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  <input type="text" id="offDoubleSharingApPlan" value={offDoubleSharingApPlan}
+                    onChange={(e)=>setOffDoubleSharingApPlan(e.target.value)}
                   />
                 </label>
 
                 <label htmlFor="offquadsharing">
                   Quad Sharing:
-                  <input type="text" id="offquadsharing" value={offquadsharing}
-                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                  <input type="text" id="offquadsharingap" value={offquadsharingap}
+                  onChange={(e)=>setOffquadsharingap(e.target.value)} />
                 </label>
 
-                <label htmlFor="offbulkbooking">
+                <label htmlFor="offbulkbookingap">
                   Bulk Booking more then 20-30people:
-                  <input type="text" id="offbulkbooking" value={offbulkbooking}
-                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  <input type="text" id="offbulkbookingap" value={offbulkbookingap}
+                    onChange={(e)=>setOffbulkbookingap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="offtripplesharingap">
                   Tripple Sharing:
-                  <input type="text" id="offtripplesharing" />
+                  <input type="text" id="offtripplesharingap" value={offtripplesharingap}
+                  onChange={(e)=>setOfftripplesharingap(e.target.value)}
+                   />
                 </label>
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="offmore4roomap">
                   More then four rooms:
-                  <input type="text" id="offmore4rooms" value={offmore4room}
-                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  <input type="text" id="offmore4roomsap" value={offmore4roomap}
+                    onChange={(e)=>setOffmore4roomap(e.target.value)}
                   />
                 </label>
                 <h6>Map plan</h6>
-                <label htmlFor="offdoublesharing">
+                <label htmlFor="offdoublesharingmap">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
-                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  <input type="text" id="offdoublesharingmap" value={offDoubleSharingmap}
+                    onChange={(e)=>setOffDoubleSharingmap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offquadsharing">
+                <label htmlFor="offquadsharingmap">
                   Quad Sharing:
-                  <input type="text" id="offquadsharing" value={offquadsharing}
-                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                  <input type="text" id="offquadsharingmap" value={offquadsharingmap}
+                  onChange={(e)=>setOffquadsharingmap(e.target.value)} />
                 </label>
 
-                <label htmlFor="offbulkbooking">
+                <label htmlFor="offbulkbookingmap">
                   Bulk Booking more then 20-30people:
-                  <input type="text" id="offbulkbooking" value={offbulkbooking}
-                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  <input type="text" id="offbulkbookingmap" value={offbulkbookingmap}
+                    onChange={(e)=>setOffbulkbookingmap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="offtripplesharingmap">
                   Tripple Sharing:
-                  <input type="text" id="offtripplesharing" />
+                  <input type="text" id="offtripplesharingmap" value={offtripplesharingmap}
+                  onChange={(e)=>setOfftripplesharingmap(e.target.value)}/>
                 </label>
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="offmore4roommap">
                   More then four rooms:
-                  <input type="text" id="offmore4rooms" value={offmore4room}
-                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  <input type="text" id="offmore4roomsmap" value={offmore4roommap}
+                    onChange={(e)=>setOffmore4roommap(e.target.value)}
                   />
                 </label>
                 
@@ -1400,65 +1459,69 @@ const Partner = () => {
                   />
                 </label>
                 <h6>AP Plan</h6>
-                <label htmlFor="offdoublesharing">
+                <label htmlFor="ondoublesharingap">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" value={offDoubleSharing}
-                    onChange={(e)=>setOffDoubleSharing(e.target.value)}
+                  <input type="text" id="ondoublesharingap" value={onDoubleSharingap}
+                    onChange={(e)=>setOnDoubleSharingap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offquadsharing">
+                <label htmlFor="onquadsharingap">
                   Quad Sharing:
-                  <input type="text" id="offquadsharing" value={offquadsharing}
-                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                  <input type="text" id="onquadsharingap" value={onQuadSharingap}
+                  onChange={(e)=>setOnQuadSharingap(e.target.value)} />
                 </label>
 
-                <label htmlFor="offbulkbooking">
+                <label htmlFor="onbulkbookingap">
                   Bulk Booking more then 20-30people:
-                  <input type="text" id="offbulkbooking" value={offbulkbooking}
-                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  <input type="text" id="onbulkbookingap" value={onbulkbookingap}
+                    onChange={(e)=>setOnbulkbookingap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="ontripplesharingap">
                   Tripple Sharing:
-                  <input type="text" id="offtripplesharing" />
+                  <input type="text" id="ontripplesharingap" value={ontripplesharingap}
+                    onChange={(e)=>setOntripplesharingap(e.target.value)}
+                  />
                 </label>
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="ontripplesharing">
                   More then four rooms:
-                  <input type="text" id="offmore4rooms" value={offmore4room}
-                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  <input type="text" id="onmore4roomsap" value={onmore4roomap}
+                    onChange={(e)=>setOnmore4roomap(e.target.value)}
                   />
                 </label>
                 <h6>Map plan</h6>
-                <label htmlFor="offdoublesharing">
+                <label htmlFor="ondoublesharingmap">
                   Double Sharing:
-                  <input type="text" id="offdoublesharing" value={offDoubleSharing} //offDoubleSharingMapPlan
-                    onChange={(e)=>setOffDoubleSharing(e.target.value)} //offDoubleSharingApPlan
+                  <input type="text" id="ondoublesharingmap" value={onDoubleSharingmap} //offDoubleSharingMapPlan
+                    onChange={(e)=>setOnDoubleSharingmap(e.target.value)} //offDoubleSharingApPlan
                   />
                 </label>
 
-                <label htmlFor="offquadsharing">
+                <label htmlFor="onquadsharingmap">
                   Quad Sharing:
-                  <input type="text" id="offquadsharing" value={offquadsharing}
-                  onChange={(e)=>setOffquadsharing(e.target.value)} />
+                  <input type="text" id="onquadsharingmap" value={onQuadSharingmap}
+                  onChange={(e)=>setOnQuadSharingmap(e.target.value)} />
                 </label>
 
-                <label htmlFor="offbulkbooking">
+                <label htmlFor="onbulkbookingmap">
                   Bulk Booking more then 20-30people:
-                  <input type="text" id="offbulkbooking" value={offbulkbooking}
-                    onChange={(e)=>setOffbulkbooking(e.target.value)}
+                  <input type="text" id="onbulkbookingmap" value={onbulkbookingmap}
+                    onChange={(e)=>setOnbulkbookingmap(e.target.value)}
                   />
                 </label>
 
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="ontripplesharingmap">
                   Tripple Sharing:
-                  <input type="text" id="offtripplesharing" />
+                  <input type="text" id="ontripplesharingmap" value={ontripplesharingmap}
+                    onChange={(e)=>setOntripplesharingmap(e.target.value)}
+                  />
                 </label>
-                <label htmlFor="offtripplesharing">
+                <label htmlFor="onmore4roommap">
                   More then four rooms:
-                  <input type="text" id="offmore4rooms" value={offmore4room}
-                    onChange={(e)=>setOffmore4room(e.target.value)}
+                  <input type="text" id="onmore4roomsmap" value={onmore4roommap}
+                    onChange={(e)=>setOnmore4roommap(e.target.value)}
                   />
                 </label>
               </div>

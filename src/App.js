@@ -109,6 +109,8 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import AddHotel from "./Admin/AddHotel";
 import Sidebar from "./Admin/Sidebar";
 
+import { Customizebooking } from "./Component/Payment/Customizebooking";
+
 function App() {
   // console.log(search)
   const [refresh, setRefresh] = useState(1);
@@ -282,6 +284,7 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
+          
         </Routes>
         <Footer />
       </div>

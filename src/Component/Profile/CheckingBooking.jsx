@@ -13,7 +13,7 @@ export const CheckingBooking = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/getbooking/${bookingId}`
+        `https://hotel-backend-tge7.onrender.com/getbooking/${bookingId}`
       );
       console.log(response.data, "RESPONSE");
 
@@ -39,7 +39,11 @@ export const CheckingBooking = () => {
   const handleUpdateDates = async () => {
     try {
       const response = await axios.put(
+<<<<<<< HEAD
         `http://localhost:5000/updatebooking/${bookingId}`,
+=======
+        `https://hotel-backend-tge7.onrender.com/updatebooking/${bookingId}`,
+>>>>>>> origin/Abdul-frontend
         {
           checkInDate,
           checkOutDate,
@@ -124,7 +128,11 @@ export const CheckingBooking = () => {
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
                         min={new Date().toISOString().slice(0, 10)}
+<<<<<<< HEAD
                         max={checkOutDate ? checkOutDate : undefined} // Set the max attribute to the selected checkout date
+=======
+                        max={checkOutDate ? checkOutDate : undefined} 
+>>>>>>> origin/Abdul-frontend
                       />
                     ) : (
                       <p>
