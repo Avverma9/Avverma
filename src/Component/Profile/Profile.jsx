@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import React, { useState, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import "./_profile.css";
@@ -21,7 +19,6 @@ import { BsFillCalendarCheckFill, BsFillCreditCardFill } from "react-icons/bs";
 import { TiCancel, TiTick } from "react-icons/ti";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { useCollapse } from "react-collapsed";
-import { convertDate } from "../../utils/convertDate";
 
 import { Sidebar } from "./Sidebar";
 import { ProfileInformation } from "./ProfileInformation";

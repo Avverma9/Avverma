@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import {Customizebooking} from "../Payment/Customizebooking"
 
 export default function CheckOut({
   hotelId,
@@ -14,12 +15,14 @@ export default function CheckOut({
   hotelName,
   hotelimage,
   destination,
+  hoteldescription,
+  rating,
 }) {
   const handleOpenRazorpay = (data) => {
     const options = {
       name: "Hotel Booking",
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: amount * 100*rooms,
+      amount: amount * 100 * rooms,
       currency: data.currency,
       prefill: {
         name: userData.name,
@@ -46,7 +49,8 @@ export default function CheckOut({
     rzp.open();
   };
 
-  console.log(userData , "USERDATA CHECKOUTPAGE")
+  console.log(userData, "USERDATA CHECKOUTPAGE");
+  console.log(hoteldescription);
 
   const handlePayment = async () => {
     const data = {
@@ -55,9 +59,11 @@ export default function CheckOut({
       amount: amount,
       currency: currency,
     };
-
     try {
-      const response = await axios.post("https://hotel-backend-tge7.onrender.com/payments", data);
+      const response = await axios.post(
+        "https://hotel-backend-tge7.onrender.com/payments",
+        data
+      );
       handleOpenRazorpay(response.data);
     } catch (err) {
       console.log(err);
@@ -72,25 +78,31 @@ export default function CheckOut({
       checkIn: checkIn,
       checkOut: checkOut,
       guests: guests,
-      rooms:rooms,
+      rooms: rooms,
       price: amount,
       paymentStatus: paymentStatus,
       images: hotelimage,
       destination: destination,
     };
-  
+
     if (userData && userData.email && paymentStatus === "success") {
       axios
-        .post(`https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`, bookingData)
+        .post(
+          `https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`,
+          bookingData
+        )
         .then((res) => {
           console.log(res.data, "Booking created successfully", bookingData);
-  
+
           if (userData.email) {
             axios
-              .post("https://hotel-backend-tge7.onrender.com/SendBookingEmail", {
-                bookingData: bookingData,
-                email: userData.email,
-              })
+              .post(
+                "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
+                {
+                  bookingData: bookingData,
+                  email: userData.email,
+                }
+              )
               .then((res) => {
                 console.log("Email sent successfully");
               })
@@ -107,7 +119,7 @@ export default function CheckOut({
     } else {
       console.log("User data, email, or payment status is not valid");
     }
-  }
+  };
 
   const handleBookNow = () => {
     if (!checkIn || !checkOut || guests < 1 || rooms < 1) {
@@ -116,11 +128,24 @@ export default function CheckOut({
       handlePayment();
     }
   };
-  
+
   return (
     <>
+      <Customizebooking
+      rating={rating}
+      hoteldescription={hoteldescription}
+        hotelId={hotelId}
+        userId={userId}
+        amount={amount}
+        currency={currency}
+        hotelName={hotelName}
+        hotelimage={hotelimage}
+        destination={destination}
+        checkIn={checkIn}
+        checkOut={checkOut}
+      />
       <button
-        onClick={handleBookNow}
+        // onClick={handleBookNow}
         style={{
           padding: "10px 15px",
           backgroundColor: "#0056b3",
@@ -130,6 +155,8 @@ export default function CheckOut({
           boxShadow:
             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
         }}
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
       >
         Book Now
       </button>
