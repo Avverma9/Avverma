@@ -91,11 +91,21 @@ import Kolhapur from "./Component/Dropdownbar/city/kolhapur/kolhapur";
 import Offers from "./Component/Offers/Offers";
 import BookNowPage from "./Component/Booknowpage/Booknowpage";
 import Footer from "./Component/Footer/Footer";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ResetPassword from "./Component/Login/ResetPassword";
 import ConfirmEmail from "./Component/Login/ConfirmEmail";
 import LoginWithOtp from "./Component/Login/LoginWithOtp";
+import { ProfileInformation } from "./Component/Profile/ProfileInformation";
+import { getLocalStorage } from "./hooks/useLocalStorage";
+import { CancelBooking } from "./Component/Profile/CancelBooking";
+import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
+import { CheckingBooking } from "./Component/Profile/CheckingBooking";
+import { CheckOutBooking } from "./Component/Profile/CheckOutBooking";
+import { NoShowBooking } from "./Component/Profile/NoShowBooking";
+import { FailedBooking } from "./Component/Profile/FailedBooking";
+import { MyReviewSection } from "./Component/Profile/MyReviewSection";
+import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 
 function App() {
   // console.log(search)
@@ -105,6 +115,9 @@ function App() {
   };
 
   const [userData, setUserData] = useState(null);
+
+  const userDetails = getLocalStorage("loggedUser");
+  const isSignedIn = getLocalStorage("isSignedIn");
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -130,7 +143,7 @@ function App() {
     <Router>
       <div>
         <Header />
-        <ToastContainer/>
+        <ToastContainer />
         <HeaderImage />
         <Dropdownbar />
 
@@ -139,7 +152,7 @@ function App() {
         <Home />
         <Offers />
         <Hotel />
-        {/* <ChatBox /> */}
+        <ChatBox />
         <PopupCard />
 
         <UserSettings />
@@ -166,11 +179,49 @@ function App() {
           <Route
             path="/profile"
             element={<Profile refresh={refresh} reset={reset} />}
-          />
-            <Route path="/resetPassword/:token" element={<ResetPassword/>} />
-            <Route path="/passwordChangeMail" element={<ConfirmEmail/>}/>
-            <Route path="/otplogin" element={<LoginWithOtp/>}/>
-          <Route path="state" element={HeaderImage} />
+          >
+            <Route
+              index
+              element={
+                <ProfileInformation
+                  toast={toast}
+                  userData={userData}
+                  isSignedIn={isSignedIn}
+                  userDetails={userDetails}
+                  reset={reset}
+                  refresh={refresh}
+                />
+              }
+            />
+            <Route
+              path="cancel-booking"
+              element={<CancelBooking toast={toast} />}
+            />
+            <Route
+              path="confirm-booking"
+              element={<ConfirmBooking toast={toast} />}
+            />
+            <Route path="check-in-booking" element={<CheckingBooking />} />
+            <Route path="check-out-booking" element={<CheckOutBooking />} />
+            <Route path="no-show-booking" element={<NoShowBooking />} />
+            <Route path="failed-booking" element={<FailedBooking />} />
+            <Route path="reviews" element={<MyReviewSection />} />
+            <Route
+              path="complaints"
+              element={
+                <ComplaintsSection
+                  userData={userData}
+                  reset={reset}
+                  refresh={refresh}
+                  isSignedIn={isSignedIn}
+                />
+              }
+            />
+          </Route>
+          <Route path="/resetPassword/:token" element={<ResetPassword />} />
+          <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
+          <Route path="/otplogin" element={<LoginWithOtp />} />
+          <Route path="state" element={<HeaderImage />} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"

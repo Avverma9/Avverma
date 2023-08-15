@@ -13,8 +13,8 @@ const HeaderImage = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
-
-  if (location.pathname !== "/home") {
+  const render = location.pathname;
+  if (render !== "/home" && render !== "/") {
     return null;
   }
 

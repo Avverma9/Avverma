@@ -32,7 +32,7 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
-import { convertDate, getCurrentDate } from "../../utils/convertDate";
+import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
 export default function BookNow({ refresh, reset, userData }) {
@@ -49,8 +49,6 @@ export default function BookNow({ refresh, reset, userData }) {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
-
-
   const [localid, setLocalid] = useState("");
   const [myReview, setMyReview] = useState("");
   const [hotelReviews, setHotelReviews] = useState([]);
@@ -82,13 +80,6 @@ export default function BookNow({ refresh, reset, userData }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const handleRoomChange = (e) => {
-    let value = parseInt(e.target.value, 10);
-    value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
-    setSelectedRooms(value);
-  };
-
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/hotels/${params.id}`)
@@ -137,7 +128,8 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = hotelReviews && hotelReviews.slice(startIndex, endIndex);
+  const currentData =
+    hotelReviews && [...hotelReviews].reverse().slice(startIndex, endIndex);
 
   const visiblePages = [];
   const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
@@ -463,7 +455,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} min={getCurrentDate()} />
+                      <input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} />
                     </span>
                   </p>
                 </div>
@@ -475,7 +467,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   <p>
                     <span className="booking-label"></span>{" "}
                     <span className="booking-date">
-                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} min={checkInDate} disabled={!checkInDate} />
+                      <input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} />
                     </span>
                   </p>
                 </div>
@@ -487,37 +479,14 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faIdCard} className="icon" />
                 LocalID: {bookingDetails.availability}
               </p>
-              <div className="noofroom input-container">
+              <p className="noofroom">
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
-                Rooms:
-                <button className="negposbtn" onClick={() => setSelectedRooms(Math.max(selectedRooms - 1, 1))}>
-                  -
-                </button>
-                <input className="inputbutton" type="number" value={selectedRooms} onChange={handleRoomChange} min="1" max="4" />
-                <button className="negposbtn" onClick={() => setSelectedRooms(Math.min(selectedRooms + 1, 4))}>
-                  +
-                </button>
-              </div>
-
-              <div className="noofguest input-container">
+                Rooms: <input type="number" value={selectedRooms} onChange={(e) => setSelectedRooms(e.target.value)} />
+              </p>
+              <p className="noofguest">
                 <FontAwesomeIcon icon={faPerson} className="icon" />
-                Guests :
-                <button className="negposbtn" onClick={() => setSelectedGuests(Math.max(selectedGuests - 1, 1))}>
-                  -
-                </button>
-                <input className="inputbutton" type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} min="1" />
-                <button className="negposbtn" onClick={() => setSelectedGuests(selectedGuests + 1)}>
-                  +
-                </button>
-              </div>
-              {bookingDetails.disclaimer && (
-                <>
-                  <p>{bookingDetails.disclaimer}</p>
-                  {bookingDetails.contact && (
-                    <p>Hotel Contact: {bookingDetails.contact}</p>
-                  )}
-                </>
-              )}
+                Guests: <input type="number" value={selectedGuests} onChange={(e) => setSelectedGuests(e.target.value)} />
+              </p>
               <p className="roomtype">
                 <FontAwesomeIcon icon={faHotel} className="icon" />
                 Room Type: {bookingDetails.roomtype}
@@ -556,58 +525,58 @@ export default function BookNow({ refresh, reset, userData }) {
             <div className="reviews" key={refresh}>
               <div className="reviewhead">
                 <h1>Reviews:</h1>
-                {currentData
-                  ? [...currentData].reverse().map((rev, i) => (
-                    <>
-                      <div
-                        className="d-flex flex-column gap-3"
-                        style={{
-                          padding: "20px",
-                          marginRight: "10%",
-                          // marginBottom: "20px",
-                          width: "75%",
-                          height: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "1",
-                        }}
-                        key={i}
-                      >
-                        <div className="review_container">
-                          <div className="comment_profile">
-                            <Avatar
-                              name={rev.user.name}
-                              src={rev.user.images[0]}
-                              round={true}
-                              size="35"
-                              style={{
-                                boxShadow:
-                                  "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                              }}
-                            />
-                          </div>
+                {currentData && currentData.length !== 0
+                  ? currentData.map((rev, i) => (
+                      <>
+                        <div
+                          className="d-flex flex-column gap-3"
+                          style={{
+                            padding: "20px",
+                            marginRight: "10%",
+                            // marginBottom: "20px",
+                            width: "75%",
+                            height: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1",
+                          }}
+                          key={i}
+                        >
+                          <div className="review_container">
+                            <div className="comment_profile">
+                              <Avatar
+                                name={rev.user.name}
+                                src={rev.user.images[0]}
+                                round={true}
+                                size="35"
+                                style={{
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                              />
+                            </div>
 
                           <div className="comment_profile_name">
                             <h4>{rev.user.name}</h4>
                           </div>
 
-                          {rev.review.user === userId && (
-                            <div className="comment_update_del">
-                              <BiEdit
-                                color="#2563eb"
-                                size={24}
-                                onClick={() => toggleUpdateReview(rev)}
-                              />
-                              <BiTrash
-                                color="#dc3545"
-                                size={24}
-                                onClick={() =>
-                                  deleteReviewHandler(rev.review._id)
-                                }
-                              />
-                            </div>
-                          )}
-                        </div>
+                            {rev.review.user === userId && (
+                              <div className="comment_update_del">
+                                <BiEdit
+                                  color="#2563eb"
+                                  size={24}
+                                  onClick={() => toggleUpdateReview(rev)}
+                                />
+                                <BiTrash
+                                  color="#dc3545"
+                                  size={24}
+                                  onClick={() =>
+                                    deleteReviewHandler(rev.review._id)
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
 
                         {isUpdatingReview && reviewId === rev.review._id ? (
                           <div className="update_review">
