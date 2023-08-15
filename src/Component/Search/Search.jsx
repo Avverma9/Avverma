@@ -146,7 +146,6 @@ const SearchComponent = () => {
               name="maritalStatus"
               value={searchData.maritalStatus}
               onChange={handleInputChange}
-             
               className="input-select-marital"
             >
               <option value="">Select</option>
