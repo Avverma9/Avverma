@@ -211,9 +211,9 @@ const Footer = () => {
         className="text-center p-3"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
-        Copyright © Shivila Technologies Private Limited, 2023<br />
+        Copyright © Apna Company Private Limited, 2023<br />
          <a className="text-white" href="https://mdbootstrap.com/">
-      All Rights Reserved, Developed By Shivila Technologies Pvt Ltd.
+      All Rights Reserved, Developed By Apna company Pvt Ltd.
 
         </a>
       </div>

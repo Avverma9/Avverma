@@ -58,26 +58,9 @@ export const CancelBooking = ({ toast }) => {
       });
   };
 
-  // const fetchCanceledBookings = () => {
-  //   axios
-  //     .get("https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking")
-  //     .then((res) => {
-  //       console.log(res.data, "CancelledData");
-  //       setCanceledBookings(res.data.canceledBookings);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       toast.error("Failed to fetch canceled bookings.");
-  //     });
-  // };
-
-  const fetchCanceledBookings = useCallback(() => {
-    const id = localStorage.getItem("userId")
-    console.log(id, "myId")
+  const fetchCanceledBookings= () => {
     axios
-      .get(
-        `http://localhost:5000/booking/getCancelledBooking/${id}`
-      )
+      .get("https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking")
       .then((res) => {
         console.log(res.data, "CancelledData");
         setCanceledBookings(res.data.canceledBookings);
@@ -86,11 +69,28 @@ export const CancelBooking = ({ toast }) => {
         console.log(err);
         toast.error("Failed to fetch canceled bookings.");
       });
-  }, [toast]);
+  };
+
+  // const fetchCanceledBookings = useCallback(() => {
+  //   const id = localStorage.getItem("userId")
+  //   console.log(id, "myId")
+  //   axios
+  //     .get(
+  //       `http://localhost:5000/booking/getCancelledBooking/${id}`
+  //     )
+  //     .then((res) => {
+  //       console.log(res.data, "CancelledData");
+  //       setCanceledBookings(res.data.canceledBookings);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error("Failed to fetch canceled bookings.");
+  //     });
+  // }, [toast]);
 
   useEffect(() => {
     fetchCanceledBookings();
-  }, [fetchCanceledBookings]);
+  }, []);
 
   return (
     <>
