@@ -463,14 +463,13 @@ input[type="radio"] {
   font-weight: 600;
 }
 
-.hotelimage{
-  min-width: 150px;
-  height: 150px;
+/* .hotelimage{
+  min-width: 100px;
+  height: auto;
   object-fit:cover;
-  border: 2px solid black;
   padding: 5px;
   border-radius: 10px;
-}
+} */
 
 .savebtn{
   padding: 10px;

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { formatDate } from "../../utils/_dateFuntions";
 import {
   faChevronLeft,
   faChevronRight,
@@ -681,7 +682,7 @@ export default function BookNow({ refresh, reset, userData }) {
                               <p>{rev.review.comment}</p>
 
                               <div className="comment_date">
-                                <h6>{convertDate(rev.review.createdAt)}</h6>
+                                <h6>{formatDate(rev.review.createdAt)}</h6>
                               </div>
                             </div>
                           )}
@@ -733,7 +734,6 @@ export default function BookNow({ refresh, reset, userData }) {
               checkOut={checkOutDate}
               guests={selectedGuests}
               rooms={selectedRooms}
-              
               hotelimage={firstImageURL}
               destination={bookingDetails.destination}
               paymentMethod={bookingDetails.paymentMethod}

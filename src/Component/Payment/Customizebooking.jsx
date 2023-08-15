@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import Plusminus from '../Payment/Plusminus';
-import './Plusminus.css';
-import { FaStar,FaRupeeSign } from "react-icons/fa";
-import {GoLocation} from "react-icons/go";
-import moment from 'moment';
+import Plusminus from "../Payment/Plusminus";
+import "./Plusminus.css";
+import { FaStar, FaRupeeSign } from "react-icons/fa";
+import { GoLocation } from "react-icons/go";
 export const Customizebooking = ({
   rating,
   hoteldescription,
@@ -22,10 +21,7 @@ export const Customizebooking = ({
   destination,
 }) => {
   const [meals, setMeals] = useState([]);
-  const [updatePrice, setUpdatePrice] = useState(0);
-  const [isClicked, setIsClicked] = useState(false);
   useEffect(() => {
-    setUpdatePrice(amount);
     fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
       .then((response) => {
         console.log(response, "RESPONSE");
@@ -36,20 +32,19 @@ export const Customizebooking = ({
         }
       })
       .then((data) => {
-        console.log(data);
         setMeals(data);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [setUpdatePrice, amount]);
+  }, []);
   console.log(meals);
 
   const handlePayment = async () => {
     const data = {
       hotelId: hotelId,
       userId: userId,
-      amount: updatePrice,
+      amount: amount,
       currency: currency,
     };
     try {
@@ -63,11 +58,31 @@ export const Customizebooking = ({
       console.log(err);
     }
   };
-  const updatepricehandler = ({ price, id }) => {
-    setUpdatePrice(updatePrice + price);
+
+
+  const addFoodItemsHandler = async ({ name, price }) => {
+    const data = {
+      name: name,
+      price: price,
+      quantity: 1,
+    };
+    try {
+      const response = await fetch(
+        `https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+    }
   };
-  console.log(hotelName);
-  console.log(updatePrice);
+
   return (
     <div
       className="modal modal-xl fade"
@@ -116,19 +131,19 @@ export const Customizebooking = ({
                               </small>
                             </p>
                             <div className="btn-flex">
-                            <button
-                              type="button"
-                              className="btn btn-primary"
-                              onClick={() =>
-                                updatepricehandler({
-                                  price: m.price,
-                                  id: m._id,
-                                })
-                              }
-                            >
-                              Add
-                            </button>
-                            <Plusminus/>
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() =>
+                                  addFoodItemsHandler({
+                                    name: m.name,
+                                    price: m.price,
+                                  })
+                                }
+                              >
+                                Add
+                              </button>
+                              <Plusminus />
                             </div>
                           </div>
                         </div>
@@ -140,23 +155,31 @@ export const Customizebooking = ({
                   className="booking-details-preview"
                   style={{ width: "40%" }}
                 >
-                <div className="hotelname">
-                  <h4>{hotelName}</h4>
+                  <div className="hotelname">
+                    <h4>{hotelName}</h4>
                   </div>
                   <img src={hotelimage} alt="hotelimage" />
                   <div className="name-rating-flex">
-                  <p className="destination"><span><GoLocation/></span>{destination}</p>
-                  <p className="rating12">
-                    {rating}<FaStar/>
-                  </p>
+                    <p className="destination">
+                      <span>
+                        <GoLocation />
+                      </span>
+                      {destination}
+                    </p>
+                    <p className="rating12">
+                      {rating}
+                      <FaStar />
+                    </p>
                   </div>
                   <p className="rate">
-                    <span><FaRupeeSign/></span>
-                    {updatePrice}
+                    <span>
+                      <FaRupeeSign />
+                    </span>
+                    {amount}
                   </p>
                   <div className="detail-head">
-                  <h6>Description</h6>
-                  <p className="detail-hotel">{hoteldescription}</p>
+                    <h6>Description</h6>
+                    <p className="detail-hotel">{hoteldescription}</p>
                   </div>
                   <div className="date-room">
                   <div className="checkinout">

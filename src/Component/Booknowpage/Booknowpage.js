@@ -30,8 +30,9 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { formatDate } from "../../utils/_dateFuntions";
+import { FaTelegramPlane } from "react-icons/fa";
 
-const BookNowPage = ({ refresh, reset }) => {
+const BookNowPage = () => {
   const { offerId } = useParams();
   const [offerData, setOfferData] = useState(null);
   const [hotelImages, setHotelImages] = useState([]);
@@ -40,7 +41,9 @@ const BookNowPage = ({ refresh, reset }) => {
   const [checkin, setCheckIn] = useState("");
   const [checkout, setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
-  const [hotelReviews, setHotelReviews] = useState([]);
+  // const [hotelReviews, setHotelReviews] = useState([]);
+  const [myReview, setMyReview] = useState("");
+  const userId = localStorage.getItem("userId");
 
   const sliderRef = useRef(null);
 
@@ -108,6 +111,33 @@ const BookNowPage = ({ refresh, reset }) => {
       return text.substring(0, maxLength) + "...";
     }
     return text;
+  };
+
+  const postReviewHandler = () => {
+    fetch(
+      `https://hotel-backend-tge7.onrender.com/offers/review/${userId}/${offerId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: myReview,
+        }),
+      }
+    ).then((response) => {
+      try {
+        if (response?.status === 201) {
+          const data = response.json();
+          console.log(data);
+
+          setMyReview("");
+          // window.location.reload();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   return (
@@ -310,6 +340,27 @@ const BookNowPage = ({ refresh, reset }) => {
               <div className="hotel-policyheading">Hotel Policies:</div>
               <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
             </div>
+
+            <div className="create_new_reviews">
+              <textarea
+                placeholder="Write a new review"
+                type="text"
+                rows="2"
+                value={myReview}
+                onChange={(e) => setMyReview(e.target.value)}
+                // onKeyUp={keyPressHandler}
+                // onFocus={(e) =>
+                //   setFieldFocus(e.target.nextElementSibling.className)
+                // }
+              />
+              <button
+                className="post_review_button"
+                onClick={postReviewHandler}
+              >
+                <FaTelegramPlane />
+              </button>
+            </div>
+
             <div className="reviews">
               <div className="reviewhead">
                 <h1>Reviews:</h1>
