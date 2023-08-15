@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { formatDate } from "../../utils/_dateFuntions";
+import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
 import {
   faChevronLeft,
   faChevronRight,
@@ -499,7 +499,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faIdCard} className="icon" />
                 LocalID: {bookingDetails.availability}
               </p>
-              <p className="noofroom">
+              <p className="noofroom"/>
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
                 <button
@@ -739,7 +739,6 @@ export default function BookNow({ refresh, reset, userData }) {
             />
           </div>
         </div>
-      </div>
     </>
   );
 }
