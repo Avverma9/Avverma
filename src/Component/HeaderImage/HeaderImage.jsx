@@ -39,33 +39,51 @@ const HeaderImage = () => {
         </div>
       </div>
       <a href="state/punjab" class="no-underline text-black">
-        <div className="city">
+        <div className="city" onClick={toggleDropdown}>
           <img
             className="circle"
             src="https://www.newsclick.in/sites/default/files/styles/amp_1200x675_16_9/public/2020-04/Punjab.PNG?itok=6M8kSqzz"
             alt="Image 2"
           />
           <p className="city-name">Punjab</p>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <a href="#">Offers for Hotel</a>
+              <a href="#">Offers for Tour</a>
+            </div>
+          )}
         </div>
       </a>
       <a href="state/maharashtra" class="no-underline text-black">
-        <div className="city">
+        <div className="city" onClick={toggleDropdown}>
           <img
             className="circle"
             src="https://static.india.com/wp-content/uploads/2018/08/maharashtra-1.jpg"
             alt="Image 3"
           />
           <p className="city-name">Maharashtra</p>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <a href="#">Offers for Hotel</a>
+              <a href="#">Offers for Tour</a>
+            </div>
+          )}
         </div>
       </a>
       <a href="state/goa" class="no-underline text-black">
-        <div className="city">
+        <div className="city" onClick={toggleDropdown}>
           <img
             className="circle"
             src="https://assets.gqindia.com/photos/61bc4462b764212228e2b603/1:1/w_3716,h_3716,c_limit/Fairfield%20by%20Marriott%20Goa%20Benaulim2.jpeg"
             alt="Image 4"
           />
           <p className="city-name">Goa</p>
+          {dropdownOpen && (
+            <div className="dropdown-menu">
+              <a href="#">Offers for Hotel</a>
+              <a href="#">Offers for Tour</a>
+            </div>
+          )}
         </div>
       </a>
       <a href="state/tamilnadu" class="no-underline text-black">

@@ -99,7 +99,7 @@ import LoginWithOtp from "./Component/Login/LoginWithOtp";
 import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
-import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
+ import {ConfirmBooking} from "./Component/Profile/ConfirmBooking"
 import { CheckingBooking } from "./Component/Profile/CheckingBooking";
 import { CheckOutBooking } from "./Component/Profile/CheckOutBooking";
 import { NoShowBooking } from "./Component/Profile/NoShowBooking";
