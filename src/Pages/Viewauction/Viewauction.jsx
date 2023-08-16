@@ -8,7 +8,6 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FiUpload } from "react-icons/fi";
 
 import "./Viewauction.css";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const Viewauction = () => {
   const [auctionData, setAuctionData] = useState(null);
@@ -78,7 +77,6 @@ export const Viewauction = () => {
 
   return (
     <div className="addauction-preview">
-      <PrevBtn />
       {auctionData && (
         <>
           <div className="image-slider">

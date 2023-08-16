@@ -19,7 +19,6 @@ import "./Dashboard2.css";
 import { RegionTable } from "./RegionTable";
 import { SellerTable } from "./SellerTable";
 import { CategoryTable } from "./CategoryTable";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 // const data = [
 //   {
@@ -117,7 +116,6 @@ function Dashboard2() {
 
   return (
     <div className="dashboard">
-      <PrevBtn />
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>

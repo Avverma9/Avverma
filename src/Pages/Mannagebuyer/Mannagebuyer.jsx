@@ -6,7 +6,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { GrAddCircle } from "react-icons/gr";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 
 
@@ -103,7 +102,6 @@ export const Mannagebuyer = () => {
   ];
   return (
     <>
-      <PrevBtn />
       <DataTable
         title="Mannage Buyer"
         columns={columns}

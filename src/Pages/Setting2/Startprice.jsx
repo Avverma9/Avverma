@@ -1,10 +1,8 @@
 import React from "react";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function Startprice() {
   return (
     <div className="setting-container">
-      <PrevBtn />
       <div className="setting-head">
         <h1>Set Price</h1>
       </div>

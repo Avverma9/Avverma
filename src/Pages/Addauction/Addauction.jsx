@@ -3,7 +3,6 @@ import Select from "react-select";
 
 import "./Addauction.css";
 import { GrUpload } from "react-icons/gr";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 const BASE_URL = "http://13.48.45.18:4008";
 
@@ -139,7 +138,6 @@ export const Addauction = () => {
 
   return (
     <>
-      <PrevBtn />
       <form onSubmit={handleSubmit}>
         <div className="dashboard-header">
           <h1>Add new Auction</h1>

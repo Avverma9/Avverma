@@ -3,7 +3,6 @@ import { BiEdit } from "react-icons/bi";
 import { ImExit } from "react-icons/im";
 import "./Profile.css";
 import DataTable from "react-data-table-component";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const Profile = () => {
   const [formData, setFormData] = useState({
@@ -60,7 +59,6 @@ export const Profile = () => {
 
   return (
     <>
-      <PrevBtn />
       <div className="_profile-header">
         <h1>Profile</h1>
         <BiEdit size={22} />

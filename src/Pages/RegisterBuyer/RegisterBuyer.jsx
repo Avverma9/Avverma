@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./RegisterBuyer.css";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function RegisterBuyer() {
   const [buyerData, setBuyerData] = useState({
@@ -52,7 +51,6 @@ function RegisterBuyer() {
 
   return (
     <div className="main-container">
-      <PrevBtn />
       <div className="page-heading">
         <h1>Register Buyer</h1>
       </div>

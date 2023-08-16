@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import Select from "react-select";
 import "./Pushnotification.css";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 const BASE_URL = "http://13.48.45.18:4008";
 
@@ -67,7 +66,6 @@ export const Pushnotification = () => {
 
   return (
     <div className="push_notification_container">
-      <PrevBtn />
       <div className="push_notification-header">
         <h1>Push Notification</h1>
       </div>

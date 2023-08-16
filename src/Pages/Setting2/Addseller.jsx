@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function Addseller() {
   const [name, setName] = useState("");
@@ -28,7 +27,6 @@ function Addseller() {
   };
   return (
     <div className="setting-container">
-      <PrevBtn />
       <form onSubmit={handleSubmit}>
         <div className="setting-head">
           <h1>Add Seller</h1>

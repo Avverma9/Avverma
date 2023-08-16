@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./RegisterSubAdmin.css";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function RegisterSubAdmin() {
   const [subAdminData, setSubAdminData] = useState({
@@ -103,7 +102,6 @@ function RegisterSubAdmin() {
 
   return (
     <div className="main-container">
-      <PrevBtn />
       <div className="page-heading">
         <h1>Register</h1>
       </div>

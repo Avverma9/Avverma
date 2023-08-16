@@ -8,11 +8,10 @@ import { CgProfile } from "react-icons/cg";
 import { TbCategory } from "react-icons/tb";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoIosArrowDropright } from "react-icons/io";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
+
 function Setting2() {
   return (
     <div className="setting-page">
-      <PrevBtn />
       <div className="setting-content">
         <div className="setting-heading">
           <h1>Setting</h1>

@@ -3,7 +3,6 @@ import Select from "react-select";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { useNavigate, useParams } from "react-router-dom";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 // import "./Addauction.css";
 
 const BASE_URL = "http://13.48.45.18:4008";
@@ -137,7 +136,6 @@ export const Editauction = () => {
 
   return (
     <>
-      <PrevBtn />
       <form onSubmit={handleSubmit}>
         <div className="dashboard-header">
           <h1>Edit Auction</h1>

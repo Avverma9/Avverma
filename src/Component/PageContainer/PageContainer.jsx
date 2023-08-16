@@ -42,11 +42,12 @@ import { Assignbuyer } from "../../Pages/Assignbuyer/Assignbuyer";
 import Login from "../Login/Login";
 import Upload from "../../Pages/UploadStatement/Upload";
 import { Editauction } from "../../Pages/Editauction/Editauction";
-
+import { PrevBtn } from "../PrevBtn.jsx/PrevBtn";
 export const PageContainer = () => {
   return (
     <div className="page_container page_container_background-img">
       {/* <BrowserRouter> */}
+      <PrevBtn />
       <Routes>
         <Route path="/" element={<Welcome />} />
         <Route path="/login" element={<Login />} />
@@ -57,7 +58,7 @@ export const PageContainer = () => {
         <Route path="/import-auction" element={<Importauction />} />
         <Route path="/filter-auction" element={<Filterauction />} />
         <Route path="/wins" element={<YourWins />} />
-        
+
         <Route path="/view-auction/:id" element={<Viewauction />} />
         <Route path="/edit-view-auction/:id" element={<Editauction />} />
         <Route path="/add-new-auction" element={<Addauction />} />
@@ -89,7 +90,7 @@ export const PageContainer = () => {
         <Route path="/register-buyer" element={<RegisterBuyer />} />
         <Route path="/register-sub-admin" element={<RegisterSubAdmin />} />
         <Route path="/assign-buyer" element={<Assignbuyer />} />
-        <Route path="/upload-statement" element={<Upload/>}/>
+        <Route path="/upload-statement" element={<Upload />} />
       </Routes>
       {/* </BrowserRouter> */}
     </div>

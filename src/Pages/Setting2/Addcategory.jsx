@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function Addcategory() {
   const [name, setName] = useState("");
@@ -33,7 +32,6 @@ function Addcategory() {
   };
   return (
     <div className="setting-container">
-      <PrevBtn />
       <form onSubmit={handleSubmit}>
         <div className="setting-head">
           <h1>Add Category</h1>
