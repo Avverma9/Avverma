@@ -15,34 +15,39 @@ function RegisterSubAdmin() {
 
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchRegionData();
   }, []);
 
   const fetchRegionData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
         "http://13.48.45.18:4008/admin/region/getAll"
       );
       const data = await response.json();
-      if (data && data.data && Array.isArray(data.data)) {
-        setRegions(data.data);
-      } else {
-        console.error("Invalid region data:", data);
+      if (response.ok) {
+        if (data && data.data && Array.isArray(data.data)) {
+          setRegions(data.data);
+        } else {
+          console.error("Invalid region data:", data);
+        }
       }
     } catch (error) {
       console.error("Error fetching region data:", error);
     }
+    setLoading(false);
   };
-
-  console.log(regions)
 
   const handleRegionChange = (e) => {
     const selectedRegionId = e.target.value;
     setSelectedRegionId(selectedRegionId);
     console.log("Selected region ID:", selectedRegionId);
   };
+
+  console.log(subAdminData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,22 +68,26 @@ function RegisterSubAdmin() {
       );
 
       if (selectedRegion) {
-        const dataToSend = {
-          ...subAdminData,
-          role: roleValue,
-          region: selectedRegionId,
-        };
-
         const response = await fetch("http://13.48.45.18:4008/admin/create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(dataToSend),
+          body: JSON.stringify({
+            region: selectedRegionId,
+            name: subAdminData.name,
+            email: subAdminData.email,
+            password: subAdminData.password,
+            role: roleValue,
+            mobile: subAdminData.mobile,
+          }),
         });
 
         const data = await response.json();
-        console.log(data);
+        if (response.ok) {
+          alert("Account Created");
+          console.log(data);
+        }
       } else {
         console.error("Region not found:", selectedRegionId);
       }
@@ -98,7 +107,7 @@ function RegisterSubAdmin() {
       <div className="page-heading">
         <h1>Register</h1>
       </div>
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className="form-container">
         <label htmlFor="sub-admin-name">
           <p>Name</p>
           <input
@@ -144,11 +153,13 @@ function RegisterSubAdmin() {
             onChange={handleRegionChange}
           >
             <option value="">Select Region</option>
-            {regions.map((region) => (
-              <option key={region._id} value={region._id}>
-                {region.name.charAt(0).toUpperCase() + region.name.slice(1)}
-              </option>
-            ))}
+            {!loading &&
+              regions !== [] &&
+              regions.map((region) => (
+                <option key={region._id} value={region._id}>
+                  {region.name.charAt(0).toUpperCase() + region.name.slice(1)}
+                </option>
+              ))}
           </select>
         </label>
         <label htmlFor="acc-status">
@@ -176,7 +187,7 @@ function RegisterSubAdmin() {
           </select>
         </label>
         <div className="submit">
-          <button className="submit-btn" type="submit">
+          <button className="submit-btn" onClick={handleSubmit}>
             Submit
           </button>
         </div>
