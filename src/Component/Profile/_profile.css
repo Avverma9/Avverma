@@ -463,32 +463,13 @@ input[type="radio"] {
   font-weight: 600;
 }
 
-.hotelimage{
-  min-width: 150px;
-  height: 150px;
+/* .hotelimage{
+  min-width: 100px;
+  height: auto;
   object-fit:cover;
-  border: 2px solid black;
   padding: 5px;
   border-radius: 10px;
-}
-
-.savebtn{
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background-color: #2563eb;
-  color: white;
-}
-
-.editbtn{
-  padding: 5px 10px;
-  border-radius: 10px;
-  border: none;
-  background-color: #2563eb;
-  color: white;
-  margin-left: 5px;
-}
-
+} */
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {

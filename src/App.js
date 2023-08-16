@@ -99,15 +99,17 @@ import LoginWithOtp from "./Component/Login/LoginWithOtp";
 import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
-import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
+ import {ConfirmBooking} from "./Component/Profile/ConfirmBooking"
 import { CheckingBooking } from "./Component/Profile/CheckingBooking";
 import { CheckOutBooking } from "./Component/Profile/CheckOutBooking";
 import { NoShowBooking } from "./Component/Profile/NoShowBooking";
 import { FailedBooking } from "./Component/Profile/FailedBooking";
 import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
-import { Customizebooking } from "./Component/Payment/Customizebooking";
+import AddHotel from "./Admin/AddHotel";
+import Sidebar from "./Admin/Sidebar";
 
+import { Customizebooking } from "./Component/Payment/Customizebooking";
 
 function App() {
   // console.log(search)
@@ -207,6 +209,7 @@ function App() {
             <Route path="check-out-booking" element={<CheckOutBooking />} />
             <Route path="no-show-booking" element={<NoShowBooking />} />
             <Route path="failed-booking" element={<FailedBooking />} />
+            
             <Route path="reviews" element={<MyReviewSection />} />
             <Route
               path="complaints"
@@ -223,6 +226,8 @@ function App() {
           <Route path="/resetPassword/:token" element={<ResetPassword />} />
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
+          <Route path="/admin/add/hotel" element={<AddHotel/>} />
+            <Route path="/admin/sidebar" element={<Sidebar/>}/>
           <Route path="state" element={<HeaderImage />} />
           <Route path="/search/results" element={<SearchResults />} />
           <Route
