@@ -40,6 +40,8 @@ function Dashboard2() {
   const [dashboard, setDashboard] = useState([]);
   const [target, setTarget] = useState(null);
 
+  const navigate = useNavigate();
+
   // const columns = [
   //   {
   //     name: "User Name",
@@ -117,6 +119,7 @@ function Dashboard2() {
 
   return (
     <div className="dashboard">
+      <button onClick={() => navigate(-1)}>Go back</button>
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>
