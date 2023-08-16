@@ -1,13 +1,11 @@
 import "./Welcome.css";
 import { upperCase } from "../../utils";
-import { useNavigate } from "react-router-dom";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const Welcome = () => {
-  const navigate = useNavigate()
   return (
     <>
-      <button onClick={() => navigate(-1)}>Go back</button>
-
+      <PrevBtn />
       <div className="welcome-text">
         <h1>{upperCase("Welcome to Admin Portal")}</h1>
       </div>

@@ -3,6 +3,7 @@ import { BiEdit } from "react-icons/bi";
 import { ImExit } from "react-icons/im";
 import "./Profile.css";
 import DataTable from "react-data-table-component";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const Profile = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,6 @@ export const Profile = () => {
     email: "test@gmail.com",
     password: "**************",
   });
-
 
   const [data, setData] = useState([]);
 
@@ -60,13 +60,14 @@ export const Profile = () => {
 
   return (
     <>
+      <PrevBtn />
       <div className="_profile-header">
         <h1>Profile</h1>
         <BiEdit size={22} />
         <ImExit size={18} />
       </div>
       <div className="_profile-body">
-      <div className="_input-fields">
+        <div className="_input-fields">
           <label htmlFor="">Name</label>
           <input
             type="text"

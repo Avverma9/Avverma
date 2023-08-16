@@ -8,6 +8,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { FiUpload } from "react-icons/fi";
 
 import "./Viewauction.css";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const Viewauction = () => {
   const [auctionData, setAuctionData] = useState(null);
@@ -24,7 +25,7 @@ export const Viewauction = () => {
         }
       );
       const { data } = await response.json();
-      console.log(data, "I am DATA")
+      console.log(data, "I am DATA");
       setAuctionData(data);
     } catch (error) {
       console.error(error);
@@ -39,7 +40,7 @@ export const Viewauction = () => {
     {
       name: "Buyer Name",
       cell: (row) => {
-        const seller = row.seller[0]; 
+        const seller = row.seller[0];
         return seller ? seller.name : "";
       },
       sortable: true,
@@ -47,21 +48,20 @@ export const Viewauction = () => {
     {
       name: "Buyer Ph.No.",
       cell: (row) => {
-        const seller = row.seller[0]; 
+        const seller = row.seller[0];
         return seller ? seller.name : "";
       },
       sortable: true,
     },
     {
       name: "Buyer Email",
-      selector: (row) => row.buyerEmail ?  row.buyerEmail : "N/A",
-  
+      selector: (row) => (row.buyerEmail ? row.buyerEmail : "N/A"),
+
       sortable: true,
     },
     {
       name: "Bid Amount",
-      selector: (row) => row.current_bidding_price
-      ,
+      selector: (row) => row.current_bidding_price,
       sortable: true,
     },
     {
@@ -78,27 +78,28 @@ export const Viewauction = () => {
 
   return (
     <div className="addauction-preview">
+      <PrevBtn />
       {auctionData && (
         <>
           <div className="image-slider">
-        <div className="image-header-contains">
-          <button>Set Primary</button>
-          <BiEdit size="20" color="#000000" />
-          <MdDeleteOutline size="20" color="#ff0000" />
-        </div>
-        <div className="image-slide">
-          <RiArrowLeftDoubleFill />
-          {/* {images.map((i) => (
+            <div className="image-header-contains">
+              <button>Set Primary</button>
+              <BiEdit size="20" color="#000000" />
+              <MdDeleteOutline size="20" color="#ff0000" />
+            </div>
+            <div className="image-slide">
+              <RiArrowLeftDoubleFill />
+              {/* {images.map((i) => (
             <img src={i.url} alt="i-banner" />
           ))} */}
-          <RiArrowRightDoubleFill />
-        </div>
-      </div>
+              <RiArrowRightDoubleFill />
+            </div>
+          </div>
           <div className="biding-details-table">
             <DataTable
               title="Bidding Details"
               columns={columns}
-              data={auctionData} 
+              data={auctionData}
               pagination
               fixedHeader
               fixedHeaderScrollHeight="75vh"
@@ -110,4 +111,3 @@ export const Viewauction = () => {
     </div>
   );
 };
-

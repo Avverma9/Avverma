@@ -16,10 +16,10 @@ import { RiAdminLine } from "react-icons/ri";
 import { GrUserAdmin } from "react-icons/gr";
 
 import "./Dashboard2.css";
-import { useNavigate } from "react-router-dom";
 import { RegionTable } from "./RegionTable";
 import { SellerTable } from "./SellerTable";
 import { CategoryTable } from "./CategoryTable";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 // const data = [
 //   {
@@ -39,8 +39,6 @@ import { CategoryTable } from "./CategoryTable";
 function Dashboard2() {
   const [dashboard, setDashboard] = useState([]);
   const [target, setTarget] = useState(null);
-
-  const navigate = useNavigate();
 
   // const columns = [
   //   {
@@ -119,7 +117,7 @@ function Dashboard2() {
 
   return (
     <div className="dashboard">
-      <button onClick={() => navigate(-1)}>Go back</button>
+      <PrevBtn />
       <div className="dashboard-header">
         <h1>Dashboard</h1>
       </div>

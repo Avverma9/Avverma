@@ -3,6 +3,7 @@ import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function Setauctiontime() {
   const BASE_URL = "http://13.48.45.18:4008";
@@ -94,6 +95,7 @@ function Setauctiontime() {
 
   return (
     <div className="setting-container">
+      <PrevBtn />
       <div className="setting-head">
         <h1>Setting Set Auction Timing</h1>
       </div>

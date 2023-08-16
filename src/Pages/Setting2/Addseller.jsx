@@ -1,5 +1,6 @@
-import React from 'react'
-import { useState } from 'react';
+import React from "react";
+import { useState } from "react";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 function Addseller() {
   const [name, setName] = useState("");
@@ -18,32 +19,34 @@ function Addseller() {
       });
       console.log(response);
       if (response && response.ok === true) {
-        alert("Added successfully")
-        setName("")
+        alert("Added successfully");
+        setName("");
       }
-
     } catch (error) {
       console.error(error);
     }
   };
   return (
-    <div className='setting-container'>
+    <div className="setting-container">
+      <PrevBtn />
       <form onSubmit={handleSubmit}>
-        <div className='setting-head'>
+        <div className="setting-head">
           <h1>Add Seller</h1>
         </div>
-        <div className='setting-dropdown'>
-          <label>Add Seller
-            <input type='text'
+        <div className="setting-dropdown">
+          <label>
+            Add Seller
+            <input
+              type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </label>
         </div>
-        <button className='sub-button'>Submit</button>
+        <button className="sub-button">Submit</button>
       </form>
     </div>
-  )
+  );
 }
 
-export default Addseller
+export default Addseller;

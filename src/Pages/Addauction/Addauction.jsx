@@ -3,6 +3,7 @@ import Select from "react-select";
 
 import "./Addauction.css";
 import { GrUpload } from "react-icons/gr";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 const BASE_URL = "http://13.48.45.18:4008";
 
@@ -137,151 +138,153 @@ export const Addauction = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="dashboard-header">
-        <h1>Add new Auction</h1>
-      </div>
-      <div className="add-new-auction-fields">
-        <Select
-          name="region"
-          defaultValue={selectRegionOptions}
-          options={selectRegionOptions}
-          className="basic-multi-select"
-          classNamePrefix="select"
-          placeholder="Region"
-        />
-        <Select
-          name="category"
-          defaultValue={selectCategoryOptions}
-          options={selectCategoryOptions}
-          className="basic-multi-select"
-          classNamePrefix="select"
-          placeholder="Category"
-        />
-        <Select
-          name="seller"
-          defaultValue={selectSellerOptions}
-          options={selectSellerOptions}
-          className="basic-multi-select"
-          classNamePrefix="select"
-          placeholder="Seller"
-        />
-
-        <label htmlFor="nameofproduct">
-          <p>Name of the product</p>
-          <input
-            type="text"
-            name="productName"
-            placeholder="Name of the product"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="Registration Number">
-          <p>Registration Number</p>
-          <input
-            type="number"
-            name="registrationNumber"
-            placeholder="Registration Number"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="Agreement Number">
-          <p>Agreement Number</p>
-          <input
-            type="number"
-            name="agreementNumber"
-            placeholder="Agreement Number"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-
-        <div className="rc-input">
-          <label htmlFor="">RC</label>
-          <input
-            type="radio"
-            id="yes"
-            name="rc"
-            value={true}
-            checked={rcValue === true}
-            onChange={handleRCChange}
-          />
-          <label htmlFor="yes">Yes</label>
-          <input
-            type="radio"
-            id="no"
-            name="rc"
-            value={false}
-            checked={rcValue === false}
-            onChange={handleRCChange}
-          />
-          <label htmlFor="no">No</label>
+    <>
+      <PrevBtn />
+      <form onSubmit={handleSubmit}>
+        <div className="dashboard-header">
+          <h1>Add new Auction</h1>
         </div>
-        <label htmlFor="nameofproduct">
-          <p>RC Name</p>
-          <input
-            type="text"
-            name="rc_name"
-            placeholder="RC name"
-            className="basic-multi-select-inputs"
+        <div className="add-new-auction-fields">
+          <Select
+            name="region"
+            defaultValue={selectRegionOptions}
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
           />
-        </label>
-        <label htmlFor="start-price">
-          <p>Start Price</p>
-          {/* <span class="price-icon">₹</span> */}
-          <input
-            type="number"
-            name="startPrice"
-            placeholder="Start Price"
-            className="basic-multi-select-inputs"
+          <Select
+            name="category"
+            defaultValue={selectCategoryOptions}
+            options={selectCategoryOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Category"
           />
-        </label>
-        <label htmlFor="reserve-price">
-          <p>Reserve Price</p>
-          {/* <span class="price-icon">₹</span> */}
-          <input
-            type="number"
-            name="reservePrice"
-            placeholder="Reserve Price"
-            className="basic-multi-select-inputs"
+          <Select
+            name="seller"
+            defaultValue={selectSellerOptions}
+            options={selectSellerOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Seller"
           />
-        </label>
-        <label htmlFor="start-time">
-          <p>Start Time</p>
-          <input
-            type="date"
-            name="startTime"
-            placeholder="Start Time"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="start-date">
-          <p>Start Date</p>
-          <input
-            type="date"
-            name="startDate"
-            placeholder="Start Date"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="end-time">
-          <p>End Time</p>
-          <input
-            type="date"
-            name="endTime"
-            placeholder="End Time"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="end-date">
-          <p>End Date</p>
-          <input
-            type="date"
-            name="endDate"
-            placeholder="End Date"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        {/* <label htmlFor='fuel-type'>
+
+          <label htmlFor="nameofproduct">
+            <p>Name of the product</p>
+            <input
+              type="text"
+              name="productName"
+              placeholder="Name of the product"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="Registration Number">
+            <p>Registration Number</p>
+            <input
+              type="number"
+              name="registrationNumber"
+              placeholder="Registration Number"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="Agreement Number">
+            <p>Agreement Number</p>
+            <input
+              type="number"
+              name="agreementNumber"
+              placeholder="Agreement Number"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+
+          <div className="rc-input">
+            <label htmlFor="">RC</label>
+            <input
+              type="radio"
+              id="yes"
+              name="rc"
+              value={true}
+              checked={rcValue === true}
+              onChange={handleRCChange}
+            />
+            <label htmlFor="yes">Yes</label>
+            <input
+              type="radio"
+              id="no"
+              name="rc"
+              value={false}
+              checked={rcValue === false}
+              onChange={handleRCChange}
+            />
+            <label htmlFor="no">No</label>
+          </div>
+          <label htmlFor="nameofproduct">
+            <p>RC Name</p>
+            <input
+              type="text"
+              name="rc_name"
+              placeholder="RC name"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="start-price">
+            <p>Start Price</p>
+            {/* <span class="price-icon">₹</span> */}
+            <input
+              type="number"
+              name="startPrice"
+              placeholder="Start Price"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="reserve-price">
+            <p>Reserve Price</p>
+            {/* <span class="price-icon">₹</span> */}
+            <input
+              type="number"
+              name="reservePrice"
+              placeholder="Reserve Price"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="start-time">
+            <p>Start Time</p>
+            <input
+              type="date"
+              name="startTime"
+              placeholder="Start Time"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="start-date">
+            <p>Start Date</p>
+            <input
+              type="date"
+              name="startDate"
+              placeholder="Start Date"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="end-time">
+            <p>End Time</p>
+            <input
+              type="date"
+              name="endTime"
+              placeholder="End Time"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="end-date">
+            <p>End Date</p>
+            <input
+              type="date"
+              name="endDate"
+              placeholder="End Date"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          {/* <label htmlFor='fuel-type'>
 					<p>RC</p>
 					<div className='fuel-type'>
 						<input type='radio' id='petrol' name='fuel' />
@@ -294,119 +297,120 @@ export const Addauction = () => {
 						<label for='e'>E</label>
 					</div>
 				</label> */}
-        <label htmlFor="parking-name">
-          <p>Parking Name</p>
-          <input
-            type="text"
-            name="parkingName"
-            placeholder="Parking Name"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="parking-address">
-          <p>Parking Address</p>
-          <input
-            type="text"
-            name="parkingAddress"
-            placeholder="Address"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="menufecture-year">
-          <p>Year of Manufacture</p>
-          <input
-            type="number"
-            name="yearOfManufacture"
-            placeholder="Year"
-            className="basic-multi-select-inputs"
-          />
-        </label>
+          <label htmlFor="parking-name">
+            <p>Parking Name</p>
+            <input
+              type="text"
+              name="parkingName"
+              placeholder="Parking Name"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="parking-address">
+            <p>Parking Address</p>
+            <input
+              type="text"
+              name="parkingAddress"
+              placeholder="Address"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="menufecture-year">
+            <p>Year of Manufacture</p>
+            <input
+              type="number"
+              name="yearOfManufacture"
+              placeholder="Year"
+              className="basic-multi-select-inputs"
+            />
+          </label>
 
-        <label htmlFor="payment-mode">
-          <p>Payment Term</p>
-          <select
-            className="basic-multi-select-inputs"
-            name="paymentTerm"
-            value={selectedOption}
-            onChange={handleOptionChange}
-          >
-            <option value="" disabled>
-              Select an option
-            </option>
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-            <option value="upi">UPI</option>
-            <option value="net-banking">Net Banking</option>
-          </select>
-        </label>
-        <label htmlFor="quatation-validity">
-          <p>Quatation Validity</p>
-          <input
-            type="date"
-            name="quotationValidity"
-            placeholder=""
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="auction-fees">
-          <p>Auction Fees</p>
-          <input
-            type="number"
-            name="auctionFees"
-            placeholder="Auction-fees"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="auction-term">
-          <p>Auction Term</p>
-          <input
-            type="text"
-            name="auctionTerm"
-            placeholder="Auction-term"
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <div className="textarea">
-          <label htmlFor="text-area">
-            <p>Other Information </p>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
+          <label htmlFor="payment-mode">
+            <p>Payment Term</p>
+            <select
+              className="basic-multi-select-inputs"
+              name="paymentTerm"
+              value={selectedOption}
+              onChange={handleOptionChange}
+            >
+              <option value="" disabled>
+                Select an option
+              </option>
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+              <option value="upi">UPI</option>
+              <option value="net-banking">Net Banking</option>
+            </select>
+          </label>
+          <label htmlFor="quatation-validity">
+            <p>Quatation Validity</p>
+            <input
+              type="date"
+              name="quotationValidity"
+              placeholder=""
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="auction-fees">
+            <p>Auction Fees</p>
+            <input
+              type="number"
+              name="auctionFees"
+              placeholder="Auction-fees"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="auction-term">
+            <p>Auction Term</p>
+            <input
+              type="text"
+              name="auctionTerm"
+              placeholder="Auction-term"
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <div className="textarea">
+            <label htmlFor="text-area">
+              <p>Other Information </p>
+              <textarea name="" id="" cols="30" rows="10"></textarea>
+            </label>
+          </div>
+        </div>
+        <div className="cont-2">
+          <label htmlFor="add-video">
+            <p>
+              <GrUpload />
+              Upload Photo/Video
+            </p>
+            <input
+              type="file"
+              name="photoVideo"
+              placeholder=""
+              onChange={handleUploadPVChange}
+              className="basic-multi-select-inputs"
+            />
+          </label>
+          <label htmlFor="add-file">
+            <p>
+              <GrUpload />
+              Add Valuation File
+            </p>
+            <input
+              type="file"
+              id="add-file"
+              name="valuationFile"
+              placeholder=""
+              onChange={handleValuationFileChange}
+              className="basic-multi-select-inputs"
+            />
           </label>
         </div>
-      </div>
-      <div className="cont-2">
-        <label htmlFor="add-video">
-          <p>
-            <GrUpload />
-            Upload Photo/Video
-          </p>
-          <input
-            type="file"
-            name="photoVideo"
-            placeholder=""
-            onChange={handleUploadPVChange}
-            className="basic-multi-select-inputs"
-          />
-        </label>
-        <label htmlFor="add-file">
-          <p>
-            <GrUpload />
-            Add Valuation File
-          </p>
-          <input
-            type="file"
-            id="add-file"
-            name="valuationFile"
-            placeholder=""
-            onChange={handleValuationFileChange}
-            className="basic-multi-select-inputs"
-          />
-        </label>
-      </div>
-      <div className="submit-btn-1">
-        <button type="submit" className="submit-btn">
-          Submit
-        </button>
-      </div>
-    </form>
+        <div className="submit-btn-1">
+          <button type="submit" className="submit-btn">
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
   );
 };

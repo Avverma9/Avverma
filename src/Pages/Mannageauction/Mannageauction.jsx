@@ -12,6 +12,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { TfiExport } from "react-icons/tfi";
 import "./Mannageauction.css";
 import { useNavigate } from "react-router-dom";
+import { PrevBtn } from "../../Component/PrevBtn.jsx/PrevBtn";
 
 export const MannageAuction = () => {
   const [showRegion, setShowRegion] = useState(false);
@@ -250,6 +251,7 @@ export const MannageAuction = () => {
   console.log(auctions);
   return (
     <>
+      <PrevBtn />
       <DataTable
         title="Mannage Auction"
         columns={columns}
