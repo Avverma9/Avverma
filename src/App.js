@@ -8,7 +8,6 @@ import Header from "./Component/Header/Header";
 // Sourav Satpati
 import Register from "./Component/Register/Register.jsx";
 import Login from "./Component/Login/Login";
-import Profile from "./Component/Profile/Profile.jsx";
 import HeaderImage from "./Component/HeaderImage/HeaderImage";
 
 // import CarouselPage from './Component/Carousel/Carousel';
@@ -22,7 +21,6 @@ import PopupCard from "./Component/Welcome/Welcome";
 
 import Hotel from "./Component/Hotel/Hotel.jsx";
 
-import UserSettings from "./Component/Profile/UserAction";
 import Partner from "./Component/Partner/Partner";
 import PunjabPage from "./Component/States/Punjab/Punjab";
 
@@ -96,6 +94,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ResetPassword from "./Component/Login/ResetPassword";
 import ConfirmEmail from "./Component/Login/ConfirmEmail";
 import LoginWithOtp from "./Component/Login/LoginWithOtp";
+import { Profile } from "./Component/Profile/Profile";
 
 function App() {
   // console.log(search)
@@ -106,8 +105,8 @@ function App() {
 
   const [userData, setUserData] = useState(null);
 
-  const userDetails = getLocalStorage("loggedUser");
-  const isSignedIn = getLocalStorage("isSignedIn");
+  const userDetails = localStorage.getItem("loggedUser");
+  const isSignedIn = localStorage.getItem("isSignedIn");
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
@@ -145,7 +144,7 @@ function App() {
         <ChatBox />
         <PopupCard />
 
-        <UserSettings />
+        {/* <UserSettings /> */}
         <Partner />
         <PunjabPage />
 
@@ -166,12 +165,7 @@ function App() {
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/profile"
-            element={<Profile />}
-          >
-           
-          </Route>
+          <Route path="/profile" element={<Profile />}></Route>
           <Route path="/resetPassword/:token" element={<ResetPassword />} />
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
