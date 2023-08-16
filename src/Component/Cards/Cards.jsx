@@ -12,7 +12,7 @@ export const Cards = ({offer }) => {
     navigate(`/book-now/${offerId}`);
   }; 
   return (
-    <div className="_card">
+    <div className="_card" onClick={() => handleBookNow(offer._id)}>
       <header
         className="_card-header"
         style={{
@@ -22,7 +22,7 @@ export const Cards = ({offer }) => {
       >
         <h4 className="_card-header--title">{offer.hotelName}</h4>
       </header>
-      <div className="_card-body">
+      <div className="_card-body" >
         <div className="d-flex align-items-center justify-content-between">
           <p class="_date">
             <MdLocationOn /> {offer.destination}
@@ -39,7 +39,7 @@ export const Cards = ({offer }) => {
         </p>
         <h2 style={{ color: "#3e4152" }}>{offer.offers}</h2>
         <p class="_body-content">{offer.description}</p>
-        <button className="_card-button" onClick={() => handleBookNow(offer._id)}>
+        <button className="_card-button" >
           <IoIosArrowForward /> View Details
         </button>
       </div>

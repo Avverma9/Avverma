@@ -135,7 +135,7 @@ function HotelList() {
   return (
     <>
       <div className="whole-data d-flex">
-        <div className={styles["vertical-bar"]}>
+      <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
           <div className="filt-1st">
             <h3 className="filterhead">Filters</h3>
             <br />
@@ -227,6 +227,7 @@ function HotelList() {
               <input type="checkbox" />
               Sitting Area
             </label>
+            {" "}
             <label>
               {" "}
               <input type="checkbox" />
