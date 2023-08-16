@@ -107,6 +107,7 @@ import { FailedBooking } from "./Component/Profile/FailedBooking";
 import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
+import BookingDetails from "./Component/Hotel/BookingDetails";
 
 
 function App() {
@@ -279,6 +280,7 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
+          <Route path="/bookingDetails" element={<BookingDetails/>}/>
           
         </Routes>
         <Footer />

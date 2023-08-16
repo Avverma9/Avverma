@@ -35,6 +35,7 @@ import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
+import BookingDetails from "./BookingDetails";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -318,6 +319,7 @@ export default function BookNow({ refresh, reset, userData }) {
   return (
     <>
       <div className="container-p-4">
+        
         <div className="flex">
           <div className="w-1/3 slider-container book_now">
             <Slider ref={sliderRef} {...settings}>
@@ -340,6 +342,7 @@ export default function BookNow({ refresh, reset, userData }) {
               </button>
             </div>
           </div>
+          <div className="bookingflex">
           <div className="hotel-details1">
             <div className="flex-rating">
               <div className="name-location">
@@ -569,6 +572,10 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
                 Marital Status: {bookingDetails.maritalStatus}
               </p>
+            </div>
+            <div className="bookingDetailsticky">
+              <BookingDetails price={bookingDetails.price}/>
+            </div>
             </div>
 
             <div className="hotel-policies">
