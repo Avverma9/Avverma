@@ -6,7 +6,7 @@ import "./Pushnotification.css";
 const BASE_URL = "http://13.48.45.18:4008";
 
 export const Pushnotification = () => {
-  const [selectedRegion, setSelectedRegion] = useState([]); 
+  const [selectedRegion, setSelectedRegion] = useState([]);
   const [notificationData, setNotificationData] = useState({
     image: "image_url",
     title: "",
@@ -25,8 +25,8 @@ export const Pushnotification = () => {
   }, []);
 
   const regionArray = Array.isArray(selectedRegion)
-  ? selectedRegion
-  : [selectedRegion];
+    ? selectedRegion
+    : [selectedRegion];
 
   const selectRegionOptions = regionArray?.map((region) => ({
     value: region._id,
@@ -51,7 +51,7 @@ export const Pushnotification = () => {
     });
 
     if (response.ok) {
-      alert("Notification sent Successfully")
+      alert("Notification sent Successfully");
       console.log("Notification sent successfully");
 
       setNotificationData({

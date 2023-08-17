@@ -12,7 +12,6 @@ export const Profile = () => {
     password: "**************",
   });
 
-
   const [data, setData] = useState([]);
 
   const columns = [
@@ -66,7 +65,7 @@ export const Profile = () => {
         <ImExit size={18} />
       </div>
       <div className="_profile-body">
-      <div className="_input-fields">
+        <div className="_input-fields">
           <label htmlFor="">Name</label>
           <input
             type="text"

@@ -16,7 +16,6 @@ import { RiAdminLine } from "react-icons/ri";
 import { GrUserAdmin } from "react-icons/gr";
 
 import "./Dashboard2.css";
-import { useNavigate } from "react-router-dom";
 import { RegionTable } from "./RegionTable";
 import { SellerTable } from "./SellerTable";
 import { CategoryTable } from "./CategoryTable";
@@ -111,12 +110,10 @@ function Dashboard2() {
   }, []);
 
   const handleSwitch = (e) => {
-    const targetInnerText = e.nativeEvent.currentTarget.innerText;
-    console.log("Target Inner Text:", targetInnerText);
-    
-    setTarget(targetInnerText);
+    console.log(e.nativeEvent.originalTarget.innerText);
+    setTarget(e.nativeEvent.originalTarget.innerText);
   };
-  
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">

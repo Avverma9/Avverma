@@ -15,12 +15,14 @@ import { useNavigate } from "react-router-dom";
 
 export const MannageAuction = () => {
   const [showRegion, setShowRegion] = useState(false);
-  const [filterRegion,setFilterRegion]=useState([])
   const [showSeller, setShowSeller] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
   const [filterView, setFilterView] = useState(false);
   const [exportView, setExportView] = useState([]);
   const [filterText, setFilterText] = useState("");
+
+  const [regions, setRegions] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState("");
 
   const [auctions, setAuctions] = useState([]);
   const exportToExcel = () => {
@@ -31,13 +33,29 @@ export const MannageAuction = () => {
       bookType: "xlsx",
       type: "array",
     });
-    const data = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    const data = new Blob([excelBuffer], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
     const downloadLink = URL.createObjectURL(data);
     const link = document.createElement("a");
     link.href = downloadLink;
     link.download = "Buyer_Data.xlsx";
     link.click();
   };
+
+  useEffect(() => {
+    fetch("http://13.48.45.18:4008/admin/region/getAll")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          setRegions(data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching regions:", error);
+      });
+  }, []);
+
   const fetchAuctions = async () => {
     try {
       const response = await fetch(
@@ -55,23 +73,59 @@ export const MannageAuction = () => {
     }
   };
 
+  const fetchFilteredAuctions = () => {
+    // Define the API URL
+    const apiUrl = "http://13.48.45.18:4008/admin/auction/filter";
+
+    // Define the request body
+    const requestBody = {
+      region: "64d5b3972dab69ddd864e3bc",
+      category: "64d5b3b42dab69ddd864e3c0",
+      seller: "64d5b4b02dab69ddd864e3dd",
+      status: 2,
+    };
+
+    // Define the headers
+    const headers = {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    };
+
+    // Send the POST request to the API
+    fetch(apiUrl, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => response.json()) // Parse the response as JSON
+      .then((data) => {
+        // Handle the successful response
+        console.log(data);
+      })
+      .catch((error) => {
+        // Handle any errors
+        console.error("Error:", error);
+      });
+  };
+
   useEffect(() => {
     fetchAuctions();
   }, []);
-//=============================================filter by region=======================================//
-
-useEffect(()=>{
-fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be")
-},[]
-)
-//===================================================================================================//
+  //=============================================filter by region=======================================//
+  console.log(selectedRegion);
+  useEffect(() => {
+    fetch(
+      "http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be"
+    );
+  }, []);
+  //===================================================================================================//
   const handleClick = () => {
-    fetchAuctions();
+    // fetchAuctions();
+    fetchFilteredAuctions();
   };
   // const handleRowSelected = (state) => {
   //   setExportView(state.selectedRows);
   // };
-  
+
   const filteredItems = auctions?.filter((item) => {
     if (!item) {
       return false;
@@ -102,6 +156,11 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
     if (response.ok) {
       fetchAuctions();
     }
+  };
+
+  const handleRegionChange = (e) => {
+    console.log(e);
+    setSelectedRegion(e.target.value);
   };
 
   const editHandler = (id, winId) => {
@@ -159,7 +218,7 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
     },
     {
       name: "Status",
-      selector: (row) => row.status ? "Live": "Ended",
+      selector: (row) => (row.status ? "Live" : "Ended"),
       sortable: true,
     },
     {
@@ -218,13 +277,13 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
                 />
                 <AiOutlineSearch className="search-icon" />
                 {exportView.length !== 0 && (
-            <button className="export-button" onClick={exportToExcel}>
-              <p>
-                <TfiExport style={{ marginRight: "5px" }} />
-                Export
-              </p>
-            </button>
-          )}
+                  <button className="export-button" onClick={exportToExcel}>
+                    <p>
+                      <TfiExport style={{ marginRight: "5px" }} />
+                      Export
+                    </p>
+                  </button>
+                )}
                 <button
                   className="filter-button"
                   onClick={() => setFilterView(!filterView)}
@@ -302,11 +361,15 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
                       <select
                         name="filter-auction-select"
                         id="filter-auction-select"
+                        onChange={handleRegionChange}
+                        value={selectedRegion}
                       >
-                        <option value="">-- Please choose an option --</option>
-                        <option value="name">uttar predesh</option>
-                        <option value="mobile">kolkata</option>
-                        <option value="email">Patna</option>
+                        <option value="">-- Select Region --</option>
+                        {regions.map((region) => (
+                          <option key={region._id} value={region._id}>
+                            {region.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}
@@ -360,7 +423,6 @@ fetch("http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be
             )}
           </>
         }
-       
       />
     </>
   );
