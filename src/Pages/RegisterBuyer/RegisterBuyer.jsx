@@ -119,18 +119,18 @@ function RegisterBuyer() {
 
       if (response.ok) {
         alert("Data submitted successfully");
-        // setBuyerData({
-        //   full_name: "",
-        //   company_name: "",
-        //   company_address: "",
-        //   email: "",
-        //   mobile: "",
-        //   DOB: "",
-        //   password: "",
-        //   Pan: "",
-        //   region: [],
-        //   PanNumber: "",
-        // });
+        setBuyerData({
+          full_name: "",
+          company_name: "",
+          company_address: "",
+          email: "",
+          mobile: "",
+          DOB: "",
+          password: "",
+          Pan: "",
+          region: "",
+          PanNumber: "",
+        });
       } else {
         alert("Failed to submit data");
       }
