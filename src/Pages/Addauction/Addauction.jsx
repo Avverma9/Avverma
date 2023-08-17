@@ -10,7 +10,7 @@ export const Addauction = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(""); // State to track selected option
+  const [selectedOption, setSelectedOption] = useState(""); 
 
   const [photoVideo, setphotoVideo] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);

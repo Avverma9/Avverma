@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RegisterBuyer.css";
+import Select from "react-select";
+
+const BASE_URL = "http://13.48.45.18:4008";
 
 function RegisterBuyer() {
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [buyerData, setBuyerData] = useState({
     full_name: "",
     company_name: "",
@@ -10,49 +15,78 @@ function RegisterBuyer() {
     mobile: "",
     DOB: "",
     password: "",
-    Pan: "",
+    PAN: "",
     region: [],
     PanNumber: "",
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBuyerData({ ...buyerData, [name]: value });
+  const getRegions = async () => {
+    const response = await fetch(`${BASE_URL}/admin/region/getAll`);
+
+    const { data } = await response.json();
+
+    setSelectedRegion(data);
+    console.log(data, "REGION DATA");
   };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setBuyerData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setBuyerData({ ...buyerData, Pan: file });
+    setBuyerData((prevData) => ({
+      ...prevData,
+      PAN: file,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
-    for (const key in buyerData) {
-      formData.append(key, buyerData[key]);
-    }
+    formData.append("full_name", buyerData.full_name);
+    formData.append("company_name", buyerData.company_name);
+    formData.append("company_address", buyerData.company_address);
+    formData.append("email", buyerData.email);
+    formData.append("mobile", buyerData.mobile);
+    formData.append("DOB", buyerData.DOB);
+    formData.append("password", buyerData.password);
+    formData.append("PAN", buyerData.PAN);
+
+    const filteredRegion = buyerData.region.filter((region) => region !== null && region !== "null");
+    console.log("Filtered Region:", filteredRegion);
+
+    formData.append("region", JSON.stringify(filteredRegion));
+    formData.append("PanNumber", buyerData.PanNumber);
 
     try {
-      const response = await fetch("http://13.48.45.18:4008/user/create", {
+      const response = await fetch(`${BASE_URL}/user/create`, {
         method: "POST",
         body: formData,
       });
 
+
       if (response.ok) {
         alert("Data submitted successfully");
-        setBuyerData({
-          full_name: "",
-          company_name: "",
-          company_address: "",
-          email: "",
-          mobile: "",
-          DOB: "",
-          password: "",
-          Pan: "",
-          region: [],
-          PanNumber: "",
-        });
+        // setBuyerData({
+        //   full_name: "",
+        //   company_name: "",
+        //   company_address: "",
+        //   email: "",
+        //   mobile: "",
+        //   DOB: "",
+        //   password: "",
+        //   Pan: "",
+        //   region: [],
+        //   PanNumber: "",
+        // });
       } else {
         alert("Failed to submit data");
       }
@@ -62,6 +96,25 @@ function RegisterBuyer() {
     }
   };
 
+
+
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
+  const handleRegionSelect = (selectedOptions) => {
+    const selectedRegionIds = selectedOptions.map((option) => option.value);
+    setSelectedOption(selectedRegionIds); 
+    setBuyerData((prevData) => ({
+      ...prevData,
+      region: selectedRegionIds,
+    }));
+  };
 
 
   return (
@@ -129,11 +182,15 @@ function RegisterBuyer() {
 
         <label htmlFor="region">
           <p>Region</p>
-          <input
-            type="text"
+          <Select
             name="region"
-            value={buyerData.region}
-            onChange={handleInputChange}
+            value={selectedOption} 
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
+            isMulti
+            onChange={handleRegionSelect}
           />
         </label>
         <label htmlFor="acc-status">
@@ -220,7 +277,7 @@ function RegisterBuyer() {
           <p>Upload Pan</p>
           <input
             type="file"
-            name="Pan"
+            name="PAN"
             accept=".jpg,.jpeg,.png"
             onChange={handleFileChange}
           />
