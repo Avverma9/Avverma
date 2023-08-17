@@ -17,9 +17,23 @@ export const Viewauction = () => {
 
   // const currentImage = getCurrentIndex();
 
-  const setPrimary = () => {};
+  const setPrimary = () => {
+    console.log(slideShowref.current.getCurrentIndex());
+  };
 
   const images = [
+    {
+      original: "https://picsum.photos/id/1018/1000/600/",
+      thumbnail: "https://picsum.photos/id/1018/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1015/1000/600/",
+      thumbnail: "https://picsum.photos/id/1015/250/150/",
+    },
+    {
+      original: "https://picsum.photos/id/1019/1000/600/",
+      thumbnail: "https://picsum.photos/id/1019/250/150/",
+    },
     {
       original: "https://picsum.photos/id/1018/1000/600/",
       thumbnail: "https://picsum.photos/id/1018/250/150/",
@@ -109,6 +123,8 @@ export const Viewauction = () => {
           />
           <div>
             <button onClick={setPrimary}>Set Primary</button>
+            <button>Edit</button>
+            <button>Delete</button>
           </div>
           <div className="biding-details-table">
             <DataTable
