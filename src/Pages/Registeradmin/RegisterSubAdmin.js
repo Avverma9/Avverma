@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./RegisterSubAdmin.css";
+import Select from "react-select";
 
 function RegisterSubAdmin() {
   const [subAdminData, setSubAdminData] = useState({
@@ -12,6 +13,7 @@ function RegisterSubAdmin() {
     role: 1,
   });
 
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,7 @@ function RegisterSubAdmin() {
       if (response.ok) {
         if (data && data.data && Array.isArray(data.data)) {
           setRegions(data.data);
+          setSelectedRegion(data.data);
         } else {
           console.error("Invalid region data:", data);
         }
@@ -100,6 +103,11 @@ function RegisterSubAdmin() {
     setSubAdminData({ ...subAdminData, [name]: value });
   };
 
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
   return (
     <div className="main-container">
       <div className="page-heading">
@@ -159,6 +167,14 @@ function RegisterSubAdmin() {
                 </option>
               ))}
           </select>
+          {/* <Select
+            name="region"
+            defaultValue={selectRegionOptions}
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
+          /> */}
         </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>

@@ -25,6 +25,7 @@ const Login = () => {
       if (response.ok) {
         alert("Logged In ");
         localStorage.setItem("token", data.token);
+        localStorage.setItem("adminId", data.data._id);
         navigate("/mannage-auction");
       }
     } catch (error) {

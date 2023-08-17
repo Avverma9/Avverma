@@ -73,11 +73,11 @@ export const Viewauction = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-  console.log(bidders);
+
   const columns = [
     {
       name: "Buyer Name",
-      cell: (row) => (row.userInforomation !== [] ? "A" : "N/A"),
+      cell: (row) => "N/A",
       sortable: true,
     },
     {
