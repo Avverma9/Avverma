@@ -40,7 +40,7 @@ function Addcategory() {
     const newName = e.target.value;
     const regexPattern = /^[A-Za-z\s]+$/;
 
-    if (newName.length <= 15 && regexPattern.test(newName)) {
+    if (newName.length <= 25 && regexPattern.test(newName)) {
       setName(newName);
       setIsValidName(true);
     } else {
@@ -110,6 +110,7 @@ function Addcategory() {
           <label>
             Add Category
             <input
+              maxLength={25}
               type="text"
               value={name}
               max={10}
@@ -118,7 +119,7 @@ function Addcategory() {
             {!isValidName && (
               <p style={{ color: "red" }}>
                 Please don't add any number or special characters <br />
-                Maximum 15 characters allowed.
+                Maximum 25 characters allowed.
               </p>
             )}
           </label>

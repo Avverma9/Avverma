@@ -70,15 +70,19 @@ export const Pushnotification = () => {
         <h1>Push Notification</h1>
       </div>
       <div className="_select_search_region">
+        <p>Region</p>
         <Select
           value={selectedRegion}
           onChange={setSelectedRegion}
-          options={selectRegionOptions}
+          options={selectRegionOptions }
           className="basic-multi-select"
           classNamePrefix="select"
           placeholder="Region"
         />
       </div>
+     
+      <div>
+        <p>Title</p>
       <input
         type="text"
         placeholder="Title"
@@ -87,14 +91,22 @@ export const Pushnotification = () => {
           setNotificationData({ ...notificationData, title: e.target.value })
         }
       />
-      <textarea
+      </div>
+     <div>
+      <p>Body</p>
+     <textarea
         placeholder="Body"
         value={notificationData.body}
         onChange={(e) =>
           setNotificationData({ ...notificationData, body: e.target.value })
         }
       ></textarea>
-      <input type="file" name="" id="" />
+     </div>
+     
+     <div>
+      <p>Image</p>
+     <input type="file" name="" id="" />
+     </div>
       <input type="button" value="Send" onClick={sendNotification} />
     </div>
   );

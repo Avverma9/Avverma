@@ -49,8 +49,6 @@ function RegisterSubAdmin() {
     console.log("Selected region ID:", selectedRegionId);
   };
 
-  console.log(subAdminData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,11 +57,30 @@ function RegisterSubAdmin() {
         !subAdminData.name ||
         !subAdminData.email ||
         !subAdminData.mobile ||
-        !subAdminData.password
+        !subAdminData.password ||
+        !selectedRegionId
       ) {
-        alert("All fields are required ");
+        alert("All fields are required");
         return;
       }
+
+      const nameRegex = /^[A-Za-z\s]{1,30}$/;
+      if (!nameRegex.test(subAdminData.name)) {
+        alert("Invalid name format");
+        return;
+      }
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailRegex.test(subAdminData.email)) {
+        alert("Invalid email format");
+        return;
+      }
+
+      if (subAdminData.mobile.length !== 10) {
+        alert("Mobile number should be 10 digits");
+        return;
+      }
+
       const roleValue = subAdminData.role === "admin" ? 0 : 1;
       const selectedRegion = regions.find(
         (region) => region._id === selectedRegionId
@@ -117,6 +134,7 @@ function RegisterSubAdmin() {
         <label htmlFor="sub-admin-name">
           <p>Name</p>
           <input
+          maxLength={25}
             type="text"
             name="name"
             value={subAdminData.name}

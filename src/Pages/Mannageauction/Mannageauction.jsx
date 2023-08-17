@@ -144,17 +144,27 @@ export const MannageAuction = () => {
   const navigate = useNavigate();
 
   const deleteAuction = async (id) => {
-    const response = await fetch(
-      `http://13.48.45.18:4008/auction/delete/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const headers = {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    };
+  
+    try {
+      const response = await fetch(
+        `http://13.48.45.18:4008/admin/auction/delete/${id}`,
+        {
+          method: "DELETE",
+          headers: headers,
+        }
+      );
+  
+      if (response.ok) {
+        fetchAuctions();
+        alert("Auction deleted successfully.");
+      } else {
+        console.error("Error deleting auction");
       }
-    );
-    if (response.ok) {
-      fetchAuctions();
+    } catch (error) {
+      console.error("Error deleting auction:", error);
     }
   };
 

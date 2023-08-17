@@ -47,6 +47,7 @@ function Addseller() {
           <label>
             Add Seller
             <input
+             maxLength={25}
               type="text"
               value={name}
               onChange={(e) => {
@@ -57,7 +58,9 @@ function Addseller() {
             />
           </label>
         </div>
-          {!isValid && <div style={{color:"red"}}>Invalid input. Only letters and spaces allowed.</div>}
+          {!isValid && <div style={{color:"red"}}> Only letters and spaces allowed, <br/>
+          Make Sure it dosen't have more than 25 letters
+          </div>}
         <button className="sub-button">Submit</button>
       </form>
     </div>
