@@ -17,7 +17,9 @@ export const Viewauction = () => {
 
   // const currentImage = getCurrentIndex();
 
-  const setPrimary = () => {};
+  const setPrimary = () => {
+    console.log(slideShowref.current.getCurrentIndex());
+  };
 
   const images = [
     {
