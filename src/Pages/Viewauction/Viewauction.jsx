@@ -11,6 +11,7 @@ import "./Viewauction.css";
 
 export const Viewauction = () => {
   const [auctionData, setAuctionData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
   const slideShowref = useRef();
@@ -49,9 +50,10 @@ export const Viewauction = () => {
   ];
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const response = await fetch(
-        `http://13.48.45.18:4008/admin/auction/get/${id}`,
+        `http://13.48.45.18:4008/bid/getBiddersByAuction/${id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
@@ -59,11 +61,11 @@ export const Viewauction = () => {
         }
       );
       const { data } = await response.json();
-      console.log(data, "I am DATA");
       setAuctionData(data);
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -73,46 +75,43 @@ export const Viewauction = () => {
   const columns = [
     {
       name: "Buyer Name",
-      cell: (row) => {
-        const seller = row.seller[0];
-        return seller ? seller.name : "";
-      },
+      cell: (row) => "N/A",
       sortable: true,
     },
     {
       name: "Buyer Ph.No.",
-      cell: (row) => {
-        const seller = row.seller[0];
-        return seller ? seller.name : "";
-      },
+      cell: (row) => "N/A",
       sortable: true,
     },
     {
       name: "Buyer Email",
-      selector: (row) => (row.buyerEmail ? row.buyerEmail : "N/A"),
+      selector: (row) =>
+        row.userInforomation !== [] || row.userInforomation !== null
+          ? "A"
+          : "N/A",
 
       sortable: true,
     },
     {
       name: "Bid Amount",
-      selector: (row) => row.current_bidding_price,
+      selector: (row) => row.bid_price,
       sortable: true,
     },
     {
       name: "Bid Date",
-      selector: (row) => row.startTime,
+      selector: (row) => "N/A",
       sortable: true,
     },
     {
       name: "Bid Time",
-      selector: (row) => row.endTime,
+      selector: (row) => "N/A",
       sortable: true,
     },
   ];
 
   return (
     <div className="addauction-preview">
-      {auctionData && (
+      {!loading && auctionData && (
         <>
           <ImageGallery
             ref={slideShowref}
