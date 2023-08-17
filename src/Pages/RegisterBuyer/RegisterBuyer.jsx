@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RegisterBuyer.css";
+import Select from "react-select";
 
 function RegisterBuyer() {
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [buyerData, setBuyerData] = useState({
     full_name: "",
     company_name: "",
@@ -14,6 +16,25 @@ function RegisterBuyer() {
     region: [],
     PanNumber: "",
   });
+
+  const getRegions = async () => {
+    const response = await fetch(`http://13.48.45.18:4008/admin/region/getAll`);
+
+    const { data } = await response.json();
+
+    setSelectedRegion(data);
+    console.log(data, "REGION DATA");
+  };
+
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -127,15 +148,14 @@ function RegisterBuyer() {
           />
         </label>
 
-        <label htmlFor="region">
-          <p>Region</p>
-          <input
-            type="text"
+        <Select
             name="region"
-            value={buyerData.region}
-            onChange={handleInputChange}
+            defaultValue={selectRegionOptions}
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
           />
-        </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>
           <select
