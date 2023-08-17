@@ -10,7 +10,7 @@ import ImageGallery from "react-image-gallery";
 import "./Viewauction.css";
 
 export const Viewauction = () => {
-  const [auctionData, setAuctionData] = useState(null);
+  const [bidders, setBidders] = useState([]);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
 
@@ -61,7 +61,9 @@ export const Viewauction = () => {
         }
       );
       const { data } = await response.json();
-      setAuctionData(data);
+      if (response.ok) {
+        setBidders(data);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -71,11 +73,11 @@ export const Viewauction = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-
+  console.log(bidders);
   const columns = [
     {
       name: "Buyer Name",
-      cell: (row) => "N/A",
+      cell: (row) => (row.userInforomation !== [] ? "A" : "N/A"),
       sortable: true,
     },
     {
@@ -85,10 +87,7 @@ export const Viewauction = () => {
     },
     {
       name: "Buyer Email",
-      selector: (row) =>
-        row.userInforomation !== [] || row.userInforomation !== null
-          ? "A"
-          : "N/A",
+      selector: (row) => "N/A",
 
       sortable: true,
     },
@@ -111,7 +110,7 @@ export const Viewauction = () => {
 
   return (
     <div className="addauction-preview">
-      {!loading && auctionData && (
+      {!loading && bidders !== [] && (
         <>
           <ImageGallery
             ref={slideShowref}
@@ -129,7 +128,7 @@ export const Viewauction = () => {
             <DataTable
               title="Bidding Details"
               columns={columns}
-              data={auctionData}
+              data={bidders}
               pagination
               fixedHeader
               fixedHeaderScrollHeight="75vh"
