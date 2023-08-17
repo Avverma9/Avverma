@@ -16,7 +16,7 @@ function RegisterBuyer() {
     DOB: "",
     password: "",
     PAN: "",
-    region: [],
+    region: "",
     PanNumber: "",
   });
 
@@ -47,6 +47,28 @@ function RegisterBuyer() {
     }));
   };
 
+ 
+
+
+
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
+  const handleRegionSelect = (selectedOptions) => {
+    const selectedRegionIds = selectedOptions.map((option) => option.value);
+    setSelectedOption(selectedRegionIds);
+    setBuyerData((prevData) => ({
+      ...prevData,
+      region: selectedRegionIds,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,7 +85,7 @@ function RegisterBuyer() {
     const filteredRegion = buyerData.region.filter((region) => region !== null && region !== "null");
     console.log("Filtered Region:", filteredRegion);
 
-    formData.append("region", JSON.stringify(filteredRegion));
+    formData.append("region", JSON.stringify(filteredRegion.map(String)));
     formData.append("PanNumber", buyerData.PanNumber);
 
     try {
@@ -94,26 +116,6 @@ function RegisterBuyer() {
       console.error(error);
       alert("An error occurred");
     }
-  };
-
-
-
-  useEffect(() => {
-    getRegions();
-  }, []);
-
-  const selectRegionOptions = selectedRegion?.map((region) => ({
-    value: region._id,
-    label: region.name,
-  }));
-
-  const handleRegionSelect = (selectedOptions) => {
-    const selectedRegionIds = selectedOptions.map((option) => option.value);
-    setSelectedOption(selectedRegionIds); 
-    setBuyerData((prevData) => ({
-      ...prevData,
-      region: selectedRegionIds,
-    }));
   };
 
 
@@ -192,7 +194,7 @@ function RegisterBuyer() {
             isMulti
             onChange={handleRegionSelect}
           />
-        </label>
+          </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>
           <select
