@@ -56,7 +56,7 @@ function Addregion() {
             />
           </label>
         </div>
-          {!isValid && <div style={{color:"red"}}>Invalid input. Only letters and spaces allowed.</div>}
+          {!isValid && <div style={{color:"red"}}> Only letters and spaces allowed.</div>}
         <button className="sub-button">Submit</button>
       </form>
     </div>
