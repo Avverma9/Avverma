@@ -111,6 +111,8 @@ export const Viewauction = () => {
           />
           <div>
             <button onClick={setPrimary}>Set Primary</button>
+            <button>Edit</button>
+            <button>Delete</button>
           </div>
           <div className="biding-details-table">
             <DataTable
