@@ -7,76 +7,47 @@ import { GrAddCircle } from "react-icons/gr";
 import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
 
-
-
 export const Mannagebuyer = () => {
   const navigate = useNavigate();
-  const [managebuyer,setManagebuyer] = useState([])
-  const Token=localStorage.getItem("token");
-  const fetchmanagebuyer=async()=>{
-          try{
-            const response= await fetch("http://13.233.229.68:4008/admin/seller/getAll",
-            {
-              headers:{
-                Authorization:`Bearer ${Token}`,
-              },
-            }
-            );
-            const res = await response.json();
-            setManagebuyer(res.data)
+  const [managebuyer, setManagebuyer] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState("");
+  const Token = localStorage.getItem("token");
 
+  const fetchmanagebuyer = async () => {
+    try {
+      const response = await fetch("http://13.48.45.18:4008/user/getAll", {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const res = await response.json();
+      console.log(res.data);
+      setManagebuyer(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-          }catch(error){
-            console.error(error)
-          }
-  }
-  console.log(managebuyer)
-  useEffect(()=>{
+  console.log(managebuyer);
+
+  useEffect(() => {
     fetchmanagebuyer();
-  },[])
-
-
-
-  const data = [
-    {
-      sl: 1,
-      name: "abc",
-      phno: "8668190986",
-      email: "example@example.com",
-      status: "pending", // default pending, deactive,active
-    },
-    {
-      sl: 2,
-      name: "abc",
-      phno: "8668190986",
-      email: "example@example.com",
-      status: "pending", // default pending, deactive,active
-    },
-    {
-      sl: 3,
-      name: "abc",
-      phno: "8668190986",
-      email: "example@example.com",
-      status: "pending", // default pending, deactive,active
-    },
-  ];
-
-
+  }, []);
 
   const columns = [
     {
       name: "Sl.No",
-      selector: (row) => row.sl,
+      selector: (row, index) => index + 1,
       sortable: true,
     },
     {
       name: "Buyer Name",
-      selector: (row) => row.name,
+      selector: (row) => row.full_name,
       sortable: true,
     },
     {
       name: "Buyer Phone",
-      selector: (row) => row.phno,
+      selector: (row) => row.mobile,
       sortable: true,
     },
     {
@@ -86,26 +57,38 @@ export const Mannagebuyer = () => {
     },
     {
       name: "Status",
-      selector: (row) => row.status,
+      selector: (row) => (row.isApprovedByAdmin ? "Active" : "Pending"),
       sortable: true,
     },
-    {
-      name: "Action",
-      selector: (row) => (
-        <div className="_edit">
-          <MdOutlineRemoveRedEye size="18" color="#1a2333" />
-          <BiEdit size="18" color="#1b3ea9" />
-          <MdDeleteOutline size="18" color="#ff0000" />
-        </div>
-      ),
-    },
+    // {
+    //   name: "Action",
+    //   selector: (row) => (
+    //     <div className="_edit">
+    //       <MdOutlineRemoveRedEye size="18" color="#1a2333" />
+    //       <BiEdit size="18" color="#1b3ea9" />
+    //       <MdDeleteOutline size="18" color="#ff0000" />
+    //     </div>
+    //   ),
+    // },
   ];
+
+
+  const filteredData = managebuyer.filter((row) => {
+    if (!selectedFilter) {
+      return true;
+    }
+    return (
+      (selectedFilter === "Pending" && !row.isApprovedByAdmin) ||
+      (selectedFilter === "Active" && row.isApprovedByAdmin)
+    );
+  });
+
   return (
     <>
       <DataTable
-        title="Mannage Buyer"
+        title="Manage Buyer"
         columns={columns}
-        data={data}
+        data={filteredData}
         pagination
         fixedHeader
         fixedHeaderScrollHeight="75vh"
@@ -118,11 +101,15 @@ export const Mannagebuyer = () => {
               <AiOutlineSearch />
             </div>
             <div className="_filter-dropdown">
-              <select name="" id="">
-                <option>Filter</option>
-                <option value="">Pending</option>
-                <option value="">Active</option>
-                <option value="">InActive</option>
+              <select
+                name=""
+                id=""
+                value={selectedFilter}
+                onChange={(e) => setSelectedFilter(e.target.value)}
+              >
+                <option value="">Filter</option>
+                <option value="Pending">Pending</option>
+                <option value="Active">Active</option>
               </select>
             </div>
             <div className="_register-buyer-btn">
@@ -130,9 +117,7 @@ export const Mannagebuyer = () => {
                 <GrAddCircle color="#fff" />
                 <span>Register a Buyer</span>
               </button>
-              
             </div>
-            
           </div>
         }
       />

@@ -21,6 +21,23 @@
   width: 60px !important;
 }
 
+.image-btn-container {
+  width: 215px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  position: absolute;
+  top: 25px;
+  right: 120px;
+}
+
+.image-btn-container button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 4px;
+  color: #ffffff;
+}
+
 .addauction-new-form-section label {
   display: flex;
   flex-direction: column;

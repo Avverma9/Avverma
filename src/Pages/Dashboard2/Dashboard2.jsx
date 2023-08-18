@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { GiOlive } from "react-icons/gi";
 import { CgStopwatch } from "react-icons/cg";
@@ -104,7 +104,7 @@ function Dashboard2() {
       console.error(error);
     }
   };
-  console.log(dashboard);
+  // console.log(Array(dashboard.users)[0].length);
   useEffect(() => {
     fetchdashboard();
   }, []);
@@ -113,6 +113,8 @@ function Dashboard2() {
     console.log(e.nativeEvent.originalTarget.innerText);
     setTarget(e.nativeEvent.originalTarget.innerText);
   };
+
+  const listRef = useRef(null);
 
   return (
     <div className="dashboard">
@@ -123,20 +125,21 @@ function Dashboard2() {
         <ul className="dashboard-content">
           <li className="dashboard-b">
             <GiOlive />
-            <span>Live Auctions:</span> 125
+            <span>Live Auctions:</span>
+            {dashboard.live_auction_count}
           </li>
           <li className="dashboard-bu">
             <CgStopwatch />
-            <span>Pending Auctions:</span> 56
+            <span>Pending Auctions:</span> {dashboard.pending_auction_count}
           </li>
           <li className="dashboard-but">
             <MdIncompleteCircle />
-            <span>Complete Auctions:</span>{" "}
-            {dashboard.totalAuction?.length || 0}
+            <span>Complete Auctions:</span> {dashboard.completed_auction_count}
           </li>
           <li className="dashboard-butt" onClick={(e) => handleSwitch(e)}>
             <BsFillPersonFill />
-            <span>Total Buyers:</span>NA
+            <span>Total Buyers:</span>
+            {/* {Array(dashboard.users)[0].length} */}
           </li>
           <li className="dashboard-b" onClick={(e) => handleSwitch(e)}>
             <TbBuildingEstate />
@@ -158,9 +161,9 @@ function Dashboard2() {
             <GrWheelchairActive />
             <span>Active Buyer Accounts:</span> N/A
           </li>
-          <li className="dashboard-bu">
+          <li className="dashboard-bu" onClick={() => console.log(listRef.current.innerText)}>
             <MdNoAccounts />
-            <span>Inactive Buyer Accounts:</span> N/A
+            <span ref={listRef}>Inactive Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-but">
             <RiAdminLine />

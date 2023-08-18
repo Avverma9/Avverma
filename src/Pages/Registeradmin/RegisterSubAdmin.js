@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./RegisterSubAdmin.css";
+import Select from "react-select";
 
 function RegisterSubAdmin() {
   const [subAdminData, setSubAdminData] = useState({
@@ -12,6 +13,7 @@ function RegisterSubAdmin() {
     role: 1,
   });
 
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,7 @@ function RegisterSubAdmin() {
       if (response.ok) {
         if (data && data.data && Array.isArray(data.data)) {
           setRegions(data.data);
+          setSelectedRegion(data.data);
         } else {
           console.error("Invalid region data:", data);
         }
@@ -46,8 +49,6 @@ function RegisterSubAdmin() {
     console.log("Selected region ID:", selectedRegionId);
   };
 
-  console.log(subAdminData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -56,11 +57,30 @@ function RegisterSubAdmin() {
         !subAdminData.name ||
         !subAdminData.email ||
         !subAdminData.mobile ||
-        !subAdminData.password
+        !subAdminData.password ||
+        !selectedRegionId
       ) {
-        alert("All fields are required ");
+        alert("All fields are required");
         return;
       }
+
+      const nameRegex = /^[A-Za-z\s]{1,30}$/;
+      if (!nameRegex.test(subAdminData.name)) {
+        alert("Invalid name format");
+        return;
+      }
+
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      if (!emailRegex.test(subAdminData.email)) {
+        alert("Invalid email format");
+        return;
+      }
+
+      if (subAdminData.mobile.length !== 10) {
+        alert("Mobile number should be 10 digits");
+        return;
+      }
+
       const roleValue = subAdminData.role === "admin" ? 0 : 1;
       const selectedRegion = regions.find(
         (region) => region._id === selectedRegionId
@@ -100,6 +120,11 @@ function RegisterSubAdmin() {
     setSubAdminData({ ...subAdminData, [name]: value });
   };
 
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
   return (
     <div className="main-container">
       <div className="page-heading">
@@ -109,6 +134,7 @@ function RegisterSubAdmin() {
         <label htmlFor="sub-admin-name">
           <p>Name</p>
           <input
+          maxLength={25}
             type="text"
             name="name"
             value={subAdminData.name}
@@ -159,6 +185,14 @@ function RegisterSubAdmin() {
                 </option>
               ))}
           </select>
+          {/* <Select
+            name="region"
+            defaultValue={selectRegionOptions}
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
+          /> */}
         </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>

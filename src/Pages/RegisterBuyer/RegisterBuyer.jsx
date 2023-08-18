@@ -3,21 +3,16 @@ import "./RegisterBuyer.css";
 
 function RegisterBuyer() {
   const [buyerData, setBuyerData] = useState({
-    buyerName: "",
-    pinCode: "",
-    mobileNumber: "",
+    full_name: "",
+    company_name: "",
+    company_address: "",
     email: "",
-    region: "",
-    accountStatus: "Active",
-    username: "",
+    mobile: "",
+    DOB: "",
     password: "",
-    vehicleLimit: "",
-    buyingAmount: "",
-    registrationDate: "",
-    expiryDate: "",
-    panId: "",
-    address: "",
-    kycVerification: "notverified",
+    Pan: "",
+    region: [],
+    PanNumber: "",
   });
 
   const handleInputChange = (e) => {
@@ -25,29 +20,49 @@ function RegisterBuyer() {
     setBuyerData({ ...buyerData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form data:", buyerData);
-    alert("Data submitted successfully");
-    setBuyerData({
-      buyerName: "",
-      pinCode: "",
-      mobileNumber: "",
-      email: "",
-      region: "",
-      accountStatus: "Active",
-      username: "",
-      password: "",
-      vehicleLimit: "",
-      buyingAmount: "",
-      registrationDate: "",
-      expiryDate: "",
-      panId: "",
-      address: "",
-      kycVerification: "notverified",
-    });
-    alert("Data submitted");
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setBuyerData({ ...buyerData, Pan: file });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    for (const key in buyerData) {
+      formData.append(key, buyerData[key]);
+    }
+
+    try {
+      const response = await fetch("http://13.48.45.18:4008/user/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("Data submitted successfully");
+        setBuyerData({
+          full_name: "",
+          company_name: "",
+          company_address: "",
+          email: "",
+          mobile: "",
+          DOB: "",
+          password: "",
+          Pan: "",
+          region: [],
+          PanNumber: "",
+        });
+      } else {
+        alert("Failed to submit data");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred");
+    }
+  };
+
+
 
   return (
     <div className="main-container">
@@ -59,18 +74,27 @@ function RegisterBuyer() {
           <p>Buyer Name</p>
           <input
             type="text"
-            name="buyerName"
-            value={buyerData.buyerName}
+            name="full_name"
+            value={buyerData.full_name}
             onChange={handleInputChange}
             required
           />
         </label>
         <label htmlFor="pin-code">
-          <p>Pin Code</p>
+          <p>Company Name</p>
           <input
             type="text"
-            name="pinCode"
-            value={buyerData.pinCode}
+            name="company_name"
+            value={buyerData.company_name}
+            onChange={handleInputChange}
+          />
+        </label>
+        <label htmlFor="pin-code">
+          <p>Company Address</p>
+          <input
+            type="text"
+            name="company_address"
+            value={buyerData.company_address}
             onChange={handleInputChange}
           />
         </label>
@@ -78,11 +102,12 @@ function RegisterBuyer() {
           <p>Mobile Number</p>
           <input
             type="text"
-            name="mobileNumber"
-            value={buyerData.mobileNumber}
+            name="mobile"
+            value={buyerData.mobile}
             onChange={handleInputChange}
           />
         </label>
+
         <label htmlFor="mail-id">
           <p>Email</p>
           <input
@@ -92,6 +117,16 @@ function RegisterBuyer() {
             onChange={handleInputChange}
           />
         </label>
+        <label htmlFor="mobile-no">
+          <p>Date of Birth</p>
+          <input
+            type="date"
+            name="DOB"
+            value={buyerData.DOB}
+            onChange={handleInputChange}
+          />
+        </label>
+
         <label htmlFor="region">
           <p>Region</p>
           <input
@@ -172,18 +207,23 @@ function RegisterBuyer() {
         <div className="emd-balance">
           <p>EMD Balance</p>
         </div>
-        <label htmlFor="pan-id">
+        <label htmlFor="pan">
           <p>Pan Id/No</p>
           <input
             type="text"
-            name="panId"
-            value={buyerData.panId}
+            name="PanNumber"
+            value={buyerData.PanNumber}
             onChange={handleInputChange}
           />
         </label>
-        <label htmlFor="upload-kyc">
-          <p>Upload Kyc</p>
-          <input type="file" />
+        <label htmlFor="pan-upload">
+          <p>Upload Pan</p>
+          <input
+            type="file"
+            name="Pan"
+            accept=".jpg,.jpeg,.png"
+            onChange={handleFileChange}
+          />
         </label>
         <label htmlFor="address">
           <p>Address</p>
