@@ -8,17 +8,27 @@ import { useNavigate, useParams } from "react-router-dom";
 const BASE_URL = "http://13.48.45.18:4008";
 
 export const Editauction = () => {
+  const [auctionData, setAuctionData] = useState({});
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(""); // State to track selected option
+  const [selectedOption, setSelectedOption] = useState("");
 
   const [uploadPVFile, setUploadPVFile] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
+  const [rcValue, setRcValue] = useState(true);
+
+  const handleRCChange = (e) => {
+    setRcValue(e.target.value === "true");
+  };
 
   const urlId = useParams();
   const navigate = useNavigate();
+  const auctionId = urlId.id;
   localStorage.setItem("auctionId", JSON.stringify(urlId));
+
+
+  // console.log(urlId.id, "IDDDDDDD")
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];
@@ -58,11 +68,33 @@ export const Editauction = () => {
     // console.log(data);
   };
 
+  const getAuctionDataById = async (id) => {
+    try {
+      const response = await fetch(`${BASE_URL}/admin/auction/get/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
+
+      const { data } = await response.json();
+      console.log("Auction Data:", data);
+
+      setAuctionData(data);
+    } catch (error) {
+      console.error("API Error:", error);
+    }
+  };
+
   useEffect(() => {
     getCategory();
     getRegions();
     getSeller();
-  }, []);
+    getAuctionDataById(auctionId);
+  }, [auctionId]);
 
   const selectRegionOptions = selectedRegion?.map((region) => ({
     value: region._id,
@@ -90,18 +122,18 @@ export const Editauction = () => {
       region: event.target.region.value,
       category: event.target.category.value,
       seller: event.target.seller.value,
-      nameOfProduct: event.target.nameOfProduct.value,
+      productName: event.target.productName.value,
       registrationNumber: event.target.registrationNumber.value,
       agreementNumber: event.target.agreementNumber.value,
-      rc: document.querySelector('input[name="rc"]:checked')?.value || "",
+      rc: rcValue,
       startPrice: event.target.startPrice.value,
       reservePrice: event.target.reservePrice.value,
-      startTime: event.target.startTime.value,
-      startDate: event.target.startDate.value,
-      endTime: event.target.endTime.value,
-      endDate: event.target.endDate.value,
-      fuelType:
-        document.querySelector('input[name="fuel"]:checked')?.value || "",
+      // startTime: event.target.startTime.value,
+      // startDate: event.target.startDate.value,
+      // endTime: event.target.endTime.value,
+      // endDate: event.target.endDate.value,
+      // fuelType:
+      //   document.querySelector('input[name="fuel"]:checked')?.value || "",
       parkingName: event.target.parkingName.value,
       parkingAddress: event.target.parkingAddress.value,
       yearOfManufacture: event.target.yearOfManufacture.value,
@@ -109,11 +141,11 @@ export const Editauction = () => {
       quotationValidity: event.target.quotationValidity.value,
       auctionFees: event.target.auctionFees.value,
       auctionTerm: event.target.auctionTerm.value,
-      uploadPV: uploadPVFile,
-      valuationFile: valuationFile,
+      // uploadPV: uploadPVFile,
+      // valuationFile: valuationFile,
     };
 
-    const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId}`, {
+    const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId.id}`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -123,16 +155,31 @@ export const Editauction = () => {
     });
     console.log("Form Data:", formData);
 
-    // Check the response status and handle accordingly
-    if (response.ok) {
-      // Successful response handling
-      console.log("Auction successfully added.");
+    const responseData = await response.json();
+
+
+    if (responseData.message === "Auction updated") {
+      alert("Auction Data Updated")
+    }else if( responseData.message === "Something went wrong"){
+      alert("Something went wrong")
       navigate("/settings");
     } else {
       // Error handling
       console.error("Error adding auction:", response.statusText);
     }
   };
+
+  //StartTime Formate changing 
+  const startTime = new Date(auctionData[0]?.startTime);
+const startTimeHours = startTime.getHours().toString().padStart(2, '0');
+const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
+
+
+ //End Time Format Changing 
+ const EndTime = new Date(auctionData[0]?.endTime);
+ const EndTimeHours = EndTime.getHours().toString().padStart(2, '0');
+ const EndTimeMinutes = EndTime.getMinutes().toString().padStart(2, '0');
+
 
   return (
     <>
@@ -166,13 +213,19 @@ export const Editauction = () => {
             placeholder="Seller"
           />
 
-          <label htmlFor="nameofproduct">
+          <label htmlFor="productName">
             <p>Name of the product</p>
             <input
               type="text"
-              name="nameOfProduct"
+              name="productName"
               placeholder="Name of the product"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.productName || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].productName = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="Registration Number">
@@ -182,6 +235,12 @@ export const Editauction = () => {
               name="registrationNumber"
               placeholder="Registration Number"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.registrationNumber || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].registrationNumber = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="Agreement Number">
@@ -191,14 +250,24 @@ export const Editauction = () => {
               name="agreementNumber"
               placeholder="Agreement Number"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.agreementNumber || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].agreementNumber = e.target.value;
+                setAuctionData(newData);
+              }}
+
             />
           </label>
           <label htmlFor="RC">
             <p>RC</p>
             <div className="rc-input">
-              <input type="radio" id="yes" name="rc" />
+              <input type="radio" id="true" name="rc"   checked={rcValue === true}
+              onChange={handleRCChange} />
               <label for="yes">Yes</label>
-              <input type="radio" id="no" name="rc" />
+              <input type="radio" id="false" name="rc" 
+               checked={rcValue === false}
+               onChange={handleRCChange}/>
               <label for="no">No</label>
             </div>
           </label>
@@ -207,8 +276,14 @@ export const Editauction = () => {
             <input
               type="text"
               name="startPrice"
-              placeholder=<LiaRupeeSignSolid />
+              placeholder="Start Price"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.startPrice || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].startPrice = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="reserve-price">
@@ -216,44 +291,57 @@ export const Editauction = () => {
             <input
               type="text"
               name="reservePrice"
-              placeholder=<LiaRupeeSignSolid />
+              placeholder="Reserve Price"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.reservePrice || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].reservePrice = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="start-time">
             <p>Start Time</p>
             <input
-              type="text"
+              type="time"
               name="startTime"
               placeholder="Start Time"
               className="basic-multi-select-inputs"
+              value={`${startTimeHours}:${startTimeMinutes}`}
+           
             />
           </label>
           <label htmlFor="start-date">
             <p>Start Date</p>
             <input
-              type="text"
+              type="date"
               name="startDate"
               placeholder="Start Date"
               className="basic-multi-select-inputs"
+              
+              
             />
           </label>
           <label htmlFor="end-time">
             <p>End Time</p>
             <input
-              type="text"
+              type="time"
               name="endTime"
               placeholder="End Time"
               className="basic-multi-select-inputs"
+              value={`${EndTimeHours}:${EndTimeMinutes}`}
+        
             />
           </label>
           <label htmlFor="end-date">
             <p>End Date</p>
             <input
-              type="text"
+              type="date"
               name="endDate"
               placeholder="End Date"
               className="basic-multi-select-inputs"
+             
             />
           </label>
           <label htmlFor="fuel-type">
@@ -276,6 +364,12 @@ export const Editauction = () => {
               name="parkingName"
               placeholder="Parking Name"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.parkingName || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].parkingName = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="parking-address">
@@ -285,6 +379,12 @@ export const Editauction = () => {
               name="parkingAddress"
               placeholder="Address"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.parkingAddress || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].parkingAddress = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="menufecture-year">
@@ -294,6 +394,12 @@ export const Editauction = () => {
               name="yearOfManufacture"
               placeholder="Year"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.yearOfManufacture || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].yearOfManufacture = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
 
@@ -317,10 +423,11 @@ export const Editauction = () => {
           <label htmlFor="quatation-validity">
             <p>Quatation Validity</p>
             <input
-              type="text"
+              type="number"
               name="quotationValidity"
-              placeholder=""
+              placeholder="Quatation Validity"
               className="basic-multi-select-inputs"
+          
             />
           </label>
           <label htmlFor="auction-fees">
@@ -330,6 +437,12 @@ export const Editauction = () => {
               name="auctionFees"
               placeholder="Auction-fees"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.auctionFees || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].auctionFees = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="auction-term">
@@ -339,6 +452,12 @@ export const Editauction = () => {
               name="auctionTerm"
               placeholder="Auction-term"
               className="basic-multi-select-inputs"
+              value={auctionData[0]?.auctionTerm || ""}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].auctionTerm = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <div className="textarea">

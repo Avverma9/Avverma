@@ -223,6 +223,7 @@ export const Addauction = () => {
               type="text"
               name="rc_name"
               placeholder="RC name"
+              required
               className="basic-multi-select-inputs"
             />
           </label>
