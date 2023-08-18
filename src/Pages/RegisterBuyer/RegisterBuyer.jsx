@@ -116,8 +116,11 @@ function RegisterBuyer() {
         body: formData,
       });
 
+      console.log(response)
+  
+      const responseData = await response.json();
 
-      if (response.ok) {
+      if (responseData.message === "user registered") {
         alert("Data submitted successfully");
         setBuyerData({
           full_name: "",
@@ -130,7 +133,15 @@ function RegisterBuyer() {
           Pan: "",
           region: "",
           PanNumber: "",
+          username:"",
+          vehicleLimit:"",
+          buyingAmount:"",
+          registrationDate:"",
+          expiryDate:"",
+          address:""
         });
+      } else if (responseData.message === "user already exist please login") {
+        alert("User Already Exists");
       } else {
         alert("Failed to submit data");
       }
@@ -139,7 +150,10 @@ function RegisterBuyer() {
       alert("An error occurred");
     }
   };
-
+  
+  
+  
+  
 
   return (
     <div className="main-container">
