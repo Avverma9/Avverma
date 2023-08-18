@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./RegisterBuyer.css";
+import Select from "react-select";
+
+const BASE_URL = "http://13.48.45.18:4008";
 
 function RegisterBuyer() {
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("");
   const [buyerData, setBuyerData] = useState({
     full_name: "",
     company_name: "",
@@ -10,34 +15,107 @@ function RegisterBuyer() {
     mobile: "",
     DOB: "",
     password: "",
-    Pan: "",
-    region: [],
+    PAN: "",
+    region: '',
     PanNumber: "",
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setBuyerData({ ...buyerData, [name]: value });
+  const getRegions = async () => {
+    const response = await fetch(`${BASE_URL}/admin/region/getAll`);
+
+    const { data } = await response.json();
+
+    setSelectedRegion(data);
+    console.log(data, "REGION DATA");
   };
+
+
+  const nameRegex = /^[a-zA-Z\s]*$/;
+
+  const validateField = (fieldName, fieldValue) => {
+    switch (fieldName) {
+      case "full_name":
+        return nameRegex.test(fieldValue);
+      default:
+        return true;
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    
+    if (validateField(name, value)) {
+      setBuyerData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+
+
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setBuyerData({ ...buyerData, Pan: file });
+    setBuyerData((prevData) => ({
+      ...prevData,
+      PAN: file,
+    }));
+  };
+
+ 
+
+
+
+  useEffect(() => {
+    getRegions();
+  }, []);
+
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
+
+  const handleRegionSelect = (selectedOptions) => {
+    const selectedRegionIds = selectedOptions.map((option) => option.value);
+    setSelectedOption(selectedRegionIds);
+    setBuyerData((prevData) => ({
+      ...prevData,
+      region: selectedRegionIds,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    for (const key in buyerData) {
-      formData.append(key, buyerData[key]);
+    if (buyerData.mobile.length !== 10) {
+      alert("Mobile number should be exactly 10 characters long.");
+      return;
     }
 
+    if (!buyerData.email.includes("@") || !buyerData.email.includes(".com")) {
+      alert("Invalid email format.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("full_name", buyerData.full_name);
+    formData.append("company_name", buyerData.company_name);
+    formData.append("company_address", buyerData.company_address);
+    formData.append("email", buyerData.email);
+    formData.append("mobile", buyerData.mobile);
+    formData.append("DOB", buyerData.DOB);
+    formData.append("password", buyerData.password);
+    formData.append("PAN", buyerData.PAN);
+    formData.append("region",buyerData.region);
+    formData.append("PanNumber", buyerData.PanNumber);
+
     try {
-      const response = await fetch("http://13.48.45.18:4008/user/create", {
+      const response = await fetch(`${BASE_URL}/user/create`, {
         method: "POST",
         body: formData,
       });
+
 
       if (response.ok) {
         alert("Data submitted successfully");
@@ -50,7 +128,7 @@ function RegisterBuyer() {
           DOB: "",
           password: "",
           Pan: "",
-          region: [],
+          region: "",
           PanNumber: "",
         });
       } else {
@@ -61,7 +139,6 @@ function RegisterBuyer() {
       alert("An error occurred");
     }
   };
-
 
 
   return (
@@ -77,6 +154,7 @@ function RegisterBuyer() {
             name="full_name"
             value={buyerData.full_name}
             onChange={handleInputChange}
+            maxLength={25}
             required
           />
         </label>
@@ -86,6 +164,7 @@ function RegisterBuyer() {
             type="text"
             name="company_name"
             value={buyerData.company_name}
+            maxLength={20}
             onChange={handleInputChange}
           />
         </label>
@@ -101,7 +180,7 @@ function RegisterBuyer() {
         <label htmlFor="mobile-no">
           <p>Mobile Number</p>
           <input
-            type="text"
+            type="tel"
             name="mobile"
             value={buyerData.mobile}
             onChange={handleInputChange}
@@ -129,13 +208,17 @@ function RegisterBuyer() {
 
         <label htmlFor="region">
           <p>Region</p>
-          <input
-            type="text"
+          <Select
             name="region"
-            value={buyerData.region}
-            onChange={handleInputChange}
+            value={selectedOption} 
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
+            isMulti
+            onChange={handleRegionSelect}
           />
-        </label>
+          </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>
           <select
@@ -153,6 +236,7 @@ function RegisterBuyer() {
             type="text"
             name="username"
             value={buyerData.username}
+            maxLength={25}
             onChange={handleInputChange}
           />
         </label>
@@ -168,7 +252,7 @@ function RegisterBuyer() {
         <label htmlFor="vehicle-limit">
           <p>Vehicle Limit</p>
           <input
-            type="text"
+            type="number"
             name="vehicleLimit"
             value={buyerData.vehicleLimit}
             onChange={handleInputChange}
@@ -177,7 +261,7 @@ function RegisterBuyer() {
         <label htmlFor="buying-amount">
           <p>Buying Amount</p>
           <input
-            type="text"
+            type="number"
             name="buyingAmount"
             value={buyerData.buyingAmount}
             onChange={handleInputChange}
@@ -212,6 +296,7 @@ function RegisterBuyer() {
           <input
             type="text"
             name="PanNumber"
+            maxLength={10}
             value={buyerData.PanNumber}
             onChange={handleInputChange}
           />
@@ -220,7 +305,7 @@ function RegisterBuyer() {
           <p>Upload Pan</p>
           <input
             type="file"
-            name="Pan"
+            name="PAN"
             accept=".jpg,.jpeg,.png"
             onChange={handleFileChange}
           />
