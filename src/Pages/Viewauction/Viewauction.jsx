@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from "react-icons/ri";
+import { GiLaurelsTrophy } from "react-icons/gi";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 import { FiUpload } from "react-icons/fi";
@@ -62,7 +63,7 @@ export const Viewauction = () => {
       );
       const { data } = await response.json();
       if (response.ok) {
-        console.log(data[2]);
+        console.log(data);
         setBidders(data);
       }
     } catch (error) {
@@ -74,6 +75,30 @@ export const Viewauction = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
+
+  // const declareWinner = async (uId) => {
+  //   console.log(uId);
+  //   try {
+  //     const response = await fetch(
+  //       `http://13.48.45.18:4008/admin/auction/update/${id}`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Authorization: "Bearer " + localStorage.getItem("token"),
+  //         },
+  //         body: JSON.stringify({
+  //           winner: uId,
+  //         }),
+  //       }
+  //     );
+  //     const { data } = await response.json();
+  //     if (response.ok) {
+  //       console.log(data);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const columns = [
     {
@@ -115,6 +140,22 @@ export const Viewauction = () => {
       name: "Bid Time",
       selector: (row) => "N/A",
       sortable: true,
+    },
+    {
+      name: "Action",
+      selector: (row) => (
+        <GiLaurelsTrophy
+          size="18"
+          color="#1a2333"
+          onClick={() =>
+            console.log(
+              row?.userInforomation[0]?._id
+                ? row?.userInforomation[0]?._id
+                : null
+            )
+          }
+        />
+      ),
     },
   ];
 
