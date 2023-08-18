@@ -144,7 +144,7 @@ function Dashboard2() {
           <li className="dashboard-butt" onClick={handleSwitch}>
             <BsFillPersonFill />
             <span ref={listRef}>Total Buyers:</span>
-            {dashboard?.users.length}
+            {dashboard?.users?.length}
           </li>
           <li className="dashboard-b" onClick={handleSwitch}>
             <TbBuildingEstate />
