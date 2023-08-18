@@ -102,7 +102,7 @@ function Dashboard2() {
         },
       });
       const data = await response.json();
-      console.log(data.data.count?.users.length);
+      // console.log(data.data.count?.users.length);
 
       setDashboard(data.data.count);
     } catch (error) {
@@ -144,7 +144,7 @@ function Dashboard2() {
           <li className="dashboard-butt" onClick={handleSwitch}>
             <BsFillPersonFill />
             <span ref={listRef}>Total Buyers:</span>
-            {dashboard?.users.length}
+            {dashboard?.users?.length}
           </li>
           <li className="dashboard-b" onClick={handleSwitch}>
             <TbBuildingEstate />

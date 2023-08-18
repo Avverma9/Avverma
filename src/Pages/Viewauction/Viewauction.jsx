@@ -62,6 +62,7 @@ export const Viewauction = () => {
       );
       const { data } = await response.json();
       if (response.ok) {
+        console.log(data[2]);
         setBidders(data);
       }
     } catch (error) {
@@ -77,17 +78,26 @@ export const Viewauction = () => {
   const columns = [
     {
       name: "Buyer Name",
-      cell: (row) => "N/A",
+      cell: (row) =>
+        row?.userInforomation[0]?.full_name
+          ? row?.userInforomation[0]?.full_name
+          : "N/A",
       sortable: true,
     },
     {
       name: "Buyer Ph.No.",
-      cell: (row) => "N/A",
+      cell: (row) =>
+        row?.userInforomation[0]?.mobile
+          ? row?.userInforomation[0]?.mobile
+          : "N/A",
       sortable: true,
     },
     {
       name: "Buyer Email",
-      selector: (row) => "N/A",
+      selector: (row) =>
+        row?.userInforomation[0]?.email
+          ? row?.userInforomation[0]?.email
+          : "N/A",
 
       sortable: true,
     },
