@@ -151,6 +151,10 @@ const getCity = async function(req,res){
  
   res.json(hotels)
 }
+//==================================get by category========================================//
+const getByFilter= async function(req,res){
+  
+}
 //==========================================================================
 
 const getHotelbyName = async (req, res) => {

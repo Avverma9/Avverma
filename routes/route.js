@@ -13,6 +13,7 @@ const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
 const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
+const carouselController = require("../controllers/carouselController")
 // const otpController = require("../controllers/otpController")
 
 
@@ -24,7 +25,9 @@ router.patch(
   complaintController.approveComplaint
 );
 router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
-
+//==============================carousel====================================//
+router.post("/create/second/carousel",upload,carouselController.createFirstCarousel)
+router.get("/get/second/carousel",carouselController.getSecondCarousel)
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
