@@ -104,7 +104,7 @@ function Dashboard2() {
       console.error(error);
     }
   };
-  console.log(Array(dashboard.users)[0].length);
+  // console.log(Array(dashboard.users)[0].length);
   useEffect(() => {
     fetchdashboard();
   }, []);
@@ -137,7 +137,7 @@ function Dashboard2() {
           <li className="dashboard-butt" onClick={(e) => handleSwitch(e)}>
             <BsFillPersonFill />
             <span>Total Buyers:</span>
-            {Array(dashboard.users)[0].length}
+            {/* {Array(dashboard.users)[0].length} */}
           </li>
           <li className="dashboard-b" onClick={(e) => handleSwitch(e)}>
             <TbBuildingEstate />

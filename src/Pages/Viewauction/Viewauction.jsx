@@ -119,10 +119,29 @@ export const Viewauction = () => {
             lazyLoad="true"
             autoPlay="true"
           />
-          <div>
-            <button onClick={setPrimary}>Set Primary</button>
-            <button>Edit</button>
-            <button>Delete</button>
+          <div className="image-btn-container">
+            <button
+              style={{
+                backgroundColor: "#038ce4",
+              }}
+              onClick={setPrimary}
+            >
+              Set Primary
+            </button>
+            <button
+              style={{
+                backgroundColor: "#0ff44f",
+              }}
+            >
+              Edit
+            </button>
+            <button
+              style={{
+                backgroundColor: "#ff0000",
+              }}
+            >
+              Delete
+            </button>
           </div>
           <div className="biding-details-table">
             <DataTable
