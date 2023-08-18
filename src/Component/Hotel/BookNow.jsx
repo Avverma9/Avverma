@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { formatDate } from "../../utils/_dateFuntions";
+import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
 import {
   faChevronLeft,
   faChevronRight,
@@ -33,7 +33,7 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
-import { convertDate, getCurrentDate } from "../../utils/convertDate";
+import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 
 export default function BookNow({ refresh, reset, userData }) {
@@ -173,8 +173,8 @@ export default function BookNow({ refresh, reset, userData }) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
+    slidesToShow: 2,
+    slidesToScroll: 2,
   };
 
   const slideToPrev = () => {
@@ -500,7 +500,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faIdCard} className="icon" />
                 LocalID: {bookingDetails.availability}
               </p>
-              <div className="noofroom input-container">
+              <p className="noofroom"/>
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
                 <button
@@ -740,7 +740,6 @@ export default function BookNow({ refresh, reset, userData }) {
             />
           </div>
         </div>
-      </div>
     </>
   );
 }
