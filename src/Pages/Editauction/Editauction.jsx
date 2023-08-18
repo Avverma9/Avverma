@@ -162,7 +162,7 @@ export const Editauction = () => {
       alert("Auction Data Updated")
     }else if( responseData.message === "Something went wrong"){
       alert("Something went wrong")
-      // navigate("/settings");
+      navigate("/settings");
     } else {
       // Error handling
       console.error("Error adding auction:", response.statusText);
