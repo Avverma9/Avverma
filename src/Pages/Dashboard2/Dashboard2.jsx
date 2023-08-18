@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DataTable from "react-data-table-component";
 import { GiOlive } from "react-icons/gi";
 import { CgStopwatch } from "react-icons/cg";
@@ -114,6 +114,8 @@ function Dashboard2() {
     setTarget(e.nativeEvent.originalTarget.innerText);
   };
 
+  const listRef = useRef(null);
+
   return (
     <div className="dashboard">
       <div className="dashboard-header">
@@ -159,9 +161,9 @@ function Dashboard2() {
             <GrWheelchairActive />
             <span>Active Buyer Accounts:</span> N/A
           </li>
-          <li className="dashboard-bu">
+          <li className="dashboard-bu" onClick={() => console.log(listRef.current.innerText)}>
             <MdNoAccounts />
-            <span>Inactive Buyer Accounts:</span> N/A
+            <span ref={listRef}>Inactive Buyer Accounts:</span> N/A
           </li>
           <li className="dashboard-but">
             <RiAdminLine />
