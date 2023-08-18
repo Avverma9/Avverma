@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./RegisterSubAdmin.css";
+import Select from "react-select";
 
 function RegisterSubAdmin() {
   const [subAdminData, setSubAdminData] = useState({
@@ -12,6 +13,7 @@ function RegisterSubAdmin() {
     role: 1,
   });
 
+  const [selectedRegion, setSelectedRegion] = useState(null);
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,6 +32,7 @@ function RegisterSubAdmin() {
       if (response.ok) {
         if (data && data.data && Array.isArray(data.data)) {
           setRegions(data.data);
+          setSelectedRegion(data.data);
         } else {
           console.error("Invalid region data:", data);
         }
@@ -102,6 +105,16 @@ function RegisterSubAdmin() {
         const data = await response.json();
         if (response.ok) {
           alert("Account Created");
+          setSubAdminData({
+            name: "",
+            email: "",
+            mobile: "",
+            password: "",
+            region: "",
+            status: "active",
+            role: 1,
+
+          })
           console.log(data);
         }
       } else {
@@ -116,6 +129,11 @@ function RegisterSubAdmin() {
     const { name, value } = e.target;
     setSubAdminData({ ...subAdminData, [name]: value });
   };
+
+  const selectRegionOptions = selectedRegion?.map((region) => ({
+    value: region._id,
+    label: region.name,
+  }));
 
   return (
     <div className="main-container">
@@ -138,6 +156,7 @@ function RegisterSubAdmin() {
           <input
             type="number"
             name="mobile"
+            maxLength={10}
             value={subAdminData.mobile}
             onChange={handleInputChange}
           />
@@ -177,6 +196,14 @@ function RegisterSubAdmin() {
                 </option>
               ))}
           </select>
+          {/* <Select
+            name="region"
+            defaultValue={selectRegionOptions}
+            options={selectRegionOptions}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Region"
+          /> */}
         </label>
         <label htmlFor="acc-status">
           <p>Account Status</p>

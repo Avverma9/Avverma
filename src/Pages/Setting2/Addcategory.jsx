@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 function Addcategory() {
   const [name, setName] = useState("");
-  const [startTime, setStartTime] = useState(""); 
-  const [endTime, setEndTime] = useState(""); 
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [isValidName, setIsValidName] = useState(true);
@@ -39,7 +39,7 @@ function Addcategory() {
   const handleNameChange = (e) => {
     const newName = e.target.value;
     const regexPattern = /^[A-Za-z\s]+$/;
-    
+
     if (newName.length <= 25 && regexPattern.test(newName)) {
       setName(newName);
       setIsValidName(true);
@@ -64,8 +64,10 @@ function Addcategory() {
     );
 
     if (selectedRegion) {
-      const formattedStartTime = new Date().toISOString().substr(0, 11) + startTime + ":00Z";
-      const formattedEndTime = new Date().toISOString().substr(0, 11) + endTime + ":00Z";
+      const formattedStartTime =
+        new Date().toISOString().substr(0, 11) + startTime + ":00Z";
+      const formattedEndTime =
+        new Date().toISOString().substr(0, 11) + endTime + ":00Z";
 
       try {
         const response = await fetch(
@@ -79,8 +81,8 @@ function Addcategory() {
             body: JSON.stringify({
               name: name,
               region: selectedRegionId,
-              startTime: formattedStartTime, 
-              endTime: formattedEndTime,    
+              startTime: formattedStartTime,
+              endTime: formattedEndTime,
             }),
           }
         );
@@ -108,14 +110,18 @@ function Addcategory() {
           <label>
             Add Category
             <input
-            maxLength={25}
+              maxLength={25}
               type="text"
               value={name}
               max={10}
               onChange={handleNameChange}
             />
-            {!isValidName && <p style={{color:"red"}}>Please don't add any number or special characters <br/> 
-             Maximum 25 characters allowed.</p>}
+            {!isValidName && (
+              <p style={{ color: "red" }}>
+                Please don't add any number or special characters <br />
+                Maximum 25 characters allowed.
+              </p>
+            )}
           </label>
           <label>
             Region
@@ -151,9 +157,7 @@ function Addcategory() {
             />
           </label>
         </div>
-        <button className="sub-button">
-          Submit
-        </button>
+        <button className="sub-button">Submit</button>
       </form>
     </div>
   );

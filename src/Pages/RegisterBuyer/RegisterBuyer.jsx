@@ -16,7 +16,7 @@ function RegisterBuyer() {
     DOB: "",
     password: "",
     PAN: "",
-    region: "",
+    region: '',
     PanNumber: "",
   });
 
@@ -29,13 +29,29 @@ function RegisterBuyer() {
     console.log(data, "REGION DATA");
   };
 
+
+  const nameRegex = /^[a-zA-Z\s]*$/;
+
+  const validateField = (fieldName, fieldValue) => {
+    switch (fieldName) {
+      case "full_name":
+        return nameRegex.test(fieldValue);
+      default:
+        return true;
+    }
+  };
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setBuyerData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    
+    if (validateField(name, value)) {
+      setBuyerData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
+
 
 
 
@@ -72,6 +88,16 @@ function RegisterBuyer() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (buyerData.mobile.length !== 10) {
+      alert("Mobile number should be exactly 10 characters long.");
+      return;
+    }
+
+    if (!buyerData.email.includes("@") || !buyerData.email.includes(".com")) {
+      alert("Invalid email format.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("full_name", buyerData.full_name);
     formData.append("company_name", buyerData.company_name);
@@ -81,11 +107,7 @@ function RegisterBuyer() {
     formData.append("DOB", buyerData.DOB);
     formData.append("password", buyerData.password);
     formData.append("PAN", buyerData.PAN);
-
-    const filteredRegion = buyerData.region.filter((region) => region !== null && region !== "null");
-    console.log("Filtered Region:", filteredRegion);
-
-    formData.append("region", JSON.stringify(filteredRegion.map(String)));
+    formData.append("region",buyerData.region);
     formData.append("PanNumber", buyerData.PanNumber);
 
     try {
@@ -94,21 +116,32 @@ function RegisterBuyer() {
         body: formData,
       });
 
+      console.log(response)
+  
+      const responseData = await response.json();
 
-      if (response.ok) {
+      if (responseData.message === "user registered") {
         alert("Data submitted successfully");
-        // setBuyerData({
-        //   full_name: "",
-        //   company_name: "",
-        //   company_address: "",
-        //   email: "",
-        //   mobile: "",
-        //   DOB: "",
-        //   password: "",
-        //   Pan: "",
-        //   region: [],
-        //   PanNumber: "",
-        // });
+        setBuyerData({
+          full_name: "",
+          company_name: "",
+          company_address: "",
+          email: "",
+          mobile: "",
+          DOB: "",
+          password: "",
+          Pan: "",
+          region: "",
+          PanNumber: "",
+          username:"",
+          vehicleLimit:"",
+          buyingAmount:"",
+          registrationDate:"",
+          expiryDate:"",
+          address:""
+        });
+      } else if (responseData.message === "user already exist please login") {
+        alert("User Already Exists");
       } else {
         alert("Failed to submit data");
       }
@@ -117,7 +150,10 @@ function RegisterBuyer() {
       alert("An error occurred");
     }
   };
-
+  
+  
+  
+  
 
   return (
     <div className="main-container">
@@ -132,6 +168,7 @@ function RegisterBuyer() {
             name="full_name"
             value={buyerData.full_name}
             onChange={handleInputChange}
+            maxLength={25}
             required
           />
         </label>
@@ -141,6 +178,7 @@ function RegisterBuyer() {
             type="text"
             name="company_name"
             value={buyerData.company_name}
+            maxLength={20}
             onChange={handleInputChange}
           />
         </label>
@@ -156,7 +194,7 @@ function RegisterBuyer() {
         <label htmlFor="mobile-no">
           <p>Mobile Number</p>
           <input
-            type="text"
+            type="tel"
             name="mobile"
             value={buyerData.mobile}
             onChange={handleInputChange}
@@ -212,6 +250,7 @@ function RegisterBuyer() {
             type="text"
             name="username"
             value={buyerData.username}
+            maxLength={25}
             onChange={handleInputChange}
           />
         </label>
@@ -227,7 +266,7 @@ function RegisterBuyer() {
         <label htmlFor="vehicle-limit">
           <p>Vehicle Limit</p>
           <input
-            type="text"
+            type="number"
             name="vehicleLimit"
             value={buyerData.vehicleLimit}
             onChange={handleInputChange}
@@ -236,7 +275,7 @@ function RegisterBuyer() {
         <label htmlFor="buying-amount">
           <p>Buying Amount</p>
           <input
-            type="text"
+            type="number"
             name="buyingAmount"
             value={buyerData.buyingAmount}
             onChange={handleInputChange}
@@ -271,6 +310,7 @@ function RegisterBuyer() {
           <input
             type="text"
             name="PanNumber"
+            maxLength={10}
             value={buyerData.PanNumber}
             onChange={handleInputChange}
           />
