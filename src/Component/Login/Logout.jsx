@@ -1,20 +1,17 @@
-import React,{useNavigate} from "react";
+import React from "react";
+import { AiOutlineLogout } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
-const Logout=()=>{
-    const navigate=useNavigate()
-   
-
-    const handleLogout=(e)=>{
-        localStorage.removeItem("token")
-        alert("logged out")
-        navigate("/sign-in")
-    }
-    
-
-    return (
-        <>
-        <button onClick={handleLogout}>Logout</button>
-        </>
-    )
-}
-export default Logout
+export const Logout = () => {
+  const navigate = useNavigate();
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminId");
+    navigate("/login");
+  };
+  return (
+    <button onClick={logoutHandler}>
+      <AiOutlineLogout color="black" size="22px" /> <span>Logout</span>
+    </button>
+  );
+};

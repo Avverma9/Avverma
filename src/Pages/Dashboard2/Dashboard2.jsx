@@ -19,6 +19,10 @@ import "./Dashboard2.css";
 import { RegionTable } from "./RegionTable";
 import { SellerTable } from "./SellerTable";
 import { CategoryTable } from "./CategoryTable";
+import { LiveAuctionTable } from "./LiveAuctionTable";
+import { PendingAuctionTable } from "./PendingAuction";
+import { CompletedAuctionTable } from "./CompletedAuctionTable";
+import { BuyersTable } from "./BuyersTable";
 
 // const data = [
 //   {
@@ -38,6 +42,7 @@ import { CategoryTable } from "./CategoryTable";
 function Dashboard2() {
   const [dashboard, setDashboard] = useState([]);
   const [target, setTarget] = useState(null);
+  const listRef = useRef(null);
 
   // const columns = [
   //   {
@@ -97,7 +102,7 @@ function Dashboard2() {
         },
       });
       const data = await response.json();
-      console.log(data);
+      // console.log(data.data.count?.users.length);
 
       setDashboard(data.data.count);
     } catch (error) {
@@ -110,11 +115,9 @@ function Dashboard2() {
   }, []);
 
   const handleSwitch = (e) => {
-    console.log(e.nativeEvent.originalTarget.innerText);
-    setTarget(e.nativeEvent.originalTarget.innerText);
+    console.log(e.target.innerText);
+    setTarget(e.target.innerText);
   };
-
-  const listRef = useRef(null);
 
   return (
     <div className="dashboard">
@@ -123,59 +126,64 @@ function Dashboard2() {
       </div>
       <div className="dashboard-section-head">
         <ul className="dashboard-content">
-          <li className="dashboard-b">
+          <li className="dashboard-b" onClick={handleSwitch}>
             <GiOlive />
-            <span>Live Auctions:</span>
+            <span ref={listRef}>Live Auctions:</span>
             {dashboard.live_auction_count}
           </li>
-          <li className="dashboard-bu">
+          <li className="dashboard-bu" onClick={handleSwitch}>
             <CgStopwatch />
-            <span>Pending Auctions:</span> {dashboard.pending_auction_count}
+            <span ref={listRef}>Pending Auctions:</span>{" "}
+            {dashboard.pending_auction_count}
           </li>
-          <li className="dashboard-but">
+          <li className="dashboard-but" onClick={handleSwitch}>
             <MdIncompleteCircle />
-            <span>Complete Auctions:</span> {dashboard.completed_auction_count}
+            <span ref={listRef}>Complete Auctions:</span>{" "}
+            {dashboard.completed_auction_count}
           </li>
-          <li className="dashboard-butt" onClick={(e) => handleSwitch(e)}>
+          <li className="dashboard-butt" onClick={handleSwitch}>
             <BsFillPersonFill />
-            <span>Total Buyers:</span>
-            {/* {Array(dashboard.users)[0].length} */}
+            <span ref={listRef}>Total Buyers:</span>
+            {dashboard?.users?.length}
           </li>
-          <li className="dashboard-b" onClick={(e) => handleSwitch(e)}>
+          <li className="dashboard-b" onClick={handleSwitch}>
             <TbBuildingEstate />
-            <span>Total Regions:</span> {dashboard.totalregionn}
+            <span ref={listRef}>Total Regions:</span> {dashboard.totalregionn}
           </li>
-          <li className="dashboard-bu" onClick={(e) => handleSwitch(e)}>
+          <li className="dashboard-bu" onClick={handleSwitch}>
             <FcSalesPerformance />
-            <span>Total Sellers:</span> {dashboard.totalSeller}
+            <span ref={listRef}>Total Sellers:</span> {dashboard.totalSeller}
           </li>
-          <li className="dashboard-but" onClick={(e) => handleSwitch(e)}>
+          <li className="dashboard-but" onClick={handleSwitch}>
             <BiSolidCategory />
-            <span>Total Categories:</span> {dashboard.totalCategory}
+            <span ref={listRef}>Total Categories:</span>{" "}
+            {dashboard.totalCategory}
           </li>
-          <li className="dashboard-butt">
+          <li className="dashboard-butt" onClick={handleSwitch}>
             <MdOutlinePending />
-            <span>Pending Buyer Accounts:</span> N/A
+            <span ref={listRef}>Pending Buyer Accounts:</span> N/A
           </li>
-          <li className="dashboard-b">
+          <li className="dashboard-b" onClick={handleSwitch}>
             <GrWheelchairActive />
-            <span>Active Buyer Accounts:</span> N/A
+            <span ref={listRef}>Active Buyer Accounts:</span> N/A
           </li>
-          <li className="dashboard-bu" onClick={() => console.log(listRef.current.innerText)}>
+          <li className="dashboard-bu" onClick={handleSwitch}>
             <MdNoAccounts />
             <span ref={listRef}>Inactive Buyer Accounts:</span> N/A
           </li>
-          <li className="dashboard-but">
+          <li className="dashboard-but" onClick={handleSwitch}>
             <RiAdminLine />
-            <span>Total Sub Admin:</span> {dashboard.totalSubAdmin}
+            <span ref={listRef}>Total Sub Admin:</span>{" "}
+            {dashboard.totalSubAdmin}
           </li>
-          <li className="dashboard-butt">
+          <li className="dashboard-butt" onClick={handleSwitch}>
             <GrUserAdmin />
-            <span>Total Active Sub Admin:</span> {dashboard.totalActiveSubAdmin}
+            <span ref={listRef}>Total Active Sub Admin:</span>{" "}
+            {dashboard.totalActiveSubAdmin}
           </li>
-          <li className="dashboard-butto">
+          <li className="dashboard-butto" onClick={handleSwitch}>
             <BsSnow2 />
-            <span>Freezed Users:</span> NA
+            <span ref={listRef}>Freezed Users:</span> NA
           </li>
         </ul>
       </div>
@@ -194,6 +202,14 @@ function Dashboard2() {
         <SellerTable />
       ) : target === "Total Categories:" ? (
         <CategoryTable />
+      ) : target === "Live Auctions:" ? (
+        <LiveAuctionTable />
+      ) : target === "Pending Auctions:" ? (
+        <PendingAuctionTable />
+      ) : target === "Complete Auctions:" ? (
+        <CompletedAuctionTable />
+      ) : target === "Total Buyers:" ? (
+        <BuyersTable />
       ) : null}
     </div>
   );

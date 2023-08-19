@@ -105,6 +105,16 @@ function RegisterSubAdmin() {
         const data = await response.json();
         if (response.ok) {
           alert("Account Created");
+          setSubAdminData({
+            name: "",
+            email: "",
+            mobile: "",
+            password: "",
+            region: "",
+            status: "active",
+            role: 1,
+
+          })
           console.log(data);
         }
       } else {
@@ -146,6 +156,7 @@ function RegisterSubAdmin() {
           <input
             type="number"
             name="mobile"
+            maxLength={10}
             value={subAdminData.mobile}
             onChange={handleInputChange}
           />

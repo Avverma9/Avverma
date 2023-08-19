@@ -55,3 +55,23 @@ font-size: 16px;
 background: white;
 border: 1px solid black;
 }
+
+.add-new-auction-fields .basic-multi-select {
+  flex-basis: 30%;
+  flex-grow: 1;
+  width: 100%;
+}
+.add-new-auction-fields .basic-multi-select-inputs {
+  height: 40px;
+  width: 100%;
+  
+}
+.add-new-auction-fields label {
+  flex-basis: 30%;
+  flex-grow: 1;
+  width: 100%;
+  
+}
+.add-new-auction-fields input{
+margin-top: 10px;
+}

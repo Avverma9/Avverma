@@ -8,6 +8,7 @@ import "./Mannagebuyer.css";
 import { useNavigate } from "react-router-dom";
 
 export const Mannagebuyer = () => {
+  const [searchInput, setSearchInput] = useState("");
   const navigate = useNavigate();
   const [managebuyer, setManagebuyer] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState("");
@@ -81,8 +82,11 @@ export const Mannagebuyer = () => {
       (selectedFilter === "Pending" && !row.isApprovedByAdmin) ||
       (selectedFilter === "Active" && row.isApprovedByAdmin)
     );
-  });
-
+  }).filter((row) =>
+    row.full_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+    row.mobile.includes(searchInput) ||
+    row.email.toLowerCase().includes(searchInput.toLowerCase())
+  );
   return (
     <>
       <DataTable
@@ -97,7 +101,14 @@ export const Mannagebuyer = () => {
         subHeaderComponent={
           <div className="_mannage-buyer-sub-header">
             <div className="_search-component">
-              <input type="text" name="" id="" placeholder="Search" />
+              <input
+                type="text"
+                name=""
+                id=""
+                placeholder="Search"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+              />
               <AiOutlineSearch />
             </div>
             <div className="_filter-dropdown">
