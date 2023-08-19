@@ -100,6 +100,32 @@ export const Viewauction = () => {
   //   }
   // };
 
+  function formatDate(d) {
+    const date = new Date(d);
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`;
+    return formattedDate;
+  }
+
+  function formatTime(t) {
+    const date = new Date(t);
+    let hour = date.getHours();
+    if (hour >= 12) {
+      hour -= 12;
+    }
+    const minutes = date.getMinutes();
+    // const seconds = date.getSeconds();
+    let formattedTime = `${hour}:${minutes}`;
+    if (hour < 12) {
+      formattedTime += " AM";
+    } else {
+      formattedTime += " PM";
+    }
+    return formattedTime;
+  }
+
   const columns = [
     {
       name: "Buyer Name",
@@ -133,12 +159,12 @@ export const Viewauction = () => {
     },
     {
       name: "Bid Date",
-      selector: (row) => "N/A",
+      selector: (row) => formatDate(row.createdAt),
       sortable: true,
     },
     {
       name: "Bid Time",
-      selector: (row) => "N/A",
+      selector: (row) => formatTime(row.createdAt),
       sortable: true,
     },
     {
