@@ -249,7 +249,7 @@ export const Addauction = () => {
           <label htmlFor="start-time">
             <p>Start Time</p>
             <input
-              type="date"
+              type="time"
               name="startTime"
               placeholder="Start Time"
               className="basic-multi-select-inputs"
@@ -267,7 +267,7 @@ export const Addauction = () => {
           <label htmlFor="end-time">
             <p>End Time</p>
             <input
-              type="date"
+              type="time"
               name="endTime"
               placeholder="End Time"
               className="basic-multi-select-inputs"
