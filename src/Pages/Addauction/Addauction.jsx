@@ -381,6 +381,7 @@ export const Addauction = () => {
               Upload Photo/Video
             </p>
             <input
+              id="add-video"
               type="file"
               name="photoVideo"
               placeholder=""
