@@ -10,7 +10,7 @@ export const Addauction = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(""); 
+  const [selectedOption, setSelectedOption] = useState(""); // State to track selected option
 
   const [photoVideo, setphotoVideo] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
@@ -223,7 +223,6 @@ export const Addauction = () => {
               type="text"
               name="rc_name"
               placeholder="RC name"
-              required
               className="basic-multi-select-inputs"
             />
           </label>
