@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Plusminus.css";
 
-const Plusminus = () => {
+const Plusminus = ({ setMealQty }) => {
   const [num, setNum] = useState(0);
   const increament = () => {
     setNum(num + 1);
@@ -13,6 +13,9 @@ const Plusminus = () => {
       setNum(0);
     }
   };
+  useEffect(() => {
+    setMealQty(num);
+  }, [setMealQty, num]);
   return (
     <div className="main_div">
       <div className="center_div">
