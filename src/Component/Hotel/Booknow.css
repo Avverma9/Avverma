@@ -957,3 +957,11 @@
 .icon {
   margin-right: 10px;
 }
+
+.bookingflex{
+  display: flex;
+}
+
+.bookingDetailsticky{
+
+}

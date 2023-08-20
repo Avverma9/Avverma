@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css';
 import { useLocation } from 'react-router-dom';
+import './Home.css';
 
 function Home() {
+  const location =useLocation()
   const [images, setImages] = useState([]);
   const [slideIndex, setSlideIndex] = useState(0);
 
@@ -28,12 +29,10 @@ function Home() {
   const goToPreviousSlide = () => {
     setSlideIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
   };
-  const location = useLocation()
-if (location.pathname!=='/'){
-  return(
-    null
-  )
+if(location.pathname !== "/"){
+  return null
 }
+
   return (
     <div className="slider-img02">
       {images.length > 0 && (
