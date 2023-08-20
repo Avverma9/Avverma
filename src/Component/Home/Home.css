@@ -1,10 +1,45 @@
-img {
-    width: 100%;
-  }
-  
-  @media (max-width: 768px) {
-    img {
-      width: 100%; /* Adjust the width as needed for smaller screens */
-    }
-  }
-  
+/* Home.css */
+.slider-container02 {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-height: 400px; /* Adjust the max-height as needed */
+}
+
+.slider-container02 img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider-img02 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  background-color: #f0f0f0;
+}
+
+.slider-arrows02 {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.slider-arrow-left-arrow02,
+.slider-arrow-right-arrow02 {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.slider-arrow-left-arrow02:hover,
+.slider-arrow-right-arrow02:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
