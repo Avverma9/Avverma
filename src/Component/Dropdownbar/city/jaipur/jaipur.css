@@ -1,4 +1,4 @@
-/* hotel.module.css */
+hotel.module.css
 
 .search-results {
   
@@ -283,8 +283,10 @@ width:6%
 .filt-2nd label,
 .filt-3rd label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   cursor: pointer;
+  font-size: 15px;
+  
 }
 
 input[type="checkbox"] {
@@ -298,6 +300,12 @@ input[type="checkbox"]:checked + span {
 /* Accommodation Type section */
 .filt-4th {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  /* font-size: 95px; */
+  border: 2px solid red;
+
+
 }
 
 /* Hotel Facilities section */

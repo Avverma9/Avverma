@@ -137,9 +137,9 @@ function HotelList() {
       <div className="whole-data d-flex">
       <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
           <div className="filt-1st">
-            <h3 className="filterhead">Filters</h3>
+            <h3 className={styles.filterhead}>Filters</h3>
             <br />
-            <h5 className="filterprice">Price</h5>
+            <h5 className={styles.filterprice}>Price</h5>
             <RangeSlider
               minValue={minValue}
               maxValue={maxValue}
@@ -148,8 +148,8 @@ function HotelList() {
             />
           </div>
           <hr />
-          <div className="filt-2nd">
-            <h5 className="colle">Collections</h5>
+          <div className={styles.filt2nds}>
+            <h5 className={styles.colle}>Collections</h5>
             <label>
               {" "}
               <input type="checkbox" />
@@ -177,8 +177,8 @@ function HotelList() {
             </label>
           </div>
           <hr />
-          <div className="filt-3rd">
-            <h5 className="colle">Categroies</h5>
+          <div className={styles.filt3rds}>
+            <h5 className={styles.colle}>Categroies</h5>
             <label>
               {" "}
               <input type="checkbox" />
@@ -206,8 +206,8 @@ function HotelList() {
             </label>
           </div>
           <hr />
-          <div className="filt-4th">
-            <h5 className="colle">Accomodation Type</h5>
+          <div className={styles.filt4th}>
+            <h5 className={styles.colle}>Accomodation Type</h5>
             <label>
               {" "}
               <input type="checkbox" />
@@ -220,8 +220,8 @@ function HotelList() {
             </label>
           </div>
           <hr />
-          <div className="filt-5th">
-            <h5 className="colle">Hotel Facilities</h5>
+          <div className={styles.filt5th}>
+            <h5 className={styles.colle}>Hotel Facilities</h5>
             <label>
               {" "}
               <input type="checkbox" />
@@ -250,8 +250,8 @@ function HotelList() {
             </label>
           </div>
           <hr />
-          <div className="filt-6th">
-            <h5 className="colle">Check In Feature</h5>
+          <div className={styles.filt6th}>
+            <h5 className={styles.colle}>Check In Feature</h5>
             <label>
               {" "}
               <input type="checkbox" />

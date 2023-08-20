@@ -205,11 +205,16 @@ hr {
 }
 
 
-.filt-2nd label,
-.filt-3rd label {
+.filt2nds label,
+.filt3rds label,
+.filt4th label,
+.filt5th label,
+.filt6th label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   cursor: pointer;
+  font-size: 15px;
+  
 }
 
 input[type="checkbox"] {
@@ -221,21 +226,17 @@ input[type="checkbox"]:checked + span {
 }
 
 /* Accommodation Type section */
-.filt-4th {
-  margin-bottom: 20px;
-
-}
 
 /* Hotel Facilities section */
-.filt-5th {
+/* .filt-5th {
   margin-bottom: 20px;
 
-}
+} */
 
 /* Check In Feature section */
-.filt-6th {
+/* .filt-6th {
   margin-bottom: 20px;
-}
+} */
 
 hr {
   border: none;
