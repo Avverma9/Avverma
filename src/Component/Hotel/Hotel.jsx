@@ -37,6 +37,7 @@ function HotelList() {
   const location = useLocation();
   const [hotels, setHotels] = useState([]); // list of hotels initially when page loaded
   const [expandedResultId, setExpandedResultId] = useState(null);
+  const [reviewCount, setReviewCount] = useState([])
   const navigate = useNavigate();
 
   const [minValue, set_minValue] = useState(400);
@@ -65,6 +66,8 @@ function HotelList() {
         .catch((error) => console.log(error));
     }
 
+
+
     const labels = document.getElementsByClassName("label");
     Array.from(labels).forEach((label, index) => {
       if (index === 0) {
@@ -74,6 +77,34 @@ function HotelList() {
       }
     });
   }, [maxValue, minValue]);
+
+
+  useEffect(() => {
+    const fetchReviewsCount = async () => {
+      const reviewCounts = await Promise.all(
+        hotels.map(async (hotel) => {
+          try {
+            const response = await fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotel._id}`);
+            const data = await response.json();
+            
+            if (!data || !data.reviews || !Array.isArray(data.reviews)) {
+              console.log(`Invalid data structure for hotelId: ${hotel._id}`);
+              return { hotelId: hotel._id, count: 0 };
+            }
+            
+            return { hotelId: hotel._id, count: data.reviews.length };
+          } catch (error) {
+            console.error(`Error fetching data for hotelId ${hotel._id}:`, error);
+            return { hotelId: hotel._id, count: 0 };
+          }
+        })
+      );
+      setReviewCount(reviewCounts);
+    };
+  
+    fetchReviewsCount();
+  }, [hotels]);
+
 
   if (location.pathname !== "/home") {
     return null;
@@ -135,7 +166,7 @@ function HotelList() {
   return (
     <>
       <div className="whole-data d-flex">
-      <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
+        <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
           <div className="filt-1st">
             <h3 className={styles.filterhead}>Filters</h3>
             <br />
@@ -264,9 +295,8 @@ function HotelList() {
           {currentData.map((result) => (
             <div
               key={result._id}
-              className={`${styles["search-result"]} ${
-                expandedResultId === result._id ? styles["expanded"] : ""
-              }`}
+              className={`${styles["search-result"]} ${expandedResultId === result._id ? styles["expanded"] : ""
+                }`}
             >
               <Imgslide />
               <div className={styles["search-result-content"]}>
@@ -404,6 +434,9 @@ function HotelList() {
                   }}
                 >
                   <div className="rupeedetail">
+                    <p className={styles["search-result-reviews"]}>
+                      {reviewCount.find((review) => review.hotelId === result._id)?.count || "No"} Reviews
+                    </p>
                     <p className={styles["search-result-price"]}>
                       <FontAwesomeIcon
                         icon={faInr}
@@ -423,6 +456,7 @@ function HotelList() {
                       gap: "15%",
                     }}
                   >
+
                     <button
                       className={styles["view-details-button"]}
                       onClick={() => handleBuy(result._id)}
@@ -590,11 +624,10 @@ function HotelList() {
           ))}
           <div className="_pagination">
             <button
-              className={`_pagination-button ${
-                currentPage === 1
+              className={`_pagination-button ${currentPage === 1
                   ? "_pagination-inactive"
                   : "_pagination-active"
-              }`}
+                }`}
               onClick={handlePrevPage}
               disabled={currentPage === 1}
             >
@@ -603,22 +636,20 @@ function HotelList() {
             {visiblePages.map((page) => (
               <button
                 key={page}
-                className={`_pagination-button ${
-                  page === currentPage
+                className={`_pagination-button ${page === currentPage
                     ? "_pagination-active"
                     : "_pagination-inactive"
-                }`}
+                  }`}
                 onClick={() => handlePageClick(page)}
               >
                 {page}
               </button>
             ))}
             <button
-              className={`_pagination-button ${
-                currentPage === totalPages
+              className={`_pagination-button ${currentPage === totalPages
                   ? "_pagination-inactive"
                   : "_pagination-active"
-              }`}
+                }`}
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
             >
