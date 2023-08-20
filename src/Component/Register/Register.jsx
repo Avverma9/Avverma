@@ -79,7 +79,7 @@ const Register = () => {
                 <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
               )}
             </div>
-            <label htmlFor="profile-image" className="upload-button-register">
+            <label htmlFor="profile-image" className="upload-button-signup">
               Select Profile Picture
               <br />
               <input
