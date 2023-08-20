@@ -1,0 +1,35 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding: 30px 10px;
+    /* border: 2px solid black; */
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+    height: auto;
+  }
+  
+  .details {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 20px;
+  }
+  
+  .details p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .details p .spanprice {
+    font-weight: bold;
+  }
+  
+  .gray {
+    color: gray;
+    margin-right: 100px;
+  }
+  
