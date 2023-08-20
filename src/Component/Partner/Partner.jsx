@@ -462,7 +462,7 @@ const Partner = () => {
             <h3>Hotel Details & Location</h3>
             <div className="group3">
               <div className="hoteldetails">
-                <label htmlFor="hotelDetails">Hotel Name:</label>
+                <label htmlFor="hotelDetails">Hotel Details:</label>
                 <input
                   type="text"
                   id="hotelDetails"
@@ -471,7 +471,7 @@ const Partner = () => {
                 />
               </div>
               <div className="street">
-                <label htmlFor="street">Location:</label>
+                <label htmlFor="street">Street:</label>
                 <input
                   type="text"
                   id="street"

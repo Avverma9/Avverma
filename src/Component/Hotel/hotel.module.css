@@ -44,7 +44,6 @@
 .hotel-info {
   display: flex;
   flex-direction: column;
-  row-gap: 10px;
 }
 
 .search-result-title {
@@ -59,7 +58,7 @@
 
 .search-result-destination {
   font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #606060;
   font-weight: 501;
 }
@@ -153,7 +152,6 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  margin-top: 20px;
 }
 
 .amenities li {
@@ -281,17 +279,15 @@ input[type="checkbox"] {
 }
 
 .hotel-rating {
-  font-size: 14px;
+  font-size: 12px;
   color: #ffffff;
   margin: 0px;
   display: flex;
   align-items: center;
   background-color: #3bc03b;
-  
+  padding: 4px;
   border-radius: 3px;
-  width: 10%;
-  padding: 9px;
-  justify-content: center;
+  width: 6%;
 }
 
 .fastar {
