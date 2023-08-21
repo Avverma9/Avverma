@@ -109,8 +109,6 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 
-import Loginz from "./Component/zishan/Login";
-import Registera from "./Component/zishan/Register";
 
 function App() {
   // console.log(search)
@@ -278,8 +276,6 @@ function App() {
           <Route path="cities/mussoorie" element={<Mussoorie />} />
           <Route path="cities/haridwar" element={<Haridwar />} />
           <Route path="cities/kolhapur" element={<Kolhapur />} />
-          <Route path="/login" element={<Loginz/>}/>
-          <Route path="/registera" element={<Registera/>}/>
           <Route
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}

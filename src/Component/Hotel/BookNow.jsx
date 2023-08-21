@@ -319,7 +319,6 @@ export default function BookNow({ refresh, reset, userData }) {
   return (
     <>
       <div className="container-p-4">
-        
         <div className="flex">
           <div className="w-1/3 slider-container book_now">
             <Slider ref={sliderRef} {...settings}>
@@ -343,166 +342,243 @@ export default function BookNow({ refresh, reset, userData }) {
             </div>
           </div>
           <div className="bookingflex">
-          <div className="hotel-details1">
-            <div className="flex-rating">
-              <div className="name-location">
-                <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
+            <div className="hotel-details1">
+              <div className="flex-rating">
+                <div className="name-location">
+                  <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
 
-                <p className="location-booknow">{bookingDetails.destination}</p>
-              </div>
-              <div className="rating0">
-                <div className="staricon">
-                  {bookingDetails.rating}
-                  <FontAwesomeIcon icon={faStar} className="staricon" />
-                </div>
-              </div>
-            </div>
-            <div className="pricing">
-              <FontAwesomeIcon icon={faInr} className="indianrupee" />
-              {bookingDetails.price}
-            </div>
-            <div className="hotel-descrip">
-              <p className={`description1 ${expand ? "expanded" : ""}`}>
-                Description:
-              </p>{" "}
-              <p className={`description-content ${expand ? "expanded" : ""}`}>
-                {bookingDetails.description &&
-                  truncateText(bookingDetails.description, 100)}
-              </p>
-              {!expand && (
-                <button className="viewMoreBtn" onClick={expanddescription}>
-                  View More
-                </button>
-              )}
-              {expand && (
-                <button className="viewLessBtn" onClick={expanddescription}>
-                  View Less
-                </button>
-              )}
-            </div>
-            <p className="amenity-section">
-              <p className="amenity-word">Amenities: </p>
-              <div className="amenityclass">
-                {hotelAmenities.map((option, index) => {
-                  let icon;
-                  switch (option) {
-                    case "GYM":
-                      icon = faDumbbell;
-                      break;
-                    case "Free WIFI":
-                      icon = faWifi;
-                      break;
-
-                    case "Parking":
-                      icon = faParking;
-                      break;
-                    case "Geyser":
-                      icon = faFire;
-                      break;
-                    case "TV":
-                      icon = faTv;
-                      break;
-                    case "CCTV":
-                      icon = faCamera;
-                      break;
-                    case "AC":
-                      icon = faSnowflake;
-                      break;
-                    case "Card-payment":
-                      icon = faCreditCard;
-                      break;
-                    case "Elevator":
-                      icon = faElevator;
-                      break;
-                    case "Kitchen":
-                      icon = faKitchenSet;
-                      break;
-                    default:
-                      icon = faCheck;
-                  }
-                  return (
-                    <p key={index}>
-                      {icon && (
-                        <FontAwesomeIcon icon={icon} className="amenity-icon" />
-                      )}{" "}
-                      {option}
-                    </p>
-                  );
-                })}
-              </div>
-            </p>
-            <div className="moreopt">
-              <p className="morehead">More:</p>
-              <div className="moreitem">
-                {hotelMoreOpt.map((option, index) => {
-                  let icon;
-                  // eslint-disable-next-line default-case
-                  switch (option) {
-                    case "Pets Allowed":
-                      icon = faPaw;
-                      break;
-                    case "Alcohol Allowed":
-                      icon = faGlassMartini;
-                      break;
-                    case "Bachelor Allowed":
-                      icon = faPeopleGroup;
-                      break;
-                  }
-                  return (
-                    <p key={index}>
-                      {icon && (
-                        <FontAwesomeIcon icon={icon} className="more-icon" />
-                      )}
-                      {option}
-                    </p>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="bookcardmain">
-              <div className="booking-card">
-                <h2 className="booking-card-title">Check in</h2>
-                <div className="booking-card-content">
-                  <p>
-                    <span className="booking-label"></span>{" "}
-                    <span className="booking-date">
-                      <input
-                        type="date"
-                        value={checkInDate}
-                        onChange={(e) => setCheckInDate(e.target.value)}
-                        min={getCurrentDate()}
-                      />
-                    </span>
+                  <p className="location-booknow">
+                    {bookingDetails.destination}
                   </p>
                 </div>
-              </div>
-
-              <div className="booking-card">
-                <h2 className="booking-card-title">Check out</h2>
-                <div className="booking-card-content">
-                  <p>
-                    <span className="booking-label"></span>{" "}
-                    <span className="booking-date">
-                      <input
-                        type="date"
-                        value={checkOutDate}
-                        onChange={(e) => setCheckOutDate(e.target.value)}
-                        min={checkInDate}
-                        disabled={!checkInDate}
-                      />
-                    </span>
-                  </p>
+                <div className="rating0">
+                  <div className="staricon">
+                    {bookingDetails.rating}
+                    <FontAwesomeIcon icon={faStar} className="staricon" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="cust-detail">Customer Details:</div>
-            <div className="card">
-              <p className="id">
-                <FontAwesomeIcon icon={faIdCard} className="icon" />
-                LocalID: {bookingDetails.availability}
+              <div className="pricing">
+                <FontAwesomeIcon icon={faInr} className="indianrupee" />
+                {bookingDetails.price}
+              </div>
+              <div className="hotel-descrip">
+                <p className={`description1 ${expand ? "expanded" : ""}`}>
+                  Description:
+                </p>{" "}
+                <p
+                  className={`description-content ${expand ? "expanded" : ""}`}
+                >
+                  {bookingDetails.description &&
+                    truncateText(bookingDetails.description, 100)}
+                </p>
+                {!expand && (
+                  <button className="viewMoreBtn" onClick={expanddescription}>
+                    View More
+                  </button>
+                )}
+                {expand && (
+                  <button className="viewLessBtn" onClick={expanddescription}>
+                    View Less
+                  </button>
+                )}
+              </div>
+              <p className="amenity-section">
+                <p className="amenity-word">Amenities: </p>
+                <div className="amenityclass">
+                  {hotelAmenities.map((option, index) => {
+                    let icon;
+                    switch (option) {
+                      case "GYM":
+                        icon = faDumbbell;
+                        break;
+                      case "Free WIFI":
+                        icon = faWifi;
+                        break;
+
+                      case "Parking":
+                        icon = faParking;
+                        break;
+                      case "Geyser":
+                        icon = faFire;
+                        break;
+                      case "TV":
+                        icon = faTv;
+                        break;
+                      case "CCTV":
+                        icon = faCamera;
+                        break;
+                      case "AC":
+                        icon = faSnowflake;
+                        break;
+                      case "Card-payment":
+                        icon = faCreditCard;
+                        break;
+                      case "Elevator":
+                        icon = faElevator;
+                        break;
+                      case "Kitchen":
+                        icon = faKitchenSet;
+                        break;
+                      default:
+                        icon = faCheck;
+                    }
+                    return (
+                      <p key={index}>
+                        {icon && (
+                          <FontAwesomeIcon
+                            icon={icon}
+                            className="amenity-icon"
+                          />
+                        )}{" "}
+                        {option}
+                      </p>
+                    );
+                  })}
+                </div>
               </p>
-              <p className="noofroom"/>
+              <div className="moreopt">
+                <p className="morehead">More:</p>
+                <div className="moreitem">
+                  {hotelMoreOpt.map((option, index) => {
+                    let icon;
+                    // eslint-disable-next-line default-case
+                    switch (option) {
+                      case "Pets Allowed":
+                        icon = faPaw;
+                        break;
+                      case "Alcohol Allowed":
+                        icon = faGlassMartini;
+                        break;
+                      case "Bachelor Allowed":
+                        icon = faPeopleGroup;
+                        break;
+                    }
+                    return (
+                      <p key={index}>
+                        {icon && (
+                          <FontAwesomeIcon icon={icon} className="more-icon" />
+                        )}
+                        {option}
+                      </p>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="hotel-policies">
+                <div className="hotel-policyheading">Hotel Policies:</div>
+                <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
+              </div>
+
+              <div className="bookcardmain">
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check in</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="date"
+                          value={checkInDate}
+                          onChange={(e) => setCheckInDate(e.target.value)}
+                          min={getCurrentDate()}
+                        />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check out</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="date"
+                          value={checkOutDate}
+                          onChange={(e) => setCheckOutDate(e.target.value)}
+                          min={checkInDate}
+                          disabled={!checkInDate}
+                        />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="_meals-container">
+                <h1>Enjoy meals during your stay</h1>
+                <div className="d-flex gap-3">
+                  <div className="card w-50 h-25 mb-3">
+                    <div className="row g-0">
+                      <div className="col-md-4">
+                        <img
+                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
+                          className="img-fluid rounded-start"
+                          alt="..."
+                        />
+                      </div>
+                      <div className="col-md-8">
+                        <div className="card-body">
+                          <h5 className="card-title">Lunch</h5>
+                          <p className="card-text">Veg/Non-Veg Thali</p>
+                          <p className="card-text">
+                            <small className="text-body-secondary">100</small>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row g-0">
+                      <div className="col-md-12">
+                        <button
+                          type="button"
+                          className="btn btn-primary w-100 d-flex mt-4"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card w-50 h-25 mb-3">
+                    <div className="row g-0">
+                      <div className="col-md-4">
+                        <img
+                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
+                          className="img-fluid rounded-start"
+                          alt="..."
+                        />
+                      </div>
+                      <div className="col-md-8">
+                        <div className="card-body">
+                          <h5 className="card-title">Dinner</h5>
+                          <p className="card-text">Veg/Non-Veg Thali</p>
+                          <p className="card-text">
+                            <small className="text-body-secondary">100</small>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row g-0">
+                      <div className="col-md-12">
+                        <button
+                          type="button"
+                          className="btn btn-primary w-100 d-flex mt-4"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="cust-detail">Customer Details:</div>
+              <div className="card">
+                <p className="id">
+                  <FontAwesomeIcon icon={faIdCard} className="icon" />
+                  LocalID: {bookingDetails.availability}
+                </p>
+                <p className="noofroom" />
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
                 <button
@@ -572,180 +648,187 @@ export default function BookNow({ refresh, reset, userData }) {
                 <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
                 Marital Status: {bookingDetails.maritalStatus}
               </p>
-            </div>
-            <div className="bookingDetailsticky">
-              <BookingDetails price={bookingDetails.price}/>
-            </div>
-            </div>
+              <div className="create_new_reviews">
+                <textarea
+                  placeholder="Write a new review"
+                  type="text"
+                  rows="2"
+                  value={myReview}
+                  onChange={(e) => setMyReview(e.target.value)}
+                  onKeyUp={keyPressHandler}
+                  onFocus={(e) =>
+                    setFieldFocus(e.target.nextElementSibling.className)
+                  }
+                />
+                <button
+                  className="post_review_button"
+                  onClick={postReviewHandler}
+                >
+                  <FaTelegramPlane />
+                </button>
+              </div>
 
-            <div className="hotel-policies">
-              <div className="hotel-policyheading">Hotel Policies:</div>
-              <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
-            </div>
-
-            <div className="create_new_reviews">
-              <textarea
-                placeholder="Write a new review"
-                type="text"
-                rows="2"
-                value={myReview}
-                onChange={(e) => setMyReview(e.target.value)}
-                onKeyUp={keyPressHandler}
-                onFocus={(e) =>
-                  setFieldFocus(e.target.nextElementSibling.className)
-                }
-              />
-              <button
-                className="post_review_button"
-                onClick={postReviewHandler}
-              >
-                <FaTelegramPlane />
-              </button>
-            </div>
-
-            <div className="reviews" key={refresh}>
-              <div className="reviewhead">
-                <h1>Reviews:</h1>
-                {currentData
-                  ? [...currentData].reverse().map((rev, i) => (
-                      <>
-                        <div
-                          className="d-flex flex-column gap-3"
-                          style={{
-                            padding: "20px",
-                            marginRight: "10%",
-                            // marginBottom: "20px",
-                            width: "75%",
-                            height: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "1",
-                          }}
-                          key={i}
-                        >
-                          <div className="review_container">
-                            <div className="comment_profile">
-                              <Avatar
-                                name={rev.user.name}
-                                src={rev.user.images[0]}
-                                round={true}
-                                size="35"
-                                style={{
-                                  boxShadow:
-                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                                }}
-                              />
-                            </div>
-
-                            <div className="comment_profile_name">
-                              <h4>{rev.user.name}</h4>
-                            </div>
-
-                            {rev.review.user === userId && (
-                              <div className="comment_update_del">
-                                <BiEdit
-                                  color="#2563eb"
-                                  size={24}
-                                  onClick={() => toggleUpdateReview(rev)}
+              <div className="reviews" key={refresh}>
+                <div className="reviewhead">
+                  <h1>Ratings and reviews</h1>
+                  <div className="row g-0">
+                    <div className="col-md-4">
+                      <div className="card-body">
+                        <span>4.3 Ratting Icon</span>
+                        <h4>Very Good</h4>
+                        <p>880 ratings </p>
+                      </div>
+                    </div>
+                    <div className="col-md-8">
+                      <div className="card-body"></div>
+                    </div>
+                  </div>
+                  {currentData
+                    ? [...currentData].reverse().map((rev, i) => (
+                        <>
+                          <div
+                            className="d-flex flex-column gap-3"
+                            style={{
+                              padding: "20px",
+                              marginRight: "10%",
+                              // marginBottom: "20px",
+                              width: "75%",
+                              height: "auto",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "1",
+                            }}
+                            key={i}
+                          >
+                            <div className="review_container">
+                              <div className="comment_profile">
+                                <Avatar
+                                  name={rev.user.name}
+                                  src={rev.user.images[0]}
+                                  round={true}
+                                  size="35"
+                                  style={{
+                                    boxShadow:
+                                      "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                  }}
                                 />
-                                <BiTrash
-                                  color="#dc3545"
-                                  size={24}
-                                  onClick={() =>
-                                    deleteReviewHandler(rev.review._id)
+                              </div>
+
+                              <div className="comment_profile_name">
+                                <h4>{rev.user.name}</h4>
+                              </div>
+
+                              {rev.review.user === userId && (
+                                <div className="comment_update_del">
+                                  <BiEdit
+                                    color="#2563eb"
+                                    size={24}
+                                    onClick={() => toggleUpdateReview(rev)}
+                                  />
+                                  <BiTrash
+                                    color="#dc3545"
+                                    size={24}
+                                    onClick={() =>
+                                      deleteReviewHandler(rev.review._id)
+                                    }
+                                  />
+                                </div>
+                              )}
+                            </div>
+
+                            {isUpdatingReview && reviewId === rev.review._id ? (
+                              <div className="update_review">
+                                <textarea
+                                  placeholder="Update Review"
+                                  type="text"
+                                  rows="2"
+                                  value={updatedReview}
+                                  onChange={(e) =>
+                                    setUpdatedReview(e.target.value)
+                                  }
+                                  onKeyUp={keyPressHandler}
+                                  onFocus={(e) =>
+                                    setFieldFocus(
+                                      e.target.nextElementSibling.className
+                                    )
                                   }
                                 />
+                                <button
+                                  className="update_review_button"
+                                  onClick={updateReviewHandler}
+                                >
+                                  <FaTelegramPlane />
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="review_comment">
+                                <p>{rev.review.comment}</p>
+
+                                <div className="comment_date">
+                                  <h6>{formatDate(rev.review.createdAt)}</h6>
+                                </div>
                               </div>
                             )}
+                            <div style={{ border: "1px solid #94a3b8 " }}></div>
                           </div>
-
-                          {isUpdatingReview && reviewId === rev.review._id ? (
-                            <div className="update_review">
-                              <textarea
-                                placeholder="Update Review"
-                                type="text"
-                                rows="2"
-                                value={updatedReview}
-                                onChange={(e) =>
-                                  setUpdatedReview(e.target.value)
-                                }
-                                onKeyUp={keyPressHandler}
-                                onFocus={(e) =>
-                                  setFieldFocus(
-                                    e.target.nextElementSibling.className
-                                  )
-                                }
-                              />
-                              <button
-                                className="update_review_button"
-                                onClick={updateReviewHandler}
-                              >
-                                <FaTelegramPlane />
-                              </button>
-                            </div>
-                          ) : (
-                            <div className="review_comment">
-                              <p>{rev.review.comment}</p>
-
-                              <div className="comment_date">
-                                <h6>{formatDate(rev.review.createdAt)}</h6>
-                              </div>
-                            </div>
-                          )}
-                          <div style={{ border: "1px solid #94a3b8 " }}></div>
-                        </div>
-                      </>
-                    ))
-                  : null}
-              </div>
-              {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
-              <div className="_pagination">
-                <button
-                  className="_pagination-button"
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 1}
-                >
-                  Prev
-                </button>
-                {visiblePages.map((page) => (
+                        </>
+                      ))
+                    : null}
+                </div>
+                {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
+                <div className="_pagination">
                   <button
-                    key={page}
-                    className={`_pagination-button ${
-                      page === currentPage ? "_pagination-active" : ""
-                    }`}
-                    onClick={() => handlePageClick(page)}
+                    className="_pagination-button"
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
                   >
-                    {page}
+                    Prev
                   </button>
-                ))}
-                <button
-                  className="_pagination-button"
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
+                  {visiblePages.map((page) => (
+                    <button
+                      key={page}
+                      className={`_pagination-button ${
+                        page === currentPage ? "_pagination-active" : ""
+                      }`}
+                      onClick={() => handlePageClick(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    className="_pagination-button"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
-            <CheckOut
-            rating={bookingDetails.rating}
-             hoteldescription={bookingDetails.description}
-              hotelName={bookingDetails.hotelName}
-              hotelId={bookingDetails._id}
-              userId={userId}
-              amount={Number(bookingDetails.price)}
-              currency="INR"
-              userData={userData}
-              checkIn={checkInDate}
-              checkOut={checkOutDate}
-              guests={selectedGuests}
-              rooms={selectedRooms}
-              hotelimage={firstImageURL}
-              destination={bookingDetails.destination}
-              paymentMethod={bookingDetails.paymentMethod}
-            />
+            <div className="bookingDetailsticky">
+              <BookingDetails price={bookingDetails.price} />
+            </div>
           </div>
+
+          <CheckOut
+            rating={bookingDetails.rating}
+            hoteldescription={bookingDetails.description}
+            hotelName={bookingDetails.hotelName}
+            hotelId={bookingDetails._id}
+            userId={userId}
+            amount={Number(bookingDetails.price)}
+            currency="INR"
+            userData={userData}
+            checkIn={checkInDate}
+            checkOut={checkOutDate}
+            guests={selectedGuests}
+            rooms={selectedRooms}
+            hotelimage={firstImageURL}
+            destination={bookingDetails.destination}
+            paymentMethod={bookingDetails.paymentMethod}
+          />
         </div>
+      </div>
     </>
   );
 }
