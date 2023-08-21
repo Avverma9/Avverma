@@ -511,8 +511,8 @@ export default function BookNow({ refresh, reset, userData }) {
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
                   <div className="card w-50 h-25 mb-3">
-                    <div className="row g-0">
-                      <div className="col-md-4">
+                    <div className="row-g-0">
+                      <div className="img-thali">
                         <img
                           src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
                           className="img-fluid rounded-start"
@@ -522,6 +522,36 @@ export default function BookNow({ refresh, reset, userData }) {
                       <div className="col-md-8">
                         <div className="card-body">
                           <h5 className="card-title">Lunch</h5>
+                          <p className="card-text">Veg/Non-Veg Thali</p>
+                          <p className="card-text">
+                            <small className="text-body-secondary">200</small>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row g-0">
+                      <div className="col-md-12">
+                        <button
+                          type="button"
+                          className="btn btn-primary w-100 d-flex mt-4"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card w-50 h-25 mb-3">
+                    <div className="row-g-0">
+                      <div className="img-thali">
+                        <img
+                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
+                          className="img-fluid rounded-start"
+                          alt="..."
+                        />
+                      </div>
+                      <div className="col-md-8">
+                        <div className="card-body">
+                          <h5 className="card-title">Dinner</h5>
                           <p className="card-text">Veg/Non-Veg Thali</p>
                           <p className="card-text">
                             <small className="text-body-secondary">100</small>
@@ -541,8 +571,8 @@ export default function BookNow({ refresh, reset, userData }) {
                     </div>
                   </div>
                   <div className="card w-50 h-25 mb-3">
-                    <div className="row g-0">
-                      <div className="col-md-4">
+                    <div className="row-g-0">
+                      <div className="img-thali">
                         <img
                           src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
                           className="img-fluid rounded-start"
@@ -554,12 +584,42 @@ export default function BookNow({ refresh, reset, userData }) {
                           <h5 className="card-title">Dinner</h5>
                           <p className="card-text">Veg/Non-Veg Thali</p>
                           <p className="card-text">
-                            <small className="text-body-secondary">100</small>
+                            <small className="text-body-secondary">300</small>
                           </p>
                         </div>
                       </div>
                     </div>
                     <div className="row g-0">
+                      <div className="col-md-12">
+                        <button
+                          type="button"
+                          className="btn btn-primary w-100 d-flex mt-4"
+                        >
+                          Add
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card w-50 h-25 mb-3">
+                    <div className="row-g-0">
+                      <div className="img-thali">
+                        <img
+                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
+                          className="img-fluid rounded-start"
+                          alt="..."
+                        />
+                      </div>
+                      <div className="col-md-8">
+                        <div className="card-body">
+                          <h5 className="card-title">Dinner</h5>
+                          <p className="card-text">Veg/Non-Veg Thali</p>
+                          <p className="card-text">
+                            <small className="text-body-secondary">500</small>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row-g-0">
                       <div className="col-md-12">
                         <button
                           type="button"

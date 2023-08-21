@@ -4,8 +4,10 @@ import styles from './BookingDetails.module.css';
 const BookingDetails = ({price}) => {
   return (
     <>
-      <h5>Booking Summary</h5>
+    <div className='new-booking-details'>
+      
       <div className={styles.main}>
+      <h5>Booking Summary</h5>
         <div className={styles.details}>
           <p>
             <span className={styles.gray}>Rooms:</span> <span className={styles.spanprice}>{price}</span>
@@ -22,9 +24,12 @@ const BookingDetails = ({price}) => {
           <p>
             <span className={styles.gray}>Final Price:</span> <span className={styles.spanprice}>3000</span>
           </p>
-          <button>Make Payment</button>
+          
         </div>
       </div>
+      
+      </div>
+      <div className={styles.btn_payment}><button className='payment-btn'>Make Payment</button></div>
     </>
   );
 };
