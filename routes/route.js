@@ -14,6 +14,8 @@ const offersController = require("../controllers/offersController")
 const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
 const carouselController = require("../controllers/carouselController")
+const DashboardUser = require("../controllers/dashboardUser");
+
 // const otpController = require("../controllers/otpController")
 
 
@@ -105,7 +107,9 @@ router.post("/verifyotp", emailController.verifyOtp)
 //===============================food==========================================//
 router.post("/create",upload,foodController.createFood)
 router.get("/get/latest/food",foodController.getFood)
-
+//===============================Dashboard===========================
+router.post("/create/dashboard/user",upload,DashboardUser.registerUser)
+router.post("/login/dashboard/user",DashboardUser.loginUser)
 
 
 

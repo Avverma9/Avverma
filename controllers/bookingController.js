@@ -8,7 +8,8 @@ const foodModel= require("../models/foodModel")
 
 const createBooking = async (req, res) => {
   try {
-    const { userId, hotelId, foodItems } = req.params;
+    const { userId, hotelId } = req.params;
+    const { foodItems } = req.body;
     let totalFoodPrice=0
     for(const foodItem of foodItems){
       const food= await foodModel.findById(foodItem._id)
