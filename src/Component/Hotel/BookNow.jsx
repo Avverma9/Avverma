@@ -194,7 +194,7 @@ export default function BookNow({ refresh, reset, userData }) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 2,
     slidesToScroll: 3,
   };
 
@@ -578,7 +578,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   <FontAwesomeIcon icon={faIdCard} className="icon" />
                   LocalID: {bookingDetails.availability}
                 </p>
-                <p className="noofroom" />
+                <p className="noofroom" >
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
                 <button
@@ -605,49 +605,47 @@ export default function BookNow({ refresh, reset, userData }) {
                 >
                   +
                 </button>
+                   </p>
+
+                <div className="noofguest input-container">
+                  <FontAwesomeIcon icon={faPerson} className="icon" />
+                  Guests :
+                  <button
+                    className="negposbtn"
+                    onClick={() =>
+                      setSelectedGuests(Math.max(selectedGuests - 1, 1))
+                    }
+                  >
+                    -
+                  </button>
+                  <input
+                    className="inputbutton"
+                    type="number"
+                    value={selectedGuests}
+                    onChange={(e) => setSelectedGuests(e.target.value)}
+                    min="1"
+                  />
+                  <button
+                    className="negposbtn"
+                    onClick={() => setSelectedGuests(selectedGuests + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+                {bookingDetails.disclaimer && (
+                  <>
+                    <p>{bookingDetails.disclaimer}</p>
+                    {bookingDetails.contact && (
+                      <p>Hotel Contact: {bookingDetails.contact}</p>
+                    )}
+                  </>
+                )}
+                <p className="roomtype">
+                  <FontAwesomeIcon icon={faHotel} className="icon" />
+                  Room Type: {bookingDetails.roomtype}
+                </p>
               </div>
 
-              <div className="noofguest input-container">
-                <FontAwesomeIcon icon={faPerson} className="icon" />
-                Guests :
-                <button
-                  className="negposbtn"
-                  onClick={() =>
-                    setSelectedGuests(Math.max(selectedGuests - 1, 1))
-                  }
-                >
-                  -
-                </button>
-                <input
-                  className="inputbutton"
-                  type="number"
-                  value={selectedGuests}
-                  onChange={(e) => setSelectedGuests(e.target.value)}
-                  min="1"
-                />
-                <button
-                  className="negposbtn"
-                  onClick={() => setSelectedGuests(selectedGuests + 1)}
-                >
-                  +
-                </button>
-              </div>
-              {bookingDetails.disclaimer && (
-                <>
-                  <p>{bookingDetails.disclaimer}</p>
-                  {bookingDetails.contact && (
-                    <p>Hotel Contact: {bookingDetails.contact}</p>
-                  )}
-                </>
-              )}
-              <p className="roomtype">
-                <FontAwesomeIcon icon={faHotel} className="icon" />
-                Room Type: {bookingDetails.roomtype}
-              </p>
-              <p className="maritalstatus">
-                <FontAwesomeIcon icon={faPeopleArrows} className="icon" />
-                Marital Status: {bookingDetails.maritalStatus}
-              </p>
               <div className="create_new_reviews">
                 <textarea
                   placeholder="Write a new review"
@@ -668,6 +666,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 </button>
               </div>
 
+
               <div className="reviews" key={refresh}>
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
@@ -685,94 +684,94 @@ export default function BookNow({ refresh, reset, userData }) {
                   </div>
                   {currentData
                     ? [...currentData].reverse().map((rev, i) => (
-                        <>
-                          <div
-                            className="d-flex flex-column gap-3"
-                            style={{
-                              padding: "20px",
-                              marginRight: "10%",
-                              // marginBottom: "20px",
-                              width: "75%",
-                              height: "auto",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "1",
-                            }}
-                            key={i}
-                          >
-                            <div className="review_container">
-                              <div className="comment_profile">
-                                <Avatar
-                                  name={rev.user.name}
-                                  src={rev.user.images[0]}
-                                  round={true}
-                                  size="35"
-                                  style={{
-                                    boxShadow:
-                                      "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                                  }}
-                                />
-                              </div>
-
-                              <div className="comment_profile_name">
-                                <h4>{rev.user.name}</h4>
-                              </div>
-
-                              {rev.review.user === userId && (
-                                <div className="comment_update_del">
-                                  <BiEdit
-                                    color="#2563eb"
-                                    size={24}
-                                    onClick={() => toggleUpdateReview(rev)}
-                                  />
-                                  <BiTrash
-                                    color="#dc3545"
-                                    size={24}
-                                    onClick={() =>
-                                      deleteReviewHandler(rev.review._id)
-                                    }
-                                  />
-                                </div>
-                              )}
+                      <>
+                        <div
+                          className="d-flex flex-column gap-3"
+                          style={{
+                            padding: "20px",
+                            marginRight: "10%",
+                            // marginBottom: "20px",
+                            width: "75%",
+                            height: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1",
+                          }}
+                          key={i}
+                        >
+                          <div className="review_container">
+                            <div className="comment_profile">
+                              <Avatar
+                                name={rev.user.name}
+                                src={rev.user.images[0]}
+                                round={true}
+                                size="35"
+                                style={{
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                              />
                             </div>
 
-                            {isUpdatingReview && reviewId === rev.review._id ? (
-                              <div className="update_review">
-                                <textarea
-                                  placeholder="Update Review"
-                                  type="text"
-                                  rows="2"
-                                  value={updatedReview}
-                                  onChange={(e) =>
-                                    setUpdatedReview(e.target.value)
-                                  }
-                                  onKeyUp={keyPressHandler}
-                                  onFocus={(e) =>
-                                    setFieldFocus(
-                                      e.target.nextElementSibling.className
-                                    )
+                            <div className="comment_profile_name">
+                              <h4>{rev.user.name}</h4>
+                            </div>
+
+                            {rev.review.user === userId && (
+                              <div className="comment_update_del">
+                                <BiEdit
+                                  color="#2563eb"
+                                  size={24}
+                                  onClick={() => toggleUpdateReview(rev)}
+                                />
+                                <BiTrash
+                                  color="#dc3545"
+                                  size={24}
+                                  onClick={() =>
+                                    deleteReviewHandler(rev.review._id)
                                   }
                                 />
-                                <button
-                                  className="update_review_button"
-                                  onClick={updateReviewHandler}
-                                >
-                                  <FaTelegramPlane />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="review_comment">
-                                <p>{rev.review.comment}</p>
-
-                                <div className="comment_date">
-                                  <h6>{formatDate(rev.review.createdAt)}</h6>
-                                </div>
                               </div>
                             )}
-                            <div style={{ border: "1px solid #94a3b8 " }}></div>
                           </div>
-                        </>
-                      ))
+
+                          {isUpdatingReview && reviewId === rev.review._id ? (
+                            <div className="update_review">
+                              <textarea
+                                placeholder="Update Review"
+                                type="text"
+                                rows="2"
+                                value={updatedReview}
+                                onChange={(e) =>
+                                  setUpdatedReview(e.target.value)
+                                }
+                                onKeyUp={keyPressHandler}
+                                onFocus={(e) =>
+                                  setFieldFocus(
+                                    e.target.nextElementSibling.className
+                                  )
+                                }
+                              />
+                              <button
+                                className="update_review_button"
+                                onClick={updateReviewHandler}
+                              >
+                                <FaTelegramPlane />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="review_comment">
+                              <p>{rev.review.comment}</p>
+
+                              <div className="comment_date">
+                                <h6>{formatDate(rev.review.createdAt)}</h6>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{ border: "1px solid #94a3b8 " }}></div>
+                        </div>
+                      </>
+                    ))
                     : null}
                 </div>
                 {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
@@ -787,9 +786,8 @@ export default function BookNow({ refresh, reset, userData }) {
                   {visiblePages.map((page) => (
                     <button
                       key={page}
-                      className={`_pagination-button ${
-                        page === currentPage ? "_pagination-active" : ""
-                      }`}
+                      className={`_pagination-button ${page === currentPage ? "_pagination-active" : ""
+                        }`}
                       onClick={() => handlePageClick(page)}
                     >
                       {page}

@@ -1012,3 +1012,6 @@ font-size: 18px;
 .col-md-8{
   width: 100% !important;
 }
+.row-g-0{
+  height: 200px;
+}
