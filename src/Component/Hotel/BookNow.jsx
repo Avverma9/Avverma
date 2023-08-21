@@ -52,9 +52,12 @@ export default function BookNow({ refresh, reset, userData }) {
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
 
+  const [foodPrice, setFoodPrice] = useState(0);
+
   const [localid, setLocalid] = useState("");
   const [myReview, setMyReview] = useState("");
   const [hotelReviews, setHotelReviews] = useState([]);
+  const [meals, setMeals] = useState([]);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -113,6 +116,24 @@ export default function BookNow({ refresh, reset, userData }) {
         console.log(error);
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate]);
+
+  useEffect(() => {
+    fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
+      .then((response) => {
+        console.log(response, "RESPONSE");
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      })
+      .then((data) => {
+        setMeals(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     setHotelReviews([]);
@@ -316,6 +337,10 @@ export default function BookNow({ refresh, reset, userData }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
+  const foodPriceHandler = (fprice) => {
+    setFoodPrice(foodPrice + fprice);
+  };
+
   return (
     <>
       <div className="container-p-4">
@@ -510,126 +535,41 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="_meals-container">
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
-                  <div className="card w-50 h-25 mb-3">
-                    <div className="row-g-0">
-                      <div className="img-thali">
-                        <img
-                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
-                          className="img-fluid rounded-start"
-                          alt="..."
-                        />
+                  {meals.map((m) => (
+                    <div className="card w-50 h-25 mb-3" key={m._id}>
+                      <div className="row-g-0">
+                        <div className="img-thali">
+                          <img
+                            src={m.images[0]}
+                            className="img-fluid rounded-start"
+                            alt="..."
+                          />
+                        </div>
+                        <div className="col-md-8">
+                          <div className="card-body">
+                            <h5 className="card-title">{m.name}</h5>
+                            {/* <p className="card-text">{m.description}</p> */}
+                            <p className="card-text">
+                              <small className="text-body-secondary">
+                                {m.price}
+                              </small>
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">Lunch</h5>
-                          <p className="card-text">Veg/Non-Veg Thali</p>
-                          <p className="card-text">
-                            <small className="text-body-secondary">200</small>
-                          </p>
+                      <div className="row g-0">
+                        <div className="col-md-12">
+                          <button
+                            type="button"
+                            className="btn btn-primary w-100 d-flex mt-4"
+                            onClick={() => foodPriceHandler(m.price)}
+                          >
+                            Add
+                          </button>
                         </div>
                       </div>
                     </div>
-                    <div className="row g-0">
-                      <div className="col-md-12">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100 d-flex mt-4"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card w-50 h-25 mb-3">
-                    <div className="row-g-0">
-                      <div className="img-thali">
-                        <img
-                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
-                          className="img-fluid rounded-start"
-                          alt="..."
-                        />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">Dinner</h5>
-                          <p className="card-text">Veg/Non-Veg Thali</p>
-                          <p className="card-text">
-                            <small className="text-body-secondary">100</small>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row g-0">
-                      <div className="col-md-12">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100 d-flex mt-4"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card w-50 h-25 mb-3">
-                    <div className="row-g-0">
-                      <div className="img-thali">
-                        <img
-                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
-                          className="img-fluid rounded-start"
-                          alt="..."
-                        />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">Dinner</h5>
-                          <p className="card-text">Veg/Non-Veg Thali</p>
-                          <p className="card-text">
-                            <small className="text-body-secondary">300</small>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row g-0">
-                      <div className="col-md-12">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100 d-flex mt-4"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card w-50 h-25 mb-3">
-                    <div className="row-g-0">
-                      <div className="img-thali">
-                        <img
-                          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1691429272813-Fried-eggs.jpeg"
-                          className="img-fluid rounded-start"
-                          alt="..."
-                        />
-                      </div>
-                      <div className="col-md-8">
-                        <div className="card-body">
-                          <h5 className="card-title">Dinner</h5>
-                          <p className="card-text">Veg/Non-Veg Thali</p>
-                          <p className="card-text">
-                            <small className="text-body-secondary">500</small>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row-g-0">
-                      <div className="col-md-12">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100 d-flex mt-4"
-                        >
-                          Add
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
               <div className="cust-detail">Customer Details:</div>
@@ -866,11 +806,18 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
             </div>
             <div className="bookingDetailsticky">
-              <BookingDetails price={bookingDetails.price} />
+              <BookingDetails
+                price={bookingDetails.price}
+                foodPrice={foodPrice}
+                hotelID={hotelID}
+                userId={userId}
+                currency="INR"
+                userData={userData}
+              />
             </div>
           </div>
 
-          <CheckOut
+          {/* <CheckOut
             rating={bookingDetails.rating}
             hoteldescription={bookingDetails.description}
             hotelName={bookingDetails.hotelName}
@@ -886,7 +833,8 @@ export default function BookNow({ refresh, reset, userData }) {
             hotelimage={firstImageURL}
             destination={bookingDetails.destination}
             paymentMethod={bookingDetails.paymentMethod}
-          />
+          /> */}
+          <button>Book Now</button>
         </div>
       </div>
     </>
