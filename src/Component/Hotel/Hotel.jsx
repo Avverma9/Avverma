@@ -134,8 +134,10 @@ function HotelList() {
 
   return (
     <>
+    {/* 138 to 263 filter slider code */}
       <div className="whole-data d-flex">
-      <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
+      <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>  
+      
           <div className="filt-1st">
             <h3 className="filterhead">Filters</h3>
             <br />
@@ -259,6 +261,8 @@ function HotelList() {
             </label>
           </div>
         </div>
+        
+{/* slide code ends here */}
 
         <div className={styles["search-results"]}>
           {currentData.map((result) => (
