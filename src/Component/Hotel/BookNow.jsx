@@ -196,7 +196,7 @@ export default function BookNow({ refresh, reset, userData }) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 2,
     slidesToScroll: 3,
   };
 
