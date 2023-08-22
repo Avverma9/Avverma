@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import { CiStar } from "react-icons/ci";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
 import {
@@ -36,6 +37,7 @@ import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
+import Ratingrange from "./Ratingrange";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -194,7 +196,7 @@ export default function BookNow({ refresh, reset, userData }) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: 3,
     slidesToScroll: 3,
   };
 
@@ -493,10 +495,39 @@ export default function BookNow({ refresh, reset, userData }) {
 
               <div className="hotel-policies">
                 <div className="hotel-policyheading">Hotel Policies:</div>
+                <div className="bookcardmain">
+                  <div className="booking-card">
+                    <h2 className="booking-card-title">Check in</h2>
+                    <div className="booking-card-content">
+                      <p>
+                        <span className="booking-label"></span>{" "}
+                        <span className="booking-date">
+                          <input type="text" value="12 PM" />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="booking-card">
+                    <h2 className="booking-card-title">Check out</h2>
+                    <div className="booking-card-content">
+                      <p>
+                        <span className="booking-label"></span>{" "}
+                        <span className="booking-date">
+                          <input
+                            type="text"
+                            value="11 AM"
+                            onChange={(e) => setCheckOutDate(e.target.value)}
+                          />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
               </div>
 
-              <div className="bookcardmain">
+              {/* <div className="bookcardmain">
                 <div className="booking-card">
                   <h2 className="booking-card-title">Check in</h2>
                   <div className="booking-card-content">
@@ -531,7 +562,7 @@ export default function BookNow({ refresh, reset, userData }) {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="_meals-container">
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
@@ -574,38 +605,40 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
               <div className="cust-detail">Customer Details:</div>
               <div className="card">
-                <p className="id">
-                  <FontAwesomeIcon icon={faIdCard} className="icon" />
-                  LocalID: {bookingDetails.availability}
+                <p className="roomtype">
+                  <FontAwesomeIcon icon={faHotel} className="icon" />
+                  Room Type: {bookingDetails.roomtype}
                 </p>
-                <p className="noofroom" >
-                <FontAwesomeIcon icon={faRestroom} className="icon" />
-                Rooms:
-                <button
-                  className="negposbtn"
-                  onClick={() =>
-                    setSelectedRooms(Math.max(selectedRooms - 1, 1))
-                  }
-                >
-                  -
-                </button>
-                <input
-                  className="inputbutton"
-                  type="number"
-                  value={selectedRooms}
-                  onChange={handleRoomChange}
-                  min="1"
-                  max="4"
-                />
-                <button
-                  className="negposbtn"
-                  onClick={() =>
-                    setSelectedRooms(Math.min(selectedRooms + 1, 4))
-                  }
-                >
-                  +
-                </button>
-                   </p>
+
+                <p className="noofroom">
+                  <FontAwesomeIcon icon={faRestroom} className="icon" />
+                  Rooms:
+                  <button
+                    className="negposbtn"
+                    onClick={() =>
+                      setSelectedRooms(Math.max(selectedRooms - 1, 1))
+                    }
+                  >
+                    -
+                  </button>
+                  <input
+                    className="inputbutton"
+                    type="text"
+                    inputmode="numeric"
+                    value={selectedRooms}
+                    onChange={handleRoomChange}
+                    min="1"
+                    max="4"
+                  />
+                  <button
+                    className="negposbtn"
+                    onClick={() =>
+                      setSelectedRooms(Math.min(selectedRooms + 1, 4))
+                    }
+                  >
+                    +
+                  </button>
+                </p>
 
                 <div className="noofguest input-container">
                   <FontAwesomeIcon icon={faPerson} className="icon" />
@@ -620,7 +653,8 @@ export default function BookNow({ refresh, reset, userData }) {
                   </button>
                   <input
                     className="inputbutton"
-                    type="number"
+                    type="text"
+                    inputmode="numeric"
                     value={selectedGuests}
                     onChange={(e) => setSelectedGuests(e.target.value)}
                     min="1"
@@ -640,9 +674,10 @@ export default function BookNow({ refresh, reset, userData }) {
                     )}
                   </>
                 )}
-                <p className="roomtype">
-                  <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {bookingDetails.roomtype}
+
+                <p className="id">
+                  <FontAwesomeIcon icon={faIdCard} className="icon" />
+                  LocalID: {bookingDetails.availability}
                 </p>
               </div>
 
@@ -666,56 +701,45 @@ export default function BookNow({ refresh, reset, userData }) {
                 </button>
               </div>
 
-
               <div className="reviews" key={refresh}>
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
-                  <div className="row g-0">
-                    <div className="col-md-4">
-                      <div className="card-body">
-                        <span>4.3 Ratting Icon</span>
-                        <h4>Very Good</h4>
-                        <p>880 ratings </p>
-                      </div>
-                    </div>
-                    <div className="col-md-8">
-                      <div className="card-body"></div>
-                    </div>
-                  </div>
+                  <Ratingrange />
+
                   {currentData
                     ? [...currentData].reverse().map((rev, i) => (
-                      <>
-                        <div
-                          className="d-flex flex-column gap-3"
-                          style={{
-                            padding: "20px",
-                            marginRight: "10%",
-                            // marginBottom: "20px",
-                            width: "75%",
-                            height: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: "1",
-                          }}
-                          key={i}
-                        >
-                          <div className="review_container">
-                            <div className="comment_profile">
-                              <Avatar
-                                name={rev.user.name}
-                                src={rev.user.images[0]}
-                                round={true}
-                                size="35"
-                                style={{
-                                  boxShadow:
-                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                                }}
-                              />
-                            </div>
+                        <>
+                          <div
+                            className="d-flex flex-column gap-3"
+                            style={{
+                              padding: "20px",
+                              marginRight: "10%",
+                              // marginBottom: "20px",
+                              width: "75%",
+                              height: "auto",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "1",
+                            }}
+                            key={i}
+                          >
+                            <div className="review_container">
+                              <div className="comment_profile">
+                                <Avatar
+                                  name={rev.user.name}
+                                  src={rev.user.images[0]}
+                                  round={true}
+                                  size="35"
+                                  style={{
+                                    boxShadow:
+                                      "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                  }}
+                                />
+                              </div>
 
-                            <div className="comment_profile_name">
-                              <h4>{rev.user.name}</h4>
-                            </div>
+                              <div className="comment_profile_name">
+                                <h4>{rev.user.name}</h4>
+                              </div>
 
                               {rev.review.user === userId && (
                                 <div className="comment_update_del">
@@ -763,47 +787,61 @@ export default function BookNow({ refresh, reset, userData }) {
                               <div className="review_comment">
                                 <p>{rev.review.comment}</p>
 
-                              <div className="comment_date">
-                                <h6>{formatDate(rev.review.createdAt)}</h6>
+                                <div className="comment_date">
+                                  <h6>{formatDate(rev.review.createdAt)}</h6>
+                                </div>
                               </div>
-                            </div>
-                          )}
-                          <div style={{ border: "1px solid #94a3b8 " }}></div>
-                        </div>
-                      </>
-                    ))
-                  : null}
-              </div>
-              {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
-              <div className="_pagination">
-                <button
-                  className="_pagination-button"
-                  onClick={handlePrevPage}
-                  disabled={currentPage === 1}
-                >
-                  Prev
-                </button>
-                {visiblePages.map((page) => (
+                            )}
+                            <div style={{ border: "1px solid #94a3b8 " }}></div>
+                          </div>
+                        </>
+                      ))
+                    : null}
+                </div>
+                {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
+                <div className="_pagination">
                   <button
-                    key={page}
-                    className={`_pagination-button ${
-                      page === currentPage ? "_pagination-active" : ""
-                    }`}
-                    onClick={() => handlePageClick(page)}
+                    className="_pagination-button"
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
                   >
-                    {page}
+                    Prev
                   </button>
-                ))}
-                <button
-                  className="_pagination-button"
-                  onClick={handleNextPage}
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
+                  {visiblePages.map((page) => (
+                    <button
+                      key={page}
+                      className={`_pagination-button ${
+                        page === currentPage ? "_pagination-active" : ""
+                      }`}
+                      onClick={() => handlePageClick(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  <button
+                    className="_pagination-button"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
-            <CheckOut
+            <div className="bookingDetailsticky">
+              <BookingDetails
+                hotelName={bookingDetails.hotelName}
+                price={bookingDetails.price}
+                foodPrice={foodPrice}
+                hotelID={hotelID}
+                userId={userId}
+                currency="INR"
+                userData={userData}
+              />
+            </div>
+          </div>
+
+          {/* <CheckOut
             rating={bookingDetails.rating}
             hoteldescription={bookingDetails.description}
             hotelName={bookingDetails.hotelName}
@@ -820,7 +858,7 @@ export default function BookNow({ refresh, reset, userData }) {
             destination={bookingDetails.destination}
             paymentMethod={bookingDetails.paymentMethod}
           /> */}
-          <button>Book Now</button>
+          {/* <button>Book Now</button> */}
         </div>
       </div>
     </>
