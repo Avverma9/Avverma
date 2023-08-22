@@ -42,7 +42,7 @@
 }
 .hotel-details1 .hotel-descrip {
   color: rgb(112, 112, 112);
-  width: 50%;
+  width: 100%;
   margin-bottom: 50px;
   margin-top: 44px;
 }
@@ -59,7 +59,7 @@
 }
 
 .amenity-section {
-  width: 50%;
+  width: 100%;
 }
 .amenityclass {
   display: flex;
@@ -247,7 +247,7 @@
   margin-bottom: 20px;
 }
 .hotel-policies {
-  width: 50%;
+  width: 100%;
   margin-top: 50px;
 }
 .pricing {

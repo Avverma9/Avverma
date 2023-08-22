@@ -45,19 +45,25 @@
 }
 .slider-arrow-left-arrow,
 .slider-arrow-right-arrow {
-  font-size: 25px;
-  background-color: rgb(104, 104, 104);
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  display: block;
+  visibility: visible;
+  font-weight: 501;
+  cursor: pointer;
+background-color: rgba(0, 0, 0, 0.135);
+color: white;
+font-size: 24px;
+padding: 10px;
+border-radius: 50%;
 }
 
 .slider-arrow-right-arrow:hover {
   background-color: rgba(28, 28, 28);
+  transition: all 0.8s ease;
 }
 
 .slider-arrow-left-arrow:hover {
   background-color: rgb(26, 26, 26);
+  transition: all 0.8s ease;
 }
 @media (max-width: 768px) {
   

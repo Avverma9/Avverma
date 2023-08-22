@@ -131,13 +131,11 @@
 /* ========= */
 
 /* >>>>>>>>> Temporary merge branch 2 */
-.view-details-button:hover,
-.book-now-button:hover {
-  background-color: #0056b3;
-}
+
+
 
 .amenities {
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .amenities h6 {
@@ -275,19 +273,20 @@ input[type="checkbox"] {
   font-size: 22px;
   color: black;
   font-weight: bold;
-  margin: 0;
+  margin-bottom: 10px;
 }
 
 .hotel-rating {
-  font-size: 12px;
-  color: #ffffff;
-  margin: 0px;
-  display: flex;
-  align-items: center;
-  background-color: #3bc03b;
-  padding: 4px;
-  border-radius: 3px;
-  width: 6%;
+  font-size: 14px;
+color: #ffffff;
+margin: 0px;
+display: flex;
+align-items: center;
+background-color: #3bc03b;
+padding: 8px;
+border-radius: 3px;
+width: 60px;
+justify-content: center;
 }
 
 .fastar {
@@ -307,14 +306,15 @@ input[type="checkbox"] {
 
 .view-details-button {
   font-family: "Roboto", sans-serif;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 8px;
-  width: 53%;
-  color: rgb(2, 2, 2);
-  border: 1px solid black;
-  background: white;
+font-weight: bold;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 8px;
+width: 100%;
+color: rgb(105, 105, 105);
+border: 1px solid #cdcdcd;
+background: white;
+font-size: 14px;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -323,7 +323,8 @@ input[type="checkbox"] {
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 8px;
-  width: 53%;
+  width: 100%;
+  font-size: 14px;
 }
 
 /* <<<<<<<<< Temporary merge branch 1 */
@@ -331,12 +332,14 @@ input[type="checkbox"] {
 
 
 /* >>>>>>>>> Temporary merge branch 2 */
-.view-details-button:hover,
+
 .book-now-button:hover {
   /* ... previous styles ... */
   background-color: #0056b3;
   transform: translateY(-3px);
+  transition: 0.3s;
 }
+
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {
