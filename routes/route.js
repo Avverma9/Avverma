@@ -13,7 +13,9 @@ const bookingController = require("../controllers/bookingController");
 const offersController = require("../controllers/offersController")
 const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
+const carouselController = require("../controllers/carouselController")
 // const otpController = require("../controllers/otpController")
+const couponController = require("../controllers/couponController")
 
 
 
@@ -24,7 +26,9 @@ router.patch(
   complaintController.approveComplaint
 );
 router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
-
+//==============================carousel====================================//
+router.post("/create/second/carousel",upload,carouselController.createFirstCarousel)
+router.get("/get/second/carousel",carouselController.getSecondCarousel)
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
@@ -72,10 +76,10 @@ router.get('/partners/:partnerId', partnerController.getHotelPartner);
 
 //============================= BOOKING =======================================
 router.post('/booking/:userId/:hotelId',upload, bookingController.createBooking);
-router.get('/bookingsConfirm/:id', bookingController.getConfirmedBookings);
-router.get('/bookingFailed/:id', bookingController.getFailedBookings);
+router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
+router.get('/bookingFailed', bookingController.getFailedBookings);
 router.put('/booking/:bookingId', bookingController.cancelBooking);
-router.get("/booking/getCancelledBooking/:id", bookingController.getCancelledBooking)
+router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)
 router.put('/updatebooking/:bookingId', bookingController.updateBookingDates);
 
@@ -103,6 +107,9 @@ router.post("/verifyotp", emailController.verifyOtp)
 router.post("/create",upload,foodController.createFood)
 router.get("/get/latest/food",foodController.getFood)
 
+// /=================================Coupon======================================//
+router.post('/coupon',couponController.MakeCoupon )
+router.get('/coupon/:code',couponController.ApplyCoupon)
 
 
 
