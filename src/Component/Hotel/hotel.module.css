@@ -261,8 +261,8 @@ hr {
 
 /* Optional styles for label and checkbox positioning */
 label {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
 }
 
 input[type="checkbox"] {

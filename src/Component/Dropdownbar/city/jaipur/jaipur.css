@@ -282,7 +282,8 @@ width:6%
 
 .filt-2nd label,
 .filt-3rd label {
-  display: block;
+  display: flex;
+  align-items: center;
   margin-bottom: 5px;
   cursor: pointer;
 }

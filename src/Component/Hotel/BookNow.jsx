@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import {CiStar} from 'react-icons/ci';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
 import {
@@ -36,6 +37,7 @@ import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
+import Ratingrange from "./Ratingrange";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -493,10 +495,47 @@ export default function BookNow({ refresh, reset, userData }) {
 
               <div className="hotel-policies">
                 <div className="hotel-policyheading">Hotel Policies:</div>
+                <div className="bookcardmain">
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check in</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="text"
+                          value="12 PM"
+                        />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check out</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="text"
+                          value="11 AM"
+                          onChange={(e) => setCheckOutDate(e.target.value)}
+                          
+                          
+                        />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
                 <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
+                
               </div>
 
-              <div className="bookcardmain">
+              
+
+              {/* <div className="bookcardmain">
                 <div className="booking-card">
                   <h2 className="booking-card-title">Check in</h2>
                   <div className="booking-card-content">
@@ -531,7 +570,7 @@ export default function BookNow({ refresh, reset, userData }) {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="_meals-container">
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
@@ -574,10 +613,11 @@ export default function BookNow({ refresh, reset, userData }) {
               </div>
               <div className="cust-detail">Customer Details:</div>
               <div className="card">
-                <p className="id">
-                  <FontAwesomeIcon icon={faIdCard} className="icon" />
-                  LocalID: {bookingDetails.availability}
+              <p className="roomtype">
+                  <FontAwesomeIcon icon={faHotel} className="icon" />
+                  Room Type: {bookingDetails.roomtype}
                 </p>
+                
                 <p className="noofroom" >
                 <FontAwesomeIcon icon={faRestroom} className="icon" />
                 Rooms:
@@ -591,7 +631,8 @@ export default function BookNow({ refresh, reset, userData }) {
                 </button>
                 <input
                   className="inputbutton"
-                  type="number"
+                  type="text"
+                  inputmode="numeric"
                   value={selectedRooms}
                   onChange={handleRoomChange}
                   min="1"
@@ -620,7 +661,8 @@ export default function BookNow({ refresh, reset, userData }) {
                   </button>
                   <input
                     className="inputbutton"
-                    type="number"
+                    type="text" 
+                    inputmode="numeric"
                     value={selectedGuests}
                     onChange={(e) => setSelectedGuests(e.target.value)}
                     min="1"
@@ -640,9 +682,10 @@ export default function BookNow({ refresh, reset, userData }) {
                     )}
                   </>
                 )}
-                <p className="roomtype">
-                  <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {bookingDetails.roomtype}
+               
+                <p className="id">
+                  <FontAwesomeIcon icon={faIdCard} className="icon" />
+                  LocalID: {bookingDetails.availability}
                 </p>
               </div>
 
@@ -670,18 +713,8 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="reviews" key={refresh}>
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
-                  <div className="row g-0">
-                    <div className="col-md-4">
-                      <div className="card-body">
-                        <span>4.3 Ratting Icon</span>
-                        <h4>Very Good</h4>
-                        <p>880 ratings </p>
-                      </div>
-                    </div>
-                    <div className="col-md-8">
-                      <div className="card-body"></div>
-                    </div>
-                  </div>
+                  <Ratingrange/>
+                  
                   {currentData
                     ? [...currentData].reverse().map((rev, i) => (
                       <>

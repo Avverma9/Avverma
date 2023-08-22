@@ -341,7 +341,7 @@ input[type="checkbox"]{
   display: flex;
 position: relative;
 cursor: pointer;
-margin-bottom: 18px;
+
 padding-left: 28px;
 user-select: none;
 }
