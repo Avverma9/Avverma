@@ -963,5 +963,52 @@
 }
 
 .bookingDetailsticky{
+margin-right: 10%;
 
+}
+._meals-container h1{
+  font-size: 25px;
+font-weight: bold;
+color: black;
+margin-top: 25px;
+margin-bottom: 20px;
+}
+.col-md-12 button{
+  border-radius: 4px;
+  background-color: rgb(26, 182, 79);
+  border: 0px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2;
+  padding: 10px;
+  width: 100%;
+  outline: 0px;
+}
+.col-md-12 button:hover{
+  border-radius: 4px;
+  background-color: rgb(11, 148, 57);
+  border: 0px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2;
+  padding: 10px;
+  width: 100%;
+  outline: 0px;
+}
+.img-thali{
+  width: 100%;
+}
+.img-thali img{
+  width: 100%;
+}
+.card-body h5{
+  display: flex;
+justify-content: center;
+font-weight: 501;
+font-size: 18px;
+}
+.col-md-8{
+  width: 100% !important;
 }
