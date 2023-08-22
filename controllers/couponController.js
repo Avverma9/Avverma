@@ -38,7 +38,19 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 
+//GET ALL 
+const GetAllCoupons = async (req, res) => {
+  try {
+    const coupons = await couponModel.find().sort({ validity: -1 });
+    res.status(200).json(coupons);
+  } catch (error) {
+
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   MakeCoupon,
   ApplyCoupon,
+  GetAllCoupons,
 };
