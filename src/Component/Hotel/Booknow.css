@@ -888,6 +888,39 @@
   margin-right: 10px;
 }
 
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.inputbutton {
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.negposbtn {
+  width: 30px;
+  height: 30px;
+  background-color: #0056b3;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.negposbtn:hover {
+  background-color: #004280;
+}
+
+.icon {
+  margin-right: 10px;
+}
 
 .input-container {
   display: flex;
@@ -923,57 +956,21 @@
   margin-right: 10px;
 }
 
-
-.input-container {
-  display: flex;
-  align-items: center;
-}
-
-.inputbutton {
-  width: 50px;
-  text-align: center;
-  padding: 5px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.negposbtn {
-  width: 30px;
-  height: 30px;
-  background-color: #0056b3;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 0 5px;
-}
-
-.negposbtn:hover {
-  background-color: #004280;
-}
-
-.icon {
-  margin-right: 10px;
-}
-
-.bookingflex{
+.bookingflex {
   display: flex;
 }
 
-.bookingDetailsticky{
-margin-right: 10%;
-
+.bookingDetailsticky {
+  margin-right: 10%;
 }
-._meals-container h1{
+._meals-container h1 {
   font-size: 25px;
-font-weight: bold;
-color: black;
-margin-top: 25px;
-margin-bottom: 20px;
+  font-weight: bold;
+  color: black;
+  margin-top: 25px;
+  margin-bottom: 20px;
 }
-.col-md-12 button{
+.col-md-12 button {
   border-radius: 4px;
   background-color: rgb(26, 182, 79);
   border: 0px;
@@ -985,7 +982,7 @@ margin-bottom: 20px;
   width: 100%;
   outline: 0px;
 }
-.col-md-12 button:hover{
+.col-md-12 button:hover {
   border-radius: 4px;
   background-color: rgb(11, 148, 57);
   border: 0px;
@@ -997,18 +994,21 @@ margin-bottom: 20px;
   width: 100%;
   outline: 0px;
 }
-.img-thali{
+.img-thali {
   width: 100%;
 }
-.img-thali img{
+.img-thali img {
   width: 100%;
 }
-.card-body h5{
+.card-body h5 {
   display: flex;
-justify-content: center;
-font-weight: 501;
-font-size: 18px;
+  justify-content: center;
+  font-weight: 501;
+  font-size: 18px;
 }
-.col-md-8{
+.col-md-8 {
   width: 100% !important;
+}
+.row-g-0 {
+  height: 200px;
 }

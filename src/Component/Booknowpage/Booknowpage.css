@@ -340,6 +340,7 @@
   flex-direction: row;
   align-items: flex-start;
   gap: 15px;
+  margin-top: 10px;
 }
 .create_new_reviews > textarea {
   width: 74%;
