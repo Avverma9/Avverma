@@ -15,12 +15,14 @@ const BookingDetails = ({
   currency,
   userData,
   hotelName,
+  selectedRooms,
+  selectedGuests,
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (price + foodPrice) * 100,
+      amount: (price * selectedRooms + foodPrice) * 100,
       currency: data.currency,
       prefill: {
         name: userData.name,
@@ -89,7 +91,7 @@ const BookingDetails = ({
             <div className={styles.head}>
               <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {price + foodPrice}
+                {price * selectedRooms + foodPrice}
               </span>
               <span>1999</span>
               <span>81% off</span>
@@ -108,7 +110,9 @@ const BookingDetails = ({
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in}>1 Room , 1 Guest</div>
+                <div className={styles.guest_in_in}>
+                  {selectedRooms} Room , {selectedGuests} Guest
+                </div>
               </div>
             </div>
           </div>
@@ -201,7 +205,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price}
+                  {price * selectedRooms}
                 </span>
               </div>
             </div>
@@ -219,7 +223,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price + foodPrice}
+                  {price * selectedRooms + foodPrice}
                 </span>
               </div>
             </div>
