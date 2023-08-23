@@ -31,13 +31,14 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import { FaTelegramPlane } from "react-icons/fa";
+import { FaStar, FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
 import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
+import Ratings from "../Ratings/Ratings";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,6 +59,7 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const [localid, setLocalid] = useState("");
   const [myReview, setMyReview] = useState("");
+  const [myrating, setMyRating] = useState(0);
   const [hotelReviews, setHotelReviews] = useState([]);
   const [meals, setMeals] = useState([]);
 
@@ -228,6 +230,7 @@ export default function BookNow({ refresh, reset, userData }) {
         },
         body: JSON.stringify({
           comment: myReview,
+          rating: myrating,
         }),
       }
     ).then((response) => {
@@ -700,6 +703,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 >
                   <FaTelegramPlane />
                 </button>
+                <Ratings setMyRating={setMyRating} />
               </div>
 
               <div className="reviews" key={refresh}>
@@ -785,13 +789,26 @@ export default function BookNow({ refresh, reset, userData }) {
                                 </button>
                               </div>
                             ) : (
-                              <div className="review_comment">
-                                <p>{rev.review.comment}</p>
+                              <>
+                                <span>
+                                  {[...Array(rev.review.rating)].map(() => {
+                                    return (
+                                      <FaStar
+                                        className="star"
+                                        size={22}
+                                        color={"#ffc107"}
+                                      />
+                                    );
+                                  })}
+                                </span>
+                                <div className="review_comment">
+                                  <p>{rev.review.comment}</p>
 
-                                <div className="comment_date">
-                                  <h6>{formatDate(rev.review.createdAt)}</h6>
+                                  <div className="comment_date">
+                                    <h6>{formatDate(rev.review.createdAt)}</h6>
+                                  </div>
                                 </div>
-                              </div>
+                              </>
                             )}
                             <div style={{ border: "1px solid #94a3b8 " }}></div>
                           </div>

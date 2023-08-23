@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import "./Ratings.css";
 
-const Ratings = () => {
-  const [rating, setRating] = useState(null);
+const Ratings = ({ setMyRating }) => {
+  const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
-  console.log(rating);
+  useEffect(() => {
+    setMyRating(rating);
+  }, [rating]);
+
   return (
     <>
       {[...Array(5)].map((star, index) => {
@@ -21,7 +24,7 @@ const Ratings = () => {
             />
             <FaStar
               className="star"
-              size={28}
+              size={22}
               color={currentRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
               onMouseEnter={() => setHover(currentRating)}
               onMouseLeave={() => setHover(null)}
