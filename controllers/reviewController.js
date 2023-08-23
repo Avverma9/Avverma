@@ -9,7 +9,8 @@ const createReview = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
 
-    const { comment } = req.body;
+    const { comment,rating } = req.body;
+
 
     const user = await userModel.findById(userId);
 
@@ -21,6 +22,7 @@ const createReview = async (req, res) => {
       hotel: hotelId,
       user: userId,
       comment: comment,
+      rating: rating
     });
     const savedReview = await reviewModel.create(review);
 
@@ -33,6 +35,7 @@ const createReview = async (req, res) => {
         images: user.images,
       },
       comment: savedReview.comment,
+      rating : savedReview.rating,
       createdAt: savedReview.createdAt,
     };
     return res.status(201).send({
@@ -49,7 +52,7 @@ const createOfferReview = async (req, res) => {
   try {
     const { userId, offersId } = req.params;
 
-    const { comment } = req.body;
+    const { comment,rating } = req.body;
 
     const user = await userModel.findById(userId);
 
@@ -61,6 +64,7 @@ const createOfferReview = async (req, res) => {
       offers: offersId,
       user: userId,
       comment: comment,
+      rating: rating
     });
     const savedReview = await reviewModel.create(review);
 
@@ -73,6 +77,7 @@ const createOfferReview = async (req, res) => {
         images: user.images,
       },
       comment: savedReview.comment,
+      rating: savedReview.comment,
       createdAt: savedReview.createdAt,
     };
     return res.status(201).send({
@@ -89,7 +94,7 @@ const getReviewsByHotelId = async (req, res) => {
   try {
     const { hotelId } = req.params;
 
-    const reviews = await reviewModel.find({ hotel: hotelId });
+    const reviews = await reviewModel.find({ hotel: hotelId })
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });

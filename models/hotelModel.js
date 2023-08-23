@@ -79,22 +79,22 @@ const hotelsSchema = new mongoose.Schema({
   },
   collections: {
     type: [String],
-    required: true,
+   
   },
   categories: {
     type: [String],
-    required: true,
+  
   },
   accommodationType: {
     type: [String],
-    required: true,
+ 
   },
   checkInFeature: {
     type: Boolean,
   },
-  // contact:{
-  //  type: Number,
-  // },
+  contact:{
+   type: Number,
+  },
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);

@@ -17,6 +17,7 @@ const carouselController = require("../controllers/carouselController")
 const DashboardUser = require("../controllers/dashboardUser");
 
 // const otpController = require("../controllers/otpController")
+const couponController = require("../controllers/couponController")
 
 
 
@@ -53,6 +54,7 @@ router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotelsAccomodation", hotelController.getHotelsByAccommodation);
 router.get('/hotels/filters', hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all",hotelController.getCity)
+router.get("/hotels/query/get/by",hotelController.getByQuery)
 
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
@@ -110,6 +112,12 @@ router.get("/get/latest/food",foodController.getFood)
 //===============================Dashboard===========================
 router.post("/create/dashboard/user",upload,DashboardUser.registerUser)
 router.post("/login/dashboard/user",DashboardUser.loginUser)
+
+// /=================================Coupon======================================//
+router.post('/coupon',couponController.MakeCoupon )
+router.get('/coupon/:code',couponController.ApplyCoupon)
+router.get('/coupon/get/all', couponController.GetAllCoupons);
+
 
 
 

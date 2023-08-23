@@ -64,6 +64,31 @@ const createHotel = async function (req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+//=============================get hotel by amenities===========================//
+const getByQuery = async (req, res) => {
+  const { amenities, bedTypes,roomTypes,starRating,propertyType } = req.query;
+  let query = {};
+
+  if (amenities) {
+    query.amenities = amenities;
+  }
+
+  if (bedTypes) {
+    query.bedTypes = bedTypes;
+  }
+
+  if (roomTypes) {
+    query.roomTypes = roomTypes;
+  }
+if(starRating){
+  query.starRating=starRating;
+}
+if(propertyType){
+  query.propertyType=propertyType;
+}
+  const fetchedData = await hotelModel.find(query);
+  res.json(fetchedData);
+};
 
 //================================================================================================
 const searchHotels = async (req, res) => {
@@ -78,9 +103,7 @@ const searchHotels = async (req, res) => {
       moreOptions,
     } = req.query;
 
-    // if (numRooms && Number(numRooms) > 4) {
-    //   return res.status(400).json({ message: "User cannot book more than 4 rooms, please contact the hotel" });
-    // }
+ 
     
     const searchQuery = {};
 
@@ -89,9 +112,9 @@ const searchHotels = async (req, res) => {
     }
 
     if (startDate && endDate) {
-      // Checking if the start date is before the end date
+    
       if (startDate <= endDate) {
-        // Getting the hotels that are available between the start and end date
+     
         searchQuery.startDate = { $lte: new Date(startDate) };
         searchQuery.endDate = { $gte: new Date(endDate) };
       }
@@ -101,7 +124,7 @@ const searchHotels = async (req, res) => {
       searchQuery.numRooms = { $gte: Number(numRooms) };
     }
 
-    // Set localId to false by default if not passed
+   
     if (localId !== undefined && localId !== "") {
       searchQuery.localId = localId;
     } else {
@@ -115,13 +138,13 @@ const searchHotels = async (req, res) => {
 
     let searchResults = await hotelModel.find(searchQuery).lean();
     searchResults = searchResults.map((hotel) => {
-      // Calculate extra guests by multiplying the number of guests allowed times the number of rooms
+      
       const extraGuests =
         guests - hotel.guests * Number(numRooms) > 0
           ? guests - hotel.guests * Number(numRooms)
           : 0;
 
-      // Calculate the total price by multiplying the price per room times the number of rooms plus the extra guests times 10% of the price per room
+  
       hotel.price =
         Number(hotel.price) * Number(numRooms) +
         extraGuests * (Number(hotel.price) * 0.1);
@@ -152,9 +175,7 @@ const getCity = async function(req,res){
   res.json(hotels)
 }
 //==================================get by category========================================//
-const getByFilter= async function(req,res){
-  
-}
+
 //==========================================================================
 
 const getHotelbyName = async (req, res) => {
@@ -283,5 +304,6 @@ module.exports = {
   getHotelsByLocalID,
   getHotelsByCategory,
   getHotelsByFilters,
-  getCity
+  getCity,
+  getByQuery
 };
