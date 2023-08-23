@@ -122,7 +122,7 @@
 .booking-card {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 15px 45px;
+  padding: 15px 15px;
   background-color: #f9f9f9;
   margin-bottom: 20px;
 }
@@ -214,6 +214,8 @@
   margin-bottom: 10px;
   font-size: 16px;
   color: #333;
+  display: flex;
+  align-items: center;
 }
 
 .card .icon {
@@ -939,7 +941,7 @@
 .negposbtn {
   width: 30px;
   height: 30px;
-  background-color: #0056b3;
+  background-color: #23e163;
   color: white;
   font-size: 16px;
   border: none;
@@ -949,7 +951,7 @@
 }
 
 .negposbtn:hover {
-  background-color: #004280;
+  background-color: #1ab64f;
 }
 
 .icon {
@@ -1004,11 +1006,16 @@
   display: flex;
   justify-content: center;
   font-weight: 501;
-  font-size: 18px;
+  font-size: 14px;
 }
 .col-md-8 {
   width: 100% !important;
 }
 .row-g-0 {
   height: 200px;
+}
+.booking-date input {
+  padding: 5px;
+  width: 100%;
+  font-size: 18px;
 }

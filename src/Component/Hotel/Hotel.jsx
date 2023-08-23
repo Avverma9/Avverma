@@ -401,6 +401,7 @@ function HotelList() {
                     display: "flex",
                     justifyContent: "space-between",
                     marginTop: "6px",
+                    height:"50px"
                   }}
                 >
                   <div className="rupeedetail">
@@ -420,7 +421,9 @@ function HotelList() {
                     style={{
                       display: "flex",
                       flexDirection: "row",
-                      gap: "15%",
+                      gap: "10px",
+                      width:"50%",
+
                     }}
                   >
                     <button

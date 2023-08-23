@@ -131,6 +131,8 @@
 
 /* >>>>>>>>> Temporary merge branch 2 */
 
+
+
 .amenities {
   margin-top: 30px;
 }
@@ -272,15 +274,15 @@ input[type="checkbox"] {
 
 .hotel-rating {
   font-size: 14px;
-  color: #ffffff;
-  margin: 0px;
-  display: flex;
-  align-items: center;
-  background-color: #3bc03b;
-  padding: 8px;
-  border-radius: 3px;
-  width: 60px;
-  justify-content: center;
+color: #ffffff;
+margin: 0px;
+display: flex;
+align-items: center;
+background-color: #3bc03b;
+padding: 8px;
+border-radius: 3px;
+width: 60px;
+justify-content: center;
 }
 
 .fastar {
@@ -300,15 +302,15 @@ input[type="checkbox"] {
 
 .view-details-button {
   font-family: "Roboto", sans-serif;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 8px;
-  width: 100%;
-  color: rgb(105, 105, 105);
-  border: 1px solid #cdcdcd;
-  background: white;
-  font-size: 14px;
+font-weight: bold;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 8px;
+width: 100%;
+color: rgb(105, 105, 105);
+border: 1px solid #cdcdcd;
+background: white;
+font-size: 14px;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -332,6 +334,7 @@ input[type="checkbox"] {
   transform: translateY(-3px);
   transition: 0.3s;
 }
+
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {

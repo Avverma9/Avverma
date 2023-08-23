@@ -496,35 +496,41 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="hotel-policies">
                 <div className="hotel-policyheading">Hotel Policies:</div>
                 <div className="bookcardmain">
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check in</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input type="text" value="12 PM" />
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check out</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input
-                            type="text"
-                            value="11 AM"
-                            onChange={(e) => setCheckOutDate(e.target.value)}
-                          />
-                        </span>
-                      </p>
-                    </div>
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check in</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="text"
+                          value="12 PM"
+                        />
+                      </span>
+                    </p>
                   </div>
                 </div>
+
+                <div className="booking-card">
+                  <h2 className="booking-card-title">Check out</h2>
+                  <div className="booking-card-content">
+                    <p>
+                      <span className="booking-label"></span>{" "}
+                      <span className="booking-date">
+                        <input
+                          type="text"
+                          value="11 AM"
+                          onChange={(e) => setCheckOutDate(e.target.value)}
+                          
+                          
+                        />
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
                 <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
+                
               </div>
 
               {/* <div className="bookcardmain">
@@ -701,6 +707,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 </button>
               </div>
 
+
               <div className="reviews" key={refresh}>
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
@@ -708,94 +715,94 @@ export default function BookNow({ refresh, reset, userData }) {
 
                   {currentData
                     ? [...currentData].reverse().map((rev, i) => (
-                        <>
-                          <div
-                            className="d-flex flex-column gap-3"
-                            style={{
-                              padding: "20px",
-                              marginRight: "10%",
-                              // marginBottom: "20px",
-                              width: "75%",
-                              height: "auto",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "1",
-                            }}
-                            key={i}
-                          >
-                            <div className="review_container">
-                              <div className="comment_profile">
-                                <Avatar
-                                  name={rev.user.name}
-                                  src={rev.user.images[0]}
-                                  round={true}
-                                  size="35"
-                                  style={{
-                                    boxShadow:
-                                      "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
-                                  }}
-                                />
-                              </div>
-
-                              <div className="comment_profile_name">
-                                <h4>{rev.user.name}</h4>
-                              </div>
-
-                              {rev.review.user === userId && (
-                                <div className="comment_update_del">
-                                  <BiEdit
-                                    color="#2563eb"
-                                    size={24}
-                                    onClick={() => toggleUpdateReview(rev)}
-                                  />
-                                  <BiTrash
-                                    color="#dc3545"
-                                    size={24}
-                                    onClick={() =>
-                                      deleteReviewHandler(rev.review._id)
-                                    }
-                                  />
-                                </div>
-                              )}
+                      <>
+                        <div
+                          className="d-flex flex-column gap-3"
+                          style={{
+                            padding: "20px",
+                            marginRight: "10%",
+                            // marginBottom: "20px",
+                            width: "75%",
+                            height: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1",
+                          }}
+                          key={i}
+                        >
+                          <div className="review_container">
+                            <div className="comment_profile">
+                              <Avatar
+                                name={rev.user.name}
+                                src={rev.user.images[0]}
+                                round={true}
+                                size="35"
+                                style={{
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                              />
                             </div>
 
-                            {isUpdatingReview && reviewId === rev.review._id ? (
-                              <div className="update_review">
-                                <textarea
-                                  placeholder="Update Review"
-                                  type="text"
-                                  rows="2"
-                                  value={updatedReview}
-                                  onChange={(e) =>
-                                    setUpdatedReview(e.target.value)
-                                  }
-                                  onKeyUp={keyPressHandler}
-                                  onFocus={(e) =>
-                                    setFieldFocus(
-                                      e.target.nextElementSibling.className
-                                    )
+                            <div className="comment_profile_name">
+                              <h4>{rev.user.name}</h4>
+                            </div>
+
+                            {rev.review.user === userId && (
+                              <div className="comment_update_del">
+                                <BiEdit
+                                  color="#2563eb"
+                                  size={24}
+                                  onClick={() => toggleUpdateReview(rev)}
+                                />
+                                <BiTrash
+                                  color="#dc3545"
+                                  size={24}
+                                  onClick={() =>
+                                    deleteReviewHandler(rev.review._id)
                                   }
                                 />
-                                <button
-                                  className="update_review_button"
-                                  onClick={updateReviewHandler}
-                                >
-                                  <FaTelegramPlane />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="review_comment">
-                                <p>{rev.review.comment}</p>
-
-                                <div className="comment_date">
-                                  <h6>{formatDate(rev.review.createdAt)}</h6>
-                                </div>
                               </div>
                             )}
-                            <div style={{ border: "1px solid #94a3b8 " }}></div>
                           </div>
-                        </>
-                      ))
+
+                          {isUpdatingReview && reviewId === rev.review._id ? (
+                            <div className="update_review">
+                              <textarea
+                                placeholder="Update Review"
+                                type="text"
+                                rows="2"
+                                value={updatedReview}
+                                onChange={(e) =>
+                                  setUpdatedReview(e.target.value)
+                                }
+                                onKeyUp={keyPressHandler}
+                                onFocus={(e) =>
+                                  setFieldFocus(
+                                    e.target.nextElementSibling.className
+                                  )
+                                }
+                              />
+                              <button
+                                className="update_review_button"
+                                onClick={updateReviewHandler}
+                              >
+                                <FaTelegramPlane />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="review_comment">
+                              <p>{rev.review.comment}</p>
+
+                              <div className="comment_date">
+                                <h6>{formatDate(rev.review.createdAt)}</h6>
+                              </div>
+                            </div>
+                          )}
+                          <div style={{ border: "1px solid #94a3b8 " }}></div>
+                        </div>
+                      </>
+                    ))
                     : null}
                 </div>
                 {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
@@ -810,9 +817,8 @@ export default function BookNow({ refresh, reset, userData }) {
                   {visiblePages.map((page) => (
                     <button
                       key={page}
-                      className={`_pagination-button ${
-                        page === currentPage ? "_pagination-active" : ""
-                      }`}
+                      className={`_pagination-button ${page === currentPage ? "_pagination-active" : ""
+                        }`}
                       onClick={() => handlePageClick(page)}
                     >
                       {page}
