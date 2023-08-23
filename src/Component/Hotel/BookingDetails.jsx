@@ -112,7 +112,7 @@ const BookingDetails = ({
               </div>
             </div>
           </div>
-          <div className={styles.facilities}>
+          {/* <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
                 <CiMobile1 />
@@ -126,8 +126,8 @@ const BookingDetails = ({
                 <BsPencil />
               </span>
             </div>
-          </div>
-          <div className={styles.offerdata}>
+          </div> */}
+          {/* <div className={styles.offerdata}>
             <span className={styles.percenticon}>
               <BiSolidOffer />
             </span>
@@ -146,8 +146,8 @@ const BookingDetails = ({
                 </label>
               </div>
             </div>
-          </div>
-          <div className={styles.offerapplied}>
+          </div> */}
+          {/* <div className={styles.offerapplied}>
             <div className={styles.fside}>
               <span className={styles.icon_a}>
                 <AiOutlineCodepenCircle />
@@ -169,8 +169,8 @@ const BookingDetails = ({
                 <input type="checkbox" id="checkboxr" />
               </label>
             </div>
-          </div>
-          <div className={styles.wizard}>
+          </div> */}
+          {/* <div className={styles.wizard}>
             <div className={styles.wizardf}>
               <div className={styles.wizard_in}>
                 <div className={styles.wizardf1}>
@@ -194,23 +194,23 @@ const BookingDetails = ({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className={styles.pricechart}>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Price Surge</div>
+              <div className={styles.pri1}>Hotel Price</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  39
+                  {price}
                 </span>
               </div>
             </div>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Your Saving</div>
+              <div className={styles.pri1}>Food Price</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  650
+                  {foodPrice}
                 </span>
               </div>
             </div>
