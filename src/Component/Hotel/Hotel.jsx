@@ -47,8 +47,9 @@ function HotelList() {
   const [starrating,setStarrating] = useState([]);
   const [roomtype,setRoomtype] = useState([]);
   const [bedtype,setBedtype] = useState([]);
+  const [amenity,setAmenity] = useState([]);
 
-
+  
 
   //Filter functions
   const handlePropertyTypeChange = (propertyType, checked) => {
@@ -87,6 +88,16 @@ function HotelList() {
       );
     };
   };
+  const handleamenity = (amenities,checked)=>{
+    if (checked){
+      setAmenity((prevSelected)=>[...prevSelected,amenities]);
+    } else{
+      setAmenity((prevSelected)=>
+      
+      prevSelected.filter((type)=>type!==amenities)
+      );
+    };
+  };
 
 
 
@@ -98,11 +109,12 @@ function HotelList() {
     const roomtypeQueryParam = roomtype.join(",");
     const starRatingQueryParam = starrating.join(",");
     const bedtypeQueryparam = bedtype.join(",");
+    const amenitiesQueryparams = amenity.join(",");
     
     
     axios
       .get(
-        `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}`
+        `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`
       )
       .then((data) => {
         if (data.status === 200) {
@@ -110,7 +122,7 @@ function HotelList() {
         }
       })
       .catch((error) => console.log(error));
-  }, [selectedPropertyTypes,roomtype,starrating,bedtype]);
+  }, [selectedPropertyTypes,roomtype,starrating,bedtype,amenity]);
 
  
 
@@ -566,22 +578,22 @@ function HotelList() {
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("King bed or Queen bed",e.target.value)}/>
               King Bed Or Queen Bed
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("King or Twin",e.target.value)}/>
               King or Twin
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("King size + Queen bed",e.target.value)}/>
               King Size + Queen Size
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("King+Twin",e.target.value)}/>
               King+Twin
             </label>
             <label>
@@ -596,7 +608,7 @@ function HotelList() {
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("Single Bed",e.target.value)}/>
               Single Bed
             </label>
             <label>
@@ -606,17 +618,17 @@ function HotelList() {
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("Twin+King+Queen",e.target.value)}/>
               Twin+King+Queen
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("Twin Bed",e.target.value)}/>
               Twin Bed
             </label>
             <label>
               {" "}
-              <input type="checkbox" onChange={(e)=>handlebedtype("",e.target.value)}/>
+              <input type="checkbox" onChange={(e)=>handlebedtype("Twin bed or Kingbed or Queen bed",e.target.value)}/>
               King Bed or Queen Bed or Twin Bed
             </label>
           </div>
@@ -625,387 +637,387 @@ function HotelList() {
             <h5 className="colle">Amenities</h5>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("24-hour front desk service",e.target.value)}/>
               24-hour Front Desk Service
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("ATM on site",e.target.value)}/>
               ATM on Site
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Air Conditioning",e.target.value)}/>
               Air Conditioning
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Airport shuttle(free)",e.target.value)}/>
               Airport Shuttle (Free)
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("",e.target.value)}/>
               Airport Shuttle Service (Surcharge)
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("BBQ/Picnic area",e.target.value)}/>
               BBQ/picnic area
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Baby sitting",e.target.value)}/>
               Baby sitting
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Baggage Storage",e.target.value)}/>
               Baggage Storage
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Bar",e.target.value)}/>
               Bar
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Bathrobe",e.target.value)}/>
               Bathrobe
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Beach",e.target.value)}/>
               Beach
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Beachfront",e.target.value)}/>
               BeachFront
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Billiard",e.target.value)}/>
               Billiard
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Business center",e.target.value)}/>
               Business Center
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Cable TV",e.target.value)}/>
               Cable TV
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Car rental",e.target.value)}/>
               Car Rental
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Casino",e.target.value)}/>
               Casino
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Clean & Disinfect",e.target.value)}/>
               Clean & Disinfect
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Coffee/Tea",e.target.value)}/>
               Coffee/Tea
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Coffeemaker",e.target.value)}/>
               Coffee Maker
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Complimentart Bottled Water",e.target.value)}/>
               Complimentary Bottled Water
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Complimentary Toiletries",e.target.value)}/>
               Complimentary Toiletries
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Complimentary breakfast",e.target.value)}/>
               Complimentary Breakfast
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Concierge desk",e.target.value)}/>
               Conclerge Desk
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Continental Breakfast",e.target.value)}/>
               Continental Breakfast
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Currency exchange",e.target.value)}/>
               Currency Exchange
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Dinner",e.target.value)}/>
               Dinner
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Dry cleaning",e.target.value)}/>
               Dry Cleaning
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Elevators",e.target.value)}/>
               Elevators
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Executive Suite",e.target.value)}/>
               Executive Suite
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Fishing",e.target.value)}/>
               Fishing
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Fitness Center",e.target.value)}/>
               Fitness Center
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Free Parking",e.target.value)}/>
               Free Parking
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Free Wireless Internet",e.target.value)}/>
               Free Wireless Internet
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Game room",e.target.value)}/>
               Game Room
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Good Showers",e.target.value)}/>
               Good Showers
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Grocery shopping service available",e.target.value)}/>
               Grocery shopping service available
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Hair Dryer",e.target.value)}/>
               Hair Dryer
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Housekeeping",e.target.value)}/>
               House Keeping
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Indoor parking",e.target.value)}/>
               Indoor Parking
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Indoor pool",e.target.value)}/>
             Indoor Pool
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Ironing service",e.target.value)}/>
               Ironing Service
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Jacuzzi(Hot Tub)",e.target.value)}/>
               Jacuzzi (hot tub)
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Kitchen Facility",e.target.value)}/>
               Kitchen Facility
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Laundry",e.target.value)}/>
               Laundary
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Library",e.target.value)}/>
               Library
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Lockers",e.target.value)}/>
               Lockers
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Lunch",e.target.value)}/>
             Lunch
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Meeting/Banquet Facilities",e.target.value)}/>
               Meeting/Banquet Facilities
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Microwave",e.target.value)}/>
               Microwave
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Newspaper",e.target.value)}/>
               Newspaper
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Nightclub/DJ",e.target.value)}/>
               Nightclub/DJ
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Non-smoking rooms",e.target.value)}/>
               Non Smoking Rooms
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("On-site Restaurant",e.target.value)}/>
               On Site Restaurant
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Paid Parking",e.target.value)}/>
               Paid Parking
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Pet-friendly",e.target.value)}/>
               Pet Friendly
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Playground",e.target.value)}/>
               Playground
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Private brach area",e.target.value)}/>
               Private Beach area
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Refrigerator",e.target.value)}/>
               Refrigerator
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Room Service",e.target.value)}/>
               Room Service
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Safe",e.target.value)}/>
               Safe
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("SatelliteTV",e.target.value)}/>
               Satellite Tv
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Shoeshine",e.target.value)}/>
               Shoeshine
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Shops(on site)",e.target.value)}/>
               Shops (on Site)
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Social Distancing",e.target.value)}/>
               Social Distancing
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Souvenir/Gift Shop",e.target.value)}/>
               Gift Shop
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Spa",e.target.value)}/>
               Spa
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Swimming Pool",e.target.value)}/>
               Swimming Pool
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Table tennis",e.target.value)}/>
               Table tennis
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Telephone",e.target.value)}/>
               Telephone
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Television",e.target.value)}/>
               Television
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Tennis court",e.target.value)}/>
               Tennis court
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Tour Desk",e.target.value)}/>
               Tour Desk
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Towels",e.target.value)}/>
               Towels
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Turkish/Steam Bath",e.target.value)}/>
               Turkish/Steam bath
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Valet Parking",e.target.value)}/>
               valet parking
             </label>
             <label>
               {" "}
-              <input type="checkbox" />
+              <input type="checkbox" onChange={(e)=>handleamenity("Vending Machine(snacks)",e.target.value)}/>
               Vending Machine(snakes)
             </label>
             
