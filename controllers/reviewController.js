@@ -212,7 +212,7 @@ const getReviewsByUserId = async (req, res) => {
 const updateReview = async (req, res) => {
   try {
     const { userId, hotelId, reviewId } = req.params;
-    const { comment } = req.body;
+    const { comment,rating } = req.body;
 
     const review = await reviewModel.findOne({ user: userId, hotel: hotelId, _id: reviewId });
 
@@ -221,6 +221,7 @@ const updateReview = async (req, res) => {
     }
 
     review.comment = comment;
+    review.rating= rating;
 
     await review.save();
 
