@@ -95,11 +95,11 @@ const getReviewsByHotelId = async (req, res) => {
     const { hotelId } = req.params;
 
     const reviews = await reviewModel.find({ hotel: hotelId })
-
+ let countRating = reviews.length
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
-    reviews.sort((a, b) => b.createdAt - a.createdAt);
+    reviews.sort((a, b) => b.createdAt-1 - a.createdAt-1);
 
     const hotel = await hotelModel.findById(hotelId).select("hotelName");
 
@@ -127,7 +127,8 @@ const getReviewsByHotelId = async (req, res) => {
 
     res.status(200).json({
       hotel: hotel.hotelName,
-      reviews: reviewData
+      reviews: reviewData,
+      countRating
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -139,7 +140,7 @@ const  getReviewsByOfferId= async (req, res) => {
     const { offersId } = req.params;
 
     const reviews = await reviewModel.find({ offers: offersId});
-
+ let countRating= reviews.length
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
@@ -170,7 +171,8 @@ const  getReviewsByOfferId= async (req, res) => {
 
     res.status(200).json({
       offers: offers.hotelName,
-      reviews: reviewData
+      reviews: reviewData,
+      countRating
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
