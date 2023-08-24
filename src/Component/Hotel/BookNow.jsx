@@ -77,6 +77,8 @@ export default function BookNow({ refresh, reset, userData }) {
   const params = useParams();
   const [expand, setExpand] = useState(false);
 
+  const [addingFood, setAddingFood] = useState(false);
+
   const expanddescription = () => {
     setExpand(!expand);
   };
@@ -346,7 +348,11 @@ export default function BookNow({ refresh, reset, userData }) {
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
   const foodPriceHandler = (fprice) => {
-    setFoodPrice(foodPrice + fprice);
+    setAddingFood(true);
+    setTimeout(() => {
+      setFoodPrice(foodPrice + fprice);
+      setAddingFood(false);
+    }, 1000);
   };
 
   return (
@@ -602,7 +608,16 @@ export default function BookNow({ refresh, reset, userData }) {
                             className="btn btn-primary w-100 d-flex mt-4"
                             onClick={() => foodPriceHandler(m.price)}
                           >
-                            Add
+                            {addingFood ? (
+                              <div
+                                className="spinner-border text-secondary"
+                                role="status"
+                              >
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            ) : (
+                              "Add"
+                            )}
                           </button>
                         </div>
                       </div>
@@ -820,7 +835,7 @@ export default function BookNow({ refresh, reset, userData }) {
                                       <FaStar
                                         className="star"
                                         size={22}
-                                        color={"#ffc107"}
+                                        color="#ffc107"
                                       />
                                     );
                                   })}
