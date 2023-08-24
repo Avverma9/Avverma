@@ -135,7 +135,9 @@ function HotelList() {
   return (
     <>
       <div className="whole-data d-flex">
-      <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
+        <div
+          className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}
+        >
           <div className="filt-1st">
             <h3 className="filterhead">Filters</h3>
             <br />
@@ -226,8 +228,7 @@ function HotelList() {
               {" "}
               <input type="checkbox" />
               Sitting Area
-            </label>
-            {" "}
+            </label>{" "}
             <label>
               {" "}
               <input type="checkbox" />
@@ -268,7 +269,7 @@ function HotelList() {
                 expandedResultId === result._id ? styles["expanded"] : ""
               }`}
             >
-              <Imgslide />
+              <Imgslide resultId={result._id} />
               <div className={styles["search-result-content"]}>
                 <div className={styles["hotel-info"]}>
                   <h3 className={styles["search-result-title"]}>
@@ -401,7 +402,7 @@ function HotelList() {
                     display: "flex",
                     justifyContent: "space-between",
                     marginTop: "6px",
-                    height:"50px"
+                    height: "50px",
                   }}
                 >
                   <div className="rupeedetail">
@@ -422,8 +423,7 @@ function HotelList() {
                       display: "flex",
                       flexDirection: "row",
                       gap: "10px",
-                      width:"50%",
-
+                      width: "50%",
                     }}
                   >
                     <button

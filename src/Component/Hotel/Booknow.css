@@ -1019,3 +1019,16 @@
   width: 100%;
   font-size: 18px;
 }
+
+.writeReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #6792ff;
+  margin-top: 30px;
+}
+.cancelReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc3545;
+  margin-top: 30px;
+}

@@ -58,6 +58,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [foodPrice, setFoodPrice] = useState(0);
 
   const [localid, setLocalid] = useState("");
+  const [writeReview, setWriteReview] = useState(false);
   const [myReview, setMyReview] = useState("");
   const [myrating, setMyRating] = useState(0);
   const [hotelReviews, setHotelReviews] = useState([]);
@@ -240,6 +241,8 @@ export default function BookNow({ refresh, reset, userData }) {
           console.log(data);
 
           setMyReview("");
+          setMyRating(0);
+          setWriteReview(false);
           // window.location.reload();
           reset();
         }
@@ -685,26 +688,47 @@ export default function BookNow({ refresh, reset, userData }) {
                 </p>
               </div>
 
-              <div className="create_new_reviews">
-                <textarea
-                  placeholder="Write a new review"
-                  type="text"
-                  rows="2"
-                  value={myReview}
-                  onChange={(e) => setMyReview(e.target.value)}
-                  onKeyUp={keyPressHandler}
-                  onFocus={(e) =>
-                    setFieldFocus(e.target.nextElementSibling.className)
-                  }
-                />
-                <button
-                  className="post_review_button"
-                  onClick={postReviewHandler}
-                >
-                  <FaTelegramPlane />
-                </button>
-                <Ratings setMyRating={setMyRating} />
-              </div>
+              {writeReview !== true && (
+                <>
+                  <h6
+                    className="writeReview"
+                    onClick={() => setWriteReview(true)}
+                  >
+                    Write a Review
+                  </h6>
+                </>
+              )}
+
+              {writeReview === true && (
+                <>
+                  <p
+                    className="cancelReview"
+                    onClick={() => setWriteReview(false)}
+                  >
+                    Cancel
+                  </p>
+                  <div className="create_new_reviews">
+                    <textarea
+                      placeholder="Write a new review"
+                      type="text"
+                      rows="2"
+                      value={myReview}
+                      onChange={(e) => setMyReview(e.target.value)}
+                      onKeyUp={keyPressHandler}
+                      onFocus={(e) =>
+                        setFieldFocus(e.target.nextElementSibling.className)
+                      }
+                    />
+                    <button
+                      className="post_review_button"
+                      onClick={postReviewHandler}
+                    >
+                      <FaTelegramPlane />
+                    </button>
+                    <Ratings setMyRating={setMyRating} />
+                  </div>
+                </>
+              )}
 
               <div className="reviews" key={refresh}>
                 <div className="reviewhead">
