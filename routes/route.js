@@ -73,6 +73,7 @@ router.delete(
   "/delete/:userId/:hotelId/:reviewId",
   reviewController.deleteReview
 );
+//
 //=============================PARTNER=========================================
 router.post("/create/partner", upload, partnerController.createPartner);
 router.get('/partners/:partnerId', partnerController.getHotelPartner);
