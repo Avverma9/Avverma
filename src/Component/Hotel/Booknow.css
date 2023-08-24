@@ -122,7 +122,7 @@
 .booking-card {
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 15px 45px;
+  padding: 15px 15px;
   background-color: #f9f9f9;
   margin-bottom: 20px;
 }
@@ -214,6 +214,8 @@
   margin-bottom: 10px;
   font-size: 16px;
   color: #333;
+  display: flex;
+  align-items: center;
 }
 
 .card .icon {
@@ -888,7 +890,6 @@
   margin-right: 10px;
 }
 
-
 .input-container {
   display: flex;
   align-items: center;
@@ -923,7 +924,6 @@
   margin-right: 10px;
 }
 
-
 .input-container {
   display: flex;
   align-items: center;
@@ -941,7 +941,7 @@
 .negposbtn {
   width: 30px;
   height: 30px;
-  background-color: #0056b3;
+  background-color: #23e163;
   color: white;
   font-size: 16px;
   border: none;
@@ -951,29 +951,28 @@
 }
 
 .negposbtn:hover {
-  background-color: #004280;
+  background-color: #1ab64f;
 }
 
 .icon {
   margin-right: 10px;
 }
 
-.bookingflex{
+.bookingflex {
   display: flex;
 }
 
-.bookingDetailsticky{
-margin-right: 10%;
-
+.bookingDetailsticky {
+  margin-right: 10%;
 }
-._meals-container h1{
+._meals-container h1 {
   font-size: 25px;
-font-weight: bold;
-color: black;
-margin-top: 25px;
-margin-bottom: 20px;
+  font-weight: bold;
+  color: black;
+  margin-top: 25px;
+  margin-bottom: 20px;
 }
-.col-md-12 button{
+.col-md-12 button {
   border-radius: 4px;
   background-color: rgb(26, 182, 79);
   border: 0px;
@@ -985,7 +984,7 @@ margin-bottom: 20px;
   width: 100%;
   outline: 0px;
 }
-.col-md-12 button:hover{
+.col-md-12 button:hover {
   border-radius: 4px;
   background-color: rgb(11, 148, 57);
   border: 0px;
@@ -997,21 +996,39 @@ margin-bottom: 20px;
   width: 100%;
   outline: 0px;
 }
-.img-thali{
+.img-thali {
   width: 100%;
 }
-.img-thali img{
+.img-thali img {
   width: 100%;
 }
-.card-body h5{
+.card-body h5 {
   display: flex;
-justify-content: center;
-font-weight: 501;
-font-size: 18px;
+  justify-content: center;
+  font-weight: 501;
+  font-size: 14px;
 }
-.col-md-8{
+.col-md-8 {
   width: 100% !important;
 }
-.row-g-0{
+.row-g-0 {
   height: 200px;
+}
+.booking-date input {
+  padding: 5px;
+  width: 100%;
+  font-size: 18px;
+}
+
+.writeReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #6792ff;
+  margin-top: 30px;
+}
+.cancelReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc3545;
+  margin-top: 30px;
 }
