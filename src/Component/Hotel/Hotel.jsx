@@ -48,6 +48,11 @@ function HotelList() {
   const [roomtype,setRoomtype] = useState([]);
   const [bedtype,setBedtype] = useState([]);
   const [amenity,setAmenity] = useState([]);
+  const [showall,setShowall] =useState(false);
+  const [showallstar,setShowallstar] = useState(false);
+  const [showroomtype,setShowroomtype] = useState(false);
+  const [showbedtype,setShowbedtype] = useState(false);
+  const [showamenities,setShowamenities] = useState(false);
 
   
 
@@ -254,7 +259,7 @@ function HotelList() {
     <>
       <div className="whole-data d-flex">
       <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
-          <div className="filt-1st">
+          <div className={styles.filt_1st}>
             <h3 className="filterhead">Filters</h3>
             <br />
             <h5 className="filterprice">Price</h5>
@@ -266,9 +271,11 @@ function HotelList() {
             />
           </div>
           <hr />
-          <div className="filt-2nd">
-            <h5 className="colle">Property Type</h5>
-            <label>
+          <div className={styles.filt_2nd}>
+            <h5 className={styles.colle}>Property Type</h5>
+            {showall ? (
+              <>
+              <label>
               {" "}
               <input type="checkbox"
                 onChange={(e) => handlePropertyTypeChange("Apartment", e.target.checked)} />
@@ -316,11 +323,46 @@ function HotelList() {
               <input type="checkbox" onChange={(e) => handlePropertyTypeChange("Villa", e.target.checked)}/>
               Villa
             </label>
+            
+              </>
+            ):(
+              <>
+              <label>
+              {" "}
+              <input type="checkbox"
+                onChange={(e) => handlePropertyTypeChange("Apartment", e.target.checked)} />
+              Apartment
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox"
+              onChange={(e) => handlePropertyTypeChange("Guest house", e.target.checked)}
+              />
+              Guest House
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handlePropertyTypeChange("Holiday home", e.target.checked)} />
+              Holiday Home
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handlePropertyTypeChange("Homestay", e.target.checked)}/>
+              Homes Stay
+            </label>
+              </>
+            )
+            }
+            <button className={styles.showless_btn} onClick={() => setShowall(!showall)}>
+    {showall ? 'Less' : 'More'}
+  </button>
           </div>
           <hr />
-          <div className="filt-3rd">
-            <h5 className="colle">Star Rating</h5>
-            <label>
+          <div className={styles.filt_3rd}>
+            <h5 className={styles.colle}>Star Rating</h5>
+            {showallstar ? (
+              <>
+              <label>
               {" "}
               <input type="checkbox" onChange={(e) => handleRatingChange("1", e.target.checked)}/>
               1 Star
@@ -345,11 +387,40 @@ function HotelList() {
               <input type="checkbox" onChange={(e) => handleRatingChange("5", e.target.checked)}/>
               5 Star
             </label>
+              </>
+            ):(
+              <>
+              <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleRatingChange("1", e.target.checked)}/>
+              1 Star
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleRatingChange("2", e.target.checked)}/>
+              2 Star
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleRatingChange("3", e.target.checked)}/>
+              3 Star
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleRatingChange("4", e.target.checked)}/>
+              4 Star
+            </label>
+              </>
+            )
+            }
+           <button className={styles.showless_btn} onClick={()=>setShowallstar(!showallstar)}>{showallstar?'Less':'More'}</button>
           </div>
           <hr />
-          <div className="filt-4th">
-            <h5 className="colle">Room Type</h5>
-            <label>
+          <div className={styles.filt_4th}>
+            <h5 className={styles.colle}>Room Type</h5>
+            {showroomtype?(
+              <>
+              <label>
               {" "}
               <input type="checkbox" onChange={(e) => handleroomtype("Business Double Room", e.target.checked)}/>
               Business Double Room
@@ -554,11 +625,42 @@ function HotelList() {
               <input type="checkbox" onChange={(e) => handleroomtype("Two-Bedroom Apartment", e.target.checked)}/>
               Two Bedroom Apartment
             </label>
+              </>
+
+            ):(
+              <>
+              <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleroomtype("Business Double Room", e.target.checked)}/>
+              Business Double Room
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleroomtype("Deluxe King Room", e.target.checked)}/>
+              Deluxe King Room
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleroomtype("Deluxe One Bed Room Suite", e.target.checked)}/>
+              Deluxe One Bed Room
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e) => handleroomtype("Deluxe Room", e.target.checked)}/>
+              Deluxe Room
+            </label>
+              </>
+
+            )
+            }
+            <button className={styles.showless_btn} onClick={()=>setShowroomtype(!showroomtype)}>{showroomtype?'Less':'More'}</button>
           </div>
           <hr />
-          <div className="filt-5th">
-            <h5 className="colle">Bed Types</h5>
-            <label>
+          <div className={styles.filt_5th}>
+            <h5 className={styles.colle}>Bed Types</h5>
+            {showbedtype?(
+              <>
+              <label>
               {" "}
               <input type="checkbox" onChange={(e)=>handlebedtype("Bunk Bed",e.target.value)}/>
               Bunk Bed
@@ -629,10 +731,42 @@ function HotelList() {
               <input type="checkbox" onChange={(e)=>handlebedtype("Twin bed or Kingbed or Queen bed",e.target.value)}/>
               King Bed or Queen Bed or Twin Bed
             </label>
+
+              </>
+            ):(
+              <>
+              <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handlebedtype("Bunk Bed",e.target.value)}/>
+              Bunk Bed
+            </label>
+            {" "}
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handlebedtype("Daybed",e.target.value)}/>
+              DayBed
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handlebedtype("King Size",e.target.value)}/>
+              King Size
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handlebedtype("King bed or Queen bed",e.target.value)}/>
+              King Bed Or Queen Bed
+            </label>
+              </>
+            )
+            }
+            <button className={styles.showless_btn} onClick={()=>setShowbedtype(!showbedtype)}>{showbedtype?'Less':'More'}</button>
+           
           </div>
           <hr />
-          <div className="filt-6th">
-            <h5 className="colle">Amenities</h5>
+          <div className={styles.filt_6th}>
+            <h5 className={styles.colle}>Amenities</h5>
+            {showamenities?(
+              <>
             <label>
               {" "}
               <input type="checkbox" onChange={(e)=>handleamenity("24-hour front desk service",e.target.value)}/>
@@ -1018,10 +1152,53 @@ function HotelList() {
               <input type="checkbox" onChange={(e)=>handleamenity("Vending Machine(snacks)",e.target.value)}/>
               Vending Machine(snakes)
             </label>
+            </>
+            ):(
+              <>
+              <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("24-hour front desk service",e.target.value)}/>
+              24-hour Front Desk Service
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("ATM on site",e.target.value)}/>
+              ATM on Site
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("Air Conditioning",e.target.value)}/>
+              Air Conditioning
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("Airport shuttle(free)",e.target.value)}/>
+              Airport Shuttle (Free)
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("",e.target.value)}/>
+              Airport Shuttle Service (Surcharge)
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("BBQ/Picnic area",e.target.value)}/>
+              BBQ/picnic area
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("Baby sitting",e.target.value)}/>
+              Baby sitting
+            </label>
+            <label>
+              {" "}
+              <input type="checkbox" onChange={(e)=>handleamenity("Baggage Storage",e.target.value)}/>
+              Baggage Storage
+            </label>
+              </>
+            )}
             
-
-            
-
+<button className={styles.showless_btn} onClick={()=>setShowamenities(!showamenities)}>{showamenities?'Less':'More'}</button>
           </div>
         </div>
 
