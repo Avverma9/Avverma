@@ -260,7 +260,8 @@ export const MannageAuction = () => {
     {
       name: "Start Date",
       selector: (row) => {
-        const date = new Date(row.startTime);
+        // console.log(row.startTime.split("T")[0]);
+        const date = new Date(row.startTime.split("T")[0]);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
           .toString()
           .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
@@ -271,7 +272,7 @@ export const MannageAuction = () => {
     {
       name: "End Date",
       selector: (row) => {
-        const date = new Date(row.endTime);
+        const date = new Date(row.endTime.split("T")[0]);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
           .toString()
           .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;

@@ -11,54 +11,11 @@ export const Profile = () => {
   const [password, setpassword] = useState("");
   const [profileEdit, setProfileEdit] = useState(false);
 
-  const [data, setData] = useState([]);
   const [loggedUser, setLoggedUser] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const columns = [
-    {
-      name: "Username",
-      selector: (row) => row.name,
-      sortable: true,
-    },
-    {
-      name: "Mobile No",
-      selector: (row) => row.mobile || "N/A",
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: (row) => row.email,
-      sortable: true,
-    },
-    {
-      name: "Region",
-      selector: (row) => row.regionData[0]?.name || "N/A",
-      sortable: true,
-    },
-  ];
-
   const Token = localStorage.getItem("token");
   const AdminId = localStorage.getItem("adminId");
-
-  const fetchAdminData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://13.48.45.18:4008/admin/getAll", {
-        headers: {
-          Authorization: `Bearer ${Token}`,
-        },
-      });
-      const data = await response.json();
-      if (response.ok) {
-        console.log(data.data);
-        setData(data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching region data:", error);
-    }
-    setLoading(false);
-  };
 
   const fetchLoggedUser = async () => {
     setLoading(true);
@@ -83,7 +40,6 @@ export const Profile = () => {
   };
 
   useEffect(() => {
-    fetchAdminData();
     fetchLoggedUser();
   }, []);
 
@@ -220,15 +176,7 @@ export const Profile = () => {
       </div>
       <button className="_profile-btn" onClick={updateProfile}>
         Update
-      </button>
-      <DataTable
-        title="Assigned Region Table"
-        columns={columns}
-        data={data}
-        pagination
-        fixedHeader
-        fixedHeaderScrollHeight="75vh"
-      />
+      </button> 
     </>
   );
 };

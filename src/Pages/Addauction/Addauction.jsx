@@ -21,6 +21,7 @@ export const Addauction = () => {
   };
 
   const handleUploadPVChange = (e) => {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
     setphotoVideo(file);
   };
@@ -97,10 +98,13 @@ export const Addauction = () => {
       rc_name: event.target.rc_name.value,
       startPrice: event.target.startPrice.value,
       reservePrice: event.target.reservePrice.value,
-      startTime: event.target.startTime.value,
-      startDate: event.target.startDate.value,
-      endTime: event.target.endTime.value,
-      endDate: event.target.endDate.value,
+      // startTime: event.target.startTime.value,
+      // startDate: event.target.startDate.value,
+      // endTime: event.target.endTime.value,
+      // endDate: event.target.endDate.value,
+      startTime:
+        event.target.startDate.value + " " + event.target.startTime.value,
+      endTime: event.target.endDate.value + " " + event.target.endTime.value,
       // fuelType:
       // 	document.querySelector('input[name="fuel"]:checked')?.value || "",
       parkingName: event.target.parkingName.value,
@@ -110,7 +114,7 @@ export const Addauction = () => {
       quotationValidity: event.target.quotationValidity.value,
       auctionFees: event.target.auctionFees.value,
       auctionTerm: event.target.auctionTerm.value,
-      photoVideo: photoVideo,
+      files: photoVideo,
       valuationFile: valuationFile,
     };
 
@@ -125,11 +129,11 @@ export const Addauction = () => {
     console.log("Form Data:", formData);
 
     // Check the response status and handle accordingly
-    if (response.ok) {
-      console.log(response);
-      console.log(response.data);
+    if (response.ok && response.status === 200) {
+      // console.log(response);
+      // console.log(response.data);
       console.log("Auction successfully added.");
-      alert("Data Sent Successfully");
+      alert("New Auction Added ");
     } else {
       // Error handling
       console.error("Error adding auction:", response.statusText);
@@ -341,7 +345,7 @@ export const Addauction = () => {
             </select>
           </label>
           <label htmlFor="quatation-validity">
-            <p>Quatation Validity</p>
+            <p>Quotation Validity</p>
             <input
               type="date"
               name="quotationValidity"
