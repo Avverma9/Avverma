@@ -962,8 +962,9 @@
   display: flex;
 }
 
-.bookingDetailsticky {
-  margin-right: 10%;
+.bookingDetailsticky{
+margin-right: 5%;
+
 }
 ._meals-container h1 {
   font-size: 25px;

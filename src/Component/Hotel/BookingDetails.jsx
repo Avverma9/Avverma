@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BookingDetails.module.css";
 import axios from "axios";
 import { FaRupeeSign } from "react-icons/fa";
@@ -6,6 +6,9 @@ import { CiMobile1 } from "react-icons/ci";
 import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const BookingDetails = ({
   price,
@@ -83,6 +86,31 @@ const BookingDetails = ({
       console.log(err);
     }
   };
+  //for date picker
+  const [selectdate, setSelectdate] = useState(null);
+  const [selectdatecheckout, setSelectdatecheckout] = useState(null);
+  const [calenderopen, setCalenderopen] = useState(false);
+  const handledatechange = (date) => {
+    setSelectdate(date);
+  };
+
+  const handledatechange2 = (date) => {
+    setSelectdatecheckout(date);
+  };
+  //for add room and guest
+  const [isopen, setIsopen] = useState(false);
+  const [roomcount, setRoomcount] = useState(1);
+  const [guestcount, setGuestcount] = useState(1);
+  const togglePopup = () => {
+    setIsopen(!isopen);
+  };
+  const handleroomchange = (count) => {
+    setRoomcount(count);
+  };
+  const handleguestchange = (count) => {
+    setGuestcount(count);
+  };
+
   return (
     <>
       <div className="new-booking-details">
@@ -102,17 +130,59 @@ const BookingDetails = ({
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
                 <div className={styles.check_in_in_in}>
-                  <span className={styles.check_in_real}>Mon,1 Oct</span>
-                  <span className={styles.dash}>-</span>
-                  <span className={styles.check_out_real}>Tue,2 Oct</span>
+                  <span className={styles.check_in_real}>
+                    <DatePicker
+                      selected={selectdate}
+                      onChange={handledatechange}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-in Date"
+                    />
+                    {selectdate && <p> {selectdate.toDateString()}</p>}
+                  </span>
+
+                  <span className={styles.check_out_real}>
+                    <DatePicker
+                      selected={selectdatecheckout}
+                      onChange={handledatechange2}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-out Date"
+                    />
+                    {selectdatecheckout && (
+                      <p> {selectdatecheckout.toDateString()}</p>
+                    )}
+                  </span>
                 </div>
               </div>
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in}>
-                  {selectedRooms} Room , {selectedGuests} Guest
+                <div className={styles.guest_in_in} onClick={togglePopup}>
+                  {roomcount} Room , {guestcount} Guest
                 </div>
+                {isopen && (
+                  <div className={styles.popup}>
+                    <div className={styles.roompo}>
+                      <div className={styles.headpop}>
+                        <h5>Add Room and Guest</h5>
+                      </div>
+                      <label>Rooms</label>
+                      <input
+                        type="number"
+                        value={roomcount}
+                        onChange={(e) => setRoomcount(e.target.value)}
+                      />
+                    </div>
+                    <div className={styles.guestpop}>
+                      <label>Guest</label>
+                      <input
+                        type="number"
+                        value={guestcount}
+                        onChange={(e) => setGuestcount(e.target.value)}
+                      />
+                    </div>
+                    <button onClick={togglePopup}>Close</button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
