@@ -66,25 +66,29 @@ const createHotel = async function (req, res) {
 };
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
-  const { amenities, accommodationType, collections } = req.query;
+  const { amenities, bedTypes,roomTypes,starRating,propertyType } = req.query;
   let query = {};
 
   if (amenities) {
-    query.amenities = { $in: amenities };
+    query.amenities = {$in : amenities};
   }
 
-  if (accommodationType) {
-    query.accommodationType = { $in: accommodationType};
+  if (bedTypes) {
+    query.bedTypes = {$in : bedTypes};
   }
 
-  if (collections) {
-    query.collections = {$in: collections};
+  if (roomTypes) {
+    query.roomTypes = {$in : roomTypes};
   }
-
+if(starRating){
+  query.starRating={$in : starRating};
+}
+if(propertyType){
+  query.propertyType={$in : propertyType};
+}
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
 };
-
 
 //================================================================================================
 const searchHotels = async (req, res) => {

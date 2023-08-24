@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const hotelsSchema = new mongoose.Schema({
   images: {
     type: [String],
-    required: true,
+    
   },
   hotelName: {
     type: String,
     required: true,
   },
-  roomtype: {
-    type: String,
-    required: true,
+  roomTypes: {
+    type: [String],
+    default: [],
   },
   
   description: {
@@ -42,10 +42,6 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  roomType: {
-    type: String,
-    required: true,
-  },
   localId: {
     type: Boolean,
     default: false,
@@ -62,10 +58,6 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  moreOptions: {
-    type: [String],
-    default: [],
-  },
   amenities: {
     type: [String],
     default: [],
@@ -77,24 +69,25 @@ const hotelsSchema = new mongoose.Schema({
   rating: {
     type: Number,
   },
-  collections: {
-    type: [String],
-   
-  },
-  categories: {
-    type: [String],
-  
-  },
-  accommodationType: {
-    type: [String],
- 
-  },
   checkInFeature: {
     type: Boolean,
+  },
+  bedTypes:{
+    type:[String],
+    default: [],
+  },
+
+  starRating:{
+    type:[String],
+    default: [],
+  },
+  propertyType:{
+    type:[String],
+    default: [],
   },
   contact:{
    type: Number,
   },
 });
 
-module.exports = mongoose.model("Hotels", hotelsSchema);
+module.exports = mongoose.model("Hotels", hotelsSchema);

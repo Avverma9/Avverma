@@ -80,6 +80,7 @@ router.get('/partners/:partnerId', partnerController.getHotelPartner);
 
 //============================= BOOKING =======================================
 router.post('/booking/:userId/:hotelId',upload, bookingController.createBooking);
+router.post('/booking/:userId/:offerId',upload, bookingController.createOfferBooking);
 router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
 router.put('/booking/:bookingId', bookingController.cancelBooking);
