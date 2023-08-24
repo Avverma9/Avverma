@@ -1226,7 +1226,11 @@ function HotelList() {
                 <h5 className={styles["hotel-rating"]}>
                   {result.rating}
                   <FontAwesomeIcon icon={faStar} className={styles["fastar"]} />
+                 
                 </h5>
+                <p className={styles["search-result-reviews"]}>
+                      {reviewCount.find((review) => review.hotelId === result._id)?.count || "No"} Reviews
+                    </p>
 
                 <div className={styles["amenities"]}>
                   <ul>
@@ -1345,9 +1349,7 @@ function HotelList() {
                   }}
                 >
                   <div className="rupeedetail">
-                    <p className={styles["search-result-reviews"]}>
-                      {reviewCount.find((review) => review.hotelId === result._id)?.count || "No"} Reviews
-                    </p>
+                   
                     <p className={styles["search-result-price"]}>
                       <FontAwesomeIcon
                         icon={faInr}

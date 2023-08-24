@@ -249,6 +249,12 @@ hr {
   border-top: 8px solid #ddd;
   margin: 20px 0;
 }
+.search-result-reviews{
+  font-size: 13px;
+font-weight: 501;
+color: #444;
+margin-bottom: 0px;
+}
 
 /* Optional styles for the RangeSlider component */
 
