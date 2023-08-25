@@ -482,7 +482,7 @@ export default function BookNow({ refresh, reset, userData }) {
                         break;
                     }
                     return (
-                      <p key={index}>
+                      <p key={index} style={{fontSize:'16px',display:'flex',alignItems:'center',gap:'5px'}}>
                         {icon && (
                           <FontAwesomeIcon icon={icon} className="more-icon" />
                         )}
