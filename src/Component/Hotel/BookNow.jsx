@@ -839,6 +839,7 @@ export default function BookNow({ refresh, reset, userData }) {
                                       />
                                     );
                                   })}
+                                  {/* <Ratings  /> */}
                                 </span>
                                 <div className="review_comment">
                                   <p>{rev.review.comment}</p>
