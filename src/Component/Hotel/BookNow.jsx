@@ -38,7 +38,7 @@ import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
-import Ratings from "../Ratings/Ratings";
+import { Rating } from "react-simple-star-rating";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +56,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [selectedGuests, setSelectedGuests] = useState(1);
 
   const [foodPrice, setFoodPrice] = useState(0);
+  const [countRating, setCountRating] = useState(0);
 
   const [localid, setLocalid] = useState("");
   const [writeReview, setWriteReview] = useState(false);
@@ -154,6 +155,7 @@ export default function BookNow({ refresh, reset, userData }) {
       })
       .then((data) => {
         setHotelReviews(data?.reviews);
+        setCountRating(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
@@ -286,6 +288,7 @@ export default function BookNow({ refresh, reset, userData }) {
         },
         body: JSON.stringify({
           comment: updatedReview,
+          rating: myrating,
         }),
       }
     ).then((response) => {
@@ -353,6 +356,10 @@ export default function BookNow({ refresh, reset, userData }) {
       setFoodPrice(foodPrice + fprice);
       setAddingFood(false);
     }, 1000);
+  };
+
+  const handleRating = (rate) => {
+    setMyRating(rate);
   };
 
   return (
@@ -495,7 +502,15 @@ export default function BookNow({ refresh, reset, userData }) {
                         break;
                     }
                     return (
-                      <p key={index} style={{fontSize:'16px',display:'flex',alignItems:'center',gap:'5px'}}>
+                      <p
+                        key={index}
+                        style={{
+                          fontSize: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
                         {icon && (
                           <FontAwesomeIcon icon={icon} className="more-icon" />
                         )}
@@ -740,7 +755,12 @@ export default function BookNow({ refresh, reset, userData }) {
                     >
                       <FaTelegramPlane />
                     </button>
-                    <Ratings setMyRating={setMyRating} />
+                    {/* <Ratings setMyRating={setMyRating} /> */}
+                    <Rating
+                      onClick={handleRating}
+                      initialValue={myrating}
+                      size={22}
+                    />
                   </div>
                 </>
               )}
@@ -804,42 +824,47 @@ export default function BookNow({ refresh, reset, userData }) {
                             </div>
 
                             {isUpdatingReview && reviewId === rev.review._id ? (
-                              <div className="update_review">
-                                <textarea
-                                  placeholder="Update Review"
-                                  type="text"
-                                  rows="2"
-                                  value={updatedReview}
-                                  onChange={(e) =>
-                                    setUpdatedReview(e.target.value)
-                                  }
-                                  onKeyUp={keyPressHandler}
-                                  onFocus={(e) =>
-                                    setFieldFocus(
-                                      e.target.nextElementSibling.className
-                                    )
-                                  }
-                                />
-                                <button
-                                  className="update_review_button"
-                                  onClick={updateReviewHandler}
-                                >
-                                  <FaTelegramPlane />
-                                </button>
-                              </div>
+                              <>
+                                <span>
+                                  <Rating
+                                    onClick={handleRating}
+                                    initialValue={rev.review.rating}
+                                    size={22}
+                                    // readonly
+                                  />
+                                </span>
+                                <div className="update_review">
+                                  <textarea
+                                    placeholder="Update Review"
+                                    type="text"
+                                    rows="2"
+                                    value={updatedReview}
+                                    onChange={(e) =>
+                                      setUpdatedReview(e.target.value)
+                                    }
+                                    onKeyUp={keyPressHandler}
+                                    onFocus={(e) =>
+                                      setFieldFocus(
+                                        e.target.nextElementSibling.className
+                                      )
+                                    }
+                                  />
+                                  <button
+                                    className="update_review_button"
+                                    onClick={updateReviewHandler}
+                                  >
+                                    <FaTelegramPlane />
+                                  </button>
+                                </div>
+                              </>
                             ) : (
                               <>
                                 <span>
-                                  {[...Array(rev.review.rating)].map(() => {
-                                    return (
-                                      <FaStar
-                                        className="star"
-                                        size={22}
-                                        color="#ffc107"
-                                      />
-                                    );
-                                  })}
-                                  {/* <Ratings  /> */}
+                                  <Rating
+                                    initialValue={rev.review.rating}
+                                    size={22}
+                                    readonly
+                                  />
                                 </span>
                                 <div className="review_comment">
                                   <p>{rev.review.comment}</p>
