@@ -1,29 +1,321 @@
-import React from 'react';
-import styles from './BookingDetails.module.css';
+import React, { useState } from "react";
+import styles from "./BookingDetails.module.css";
+import axios from "axios";
+import { FaRupeeSign } from "react-icons/fa";
+import { CiMobile1 } from "react-icons/ci";
+import { BsPencil } from "react-icons/bs";
+import { BiSolidOffer } from "react-icons/bi";
+import { AiOutlineCodepenCircle } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 
-const BookingDetails = ({price}) => {
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+const BookingDetails = ({
+  hotelName,
+  price,
+  foodPrice,
+  hotelId,
+  userId,
+  currency,
+  userData,
+  selectedRooms,
+  selectedGuests,
+  setSelectedRooms,
+  setSelectedGuests,
+}) => {
+  const handleOpenRazorpay = (data) => {
+    const options = {
+      name: { hotelName },
+      key: "rzp_test_CE1nBQFs6SwXnC",
+      amount: (price * selectedRooms + foodPrice) * 100,
+      currency: data.currency,
+      prefill: {
+        name: userData.name,
+        email: userData.email,
+      },
+      remember: true,
+      handler: function (response) {
+        if (response.razorpay_payment_id) {
+          handleBooking("success");
+        } else {
+          handleBooking("failed");
+        }
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const rzp = new window.Razorpay(options);
+
+    rzp.on("payment.failed", function (response) {
+      handleBooking("failed");
+    });
+
+    rzp.open();
+  };
+
+  const handleBooking = (paymentStatus) => {
+    //  const bookingData = {
+    //    userId: userId,
+    //    hotelId: hotelId,
+    //    hotelName: hotelName,
+    //    checkIn: checkIn,
+    //    checkOut: checkOut,
+    //    guests: guests,
+    //    rooms: rooms,
+    //    price: amount,
+    //    paymentStatus: paymentStatus,
+    //    images: hotelimage,
+    //    destination: destination,
+    //  };
+    console.log(paymentStatus);
+  };
+
+  const handlePayment = async () => {
+    const data = {
+      hotelId: hotelId,
+      userId: userId,
+      amount: price * selectedRooms + foodPrice,
+      currency: currency,
+    };
+    try {
+      const response = await axios.post(
+        "https://hotel-backend-tge7.onrender.com/payments",
+        data
+      );
+      handleOpenRazorpay(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  //for date picker
+  const [selectdate, setSelectdate] = useState(null);
+  const [selectdatecheckout, setSelectdatecheckout] = useState(null);
+
+  const handledatechange = (date) => {
+    setSelectdate(date);
+  };
+
+  const handledatechange2 = (date) => {
+    setSelectdatecheckout(date);
+  };
+  //for add room and guest
+  const [isopen, setIsopen] = useState(false);
+
+  const togglePopup = () => {
+    setIsopen(!isopen);
+  };
+
   return (
     <>
-      <h5>Booking Summary</h5>
-      <div className={styles.main}>
-        <div className={styles.details}>
-          <p>
-            <span className={styles.gray}>Rooms:</span> <span className={styles.spanprice}>{price}</span>
-          </p>
-          <p>
-            <span className={styles.gray}>Extra Person:</span> <span className={styles.spanprice}>0</span>
-          </p>
-          <p>
-            <span className={styles.gray}>Food Price:</span> <span className={styles.spanprice}>0</span>
-          </p>
-          <p>
-            <span className={styles.gray}>Subtotal:</span> <span className={styles.spanprice}>300</span>
-          </p>
-          <p>
-            <span className={styles.gray}>Final Price:</span> <span className={styles.spanprice}>3000</span>
-          </p>
-          <button>Make Payment</button>
+      <div className="new-booking-details">
+        <div className={styles.main}>
+          <div className={styles.headupper}>
+            <div className={styles.head}>
+              <span>
+                <FaRupeeSign className={styles.rupee_sign} />
+                {price}
+              </span>
+              {/* <span>1999</span> */}
+              {/* <span>81% off</span> */}
+            </div>
+            <div className={styles.inclusive_tex}>Inclusive of all taxes</div>
+          </div>
+          <div className={styles.check_room}>
+            <div className={styles.check_in}>
+              <div className={styles.check_in_in}>
+                <div className={styles.check_in_in_in}>
+                  <span className={styles.check_in_real}>
+                    <DatePicker
+                      selected={selectdate}
+                      onChange={handledatechange}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-in Date"
+                    />
+                    {selectdate && <p> {selectdate.toDateString()}</p>}
+                  </span>
+
+                  <span className={styles.check_out_real}>
+                    <DatePicker
+                      selected={selectdatecheckout}
+                      onChange={handledatechange2}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-out Date"
+                    />
+                    {selectdatecheckout && (
+                      <p> {selectdatecheckout.toDateString()}</p>
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className={styles.guest}>
+              <div className={styles.guest_in}>
+                <div className={styles.guest_in_in} onClick={togglePopup}>
+                  {selectedRooms} Room , {selectedGuests} Guest
+                </div>
+                {isopen && (
+                  <div className={styles.popup}>
+                    <div className={styles.roompo}>
+                      <button onClick={togglePopup}>
+                        <AiOutlineClose />
+                      </button>
+                      <div className={styles.headpop}>
+                        <h5>Add Room and Guest</h5>
+                      </div>
+                      <div className={styles.flex_room_guests}>
+                        <div className={styles.roomsec}>
+                          <label>Rooms</label>
+                          <input
+                            type="number"
+                            value={selectedRooms}
+                            onChange={(e) => setSelectedRooms(e.target.value)}
+                          />
+                        </div>
+                        <div className={styles.guestpop}>
+                          <label>Guest</label>
+                          <input
+                            type="number"
+                            value={selectedGuests}
+                            onChange={(e) => setSelectedGuests(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className={styles.facilities}>
+            <div className={styles.pen_icon}>
+              <span className={styles.icon_pen}>
+                <CiMobile1 />
+              </span>
+              <div className={styles.textnew}>
+                <span className={styles.textc}>Spot On Non Ac</span>
+              </div>
+            </div>
+            <div className={styles.pencil_icon}>
+              <span className={styles.penci_ico}>
+                <BsPencil />
+              </span>
+            </div>
+          </div>
+          {/* <div className={styles.offerdata}>
+            <span className={styles.percenticon}>
+              <BiSolidOffer />
+            </span>
+            <div className={styles.textpercentage}>
+              <div className={styles.fioffer}>
+                <span className={styles.textoff}>First Coupen Applied</span>
+                <div className={styles.textoffdiv}>More offer</div>
+              </div>
+              <div className={styles.seoffer}>
+                <span className={styles.offerspan}>
+                  <FaRupeeSign />
+                  -529
+                </span>
+                <label htmlFor="offercheckbox">
+                  <input type="checkbox" id="offercheckbox" />
+                </label>
+              </div>
+            </div>
+          </div> */}
+          {/* <div className={styles.offerapplied}>
+            <div className={styles.fside}>
+              <span className={styles.icon_a}>
+                <AiOutlineCodepenCircle />
+              </span>
+              <span className={styles.textf}>
+                Money Applied
+                <div className={styles.down_text}>
+                  (<FaRupeeSign />
+                  90 Extra)
+                </div>
+              </span>
+            </div>
+            <div className={styles.sside}>
+              <span className={styles.labelr}>
+                <FaRupeeSign />
+                -89
+              </span>
+              <label htmlFor="checkboxr">
+                <input type="checkbox" id="checkboxr" />
+              </label>
+            </div>
+          </div> */}
+          {/* <div className={styles.wizard}>
+            <div className={styles.wizardf}>
+              <div className={styles.wizard_in}>
+                <div className={styles.wizardf1}>
+                  Wizard Blue Membership Charge
+                </div>
+                <div className={styles.wizardf2}>
+                  Get additional benefits upto <FaRupeeSign />
+                  1000
+                </div>
+              </div>
+              <div className={styles.wizard_inin}>
+                <div className={styles.rightwizard}>
+                  <div className={styles.rswizard}>
+                    <FaRupeeSign />
+                    99
+                  </div>
+                  <div className={styles.rs2wizard}>
+                    <FaRupeeSign />
+                    199
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> */}
+
+          <div className={styles.pricechart}>
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Accomodation:</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {price * selectedRooms}
+                </span>
+              </div>
+            </div>
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Food Items:</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {foodPrice}
+                </span>
+              </div>
+            </div>
+            {/* <div className={styles.pri}>
+              <div className={styles.pri1}>Your Saving</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  650
+                </span>
+              </div>
+            </div> */}
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Total Price</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {price * selectedRooms + foodPrice}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+      <div className={styles.btn_payment}>
+        <button className="payment-btn" onClick={handlePayment}>
+          Make Payment
+        </button>
       </div>
     </>
   );

@@ -21,6 +21,8 @@ export const Customizebooking = ({
   destination,
 }) => {
   const [meals, setMeals] = useState([]);
+  const [mealQty, setMealQty] = useState(0);
+  console.log(mealQty);
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
       .then((response) => {
@@ -111,7 +113,7 @@ export const Customizebooking = ({
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="exampleModalLabel">
-              Modal title
+              Enjoy meals during your stay
             </h5>
             <button
               type="button"
@@ -122,9 +124,9 @@ export const Customizebooking = ({
           </div>
           <div className="modal-body">
             <>
-              <div className="_customize-booking-header">
+              {/* <div className="_customize-booking-header">
                 <h4>Modify Your Booking</h4>
-              </div>
+              </div> */}
               <div className="d-flex">
                 <div className="meals-container" style={{ width: "60%" }}>
                   {meals.map((m) => (
@@ -159,7 +161,7 @@ export const Customizebooking = ({
                               >
                                 Add
                               </button>
-                              <Plusminus />
+                              <Plusminus setMealQty={setMealQty} />
                             </div>
                           </div>
                         </div>
