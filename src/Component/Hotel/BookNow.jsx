@@ -56,7 +56,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [selectedGuests, setSelectedGuests] = useState(1);
 
   const [foodPrice, setFoodPrice] = useState(0);
-  const [countRating, setCountRating] = useState(0);
+  const [indexedButton, setIndexedButton] = useState(null);
 
   const [localid, setLocalid] = useState("");
   const [writeReview, setWriteReview] = useState(false);
@@ -155,7 +155,6 @@ export default function BookNow({ refresh, reset, userData }) {
       })
       .then((data) => {
         setHotelReviews(data?.reviews);
-        setCountRating(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
@@ -350,12 +349,13 @@ export default function BookNow({ refresh, reset, userData }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
-  const foodPriceHandler = (fprice) => {
+  const foodPriceHandler = (index, fprice) => {
     setAddingFood(true);
+    setIndexedButton(index);
     setTimeout(() => {
-      setFoodPrice(foodPrice + fprice);
       setAddingFood(false);
     }, 1000);
+    setFoodPrice(foodPrice + fprice);
   };
 
   const handleRating = (rate) => {
@@ -594,7 +594,7 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="_meals-container">
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
-                  {meals.map((m) => (
+                  {meals.map((m, i) => (
                     <div className="card w-50 h-25 mb-3" key={m._id}>
                       <div className="row-g-0">
                         <div className="img-thali">
@@ -621,11 +621,12 @@ export default function BookNow({ refresh, reset, userData }) {
                           <button
                             type="button"
                             className="btn btn-primary w-100 d-flex mt-4"
-                            onClick={() => foodPriceHandler(m.price)}
+                            onClick={() => foodPriceHandler(i, m.price)}
+                            key={i}
                           >
-                            {addingFood ? (
+                            {addingFood && indexedButton === i ? (
                               <div
-                                className="spinner-border text-secondary"
+                                className="spinner-border spinner-border-sm text-white"
                                 role="status"
                               >
                                 <span className="sr-only">Loading...</span>
