@@ -897,6 +897,8 @@ export default function BookNow({ refresh, reset, userData }) {
                 userData={userData}
                 selectedRooms={selectedRooms}
                 selectedGuests={selectedGuests}
+                setSelectedRooms={setSelectedRooms}
+                setSelectedGuests={setSelectedGuests}
               />
             </div>
           </div>
