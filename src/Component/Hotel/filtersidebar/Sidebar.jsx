@@ -1,25 +1,63 @@
-import React,{useState,useEffect} from 'react';
-import styles from './hotel.module.css';
-import RangeSlider from "../Hotel/Rangeslider/range";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from '../hotel.module.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faWifi,
+  faSnowflake,
+  faDumbbell,
+  faParking,
+  faSwimmingPool,
+  faPaw,
+  faGlassMartini,
+  faSmoking,
+  faStar,
+  faKitchenSet,
+  faTv,
+  faFire,
+  faPowerOff,
+  faCamera,
+  faElevator,
+  faCreditCard,
+  faCheck,
+  faInr,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+
+import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
+import Imgslide from "../slider/sliderimage";
 import { type } from "@testing-library/user-event/dist/type";
 
-const Sidebar=()=> {
-    const [minValue, set_minValue] = useState(400);
-  const [maxValue, set_maxValue] = useState(4000);
-  const [hotels, setHotels] = useState([]);
-    const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
-    const [starrating,setStarrating] = useState([]);
-    const [roomtype,setRoomtype] = useState([]);
-    const [bedtype,setBedtype] = useState([]);
-    const [amenity,setAmenity] = useState([]);
-    const [showall,setShowall] =useState(false);
-    const [showallstar,setShowallstar] = useState(false);
-    const [showroomtype,setShowroomtype] = useState(false);
-    const [showbedtype,setShowbedtype] = useState(false);
-    const [showamenities,setShowamenities] = useState(false);
 
-     //Filter functions
+function Sidebar() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxVisiblePages = 6;
+
+  const location = useLocation();
+  const [hotels, setHotels] = useState([]); // list of hotels initially when page loaded
+  const [expandedResultId, setExpandedResultId] = useState(null);
+  const [reviewCount, setReviewCount] = useState([])
+  const navigate = useNavigate();
+
+  const [minValue, set_minValue] = useState(400);
+  const [maxValue, set_maxValue] = useState(4000);
+  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
+  const [starrating,setStarrating] = useState([]);
+  const [roomtype,setRoomtype] = useState([]);
+  const [bedtype,setBedtype] = useState([]);
+  const [amenity,setAmenity] = useState([]);
+  const [showall,setShowall] =useState(false);
+  const [showallstar,setShowallstar] = useState(false);
+  const [showroomtype,setShowroomtype] = useState(false);
+  const [showbedtype,setShowbedtype] = useState(false);
+  const [showamenities,setShowamenities] = useState(false);
+  
+
+  
+
+  //Filter functions
   const handlePropertyTypeChange = (propertyType, checked) => {
     if (checked) {
       setSelectedPropertyTypes((prevSelected) => [...prevSelected, propertyType]);
@@ -106,6 +144,11 @@ const Sidebar=()=> {
       .catch((error) => console.log(error));
   }, [selectedPropertyTypes,roomtype,starrating,bedtype,amenity]);
 
+ 
+
+
+ 
+  // ----------------------
 
   useEffect(() => {
     if (minValue > 400 || maxValue < 4000) {
@@ -141,6 +184,91 @@ const Sidebar=()=> {
       }
     });
   }, [maxValue, minValue]);
+
+
+  useEffect(() => {
+    const fetchReviewsCount = async () => {
+      const reviewCounts = await Promise.all(
+        hotels.map(async (hotel) => {
+          try {
+            const response = await fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${hotel._id}`);
+            const data = await response.json();
+            
+            if (!data || !data.reviews || !Array.isArray(data.reviews)) {
+              console.log(`Invalid data structure for hotelId: ${hotel._id}`);
+              return { hotelId: hotel._id, count: 0 };
+            }
+            
+            return { hotelId: hotel._id, count: data.reviews.length };
+          } catch (error) {
+            console.error(`Error fetching data for hotelId ${hotel._id}:`, error);
+            return { hotelId: hotel._id, count: 0 };
+          }
+        })
+      );
+      setReviewCount(reviewCounts);
+    };
+  
+    fetchReviewsCount();
+  }, [hotels]);
+
+
+  if (location.pathname !== "/home") {
+    return null;
+  }
+
+  const handleBuy = (hotelID) => {
+    // Replace with the logic to handle the booking action
+    console.log(`Book Now: ${hotelID}`);
+    navigate(`/hotels/${hotelID}`);
+  };
+
+  const toggleDetails = (resultId) => {
+    if (expandedResultId === resultId) {
+      setExpandedResultId(null);
+    } else {
+      setExpandedResultId(resultId);
+    }
+  };
+
+  // Pagination for Hotels
+
+  const totalItems = hotels && hotels.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = hotels && hotels.slice(startIndex, endIndex);
+
+  const visiblePages = [];
+  const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
+  let startPage = 1;
+  let endPage = totalPagesToDisplay;
+
+  if (currentPage > Math.floor(maxVisiblePages / 2)) {
+    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+    endPage = startPage + totalPagesToDisplay - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = endPage - totalPagesToDisplay + 1;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
           <div className={styles.filt_1st}>
