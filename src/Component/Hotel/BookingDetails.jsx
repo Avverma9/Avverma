@@ -26,7 +26,7 @@ const BookingDetails = ({
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
-      name: { hotelName },
+      name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
       amount: (price * selectedRooms + foodPrice) * 100,
       currency: data.currency,
@@ -90,8 +90,8 @@ const BookingDetails = ({
     }
   };
   //for date picker
-  const [selectdate, setSelectdate] = useState(null);
-  const [selectdatecheckout, setSelectdatecheckout] = useState(null);
+  const [selectdate, setSelectdate] = useState(new Date());
+  const [selectdatecheckout, setSelectdatecheckout] = useState(new Date());
 
   const handledatechange = (date) => {
     setSelectdate(date);
@@ -106,6 +106,7 @@ const BookingDetails = ({
   const togglePopup = () => {
     setIsopen(!isopen);
   };
+
 
   return (
     <>

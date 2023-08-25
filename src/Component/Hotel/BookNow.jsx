@@ -57,6 +57,7 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const [foodPrice, setFoodPrice] = useState(0);
   const [indexedButton, setIndexedButton] = useState(null);
+  const [revCount, setRevCount] = useState(null);
 
   const [localid, setLocalid] = useState("");
   const [writeReview, setWriteReview] = useState(false);
@@ -155,6 +156,7 @@ export default function BookNow({ refresh, reset, userData }) {
       })
       .then((data) => {
         setHotelReviews(data?.reviews);
+        setRevCount(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
@@ -398,10 +400,16 @@ export default function BookNow({ refresh, reset, userData }) {
                     {bookingDetails.destination}
                   </p>
                 </div>
-                <div className="rating0">
-                  <div className="staricon">
-                    {bookingDetails.rating}
-                    <FontAwesomeIcon icon={faStar} className="staricon" />
+                <div className="d-flex flex-column gap-3">
+                  <div className="rating0">
+                    <div className="staricon">
+                      {bookingDetails.rating}
+                      <FontAwesomeIcon icon={faStar} className="staricon" />
+                    </div>
+                  </div>
+                  <div className="reviewCount">
+                    <span>{revCount}</span>
+                    <p>Reviews</p>
                   </div>
                 </div>
               </div>

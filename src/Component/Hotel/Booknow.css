@@ -169,7 +169,6 @@
 
 .rating0 {
   background-color: green;
-  width: 10%;
   color: white;
   border-radius: 1px;
   justify-content: center;
@@ -609,17 +608,6 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-  }
-
-  .rating0 {
-    background-color: green;
-    width: 20%;
-    color: white;
-    border-radius: 5px;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    height: 30px;
   }
 
   .staricon {
