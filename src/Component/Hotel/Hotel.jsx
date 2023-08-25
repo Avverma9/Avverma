@@ -44,15 +44,18 @@ function HotelList() {
   const [minValue, set_minValue] = useState(400);
   const [maxValue, set_maxValue] = useState(4000);
   const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
-  const [starrating, setStarrating] = useState([]);
-  const [roomtype, setRoomtype] = useState([]);
-  const [bedtype, setBedtype] = useState([]);
-  const [amenity, setAmenity] = useState([]);
-  const [showall, setShowall] = useState(false);
-  const [showallstar, setShowallstar] = useState(false);
-  const [showroomtype, setShowroomtype] = useState(false);
-  const [showbedtype, setShowbedtype] = useState(false);
-  const [showamenities, setShowamenities] = useState(false);
+  const [starrating,setStarrating] = useState([]);
+  const [roomtype,setRoomtype] = useState([]);
+  const [bedtype,setBedtype] = useState([]);
+  const [amenity,setAmenity] = useState([]);
+  const [showall,setShowall] =useState(false);
+  const [showallstar,setShowallstar] = useState(false);
+  const [showroomtype,setShowroomtype] = useState(false);
+  const [showbedtype,setShowbedtype] = useState(false);
+  const [showamenities,setShowamenities] = useState(false);
+  
+
+  
 
   //Filter functions
   const handlePropertyTypeChange = (propertyType, checked) => {
@@ -83,26 +86,31 @@ function HotelList() {
       setRoomtype((prevSelected) =>
         prevSelected.filter((type) => type !== roomTypes)
       );
-    }
+    };
   };
-  const handlebedtype = (bedTypes, checked) => {
-    if (checked) {
-      setBedtype((prevSelected) => [...prevSelected, bedTypes]);
-    } else {
-      setBedtype((prevSelected) =>
-        prevSelected.filter((type) => type !== bedTypes)
+  const handlebedtype = (bedTypes,checked)=>{
+    if (checked){
+      setBedtype((prevSelected)=>[...prevSelected,bedTypes]);
+    }else{
+      setBedtype((prevSelected)=>
+      prevSelected.filter((type)=>type!==bedTypes)
       );
-    }
+    };
   };
-  const handleamenity = (amenities, checked) => {
-    if (checked) {
-      setAmenity((prevSelected) => [...prevSelected, amenities]);
-    } else {
-      setAmenity((prevSelected) =>
-        prevSelected.filter((type) => type !== amenities)
+  const handleamenity = (amenities,checked)=>{
+    if (checked){
+      setAmenity((prevSelected)=>[...prevSelected,amenities]);
+    } else{
+      setAmenity((prevSelected)=>
+      
+      prevSelected.filter((type)=>type!==amenities)
       );
-    }
+    };
   };
+
+
+
+
 
   //Filter Api
   useEffect(() => {
@@ -254,7 +262,10 @@ function HotelList() {
           className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}
         >
           <div className={styles.filt_1st}>
+          <div className={styles.clear_btn_flex}>
             <h3 className="filterhead">Filters</h3>
+            <button onClick={clearFilters} >clear</button>
+            </div>
             <br />
             <h5 className="filterprice">Price</h5>
             <RangeSlider

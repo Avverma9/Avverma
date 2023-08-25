@@ -6,6 +6,7 @@ import { CiMobile1 } from "react-icons/ci";
 import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -17,13 +18,12 @@ const BookingDetails = ({
   userId,
   currency,
   userData,
-  hotelName,
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
-      name: hotelName,
+      name: "Hotel Booking",
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (price * roomcount + foodPrice) * 100,
+      amount: (price + foodPrice) * 100,
       currency: data.currency,
       prefill: {
         name: userData.name,
@@ -117,7 +117,7 @@ const BookingDetails = ({
             <div className={styles.head}>
               <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {price * roomcount + foodPrice}
+                899
               </span>
               <span>1999</span>
               <span>81% off</span>
@@ -160,31 +160,37 @@ const BookingDetails = ({
                 {isopen && (
                   <div className={styles.popup}>
                     <div className={styles.roompo}>
+                      <button onClick={togglePopup}>
+                        <AiOutlineClose />
+                      </button>
                       <div className={styles.headpop}>
                         <h5>Add Room and Guest</h5>
                       </div>
-                      <label>Rooms</label>
-                      <input
-                        type="number"
-                        value={roomcount}
-                        onChange={(e) => setRoomcount(e.target.value)}
-                      />
+                      <div className={styles.flex_room_guests}>
+                        <div className={styles.roomsec}>
+                          <label>Rooms</label>
+                          <input
+                            type="number"
+                            value={roomcount}
+                            onChange={(e) => setRoomcount(e.target.value)}
+                          />
+                        </div>
+                        <div className={styles.guestpop}>
+                          <label>Guest</label>
+                          <input
+                            type="number"
+                            value={guestcount}
+                            onChange={(e) => setGuestcount(e.target.value)}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.guestpop}>
-                      <label>Guest</label>
-                      <input
-                        type="number"
-                        value={guestcount}
-                        onChange={(e) => setGuestcount(e.target.value)}
-                      />
-                    </div>
-                    <button onClick={togglePopup}>Close</button>
                   </div>
                 )}
               </div>
             </div>
           </div>
-          {/* <div className={styles.facilities}>
+          <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
                 <CiMobile1 />
@@ -198,8 +204,8 @@ const BookingDetails = ({
                 <BsPencil />
               </span>
             </div>
-          </div> */}
-          {/* <div className={styles.offerdata}>
+          </div>
+          <div className={styles.offerdata}>
             <span className={styles.percenticon}>
               <BiSolidOffer />
             </span>
@@ -218,8 +224,8 @@ const BookingDetails = ({
                 </label>
               </div>
             </div>
-          </div> */}
-          {/* <div className={styles.offerapplied}>
+          </div>
+          <div className={styles.offerapplied}>
             <div className={styles.fside}>
               <span className={styles.icon_a}>
                 <AiOutlineCodepenCircle />
@@ -241,8 +247,8 @@ const BookingDetails = ({
                 <input type="checkbox" id="checkboxr" />
               </label>
             </div>
-          </div> */}
-          {/* <div className={styles.wizard}>
+          </div>
+          <div className={styles.wizard}>
             <div className={styles.wizardf}>
               <div className={styles.wizard_in}>
                 <div className={styles.wizardf1}>
@@ -266,23 +272,23 @@ const BookingDetails = ({
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
           <div className={styles.pricechart}>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Hotel Price</div>
+              <div className={styles.pri1}>Price Surge</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * roomcount}
+                  39
                 </span>
               </div>
             </div>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Food Price</div>
+              <div className={styles.pri1}>Your Saving</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {foodPrice}
+                  650
                 </span>
               </div>
             </div>
@@ -291,7 +297,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * roomcount + foodPrice}
+                  899
                 </span>
               </div>
             </div>
