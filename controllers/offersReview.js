@@ -80,7 +80,7 @@ const updateOfferReview = async function (req, res) {
   const { offerId, userId, reviewId } = req.params;
   const { comment, rating } = req.body;
   const findData = await reviewModel.findOneAndUpdate(
-    { offers: offerId, user: userId, _id: reviewId },
+    { offer: offerId, user: userId, _id: reviewId },
     { comment, rating },
     { new: true }
   );
@@ -90,7 +90,7 @@ const updateOfferReview = async function (req, res) {
 //=======================================delete============================================
 const deleteOfferReview= async(req,res)=>{
     const{userId,offerId,reviewId}=req.params
-    const deletedData= await reviewModel.findOneAndDelete({user:userId,offers:offerId,_id:reviewId})
+    const deletedData= await reviewModel.findOneAndDelete({user:userId,offer:offerId,_id:reviewId})
     res.json(deletedData)
 }
 module.exports = { createOfferReview, getReviewsByOfferId, updateOfferReview,deleteOfferReview };
