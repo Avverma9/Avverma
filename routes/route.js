@@ -36,8 +36,7 @@ router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
 router.put("/update/:id", upload, userController.update);
-router.get("/getAllUser/user", userController.getAllUsers);
-
+    
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);

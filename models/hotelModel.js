@@ -83,7 +83,7 @@ const hotelsSchema = new mongoose.Schema({
 
   starRating:{
     type:[String],
-    default: [],
+    default: "2",
   },
   propertyType:{
     type:[String],
@@ -92,6 +92,41 @@ const hotelsSchema = new mongoose.Schema({
   contact:{
    type: Number,
   },
+  isAccepted:{
+    type:Boolean,
+    default: false
+  },
+  ownerContactDetails: String,
+  receptionContactDetails: String,
+  hotelEmail: String,
+  generalManagerContact: String,
+  salesManagerContact: String,
+  street: String,
+  city: String,
+  state: String,
+  zip: String,
+  landmark: String,
+  outsideFoodPolicy:String,
+      cancellationPolicy:String,
+      paymentMode:String,
+      petsAllowed:String,
+      bachelorAllowed:String,
+      smokingAllowed:String,
+      alcoholAllowed:String,
+      unmarriedCouplesAllowed:String,
+      internationalGuestAllowed:String,
+      returnPolicy:String,
+      checkInOut:String,
+    onDoubleSharing : String,
+    onQuadSharing : String,
+    onBulkBooking : String,
+    onTrippleSharing : String,
+    onMoreThanFour: String,
+    offDoubleSharing : String,
+    offQuadSharing : String,
+    offBulkBooking : String,
+    offTrippleSharing : String,
+    offMoreThanFour : String
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);

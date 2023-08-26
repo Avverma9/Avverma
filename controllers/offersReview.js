@@ -5,7 +5,7 @@ const offersModel = require("../models/offersModel");
 //==================================create review for offer================================================
 const createOfferReview = async (req, res) => {
   try {
-    const { userId, offersId } = req.params;
+    const { userId, offerId } = req.params;
 
     const { comment, rating } = req.body;
 
@@ -16,7 +16,7 @@ const createOfferReview = async (req, res) => {
     }
 
     const review = new reviewModel({
-      offers: offersId,
+      offer: offerId,
       user: userId,
       comment: comment,
       rating: rating,
@@ -25,14 +25,14 @@ const createOfferReview = async (req, res) => {
 
     const responseData = {
       _id: savedReview._id,
-      offers: savedReview.offers,
+      offer: savedReview.offer,
       user: {
         _id: user._id,
         name: user.name,
         images: user.images,
       },
       comment: savedReview.comment,
-      rating: savedReview.comment,
+      rating: savedReview.rating,
       createdAt: savedReview.createdAt,
     };
     return res.status(201).send({
@@ -48,7 +48,7 @@ const createOfferReview = async (req, res) => {
 //====================================getOfferReview===========================================
 const getReviewsByOfferId = async (req, res) => {
   const { offerId } = req.params;
-  const fetchData = await reviewModel.find({ offers: offerId });
+  const fetchData = await reviewModel.find({ offer: offerId });
   const countRating = fetchData.length;
   const hotelname = await offersModel.findById(offerId).select("hotelName");
 
