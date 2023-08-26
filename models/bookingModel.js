@@ -1,24 +1,28 @@
-const mongoose = require('mongoose');
-
+const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
   bookingId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
     required: true,
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Hotels',
+    ref: "Hotels",
     required: true,
   },
-  hotelName:{
-    type: String
+  offers: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Offer",
+    required: false,
+  },
+  hotelName: {
+    type: String,
   },
   checkInDate: {
     type: Date,
@@ -40,8 +44,8 @@ const bookingSchema = new mongoose.Schema({
   },
   bookingStatus: {
     type: String,
-    enum: ['success', 'failed','pending'],
-    default: 'success',
+    enum: ["success", "failed", "pending"],
+    default: "success",
   },
   cardDetails: {
     type: String,
@@ -51,11 +55,11 @@ const bookingSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
-  images:{
-   type:String
+  images: {
+    type: String,
   },
-  destination:{
-    type:String
+  destination: {
+    type: String,
   },
   cancelledAt: {
     type: Date,
@@ -69,10 +73,8 @@ const bookingSchema = new mongoose.Schema({
     {
       name: String,
       price: Number,
-      
-    }
-  ]
+    },
+  ],
 });
 
-
-module.exports = mongoose.model('Booking', bookingSchema);
+module.exports = mongoose.model("Booking", bookingSchema);
