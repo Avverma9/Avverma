@@ -15,7 +15,7 @@ const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
 const carouselController = require("../controllers/carouselController")
 const DashboardUser = require("../controllers/dashboardUser");
-
+const offersReview= require("../controllers/offersReview")
 // const otpController = require("../controllers/otpController")
 const couponController = require("../controllers/couponController")
 
@@ -93,10 +93,10 @@ router.put('/updatebooking/:bookingId', bookingController.updateBookingDates);
 router.post("/create/offers",upload,offersController.createOffers)
 router.get("/offers",offersController.getOffers)
 router.get("/offers/:offerId",offersController.getOffersById)
-router.post("/offers/review/:userId/:offersId",reviewController.createOfferReview)
-router.get("/offers/review/:offersId",reviewController.getReviewsByOfferId)
-
-
+router.post("/offers/review/:userId/:offerId",offersReview.createOfferReview)
+router.get("/offers/review/:offerId",offersReview.getReviewsByOfferId)
+router.put("/offers/review/put/:offerId/:userId/:reviewId",offersReview.updateOfferReview)
+router.delete("/offers/review/delete/:userId/:offerId/:reviewId",offersReview.deleteOfferReview)
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail)
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

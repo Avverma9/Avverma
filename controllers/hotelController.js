@@ -4,6 +4,7 @@ const createHotel = async function (req, res) {
   try {
     const {
       hotelName,
+      hotelOwnerName,
       description,
       destination,
       price,
@@ -30,6 +31,7 @@ const createHotel = async function (req, res) {
     const hotelData = {
       images,
       hotelName,
+      hotelOwnerName,
       roomType,
       description,
       destination,
@@ -66,7 +68,7 @@ const createHotel = async function (req, res) {
 };
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
-  const { amenities, bedTypes,roomTypes,starRating,propertyType } = req.query;
+  const { amenities, bedTypes,roomTypes,starRating,propertyType,hotelOwnerName } = req.query;
   let query = {};
 
   if (amenities) {
@@ -85,6 +87,9 @@ if(starRating){
 }
 if(propertyType){
   query.propertyType={$in : propertyType};
+}
+if(hotelOwnerName){
+  query.hotelOwnerName= hotelOwnerName
 }
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);

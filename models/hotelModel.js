@@ -9,6 +9,10 @@ const hotelsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hotelOwnerName: {
+  type:String,
+  required:false
+  },
   roomTypes: {
     type: [String],
     default: [],
