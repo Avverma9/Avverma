@@ -38,7 +38,7 @@ import { convertDate } from "../../utils/convertDate";
 import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
-import Ratings from "../Ratings/Ratings";
+import { Rating } from "react-simple-star-rating";
 
 export default function BookNow({ refresh, reset, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +56,8 @@ export default function BookNow({ refresh, reset, userData }) {
   const [selectedGuests, setSelectedGuests] = useState(1);
 
   const [foodPrice, setFoodPrice] = useState(0);
+  const [indexedButton, setIndexedButton] = useState(null);
+  const [revCount, setRevCount] = useState(null);
 
   const [localid, setLocalid] = useState("");
   const [writeReview, setWriteReview] = useState(false);
@@ -76,6 +78,8 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const params = useParams();
   const [expand, setExpand] = useState(false);
+
+  const [addingFood, setAddingFood] = useState(false);
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -152,6 +156,7 @@ export default function BookNow({ refresh, reset, userData }) {
       })
       .then((data) => {
         setHotelReviews(data?.reviews);
+        setRevCount(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
   }, [hotelID, reset]);
@@ -284,6 +289,7 @@ export default function BookNow({ refresh, reset, userData }) {
         },
         body: JSON.stringify({
           comment: updatedReview,
+          rating: myrating,
         }),
       }
     ).then((response) => {
@@ -345,8 +351,17 @@ export default function BookNow({ refresh, reset, userData }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
-  const foodPriceHandler = (fprice) => {
+  const foodPriceHandler = (index, fprice) => {
+    setAddingFood(true);
+    setIndexedButton(index);
+    setTimeout(() => {
+      setAddingFood(false);
+    }, 1000);
     setFoodPrice(foodPrice + fprice);
+  };
+
+  const handleRating = (rate) => {
+    setMyRating(rate);
   };
 
   return (
@@ -385,10 +400,16 @@ export default function BookNow({ refresh, reset, userData }) {
                     {bookingDetails.destination}
                   </p>
                 </div>
-                <div className="rating0">
-                  <div className="staricon">
-                    {bookingDetails.rating}
-                    <FontAwesomeIcon icon={faStar} className="staricon" />
+                <div className="d-flex flex-column gap-3">
+                  <div className="rating0">
+                    <div className="staricon">
+                      {bookingDetails.rating}
+                      <FontAwesomeIcon icon={faStar} className="staricon" />
+                    </div>
+                  </div>
+                  <div className="reviewCount">
+                    <span>{revCount}</span>
+                    <p>Reviews</p>
                   </div>
                 </div>
               </div>
@@ -489,7 +510,15 @@ export default function BookNow({ refresh, reset, userData }) {
                         break;
                     }
                     return (
-                      <p key={index}>
+                      <p
+                        key={index}
+                        style={{
+                          fontSize: "16px",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
                         {icon && (
                           <FontAwesomeIcon icon={icon} className="more-icon" />
                         )}
@@ -573,7 +602,7 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="_meals-container">
                 <h1>Enjoy meals during your stay</h1>
                 <div className="d-flex gap-3">
-                  {meals.map((m) => (
+                  {meals.map((m, i) => (
                     <div className="card w-50 h-25 mb-3" key={m._id}>
                       <div className="row-g-0">
                         <div className="img-thali">
@@ -600,9 +629,19 @@ export default function BookNow({ refresh, reset, userData }) {
                           <button
                             type="button"
                             className="btn btn-primary w-100 d-flex mt-4"
-                            onClick={() => foodPriceHandler(m.price)}
+                            onClick={() => foodPriceHandler(i, m.price)}
+                            key={i}
                           >
-                            Add
+                            {addingFood && indexedButton === i ? (
+                              <div
+                                className="spinner-border spinner-border-sm text-white"
+                                role="status"
+                              >
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            ) : (
+                              "Add"
+                            )}
                           </button>
                         </div>
                       </div>
@@ -725,7 +764,12 @@ export default function BookNow({ refresh, reset, userData }) {
                     >
                       <FaTelegramPlane />
                     </button>
-                    <Ratings setMyRating={setMyRating} />
+                    {/* <Ratings setMyRating={setMyRating} /> */}
+                    <Rating
+                      onClick={handleRating}
+                      initialValue={myrating}
+                      size={22}
+                    />
                   </div>
                 </>
               )}
@@ -789,41 +833,47 @@ export default function BookNow({ refresh, reset, userData }) {
                             </div>
 
                             {isUpdatingReview && reviewId === rev.review._id ? (
-                              <div className="update_review">
-                                <textarea
-                                  placeholder="Update Review"
-                                  type="text"
-                                  rows="2"
-                                  value={updatedReview}
-                                  onChange={(e) =>
-                                    setUpdatedReview(e.target.value)
-                                  }
-                                  onKeyUp={keyPressHandler}
-                                  onFocus={(e) =>
-                                    setFieldFocus(
-                                      e.target.nextElementSibling.className
-                                    )
-                                  }
-                                />
-                                <button
-                                  className="update_review_button"
-                                  onClick={updateReviewHandler}
-                                >
-                                  <FaTelegramPlane />
-                                </button>
-                              </div>
+                              <>
+                                <span>
+                                  <Rating
+                                    onClick={handleRating}
+                                    initialValue={rev.review.rating}
+                                    size={22}
+                                    // readonly
+                                  />
+                                </span>
+                                <div className="update_review">
+                                  <textarea
+                                    placeholder="Update Review"
+                                    type="text"
+                                    rows="2"
+                                    value={updatedReview}
+                                    onChange={(e) =>
+                                      setUpdatedReview(e.target.value)
+                                    }
+                                    onKeyUp={keyPressHandler}
+                                    onFocus={(e) =>
+                                      setFieldFocus(
+                                        e.target.nextElementSibling.className
+                                      )
+                                    }
+                                  />
+                                  <button
+                                    className="update_review_button"
+                                    onClick={updateReviewHandler}
+                                  >
+                                    <FaTelegramPlane />
+                                  </button>
+                                </div>
+                              </>
                             ) : (
                               <>
                                 <span>
-                                  {[...Array(rev.review.rating)].map(() => {
-                                    return (
-                                      <FaStar
-                                        className="star"
-                                        size={22}
-                                        color={"#ffc107"}
-                                      />
-                                    );
-                                  })}
+                                  <Rating
+                                    initialValue={rev.review.rating}
+                                    size={22}
+                                    readonly
+                                  />
                                 </span>
                                 <div className="review_comment">
                                   <p>{rev.review.comment}</p>
@@ -881,10 +931,11 @@ export default function BookNow({ refresh, reset, userData }) {
                 userData={userData}
                 selectedRooms={selectedRooms}
                 selectedGuests={selectedGuests}
+                setSelectedRooms={setSelectedRooms}
+                setSelectedGuests={setSelectedGuests}
               />
             </div>
           </div>
-
           {/* <CheckOut
             rating={bookingDetails.rating}
             hoteldescription={bookingDetails.description}

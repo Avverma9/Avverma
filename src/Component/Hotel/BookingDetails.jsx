@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BookingDetails.module.css";
 import axios from "axios";
 import { FaRupeeSign } from "react-icons/fa";
@@ -6,17 +6,23 @@ import { CiMobile1 } from "react-icons/ci";
 import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
+import { AiOutlineClose } from "react-icons/ai";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const BookingDetails = ({
+  hotelName,
   price,
   foodPrice,
   hotelId,
   userId,
   currency,
   userData,
-  hotelName,
   selectedRooms,
   selectedGuests,
+  setSelectedRooms,
+  setSelectedGuests,
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
@@ -70,7 +76,7 @@ const BookingDetails = ({
     const data = {
       hotelId: hotelId,
       userId: userId,
-      amount: price + foodPrice,
+      amount: price * selectedRooms + foodPrice,
       currency: currency,
     };
     try {
@@ -83,6 +89,25 @@ const BookingDetails = ({
       console.log(err);
     }
   };
+  //for date picker
+  const [selectdate, setSelectdate] = useState(new Date());
+  const [selectdatecheckout, setSelectdatecheckout] = useState(new Date());
+
+  const handledatechange = (date) => {
+    setSelectdate(date);
+  };
+
+  const handledatechange2 = (date) => {
+    setSelectdatecheckout(date);
+  };
+  //for add room and guest
+  const [isopen, setIsopen] = useState(false);
+
+  const togglePopup = () => {
+    setIsopen(!isopen);
+  };
+
+
   return (
     <>
       <div className="new-booking-details">
@@ -91,10 +116,10 @@ const BookingDetails = ({
             <div className={styles.head}>
               <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {price * selectedRooms + foodPrice}
+                {price}
               </span>
-              <span>1999</span>
-              <span>81% off</span>
+              {/* <span>1999</span> */}
+              {/* <span>81% off</span> */}
             </div>
             <div className={styles.inclusive_tex}>Inclusive of all taxes</div>
           </div>
@@ -102,21 +127,69 @@ const BookingDetails = ({
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
                 <div className={styles.check_in_in_in}>
-                  <span className={styles.check_in_real}>Mon,1 Oct</span>
-                  <span className={styles.dash}>-</span>
-                  <span className={styles.check_out_real}>Tue,2 Oct</span>
+                  <span className={styles.check_in_real}>
+                    <DatePicker
+                      selected={selectdate}
+                      onChange={handledatechange}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-in Date"
+                    />
+                    {selectdate && <p> {selectdate.toDateString()}</p>}
+                  </span>
+
+                  <span className={styles.check_out_real}>
+                    <DatePicker
+                      selected={selectdatecheckout}
+                      onChange={handledatechange2}
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Check-out Date"
+                    />
+                    {selectdatecheckout && (
+                      <p> {selectdatecheckout.toDateString()}</p>
+                    )}
+                  </span>
                 </div>
               </div>
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in}>
+                <div className={styles.guest_in_in} onClick={togglePopup}>
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
+                {isopen && (
+                  <div className={styles.popup}>
+                    <div className={styles.roompo}>
+                      <button onClick={togglePopup}>
+                        <AiOutlineClose />
+                      </button>
+                      <div className={styles.headpop}>
+                        <h5>Add Room and Guest</h5>
+                      </div>
+                      <div className={styles.flex_room_guests}>
+                        <div className={styles.roomsec}>
+                          <label>Rooms</label>
+                          <input
+                            type="number"
+                            value={selectedRooms}
+                            onChange={(e) => setSelectedRooms(e.target.value)}
+                          />
+                        </div>
+                        <div className={styles.guestpop}>
+                          <label>Guest</label>
+                          <input
+                            type="number"
+                            value={selectedGuests}
+                            onChange={(e) => setSelectedGuests(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          {/* <div className={styles.facilities}>
+          <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
                 <CiMobile1 />
@@ -130,7 +203,7 @@ const BookingDetails = ({
                 <BsPencil />
               </span>
             </div>
-          </div> */}
+          </div>
           {/* <div className={styles.offerdata}>
             <span className={styles.percenticon}>
               <BiSolidOffer />
@@ -199,9 +272,10 @@ const BookingDetails = ({
               </div>
             </div>
           </div> */}
+
           <div className={styles.pricechart}>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Hotel Price</div>
+              <div className={styles.pri1}>Accomodation:</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
@@ -210,7 +284,7 @@ const BookingDetails = ({
               </div>
             </div>
             <div className={styles.pri}>
-              <div className={styles.pri1}>Food Price</div>
+              <div className={styles.pri1}>Food Items:</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
@@ -218,6 +292,15 @@ const BookingDetails = ({
                 </span>
               </div>
             </div>
+            {/* <div className={styles.pri}>
+              <div className={styles.pri1}>Your Saving</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  650
+                </span>
+              </div>
+            </div> */}
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>

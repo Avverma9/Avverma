@@ -7,9 +7,9 @@
   flex-direction: column;
   align-items: flex-end;
 }
-.colle h5 {
-  text-decoration: #007bff;
-  font-size: 8px;
+.colle  {
+  font-weight: 501;
+  font-size: 18px;
 }
 .search-result {
   width: 100%;
@@ -131,8 +131,6 @@
 
 /* >>>>>>>>> Temporary merge branch 2 */
 
-
-
 .amenities {
   margin-top: 30px;
 }
@@ -182,8 +180,10 @@ hr {
 /* Sidebar */
 .vertical-bar {
   width: 300px;
-  background-color: #f5f5f5;
+  background-color: #fff;
   padding: 20px;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 10px;
 }
 
 /* Filter section */
@@ -201,11 +201,19 @@ hr {
   margin-bottom: 20px;
 }
 
-.filt-2nd label,
-.filt-3rd label {
+
+.filt_2nd label,
+.filt_3rd label,
+.filt_4th label,
+.filt_5th label,
+.filt_6th label
+{
   display: block;
   margin-bottom: 5px;
   cursor: pointer;
+  font-size: 18px;
+  color: rgb(117, 117, 117);
+  font-weight: 400;
 }
 
 input[type="checkbox"] {
@@ -222,12 +230,12 @@ input[type="checkbox"]:checked + span {
 }
 
 /* Hotel Facilities section */
-.filt-5th {
+.filt_5th {
   margin-bottom: 20px;
 }
 
 /* Check In Feature section */
-.filt-6th {
+.filt_6th {
   margin-bottom: 20px;
 }
 
@@ -274,15 +282,15 @@ input[type="checkbox"] {
 
 .hotel-rating {
   font-size: 14px;
-color: #ffffff;
-margin: 0px;
-display: flex;
-align-items: center;
-background-color: #3bc03b;
-padding: 8px;
-border-radius: 3px;
-width: 60px;
-justify-content: center;
+  color: #ffffff;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  background-color: #3bc03b;
+  padding: 8px;
+  border-radius: 3px;
+  width: 60px;
+  justify-content: center;
 }
 
 .fastar {
@@ -302,15 +310,15 @@ justify-content: center;
 
 .view-details-button {
   font-family: "Roboto", sans-serif;
-font-weight: bold;
-letter-spacing: 1px;
-text-transform: uppercase;
-padding: 8px;
-width: 100%;
-color: rgb(105, 105, 105);
-border: 1px solid #cdcdcd;
-background: white;
-font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px;
+  width: 100%;
+  color: rgb(105, 105, 105);
+  border: 1px solid #cdcdcd;
+  background: white;
+  font-size: 14px;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -334,7 +342,6 @@ font-size: 14px;
   transform: translateY(-3px);
   transition: 0.3s;
 }
-
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {
@@ -485,4 +492,19 @@ font-size: 14px;
 .sticky-sidebar::-webkit-scrollbar {
   width: 0;
   height: 0;
+}
+.showless_btn{
+  border: none;
+  background: transparent;
+  color: rgb(184, 184, 184);
+}
+.clear_btn_flex{
+  display: flex;
+  justify-content: space-between;
+}
+.clear_btn_flex button{
+  background: transparent;
+  color: red;
+  border: none;
+  cursor: pointer;
 }
