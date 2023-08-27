@@ -64,6 +64,15 @@ const BookNowPage = () => {
   }, []);
 
   useEffect(() => {
+    fetch(`https://hotel-backend-tge7.onrender.com/offers/review/${offerId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.error(error));
+  }, [offerId]);
+
+  useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
       .then((response) => response.json())
       .then((data) => {
