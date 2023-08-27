@@ -116,7 +116,7 @@ const hotelsSchema = new mongoose.Schema({
       unmarriedCouplesAllowed:String,
       internationalGuestAllowed:String,
       returnPolicy:String,
-      checkInOut:String,
+
     onDoubleSharing : String,
     onQuadSharing : String,
     onBulkBooking : String,
