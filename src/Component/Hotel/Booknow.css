@@ -379,7 +379,7 @@
   gap: 15px;
 }
 
-.create_new_reviews>textarea {
+.create_new_reviews > textarea {
   width: 74%;
   padding: 5px 10px;
   border: 0.5px solid #ccc;
@@ -541,8 +541,6 @@
     margin-bottom: 10px;
     font-size: 10px;
   }
-
- 
 
   .slider-navigation {
     position: absolute;
@@ -818,7 +816,7 @@
     gap: 15px;
   }
 
-  .create_new_reviews>textarea {
+  .create_new_reviews > textarea {
     width: 70%;
     padding: 2px 7px;
     border: 0.5px solid #ccc;
@@ -961,7 +959,6 @@
   margin-right: 10px;
 }
 
-
 .input-container {
   display: flex;
   align-items: center;
@@ -995,7 +992,6 @@
 .icon {
   margin-right: 10px;
 }
-
 
 .input-container {
   display: flex;
@@ -1037,9 +1033,7 @@
 
 .bookingDetailsticky {
   margin-right: 5%;
-
 }
-
 ._meals-container h1 {
   font-size: 25px;
   font-weight: bold;
@@ -1047,7 +1041,6 @@
   margin-top: 25px;
   margin-bottom: 20px;
 }
-
 .col-md-12 button {
   border-radius: 4px;
   background-color: rgb(26, 182, 79);
@@ -1060,7 +1053,6 @@
   width: 100%;
   outline: 0px;
 }
-
 .col-md-12 button:hover {
   border-radius: 4px;
   background-color: rgb(11, 148, 57);
@@ -1101,4 +1093,17 @@
   padding: 5px;
   width: 100%;
   font-size: 18px;
+}
+
+.writeReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #6792ff;
+  margin-top: 30px;
+}
+.cancelReview {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc3545;
+  margin-top: 30px;
 }
