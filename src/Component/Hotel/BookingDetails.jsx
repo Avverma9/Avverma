@@ -11,6 +11,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
 const BookingDetails = ({
   hotelName,
   price,
@@ -100,6 +101,14 @@ const BookingDetails = ({
   const handledatechange2 = (date) => {
     setSelectdatecheckout(date);
   };
+  const [selectdates, setSelectDates] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const toggleDatePicker = () => {
+    setShowDatePicker(!showDatePicker);
+  };
+
+  
   //for add room and guest
   const [isopen, setIsopen] = useState(false);
 
@@ -127,27 +136,33 @@ const BookingDetails = ({
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
                 <div className={styles.check_in_in_in}>
-                  <span className={styles.check_in_real}>
+                <div className={styles.span}>
+                  <span className={styles.check_in_real} onClick={toggleDatePicker}>
+                    {selectdate && <p> {selectdate.toDateString()}</p>}
+                  </span>
+                  
+                  {showDatePicker && (
                     <DatePicker
                       selected={selectdate}
                       onChange={handledatechange}
                       dateFormat="dd/MM/yyyy"
                       placeholderText="Check-in Date"
                     />
-                    {selectdate && <p> {selectdate.toDateString()}</p>}
+                  )}
+                  </div>
+<div className={styles.span}>
+                  <span className={styles.check_out_real} onClick={toggleDatePicker}>
+                  {selectdatecheckout && <p> {selectdatecheckout.toDateString()}</p>}
                   </span>
-
-                  <span className={styles.check_out_real}>
+                  {showDatePicker&&(
                     <DatePicker
                       selected={selectdatecheckout}
                       onChange={handledatechange2}
                       dateFormat="dd/MM/yyyy"
                       placeholderText="Check-out Date"
                     />
-                    {selectdatecheckout && (
-                      <p> {selectdatecheckout.toDateString()}</p>
-                    )}
-                  </span>
+                  )}
+                  </div>
                 </div>
               </div>
             </div>
