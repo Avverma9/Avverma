@@ -1021,6 +1021,9 @@
 
 .bookingDetailsticky {
   margin-right: 5%;
+  position: sticky;
+top: 0;
+height: 100vh;
 }
 ._meals-container h1 {
   font-size: 25px;

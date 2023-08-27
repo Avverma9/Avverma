@@ -544,7 +544,7 @@ export default function BookNow({ refresh, reset, userData }) {
                       <p>
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
-                          <input type="text" value="12 PM" />
+                          <p>12:00 PM</p>
                         </span>
                       </p>
                     </div>
@@ -556,11 +556,7 @@ export default function BookNow({ refresh, reset, userData }) {
                       <p>
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
-                          <input
-                            type="text"
-                            value="11 AM"
-                            onChange={(e) => setCheckOutDate(e.target.value)}
-                          />
+                          <p onChange={(e) => setCheckOutDate(e.target.value)}>11:00 AM</p>
                         </span>
                       </p>
                     </div>

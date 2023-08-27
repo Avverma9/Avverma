@@ -68,6 +68,7 @@ align-items: center;
  .head span:first-child{
   font-size: 24px;
   margin-right: 8px;
+  color: red;
 
 font-weight: 700;
  }
@@ -91,7 +92,7 @@ font-size: 12px;
 color: #6d787d;
  }
  .check_room{
-  display: flex;
+
 margin-top: 16px;
 width: 100%;
 box-shadow: 0 2px 6px 0 rgba(125,125,125,0.1);
@@ -132,15 +133,10 @@ line-height: 1.71;
 font-weight: 600;
 background: #fff;
 padding: 0;
-display: block;
+display: flex;
 width: 100%;
  }
- .dash{
-  font-size: 14px;
-color: #0c0a15;
-line-height: 1.71;
-font-weight: 600;
- }
+
  .check_out_real{
   font-size: 14px;
 color: #0c0a15;
@@ -205,8 +201,11 @@ margin: 0px 16px;
 -webkit-box-align: center;
 justify-content: center;
 align-items: center;
-height: 20px;
+height: 26px;
 width: 20px;
+ }
+ .icon_pen svg{
+  font-size: 16px;
  }
  .textnew{
   font-size: 14px;

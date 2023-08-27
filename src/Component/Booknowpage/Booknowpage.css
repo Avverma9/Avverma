@@ -139,6 +139,8 @@
 
 .booking-card-content p {
   margin-bottom: 0px;
+  color: black;
+  font-weight: 501;
 }
 .bookcardmain {
   display: flex;
@@ -248,6 +250,8 @@
 .hotel-policies {
   width: 100%;
   margin-top: 50px;
+  border: 1px solid rgb(222, 222, 222);
+  border-radius: 5px;
 }
 .pricing {
   color: red;
