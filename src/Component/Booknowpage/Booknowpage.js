@@ -31,6 +31,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { formatDate } from "../../utils/_dateFuntions";
 import { FaTelegramPlane } from "react-icons/fa";
+import Avatar from "react-avatar";
+import { Rating } from "react-simple-star-rating";
+import Ratingrange from "../Hotel/Ratingrange";
+import { BiEdit, BiTrash } from "react-icons/bi";
 
 const BookNowPage = () => {
   const { offerId } = useParams();
@@ -41,9 +45,58 @@ const BookNowPage = () => {
   const [checkin, setCheckIn] = useState("");
   const [checkout, setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
-  // const [hotelReviews, setHotelReviews] = useState([]);
+  const [offerReviews, setOfferReviews] = useState([]);
   const [myReview, setMyReview] = useState("");
   const userId = localStorage.getItem("userId");
+  const [myrating, setMyRating] = useState(0);
+  const [isUpdatingReview, setIsUpdatingReview] = useState(false);
+  const [reviewId, setReviewId] = useState("");
+  const [updatedReview, setUpdatedReview] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxVisiblePages = 6;
+
+  const [writeReview, setWriteReview] = useState(false);
+
+  // Pagination for Reviews
+
+  const totalItems = offerReviews && offerReviews.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = offerReviews && offerReviews.slice(startIndex, endIndex);
+
+  const visiblePages = [];
+  const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
+  let startPage = 1;
+  let endPage = totalPagesToDisplay;
+
+  if (currentPage > Math.floor(maxVisiblePages / 2)) {
+    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+    endPage = startPage + totalPagesToDisplay - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = endPage - totalPagesToDisplay + 1;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
 
   const sliderRef = useRef(null);
 
@@ -64,6 +117,15 @@ const BookNowPage = () => {
   }, []);
 
   useEffect(() => {
+    fetch(`https://hotel-backend-tge7.onrender.com/offers/review/${offerId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setOfferReviews(data.reviewData);
+      })
+      .catch((error) => console.error(error));
+  }, [offerId]);
+
+  useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/offers/${offerId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -77,19 +139,6 @@ const BookNowPage = () => {
       .catch((error) => console.error(error));
   }, [offerId]);
   console.log(offerData);
-  // useEffect(() => {
-  //   fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${offerData._id}`)
-  //     .then((response) => {
-  //       if (response.status === 200) {
-  //         return response.json();
-  //       } else {
-  //         console.log(response);
-  //       }
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //     });
-  // }, [offerData._id]);
 
   if (!offerData) {
     return <div>Loading...</div>;
@@ -130,7 +179,6 @@ const BookNowPage = () => {
         if (response?.status === 201) {
           const data = response.json();
           console.log(data);
-
           setMyReview("");
           // window.location.reload();
         }
@@ -138,6 +186,64 @@ const BookNowPage = () => {
         console.log(error);
       }
     });
+  };
+
+  const updateReviewHandler = () => {
+    fetch(
+      `https://hotel-backend-tge7.onrender.com/offers/review/put/${offerId}/${userId}/${reviewId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          comment: updatedReview,
+          rating: myrating,
+        }),
+      }
+    ).then((response) => {
+      try {
+        if (response?.status === 200) {
+          const data = response.json();
+          console.log(data);
+          setIsUpdatingReview(false);
+          setReviewId("");
+          setUpdatedReview("");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  const deleteReviewHandler = (revId) => {
+    fetch(
+      `https://hotel-backend-tge7.onrender.com/offers/review/delete/${userId}/${offerId}/${revId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => {
+      try {
+        if (response.status === 200) {
+          console.log(response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
+
+  const handleRating = (rate) => {
+    setMyRating(rate);
+  };
+
+  const toggleUpdateReview = (rev) => {
+    setIsUpdatingReview(true);
+    setReviewId(rev.review._id);
+    setUpdatedReview(rev.review.comment);
   };
 
   return (
@@ -341,31 +447,186 @@ const BookNowPage = () => {
               <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
             </div>
 
-            <div className="create_new_reviews">
-              <textarea
-                placeholder="Write a new review"
-                type="text"
-                rows="2"
-                value={myReview}
-                onChange={(e) => setMyReview(e.target.value)}
-                // onKeyUp={keyPressHandler}
-                // onFocus={(e) =>
-                //   setFieldFocus(e.target.nextElementSibling.className)
-                // }
-              />
-              <button
-                className="post_review_button"
-                onClick={postReviewHandler}
-              >
-                <FaTelegramPlane />
-              </button>
-            </div>
+            {writeReview !== true && (
+              <>
+                <h6
+                  className="writeReview"
+                  onClick={() => setWriteReview(true)}
+                >
+                  Write a Review
+                </h6>
+              </>
+            )}
+
+            {writeReview === true && (
+              <>
+                <p
+                  className="cancelReview"
+                  onClick={() => setWriteReview(false)}
+                >
+                  Cancel
+                </p>
+                <div className="create_new_reviews">
+                  <textarea
+                    placeholder="Write a new review"
+                    type="text"
+                    rows="2"
+                    value={myReview}
+                    onChange={(e) => setMyReview(e.target.value)}
+                  />
+                  <button
+                    className="post_review_button"
+                    onClick={postReviewHandler}
+                  >
+                    <FaTelegramPlane />
+                  </button>
+                  <Rating
+                    onClick={handleRating}
+                    initialValue={myrating}
+                    size={22}
+                  />
+                </div>
+              </>
+            )}
 
             <div className="reviews">
               <div className="reviewhead">
-                <h1>Reviews:</h1>
+                <h1>Ratings and reviews</h1>
+                <Ratingrange />
+
+                {currentData
+                  ? [...currentData].reverse().map((rev, i) => (
+                      <>
+                        <div
+                          className="d-flex flex-column gap-3"
+                          style={{
+                            padding: "20px",
+                            marginRight: "10%",
+                            // marginBottom: "20px",
+                            width: "75%",
+                            height: "auto",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1",
+                          }}
+                          key={i}
+                        >
+                          <div className="review_container">
+                            <div className="comment_profile">
+                              <Avatar
+                                name={rev.user.name}
+                                src={rev.user.images[0]}
+                                round={true}
+                                size="35"
+                                style={{
+                                  boxShadow:
+                                    "0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 5px 0 rgba(0, 0, 0, 0.19)",
+                                }}
+                              />
+                            </div>
+
+                            <div className="comment_profile_name">
+                              <h4>{rev.user.name}</h4>
+                            </div>
+
+                            {rev.review.user === userId && (
+                              <div className="comment_update_del">
+                                <BiEdit
+                                  color="#2563eb"
+                                  size={24}
+                                  onClick={() => toggleUpdateReview(rev)}
+                                />
+                                <BiTrash
+                                  color="#dc3545"
+                                  size={24}
+                                  onClick={() =>
+                                    deleteReviewHandler(rev.review._id)
+                                  }
+                                />
+                              </div>
+                            )}
+                          </div>
+
+                          {isUpdatingReview && reviewId === rev.review._id ? (
+                            <>
+                              <span>
+                                <Rating
+                                  onClick={handleRating}
+                                  initialValue={rev.review.rating}
+                                  size={22}
+                                  // readonly
+                                />
+                              </span>
+                              <div className="update_review">
+                                <textarea
+                                  placeholder="Update Review"
+                                  type="text"
+                                  rows="2"
+                                  value={updatedReview}
+                                  onChange={(e) =>
+                                    setUpdatedReview(e.target.value)
+                                  }
+                                />
+                                <button
+                                  className="update_review_button"
+                                  onClick={updateReviewHandler}
+                                >
+                                  <FaTelegramPlane />
+                                </button>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <span>
+                                <Rating
+                                  initialValue={rev.review.rating}
+                                  size={22}
+                                  readonly
+                                />
+                              </span>
+                              <div className="review_comment">
+                                <p>{rev.review.comment}</p>
+
+                                <div className="comment_date">
+                                  <h6>{formatDate(rev.review.createdAt)}</h6>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                          <div style={{ border: "1px solid #94a3b8 " }}></div>
+                        </div>
+                      </>
+                    ))
+                  : null}
               </div>
-              <p>{offerData.reviews}</p>
+
+              <div className="_pagination">
+                <button
+                  className="_pagination-button"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                >
+                  Prev
+                </button>
+                {visiblePages.map((page) => (
+                  <button
+                    key={page}
+                    className={`_pagination-button ${
+                      page === currentPage ? "_pagination-active" : ""
+                    }`}
+                    onClick={() => handlePageClick(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
+                <button
+                  className="_pagination-button"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>
