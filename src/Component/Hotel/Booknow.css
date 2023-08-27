@@ -1,11 +1,9 @@
 .container {
   padding: 20px;
 }
-
 .container-p4 {
   background-color: red;
 }
-
 .flex {
   display: flex;
   flex-direction: column;
@@ -28,7 +26,6 @@
   object-fit: cover;
   height: 400px;
 }
-
 .hotel-details1 {
   margin-bottom: 10px;
   margin-left: 10%;
@@ -39,12 +36,10 @@
   font-weight: bold;
   font-size: 30;
 }
-
 .hotel-details1 .location-booknow {
   color: grey;
   font-size: 18px;
 }
-
 .hotel-details1 .hotel-descrip {
   color: rgb(112, 112, 112);
   width: 50%;
@@ -57,7 +52,6 @@
   color: black;
   font-weight: bold;
 }
-
 .amenity-word {
   font-size: 20px;
   color: black;
@@ -69,14 +63,12 @@
   width: 50%;
   margin-bottom: 25px;
 }
-
 .amenityclass {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
 }
-
 .amenityclass p {
   width: calc(33.33% - 10px);
   margin-bottom: 10px;
@@ -115,23 +107,18 @@
   position: absolute;
   right: 10px;
 }
-
 .book_now .slick-next::before {
   color: #1e293b !important;
 }
-
 .book_now .slick-prev::before {
   color: #1e293b !important;
 }
-
 .book_now .slick-next {
   right: -60px !important;
 }
-
 .book_now .slick-prev {
   left: -60px !important;
 }
-
 .booking-card {
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -153,20 +140,17 @@
 .booking-card-content p {
   margin-bottom: 0px;
 }
-
 .bookcardmain {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
-
 .flex-rating {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   width: 50%;
 }
-
 .rating0 {
   background-color: green;
   width: 10%;
@@ -177,7 +161,6 @@
   align-items: center;
   height: 30px;
 }
-
 .viewMoreBtn,
 .viewLessBtn {
   border: none;
@@ -193,11 +176,9 @@
   display: flex;
   align-items: center;
 }
-
 .booking-card-content {
   color: gray;
 }
-
 .noofguest {
   width: 50%;
 
@@ -213,17 +194,14 @@
   margin-bottom: 10px;
   color: #333;
 }
-
 .person {
   font-size: 25px;
   margin-right: 10px;
 }
-
 .hotel {
   font-size: 17px;
   margin-right: 10px;
 }
-
 .card {
   background-color: #f2f2f2;
   padding: 20px;
@@ -256,7 +234,6 @@
 .card .maritalstatus .icon {
   color: #dc3545;
 }
-
 .cust-detail {
   font-size: 25px;
   font-weight: bold;
@@ -264,7 +241,6 @@
   margin-top: 25px;
   margin-bottom: 20px;
 }
-
 .hotel-policyheading {
   font-size: 25px;
   font-weight: bold;
@@ -272,31 +248,26 @@
   margin-top: 25px;
   margin-bottom: 20px;
 }
-
 .hotel-policies {
   width: 50%;
   margin-top: 50px;
 }
-
 .pricing {
   color: red;
   font-size: 25px;
   font-weight: bolder;
 }
-
 .morehead {
   font-size: 20px;
   font-weight: bold;
   color: black;
 }
-
 .reviewhead h1 {
   font-size: 25px;
   font-weight: bold;
   color: rgb(103, 146, 255);
   margin-bottom: 20px;
 }
-
 .reviews {
   margin-top: 50px;
 }
@@ -311,8 +282,7 @@
 
 .comment_profile {
   flex: 0;
-  min-width: 50px;
-  /* Adjust the width as needed */
+  min-width: 50px; /* Adjust the width as needed */
 }
 
 .comment_profile_name {
@@ -323,7 +293,6 @@
   flex: 2;
   color: #1e293b;
 }
-
 .comment_profile_name h4 {
   text-align: left;
   font-size: 20px;
@@ -346,7 +315,6 @@
   flex: 0;
   color: #6b7280;
 }
-
 .comment_date h6 {
   text-align: left;
   margin-top: 35px;
@@ -354,19 +322,16 @@
   font-size: 12px;
   font-weight: 100;
 }
-
 .review_comment {
   color: #94a3b8;
   display: flex;
 }
-
 .review_comment p {
   text-align: left;
   font: size 16px;
   font-weight: 500;
   flex: 1;
 }
-
 .star1 {
   font-size: 22px;
   margin-left: 20px;
@@ -378,7 +343,6 @@
   align-items: flex-start;
   gap: 15px;
 }
-
 .create_new_reviews > textarea {
   width: 74%;
   padding: 5px 10px;
@@ -387,7 +351,6 @@
   outline: none;
   resize: none;
 }
-
 .create_new_reviews .post_review_button {
   width: 30px;
   height: 30px;
@@ -453,16 +416,13 @@
   top: -3px;
   left: -1px;
 }
-
 @media (max-width: 768px) {
   .container {
     padding: 10px;
   }
-
   .container-p4 {
     background-color: red;
   }
-
   .flex {
     display: flex;
     flex-direction: column;
@@ -485,7 +445,6 @@
     object-fit: cover;
     height: 100px;
   }
-
   .hotel-details1 {
     margin-bottom: 5px;
     margin-left: 5%;
@@ -496,12 +455,10 @@
     font-weight: bold;
     font-size: 15px;
   }
-
   .hotel-details1 .location-booknow {
     color: grey;
     font-size: 10px;
   }
-
   .hotel-details1 .hotel-descrip {
     color: rgb(112, 112, 112);
     width: 100%;
@@ -515,11 +472,9 @@
     color: black;
     font-weight: bold;
   }
-
   .detaildescrip {
     font-size: 10px;
   }
-
   .amenity-word {
     font-size: 12px;
     color: black;
@@ -529,16 +484,17 @@
   .amenity-section {
     width: 100%;
   }
-
   .amenityclass {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
   }
-
   .amenityclass p {
     width: calc(33.33% - 10px);
     margin-bottom: 10px;
+    font-size: 10px;
+  }
+  .moreitem p {
     font-size: 10px;
   }
 
@@ -575,7 +531,6 @@
     position: absolute;
     right: 10px;
   }
-
   .booking-card {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -597,20 +552,17 @@
   .booking-card-content p {
     margin-bottom: 0px;
   }
-
   .bookcardmain {
     display: flex;
     flex-direction: row;
     gap: 10px;
   }
-
   .flex-rating {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
   }
-
   .rating0 {
     background-color: green;
     width: 20%;
@@ -626,12 +578,10 @@
     font-size: 16px;
     margin-top: 7px;
   }
-
   .booking-card-content {
     color: gray;
     font-size: 10px;
   }
-
   .noofguest {
     width: 50%;
 
@@ -647,17 +597,14 @@
     margin-bottom: 10px;
     color: #333;
   }
-
   .person {
     font-size: 25px;
     margin-right: 10px;
   }
-
   .hotel {
     font-size: 17px;
     margin-right: 10px;
   }
-
   .card {
     background-color: #f2f2f2;
     padding: 10px;
@@ -688,7 +635,6 @@
   .card .maritalstatus .icon {
     color: #dc3545;
   }
-
   .cust-detail {
     font-size: 12px;
     font-weight: bold;
@@ -696,7 +642,6 @@
     margin-top: 10px;
     margin-bottom: 20px;
   }
-
   .hotel-policyheading {
     font-size: 12px;
     font-weight: bold;
@@ -704,36 +649,30 @@
     margin-top: 5px;
     margin-bottom: 5px;
   }
-
   .hotel-policies {
     width: 100%;
     margin-top: 50px;
   }
-
   .hotel-policy {
     font-size: 10px;
     width: 100%;
   }
-
   .pricing {
     color: red;
     font-size: 15px;
     font-weight: bolder;
   }
-
   .morehead {
     font-size: 12px;
     font-weight: bold;
     color: black;
   }
-
   .reviewhead h1 {
     font-size: 12px;
     font-weight: bold;
     color: rgb(103, 146, 255);
     margin-bottom: 5px;
   }
-
   .reviews {
     margin-top: 50px;
   }
@@ -748,8 +687,7 @@
 
   .comment_profile {
     flex: 0;
-    min-width: 50px;
-    /* Adjust the width as needed */
+    min-width: 50px; /* Adjust the width as needed */
   }
 
   .comment_profile_name {
@@ -760,7 +698,6 @@
     flex: 2;
     color: #1e293b;
   }
-
   .comment_profile_name h4 {
     text-align: left;
     font-size: 12px;
@@ -783,7 +720,6 @@
     flex: 0;
     color: #6b7280;
   }
-
   .comment_date h6 {
     text-align: left;
     margin-top: 35px;
@@ -791,19 +727,16 @@
     font-size: 12px;
     font-weight: 100;
   }
-
   .review_comment {
     color: #94a3b8;
     display: flex;
   }
-
   .review_comment p {
     text-align: left;
     font: size 16px;
     font-weight: 500;
     flex: 1;
   }
-
   .star1 {
     font-size: 22px;
     margin-left: 20px;
@@ -815,7 +748,6 @@
     align-items: flex-start;
     gap: 15px;
   }
-
   .create_new_reviews > textarea {
     width: 70%;
     padding: 2px 7px;
@@ -824,7 +756,6 @@
     outline: none;
     resize: none;
   }
-
   .create_new_reviews .post_review_button {
     width: 20px;
     height: 20px;
@@ -1032,7 +963,7 @@
 }
 
 .bookingDetailsticky {
-  margin-right: 5%;
+  margin-right: 10%;
 }
 ._meals-container h1 {
   font-size: 25px;
@@ -1065,30 +996,24 @@
   width: 100%;
   outline: 0px;
 }
-
 .img-thali {
   width: 100%;
 }
-
 .img-thali img {
   width: 100%;
 }
-
 .card-body h5 {
   display: flex;
   justify-content: center;
   font-weight: 501;
   font-size: 14px;
 }
-
 .col-md-8 {
   width: 100% !important;
 }
-
 .row-g-0 {
   height: 200px;
 }
-
 .booking-date input {
   padding: 5px;
   width: 100%;

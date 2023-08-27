@@ -130,6 +130,7 @@ const BookNowPage = () => {
         if (response?.status === 201) {
           const data = response.json();
           console.log(data);
+
           setMyReview("");
           // window.location.reload();
         }

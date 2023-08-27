@@ -17,7 +17,6 @@ import Carousel from "./Component/Carousel/Carousel";
 // import SearchComponent from './Component/Search/Search';
 import Home from "./Component/Home/Home.jsx";
 
-
 import ChatBox from "./Component/Chatbot/Chatbot";
 import PopupCard from "./Component/Welcome/Welcome";
 
@@ -109,8 +108,6 @@ import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
-import ParentComponent from "./Component/Hotel/filtersidebar/ParentComp";
-
 
 
 function App() {
@@ -284,8 +281,6 @@ function App() {
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
           <Route path="/bookingDetails" element={<BookingDetails/>}/>
-          <Route path="/parent" element={<ParentComponent/>}/>
-
           
         </Routes>
         <Footer />

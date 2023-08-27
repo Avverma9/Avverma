@@ -7,9 +7,9 @@
   flex-direction: column;
   align-items: flex-end;
 }
-.colle  {
-  font-weight: 501;
-  font-size: 18px;
+.colle h5 {
+  text-decoration: #007bff;
+  font-size: 8px;
 }
 .search-result {
   width: 100%;
@@ -131,6 +131,8 @@
 
 /* >>>>>>>>> Temporary merge branch 2 */
 
+
+
 .amenities {
   margin-top: 30px;
 }
@@ -180,10 +182,8 @@ hr {
 /* Sidebar */
 .vertical-bar {
   width: 300px;
-  background-color: #fff;
+  background-color: #f5f5f5;
   padding: 20px;
-  border: 1px solid rgb(219, 219, 219);
-  border-radius: 10px;
 }
 
 /* Filter section */
@@ -201,19 +201,11 @@ hr {
   margin-bottom: 20px;
 }
 
-
-.filt_2nd label,
-.filt_3rd label,
-.filt_4th label,
-.filt_5th label,
-.filt_6th label
-{
+.filt-2nd label,
+.filt-3rd label {
   display: block;
   margin-bottom: 5px;
   cursor: pointer;
-  font-size: 18px;
-  color: rgb(117, 117, 117);
-  font-weight: 400;
 }
 
 input[type="checkbox"] {
@@ -230,12 +222,12 @@ input[type="checkbox"]:checked + span {
 }
 
 /* Hotel Facilities section */
-.filt_5th {
+.filt-5th {
   margin-bottom: 20px;
 }
 
 /* Check In Feature section */
-.filt_6th {
+.filt-6th {
   margin-bottom: 20px;
 }
 
@@ -243,12 +235,6 @@ hr {
   border: none;
   border-top: 8px solid #ddd;
   margin: 20px 0;
-}
-.search-result-reviews{
-  font-size: 13px;
-font-weight: 501;
-color: #444;
-margin-bottom: 0px;
 }
 
 /* Optional styles for the RangeSlider component */
@@ -288,15 +274,15 @@ input[type="checkbox"] {
 
 .hotel-rating {
   font-size: 14px;
-  color: #ffffff;
-  margin: 0px;
-  display: flex;
-  align-items: center;
-  background-color: #3bc03b;
-  padding: 8px;
-  border-radius: 3px;
-  width: 60px;
-  justify-content: center;
+color: #ffffff;
+margin: 0px;
+display: flex;
+align-items: center;
+background-color: #3bc03b;
+padding: 8px;
+border-radius: 3px;
+width: 60px;
+justify-content: center;
 }
 
 .fastar {
@@ -316,15 +302,15 @@ input[type="checkbox"] {
 
 .view-details-button {
   font-family: "Roboto", sans-serif;
-  font-weight: bold;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 8px;
-  width: 100%;
-  color: rgb(105, 105, 105);
-  border: 1px solid #cdcdcd;
-  background: white;
-  font-size: 14px;
+font-weight: bold;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 8px;
+width: 100%;
+color: rgb(105, 105, 105);
+border: 1px solid #cdcdcd;
+background: white;
+font-size: 14px;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -499,19 +485,4 @@ input[type="checkbox"] {
 .sticky-sidebar::-webkit-scrollbar {
   width: 0;
   height: 0;
-}
-.showless_btn{
-  border: none;
-  background: transparent;
-  color: rgb(184, 184, 184);
-}
-.clear_btn_flex{
-  display: flex;
-  justify-content: space-between;
-}
-.clear_btn_flex button{
-  background: transparent;
-  color: red;
-  border: none;
-  cursor: pointer;
 }
