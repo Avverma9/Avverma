@@ -172,6 +172,7 @@ const BookNowPage = () => {
         },
         body: JSON.stringify({
           comment: myReview,
+          rating: myrating,
         }),
       }
     ).then((response) => {
