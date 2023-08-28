@@ -98,6 +98,8 @@ const hotelsSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  checkInTime:String,
+  checkOutTime:String,
   ownerContactDetails: String,
   receptionContactDetails: String,
   hotelEmail: String,

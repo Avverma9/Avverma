@@ -17,7 +17,7 @@ const createBooking = async (req, res) => {
       totalFoodPrice += food.price
     }
 
-    const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
+    const { checkIn, checkInTime,checkOutTime,checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price* rooms
@@ -31,6 +31,8 @@ const createBooking = async (req, res) => {
       hotelName,
       checkInDate: checkIn, 
       checkOutDate: checkOut, 
+      checkOutTime: checkOutTime,
+      checkInTime: checkInTime,
       guests,
       rooms,
       price: foodPrice,
@@ -59,7 +61,7 @@ const createOfferBooking = async (req, res) => {
       totalFoodPrice += food.price
     }
 
-    const { checkIn, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
+    const { checkIn,checkInTime,checkOutTime, checkOut, guests,rooms, price, paymentStatus,hotelName,images,destination } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price* rooms
@@ -73,6 +75,8 @@ const createOfferBooking = async (req, res) => {
       hotelName,
       checkInDate: checkIn, 
       checkOutDate: checkOut, 
+      checkOutTime: checkOutTime,
+      checkInTime: checkInTime,
       guests,
       rooms,
       price: foodPrice,
@@ -112,7 +116,9 @@ const getConfirmedBookings = async (req, res) => {
       guests: booking.guests,
       price: booking.price,
       checkInDate : booking.checkInDate,
+      checkInTime: booking.checkInTime,
       checkOutDate: booking.checkOutDate,
+      checkOutTime: booking.checkOutTime,
       bookingStatus: booking.bookingStatus,
       hotelimage: booking.images,
       price:booking.price,
@@ -149,6 +155,7 @@ const getConfirmedBookings = async (req, res) => {
         price: booking.price,
         checkInDate : booking.checkInDate,
         checkOutDate: booking.checkOutDate,
+      
         bookingStatus: booking.bookingStatus
       }));
   
@@ -217,27 +224,34 @@ const getCheckingBooking = async(req,res)=>{
 }
 
 //========================================================================
-const updateBookingDates = async (req, res) => {
-  try {
-    const { bookingId } = req.params;
-    const { checkInDate, checkOutDate } = req.body;
+const updateBooking = async (req, res) => {
 
-    const booking = await bookingModel.findOne({ bookingId });
-
-    if (!booking) {
-      return res.status(404).json({ success: false, message: 'Booking not found' });
+    try {
+      const { bookingId } = req.params;
+      const updatedFields = req.body;
+  
+      const booking = await bookingModel.findOneAndUpdate({ bookingId });
+  
+      if (!booking) {
+        return res.status(404).json({ success: false, message: "Booking not found" });
+      }
+  
+     
+      for (const field in updatedFields) {
+        if (booking.schema.paths.hasOwnProperty(field)) { 
+          booking[field] = updatedFields[field];
+        }
+      }
+  
+      await booking.save();
+  
+      res.status(200).json({ success: true, data: booking });
+    } catch (error) {
+      res.status(500).json({ success: false, error: error.message });
     }
 
-    booking.checkInDate = checkInDate;
-    booking.checkOutDate = checkOutDate;
-
-    await booking.save();
-
-    res.status(200).json({ success: true, data:booking });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
 };
+
 
 
 
@@ -249,5 +263,5 @@ module.exports={
    cancelBooking,
     getCancelledBooking,
     getCheckingBooking,
-    updateBookingDates,
+    updateBooking,
   }
