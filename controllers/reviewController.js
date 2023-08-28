@@ -47,59 +47,19 @@ const createReview = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-//==================================create review for offer================================================
-const createOfferReview = async (req, res) => {
-  try {
-    const { userId, offersId } = req.params;
 
-    const { comment,rating } = req.body;
 
-    const user = await userModel.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    const review = new reviewModel({
-      offers: offersId,
-      user: userId,
-      comment: comment,
-      rating: rating
-    });
-    const savedReview = await reviewModel.create(review);
-
-    const responseData = {
-      _id: savedReview._id,
-      offers: savedReview.offers,
-      user: {
-        _id: user._id,
-        name: user.name,
-        images: user.images,
-      },
-      comment: savedReview.comment,
-      rating: savedReview.comment,
-      createdAt: savedReview.createdAt,
-    };
-    return res.status(201).send({
-      status: true,
-      data: responseData,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 //===============================================================================================
 const getReviewsByHotelId = async (req, res) => {
   try {
     const { hotelId } = req.params;
 
     const reviews = await reviewModel.find({ hotel: hotelId })
-
+ let countRating = reviews.length
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
-    reviews.sort((a, b) => b.createdAt - a.createdAt);
+    reviews.sort((a, b) => b.createdAt-1 - a.createdAt-1);
 
     const hotel = await hotelModel.findById(hotelId).select("hotelName");
 
@@ -127,56 +87,13 @@ const getReviewsByHotelId = async (req, res) => {
 
     res.status(200).json({
       hotel: hotel.hotelName,
-      reviews: reviewData
+      reviews: reviewData,
+      countRating
     });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-//====================================getOfferReview===========================================
-const  getReviewsByOfferId= async (req, res) => {
-  try {
-    const { offersId } = req.params;
-
-    const reviews = await reviewModel.find({ offers: offersId});
-
-    if (reviews.length === 0) {
-      return res.status(404).json({ message: "No reviews found" });
-    }
-
-    const offers = await offerModel.findById(offersId).select("hotelName");
-
-    if (!offers) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
-
-    const userIds = reviews.map((review) => review.user);
-    const users = await userModel.find({ _id: { $in: userIds } }).select(["name", "images"]);
-
-    if (users.length === 0) {
-      return res.status(404).json({ message: "No users found" });
-    }
-
-    const reviewData = reviews.map((review) => {
-      const user = users.find((user) => user._id.toString() === review.user.toString());
-      return {
-        review,
-        user: {
-          name: user.name,
-          images: user.images
-        }
-      };
-    });
-
-    res.status(200).json({
-      offers: offers.hotelName,
-      reviews: reviewData
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 
 
 //=======================================================================================================
@@ -212,7 +129,7 @@ const getReviewsByUserId = async (req, res) => {
 const updateReview = async (req, res) => {
   try {
     const { userId, hotelId, reviewId } = req.params;
-    const { comment } = req.body;
+    const { comment,rating } = req.body;
 
     const review = await reviewModel.findOne({ user: userId, hotel: hotelId, _id: reviewId });
 
@@ -221,6 +138,7 @@ const updateReview = async (req, res) => {
     }
 
     review.comment = comment;
+    review.rating= rating;
 
     await review.save();
 
@@ -257,7 +175,5 @@ module.exports = {
   getReviewsByUserId,
   updateReview,
   deleteReview,
-  createOfferReview,
-  getReviewsByOfferId
 
 };

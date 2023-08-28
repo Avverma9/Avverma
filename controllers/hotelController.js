@@ -1,9 +1,132 @@
 const hotelModel = require("../models/hotelModel");
 
+// const createHotel = async function (req, res) {
+//   try {
+//     const {
+//       hotelName,
+//       hotelOwnerName,
+//       description,
+//       destination,
+//       price,
+//       startDate,
+//       endDate,
+//       guests,
+//       numRooms,
+//       roomTypes, 
+//       localId,
+//       maritalStatus,
+//       availability,
+//       hotelsPolicy,
+//       // moreOptions,
+//       amenities,
+//       reviews,
+//       rating,
+//       // collections,
+//       // categories,
+//       // accommodationType,
+//       checkInFeature,
+//       bedTypes,  
+//       starRating,  
+//       propertyType,  
+//       contact,  
+//       ownerContactDetails,  
+//       hotelEmail,  
+//       street,  
+//       city,  
+//       state,  
+//       zip,  
+//       landmark,  
+//       onDoubleSharing,
+//       outsideFoodPolicy,  
+//       cancellationPolicy,  
+//       paymentMode,  
+//       petsAllowed,  
+//       bachelorAllowed,  
+//       smokingAllowed,  
+//       alcoholAllowed,  
+//       unmarriedCouplesAllowed,  
+//       internationalGuestAllowed,  
+//       returnPolicy,  
+//     } = req.body;
+//     // const images = req.files.map((file) => file.location);
+
+//     const hotelData = {
+//       // images,
+//       hotelName,
+//       hotelOwnerName,
+//       roomTypes,
+//       description,
+//       destination,
+//       price,
+//       startDate,
+//       endDate,
+//       guests,
+//       numRooms,
+//       localId,
+//       maritalStatus,
+//       availability,
+//       hotelsPolicy,
+//       // moreOptions,
+//       amenities,
+//       reviews,
+//       rating,
+//       // collections,
+//       // categories,
+//       // accommodationType,
+//       checkInFeature,
+//       bedTypes,  
+//       starRating,  
+//       propertyType,  
+//       contact,  
+//       ownerContactDetails,  
+//       hotelEmail,  
+//       street,  
+//       city,  
+//       state,  
+//       zip,  
+//       landmark,  
+//       outsideFoodPolicy,  
+//       cancellationPolicy,  
+//       paymentMode,  
+//       petsAllowed,  
+//       bachelorAllowed,  
+//       smokingAllowed,  
+//       alcoholAllowed,  
+//       unmarriedCouplesAllowed,  
+//       internationalGuestAllowed,  
+//       returnPolicy,  
+//       onDoubleSharing ,  
+//       onQuadSharing ,  
+//       onBulkBooking,  
+//       onTrippleSharing,  
+//       onMoreThanFour,  
+//       onDoubleSharing,  
+//       offQuadSharing,  
+//       offBulkBooking,  
+//       offTrippleSharing,  
+//       offMoreThanFour,  
+//     };
+
+//     const savedHotel = await hotelModel.create(hotelData);
+
+//     return res.status(201).send({
+//       status: true,
+//       data: savedHotel,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+
+
+
 const createHotel = async function (req, res) {
   try {
     const {
       hotelName,
+      hotelOwnerName,
       description,
       destination,
       price,
@@ -11,26 +134,52 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
-      roomType,
+      roomTypes,
       localId,
       maritalStatus,
       availability,
       hotelsPolicy,
-      moreOptions,
       amenities,
       reviews,
       rating,
-      collections,
-      categories,
-      accommodationType,
       checkInFeature,
+      bedTypes,
+      starRating,
+      propertyType,
+      contact,
+      ownerContactDetails,
+      hotelEmail,
+      street,
+      city,
+      state,
+      zip,
+      landmark,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      onDoubleSharing,
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour,
     } = req.body;
-    const images = req.files.map((file) => file.location);
 
     const hotelData = {
-      images,
       hotelName,
-      roomType,
+      hotelOwnerName,
+      roomTypes,
       description,
       destination,
       price,
@@ -38,19 +187,45 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
-      roomType, 
       localId,
       maritalStatus,
       availability,
       hotelsPolicy,
-      moreOptions,
       amenities,
       reviews,
       rating,
-      collections,
-      categories,
-      accommodationType,
       checkInFeature,
+      bedTypes,
+      starRating,
+      propertyType,
+      contact,
+      ownerContactDetails,
+      hotelEmail,
+      street,
+      city,
+      state,
+      zip,
+      landmark,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      onDoubleSharing,
+      onQuadSharing,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour,
     };
 
     const savedHotel = await hotelModel.create(hotelData);
@@ -64,27 +239,83 @@ const createHotel = async function (req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+//==================================Update-Numrooms========================================
+const updateRooms = async function(req,res){
+  const {hotelId}= req.params;
+  const { newNumRooms } = req.body;
+  try {
+    const hotelToUpdate = await hotelModel.findOne(hotelId)
+    if(!hotelToUpdate){
+      return res.status(404).json({error:"Hotel not found"});
+    }
+    const currentNumRooms = parseInt(hotelToUpdate.numRooms, 10);
+    const addedNumRooms = parseInt(newNumRooms, 10);
+
+    hotelToUpdate.numRooms = (currentNumRooms + addedNumRooms).toString();
+    
+    const updatedHotel = await hotelToUpdate.save();
+    return res.status(200).json({
+      status:true,
+      data:updatedHotel,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({error:"Internal Server Error"});
+  }
+
+}
+
+//==================================UpdateHotel================================
+const UpdateHotel = async function(req, res) {
+  const { id } = req.params;
+  const updateData = req.body; 
+
+  try {
+    const updatedHotel = await hotelModel.findByIdAndUpdate(id, updateData, {
+      new: true, 
+      runValidators: true, 
+    });
+
+    if (!updatedHotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    return res.status(200).json({
+      status: true,
+      data: updatedHotel,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
-  const { amenities, bedTypes,roomTypes,starRating,propertyType } = req.query;
+  const { amenities, bedTypes,roomTypes,starRating,propertyType,hotelOwnerName } = req.query;
   let query = {};
 
   if (amenities) {
-    query.amenities = amenities;
+    query.amenities = {$in : amenities};
   }
 
   if (bedTypes) {
-    query.bedTypes = bedTypes;
+    query.bedTypes = {$in : bedTypes};
   }
 
   if (roomTypes) {
-    query.roomTypes = roomTypes;
+    query.roomTypes = {$in : roomTypes};
   }
 if(starRating){
-  query.starRating=starRating;
+  query.starRating={$in : starRating};
 }
 if(propertyType){
-  query.propertyType=propertyType;
+  query.propertyType={$in : propertyType};
+}
+if(hotelOwnerName){
+  query.hotelOwnerName= hotelOwnerName
 }
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
@@ -108,7 +339,7 @@ const searchHotels = async (req, res) => {
     const searchQuery = {};
 
     if (destination) {
-      searchQuery.destination = destination;
+      searchQuery.destination ={$regex: new RegExp(destination, 'i')};
     }
 
     if (startDate && endDate) {
@@ -305,5 +536,7 @@ module.exports = {
   getHotelsByCategory,
   getHotelsByFilters,
   getCity,
-  getByQuery
+  getByQuery,
+  updateRooms,
+  UpdateHotel,
 };
