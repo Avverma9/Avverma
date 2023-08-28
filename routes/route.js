@@ -43,6 +43,8 @@ router.get("/welcome/get", welcomeController.getWelcomeUsers);
 
 //===================================== HOTEL ===========================================================
 router.post("/hotels/create/new", upload, hotelController.createHotel);
+router.patch("/hotels/updaterooms/:id", hotelController.updateRooms)
+router.patch("/hotels/update/:id", hotelController.UpdateHotel)
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/hotels/:id", hotelController.getHotelsById);
