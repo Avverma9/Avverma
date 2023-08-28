@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const hotelsSchema = new mongoose.Schema({
-  images: {
-    type: [String],
-    default:[],
-  },
+  // images: {
+  //   type: [String],
+
+  // },
   hotelName: {
     type: String,
-    required: false,
+    required: true,
   },
   hotelOwnerName: {
     type: String,
-    required: false,
+    required: false
   },
   roomTypes: {
     type: [String],
@@ -20,48 +20,47 @@ const hotelsSchema = new mongoose.Schema({
 
   description: {
     type: String,
-    required: false,
+    required: true,
   },
   destination: {
     type: String,
-    required: false,
+    required: true,
   },
   price: {
     type: Number,
-    required: false,
+    required: true,
   },
   startDate: {
     type: Date,
-    required: false,
+    required: true,
   },
   endDate: {
     type: Date,
-    required: false,
+    required: true,
   },
   guests: {
     type: String,
-    required: false,
+    required: true,
   },
   numRooms: {
     type: String,
-    required: false,
+    required: true,
   },
   localId: {
-    type: String,
-    default: "Accepted",
+    type: Boolean,
+    default: false,
   },
   maritalStatus: {
     type: String,
-    required: false,
-    default: "Unmarried"
+    required: true,
   },
   availability: {
     type: String,
-    required: false,
+    required: true,
   },
   hotelsPolicy: {
     type: String,
-    required: false,
+    required: true,
   },
   amenities: {
     type: [String],
@@ -76,7 +75,6 @@ const hotelsSchema = new mongoose.Schema({
   },
   checkInFeature: {
     type: Boolean,
-    default: true
   },
   bedTypes: {
     type: [String],
@@ -96,10 +94,8 @@ const hotelsSchema = new mongoose.Schema({
   },
   isAccepted: {
     type: Boolean,
-    default: false,
+    default: true
   },
-  checkInTime:String,
-  checkOutTime:String,
   ownerContactDetails: String,
   receptionContactDetails: String,
   hotelEmail: String,
@@ -129,7 +125,7 @@ const hotelsSchema = new mongoose.Schema({
   offQuadSharing: String,
   offBulkBooking: String,
   offTrippleSharing: String,
-  offMoreThanFour: String,
+  offMoreThanFour: String
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);
