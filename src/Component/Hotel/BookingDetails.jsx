@@ -167,6 +167,7 @@ const BookingDetails = ({
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
                 <div className={styles.check_in_in_in}>
+                  <h4>Check In </h4>
                   <span className={styles.check_in_real}>
                     <DatePicker
                       selected={selectdate}
@@ -176,7 +177,7 @@ const BookingDetails = ({
                     />
                     {selectdate && <p> {selectdate.toDateString()}</p>}
                   </span>
-
+                  <h4>Check Out </h4>
                   <span className={styles.check_out_real}>
                     <DatePicker
                       selected={selectdatecheckout}
