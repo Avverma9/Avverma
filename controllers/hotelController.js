@@ -209,7 +209,7 @@ const searchHotels = async (req, res) => {
 
     if (moreOptions) {
       const options = moreOptions.split(",");
-      searchQuery.moreOptions = { $in: options };
+      searchQuery.moreOptions = { $in: options }
     }
 
     let searchResults = await hotelModel.find(searchQuery).lean();
