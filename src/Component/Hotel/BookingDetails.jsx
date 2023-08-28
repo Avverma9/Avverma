@@ -15,7 +15,7 @@ const BookingDetails = ({
   hotelName,
   price,
   foodPrice,
-  hotelId,
+  hotelID,
   userId,
   currency,
   userData,
@@ -23,6 +23,12 @@ const BookingDetails = ({
   selectedGuests,
   setSelectedRooms,
   setSelectedGuests,
+  checkIn,
+  checkOut,
+  hotelimage,
+  destination,
+  foodIdArr,
+  setFoodIdArr,
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
@@ -56,25 +62,60 @@ const BookingDetails = ({
   };
 
   const handleBooking = (paymentStatus) => {
-    //  const bookingData = {
-    //    userId: userId,
-    //    hotelId: hotelId,
-    //    hotelName: hotelName,
-    //    checkIn: checkIn,
-    //    checkOut: checkOut,
-    //    guests: guests,
-    //    rooms: rooms,
-    //    price: amount,
-    //    paymentStatus: paymentStatus,
-    //    images: hotelimage,
-    //    destination: destination,
-    //  };
-    console.log(paymentStatus);
+    const bookingData = {
+      user: userId,
+      hotel: hotelID,
+      hotelName: hotelName,
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
+      guests: selectedGuests,
+      rooms: selectedRooms,
+      price: price * selectedRooms + foodPrice,
+      bookingStatus: paymentStatus,
+      images: hotelimage,
+      destination: destination,
+      foodItems: foodIdArr,
+    };
+    if (userData && userData.email && paymentStatus === "success") {
+      axios
+        .post(
+          `https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelID}`,
+          bookingData
+        )
+        .then((res) => {
+          console.log(res.data, "Booking created successfully", bookingData);
+          setFoodIdArr([]);
+
+          // if (userData.email) {
+          //   axios
+          //     .post(
+          //       "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
+          //       {
+          //         bookingData: bookingData,
+          //         email: userData.email,
+          //       }
+          //     )
+          //     .then((res) => {
+          //       console.log(res);
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // } else {
+          //   console.log("User data does not have a valid email");
+          // }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("User data, email, or payment status is not valid");
+    }
   };
 
   const handlePayment = async () => {
     const data = {
-      hotelId: hotelId,
+      hotelId: hotelID,
       userId: userId,
       amount: price * selectedRooms + foodPrice,
       currency: currency,
@@ -107,7 +148,6 @@ const BookingDetails = ({
     setIsopen(!isopen);
   };
 
-
   return (
     <>
       <div className="new-booking-details">
@@ -127,6 +167,7 @@ const BookingDetails = ({
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
                 <div className={styles.check_in_in_in}>
+                  <h4>Check In </h4>
                   <span className={styles.check_in_real}>
                     <DatePicker
                       selected={selectdate}
@@ -136,7 +177,7 @@ const BookingDetails = ({
                     />
                     {selectdate && <p> {selectdate.toDateString()}</p>}
                   </span>
-
+                  <h4>Check Out </h4>
                   <span className={styles.check_out_real}>
                     <DatePicker
                       selected={selectdatecheckout}

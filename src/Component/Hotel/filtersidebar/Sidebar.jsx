@@ -36,6 +36,7 @@ const Sidebar = ({
   handlebedtype,
   handleamenity,
   clearFilters,
+  setDataAvailable,
 }) => {
   //Filter Api
   useEffect(() => {
@@ -52,9 +53,11 @@ const Sidebar = ({
       .then((data) => {
         if (data.status === 200) {
           setHotels(data.data);
+          setDataAvailable(data.data.length > 0);
         }
       })
       .catch((error) => console.log(error));
+    setDataAvailable(false);
   }, [
     selectedPropertyTypes,
     roomtype,
@@ -62,6 +65,7 @@ const Sidebar = ({
     bedtype,
     amenity,
     setHotels,
+    setDataAvailable,
   ]);
 
   useEffect(() => {

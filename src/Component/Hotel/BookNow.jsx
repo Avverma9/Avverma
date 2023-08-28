@@ -80,6 +80,7 @@ export default function BookNow({ refresh, reset, userData }) {
   const [expand, setExpand] = useState(false);
 
   const [addingFood, setAddingFood] = useState(false);
+  const [foodIdArr, setFoodIdArr] = useState([]);
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -112,6 +113,9 @@ export default function BookNow({ refresh, reset, userData }) {
         }
       })
       .then((data) => {
+        console.log(data._id);
+        console.log(params.id);
+        console.log(hotelID);
         setBookingDetails(data);
         setHotelID(data._id);
         setHotelImages(data.images);
@@ -351,7 +355,8 @@ export default function BookNow({ refresh, reset, userData }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
-  const foodPriceHandler = (index, fprice) => {
+  const foodPriceHandler = (index, fprice, fId) => {
+    setFoodIdArr(...foodIdArr, { _id: fId });
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
@@ -495,37 +500,43 @@ export default function BookNow({ refresh, reset, userData }) {
               <div className="moreopt">
                 <p className="morehead">More:</p>
                 <div className="moreitem">
-                  {hotelMoreOpt.map((option, index) => {
-                    let icon;
-                    // eslint-disable-next-line default-case
-                    switch (option) {
-                      case "Pets Allowed":
-                        icon = faPaw;
-                        break;
-                      case "Alcohol Allowed":
-                        icon = faGlassMartini;
-                        break;
-                      case "Bachelor Allowed":
-                        icon = faPeopleGroup;
-                        break;
-                    }
-                    return (
-                      <p
-                        key={index}
-                        style={{
-                          fontSize: "16px",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "5px",
-                        }}
-                      >
-                        {icon && (
-                          <FontAwesomeIcon icon={icon} className="more-icon" />
-                        )}
-                        {option}
-                      </p>
-                    );
-                  })}
+                  {hotelMoreOpt &&
+                    hotelMoreOpt !== [] &&
+                    hotelMoreOpt !== undefined &&
+                    hotelMoreOpt.map((option, index) => {
+                      let icon;
+                      // eslint-disable-next-line default-case
+                      switch (option) {
+                        case "Pets Allowed":
+                          icon = faPaw;
+                          break;
+                        case "Alcohol Allowed":
+                          icon = faGlassMartini;
+                          break;
+                        case "Bachelor Allowed":
+                          icon = faPeopleGroup;
+                          break;
+                      }
+                      return (
+                        <p
+                          key={index}
+                          style={{
+                            fontSize: "16px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "5px",
+                          }}
+                        >
+                          {icon && (
+                            <FontAwesomeIcon
+                              icon={icon}
+                              className="more-icon"
+                            />
+                          )}
+                          {option}
+                        </p>
+                      );
+                    })}
                 </div>
               </div>
 
@@ -629,7 +640,7 @@ export default function BookNow({ refresh, reset, userData }) {
                           <button
                             type="button"
                             className="btn btn-primary w-100 d-flex mt-4"
-                            onClick={() => foodPriceHandler(i, m.price)}
+                            onClick={() => foodPriceHandler(i, m.price, m._id)}
                             key={i}
                           >
                             {addingFood && indexedButton === i ? (
@@ -933,6 +944,12 @@ export default function BookNow({ refresh, reset, userData }) {
                 selectedGuests={selectedGuests}
                 setSelectedRooms={setSelectedRooms}
                 setSelectedGuests={setSelectedGuests}
+                checkIn={checkInDate}
+                checkOut={checkOutDate}
+                hotelimage={firstImageURL}
+                destination={bookingDetails.destination}
+                foodIdArr={foodIdArr}
+                setFoodIdArr={setFoodIdArr}
               />
             </div>
           </div>
