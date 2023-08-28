@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const hotelsSchema = new mongoose.Schema({
-  // images: {
-  //   type: [String],
-
-  // },
+  images: {
+    type: [String],
+    default:[],
+  },
   hotelName: {
     type: String,
     required: false,
   },
   hotelOwnerName: {
     type: String,
-    required: false
+    required: false,
   },
   roomTypes: {
     type: [String],
@@ -44,7 +44,7 @@ const hotelsSchema = new mongoose.Schema({
   },
   numRooms: {
     type: String,
-    required: true,
+    required: false,
   },
   localId: {
     type: String,
@@ -61,7 +61,7 @@ const hotelsSchema = new mongoose.Schema({
   },
   hotelsPolicy: {
     type: String,
-    required: true,
+    required: false,
   },
   amenities: {
     type: [String],
@@ -96,8 +96,10 @@ const hotelsSchema = new mongoose.Schema({
   },
   isAccepted: {
     type: Boolean,
-    default: true
+    default: false,
   },
+  checkInTime:String,
+  checkOutTime:String,
   ownerContactDetails: String,
   receptionContactDetails: String,
   hotelEmail: String,
@@ -127,7 +129,7 @@ const hotelsSchema = new mongoose.Schema({
   offQuadSharing: String,
   offBulkBooking: String,
   offTrippleSharing: String,
-  offMoreThanFour: String
+  offMoreThanFour: String,
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);
