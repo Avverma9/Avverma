@@ -87,7 +87,7 @@ router.get('/bookingFailed', bookingController.getFailedBookings);
 router.put('/booking/:bookingId', bookingController.cancelBooking);
 router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)
-router.put('/updatebooking/:bookingId', bookingController.updateBookingDates);
+router.put('/updatebooking/:bookingId', bookingController.updateBooking);
 
 
 //============================offers==============================================//

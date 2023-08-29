@@ -228,19 +228,24 @@ const getCheckingBooking = async (req, res) => {
 }
 
 //========================================================================
-const updateBookingDates = async (req, res) => {
+const updateBooking = async (req, res) => {
+
   try {
     const { bookingId } = req.params;
-    const { checkInDate, checkOutDate } = req.body;
+    const updatedFields = req.body;
 
-    const booking = await bookingModel.findOne({ bookingId });
+    const booking = await bookingModel.findOneAndUpdate({ bookingId });
 
     if (!booking) {
-      return res.status(404).json({ success: false, message: 'Booking not found' });
+      return res.status(404).json({ success: false, message: "Booking not found" });
     }
 
-    booking.checkInDate = checkInDate;
-    booking.checkOutDate = checkOutDate;
+   
+    for (const field in updatedFields) {
+      if (booking.schema.paths.hasOwnProperty(field)) { 
+        booking[field] = updatedFields[field];
+      }
+    }
 
     await booking.save();
 
@@ -248,6 +253,7 @@ const updateBookingDates = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
+
 };
 
 
@@ -260,5 +266,5 @@ module.exports = {
   cancelBooking,
   getCancelledBooking,
   getCheckingBooking,
-  updateBookingDates,
+  updateBooking,
 }
