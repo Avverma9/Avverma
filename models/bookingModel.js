@@ -30,6 +30,12 @@ const bookingSchema = new mongoose.Schema({
   checkOutDate: {
     type: Date,
   },
+  checkInTime: {
+    type: Date,
+  },
+  checkOutTime: {
+    type: Date,
+  },
   guests: {
     type: Number,
     required: true,

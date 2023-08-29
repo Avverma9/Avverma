@@ -127,6 +127,7 @@ const createHotel = async function (req, res) {
     const {
       hotelName,
       hotelOwnerName,
+      roomTypes,
       description,
       destination,
       price,
@@ -134,7 +135,6 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
-      roomTypes,
       localId,
       maritalStatus,
       availability,
@@ -176,10 +176,18 @@ const createHotel = async function (req, res) {
       offMoreThanFour,
     } = req.body;
 
+    // const images = req.files.map((file) => file.location);
+
+    const roomTypesData = roomTypes.map((type) => ({
+      type: type.type,
+      price: type.price,
+    }));
+
     const hotelData = {
+      // images,
       hotelName,
       hotelOwnerName,
-      roomTypes,
+      roomTypes: roomTypesData,
       description,
       destination,
       price,
@@ -270,7 +278,7 @@ const updateRooms = async function(req,res){
 //==================================UpdateHotel================================
 const UpdateHotel = async function(req, res) {
   const { id } = req.params;
-  const updateData = req.body; 
+  const {updateData} = req.body; 
 
   try {
     const updatedHotel = await hotelModel.findByIdAndUpdate(id, updateData, {
