@@ -13,7 +13,7 @@ const bookingSchema = new mongoose.Schema({
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotels",
+    ref: "Hotel",
     required: false,
   },
   offers: {
