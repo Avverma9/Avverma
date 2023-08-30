@@ -104,71 +104,17 @@ const createOfferBooking = async (req, res) => {
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  try {
-    const bookings = await bookingModel
-      .find()
-      .populate('user')
-      .populate('hotel')
-      .exec();
-
-    const confirmedBookings = bookings.map((booking) => ({
-      bookingId: booking.bookingId,
-      user: {
-        name: booking.user?.name,
-        email: booking.user?.email
-      },
-      hotel: {
-        hotelName: booking.hotel?.hotelName,
-      },
-      guests: booking.guests,
-      price: booking.price,
-      checkInDate: booking.checkInDate,
-      checkOutDate: booking.checkOutDate,
-      bookingStatus: booking.bookingStatus,
-      hotelimage: booking.images,
-      price: booking.price,
-      destination: booking.destination
-    }));
-
-    console.log(confirmedBookings, "Confirmed Booking............................")
-
-    res.status(200).json({ success: true, bookings: confirmedBookings });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+  const booking= await bookingModel.find()
+  const confirmedBookings = booking.filter(booking=>booking.bookingStatus === "success")
+  res.json(confirmedBookings)
 };
+
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
-  try {
-    const bookings = await bookingModel
-      .find({ bookingStatus: "failed" })
-      .populate('user')
-      .populate('hotel')
-      .exec();
-
-    const failedBookings = bookings.map((booking) => ({
-      bookingId: booking.bookingId,
-      user: {
-        name: booking.user?.name,
-        email: booking.user?.email
-      },
-      hotel: {
-        hotelName: booking.hotel?.hotelName,
-      },
-      guests: booking.guests,
-      price: booking.price,
-      checkInDate: booking.checkInDate,
-      checkOutDate: booking.checkOutDate,
-      bookingStatus: booking.bookingStatus
-    }));
-
-    console.log(failedBookings, ".failed booking...........................")
-
-    res.status(200).json({ success: true, bookings: failedBookings });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+ const bookings = await bookingModel.find()
+ const failedBooking= bookings.filter(booking=>booking.bookingStatus === "failed")
+ res.json(failedBooking)
 };
 
 
@@ -200,15 +146,12 @@ const cancelBooking = async (req, res) => {
 //===================================================================================
 
 const getCancelledBooking = async (req, res) => {
-  try {
-    const canceledBookings = await bookingModel
-      .find({ bookingStatus: 'Cancelled' })
-      .populate('user');
-
-    res.status(200).json({ success: true, canceledBookings });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
+  const booking= await bookingModel.find()
+  const cancellledBooking = booking.filter(cancelled=>cancelled.bookingStatus === "cancelled")
+  if(!booking)
+  res.status(404).json({success: false , message:"No any booking are here"});
+  
+  res.json(cancellledBooking)
 };
 
 //====================================================================================

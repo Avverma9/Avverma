@@ -13,7 +13,7 @@ const bookingSchema = new mongoose.Schema({
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotel",
+    ref: "Hotels",
     required: false,
   },
   offers: {
@@ -50,7 +50,7 @@ const bookingSchema = new mongoose.Schema({
   },
   bookingStatus: {
     type: String,
-    enum: ["success", "failed", "pending"],
+    enum: ["success", "failed", "cancelled"],
     default: "success",
   },
   cardDetails: {
