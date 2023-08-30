@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 const bookingSchema = new mongoose.Schema({
   bookingId: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
-    required: true,
+    required: false,
   },
   hotel: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Hotels",
-    required: true,
+    required: false,
   },
   offers: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,15 +32,15 @@ const bookingSchema = new mongoose.Schema({
   },
   guests: {
     type: Number,
-    required: true,
+    required: false,
   },
   rooms: {
     type: Number,
-    required: true,
+    required: false,
   },
   price: {
     type: Number,
-    required: true,
+    required: false,
   },
   bookingStatus: {
     type: String,
