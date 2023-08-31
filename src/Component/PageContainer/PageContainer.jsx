@@ -80,7 +80,7 @@ export const PageContainer = () => {
         <Route path="/edit-emd" element={<Editemd />} />
         <Route path="/dashboard" element={<Dashboard2 />} />
         <Route path="/settings" element={<Setting2 />} />
-        <Route path="/set-auction-timing" element={<Setauctiontime />} />
+        <Route path="/set-auction-timing/:id" element={<Setauctiontime />} />
         <Route path="/start-price" element={<Startprice />} />
         <Route path="/add-region" element={<Addregion />} />
         <Route path="/add-seller" element={<Addseller />} />

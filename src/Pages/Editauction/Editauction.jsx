@@ -180,12 +180,16 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
  const EndTimeHours = EndTime.getHours().toString().padStart(2, '0');
  const EndTimeMinutes = EndTime.getMinutes().toString().padStart(2, '0');
 
+ const handleAddAuctionTiming = () => {
+  navigate(`/set-auction-timing/${auctionId}`);
+}
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <div className="dashboard-header">
           <h1>Edit Auction</h1>
+          <button onClick={handleAddAuctionTiming}>Add Auction Timing</button>
         </div>
         <div className="add-new-auction-fields">
           <Select
