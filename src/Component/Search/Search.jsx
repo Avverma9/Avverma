@@ -7,6 +7,7 @@ import moment from "moment";
 import { getSearchState } from "../redux/SearchSlice";
 import { useDispatch } from "react-redux";
 
+
 const SearchComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -88,6 +89,26 @@ const SearchComponent = () => {
 
     return options;
   };
+  //for guest and room
+  const [isopen, setIsopen] = useState(false);
+
+  const togglePopup = () => {
+    setIsopen(!isopen);
+  };
+  const [showRoomsSelect, setShowRoomsSelect] = useState(false);
+  const [showGuestsSelect, setShowGuestsSelect] = useState(false);
+
+  
+
+  const toggleSelectVisibility = (selectType) => {
+    if (selectType === 'rooms') {
+      setShowRoomsSelect(!showRoomsSelect);
+      setShowGuestsSelect(false); // Close the guests select when opening rooms select
+    } else if (selectType === 'guests') {
+      setShowGuestsSelect(!showGuestsSelect);
+      setShowRoomsSelect(false); // Close the rooms select when opening guests select
+    }
+  };
 
   return (
     <div className="search-container">
@@ -156,7 +177,8 @@ const SearchComponent = () => {
         </div>
         <div className="guest-room">
           <div className="guests">
-            <p>Guest</p>
+            <label htmlFor="guests" onClick={() => toggleSelectVisibility('rooms')}>Guest</label>
+            {showRoomsSelect && (
             <select
               id="guests"
               name="guests"
@@ -167,10 +189,13 @@ const SearchComponent = () => {
             >
               {renderOptions(1, 1000, "Guests")}
             </select>
+            )}
           </div>
+          
 
           <div className="rooms">
-            <p>Room</p>
+            <label htmlFor="numRooms" onClick={() => toggleSelectVisibility('guests')}>Room</label>
+            {showGuestsSelect && (
             <select
               id="numRooms"
               name="numRooms"
@@ -181,8 +206,10 @@ const SearchComponent = () => {
             >
               {renderOptions(1, 4, "Rooms")}
             </select>
+            )}
           </div>
-          <div className="more-options">
+          </div>
+          {/* <div className="more-options">
             <p>More</p>
             <select
               id="moreOptions"
@@ -198,7 +225,7 @@ const SearchComponent = () => {
               <option value="Smoking Allowed">Smoking Allowed</option>
             </select>
           </div>
-        </div>
+        
 
         <div className="local">
           <label htmlFor="localId">
@@ -212,10 +239,10 @@ const SearchComponent = () => {
             />
             Local ID
           </label>
-        </div>
+        </div> */}
 
-        <div className="btn">
-          <button type="submit">Search</button>
+        <div className="btnn">
+          <button className="butn-sub" type="submit">Search</button>
         </div>
       </form>
 
