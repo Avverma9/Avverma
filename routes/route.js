@@ -47,8 +47,8 @@ router.post("/hotels/create/new", upload, hotelController.createHotel);
 router.patch("/hotels/update/:id", hotelController.UpdateHotel)
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
-router.get("/get/main/get/hotels", hotelController.getHotels); // for home
-router.get("/get/offers/main/hotels", hotelController.getOffers); // for landing page
+router.get("/get/main/get/hotels", hotelController.getHotels); 
+router.get("/get/offers/main/hotels", hotelController.getOffers); 
 router.get("/hotels/:id", hotelController.getHotelsById);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
@@ -112,8 +112,11 @@ router.post('/coupon',couponController.MakeCoupon )
 router.get('/coupon/:code',couponController.ApplyCoupon)
 router.get('/coupon/get/all', couponController.GetAllCoupons);
 //===============================rooms=======================================
-router.post ("/create/new/room/:hotelid",roomController.createRoom)
-
+router.post ("/create/new/room/:id",roomController.createRoom)
+router.get("/get/new/room/:id",roomController.getRoomsByHotelId)
+router.get("/get/new/room/by/room/:id",roomController.getRoomsById)
+router.get("/get/all/new/room",roomController.getAllRooms)
+router.put("/update/new/created/room/:id",roomController.updateRoom)
 
 
 module.exports = router;

@@ -3,7 +3,7 @@ const roomModel = require("../models/roomModel")
 const createHotel = async (req, res) => {
   try {
     const {
-      images,
+    
       hotelName,
       hotelOwnerName,
       description,
@@ -57,7 +57,7 @@ const createHotel = async (req, res) => {
       offMoreThanFour,
     } = req.body;
 
-//  const images = req.files.map((file)=> file.location)
+ const images = req.files.map((file)=> file.location)
 
     const hotelData = {
       images,
@@ -179,7 +179,7 @@ if(propertyType){
   query.propertyType={$in : propertyType};
 }
 if(hotelOwnerName){
-  query.hotelOwnerName= hotelOwnerName
+  query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, 'i') };
 }
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
@@ -195,7 +195,6 @@ const searchHotels = async (req, res) => {
       guests,
       numRooms,
       localId,
-      moreOptions,
     } = req.query;
 
  
@@ -226,10 +225,7 @@ const searchHotels = async (req, res) => {
       searchQuery.localId = false;
     }
 
-    if (moreOptions) {
-      const options = moreOptions.split(",");
-      searchQuery.moreOptions = { $in: options };
-    }
+  
 
     let searchResults = await hotelModel.find(searchQuery).lean();
     searchResults = searchResults.map((hotel) => {
