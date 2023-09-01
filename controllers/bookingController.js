@@ -18,7 +18,7 @@ const createBooking = async (req, res) => {
       totalFoodPrice += food.price;
     }
 
-    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination } = req.body;
+    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName,hotelOwnerName, images, destination } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price * rooms;
@@ -39,6 +39,7 @@ const createBooking = async (req, res) => {
       user: userId,
       hotel: hotelId,
       hotelName,
+      hotelOwnerName,
       checkInDate: checkIn,
       checkOutDate: checkOut,
       guests,
@@ -147,7 +148,7 @@ const cancelBooking = async (req, res) => {
 
 const getCancelledBooking = async (req, res) => {
   const booking= await bookingModel.find()
-  const cancellledBooking = booking.filter(cancelled=>cancelled.bookingStatus === "cancelled")
+  const cancellledBooking = booking.filter(cancelled=>cancelled.bookingStatus === "cancelled" )
   if(!booking)
   res.status(404).json({success: false , message:"No any booking are here"});
   

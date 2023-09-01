@@ -18,6 +18,7 @@ const DashboardUser = require("../controllers/dashboardUser");
 const offersReview= require("../controllers/offersReview")
 // const otpController = require("../controllers/otpController")
 const couponController = require("../controllers/couponController")
+const roomController = require("../controllers/roomController")
 
 
 
@@ -43,7 +44,6 @@ router.get("/welcome/get", welcomeController.getWelcomeUsers);
 
 //===================================== HOTEL ===========================================================
 router.post("/hotels/create/new", upload, hotelController.createHotel);
-router.patch("/hotels/updaterooms/:id", hotelController.updateRooms)
 router.patch("/hotels/update/:id", hotelController.UpdateHotel)
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
@@ -120,7 +120,8 @@ router.post("/login/dashboard/user",DashboardUser.loginUser)
 router.post('/coupon',couponController.MakeCoupon )
 router.get('/coupon/:code',couponController.ApplyCoupon)
 router.get('/coupon/get/all', couponController.GetAllCoupons);
-
+//===============================rooms=======================================
+router.post ("/create/new/room/:hotelid",roomController.createRoom)
 
 
 

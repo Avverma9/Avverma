@@ -1,63 +1,60 @@
 const mongoose = require("mongoose");
-
-
-const roomTypeSchema = new mongoose.Schema({
-  type: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-});
-
-
 const hotelsSchema = new mongoose.Schema({
   images: {
     type: [String],
-
   },
   hotelName: {
     type: String,
-    required: true,
   },
   hotelOwnerName: {
     type: String,
-    required: false
   },
-  roomTypes: {
-    type: [roomTypeSchema],
-    default: [],
-  },
-
+  room: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "room",
+    },
+  ],
+  roomDetails: [
+    {
+      type: {
+        type: String,
+      },
+      bedTypes: {
+        type: String,
+      },
+      price: {
+        type: Number,
+      },
+    },
+  ],
   description: {
     type: String,
-    required: true,
   },
   destination: {
     type: String,
-    required: true,
   },
   price: {
     type: Number,
-    required: true,
   },
+  isOffer: {
+    type:Boolean,
+    default: false
+  },
+  offerDetails: String,
+  offerPriceLess: Number,
+
   startDate: {
     type: Date,
-    required: true,
   },
   endDate: {
     type: Date,
-    required: true,
   },
   guests: {
     type: String,
-    required: true,
   },
   numRooms: {
-    type: String,
-    required: true,
+    type: Number,
   },
   localId: {
     type: Boolean,
@@ -65,15 +62,9 @@ const hotelsSchema = new mongoose.Schema({
   },
   maritalStatus: {
     type: String,
-    required: true,
-  },
-  availability: {
-    type: String,
-    required: true,
   },
   hotelsPolicy: {
     type: String,
-    required: true,
   },
   amenities: {
     type: [String],
@@ -86,14 +77,6 @@ const hotelsSchema = new mongoose.Schema({
   rating: {
     type: Number,
   },
-  checkInFeature: {
-    type: Boolean,
-  },
-  bedTypes: {
-    type: [String],
-    default: [],
-  },
-
   starRating: {
     type: [String],
     default: "2",
@@ -107,8 +90,12 @@ const hotelsSchema = new mongoose.Schema({
   },
   isAccepted: {
     type: Boolean,
-    default: true
+    default: true,
   },
+  categories:[String],
+  collections:[String],
+  accommodationType:[String],
+  
   ownerContactDetails: String,
   receptionContactDetails: String,
   hotelEmail: String,
@@ -138,7 +125,7 @@ const hotelsSchema = new mongoose.Schema({
   offQuadSharing: String,
   offBulkBooking: String,
   offTrippleSharing: String,
-  offMoreThanFour: String
+  offMoreThanFour: String,
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);

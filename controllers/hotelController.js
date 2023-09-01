@@ -1,133 +1,10 @@
 const hotelModel = require("../models/hotelModel");
-
-// const createHotel = async function (req, res) {
-//   try {
-//     const {
-//       hotelName,
-//       hotelOwnerName,
-//       description,
-//       destination,
-//       price,
-//       startDate,
-//       endDate,
-//       guests,
-//       numRooms,
-//       roomTypes, 
-//       localId,
-//       maritalStatus,
-//       availability,
-//       hotelsPolicy,
-//       // moreOptions,
-//       amenities,
-//       reviews,
-//       rating,
-//       // collections,
-//       // categories,
-//       // accommodationType,
-//       checkInFeature,
-//       bedTypes,  
-//       starRating,  
-//       propertyType,  
-//       contact,  
-//       ownerContactDetails,  
-//       hotelEmail,  
-//       street,  
-//       city,  
-//       state,  
-//       zip,  
-//       landmark,  
-//       onDoubleSharing,
-//       outsideFoodPolicy,  
-//       cancellationPolicy,  
-//       paymentMode,  
-//       petsAllowed,  
-//       bachelorAllowed,  
-//       smokingAllowed,  
-//       alcoholAllowed,  
-//       unmarriedCouplesAllowed,  
-//       internationalGuestAllowed,  
-//       returnPolicy,  
-//     } = req.body;
-//     // const images = req.files.map((file) => file.location);
-
-//     const hotelData = {
-//       // images,
-//       hotelName,
-//       hotelOwnerName,
-//       roomTypes,
-//       description,
-//       destination,
-//       price,
-//       startDate,
-//       endDate,
-//       guests,
-//       numRooms,
-//       localId,
-//       maritalStatus,
-//       availability,
-//       hotelsPolicy,
-//       // moreOptions,
-//       amenities,
-//       reviews,
-//       rating,
-//       // collections,
-//       // categories,
-//       // accommodationType,
-//       checkInFeature,
-//       bedTypes,  
-//       starRating,  
-//       propertyType,  
-//       contact,  
-//       ownerContactDetails,  
-//       hotelEmail,  
-//       street,  
-//       city,  
-//       state,  
-//       zip,  
-//       landmark,  
-//       outsideFoodPolicy,  
-//       cancellationPolicy,  
-//       paymentMode,  
-//       petsAllowed,  
-//       bachelorAllowed,  
-//       smokingAllowed,  
-//       alcoholAllowed,  
-//       unmarriedCouplesAllowed,  
-//       internationalGuestAllowed,  
-//       returnPolicy,  
-//       onDoubleSharing ,  
-//       onQuadSharing ,  
-//       onBulkBooking,  
-//       onTrippleSharing,  
-//       onMoreThanFour,  
-//       onDoubleSharing,  
-//       offQuadSharing,  
-//       offBulkBooking,  
-//       offTrippleSharing,  
-//       offMoreThanFour,  
-//     };
-
-//     const savedHotel = await hotelModel.create(hotelData);
-
-//     return res.status(201).send({
-//       status: true,
-//       data: savedHotel,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
-
-
-
-const createHotel = async function (req, res) {
+const roomModel = require("../models/roomModel")
+const createHotel = async (req, res) => {
   try {
     const {
       hotelName,
       hotelOwnerName,
-      roomTypes,
       description,
       destination,
       price,
@@ -137,15 +14,16 @@ const createHotel = async function (req, res) {
       numRooms,
       localId,
       maritalStatus,
-      availability,
       hotelsPolicy,
       amenities,
       reviews,
       rating,
-      checkInFeature,
-      bedTypes,
+     categories,
+     collections,
+     accommodationType,
       starRating,
       propertyType,
+      isOffer,
       contact,
       ownerContactDetails,
       hotelEmail,
@@ -176,18 +54,12 @@ const createHotel = async function (req, res) {
       offMoreThanFour,
     } = req.body;
 
-    // const images = req.files.map((file) => file.location);
-
-    const roomTypesData = roomTypes.map((type) => ({
-      type: type.type,
-      price: type.price,
-    }));
+ const images = req.files.map((file)=> file.location)
 
     const hotelData = {
-      // images,
+      images,
       hotelName,
       hotelOwnerName,
-      roomTypes: roomTypesData,
       description,
       destination,
       price,
@@ -195,15 +67,15 @@ const createHotel = async function (req, res) {
       endDate,
       guests,
       numRooms,
+      isOffer,
+      offerDetails,
+      offerPriceLess,
       localId,
       maritalStatus,
-      availability,
       hotelsPolicy,
       amenities,
       reviews,
       rating,
-      checkInFeature,
-      bedTypes,
       starRating,
       propertyType,
       contact,
@@ -214,6 +86,9 @@ const createHotel = async function (req, res) {
       state,
       zip,
       landmark,
+      categories,
+      collections,
+      accommodationType,
       outsideFoodPolicy,
       cancellationPolicy,
       paymentMode,
@@ -238,7 +113,8 @@ const createHotel = async function (req, res) {
 
     const savedHotel = await hotelModel.create(hotelData);
 
-    return res.status(201).send({
+
+    return res.status(201).json({
       status: true,
       data: savedHotel,
     });
@@ -248,32 +124,9 @@ const createHotel = async function (req, res) {
   }
 };
 
+module.exports = createHotel;
 
-//==================================Update-Numrooms========================================
-const updateRooms = async function(req,res){
-  const {hotelId}= req.params;
-  const { newNumRooms } = req.body;
-  try {
-    const hotelToUpdate = await hotelModel.findOne(hotelId)
-    if(!hotelToUpdate){
-      return res.status(404).json({error:"Hotel not found"});
-    }
-    const currentNumRooms = parseInt(hotelToUpdate.numRooms, 10);
-    const addedNumRooms = parseInt(newNumRooms, 10);
 
-    hotelToUpdate.numRooms = (currentNumRooms + addedNumRooms).toString();
-    
-    const updatedHotel = await hotelToUpdate.save();
-    return res.status(200).json({
-      status:true,
-      data:updatedHotel,
-    })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({error:"Internal Server Error"});
-  }
-
-}
 
 //==================================UpdateHotel================================
 const UpdateHotel = async function(req, res) {
@@ -413,19 +266,7 @@ const getCity = async function(req,res){
  
   res.json(hotels)
 }
-//==================================get by category========================================//
 
-//==========================================================================
-
-const getHotelbyName = async (req, res) => {
-  try {
-    const { destination } = req.query;
-    const hotels = await hotelModel.find({ destination: destination });
-    res.json(hotels);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
 
 //=================================================================================
 
@@ -454,22 +295,6 @@ const getHotelsByPrice = async function (req, res) {
     res.status(500).json({ error: "An error occurred" });
   }
 }
-
-
-//=====================================================================================================
-
-const getHotelsByAccommodation = async (req, res) => {
-  const { type } = req.params;
-
-  try {
-    const hotels = await hotelModel.find({ accommodationType: type });
-    res.json(hotels);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch hotels' });
-  }
-};
-
-
 //==================================================================================
 
 const getHotelsByLocalID = async (req, res) => {
@@ -477,20 +302,6 @@ const getHotelsByLocalID = async (req, res) => {
 
   try {
     const hotels = await hotelModel.find({ 'location.localId': localId });
-    res.json(hotels);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch hotels' });
-  }
-};
-
-
-//========================================================================================
-
-const getHotelsByCategory = async (req, res) => {
-  const { category } = req.params;
-
-  try {
-    const hotels = await hotelModel.find({ categories: category });
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch hotels' });
@@ -545,6 +356,5 @@ module.exports = {
   getHotelsByFilters,
   getCity,
   getByQuery,
-  updateRooms,
   UpdateHotel,
 };

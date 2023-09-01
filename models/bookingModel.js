@@ -24,6 +24,9 @@ const bookingSchema = new mongoose.Schema({
   hotelName: {
     type: String,
   },
+  hotelOwnerName : {
+    type: String,
+  },
   checkInDate: {
     type: Date,
   },
