@@ -1,8 +1,6 @@
 const hotelModel = require("../models/hotelModel");
 const reviewModel = require("../models/reviewModel");
 const userModel = require("../models/userModel");
-const offerModel = require("../controllers/offersController");
-
 
 //======================================hotel review============================================
 const createReview = async (req, res) => {
@@ -175,5 +173,4 @@ module.exports = {
   getReviewsByUserId,
   updateReview,
   deleteReview,
-
 };

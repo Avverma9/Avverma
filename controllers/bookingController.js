@@ -2,7 +2,7 @@ const bookingModel = require('../models/bookingModel');
 const CanceledBooking = require('../models/cancelledModel');
 const paymentModel = require('../models/paymentModel');
 const foodModel = require("../models/foodModel")
-const offersModel = require("../models/offersModel")
+
 const hotelModel = require("../models/hotelModel");
 
 
@@ -60,48 +60,7 @@ const createBooking = async (req, res) => {
   }
 };
 
-//================================creating booking for offer========================================================================//
-const createOfferBooking = async (req, res) => {
-  try {
-    const { userId, offerId } = req.params;
-    const { foodItems } = req.body;
-    let totalFoodPrice = 0
-    for (const foodItem of foodItems) {
-      const food = await foodModel.findById(foodItem._id)
-      totalFoodPrice += food.price
-    }
 
-    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName, images, destination } = req.body;
-
-    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const totalprice = price * rooms
-    const foodPrice = totalprice + totalFoodPrice
-
-    const booking = {
-      images,
-      bookingId,
-      user: userId,
-      offer: offerId,
-      hotelName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
-      guests,
-      rooms,
-      price: foodPrice,
-      destination: destination,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed"
-    };
-
-    // console.log(booking, "bookingggggggggggggggg");
-
-    const savedBooking = await bookingModel.create(booking);
-    console.log(savedBooking, "savedBooking");
-
-    res.status(201).json({ success: true, data: savedBooking });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
@@ -204,7 +163,6 @@ const updateBooking = async (req, res) => {
 
 module.exports = {
   createBooking,
-  createOfferBooking,
   getConfirmedBookings,
   getFailedBookings,
   cancelBooking,

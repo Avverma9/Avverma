@@ -10,12 +10,12 @@ const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const partnerController = require("../controllers/partnerController");
 const bookingController = require("../controllers/bookingController");
-const offersController = require("../controllers/offersController")
+
 const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
 const carouselController = require("../controllers/carouselController")
 const DashboardUser = require("../controllers/dashboardUser");
-const offersReview= require("../controllers/offersReview")
+
 // const otpController = require("../controllers/otpController")
 const couponController = require("../controllers/couponController")
 const roomController = require("../controllers/roomController")
@@ -46,13 +46,12 @@ router.get("/welcome/get", welcomeController.getWelcomeUsers);
 router.post("/hotels/create/new", upload, hotelController.createHotel);
 router.patch("/hotels/update/:id", hotelController.UpdateHotel)
 router.get("/search", hotelController.searchHotels);
-router.get("/get/all/hotels", hotelController.getAllHotels);
+router.get("/get/allhotels", hotelController.getAllHotels);
+router.get("/get/hotels", hotelController.getHotels);
+router.get("/get/offers", hotelController.getOffers);
 router.get("/hotels/:id", hotelController.getHotelsById);
-router.get("/hotels", hotelController.getHotelbyName);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
-router.get("/hotelsCategory", hotelController.getHotelsByCategory);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
-router.get("/hotelsAccomodation", hotelController.getHotelsByAccommodation);
 router.get('/hotels/filters', hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all",hotelController.getCity)
 router.get("/hotels/query/get/by",hotelController.getByQuery)
@@ -81,7 +80,6 @@ router.get('/partners/:partnerId', partnerController.getHotelPartner);
 
 //============================= BOOKING =======================================
 router.post('/booking/:userId/:hotelId',upload, bookingController.createBooking);
-router.post('/booking/:userId/:offerId',upload, bookingController.createOfferBooking);
 router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
 router.put('/booking/:bookingId', bookingController.cancelBooking);
@@ -90,14 +88,7 @@ router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)
 router.put('/updatebooking/:bookingId', bookingController.updateBooking);
 
 
-//============================offers==============================================//
-router.post("/create/offers",upload,offersController.createOffers)
-router.get("/offers",offersController.getOffers)
-router.get("/offers/:offerId",offersController.getOffersById)
-router.post("/offers/review/:userId/:offerId",offersReview.createOfferReview)
-router.get("/offers/review/:offerId",offersReview.getReviewsByOfferId)
-router.put("/offers/review/put/:offerId/:userId/:reviewId",offersReview.updateOfferReview)
-router.delete("/offers/review/delete/:userId/:offerId/:reviewId",offersReview.deleteOfferReview)
+
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail)
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

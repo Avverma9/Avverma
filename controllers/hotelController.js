@@ -259,6 +259,18 @@ const getAllHotels = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+//===========================get hotels====================================================//
+const getHotels= async (req,res)=>{
+const hotels= await hotelModel.find()
+const filterData= hotels.filter(hotel=>hotel.isOffer === false)
+res.json(filterData)
+}
+//======================================get offers==========================================//
+const getOffers= async (req,res)=>{
+  const hotels= await hotelModel.find()
+  const filterData= hotels.filter(hotel=>hotel.isOffer === true)
+  res.json(filterData)
+  }
 //============================get by city============================================//
 const getCity = async function(req,res){
  const {destination} = req.body
@@ -347,14 +359,13 @@ module.exports = {
   createHotel,
   searchHotels,
   getAllHotels,
-  getHotelbyName,
   getHotelsById,
   getHotelsByPrice,
-  getHotelsByAccommodation,
   getHotelsByLocalID,
-  getHotelsByCategory,
   getHotelsByFilters,
   getCity,
   getByQuery,
   UpdateHotel,
+  getHotels,
+  getOffers
 };
