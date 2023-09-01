@@ -46,9 +46,9 @@ router.get("/welcome/get", welcomeController.getWelcomeUsers);
 router.post("/hotels/create/new", upload, hotelController.createHotel);
 router.patch("/hotels/update/:id", hotelController.UpdateHotel)
 router.get("/search", hotelController.searchHotels);
-router.get("/get/allhotels", hotelController.getAllHotels);
-router.get("/get/hotels", hotelController.getHotels);
-router.get("/get/offers", hotelController.getOffers);
+router.get("/get/all/hotels", hotelController.getAllHotels);
+router.get("/get/main/get/hotels", hotelController.getHotels); // for home
+router.get("/get/offers/main/hotels", hotelController.getOffers); // for landing page
 router.get("/hotels/:id", hotelController.getHotelsById);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);

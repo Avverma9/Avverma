@@ -3,6 +3,7 @@ const roomModel = require("../models/roomModel")
 const createHotel = async (req, res) => {
   try {
     const {
+      images,
       hotelName,
       hotelOwnerName,
       description,
@@ -24,6 +25,8 @@ const createHotel = async (req, res) => {
       starRating,
       propertyType,
       isOffer,
+      offerDetails,
+      offerPriceLess,
       contact,
       ownerContactDetails,
       hotelEmail,
@@ -54,7 +57,7 @@ const createHotel = async (req, res) => {
       offMoreThanFour,
     } = req.body;
 
- const images = req.files.map((file)=> file.location)
+//  const images = req.files.map((file)=> file.location)
 
     const hotelData = {
       images,
