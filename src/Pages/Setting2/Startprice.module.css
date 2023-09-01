@@ -1,0 +1,41 @@
+/* .addnewauctionfields {
+  display: flex;
+  flex-wrap: nowrap;
+  row-gap: 30px;
+  column-gap: 15px;
+  width: 110vh;
+} */
+
+.addnewauctionfields{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+  width: 110vh;
+}
+
+/* .addnewauctionfields .basicmultiselect {
+  flex-basis: 30%;
+  flex-grow: 1;
+  width: 100%;
+} */
+
+.submitbtn {
+  padding: 10px;
+  border: none;
+  width:55vh;
+  /* margin-top: 20px; */
+  background: rgb(66, 216, 66);
+  cursor: pointer;
+}
+
+/* .settinginputfield span {
+  display: flex;
+  flex-direction: column;
+  line-height: 3;
+
+} */
+
+.settingcontainer {
+  padding: 10px;
+  margin-left: 10%;
+}

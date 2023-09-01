@@ -21,6 +21,7 @@ export const Addauction = () => {
   };
 
   const handleUploadPVChange = (e) => {
+    console.log(e.target.files[0]);
     const file = e.target.files[0];
     setphotoVideo(file);
   };
@@ -84,57 +85,105 @@ export const Addauction = () => {
     setSelectedOption(event.target.value);
   };
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   const formData = {
+  //     region: event.target.region.value,
+  //     category: event.target.category.value,
+  //     seller: event.target.seller.value,
+  //     productName: event.target.productName.value,
+  //     registrationNumber: event.target.registrationNumber.value,
+  //     agreementNumber: event.target.agreementNumber.value,
+  //     rc: rcValue,
+  //     rc_name: event.target.rc_name.value,
+  //     startPrice: event.target.startPrice.value,
+  //     reservePrice: event.target.reservePrice.value,
+  //     // startTime: event.target.startTime.value,
+  //     // startDate: event.target.startDate.value,
+  //     // endTime: event.target.endTime.value,
+  //     // endDate: event.target.endDate.value,
+  //     startTime:
+  //       event.target.startDate.value + " " + event.target.startTime.value,
+  //     endTime: event.target.endDate.value + " " + event.target.endTime.value,
+  //     // fuelType:
+  //     // 	document.querySelector('input[name="fuel"]:checked')?.value || "",
+  //     parkingName: event.target.parkingName.value,
+  //     parkingAddress: event.target.parkingAddress.value,
+  //     yearOfManufacture: event.target.yearOfManufacture.value,
+  //     paymentTerm: event.target.paymentTerm.value,
+  //     quotationValidity: event.target.quotationValidity.value,
+  //     auctionFees: event.target.auctionFees.value,
+  //     auctionTerm: event.target.auctionTerm.value,
+  //     files: photoVideo,
+  //     valuationFile: valuationFile,
+  //   };
+
+  //   const response = await fetch(`${BASE_URL}/admin/auction/add`, {
+  //     method: "POST",
+  //     headers: {
+  //       Authorization: "Bearer " + localStorage.getItem("token"),
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(formData),
+  //   });
+  //   console.log("Form Data:", formData);
+
+  //   if (response.ok && response.status === 200) {
+  //     console.log("Auction successfully added.");
+  //     alert("New Auction Added ");
+  //   } else {
+  //     console.error("Error adding auction:", response.statusText);
+  //   }
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = {
-      region: event.target.region.value,
-      category: event.target.category.value,
-      seller: event.target.seller.value,
-      productName: event.target.productName.value,
-      registrationNumber: event.target.registrationNumber.value,
-      agreementNumber: event.target.agreementNumber.value,
-      rc: rcValue,
-      rc_name: event.target.rc_name.value,
-      startPrice: event.target.startPrice.value,
-      reservePrice: event.target.reservePrice.value,
-      startTime: event.target.startTime.value,
-      startDate: event.target.startDate.value,
-      endTime: event.target.endTime.value,
-      endDate: event.target.endDate.value,
-      // fuelType:
-      // 	document.querySelector('input[name="fuel"]:checked')?.value || "",
-      parkingName: event.target.parkingName.value,
-      parkingAddress: event.target.parkingAddress.value,
-      yearOfManufacture: event.target.yearOfManufacture.value,
-      paymentTerm: event.target.paymentTerm.value,
-      quotationValidity: event.target.quotationValidity.value,
-      auctionFees: event.target.auctionFees.value,
-      auctionTerm: event.target.auctionTerm.value,
-      photoVideo: photoVideo,
-      valuationFile: valuationFile,
-    };
 
+    const formData = new FormData();
+    formData.append("region", event.target.region.value);
+    formData.append("category", event.target.category.value);
+    formData.append("seller", event.target.seller.value);
+    formData.append("productName", event.target.productName.value);
+    formData.append("registrationNumber", event.target.registrationNumber.value);
+    formData.append("agreementNumber", event.target.agreementNumber.value);
+    formData.append("rc", rcValue);
+    formData.append("rc_name", event.target.rc_name.value);
+    formData.append("startPrice", event.target.startPrice.value);
+    formData.append("reservePrice", event.target.reservePrice.value);
+    formData.append("startTime", event.target.startDate.value + " " + event.target.startTime.value);
+    formData.append("endTime", event.target.endDate.value + " " + event.target.endTime.value);
+    formData.append("parkingName", event.target.parkingName.value);
+    formData.append("parkingAddress", event.target.parkingAddress.value);
+    formData.append("yearOfManufacture", event.target.yearOfManufacture.value);
+    formData.append("paymentTerm", event.target.paymentTerm.value);
+    formData.append("quotationValidity", event.target.quotationValidity.value);
+    formData.append("auctionFees", event.target.auctionFees.value);
+    formData.append("auctionTerm", event.target.auctionTerm.value);
+    formData.append("files", photoVideo);
+    // formData.append("valuationFile", valuationFile);
+  
     const response = await fetch(`${BASE_URL}/admin/auction/add`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: formData, 
     });
-    console.log("Form Data:", formData);
-
-    // Check the response status and handle accordingly
-    if (response.ok) {
-      console.log(response);
-      console.log(response.data);
+  
+    if (response.ok && response.status === 200) {
       console.log("Auction successfully added.");
-      alert("Data Sent Successfully");
+      alert("New Auction Added");
     } else {
-      // Error handling
       console.error("Error adding auction:", response.statusText);
     }
   };
+  
+  
+  
+  
+  
+  
+
 
   return (
     <>
@@ -223,7 +272,6 @@ export const Addauction = () => {
               type="text"
               name="rc_name"
               placeholder="RC name"
-              required
               className="basic-multi-select-inputs"
             />
           </label>
@@ -250,7 +298,7 @@ export const Addauction = () => {
           <label htmlFor="start-time">
             <p>Start Time</p>
             <input
-              type="date"
+              type="time"
               name="startTime"
               placeholder="Start Time"
               className="basic-multi-select-inputs"
@@ -268,7 +316,7 @@ export const Addauction = () => {
           <label htmlFor="end-time">
             <p>End Time</p>
             <input
-              type="date"
+              type="time"
               name="endTime"
               placeholder="End Time"
               className="basic-multi-select-inputs"
@@ -342,7 +390,7 @@ export const Addauction = () => {
             </select>
           </label>
           <label htmlFor="quatation-validity">
-            <p>Quatation Validity</p>
+            <p>Quotation Validity</p>
             <input
               type="date"
               name="quotationValidity"
@@ -382,6 +430,7 @@ export const Addauction = () => {
               Upload Photo/Video
             </p>
             <input
+              id="add-video"
               type="file"
               name="photoVideo"
               placeholder=""

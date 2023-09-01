@@ -24,6 +24,12 @@ export const MannageAuction = () => {
   const [regions, setRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState("");
 
+  const [sellers, setSellers] = useState([]);
+  const [selectedSeller, setSelectedSeller] = useState("");
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const [auctions, setAuctions] = useState([]);
   const exportToExcel = () => {
     const workbook = XLSX.utils.book_new();
@@ -44,11 +50,49 @@ export const MannageAuction = () => {
   };
 
   useEffect(() => {
-    fetch("http://13.48.45.18:4008/admin/region/getAll")
+    fetch("http://13.48.45.18:4008/admin/region/getAll", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         if (data && data.data) {
           setRegions(data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching regions:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://13.48.45.18:4008/admin/seller/getAll", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          setSellers(data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching regions:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://13.48.45.18:4008/admin/category/getAll", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.data) {
+          setCategories(data.data);
         }
       })
       .catch((error) => {
@@ -73,54 +117,61 @@ export const MannageAuction = () => {
     }
   };
 
-  const fetchFilteredAuctions = () => {
-    // Define the API URL
-    const apiUrl = "http://13.48.45.18:4008/admin/auction/filter";
-
-    // Define the request body
-    const requestBody = {
-      region: "64d5b3972dab69ddd864e3bc",
-      category: "64d5b3b42dab69ddd864e3c0",
-      seller: "64d5b4b02dab69ddd864e3dd",
-      status: 2,
-    };
-
-    // Define the headers
-    const headers = {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    };
-
-    // Send the POST request to the API
-    fetch(apiUrl, {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(requestBody),
-    })
-      .then((response) => response.json()) // Parse the response as JSON
-      .then((data) => {
-        // Handle the successful response
-        console.log(data);
-      })
-      .catch((error) => {
-        // Handle any errors
-        console.error("Error:", error);
-      });
+  const fetchFilteredAuctions = async () => {
+    try {
+      const response = await fetch(
+        "http://13.48.45.18:4008/admin/auction/filter",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+          body: JSON.stringify({
+            region: selectedRegion,
+            seller: selectedSeller,
+            category: selectedCategory,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data.data);
+      setAuctions(data.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    fetchAuctions();
-  }, []);
+    if (
+      filterView === true &&
+      (selectedRegion !== "" ||
+        selectedSeller !== "" ||
+        selectedCategory !== "")
+    ) {
+      fetchFilteredAuctions();
+    } else {
+      fetchAuctions();
+    }
+  }, [filterView, selectedRegion, selectedSeller, selectedCategory]);
   //=============================================filter by region=======================================//
-  console.log(selectedRegion);
-  useEffect(() => {
-    fetch(
-      "http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be"
-    );
-  }, []);
+  // useEffect(() => {
+  //   fetch(
+  //     "http://13.48.45.18:4008/admin/seller/getByRegion/64d5b3a32dab69ddd864e3be"
+  //   );
+  // }, []);
   //===================================================================================================//
   const handleClick = () => {
-    // fetchAuctions();
-    fetchFilteredAuctions();
+    if (
+      filterView === true &&
+      (selectedRegion !== "" ||
+        selectedSeller !== "" ||
+        selectedCategory !== "")
+    ) {
+      fetchFilteredAuctions();
+    } else {
+      fetchAuctions();
+    }
   };
   // const handleRowSelected = (state) => {
   //   setExportView(state.selectedRows);
@@ -147,7 +198,7 @@ export const MannageAuction = () => {
     const headers = {
       Authorization: "Bearer " + localStorage.getItem("token"),
     };
-  
+
     try {
       const response = await fetch(
         `http://13.48.45.18:4008/admin/auction/delete/${id}`,
@@ -156,7 +207,7 @@ export const MannageAuction = () => {
           headers: headers,
         }
       );
-  
+
       if (response.ok) {
         fetchAuctions();
         alert("Auction deleted successfully.");
@@ -169,8 +220,15 @@ export const MannageAuction = () => {
   };
 
   const handleRegionChange = (e) => {
-    console.log(e);
     setSelectedRegion(e.target.value);
+  };
+
+  const handleSellerChange = (e) => {
+    setSelectedSeller(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
   };
 
   const editHandler = (id, winId) => {
@@ -202,7 +260,8 @@ export const MannageAuction = () => {
     {
       name: "Start Date",
       selector: (row) => {
-        const date = new Date(row.startTime);
+        // console.log(row.startTime.split("T")[0]);
+        const date = new Date(row.startTime.split("T")[0]);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
           .toString()
           .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
@@ -213,7 +272,7 @@ export const MannageAuction = () => {
     {
       name: "End Date",
       selector: (row) => {
-        const date = new Date(row.endTime);
+        const date = new Date(row.endTime.split("T")[0]);
         const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
           .toString()
           .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
@@ -397,12 +456,15 @@ export const MannageAuction = () => {
                       <select
                         name="filter-auction-select"
                         id="filter-auction-select"
+                        onChange={handleSellerChange}
+                        value={selectedSeller}
                       >
-                        <option value="">-- Please choose an option --</option>
-                        <option value="name">Ankit</option>
-                        <option value="mobile">Zishan</option>
-                        <option value="email">Abdul</option>
-                        <option value="email">Sourav</option>
+                        <option value="">-- Select Seller --</option>
+                        {sellers.map((seller) => (
+                          <option key={seller._id} value={seller._id}>
+                            {seller.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}
@@ -420,11 +482,15 @@ export const MannageAuction = () => {
                       <select
                         name="filter-auction-select"
                         id="filter-auction-select"
+                        onChange={handleCategoryChange}
+                        value={selectedCategory}
                       >
-                        <option value="">--Select Any--</option>
-                        <option value="name">Car</option>
-                        <option value="mobile">Bike</option>
-                        <option value="email">test</option>
+                        <option value="">--Select Category--</option>
+                        {categories.map((category) => (
+                          <option key={category._id} value={category._id}>
+                            {category.name}
+                          </option>
+                        ))}
                       </select>
                     </div>
                   )}

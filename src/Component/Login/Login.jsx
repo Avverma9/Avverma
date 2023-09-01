@@ -41,7 +41,7 @@ const Login = () => {
     return /\S+@\S+\.\S+/.test(email);
   }
 
-  function isValidPassword(email) {
+  function isValidPassword(password) {
     return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
       password
     );

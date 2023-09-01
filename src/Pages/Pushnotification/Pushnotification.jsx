@@ -7,8 +7,9 @@ const BASE_URL = "http://13.48.45.18:4008";
 
 export const Pushnotification = () => {
   const [selectedRegion, setSelectedRegion] = useState([]);
+  const [image,setImage]=useState(null)
   const [notificationData, setNotificationData] = useState({
-    image: "image_url",
+    image: "",
     title: "",
     body: "",
   });
@@ -33,32 +34,42 @@ export const Pushnotification = () => {
     label: region.name,
   }));
 
+
+  const handleImageChange = (e) => {
+    console.log(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
+  };
+
   const sendNotification = async () => {
-    if (!selectedRegion) {
-      console.error("No region selected.");
+    if (!selectedRegion || !image || !notificationData.title || !notificationData.body) {
+      alert("All fields are required.");
       return;
     }
-
+  
+    const formData = new FormData();
+    formData.append("files", image); 
+    formData.append("title", notificationData.title);
+    formData.append("body", notificationData.body);
+  
     const regionId = selectedRegion.value;
     const url = `${BASE_URL}/admin/auction/sendNotification/${regionId}`;
-
+  
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(notificationData),
+      body: formData,
     });
-
+  
     if (response.ok) {
       alert("Notification sent Successfully");
       console.log("Notification sent successfully");
-
+  
       setNotificationData({
         image: "",
         title: "",
         body: "",
       });
+      setImage(null); 
     } else {
       console.error("Error sending notification");
     }
@@ -105,7 +116,7 @@ export const Pushnotification = () => {
      
      <div>
       <p>Image</p>
-     <input type="file" name="" id="" />
+     <input type="file" name="" id="" onChange={handleImageChange}/>
      </div>
       <input type="button" value="Send" onClick={sendNotification} />
     </div>

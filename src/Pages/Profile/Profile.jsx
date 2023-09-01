@@ -97,20 +97,20 @@ export const Profile = () => {
         !loading && loggedUser && profileEdit === false
           ? loggedUser.mobile
           : profileEdit === true
-          ? mobile
-          : "",
+            ? mobile
+            : "",
       name:
         !loading && loggedUser && profileEdit === false
           ? loggedUser.name
           : profileEdit === true
-          ? name
-          : "",
+            ? name
+            : "",
       email:
         !loading && loggedUser && profileEdit === false
           ? loggedUser.email
           : profileEdit === true
-          ? email
-          : "",
+            ? email
+            : "",
       // password:
       //   !loading && loggedUser && profileEdit === false
       //     ? loggedUser.password
@@ -160,8 +160,8 @@ export const Profile = () => {
               !loading && loggedUser && profileEdit === false
                 ? loggedUser.name
                 : profileEdit === true
-                ? name
-                : ""
+                  ? name
+                  : ""
             }
             onChange={(e) => setname(e.target.value)}
           />
@@ -177,8 +177,8 @@ export const Profile = () => {
               !loading && loggedUser && profileEdit === false
                 ? loggedUser.mobile
                 : profileEdit === true
-                ? mobile
-                : ""
+                  ? mobile
+                  : ""
             }
             onChange={(e) => setmobile(e.target.value)}
           />
@@ -194,8 +194,8 @@ export const Profile = () => {
               !loading && loggedUser && profileEdit === false
                 ? loggedUser.email
                 : profileEdit === true
-                ? email
-                : ""
+                  ? email
+                  : ""
             }
             onChange={(e) => setemail(e.target.value)}
           />
@@ -207,14 +207,14 @@ export const Profile = () => {
             name="password"
             id=""
             placeholder="**************"
-            // value={
-            //   !loading && loggedUser && profileEdit === false
-            //     ? loggedUser.password
-            //     : profileEdit === true
-            //     ? password
-            //     : ""
-            // }
-            // onChange={(e) => setpassword(e.target.value)}
+          // value={
+          //   !loading && loggedUser && profileEdit === false
+          //     ? loggedUser.password
+          //     : profileEdit === true
+          //     ? password
+          //     : ""
+          // }
+          // onChange={(e) => setpassword(e.target.value)}
           />
         </div>
       </div>
