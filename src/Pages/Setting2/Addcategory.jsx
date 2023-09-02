@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
+import { BiEdit } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
+
+
 
 function Addcategory() {
   const [name, setName] = useState("");
@@ -7,6 +12,9 @@ function Addcategory() {
   const [regions, setRegions] = useState([]);
   const [selectedRegionId, setSelectedRegionId] = useState("");
   const [isValidName, setIsValidName] = useState(true);
+  const [categoryData,serCategoryData]=useState([])
+  const [searchInput, setSearchInput] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("");
 
   useEffect(() => {
     fetchRegionData();
@@ -15,12 +23,13 @@ function Addcategory() {
   const fetchRegionData = async () => {
     try {
       const response = await fetch(
-        "http://13.48.45.18:4008/admin/region/getAll"
+        "http://13.48.45.18:4008/admin/category/getAll"
       );
       const data = await response.json();
       if (response.ok) {
         if (data && data.data && Array.isArray(data.data)) {
           setRegions(data.data);
+          serCategoryData(data.data)
         } else {
           console.error("Invalid region data:", data);
         }
@@ -100,7 +109,48 @@ function Addcategory() {
     }
   };
 
+  const columns = [
+    {
+      name: "Sl.No",
+      selector: (row, index) => index + 1,
+      sortable: true,
+    },
+    {
+      name: "Name",
+      selector: (row) => row.name,
+      sortable: true,
+    },
+    {
+      name: "Action",
+      selector: (row) => (
+        <div className="_edit">
+          <BiEdit
+            size="18"
+            color="#1b3ea9"
+            // onClick={() => handleEditClick(row._id, row.name)}
+          />
+          <MdDeleteOutline
+            size="18"
+            color="#ff0000"
+            // onClick={() => handleDeleteClick(row._id)}
+          />
+        </div>
+      ),
+    },
+  ];
+
+  const filteredData = categoryData.filter((row) => {
+    if (!selectedFilter) {
+      return true;
+    } else {
+      return row.name.toLowerCase().includes(searchInput.toLowerCase());
+    }
+  });
+
+
   return (
+    <>
+
     <div className="setting-container">
       <form onSubmit={handleSubmit}>
         <div className="setting-head">
@@ -160,6 +210,17 @@ function Addcategory() {
         <button className="sub-button">Submit</button>
       </form>
     </div>
+    <DataTable
+        title="Category Action"
+        columns={columns}
+        data={filteredData}
+        pagination
+        fixedHeader
+        fixedHeaderScrollHeight="75vh"
+        subHeader
+        subHeaderAlign="left"
+      />
+    </>
   );
 }
 
