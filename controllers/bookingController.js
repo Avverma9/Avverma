@@ -18,7 +18,7 @@ const createBooking = async (req, res) => {
       totalFoodPrice += food.price;
     }
 
-    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName,hotelOwnerName, images, destination } = req.body;
+    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName,hotelOwnerName, images, destination,foodItem } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price * rooms;
@@ -46,6 +46,7 @@ const createBooking = async (req, res) => {
       rooms,
       price: foodPrice,
       destination,
+      foodItem,
       bookingStatus: paymentStatus === "success" ? "success" : "failed"
     };
 
