@@ -8,17 +8,41 @@ const hotelModel = require("../models/hotelModel");
 
 //==========================================creating booking========================================================================================================
 
+
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const { foodItems } = req.body;
     let totalFoodPrice = 0;
+    const foodItemsDetails = [];
+
     for (const foodItem of foodItems) {
       const food = await foodModel.findById(foodItem._id);
-      totalFoodPrice += food.price;
-    }
 
-    const { checkIn, checkOut, guests, rooms, price, paymentStatus, hotelName,hotelOwnerName, images, destination,foodItem } = req.body;
+      if (!food) {
+       
+        return res.status(404).json({ success: false, error: "Food item not found" });
+      }
+
+      totalFoodPrice += food.price;
+
+      foodItemsDetails.push({
+        name: food.name,
+        price: food.price,
+      });
+    }
+    const {
+      checkIn,
+      checkOut,
+      guests,
+      rooms,
+      price,
+      paymentStatus,
+      hotelName,
+      hotelOwnerName,
+      images,
+      destination,
+    } = req.body;
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price * rooms;
@@ -33,8 +57,7 @@ const createBooking = async (req, res) => {
       return res.status(400).json({ success: false, error: "No rooms available" });
     }
 
-    const booking = {
-      images,
+    const booking = new bookingModel({
       bookingId,
       user: userId,
       hotel: hotelId,
@@ -46,20 +69,22 @@ const createBooking = async (req, res) => {
       rooms,
       price: foodPrice,
       destination,
-      foodItem,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed"
-    };
+      foodItems: foodItemsDetails,
+      bookingStatus: paymentStatus === "success" ? "success" : "failed",
+      images, // Assuming images is a string
+    });
 
     hotel.numRooms -= rooms;
     await hotel.save();
 
-    const savedBooking = await bookingModel.create(booking);
+    const savedBooking = await booking.save();
 
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 
 //================================================================================================================================================

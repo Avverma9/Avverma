@@ -16,11 +16,6 @@ const bookingSchema = new mongoose.Schema({
     ref: "Hotels",
     required: false,
   },
-  offers: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Offer",
-    required: false,
-  },
   hotelName: {
     type: String,
   },
