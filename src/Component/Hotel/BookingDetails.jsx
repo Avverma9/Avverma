@@ -12,8 +12,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const BookingDetails = ({
+  hotelOwnerName,
   hotelName,
-  price,
+  // price,
   foodPrice,
   hotelID,
   userId,
@@ -29,12 +30,16 @@ const BookingDetails = ({
   destination,
   foodIdArr,
   setFoodIdArr,
+  roomPrice,
+  isOffer,
+  offerDetails,
+  offerPriceLess,
 }) => {
   const handleOpenRazorpay = (data) => {
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (price * selectedRooms + foodPrice) * 100,
+      amount: (roomPrice * selectedRooms + foodPrice) * 100,
       currency: data.currency,
       prefill: {
         name: userData.name,
@@ -66,11 +71,12 @@ const BookingDetails = ({
       user: userId,
       hotel: hotelID,
       hotelName: hotelName,
+      hotelOwnerName: hotelOwnerName,
       checkInDate: checkIn,
       checkOutDate: checkOut,
       guests: selectedGuests,
       rooms: selectedRooms,
-      price: price * selectedRooms + foodPrice,
+      price: roomPrice * selectedRooms + foodPrice,
       bookingStatus: paymentStatus,
       images: hotelimage,
       destination: destination,
@@ -115,9 +121,10 @@ const BookingDetails = ({
 
   const handlePayment = async () => {
     const data = {
+      // hotelOwnerName: hotelOwnerName,
       hotelId: hotelID,
       userId: userId,
-      amount: price * selectedRooms + foodPrice,
+      amount: roomPrice * selectedRooms + foodPrice,
       currency: currency,
     };
     try {
@@ -156,7 +163,7 @@ const BookingDetails = ({
             <div className={styles.head}>
               <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {price}
+                {roomPrice}
               </span>
               {/* <span>1999</span> */}
               {/* <span>81% off</span> */}
@@ -288,31 +295,27 @@ const BookingDetails = ({
               </label>
             </div>
           </div> */}
-          {/* <div className={styles.wizard}>
-            <div className={styles.wizardf}>
-              <div className={styles.wizard_in}>
-                <div className={styles.wizardf1}>
-                  Wizard Blue Membership Charge
+          {isOffer === true && (
+            <div className={styles.wizard}>
+              <div className={styles.wizardf}>
+                <div className={styles.wizard_in}>
+                  <div className={styles.wizardf1}>{offerDetails}</div>
+                  {/* <div className={styles.wizardf2}>
+                    Get additional discounts of
+                  </div> */}
                 </div>
-                <div className={styles.wizardf2}>
-                  Get additional benefits upto <FaRupeeSign />
-                  1000
-                </div>
-              </div>
-              <div className={styles.wizard_inin}>
-                <div className={styles.rightwizard}>
-                  <div className={styles.rswizard}>
-                    <FaRupeeSign />
-                    99
-                  </div>
-                  <div className={styles.rs2wizard}>
-                    <FaRupeeSign />
-                    199
+                <div className={styles.wizard_inin}>
+                  <div className={styles.rightwizard}>
+                    <div className={styles.rswizard}>{offerPriceLess}% off</div>
+                    {/* <div className={styles.rs2wizard}>
+                      <FaRupeeSign />
+                      199
+                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
-          </div> */}
+          )}
 
           <div className={styles.pricechart}>
             <div className={styles.pri}>
@@ -320,7 +323,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * selectedRooms}
+                  {roomPrice * selectedRooms}
                 </span>
               </div>
             </div>
@@ -347,7 +350,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * selectedRooms + foodPrice}
+                  {roomPrice * selectedRooms + foodPrice}
                 </span>
               </div>
             </div>

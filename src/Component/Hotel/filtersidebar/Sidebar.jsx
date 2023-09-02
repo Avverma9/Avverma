@@ -82,7 +82,7 @@ const Sidebar = ({
         .catch((error) => console.log(error));
     } else {
       axios
-        .get("https://hotel-backend-tge7.onrender.com/get/all/hotels")
+        .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
         .then((data) => {
           if (data.status === 200) {
             setHotels(data.data);

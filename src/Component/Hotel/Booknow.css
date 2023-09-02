@@ -256,6 +256,26 @@
   color: #dc3545;
 }
 
+.card-detail-img img {
+  width: 150px;
+  height: 100px;
+}
+
+.card-detail-info p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.card .select-btn {
+  width: 200px;
+  padding: 5px 0;
+  border-radius: 4px;
+  border: solid 1px #d7d7d7;
+  font-size: 18px;
+  font-weight: 500;
+}
+
 .cust-detail {
   font-size: 25px;
   font-weight: bold;
