@@ -134,10 +134,10 @@ const getCheckingBooking = async (req, res) => {
 const updateBooking = async (req, res) => {
 
   try {
-    const { bookingId } = req.params;
+    const { id } = req.params;
     const updatedFields = req.body;
 
-    const booking = await bookingModel.findOneAndUpdate({ bookingId });
+    const booking = await bookingModel.findOneAndUpdate({ bookingId:id });
 
     if (!booking) {
       return res.status(404).json({ success: false, message: "Booking not found" });
