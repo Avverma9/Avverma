@@ -47,6 +47,7 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const [bookingDetails, setBookingDetails] = useState({});
   const [hotelID, setHotelID] = useState("");
+  const [hotelOwnerName, setHotelOwnerName] = useState([]);
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
@@ -65,6 +66,8 @@ export default function BookNow({ refresh, reset, userData }) {
   const [myrating, setMyRating] = useState(0);
   const [hotelReviews, setHotelReviews] = useState([]);
   const [meals, setMeals] = useState([]);
+  const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
+  const [roomPrice, setRoomPrice] = useState(0);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -113,7 +116,7 @@ export default function BookNow({ refresh, reset, userData }) {
         }
       })
       .then((data) => {
-        console.log(data._id);
+        console.log(data?.hotelOwnerName);
         console.log(params.id);
         console.log(hotelID);
         setBookingDetails(data);
@@ -122,6 +125,8 @@ export default function BookNow({ refresh, reset, userData }) {
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
+        setRoomPrice(data?.roomDetails[0].price);
+        setHotelOwnerName(data?.hotelOwnerName);
         // setCheckIn(convertDate(bookingDetails.startDate));
         // setCheckOut(convertDate(bookingDetails.endDate));
       })
@@ -367,6 +372,11 @@ export default function BookNow({ refresh, reset, userData }) {
 
   const handleRating = (rate) => {
     setMyRating(rate);
+  };
+
+  const selectRoomHandler = (index, rprice) => {
+    setSelectedRoomBtn(index);
+    setRoomPrice(rprice);
   };
 
   return (
@@ -738,6 +748,36 @@ export default function BookNow({ refresh, reset, userData }) {
                 </p>
               </div>
 
+              <div className="cust-detail">Choose your room:</div>
+              {bookingDetails &&
+                bookingDetails?.roomDetails &&
+                bookingDetails?.roomDetails.map((item, index) => (
+                  <div
+                    className="card"
+                    style={{
+                      width: "100%",
+                      margin: "15px 0",
+                      background: "#fff",
+                    }}
+                  >
+                    <div className="d-flex align-items-center">
+                      <div className="card-detail-info flex-fill">
+                        <p>{item?.type}</p>
+                        <p>{item?.bedTypes}</p>
+                        <p>{item?.price}</p>
+                      </div>
+                      <div className="card-detail-img">
+                        <img src={hotelImages[0]} alt="hotelImage" />
+                      </div>
+                    </div>
+                    <button
+                      className="select-btn"
+                      onClick={() => selectRoomHandler(index, item?.price)}
+                    >
+                      {index === selectedRoomBtn ? "Selected" : "Select"}
+                    </button>
+                  </div>
+                ))}
               {writeReview !== true && (
                 <>
                   <h6
@@ -933,8 +973,9 @@ export default function BookNow({ refresh, reset, userData }) {
             </div>
             <div className="bookingDetailsticky">
               <BookingDetails
+                hotelOwnerName={hotelOwnerName}
                 hotelName={bookingDetails.hotelName}
-                price={bookingDetails.price}
+                // price={bookingDetails.price}
                 foodPrice={foodPrice}
                 hotelID={hotelID}
                 userId={userId}
@@ -950,6 +991,10 @@ export default function BookNow({ refresh, reset, userData }) {
                 destination={bookingDetails.destination}
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
+                roomPrice={roomPrice}
+                isOffer={bookingDetails?.isOffer}
+                offerDetails={bookingDetails?.offerDetails}
+                offerPriceLess={bookingDetails?.offerPriceLess}
               />
             </div>
           </div>

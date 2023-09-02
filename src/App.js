@@ -109,7 +109,6 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 
-
 function App() {
   // console.log(search)
   const [refresh, setRefresh] = useState(1);
@@ -280,8 +279,10 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
-          <Route path="/bookingDetails" element={<BookingDetails/>}/>
-          
+          <Route
+            path="/bookingDetails"
+            element={<BookingDetails userData={userData} />}
+          />
         </Routes>
         <Footer />
       </div>
