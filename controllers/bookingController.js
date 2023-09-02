@@ -135,19 +135,11 @@ const updateBooking = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const updatedFields = req.body;
-
-    const booking = await bookingModel.findOneAndUpdate({ bookingId:id });
+    let data = req.body
+    const booking = await bookingModel.findOneAndUpdate({booking:id},data,{new: true});
 
     if (!booking) {
       return res.status(404).json({ success: false, message: "Booking not found" });
-    }
-
-   
-    for (const field in updatedFields) {
-      if (booking.schema.paths.hasOwnProperty(field)) { 
-        booking[field] = updatedFields[field];
-      }
     }
 
     await booking.save();
