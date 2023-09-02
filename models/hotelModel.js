@@ -78,7 +78,7 @@ const hotelsSchema = new mongoose.Schema({
     type: Number,
   },
   starRating: {
-    type: [String],
+    type: String,
     default: "2",
   },
   propertyType: {
