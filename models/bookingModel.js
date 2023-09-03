@@ -34,7 +34,7 @@ const bookingSchema = new mongoose.Schema({
   },
   checkOutTime: {
     type: String,
-    default: "Not Yet checked-In",
+    default: "Not Yet checked-Out",
   },
   guests: {
     type: Number,
