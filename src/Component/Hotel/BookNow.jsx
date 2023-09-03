@@ -361,7 +361,8 @@ export default function BookNow({ refresh, reset, userData }) {
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
   const foodPriceHandler = (index, fprice, fId) => {
-    setFoodIdArr(...foodIdArr, { _id: fId });
+    setFoodIdArr([...foodIdArr, { _id: fId }]);
+    console.log(foodIdArr);
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
@@ -378,6 +379,22 @@ export default function BookNow({ refresh, reset, userData }) {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
   };
+
+  const showPopup = () => {
+    alert("Contact Hotel");
+  };
+
+  useEffect(() => {
+    if (selectedRooms > selectedGuests && selectedRooms <= 4) {
+      setSelectedGuests(selectedGuests + (selectedRooms - selectedGuests));
+    }
+    if (selectedRooms * 3 < selectedGuests && selectedRooms <= 4) {
+      setSelectedGuests(selectedRooms * 3);
+    }
+    // if (selectedGuests % 3 !== 0 && selectedRooms < 4) {
+    //   setSelectedRooms(selectedRooms + 1);
+    // }
+  }, [selectedGuests, selectedRooms]);
 
   return (
     <>
@@ -670,7 +687,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   ))}
                 </div>
               </div>
-              <div className="cust-detail">Customer Details:</div>
+              <div className="cust-detail">Booking Details:</div>
               <div className="card">
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
@@ -700,7 +717,9 @@ export default function BookNow({ refresh, reset, userData }) {
                   <button
                     className="negposbtn"
                     onClick={() =>
-                      setSelectedRooms(Math.min(selectedRooms + 1, 4))
+                      selectedRooms === 4
+                        ? showPopup()
+                        : setSelectedRooms(Math.min(selectedRooms + 1, 4))
                     }
                   >
                     +

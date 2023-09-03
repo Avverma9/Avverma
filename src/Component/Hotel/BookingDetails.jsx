@@ -68,16 +68,16 @@ const BookingDetails = ({
 
   const handleBooking = (paymentStatus) => {
     const bookingData = {
-      user: userId,
-      hotel: hotelID,
+      // user: userId,
+      // hotel: hotelID,
       hotelName: hotelName,
       hotelOwnerName: hotelOwnerName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
+      checkIn: checkIn,
+      checkOut: checkOut,
       guests: selectedGuests,
       rooms: selectedRooms,
-      price: roomPrice * selectedRooms + foodPrice,
-      bookingStatus: paymentStatus,
+      price: roomPrice,
+      paymentStatus: paymentStatus,
       images: hotelimage,
       destination: destination,
       foodItems: foodIdArr,
@@ -345,15 +345,32 @@ const BookingDetails = ({
                 </span>
               </div>
             </div> */}
-            <div className={styles.pri}>
-              <div className={styles.pri1}>Total Price</div>
-              <div className={styles.pri2}>
-                <span className={styles.p}>
-                  <FaRupeeSign />
-                  {roomPrice * selectedRooms + foodPrice}
-                </span>
+            {isOffer === false && (
+              <div className={styles.pri}>
+                <div className={styles.pri1}>Total Price</div>
+                <div className={styles.pri2}>
+                  <span className={styles.p}>
+                    <FaRupeeSign />
+                    {roomPrice * selectedRooms + foodPrice}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
+            {isOffer === true && (
+              <div className={styles.pri}>
+                <div className={styles.pri1}>Discounted Price</div>
+                <div className={styles.pri2}>
+                  <span className={styles.p}>
+                    <FaRupeeSign />
+                    {roomPrice * selectedRooms +
+                      foodPrice -
+                      ((roomPrice * selectedRooms + foodPrice) *
+                        offerPriceLess) /
+                        100}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
