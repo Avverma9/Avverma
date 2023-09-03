@@ -266,7 +266,7 @@ function HotelList() {
                     </p>
                   </div>
                   <h5 className={styles["hotel-rating"]}>
-                    {result.rating}
+                    {result.starRating}
                     <FontAwesomeIcon
                       icon={faStar}
                       className={styles["fastar"]}
