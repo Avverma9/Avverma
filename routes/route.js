@@ -82,6 +82,8 @@ router.get('/partners/:partnerId', partnerController.getHotelPartner);
 router.post('/booking/:userId/:hotelId',upload, bookingController.createBooking);
 router.get('/bookingsConfirm', bookingController.getConfirmedBookings);
 router.get('/bookingFailed', bookingController.getFailedBookings);
+router.get('/booking/getCheckedIn',bookingController.getCheckedIn)
+router.get('/booking/getCheckedOut',bookingController.getCheckedOut)
 router.put('/booking/:bookingId', bookingController.cancelBooking);
 router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)

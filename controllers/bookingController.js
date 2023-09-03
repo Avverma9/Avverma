@@ -139,7 +139,24 @@ const getCancelledBooking = async (req, res) => {
   
   res.json(cancellledBooking)
 };
-
+//================================================================================
+const getCheckedIn= async(req,res)=>{
+  const booking = await bookingModel.find()
+  const checkedIn = booking.filter(checkedIn=>checkedIn.bookingStatus === "checkedIn")
+  if(!booking){
+    res.status(404).json({success: false, message: "No any booking found"})
+  }
+  res.json(checkedIn)
+}
+//========================================================================================
+const getCheckedOut = async(req,res)=>{
+  const booking = await bookingModel.find()
+  const checkedOut = booking.filter(checkedOut=>checkedOut.bookingStatus === "checkedOut")
+  if(!booking){
+    res.status(404).json({success: false, message: "No such type of booking here"})
+  }
+  res.json(checkedOut)
+}
 //====================================================================================
 const getCheckingBooking = async (req, res) => {
   try {
@@ -184,6 +201,8 @@ module.exports = {
   getConfirmedBookings,
   getFailedBookings,
   cancelBooking,
+  getCheckedIn,
+  getCheckedOut,
   getCancelledBooking,
   getCheckingBooking,
   updateBooking,
