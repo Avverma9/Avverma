@@ -282,7 +282,7 @@ const BookNowPage = ({ userData }) => {
   const firstImageURL = offerData?.images?.[0];
 
   const foodPriceHandler = (index, fprice, fId) => {
-    setFoodIdArr(...foodIdArr, { _id: fId });
+    setFoodIdArr([...foodIdArr, { _id: fId }]);
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
@@ -552,7 +552,7 @@ const BookNowPage = ({ userData }) => {
                 </div>
               </div>
 
-              <div className="cust-detail">Customer Details:</div>
+              <div className="cust-detail">Booking Details:</div>
               <div className="card">
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
