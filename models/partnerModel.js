@@ -60,7 +60,27 @@ const PartnerSchema = new mongoose.Schema({
     "offQuadSharing" : String,
     "offBulkBooking" : String,
     "offTrippleSharing" : String,
-    "offMoreThanFour" : String
+    "offMoreThanFour" : String,
+    "onDoubleSharingAp" : String,
+    "onQuadSharingAp" : String,
+    "onBulkBookingAp" : String,
+    "onTrippleSharingAp" : String,
+    "onMoreThanFourAp" : String,
+    "offDoubleSharingAp" : String,
+    "offQuadSharingAp" : String,
+    "offBulkBookingAp" : String,
+    "offTrippleSharingAp" : String,
+    "offMoreThanFourAp" : String,
+    "onDoubleSharingMAp" : String,
+    "onQuadSharingMAp" : String,
+    "onBulkBookingMAp" : String,
+    "onTrippleSharingMAp" : String,
+    "onMoreThanFourMAp" : String,
+    "offDoubleSharingMAp" : String,
+    "offQuadSharingMAp" : String,
+    "offBulkBookingMAp" : String,
+    "offTrippleSharingMAp" : String,
+    "offMoreThanFourMAp" : String
 });
 
 

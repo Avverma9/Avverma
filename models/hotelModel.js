@@ -9,12 +9,6 @@ const hotelsSchema = new mongoose.Schema({
   hotelOwnerName: {
     type: String,
   },
-  room: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "room",
-    },
-  ],
   roomDetails: [
     {
       type: {
@@ -116,16 +110,36 @@ const hotelsSchema = new mongoose.Schema({
   unmarriedCouplesAllowed: String,
   internationalGuestAllowed: String,
   returnPolicy: String,
-  onDoubleSharing: String,
-  onQuadSharing: String,
-  onBulkBooking: String,
-  onTrippleSharing: String,
-  onMoreThanFour: String,
-  offDoubleSharing: String,
-  offQuadSharing: String,
-  offBulkBooking: String,
-  offTrippleSharing: String,
-  offMoreThanFour: String,
+ onDoubleSharing : String,
+   onQuadSharing : String,
+   onBulkBooking : String,
+  onTrippleSharing : String,
+  onMoreThanFour : String,
+  offDoubleSharing : String,
+  offQuadSharing : String,
+  offBulkBooking : String,
+    offTrippleSharing : String,
+   offMoreThanFour : String,
+    onDoubleSharingAp : String,
+    onQuadSharingAp : String,
+    onBulkBookingAp : String,
+    onTrippleSharingAp : String,
+    onMoreThanFourAp : String,
+    offDoubleSharingAp : String,
+    offQuadSharingAp : String,
+    offBulkBookingAp : String,
+    offTrippleSharingAp : String,
+    offMoreThanFourAp : String,
+    onDoubleSharingMAp : String,
+    onQuadSharingMAp : String,
+    onBulkBookingMAp : String,
+    onTrippleSharingMAp : String,
+    onMoreThanFourMAp : String,
+    offDoubleSharingMAp : String,
+    offQuadSharingMAp : String,
+    offBulkBookingMAp : String,
+    offTrippleSharingMAp : String,
+    offMoreThanFourMAp : String
 });
 
 module.exports = mongoose.model("Hotels", hotelsSchema);
