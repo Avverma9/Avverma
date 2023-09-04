@@ -174,26 +174,172 @@ module.exports = createHotel;
 //==================================UpdateHotel================================
 const UpdateHotel = async function(req, res) {
   const { id } = req.params;
-  const {updateData} = req.body; 
+  const { hotelName,
+    hotelOwnerName,
+    description,
+    destination,
+    price,
+    startDate,
+    endDate,
+    guests,
+    numRooms,
+    localId,
+    maritalStatus,
+    hotelsPolicy,
+    amenities,
+    reviews,
+    rating,
+   categories,
+   collections,
+   accommodationType,
+    starRating,
+    propertyType,
+    isOffer,
+    offerDetails,
+    offerPriceLess,
+    contact,
+    ownerContactDetails,
+    hotelEmail,
+    street,
+    city,
+    state,
+    zip,
+    landmark,
+    outsideFoodPolicy,
+    cancellationPolicy,
+    paymentMode,
+    petsAllowed,
+    bachelorAllowed,
+    smokingAllowed,
+    alcoholAllowed,
+    unmarriedCouplesAllowed,
+    internationalGuestAllowed,
+    returnPolicy,
+    onDoubleSharing ,
+    onQuadSharing,
+    onBulkBooking ,
+   onTrippleSharing ,
+   onMoreThanFour ,
+   offDoubleSharing ,
+   offQuadSharing ,
+   offBulkBooking ,
+     offTrippleSharing ,
+    offMoreThanFour ,
+     onDoubleSharingAp ,
+     onQuadSharingAp ,
+     onBulkBookingAp ,
+     onTrippleSharingAp ,
+     onMoreThanFourAp ,
+     offDoubleSharingAp ,
+     offQuadSharingAp,
+     offBulkBookingAp ,
+     offTrippleSharingAp,
+     offMoreThanFourAp,
+     onDoubleSharingMAp,
+     onQuadSharingMAp,
+     onBulkBookingMAp ,
+     onTrippleSharingMAp ,
+     onMoreThanFourMAp ,
+     offDoubleSharingMAp ,
+     offQuadSharingMAp ,
+     offBulkBookingMAp ,
+     offTrippleSharingMAp ,
+     offMoreThanFourMAp} = req.body; 
 
-  try {
-    const updatedHotel = await hotelModel.findByOneAndUpdate(
-      {_id:id},
-       updateData, 
-       { new: true});
+     let images = [];
+
+     if (req.files && req.files.length > 0) {
+       images = req.files.map((file) => file.location);
+     } else {
+     
+       const user = await hotelModel.findById(id);
+       if (user) {
+         images = user.images;
+       }
+     }
+    const updatedHotel = await hotelModel.findByIdAndUpdate(id,  {images,hotelName,
+      hotelOwnerName,
+      description,
+      destination,
+      price,
+      startDate,
+      endDate,
+      guests,
+      numRooms,
+      localId,
+      maritalStatus,
+      hotelsPolicy,
+      amenities,
+      reviews,
+      rating,
+     categories,
+     collections,
+     accommodationType,
+      starRating,
+      propertyType,
+      isOffer,
+      offerDetails,
+      offerPriceLess,
+      contact,
+      ownerContactDetails,
+      hotelEmail,
+      street,
+      city,
+      state,
+      zip,
+      landmark,
+      outsideFoodPolicy,
+      cancellationPolicy,
+      paymentMode,
+      petsAllowed,
+      bachelorAllowed,
+      smokingAllowed,
+      alcoholAllowed,
+      unmarriedCouplesAllowed,
+      internationalGuestAllowed,
+      returnPolicy,
+      onDoubleSharing ,
+      onQuadSharing,
+      onBulkBooking ,
+     onTrippleSharing ,
+     onMoreThanFour ,
+     offDoubleSharing ,
+     offQuadSharing ,
+     offBulkBooking ,
+       offTrippleSharing ,
+      offMoreThanFour ,
+       onDoubleSharingAp ,
+       onQuadSharingAp ,
+       onBulkBookingAp ,
+       onTrippleSharingAp ,
+       onMoreThanFourAp ,
+       offDoubleSharingAp ,
+       offQuadSharingAp,
+       offBulkBookingAp ,
+       offTrippleSharingAp,
+       offMoreThanFourAp,
+       onDoubleSharingMAp,
+       onQuadSharingMAp,
+       onBulkBookingMAp ,
+       onTrippleSharingMAp ,
+       onMoreThanFourMAp ,
+       offDoubleSharingMAp ,
+       offQuadSharingMAp ,
+       offBulkBookingMAp ,
+       offTrippleSharingMAp ,
+       offMoreThanFourMAp}, {
+      new: true, 
+    });
 
     if (!updatedHotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
- await updatedHotel.save()
+
     return res.status(200).json({
       status: true,
       data: updatedHotel,
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+ 
 };
 
 //=============================get hotel by amenities===========================//
