@@ -140,6 +140,6 @@ const hotelsSchema = new mongoose.Schema({
     offBulkBookingMAp : String,
     offTrippleSharingMAp : String,
     offMoreThanFourMAp : String
-});
+},{timestamps: true});
 
 module.exports = mongoose.model("Hotels", hotelsSchema);

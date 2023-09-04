@@ -90,7 +90,7 @@ const createBooking = async (req, res) => {
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  const booking= await bookingModel.find()
+  const booking= await bookingModel.find().sort({createdAt: -1})
   const confirmedBookings = booking.filter(booking=>booking.bookingStatus === "success")
   res.json(confirmedBookings)
 };
@@ -98,7 +98,7 @@ const getConfirmedBookings = async (req, res) => {
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
- const bookings = await bookingModel.find()
+ const bookings = await bookingModel.find().sort({createdAt: -1})
  const failedBooking= bookings.filter(booking=>booking.bookingStatus === "failed")
  res.json(failedBooking)
 };
@@ -132,7 +132,7 @@ const cancelBooking = async (req, res) => {
 //===================================================================================
 
 const getCancelledBooking = async (req, res) => {
-  const booking= await bookingModel.find()
+  const booking= await bookingModel.find().sort({createdAt: -1})
   const cancellledBooking = booking.filter(cancelled=>cancelled.bookingStatus === "cancelled" )
   if(!booking)
   res.status(404).json({success: false , message:"No any booking are here"});
@@ -141,7 +141,7 @@ const getCancelledBooking = async (req, res) => {
 };
 //================================================================================
 const getCheckedIn= async(req,res)=>{
-  const booking = await bookingModel.find()
+  const booking = await bookingModel.find().sort({createdAt: -1})
   const checkedIn = booking.filter(checkedIn=>checkedIn.bookingStatus === "checkedIn")
   if(!booking){
     res.status(404).json({success: false, message: "No any booking found"})
@@ -150,7 +150,7 @@ const getCheckedIn= async(req,res)=>{
 }
 //========================================================================================
 const getCheckedOut = async(req,res)=>{
-  const booking = await bookingModel.find()
+  const booking = await bookingModel.find().sort({createdAt: -1})
   const checkedOut = booking.filter(checkedOut=>checkedOut.bookingStatus === "checkedOut")
   if(!booking){
     res.status(404).json({success: false, message: "No such type of booking here"})

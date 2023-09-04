@@ -292,7 +292,7 @@ const searchHotels = async (req, res) => {
 //====================================================================================
 const getAllHotels = async (req, res) => {
   try {
-    const hotels = await hotelModel.find();
+    const hotels = await hotelModel.find().sort({createdAt: -1});
     const hotelsData = hotels.filter(accepted=>accepted.isAccepted === true)
     res.json(hotelsData);
   } catch (error) {
@@ -301,20 +301,20 @@ const getAllHotels = async (req, res) => {
 };
 //===========================get hotels====================================================//
 const getHotels= async (req,res)=>{
-const hotels= await hotelModel.find()
+const hotels= await hotelModel.find().sort({createdAt: -1})
 const filterData= hotels.filter(hotel=>hotel.isOffer === false)
 res.json(filterData)
 }
 //======================================get offers==========================================//
 const getOffers= async (req,res)=>{
-  const hotels= await hotelModel.find()
+  const hotels= await hotelModel.find().sort({createdAt: -1})
   const filterData= hotels.filter(hotel=>hotel.isOffer === true)
   res.json(filterData)
   }
 //============================get by city============================================//
 const getCity = async function(req,res){
  const {destination} = req.body
-  const hotels= await hotelModel.findOne({destination:destination})
+  const hotels= await hotelModel.findOne({destination:destination}).sort({createdAt: -1})
  
   res.json(hotels)
 }
@@ -325,7 +325,7 @@ const getCity = async function(req,res){
 const getHotelsById = async (req, res) => {
   try {
     const data = req.params.id;
-    const hotels = await hotelModel.findById(data);
+    const hotels = await hotelModel.findById(data).sort({createdAt: -1});
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -353,7 +353,7 @@ const getHotelsByLocalID = async (req, res) => {
   const { localId } = req.params;
 
   try {
-    const hotels = await hotelModel.find({ 'location.localId': localId });
+    const hotels = await hotelModel.find({ 'location.localId': localId }).sort({createdAt: -1});
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch hotels' });
@@ -394,6 +394,39 @@ const getHotelsByFilters = async (req, res) => {
     res.status(500).json({ error: 'An error occurred while retrieving the hotels.' });
   }
 };
+//===================================update room =============================================
+const updateRoom = async (req, res) => {
+  const { hotelid, roomid } = req.params;
+  
+  const { type, bedTypes, price } = req.body;
+
+  try {
+    const hotel = await hotelModel.findById(hotelid)
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    const roomIndex = hotel.roomDetails.findIndex((room) => room._id == roomid);
+    if (roomIndex === -1) {
+      return res.status(404).json({ error: "Room not found" });
+    }
+
+    if (type) {
+      hotel.roomDetails[roomIndex].type = type;
+    }
+    if (bedTypes) {
+      hotel.roomDetails[roomIndex].bedTypes = bedTypes;
+    }
+    if (price) {
+      hotel.roomDetails[roomIndex].price = price;
+    }
+
+    await hotel.save();
+    res.json(hotel.roomDetails[roomIndex]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createHotel,
@@ -407,5 +440,6 @@ module.exports = {
   getByQuery,
   UpdateHotel,
   getHotels,
-  getOffers
+  getOffers,
+  updateRoom
 };

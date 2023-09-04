@@ -55,6 +55,7 @@ router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get('/hotels/filters', hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all",hotelController.getCity)
 router.get("/hotels/query/get/by",hotelController.getByQuery)
+router.put("/update/new/created/hotel/room/:hotelid/:roomid",hotelController.updateRoom)
 
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
@@ -118,7 +119,7 @@ router.post ("/create/new/room/:id",roomController.createRoom)
 router.get("/get/new/room/:id",roomController.getRoomsByHotelId)
 router.get("/get/new/room/by/room/:id",roomController.getRoomsById)
 router.get("/get/all/new/room",roomController.getAllRooms)
-router.put("/update/new/created/room/:id",roomController.updateRoom)
+
 
 
 module.exports = router;
