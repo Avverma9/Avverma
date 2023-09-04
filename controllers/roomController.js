@@ -13,26 +13,34 @@ const createRoom = async function (req, res) {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const createdRoom = await roomModel.create({
-      room: id,
-      type,
-      bedTypes,
-      price,
-    });
-   
-    createdRoom.hotel = hotel;
-    hotel.roomDetails.push({
-      type,
-      bedTypes,
-      price,
-    });
-    hotel.numRooms += 1;
-    await Promise.all([createdRoom.save(), hotel.save()]);
-    res.json(createdRoom);
+    if (type && bedTypes && price) {
+      const createdRoom = await roomModel.create({
+        room: id,
+        type,
+        bedTypes,
+        price,
+      });
+
+      createdRoom.hotel = hotel;
+      hotel.roomDetails.push({
+        type,
+        bedTypes,
+        price,
+      });
+      hotel.numRooms += 1;
+      await Promise.all([createdRoom.save(), hotel.save()]);
+      res.json(createdRoom);
+    } else {
+
+      hotel.numRooms += 1;
+      await hotel.save();
+      res.json({ message: "Num rooms increased" });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
+
 
 //============================get all rooms=================================
 const getAllRooms = async (req,res)=> {

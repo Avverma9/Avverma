@@ -293,7 +293,8 @@ const searchHotels = async (req, res) => {
 const getAllHotels = async (req, res) => {
   try {
     const hotels = await hotelModel.find();
-    res.json(hotels);
+    const hotelsData = hotels.filter(accepted=>accepted.isAccepted === true)
+    res.json(hotelsData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
