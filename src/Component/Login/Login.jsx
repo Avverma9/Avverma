@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, json } from "react-router-dom";
 import "./Login.css";
 import Google from "../SingGoogle/Google.jsx";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -16,6 +16,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
 
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Set loading state to true while making the request
@@ -28,7 +29,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email}),
         }
       );
 
