@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Google.css";
 
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { responsivePropType } from "react-bootstrap/esm/createUtilityClasses";
 
 const Google = () => {
   const auth = getAuth();
@@ -26,26 +27,35 @@ const Google = () => {
         body: JSON.stringify({ email }),
       });
 
-      // Use a ternary operator to conditionally set showErrorImage
-      setShowErrorImage(response.status >= 200 && response.status < 300 ? false : true);
+      // Use a ternary operator to conditionally navigate and set showErrorImage
+      response.status >= 200 && response.status < 300
+        ? (window.location.href = "/profile")
+        : setShowErrorImage(true);
+        const data = await response.json();
+        const { userId } = data;
+
+        localStorage.setItem("isSignedIn", "true");
+        localStorage.setItem("userId", userId);
+        
     }
   };
 
   return (
     <div className="google-container" onClick={handleGoogleLogin}>
       <p className="google-text">Continue With</p>
-      <img
-        src="https://w7.pngwing.com/pngs/326/85/png-transparent-google-logo-google-text-trademark-logo.png"
-        alt="Google Logo"
-        className="google-logo"
-      />
       {showErrorImage ? (
         <img
-          src="https://cdn.dribbble.com/users/1175431/screenshots/6188233/404-error-dribbble-800x600.gif"
+          src="image_url_here" // Replace with the URL of your error image
           alt="Error"
           className="error-image"
         />
-      ) : null}
+      ) : (
+        <img
+          src="https://freepngimg.com/thumb/google/153884-logo-google-png-download-free.png"
+          alt="Google Logo"
+          className="google-logo"
+        />
+      )}
     </div>
   );
 };
