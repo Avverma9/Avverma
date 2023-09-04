@@ -57,12 +57,12 @@ const getUserById = async function (req, res) {
 //======================================================================
 
 const signIn = async function (req, res) {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   try {
     const user = await userModel.findOne({ email });
 
-    if (user && user.password === password) {
+    if (user.email  === email) {
       res.json({ message: "Sign-in successful", userId: user._id });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
