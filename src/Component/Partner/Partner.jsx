@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import "./partner.css";
-import { useLocation } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faAirFreshener,
 	faBaby,
 	faBars,
-	faBath,
 	faBathtub,
 	faBottleWater,
 	faBrush,
 	faBusinessTime,
-	faChair,
 	faCheck,
 	faCoffee,
 	faDesktop,
@@ -32,9 +26,12 @@ import {
 	faTrowel,
 	faTv,
 	faUmbrellaBeach,
-	faWater,
 	faWifi,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import "./partner.css";
 
 const Partner = () => {
 	const location = useLocation();
@@ -42,6 +39,7 @@ const Partner = () => {
 		"Hotel Contact Information"
 	);
 	const [images, setImages] = useState([]);
+	const [amenities, setAmenities] = useState([]);
 
 	const [hotelOwnerName, setHotelOwnerName] = useState("");
 	const [ownerContactDetails, setOwnerContactDetails] = useState("");
@@ -57,27 +55,7 @@ const Partner = () => {
 	const [landmark, setLandmark] = useState("");
 	const [starType, setStarType] = useState("");
 	const [propertyType, setPropertyType] = useState("");
-	const [freeWifi, setFreeWifi] = useState(false);
-	const [ac, setAc] = useState(false);
-	const [roomService, setRoomService] = useState(false);
-	const [cleanDisinfect, setCleanDisinfect] = useState(false);
-	const [schoolDiatacing, setSchoolDiatacing] = useState(false);
-	const [freeParking, setFreeParking] = useState(false);
-	const [houseKeeping, setHouseKeeping] = useState(false);
-	const [towels, setTowels] = useState(false);
-	const [toiletries, setToiletries] = useState(false);
-	const [goodShowers, setGoodShowers] = useState(false);
-	const [cableTv, setCableTv] = useState(false);
-	const [bottledWater, setBottledWater] = useState(false);
-	const [swimmingPool, setSwimmingPool] = useState(false);
-	const [restaurant, setRestaurant] = useState(false);
-	const [hairDryer, setHairDryer] = useState(false);
-	const [fitnessCenter, setFitnessCenter] = useState(false);
-	const [conclergeDesk, setConclergeDesk] = useState(false);
-	const [spa, setSpa] = useState(false);
-	const [dryClean, setDryClean] = useState(false);
-	const [bathrobe, setBathrobe] = useState(false);
-	const [frontDeskService, setFrontDeskService] = useState(false);
+
 	const [onDoubleSharing, setOnDoubleSharing] = useState("");
 	const [onQuadSharing, setOnQuadSharing] = useState("");
 	const [onbulkbooking, setOnbulkbooking] = useState("");
@@ -126,6 +104,16 @@ const Partner = () => {
 	const [returnPolicy, setReturnPolicy] = useState("");
 	const [checkInOut, setCheckInOut] = useState("");
 
+	const toggleAmenity = (amenity) => {
+		if (amenities.includes(amenity)) {
+			// If amenity is already in the array, remove it
+			setAmenities(amenities.filter((item) => item !== amenity));
+		} else {
+			// If amenity is not in the array, add it
+			setAmenities([...amenities, amenity]);
+		}
+	};
+
 	const handleImageUpload = (event, index) => {
 		const file = event.target.files[0];
 		const updatedImages = [...images];
@@ -147,33 +135,13 @@ const Partner = () => {
 		formData.append("hotelName", hotelName);
 		formData.append("street", street);
 		formData.append("city", city);
-		formData.append("state", countryState); // Updated to match the schema
+		formData.append("state", countryState);
 		formData.append("zip", zip);
 		formData.append("landmark", landmark);
 		formData.append("starType", starType);
 		formData.append("propertyType", propertyType);
 
-		formData.append("amenities[Free Wireless Internet]", freeWifi);
-		formData.append("amenities[Air Conditioning]", ac);
-		formData.append("amenities[Room Services]", roomService);
-		formData.append("amenities[Clean And Disinfect]", cleanDisinfect);
-		formData.append("amenities[School Diatacing]", schoolDiatacing);
-		formData.append("amenities[Free Parking]", freeParking);
-		formData.append("amenities[House Keeping]", houseKeeping);
-		formData.append("amenities[Towels]", towels);
-		formData.append("amenities[Complimentary Tolietries]", toiletries);
-		formData.append("amenities[Good Showers]", goodShowers);
-		formData.append("amenities[Cable Tv]", cableTv);
-		formData.append("amenities[Bottled Water]", bottledWater);
-		formData.append("amenities[Swimming Pool]", swimmingPool);
-		formData.append("amenities[On-site Restaurant]", restaurant);
-		formData.append("amenities[Hair Dryer]", hairDryer);
-		formData.append("amenities[Fitness Center]", fitnessCenter);
-		formData.append("amenities[Conclerge Desk]", conclergeDesk);
-		formData.append("amenities[Spa]", spa);
-		formData.append("amenities[Dry Cleaning]", dryClean);
-		formData.append("amenities[Bathrobe]", bathrobe);
-		formData.append("amenities[24 Hour Front Desk Service]", frontDeskService);
+		formData.append("amenities", amenities);
 
 		formData.append("outsideFoodPolicy", outsideFoodPolicy);
 		formData.append("cancellationPolicy", cancellationpolicy);
@@ -185,7 +153,7 @@ const Partner = () => {
 		formData.append("unmarriedCouplesAllowed", unmarriedcouples);
 		formData.append("internationalGuestAllowed", internationalcouple);
 		formData.append("returnPolicy", returnPolicy);
-		formData.append("checkInOut", checkInOut);
+		// formData.append("checkInOut", checkInOut);
 
 		formData.append("onDoubleSharing", onDoubleSharing);
 		formData.append("onQuadSharing", onQuadSharing);
@@ -222,9 +190,7 @@ const Partner = () => {
 		formData.append("offBulkBookingMAp", offbulkbookingmap);
 		formData.append("offTrippleSharingMAp", offtripplesharingmap);
 		formData.append("offMoreThanFourMAp", offmore4roommap);
-		images.forEach((image, index) => {
-			formData.append(`image${index}`, image);
-		});
+		formData.append(`images`, images);
 
 		try {
 			const response = await fetch(
@@ -253,28 +219,7 @@ const Partner = () => {
 				setStarType("");
 				setPropertyType("");
 				setImages([]);
-
-				setFreeWifi(false);
-				setAc(false);
-				setRoomService(false);
-				setCleanDisinfect(false);
-				setSchoolDiatacing(false);
-				setFreeParking(false);
-				setHouseKeeping(false);
-				setTowels(false);
-				setToiletries(false);
-				setGoodShowers(false);
-				setCableTv(false);
-				setBottledWater(false);
-				setSwimmingPool(false);
-				setRestaurant(false);
-				setHairDryer(false);
-				setFitnessCenter(false);
-				setConclergeDesk(false);
-				setSpa(false);
-				setDryClean(false);
-				setBathrobe(false);
-				setFrontDeskService(false);
+				setAmenities([]);
 				setOutsideFoodPolicy("");
 				setCancellationpolicy("");
 				setPaymentMode("");
@@ -691,8 +636,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setFreeWifi(e.target.checked)}
 										value='Free Wireless Internet'
+										onChange={(e) => toggleAmenity("Free Wireless Internet")}
+										checked={amenities.includes("Free Wireless Internet")}
 									/>
 									<FontAwesomeIcon icon={faWifi} />
 									Free Wireless Internet
@@ -701,8 +647,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAc(e.target.checked)}
+										onChange={(e) => toggleAmenity("Air Conditioning")}
 										value='Air Conditioning'
+										checked={amenities.includes("Air Conditioning")}
 									/>
 									<FontAwesomeIcon icon={faAirFreshener} />
 									Air Conditioning
@@ -711,8 +658,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setRoomService(e.target.checked)}
+										onChange={(e) => toggleAmenity("Room Services")}
 										value='Room Services'
+										checked={amenities.includes("Room Services")}
 									/>
 									<FontAwesomeIcon icon={faRestroom} />
 									Room Services
@@ -721,8 +669,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setCleanDisinfect(e.target.checked)}
+										onChange={(e) => toggleAmenity("Clean And Disinfect")}
 										value='Clean And Disinfect'
+										checked={amenities.includes("Clean And Disinfect")}
 									/>
 									<FontAwesomeIcon icon={faHandsWash} />
 									Clean & Disinfect
@@ -731,8 +680,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setSchoolDiatacing(e.target.checked)}
+										onChange={(e) => toggleAmenity("School Diatacing")}
 										value='School Diatacing'
+										checked={amenities.includes("School Diatacing")}
 									/>
 									<FontAwesomeIcon icon={faSchoolFlag} />
 									School Diatacing
@@ -741,8 +691,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setFreeParking(e.target.checked)}
+										onChange={(e) => toggleAmenity("Free Parking")}
 										value='Free Parking'
+										checked={amenities.includes("Free Parking")}
 									/>
 									<FontAwesomeIcon icon={faParking} />
 									Free Parking
@@ -751,8 +702,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setHouseKeeping(e.target.checked)}
+										onChange={(e) => toggleAmenity("House Keeping")}
 										value='House Keeping'
+										checked={amenities.includes("House Keeping")}
 									/>
 									<FontAwesomeIcon icon={faBrush} />
 									House Keeping
@@ -761,8 +713,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setTowels(e.target.checked)}
+										onChange={(e) => toggleAmenity("Towels")}
 										value='Towels'
+										checked={amenities.includes("Towels")}
 									/>
 									<FontAwesomeIcon icon={faTrowel} />
 									Towels
@@ -771,8 +724,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setToiletries(e.target.checked)}
+										onChange={(e) => toggleAmenity("Complimentary Tolietries")}
 										value='Complimentary Tolietries'
+										checked={amenities.includes("Complimentary Tolietries")}
 									/>
 									<FontAwesomeIcon icon={faHandsWash} />
 									Complimentary Tolietries
@@ -781,8 +735,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setGoodShowers(e.target.checked)}
+										onChange={(e) => toggleAmenity("Good Showers")}
 										value='Good Showers'
+										checked={amenities.includes("Good Showers")}
 									/>
 									<FontAwesomeIcon icon={faShower} />
 									Good Showers
@@ -791,8 +746,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setCableTv(e.target.checked)}
+										onChange={(e) => toggleAmenity("Cable Tv")}
 										value='Cable Tv'
+										checked={amenities.includes("Cable Tv")}
 									/>
 									<FontAwesomeIcon icon={faTv} />
 									Cable Tv
@@ -801,8 +757,11 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setBottledWater(e.target.checked)}
-										value='Bottled Water'
+										onChange={(e) =>
+											toggleAmenity("Complimentary Bottled Water")
+										}
+										value='Complimentary Bottled Water'
+										checked={amenities.includes("Complimentary Bottled Water")}
 									/>
 									<FontAwesomeIcon icon={faBottleWater} />
 									Complimentary Bottled Water
@@ -811,8 +770,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setSwimmingPool(e.target.checked)}
+										onChange={(e) => toggleAmenity("Swimming Pool")}
 										value='Swimming Pool'
+										checked={amenities.includes("Swimming Pool")}
 									/>
 									<FontAwesomeIcon icon={faSwimmingPool} />
 									Swimming Pool
@@ -821,8 +781,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setRestaurant(e.target.checked)}
+										onChange={(e) => toggleAmenity("On-site Restaurant")}
 										value='On-site Restaurant'
+										checked={amenities.includes("On-site Restaurant")}
 									/>
 									<FontAwesomeIcon icon={faHotel} />
 									On-site Restaurant
@@ -831,8 +792,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setHairDryer(e.target.checked)}
+										onChange={(e) => toggleAmenity("Hair Dryer")}
 										value='Hair Dryer'
+										checked={amenities.includes("Hair Dryer")}
 									/>
 									<FontAwesomeIcon icon={faAirFreshener} />
 									Hair Dryer
@@ -841,8 +803,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setFitnessCenter(e.target.checked)}
+										onChange={(e) => toggleAmenity("Fitness Center")}
 										value='Fitness Center'
+										checked={amenities.includes("Fitness Center")}
 									/>
 									<FontAwesomeIcon icon={faHeartCircleCheck} />
 									Fitness Center
@@ -851,8 +814,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setConclergeDesk(e.target.checked)}
+										onChange={(e) => toggleAmenity("Conclerge Desk")}
 										value='Conclerge Desk'
+										checked={amenities.includes("Conclerge Desk")}
 									/>
 									<FontAwesomeIcon icon={faDesktop} />
 									Conclerge Desk
@@ -861,8 +825,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setSpa(e.target.checked)}
+										onChange={(e) => toggleAmenity("Spa")}
 										value='Spa'
+										checked={amenities.includes("Spa")}
 									/>
 									<FontAwesomeIcon icon={faSpa} />
 									Spa
@@ -871,8 +836,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setDryClean(e.target.checked)}
+										onChange={(e) => toggleAmenity("Dry Cleaning")}
 										value='Dry Cleaning'
+										checked={amenities.includes("Dry Cleaning")}
 									/>
 									<FontAwesomeIcon icon={faAirFreshener} />
 									Dry Cleaning
@@ -881,8 +847,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setBathrobe(e.target.checked)}
+										onChange={(e) => toggleAmenity("Bathrobe")}
 										value='Bathrobe'
+										checked={amenities.includes("Bathrobe")}
 									/>
 									<FontAwesomeIcon icon={faBathtub} />
 									Bathrobe
@@ -891,8 +858,11 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setFrontDeskService(e.target.checked)}
+										onChange={(e) =>
+											toggleAmenity("24 Hour Front Desk Service")
+										}
 										value='24 Hour Front Desk Service'
+										checked={amenities.includes("24 Hour Front Desk Service")}
 									/>
 									<FontAwesomeIcon icon={faCheck} />
 									24 Hours Front Desk Service
@@ -901,8 +871,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Bar")}
 										value='Bar'
+										checked={amenities.includes("Bar")}
 									/>
 									<FontAwesomeIcon icon={faBars} />
 									Bar
@@ -911,8 +882,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Coffee/Tea")}
 										value='Coffee/Tea'
+										checked={amenities.includes("Coffee/Tea")}
 									/>
 									<FontAwesomeIcon icon={faCoffee} />
 									Coffee/Tea
@@ -921,8 +893,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Non Smoking Rooms")}
 										value='Non Smoking Rooms'
+										checked={amenities.includes("Non Smoking Rooms")}
 									/>
 									<FontAwesomeIcon icon={faSmokingBan} />
 									Non Smoking Rooms
@@ -931,8 +904,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Baby Sitting")}
 										value='Baby Sitting'
+										checked={amenities.includes("Baby Sitting")}
 									/>
 									<FontAwesomeIcon icon={faBaby} />
 									Baby Sitting
@@ -941,8 +915,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Picnic Area")}
 										value='Picnic Area'
+										checked={amenities.includes("Picnic Area")}
 									/>
 									<FontAwesomeIcon icon={faUmbrellaBeach} />
 									Picnic Area
@@ -951,8 +926,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Currency Exchange")}
 										value='Currency Exchange'
+										checked={amenities.includes("Currency Exchange")}
 									/>
 									<FontAwesomeIcon icon={faInr} />
 									Currency Exchange
@@ -961,8 +937,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Indoor Pool")}
 										value='Indoor Pool'
+										checked={amenities.includes("Indoor Pool")}
 									/>
 									<FontAwesomeIcon icon={faSwimmingPool} />
 									Indoor Pool
@@ -971,8 +948,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Shoesshine")}
 										value='Shoesshine'
+										checked={amenities.includes("Shoesshine")}
 									/>
 									<FontAwesomeIcon icon={faShoePrints} />
 									Shoesshine
@@ -981,8 +959,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Tour Desk")}
 										value='Tour Desk'
+										checked={amenities.includes("Tour Desk")}
 									/>
 									<FontAwesomeIcon icon={faCheck} />
 									Tour Desk
@@ -991,8 +970,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Loundry")}
 										value='Loundry'
+										checked={amenities.includes("Loundry")}
 									/>
 									<FontAwesomeIcon icon={faShirt} />
 									Loundry
@@ -1001,8 +981,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Lockers")}
 										value='Lockers'
+										checked={amenities.includes("Lockers")}
 									/>
 									<FontAwesomeIcon icon={faLock} />
 									Lockers
@@ -1011,8 +992,9 @@ const Partner = () => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={handleCheckboxChange}
+										onChange={(e) => toggleAmenity("Business Center")}
 										value='Business Center'
+										checked={amenities.includes("Business Center")}
 									/>
 									<FontAwesomeIcon icon={faBusinessTime} />
 									Business Center
@@ -1266,13 +1248,13 @@ const Partner = () => {
 									onChange={(e) => setReturnPolicy(e.target.value)}
 								/>
 
-								<label htmlFor='checkInOut'>Check-In and Check-Out:</label>
+								{/* <label htmlFor='checkInOut'>Check-In and Check-Out:</label>
 								<input
 									type='text'
 									id='checkInOut'
 									value={checkInOut}
 									onChange={(e) => setCheckInOut(e.target.value)}
-								/>
+								/> */}
 								<hr />
 								<div className='memo'>
 									<p className='early-late'>
