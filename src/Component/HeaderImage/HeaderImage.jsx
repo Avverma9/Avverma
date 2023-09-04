@@ -3,10 +3,12 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import "./HeaderImage.css";
 
 const HeaderImage = () => {
   const location = useLocation();
+  const isSignedIn = localStorage.getItem("isSignedIn")
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const openDropdown = () => {
     setDropdownOpen(true);
@@ -24,7 +26,9 @@ const HeaderImage = () => {
   if (render !== "/home" && render !== "/") {
     return null;
   }
-
+  if(!isSignedIn){
+    return null
+  }
   return (
     <div className="header">
       <div className="city">

@@ -4,6 +4,7 @@ import './Dropdown.css';
 
 const StateItem = ({ state, cities }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isSignedIn = localStorage.getItem("isSignedIn")
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -17,7 +18,9 @@ const StateItem = ({ state, cities }) => {
   const handleCityClick = (city) => {
     navigate(`/cities/${city}`); 
   };
-
+  if(!isSignedIn){
+    return null
+  }
   return (
     <div
       className="stateItem"

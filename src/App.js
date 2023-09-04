@@ -151,7 +151,7 @@ function App() {
 
         <Carousel />
 
-        <Home />
+      
         <Offers />
         <Hotel />
         <ChatBox />
@@ -176,7 +176,7 @@ function App() {
         <Kashmirpage />
         <Haryanapage />
         <Routes>
-          <Route path="/signin" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
             path="/profile"
@@ -224,6 +224,7 @@ function App() {
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
           <Route path="state" element={<HeaderImage />} />
+          <Route path="/home" element={<Home/>}/>
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"

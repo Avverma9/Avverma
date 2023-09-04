@@ -62,7 +62,7 @@ const Login = () => {
     navigate("/otplogin")
   }
 
-  if (location.pathname !== "/signin") {
+  if (location.pathname !== "/") {
     return null;
   }
 

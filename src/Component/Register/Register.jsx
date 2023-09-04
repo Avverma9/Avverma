@@ -47,7 +47,7 @@ const Register = () => {
         setPassword("");
 
         setSelectedImage(null);
-        navigate("/signin");
+        navigate("/");
       } else {
         console.log("Signup failed");
       }
@@ -66,7 +66,7 @@ const Register = () => {
   }
 
   const handleSignInClick = () => {
-    navigate("/signin");
+    navigate("/");
   };
 
   return (
