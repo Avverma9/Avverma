@@ -45,13 +45,13 @@ const Google = () => {
       <p className="google-text">Continue With</p>
       {showErrorImage ? (
         <img
-          src="image_url_here" // Replace with the URL of your error image
+          src="https://freefrontend.com/assets/img/html-funny-404-pages/CodePen-404-Page.gif" // Replace with the URL of your error image
           alt="Error"
           className="error-image"
         />
       ) : (
         <img
-          src="https://freepngimg.com/thumb/google/153884-logo-google-png-download-free.png"
+          src="https://avvermabucket.s3.ap-south-1.amazonaws.com/1693858435763-kisspng-google-images-computer-icons-google-logo-portable-search-engine-search-searching-detective-zoomi-5cc855f44c71c0.3502844515566330763131.png"
           alt="Google Logo"
           className="google-logo"
         />

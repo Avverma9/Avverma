@@ -33,6 +33,7 @@ import "./Offers.css";
 const Offers = () => {
   const location = useLocation();
   const [data, setData] = useState([]);
+  const isSignedIn = localStorage.getItem("isSignedIn")
   const [expandedOfferId, setExpandedOfferId] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
@@ -46,7 +47,9 @@ const Offers = () => {
   if (location.pathname !== "/") {
     return null;
   }
-
+if(!isSignedIn){
+  return null
+}
   const handleBookNow = (offerId) => {
     navigate(`/book-now/${offerId}`);
   };

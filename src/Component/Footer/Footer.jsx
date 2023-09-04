@@ -11,6 +11,10 @@ import {
 } from "mdb-react-ui-kit";
 
 const Footer = () => {
+  const isSignedIn = localStorage.getItem("isSignedIn")
+  if(!isSignedIn){
+    return null
+  }
   return (
     <MDBFooter className="text-center" color="white" bgColor="dark">
       <MDBContainer className="p-4">

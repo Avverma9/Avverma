@@ -9,7 +9,9 @@ const Header = () => {
   const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
   const navigate = useNavigate()
 
-
+  if(!isSignedIn){
+    return null
+  }
   return (
     <>
   
@@ -58,7 +60,7 @@ const Header = () => {
            </li>
             )}
 
-            {isSignedIn && (
+           
               <>
                 <li className="nav-item dropdown p-0">
                   <Link
@@ -123,7 +125,7 @@ const Header = () => {
                   </Link>
                 </li>
               </>
-            )}
+      
           </ul>
           </div>
         </div>

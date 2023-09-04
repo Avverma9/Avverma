@@ -39,6 +39,7 @@ import BookingDetails from "../Hotel/BookingDetails";
 
 const BookNowPage = ({ userData }) => {
   const { offerId } = useParams();
+  const isSignedIn = localStorage.getItem("isSignedIn")
   const [offerData, setOfferData] = useState(null);
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
@@ -301,7 +302,9 @@ const BookNowPage = ({ userData }) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
   };
-
+  if(!isSignedIn){
+    return null
+  }
   return (
     <>
       <div className="container-p-4">

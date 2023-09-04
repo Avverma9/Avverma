@@ -14,12 +14,12 @@
 }
 
 .google-logo {
-  width: 100px; /* Adjust the size as needed */
+  width: 40px; /* Adjust the size as needed */
   height: auto;
 }
 
 .error-image {
-  width: 100px; /* Adjust the size as needed */
+  width: 40px; /* Adjust the size as needed */
   height: auto;
   display: none; /* Initially hidden, will be shown conditionally */
 }
