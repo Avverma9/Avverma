@@ -177,15 +177,15 @@ const UpdateHotel = async function(req, res) {
   const {updateData} = req.body; 
 
   try {
-    const updatedHotel = await hotelModel.findByIdAndUpdate(id, updateData, {
-      new: true, 
-      runValidators: true, 
-    });
+    const updatedHotel = await hotelModel.findByOneAndUpdate(
+      {_id:id},
+       updateData, 
+       { new: true});
 
     if (!updatedHotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
-
+ await updatedHotel.save()
     return res.status(200).json({
       status: true,
       data: updatedHotel,
