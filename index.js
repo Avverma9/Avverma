@@ -8,8 +8,8 @@ const multerS3 = require("multer-s3");
 const multer = require("multer");
 const Razorpay = require("razorpay");
 
-const route = require("./routes/route.js")
-// const emailController = require("./controllers/emailController");
+const route = require("./routes/route")
+
 
 const app = express();
 app.use(cors());
@@ -31,7 +31,7 @@ mongoose
 
 
   app.use("/", route);
-  // app.use("/", emailController)
+
   
 
   app.use((req, res) => {
