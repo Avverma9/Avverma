@@ -52,7 +52,7 @@ const getReviewsByHotelId = async (req, res) => {
   try {
     const { hotelId } = req.params;
 
-    const reviews = await reviewModel.find({ hotel: hotelId })
+    const reviews = await reviewModel.find({ hotel: hotelId }).sort({createdAt: -1})
  let countRating = reviews.length
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
@@ -99,7 +99,7 @@ const getReviewsByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const reviews = await reviewModel.find({ user: userId });
+    const reviews = await reviewModel.find({ user: userId }).sort({createdAt: -1});
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
