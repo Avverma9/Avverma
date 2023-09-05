@@ -112,12 +112,7 @@ const Partner = () => {
 
 
 
-	const handleImageUpload = (event, index) => {
-		const file = event.target.files[0];
-		const updatedImages = [...images];
-		updatedImages[index] = file;
-		setImages(updatedImages.slice(0, 6));
-	};
+
 
 	const handlePartnerSubmit = async (event) => {
 		event.preventDefault();
@@ -231,7 +226,7 @@ const Partner = () => {
 		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022435744-Front.jpg",
 	];
 
-	const [uploadimage, setUploadimage] = useState("");
+	const [uploadimage, setUploadimage] = useState([]);
 
 	const handleNavItemClick = (navItem) => {
 		if (navItem === "Basic Information") {
@@ -267,7 +262,12 @@ const Partner = () => {
 	if (location.pathname !== "/partner") {
 		return null;
 	}
-
+	const handleImageUpload = (event, index) => {
+		const file = event.target.files[0];
+		const updatedImages = [...images];
+		updatedImages[index] = file;
+		setImages(updatedImages.slice(0, 6));
+	};
 	return (
 		<div>
 			<nav>
