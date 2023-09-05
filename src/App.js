@@ -148,7 +148,7 @@ function App() {
         <ToastContainer />
         <HeaderImage />
         <Dropdownbar />
-        <Login />
+
         <Carousel />
 
       
@@ -176,7 +176,7 @@ function App() {
         <Kashmirpage />
         <Haryanapage />
         <Routes>
-        
+          <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
             path="/profile"

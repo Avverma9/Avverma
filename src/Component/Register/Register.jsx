@@ -66,7 +66,7 @@ const Register = () => {
   }
 
   const handleSignInClick = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (

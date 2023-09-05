@@ -11,7 +11,6 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isSignedIn = localStorage.getItem("isSignedIn")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -63,16 +62,10 @@ const Login = () => {
     navigate("/otplogin")
   }
 
-  if (location.pathname !== "/") {
-    return null;
-  }
-
   const handleForgotPassword = () => {
     navigate("/passwordChangeMail"); 
   };
-if(!isSignedIn){
-  return null
-}
+
 
   return (
     <div className="card-signin">
