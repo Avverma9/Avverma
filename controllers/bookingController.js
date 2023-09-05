@@ -101,10 +101,14 @@ const getConfirmedBookingsHotel = async (req, res) => {
   const details = booking.filter(confirmed=>confirmed.bookingStatus === "success")
   res.json(details)
 };
+//=================================
 const getFailedBookingsHotel = async (req, res) => {
-  const bookings = await bookingModel.find().sort({createdAt: -1})
-  res.json(bookings)
+  const {id} = req.params
+  const bookings = await bookingModel.find({user:id}).sort({createdAt: -1})
+  const details = bookings.filter(failed=>failed.bookingStatus === 'failed')
+  res.json(details)
 }
+
 const getCancelledBookingHotel = async (req, res) => {
   const booking= await bookingModel.find().sort({createdAt: -1})
 
