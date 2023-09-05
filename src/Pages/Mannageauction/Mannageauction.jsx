@@ -236,6 +236,20 @@ export const MannageAuction = () => {
     localStorage.setItem("winId", winId);
   };
 
+  const getStatus = (row) => {
+    const endTime = new Date(row.endTime)
+    const currentTime = new Date()
+    
+    console.log("endTime:", endTime);
+    console.log("today:", currentTime);
+  
+    if (endTime > currentTime) {
+      return "Live";
+    } else {
+      return "Ended";
+    }
+  };
+
   const columns = [
     {
       name: "Registration No",
@@ -287,7 +301,7 @@ export const MannageAuction = () => {
     },
     {
       name: "Status",
-      selector: (row) => (row.status ? "Live" : "Ended"),
+      selector: (row) => getStatus(row),
       sortable: true,
     },
     {

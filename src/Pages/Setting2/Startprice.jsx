@@ -65,7 +65,7 @@ function Startprice() {
             name="region"
             defaultValue={selectRegionOptions}
             options={selectRegionOptions}
-            className={style.basicmultiselect}
+            className={style.basicmultiselectPrice}
             classNamePrefix="select"
             placeholder="Region"
           />
@@ -73,13 +73,13 @@ function Startprice() {
             name="seller"
             defaultValue={selectSellerOptions}
             options={selectSellerOptions}
-            className={style.basicmultiselect}
+            className={style.basicmultiselectPrice}
             classNamePrefix="select"
             placeholder="Seller"
           />
           <Select
             name="price"
-            className={style.basicmultiselect}
+            className={style.basicmultiselectPrice}
             classNamePrefix="select"
             placeholder="Price"
           />
