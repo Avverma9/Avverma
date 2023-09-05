@@ -96,8 +96,10 @@ const getConfirmedBookings = async (req, res) => {
 };
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
-  const booking= await bookingModel.find().sort({createdAt: -1})  // hotel
-  res.json(booking)
+  const {id} = req.params
+  const booking= await bookingModel.find({user:id}) // hotel
+  const details = booking.filter(confirmed=>confirmed.bookingStatus === "success")
+  res.json(details)
 };
 const getFailedBookingsHotel = async (req, res) => {
   const bookings = await bookingModel.find().sort({createdAt: -1})
