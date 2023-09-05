@@ -35,12 +35,17 @@ import "./partner.css";
 
 const Partner = () => {
 	const location = useLocation();
+	//see here
+	const [DeskServicesChecked,setDeskServicesChecked] = useState(false)
+	const [Atm,setAtm] =useState(false)
+
+
 	const [activeNavItem, setActiveNavItem] = useState(
 		"Hotel Contact Information"
 	);
 	const [images, setImages] = useState([]);
 	const [amenities, setAmenities] = useState([]);
-
+	
 	const [hotelOwnerName, setHotelOwnerName] = useState("");
 	const [ownerContactDetails, setOwnerContactDetails] = useState("");
 	const [receptionContactDetails, setReceptionContactDetails] = useState("");
@@ -107,18 +112,6 @@ const Partner = () => {
 
 
 
-const toggleAmenity = (amenity) => {
-
-	if (amenities.includes(amenity)) {
-	
-	  setAmenities(amenities.filter((item) => item !== amenity));
-	} else {
-	  
-	  setAmenities([...amenities, amenity]);
-	}
-  };
-	
-
 	const handleImageUpload = (event, index) => {
 		const file = event.target.files[0];
 		const updatedImages = [...images];
@@ -145,8 +138,13 @@ const toggleAmenity = (amenity) => {
 		formData.append("landmark", landmark);
 		formData.append("starRating", starRating);
 		formData.append("propertyType", propertyType);
-
-		formData.append("amenities", amenities);
+     //see here
+		if (DeskServicesChecked) {
+			formData.append("amenities", "24-hour Front Desk Service");
+		}
+		if(Atm){
+			formData.append("amenities", "ATM on Site")
+		}
 
 		formData.append("outsideFoodPolicy", outsideFoodPolicy);
 		formData.append("cancellationPolicy", cancellationpolicy);
@@ -207,46 +205,8 @@ const toggleAmenity = (amenity) => {
 			);
 
 			if (response.ok) {
-				console.log(response, "successful");
-				// Reset form
-				setHotelOwnerName("");
-				setOwnerContactDetails("");
-				setReceptionContactDetails("");
-				setHotelEmail("");
-				setGeneralManagerContact("");
-				setSalesManagerContact("");
-				setHotelName("");
-				setStreet("");
-				setCity("");
-				setCountryState("");
-				setZip("");
-				setLandmark("");
-				setstarRating("");
-				setPropertyType("");
-				setImages([]);
-				setAmenities([]);
-				setOutsideFoodPolicy("");
-				setCancellationpolicy("");
-				setPaymentMode("");
-				setPets("");
-				setBachelor("");
-				setSmoking("");
-				setAlcohol("");
-				setUnmarriedcouples("");
-				setInternationalcouple("");
-				setReturnPolicy("");
-				setCheckInOut("");
-				setOnDoubleSharing("");
-				setOnQuadSharing("");
-				setOnbulkbooking("");
-				setOntripplesharing("");
-				setOnmore4room("");
-				setOffDoubleSharing("");
-				setOffbulkbooking("");
-				setOffmore4room("");
-				setOffquadsharing("");
-				setOfftripplesharing("");
-				setOffDoubleSharingApPlan("");
+				alert("data has created")
+				
 			} else {
 				console.log("failed");
 			}
@@ -639,32 +599,28 @@ const toggleAmenity = (amenity) => {
 							<h3>Amenities</h3>
 							<div className='amenities1'>
 							<label>
-  <input
-    type='checkbox'
-    value="Free Wireless Internet"
-    onChange={(e) => toggleAmenity("Free Wireless Internet")}
-    checked={amenities.includes("Free Wireless Internet")}
-  />
-  <FontAwesomeIcon icon={faWifi} />
-  Free Wireless Internet
-</label>
-<br />
-<label>
-  <input
-    type='checkbox'
-    onChange={(e) => toggleAmenity("Air Conditioning")}
-    value='Air Conditioning'
-    checked={amenities.includes("Air Conditioning")}
-  />
-  <FontAwesomeIcon icon={faAirFreshener} /> {/* Replace with the appropriate icon */}
-  Air Conditioning
-</label>
+                    <input
+                        type='checkbox'
+                        onChange={() => setDeskServicesChecked(!DeskServicesChecked)}
+                        checked={DeskServicesChecked}
+                    />
+                   24-hour Front Desk Service
+                </label>
+				<br />
+                <label>
+                    <input
+                        type='checkbox'
+                        onChange={() => setAtm(!Atm)}
+                        checked={Atm}
+                    />
+                    ATM on Site
+                </label>
 
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Room Services")}
+										onChange={(e) => setAmenities("Room Services")}
 										value='Room Services'
 										checked={amenities.includes("Room Services")}
 									/>
@@ -675,7 +631,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Clean And Disinfect")}
+										onChange={(e) => setAmenities("Clean And Disinfect")}
 										value='Clean And Disinfect'
 										checked={amenities.includes("Clean And Disinfect")}
 									/>
@@ -686,7 +642,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("School Diatacing")}
+										onChange={(e) => setAmenities("School Diatacing")}
 										value='School Diatacing'
 										checked={amenities.includes("School Diatacing")}
 									/>
@@ -697,7 +653,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Free Parking")}
+										onChange={(e) => setAmenities("Free Parking")}
 										value='Free Parking'
 										checked={amenities.includes("Free Parking")}
 									/>
@@ -708,7 +664,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("House Keeping")}
+										onChange={(e) => setAmenities("House Keeping")}
 										value='House Keeping'
 										checked={amenities.includes("House Keeping")}
 									/>
@@ -719,7 +675,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Towels")}
+										onChange={(e) => setAmenities("Towels")}
 										value='Towels'
 										checked={amenities.includes("Towels")}
 									/>
@@ -730,7 +686,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Complimentary Tolietries")}
+										onChange={(e) => setAmenities("Complimentary Tolietries")}
 										value='Complimentary Tolietries'
 										checked={amenities.includes("Complimentary Tolietries")}
 									/>
@@ -741,7 +697,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Good Showers")}
+										onChange={(e) => setAmenities("Good Showers")}
 										value='Good Showers'
 										checked={amenities.includes("Good Showers")}
 									/>
@@ -752,7 +708,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Cable Tv")}
+										onChange={(e) => setAmenities("Cable Tv")}
 										value='Cable Tv'
 										checked={amenities.includes("Cable Tv")}
 									/>
@@ -764,7 +720,7 @@ const toggleAmenity = (amenity) => {
 									<input
 										type='checkbox'
 										onChange={(e) =>
-											toggleAmenity("Complimentary Bottled Water")
+											setAmenities("Complimentary Bottled Water")
 										}
 										value='Complimentary Bottled Water'
 										checked={amenities.includes("Complimentary Bottled Water")}
@@ -776,7 +732,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Swimming Pool")}
+										onChange={(e) => setAmenities("Swimming Pool")}
 										value='Swimming Pool'
 										checked={amenities.includes("Swimming Pool")}
 									/>
@@ -787,7 +743,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("On-site Restaurant")}
+										onChange={(e) => setAmenities("On-site Restaurant")}
 										value='On-site Restaurant'
 										checked={amenities.includes("On-site Restaurant")}
 									/>
@@ -798,7 +754,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Hair Dryer")}
+										onChange={(e) => setAmenities("Hair Dryer")}
 										value='Hair Dryer'
 										checked={amenities.includes("Hair Dryer")}
 									/>
@@ -809,7 +765,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Fitness Center")}
+										onChange={(e) => setAmenities("Fitness Center")}
 										value='Fitness Center'
 										checked={amenities.includes("Fitness Center")}
 									/>
@@ -820,7 +776,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Conclerge Desk")}
+										onChange={(e) => setAmenities("Conclerge Desk")}
 										value='Conclerge Desk'
 										checked={amenities.includes("Conclerge Desk")}
 									/>
@@ -831,7 +787,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Spa")}
+										onChange={(e) => setAmenities("Spa")}
 										value='Spa'
 										checked={amenities.includes("Spa")}
 									/>
@@ -842,7 +798,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Dry Cleaning")}
+										onChange={(e) => setAmenities("Dry Cleaning")}
 										value='Dry Cleaning'
 										checked={amenities.includes("Dry Cleaning")}
 									/>
@@ -853,7 +809,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Bathrobe")}
+										onChange={(e) => setAmenities("Bathrobe")}
 										value='Bathrobe'
 										checked={amenities.includes("Bathrobe")}
 									/>
@@ -865,7 +821,7 @@ const toggleAmenity = (amenity) => {
 									<input
 										type='checkbox'
 										onChange={(e) =>
-											toggleAmenity("24 Hour Front Desk Service")
+											setAmenities("24 Hour Front Desk Service")
 										}
 										value='24 Hour Front Desk Service'
 										checked={amenities.includes("24 Hour Front Desk Service")}
@@ -877,7 +833,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Bar")}
+										onChange={(e) => setAmenities("Bar")}
 										value='Bar'
 										checked={amenities.includes("Bar")}
 									/>
@@ -888,7 +844,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Coffee/Tea")}
+										onChange={(e) => setAmenities("Coffee/Tea")}
 										value='Coffee/Tea'
 										checked={amenities.includes("Coffee/Tea")}
 									/>
@@ -899,7 +855,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Non Smoking Rooms")}
+										onChange={(e) => setAmenities("Non Smoking Rooms")}
 										value='Non Smoking Rooms'
 										checked={amenities.includes("Non Smoking Rooms")}
 									/>
@@ -910,7 +866,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Baby Sitting")}
+										onChange={(e) => setAmenities("Baby Sitting")}
 										value='Baby Sitting'
 										checked={amenities.includes("Baby Sitting")}
 									/>
@@ -921,7 +877,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Picnic Area")}
+										onChange={(e) => setAmenities("Picnic Area")}
 										value='Picnic Area'
 										checked={amenities.includes("Picnic Area")}
 									/>
@@ -932,7 +888,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Currency Exchange")}
+										onChange={(e) => setAmenities("Currency Exchange")}
 										value='Currency Exchange'
 										checked={amenities.includes("Currency Exchange")}
 									/>
@@ -943,7 +899,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Indoor Pool")}
+										onChange={(e) => setAmenities("Indoor Pool")}
 										value='Indoor Pool'
 										checked={amenities.includes("Indoor Pool")}
 									/>
@@ -954,7 +910,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Shoesshine")}
+										onChange={(e) => setAmenities("Shoesshine")}
 										value='Shoesshine'
 										checked={amenities.includes("Shoesshine")}
 									/>
@@ -965,7 +921,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Tour Desk")}
+										onChange={(e) => setAmenities("Tour Desk")}
 										value='Tour Desk'
 										checked={amenities.includes("Tour Desk")}
 									/>
@@ -976,7 +932,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Loundry")}
+										onChange={(e) => setAmenities("Loundry")}
 										value='Loundry'
 										checked={amenities.includes("Loundry")}
 									/>
@@ -987,7 +943,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Lockers")}
+										onChange={(e) => setAmenities("Lockers")}
 										value='Lockers'
 										checked={amenities.includes("Lockers")}
 									/>
@@ -998,7 +954,7 @@ const toggleAmenity = (amenity) => {
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => toggleAmenity("Business Center")}
+										onChange={(e) => setAmenities("Business Center")}
 										value='Business Center'
 										checked={amenities.includes("Business Center")}
 									/>
