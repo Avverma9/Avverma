@@ -34,7 +34,9 @@ const BookingDetails = ({
   isOffer,
   offerDetails,
   offerPriceLess,
+  toast,
 }) => {
+  const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
     const options = {
       name: hotelName,
@@ -89,8 +91,12 @@ const BookingDetails = ({
           bookingData
         )
         .then((res) => {
-          console.log(res.data, "Booking created successfully", bookingData);
+          console.log(res.status);
           setFoodIdArr([]);
+
+          if (res.status === 201) {
+            toast.success("Booking created successfully");
+          }
 
           // if (userData.email) {
           //   axios
@@ -112,7 +118,7 @@ const BookingDetails = ({
           // }
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err);
         });
     } else {
       console.log("User data, email, or payment status is not valid");
@@ -155,6 +161,14 @@ const BookingDetails = ({
     setIsopen(!isopen);
   };
 
+  const paymentSelect = () => {
+    setOpenPaymentModule(true);
+  };
+
+  const handlePayatCheckin = () => {
+    handleBooking("success");
+  };
+
   return (
     <>
       <div className="new-booking-details">
@@ -173,29 +187,40 @@ const BookingDetails = ({
           <div className={styles.check_room}>
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
-                <div className={styles.check_in_in_in}>
-                  <h4>Check In </h4>
-                  <span className={styles.check_in_real}>
-                    <DatePicker
-                      selected={selectdate}
-                      onChange={handledatechange}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-in Date"
-                    />
-                    {selectdate && <p> {selectdate.toDateString()}</p>}
-                  </span>
-                  <h4>Check Out </h4>
-                  <span className={styles.check_out_real}>
-                    <DatePicker
-                      selected={selectdatecheckout}
-                      onChange={handledatechange2}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-out Date"
-                    />
-                    {selectdatecheckout && (
-                      <p> {selectdatecheckout.toDateString()}</p>
-                    )}
-                  </span>
+                <div
+                  className={styles.check_in_in_in}
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check In{" "}
+                    </h4>
+                    <span className={styles.check_in_real}>
+                      <DatePicker
+                        selected={selectdate}
+                        onChange={handledatechange}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-in Date"
+                      />
+                      {selectdate && <p> {selectdate.toDateString()}</p>}
+                    </span>
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check Out{" "}
+                    </h4>
+                    <span className={styles.check_out_real}>
+                      <DatePicker
+                        selected={selectdatecheckout}
+                        onChange={handledatechange2}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-out Date"
+                      />
+                      {selectdatecheckout && (
+                        <p> {selectdatecheckout.toDateString()}</p>
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -372,12 +397,38 @@ const BookingDetails = ({
               </div>
             )}
           </div>
+
+          {openPaymentModule === false ? (
+            <div className={styles.btn_payment}>
+              <button className="payment-btn" onClick={paymentSelect}>
+                Make Payment
+              </button>
+            </div>
+          ) : (
+            <>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayment}>Pay Now</button>
+              </div>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayatCheckin}>Pay at Hotel</button>
+              </div>
+              <div className={styles.btn_payment}>
+                <button
+                  style={{ backgroundColor: "#ff0000" }}
+                  onClick={() => setOpenPaymentModule(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-      <div className={styles.btn_payment}>
-        <button className="payment-btn" onClick={handlePayment}>
-          Make Payment
-        </button>
       </div>
     </>
   );

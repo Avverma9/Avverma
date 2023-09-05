@@ -39,8 +39,9 @@ import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
 import { Rating } from "react-simple-star-rating";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
-export default function BookNow({ refresh, reset, userData }) {
+export default function BookNow({ refresh, reset, userData, toast }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
@@ -395,6 +396,12 @@ export default function BookNow({ refresh, reset, userData }) {
     //   setSelectedRooms(selectedRooms + 1);
     // }
   }, [selectedGuests, selectedRooms]);
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    console.log(currPos.x);
+    console.log(currPos.y);
+    // setPos
+  });
 
   return (
     <>
@@ -1014,6 +1021,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 isOffer={bookingDetails?.isOffer}
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
+                toast={toast}
               />
             </div>
           </div>

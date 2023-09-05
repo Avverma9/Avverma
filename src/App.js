@@ -228,7 +228,12 @@ function App() {
           <Route
             path="/hotels/:id"
             element={
-              <BookNow refresh={refresh} reset={reset} userData={userData} />
+              <BookNow
+                refresh={refresh}
+                reset={reset}
+                userData={userData}
+                toast={toast}
+              />
             }
           />
           <Route path="/cities/jaipur" element={<Jaipur />} />
@@ -279,10 +284,10 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
-          <Route
+          {/* <Route
             path="/bookingDetails"
             element={<BookingDetails userData={userData} />}
-          />
+          /> */}
         </Routes>
         <Footer />
       </div>
