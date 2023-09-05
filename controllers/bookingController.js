@@ -94,11 +94,51 @@ const getConfirmedBookings = async (req, res) => {
   const confirmedBookings = booking.filter(booking=>booking.bookingStatus === "success") //dashboard
   res.json(confirmedBookings)
 };
-
+//================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const booking= await bookingModel.find().sort({createdAt: -1})  // hotel
   res.json(booking)
 };
+const getFailedBookingsHotel = async (req, res) => {
+  const bookings = await bookingModel.find().sort({createdAt: -1})
+  res.json(bookings)
+}
+const getCancelledBookingHotel = async (req, res) => {
+  const booking= await bookingModel.find().sort({createdAt: -1})
+
+  if(!booking)
+  res.status(404).json({success: false , message:"No any booking are here"});
+  
+  res.json(booking)
+};
+const getCheckedInHotel = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const bookings = await bookingModel.find({ user: userId }).sort({ createdAt: -1 });
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ success: false, message: "No bookings found" });
+    }
+
+    const checkedIn = bookings.filter(booking => booking.bookingStatus === "checkedIn");
+
+    res.json(checkedIn);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const getCheckedOutHotel = async(req,res)=>{
+  const { userId } = req.params;
+  const bookings = await bookingModel.find({ user: userId }).sort({ createdAt: -1 });
+  const checkedOut = bookings.filter(checkedOut=>checkedOut.bookingStatus === "checkedOut")
+  if(!bookings){
+    res.status(404).json({success: false, message: "No such type of booking here"})
+  }
+  res.json(checkedOut)
+}
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
@@ -107,10 +147,6 @@ const getFailedBookings = async (req, res) => {
  res.json(failedBooking)
 };
 
-const getFailedBookingsHotel = async (req, res) => {
-  const bookings = await bookingModel.find().sort({createdAt: -1})
-  res.json(bookings)
-}
 
 //==================================================================================
 
@@ -196,6 +232,11 @@ module.exports = {
   createBooking,
   getConfirmedBookings,
   getFailedBookings,
+  getConfirmedBookingsHotel,
+  getFailedBookingsHotel,
+  getCancelledBookingHotel,
+  getCheckedInHotel,
+  getCheckedOutHotel,
   cancelBooking,
   getCheckedIn,
   getCheckedOut,
