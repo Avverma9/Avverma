@@ -39,8 +39,9 @@ import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
 import { Rating } from "react-simple-star-rating";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
-export default function BookNow({ refresh, reset, userData }) {
+export default function BookNow({ refresh, reset, userData, toast }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
@@ -361,7 +362,8 @@ export default function BookNow({ refresh, reset, userData }) {
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
   const foodPriceHandler = (index, fprice, fId) => {
-    setFoodIdArr(...foodIdArr, { _id: fId });
+    setFoodIdArr([...foodIdArr, { _id: fId }]);
+    console.log(foodIdArr);
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
@@ -378,6 +380,28 @@ export default function BookNow({ refresh, reset, userData }) {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
   };
+
+  const showPopup = () => {
+    alert("Contact Hotel");
+  };
+
+  useEffect(() => {
+    if (selectedRooms > selectedGuests && selectedRooms <= 4) {
+      setSelectedGuests(selectedGuests + (selectedRooms - selectedGuests));
+    }
+    if (selectedRooms * 3 < selectedGuests && selectedRooms <= 4) {
+      setSelectedGuests(selectedRooms * 3);
+    }
+    // if (selectedGuests % 3 !== 0 && selectedRooms < 4) {
+    //   setSelectedRooms(selectedRooms + 1);
+    // }
+  }, [selectedGuests, selectedRooms]);
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    console.log(currPos.x);
+    console.log(currPos.y);
+    // setPos
+  });
 
   return (
     <>
@@ -670,7 +694,7 @@ export default function BookNow({ refresh, reset, userData }) {
                   ))}
                 </div>
               </div>
-              <div className="cust-detail">Customer Details:</div>
+              <div className="cust-detail">Booking Details:</div>
               <div className="card">
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
@@ -700,7 +724,9 @@ export default function BookNow({ refresh, reset, userData }) {
                   <button
                     className="negposbtn"
                     onClick={() =>
-                      setSelectedRooms(Math.min(selectedRooms + 1, 4))
+                      selectedRooms === 4
+                        ? showPopup()
+                        : setSelectedRooms(Math.min(selectedRooms + 1, 4))
                     }
                   >
                     +
@@ -995,6 +1021,7 @@ export default function BookNow({ refresh, reset, userData }) {
                 isOffer={bookingDetails?.isOffer}
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
+                toast={toast}
               />
             </div>
           </div>

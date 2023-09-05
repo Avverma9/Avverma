@@ -30,9 +30,12 @@ const styles = {
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
 
-  const fetchBookingDetails = async () => {
+
+  const fetchBookingDetails = useCallback(async () => {
+    const id = localStorage.getItem("userId")
+    console.log(id, "myId")
     try {
-      const response = await axios.get("https://hotel-backend-tge7.onrender.com/bookingsConfirm");
+      const response = await axios.get(`http://localhost:5000/bookingsConfirm/${id}`)
       const { bookings } = response.data;
       console.log(bookings, "backend data");
       setBookingDetails(bookings);
@@ -40,21 +43,7 @@ export const ConfirmBooking = ({ toast }) => {
       console.log(error);
       toast.error("Error fetching booking details");
     }
-  };
-
-  // const fetchBookingDetails = useCallback(async () => {
-  //   const id = localStorage.getItem("userId")
-  //   console.log(id, "myId")
-  //   try {
-  //     const response = await axios.get(`https://hotel-backend-tge7.onrender.com/bookingsConfirm/${id}`)
-  //     const { bookings } = response.data;
-  //     console.log(bookings, "backend data");
-  //     setBookingDetails(bookings);
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Error fetching booking details");
-  //   }
-  // }, [setBookingDetails, toast]);
+  }, [setBookingDetails, toast]);
 
   useEffect(() => {
     fetchBookingDetails();

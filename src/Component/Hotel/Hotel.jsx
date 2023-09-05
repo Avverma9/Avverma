@@ -159,13 +159,10 @@ function HotelList() {
   };
 
   const toggleDetails = (resultId) => {
-    if (expandedResultId === resultId) {
-      setExpandedResultId(null);
-    } else {
-      setExpandedResultId(resultId);
-    }
+    setExpandedResultId((prevResultId) =>
+      prevResultId === resultId ? null : resultId
+    );
   };
-
   // Pagination for Hotels
 
   const totalItems = hotels && hotels.length;
@@ -245,13 +242,15 @@ function HotelList() {
         {dataAvailable ? (
           <div className={styles["search-results"]}>
             {currentData.map((result) => (
-              <div
-                key={result._id}
-                className={`${styles["search-result"]} ${
-                  expandedResultId === result._id ? styles["expanded"] : ""
-                }`}
-              >
-                <Imgslide />
+             <div
+             key={result._id}
+             className={`${styles["search-result"]} ${
+               expandedResultId === result._id ? styles["expanded"] : ""
+             }`}
+           >
+                 {result.images.length > 0 && ( // Check if images are available
+      <Imgslide resultId={result._id} />
+    )}
                 <div className={styles["search-result-content"]}>
                   <div className={styles["hotel-info"]}>
                     <h3 className={styles["search-result-title"]}>

@@ -151,7 +151,7 @@ function App() {
 
         <Carousel />
 
-      
+        <Home />
         <Offers />
         <Hotel />
         <ChatBox />
@@ -224,12 +224,16 @@ function App() {
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
           <Route path="state" element={<HeaderImage />} />
-          <Route path="/home" element={<Home/>}/>
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"
             element={
-              <BookNow refresh={refresh} reset={reset} userData={userData} />
+              <BookNow
+                refresh={refresh}
+                reset={reset}
+                userData={userData}
+                toast={toast}
+              />
             }
           />
           <Route path="/cities/jaipur" element={<Jaipur />} />
@@ -280,10 +284,10 @@ function App() {
             path="/book-now/:offerId"
             element={<BookNowPage refresh={refresh} reset={reset} />}
           />
-          <Route
+          {/* <Route
             path="/bookingDetails"
             element={<BookingDetails userData={userData} />}
-          />
+          /> */}
         </Routes>
         <Footer />
       </div>
