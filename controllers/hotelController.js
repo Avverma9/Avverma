@@ -3,9 +3,10 @@ const roomModel = require("../models/roomModel")
 const createHotel = async (req, res) => {
   try {
     const {
-    
+     images,
       hotelName,
       hotelOwnerName,
+      roomDetails,
       description,
       destination,
       price,
@@ -85,6 +86,7 @@ const createHotel = async (req, res) => {
       images,
       hotelName,
       hotelOwnerName,
+      roomDetails,
       description,
       destination,
       price,
@@ -171,7 +173,7 @@ const createHotel = async (req, res) => {
   }
 };
 
-module.exports = createHotel;
+
 
 
 
