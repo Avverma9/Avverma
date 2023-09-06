@@ -240,8 +240,8 @@ export const MannageAuction = () => {
     const endTime = new Date(row.endTime)
     const currentTime = new Date()
     
-    console.log("endTime:", endTime);
-    console.log("today:", currentTime);
+    // console.log("endTime:", endTime);
+    // console.log("today:", currentTime);
   
     if (endTime > currentTime) {
       return "Live";

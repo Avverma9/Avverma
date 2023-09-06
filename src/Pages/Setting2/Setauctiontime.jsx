@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import TimePicker from "react-time-picker";
+// import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
-import DatePicker from "react-datepicker";
+// import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import style from "./Startprice.module.css";
@@ -17,14 +17,15 @@ function Setauctiontime() {
   const [selectedSeller, setSelectedSeller] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectTime, setSelectTime] = useState(null);
-  const [timeInterVal, setTimeInterval] = useState(null);
+  const [interval, setTimeInterval] = useState("");
   const [auctions, setAuctions] = useState([]);
 
   //Date and time 
   const [editedStartDate, setEditedStartDate] = useState(null);
   const [editedStartTime, setEditedStartTime] = useState(null);
 
-  const aucId = JSON.parse(localStorage.getItem("auctionId"));
+  const currentAuction = JSON.parse(localStorage.getItem("currentAuction"));
+  // console.log(currentAuction, "AUCTION ID")
 
   // REGION
   useEffect(() => {
@@ -80,27 +81,35 @@ function Setauctiontime() {
   }));
 
   //Fetch Auction
-  const fetchAuctions = async () => {
-    try {
-      const response = await fetch(
-        "http://13.48.45.18:4008/admin/auction/getAll",
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-      const { data } = await response.json();
-      setAuctions(data);
-    } catch (error) {
-      console.error(error);
+  const fetchAuctionsBySeller = async () => {
+    if (selectedSeller) {
+      try {
+        const response = await fetch(
+          `http://13.48.45.18:4008/admin/auction/getBySeller/${selectedSeller.value}`,
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          }
+        );
+        const { data } = await response.json();
+        setAuctions(data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
   useEffect(() => {
-    fetchAuctions();
-  }, []);
+    if (selectedSeller) {
+      fetchAuctionsBySeller();
+    }
+  }, [selectedSeller]);
 
+
+  const handleTimeIntervalChange = (e) => {
+    setTimeInterval(e.target.value);
+  }
 
 
 
@@ -124,14 +133,16 @@ function Setauctiontime() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const combinedStartTime = `${editedStartDate}T${editedStartTime}:00.000Z`;
+
     const formData = {
       region: selectedRegion ? selectedRegion.value : null,
       seller: selectedSeller ? selectedSeller.value : null,
-      startTime: editedStartTime,
-      startDate: editedStartDate,
+      startTime: combinedStartTime,
+      interval: interval, 
     };
 
-    const response = await fetch(`${BASE_URL}/admin/auction/update/${aucId}`, {
+    const response = await fetch(`${BASE_URL}/admin/auction/update/${currentAuction}`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -144,8 +155,15 @@ function Setauctiontime() {
 
     if (response.ok) {
       console.log("Auction successfully added.");
+      alert("Auction Timing edited")
+      setEditedStartDate(null);
+      setEditedStartTime(null);
+      setTimeInterval("");
+      setSelectedRegion(null);
+      setSelectedSeller(null);
     } else {
       console.error("Error adding auction:", response.statusText);
+      alert("Error while editing")
     }
   };
 
@@ -166,15 +184,27 @@ function Setauctiontime() {
   };
 
   const handleEditClick = (auction) => {
-    // Extract the hours and minutes from the auction's start time
     const auctionStartTime = new Date(auction.startTime);
+
+
+    const startDateString = auctionStartTime.toISOString().split('T')[0];
+    setEditedStartDate(startDateString);
+
+
     const hours = auctionStartTime.getHours().toString().padStart(2, '0');
     const minutes = auctionStartTime.getMinutes().toString().padStart(2, '0');
-
-    // Set the edited start time in "HH:mm" format
     setEditedStartTime(`${hours}:${minutes}`);
-    // You can also store the auction ID in state if needed for updating later
+
+
+    localStorage.setItem("currentAuction", JSON.stringify(auction._id));
   };
+
+
+
+
+
+
+
 
 
   const columns = [
@@ -245,8 +275,7 @@ function Setauctiontime() {
     },
   ];
 
-
-  console.log(auctions)
+  // console.log(auctions)
   return (
     <div className="setting-container">
       <div className="setting-head">
@@ -272,16 +301,16 @@ function Setauctiontime() {
           onChange={handleSellerChange}
         />
         <label>
-           Start Date
-          <DatePicker
-            selected={editedStartDate}
-            onChange={(date) => setEditedStartDate(date)}
-            dateFormat="dd/MM/yyyy"
+          Start Date
+          <input
+            type="date"
+            value={editedStartDate}
+            onChange={(date) => setEditedStartDate(date.target.value)}
             placeholderText="Select a date"
           />
         </label>
         <label>
-         Start Time
+          Start Time
           <input
             type="time"
             onChange={(e) => setEditedStartTime(e.target.value)}
@@ -290,8 +319,13 @@ function Setauctiontime() {
         </label>
 
         <label>
-          Time Interval
-          <input type="text" placeholder="Interval Time" />
+          Time Interval (in Minutes)
+          <input
+            type="number"
+            placeholder="Interval Time"
+            value={interval}
+            onChange={handleTimeIntervalChange}
+          />
         </label>
       </div>
       <button className="sub-button" onClick={handleSubmit}>
@@ -315,3 +349,6 @@ function Setauctiontime() {
 }
 
 export default Setauctiontime;
+
+
+// 2024-08-10T12:00:00.000Z

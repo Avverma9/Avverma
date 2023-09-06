@@ -8,7 +8,7 @@
 
 .addnewauctionfields{
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(1,1fr);
   gap: 20px;
   width: 110vh;
 }
@@ -46,5 +46,10 @@
 }
 
 .basicmultiselectPrice{
-  width: 90%;
+  width: 50%;
+  height: 40px;
+}
+.priceInput{
+  width: 360px;
+  height: 40px;
 }

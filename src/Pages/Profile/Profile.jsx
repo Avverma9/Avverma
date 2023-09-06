@@ -88,10 +88,8 @@ export const Profile = () => {
   }, []);
 
   const updateProfile = () => {
-    // Define the API URL
     const apiUrl = `http://13.48.45.18:4008/admin/update/${AdminId}`;
 
-    // Define the request body
     const requestBody = {
       mobile:
         !loading && loggedUser && profileEdit === false
@@ -111,32 +109,28 @@ export const Profile = () => {
           : profileEdit === true
             ? email
             : "",
-      // password:
-      //   !loading && loggedUser && profileEdit === false
-      //     ? loggedUser.password
-      //     : profileEdit === true
-      //     ? password
-      //     : "",
+      password:
+        !loading && loggedUser && profileEdit === false
+          ? loggedUser.password
+          : profileEdit === true
+          ? password
+          : "",
     };
 
-    // Define the headers
     const headers = {
       Authorization: "Bearer " + Token,
     };
 
-    // Send the POST request to the API
     fetch(apiUrl, {
       method: "PUT",
       headers: headers,
       body: JSON.stringify(requestBody),
     })
-      .then((response) => response.json()) // Parse the response as JSON
+      .then((response) => response.json())
       .then((data) => {
-        // Handle the successful response
         console.log(data);
       })
       .catch((error) => {
-        // Handle any errors
         console.error("Error:", error);
       });
   };
@@ -146,7 +140,7 @@ export const Profile = () => {
       <div className="_profile-header">
         <h1>Profile</h1>
         <BiEdit size={22} onClick={() => setProfileEdit(!profileEdit)} />
-        <ImExit size={18} />
+        {/* <ImExit size={18} /> */}
       </div>
       <div className="_profile-body">
         <div className="_input-fields">
@@ -172,7 +166,7 @@ export const Profile = () => {
             type="number"
             name="mobile"
             id=""
-            placeholder="0000000000"
+            placeholder="Mobile number"
             value={
               !loading && loggedUser && profileEdit === false
                 ? loggedUser.mobile
@@ -207,14 +201,14 @@ export const Profile = () => {
             name="password"
             id=""
             placeholder="**************"
-          // value={
-          //   !loading && loggedUser && profileEdit === false
-          //     ? loggedUser.password
-          //     : profileEdit === true
-          //     ? password
-          //     : ""
-          // }
-          // onChange={(e) => setpassword(e.target.value)}
+          value={
+            !loading && loggedUser && profileEdit === false
+              ? loggedUser.password
+              : profileEdit === true
+              ? password
+              : ""
+          }
+          onChange={(e) => setpassword(e.target.value)}
           />
         </div>
       </div>
@@ -222,7 +216,7 @@ export const Profile = () => {
         Update
       </button>
       <DataTable
-        title="Assigned Region Table"
+        title="Assigned Admin Table"
         columns={columns}
         data={data}
         pagination

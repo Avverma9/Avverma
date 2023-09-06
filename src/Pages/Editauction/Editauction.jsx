@@ -13,7 +13,7 @@ export const Editauction = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
-
+  const [photoVideo, setPhotoVideo] = useState([]);
   const [uploadPVFile, setUploadPVFile] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
   const [rcValue, setRcValue] = useState(true);
@@ -82,6 +82,7 @@ export const Editauction = () => {
 
       const { data } = await response.json();
       console.log("Auction Data:", data);
+      setPhotoVideo(data[0]?.photoVideo || []);
 
       setAuctionData(data);
     } catch (error) {
@@ -141,8 +142,9 @@ export const Editauction = () => {
       quotationValidity: event.target.quotationValidity.value,
       auctionFees: event.target.auctionFees.value,
       auctionTerm: event.target.auctionTerm.value,
-      // uploadPV: uploadPVFile,
+      uploadPV: uploadPVFile,
       // valuationFile: valuationFile,
+      photoVideo: uploadPVFile ? [uploadPVFile] : photoVideo,
     };
 
     const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId.id}`, {
@@ -180,16 +182,16 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
  const EndTimeHours = EndTime.getHours().toString().padStart(2, '0');
  const EndTimeMinutes = EndTime.getMinutes().toString().padStart(2, '0');
 
- const handleAddAuctionTiming = () => {
-  navigate(`/set-auction-timing/${auctionId}`);
-}
+//  const handleAddAuctionTiming = () => {
+//   navigate(`/set-auction-timing/${auctionId}`);
+// }
 
   return (
     <>
       <form onSubmit={handleSubmit}>
         <div className="dashboard-header">
           <h1>Edit Auction</h1>
-          <button onClick={handleAddAuctionTiming}>Add Auction Timing</button>
+          {/* <button onClick={handleAddAuctionTiming}>Add Auction Timing</button> */}
         </div>
         <div className="add-new-auction-fields">
           <Select
@@ -235,7 +237,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           <label htmlFor="Registration Number">
             <p>Registration Number</p>
             <input
-              type="number"
+              type="text"
               name="registrationNumber"
               placeholder="Registration Number"
               className="basic-multi-select-inputs"
@@ -250,7 +252,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           <label htmlFor="Agreement Number">
             <p>Agreement Number</p>
             <input
-              type="number"
+              type="text"
               name="agreementNumber"
               placeholder="Agreement Number"
               className="basic-multi-select-inputs"
@@ -305,7 +307,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
               }}
             />
           </label>
-          <label htmlFor="start-time">
+          {/* <label htmlFor="start-time">
             <p>Start Time</p>
             <input
               type="time"
@@ -347,8 +349,8 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
               className="basic-multi-select-inputs"
              
             />
-          </label>
-          <label htmlFor="fuel-type">
+          </label> */}
+          {/* <label htmlFor="fuel-type">
             <p>RC</p>
             <div className="fuel-type">
               <input type="radio" id="petrol" name="fuel" />
@@ -360,7 +362,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
               <input type="radio" id="e" name="fuel" />
               <label for="e">E</label>
             </div>
-          </label>
+          </label> */}
           <label htmlFor="parking-name">
             <p>Parking Name</p>
             <input
@@ -427,7 +429,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           <label htmlFor="quatation-validity">
             <p>Quatation Validity</p>
             <input
-              type="number"
+              type="date"
               name="quotationValidity"
               placeholder="Quatation Validity"
               className="basic-multi-select-inputs"
@@ -471,7 +473,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           </div>
         </div>
         <div className="cont-2">
-          <label htmlFor="add-video">
+        <label htmlFor="add-video">
             <p>Upload Photo/Video</p>
             <input
               type="file"
