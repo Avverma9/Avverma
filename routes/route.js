@@ -84,8 +84,13 @@ router.put('/booking/:bookingId', bookingController.cancelBooking);
 router.get("/booking/getCancelledBooking", bookingController.getCancelledBooking)
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking)
 router.put('/updatebooking/:bookingId', bookingController.updateBooking);
+
+
 router.get('/bookingFailed/:id', bookingController.getFailedBookingsHotel);
 router.get('/bookingsConfirm/:id', bookingController.getConfirmedBookingsHotel);
+router.get('/bookingsCancelled/:id', bookingController.getCancelledBookingHotel);
+router.get('/bookingsCheckedIn/:id', bookingController.getCheckedInHotel);
+router.get('/bookingsCheckedOut/:id', bookingController.getCheckedOutHotel);
 
 
 //=================================Emails==============================================//

@@ -110,19 +110,20 @@ const getFailedBookingsHotel = async (req, res) => {
 }
 
 const getCancelledBookingHotel = async (req, res) => {
-  const booking= await bookingModel.find().sort({createdAt: -1})
-
+  const {id} = req.params
+  const booking= await bookingModel.find({user:id}).sort({createdAt: -1})
+  const details = booking.filter(failed=>failed.bookingStatus === 'cancelled')
   if(!booking)
   res.status(404).json({success: false , message:"No any booking are here"});
   
-  res.json(booking)
+  res.json(details)
 };
 const getCheckedInHotel = async (req, res) => {
   const { userId } = req.params;
 
   try {
     const bookings = await bookingModel.find({ user: userId }).sort({ createdAt: -1 });
-
+  
     if (!bookings || bookings.length === 0) {
       return res.status(404).json({ success: false, message: "No bookings found" });
     }
