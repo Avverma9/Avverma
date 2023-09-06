@@ -3,7 +3,7 @@ const roomModel = require("../models/roomModel")
 const createHotel = async (req, res) => {
   try {
     const {
-     images,
+
       hotelName,
       hotelOwnerName,
       roomDetails,
