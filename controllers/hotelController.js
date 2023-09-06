@@ -1,9 +1,7 @@
 const hotelModel = require("../models/hotelModel");
-const roomModel = require("../models/roomModel")
 const createHotel = async (req, res) => {
   try {
     const {
-
       hotelName,
       hotelOwnerName,
       roomDetails,
@@ -20,9 +18,9 @@ const createHotel = async (req, res) => {
       amenities,
       reviews,
       rating,
-     categories,
-     collections,
-     accommodationType,
+      categories,
+      collections,
+      accommodationType,
       starRating,
       propertyType,
       isOffer,
@@ -48,39 +46,39 @@ const createHotel = async (req, res) => {
       unmarriedCouplesAllowed,
       internationalGuestAllowed,
       returnPolicy,
-      onDoubleSharing ,
+      onDoubleSharing,
       onQuadSharing,
-      onBulkBooking ,
-     onTrippleSharing ,
-     onMoreThanFour ,
-     offDoubleSharing ,
-     offQuadSharing ,
-     offBulkBooking ,
-       offTrippleSharing ,
-      offMoreThanFour ,
-       onDoubleSharingAp ,
-       onQuadSharingAp ,
-       onBulkBookingAp ,
-       onTrippleSharingAp ,
-       onMoreThanFourAp ,
-       offDoubleSharingAp ,
-       offQuadSharingAp,
-       offBulkBookingAp ,
-       offTrippleSharingAp,
-       offMoreThanFourAp,
-       onDoubleSharingMAp,
-       onQuadSharingMAp,
-       onBulkBookingMAp ,
-       onTrippleSharingMAp ,
-       onMoreThanFourMAp ,
-       offDoubleSharingMAp ,
-       offQuadSharingMAp ,
-       offBulkBookingMAp ,
-       offTrippleSharingMAp ,
-       offMoreThanFourMAp
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour,
+      onDoubleSharingAp,
+      onQuadSharingAp,
+      onBulkBookingAp,
+      onTrippleSharingAp,
+      onMoreThanFourAp,
+      offDoubleSharingAp,
+      offQuadSharingAp,
+      offBulkBookingAp,
+      offTrippleSharingAp,
+      offMoreThanFourAp,
+      onDoubleSharingMAp,
+      onQuadSharingMAp,
+      onBulkBookingMAp,
+      onTrippleSharingMAp,
+      onMoreThanFourMAp,
+      offDoubleSharingMAp,
+      offQuadSharingMAp,
+      offBulkBookingMAp,
+      offTrippleSharingMAp,
+      offMoreThanFourMAp,
     } = req.body;
 
- const images = req.files.map((file)=> file.location)
+    const images = req.files.map((file) => file.location);
 
     const hotelData = {
       images,
@@ -128,40 +126,39 @@ const createHotel = async (req, res) => {
       unmarriedCouplesAllowed,
       internationalGuestAllowed,
       returnPolicy,
-      onDoubleSharing ,
+      onDoubleSharing,
       onQuadSharing,
-      onBulkBooking ,
-     onTrippleSharing ,
-     onMoreThanFour ,
-     offDoubleSharing ,
-     offQuadSharing ,
-     offBulkBooking ,
-       offTrippleSharing ,
-      offMoreThanFour ,
-       onDoubleSharingAp ,
-       onQuadSharingAp ,
-       onBulkBookingAp ,
-       onTrippleSharingAp ,
-       onMoreThanFourAp ,
-       offDoubleSharingAp ,
-       offQuadSharingAp,
-       offBulkBookingAp ,
-       offTrippleSharingAp,
-       offMoreThanFourAp,
-       onDoubleSharingMAp,
-       onQuadSharingMAp,
-       onBulkBookingMAp ,
-       onTrippleSharingMAp ,
-       onMoreThanFourMAp ,
-       offDoubleSharingMAp ,
-       offQuadSharingMAp ,
-       offBulkBookingMAp ,
-       offTrippleSharingMAp ,
-       offMoreThanFourMAp,
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour,
+      onDoubleSharingAp,
+      onQuadSharingAp,
+      onBulkBookingAp,
+      onTrippleSharingAp,
+      onMoreThanFourAp,
+      offDoubleSharingAp,
+      offQuadSharingAp,
+      offBulkBookingAp,
+      offTrippleSharingAp,
+      offMoreThanFourAp,
+      onDoubleSharingMAp,
+      onQuadSharingMAp,
+      onBulkBookingMAp,
+      onTrippleSharingMAp,
+      onMoreThanFourMAp,
+      offDoubleSharingMAp,
+      offQuadSharingMAp,
+      offBulkBookingMAp,
+      offTrippleSharingMAp,
+      offMoreThanFourMAp,
     };
 
     const savedHotel = await hotelModel.create(hotelData);
-
 
     return res.status(201).json({
       status: true,
@@ -173,14 +170,11 @@ const createHotel = async (req, res) => {
   }
 };
 
-
-
-
-
 //==================================UpdateHotel================================
-const UpdateHotel = async function(req, res) {
+const UpdateHotel = async function (req, res) {
   const { id } = req.params;
-  const { hotelName,
+  const {
+    hotelName,
     hotelOwnerName,
     description,
     destination,
@@ -195,9 +189,9 @@ const UpdateHotel = async function(req, res) {
     amenities,
     reviews,
     rating,
-   categories,
-   collections,
-   accommodationType,
+    categories,
+    collections,
+    accommodationType,
     starRating,
     propertyType,
     isOffer,
@@ -221,49 +215,53 @@ const UpdateHotel = async function(req, res) {
     unmarriedCouplesAllowed,
     internationalGuestAllowed,
     returnPolicy,
-    onDoubleSharing ,
+    onDoubleSharing,
     onQuadSharing,
-    onBulkBooking ,
-   onTrippleSharing ,
-   onMoreThanFour ,
-   offDoubleSharing ,
-   offQuadSharing ,
-   offBulkBooking ,
-     offTrippleSharing ,
-    offMoreThanFour ,
-     onDoubleSharingAp ,
-     onQuadSharingAp ,
-     onBulkBookingAp ,
-     onTrippleSharingAp ,
-     onMoreThanFourAp ,
-     offDoubleSharingAp ,
-     offQuadSharingAp,
-     offBulkBookingAp ,
-     offTrippleSharingAp,
-     offMoreThanFourAp,
-     onDoubleSharingMAp,
-     onQuadSharingMAp,
-     onBulkBookingMAp ,
-     onTrippleSharingMAp ,
-     onMoreThanFourMAp ,
-     offDoubleSharingMAp ,
-     offQuadSharingMAp ,
-     offBulkBookingMAp ,
-     offTrippleSharingMAp ,
-     offMoreThanFourMAp} = req.body; 
+    onBulkBooking,
+    onTrippleSharing,
+    onMoreThanFour,
+    offDoubleSharing,
+    offQuadSharing,
+    offBulkBooking,
+    offTrippleSharing,
+    offMoreThanFour,
+    onDoubleSharingAp,
+    onQuadSharingAp,
+    onBulkBookingAp,
+    onTrippleSharingAp,
+    onMoreThanFourAp,
+    offDoubleSharingAp,
+    offQuadSharingAp,
+    offBulkBookingAp,
+    offTrippleSharingAp,
+    offMoreThanFourAp,
+    onDoubleSharingMAp,
+    onQuadSharingMAp,
+    onBulkBookingMAp,
+    onTrippleSharingMAp,
+    onMoreThanFourMAp,
+    offDoubleSharingMAp,
+    offQuadSharingMAp,
+    offBulkBookingMAp,
+    offTrippleSharingMAp,
+    offMoreThanFourMAp,
+  } = req.body;
 
-     let images = [];
+  let images = [];
 
-     if (req.files && req.files.length > 0) {
-       images = req.files.map((file) => file.location);
-     } else {
-     
-       const user = await hotelModel.findById(id);
-       if (user) {
-         images = user.images;
-       }
-     }
-    const updatedHotel = await hotelModel.findByIdAndUpdate(id,  {images,hotelName,
+  if (req.files && req.files.length > 0) {
+    images = req.files.map((file) => file.location);
+  } else {
+    const user = await hotelModel.findById(id);
+    if (user) {
+      images = user.images;
+    }
+  }
+  const updatedHotel = await hotelModel.findByIdAndUpdate(
+    id,
+    {
+      images,
+      hotelName,
       hotelOwnerName,
       description,
       destination,
@@ -278,9 +276,9 @@ const UpdateHotel = async function(req, res) {
       amenities,
       reviews,
       rating,
-     categories,
-     collections,
-     accommodationType,
+      categories,
+      collections,
+      accommodationType,
       starRating,
       propertyType,
       isOffer,
@@ -304,75 +302,84 @@ const UpdateHotel = async function(req, res) {
       unmarriedCouplesAllowed,
       internationalGuestAllowed,
       returnPolicy,
-      onDoubleSharing ,
+      onDoubleSharing,
       onQuadSharing,
-      onBulkBooking ,
-     onTrippleSharing ,
-     onMoreThanFour ,
-     offDoubleSharing ,
-     offQuadSharing ,
-     offBulkBooking ,
-       offTrippleSharing ,
-      offMoreThanFour ,
-       onDoubleSharingAp ,
-       onQuadSharingAp ,
-       onBulkBookingAp ,
-       onTrippleSharingAp ,
-       onMoreThanFourAp ,
-       offDoubleSharingAp ,
-       offQuadSharingAp,
-       offBulkBookingAp ,
-       offTrippleSharingAp,
-       offMoreThanFourAp,
-       onDoubleSharingMAp,
-       onQuadSharingMAp,
-       onBulkBookingMAp ,
-       onTrippleSharingMAp ,
-       onMoreThanFourMAp ,
-       offDoubleSharingMAp ,
-       offQuadSharingMAp ,
-       offBulkBookingMAp ,
-       offTrippleSharingMAp ,
-       offMoreThanFourMAp}, {
-      new: true, 
-    });
-
-    if (!updatedHotel) {
-      return res.status(404).json({ error: "Hotel not found" });
+      onBulkBooking,
+      onTrippleSharing,
+      onMoreThanFour,
+      offDoubleSharing,
+      offQuadSharing,
+      offBulkBooking,
+      offTrippleSharing,
+      offMoreThanFour,
+      onDoubleSharingAp,
+      onQuadSharingAp,
+      onBulkBookingAp,
+      onTrippleSharingAp,
+      onMoreThanFourAp,
+      offDoubleSharingAp,
+      offQuadSharingAp,
+      offBulkBookingAp,
+      offTrippleSharingAp,
+      offMoreThanFourAp,
+      onDoubleSharingMAp,
+      onQuadSharingMAp,
+      onBulkBookingMAp,
+      onTrippleSharingMAp,
+      onMoreThanFourMAp,
+      offDoubleSharingMAp,
+      offQuadSharingMAp,
+      offBulkBookingMAp,
+      offTrippleSharingMAp,
+      offMoreThanFourMAp,
+    },
+    {
+      new: true,
     }
+  );
 
-    return res.status(200).json({
-      status: true,
-      data: updatedHotel,
-    });
- 
+  if (!updatedHotel) {
+    return res.status(404).json({ error: "Hotel not found" });
+  }
+
+  return res.status(200).json({
+    status: true,
+    data: updatedHotel,
+  });
 };
 
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
-  const { amenities, bedTypes,roomTypes,starRating,propertyType,hotelOwnerName } = req.query;
+  const {
+    amenities,
+    bedTypes,
+    roomTypes,
+    starRating,
+    propertyType,
+    hotelOwnerName,
+  } = req.query;
   let query = {};
 
   if (amenities) {
-    query.amenities = {$in : amenities};
+    query.amenities = { $in: amenities };
   }
 
   if (bedTypes) {
-    query.bedTypes = {$in : bedTypes};
+    query.bedTypes = { $in: bedTypes };
   }
 
   if (roomTypes) {
-    query.roomTypes = {$in : roomTypes};
+    query.roomTypes = { $in: roomTypes };
   }
-if(starRating){
-  query.starRating={$in : starRating};
-}
-if(propertyType){
-  query.propertyType={$in : propertyType};
-}
-if(hotelOwnerName){
-  query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, 'i') };
-}
+  if (starRating) {
+    query.starRating = { $in: starRating };
+  }
+  if (propertyType) {
+    query.propertyType = { $in: propertyType };
+  }
+  if (hotelOwnerName) {
+    query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, "i") };
+  }
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
 };
@@ -380,27 +387,17 @@ if(hotelOwnerName){
 //================================================================================================
 const searchHotels = async (req, res) => {
   try {
-    const {
-      destination,
-      startDate,
-      endDate,
-      guests,
-      numRooms,
-      localId,
-    } = req.query;
+    const { destination, startDate, endDate, guests, numRooms, localId } =
+      req.query;
 
- 
-    
     const searchQuery = {};
 
     if (destination) {
-      searchQuery.destination ={$regex: new RegExp(destination, 'i')};
+      searchQuery.destination = { $regex: new RegExp(destination, "i") };
     }
 
     if (startDate && endDate) {
-    
       if (startDate <= endDate) {
-     
         searchQuery.startDate = { $lte: new Date(startDate) };
         searchQuery.endDate = { $gte: new Date(endDate) };
       }
@@ -410,24 +407,19 @@ const searchHotels = async (req, res) => {
       searchQuery.numRooms = { $gte: Number(numRooms) };
     }
 
-   
     if (localId !== undefined && localId !== "") {
       searchQuery.localId = localId;
     } else {
       searchQuery.localId = false;
     }
 
-  
-
     let searchResults = await hotelModel.find(searchQuery).lean();
     searchResults = searchResults.map((hotel) => {
-      
       const extraGuests =
         guests - hotel.guests * Number(numRooms) > 0
           ? guests - hotel.guests * Number(numRooms)
           : 0;
 
-  
       hotel.price =
         Number(hotel.price) * Number(numRooms) +
         extraGuests * (Number(hotel.price) * 0.1);
@@ -444,40 +436,43 @@ const searchHotels = async (req, res) => {
 //====================================================================================
 const getAllHotels = async (req, res) => {
   try {
-    const hotels = await hotelModel.find().sort({createdAt: -1});
-    const hotelsData = hotels.filter(accepted=>accepted.isAccepted === true)
+    const hotels = await hotelModel.find().sort({ createdAt: -1 });
+    const hotelsData = hotels.filter(
+      (accepted) => accepted.isAccepted === true
+    );
     res.json(hotelsData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 //===========================get hotels====================================================//
-const getHotels= async (req,res)=>{
-const hotels= await hotelModel.find().sort({createdAt: -1})
-const filterData= hotels.filter(hotel=>hotel.isOffer === false)
-res.json(filterData)
-}
+const getHotels = async (req, res) => {
+  const hotels = await hotelModel.find().sort({ createdAt: -1 });
+  const filterData = hotels.filter((hotel) => hotel.isOffer === false);
+  res.json(filterData);
+};
 //======================================get offers==========================================//
-const getOffers= async (req,res)=>{
-  const hotels= await hotelModel.find().sort({createdAt: -1})
-  const filterData= hotels.filter(hotel=>hotel.isOffer === true)
-  res.json(filterData)
-  }
+const getOffers = async (req, res) => {
+  const hotels = await hotelModel.find().sort({ createdAt: -1 });
+  const filterData = hotels.filter((hotel) => hotel.isOffer === true);
+  res.json(filterData);
+};
 //============================get by city============================================//
-const getCity = async function(req,res){
- const {destination} = req.body
-  const hotels= await hotelModel.findOne({destination:destination}).sort({createdAt: -1})
- 
-  res.json(hotels)
-}
+const getCity = async function (req, res) {
+  const { destination } = req.body;
+  const hotels = await hotelModel
+    .findOne({ destination: destination })
+    .sort({ createdAt: -1 });
 
+  res.json(hotels);
+};
 
 //=================================================================================
 
 const getHotelsById = async (req, res) => {
   try {
     const data = req.params.id;
-    const hotels = await hotelModel.findById(data).sort({createdAt: -1});
+    const hotels = await hotelModel.findById(data).sort({ createdAt: -1 });
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -487,52 +482,64 @@ const getHotelsById = async (req, res) => {
 //=============================================
 const getHotelsByPrice = async function (req, res) {
   const minPrice = req.query.minPrice ? parseInt(req.query.minPrice) : 0;
-  const maxPrice = req.query.maxPrice ? parseInt(req.query.maxPrice) : Number.MAX_SAFE_INTEGER;
+  const maxPrice = req.query.maxPrice
+    ? parseInt(req.query.maxPrice)
+    : Number.MAX_SAFE_INTEGER;
 
   try {
-    const hotels = await hotelModel.find({
-      price: { $gte: minPrice, $lte: maxPrice },
-    }).exec();
+    const hotels = await hotelModel
+      .find({
+        price: { $gte: minPrice, $lte: maxPrice },
+      })
+      .exec();
 
     res.json(hotels);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
-}
+};
 //==================================================================================
 
 const getHotelsByLocalID = async (req, res) => {
   const { localId } = req.params;
 
   try {
-    const hotels = await hotelModel.find({ 'location.localId': localId }).sort({createdAt: -1});
+    const hotels = await hotelModel
+      .find({ "location.localId": localId })
+      .sort({ createdAt: -1 });
     res.json(hotels);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch hotels' });
+    res.status(500).json({ error: "Failed to fetch hotels" });
   }
 };
 
 //=============================================================================================
 const getHotelsByFilters = async (req, res) => {
   try {
-    const { collections, categories, accommodationTypes, hotelFacilities, checkInFeatures } = req.query;
+    const {
+      collections,
+      categories,
+      accommodationTypes,
+      hotelFacilities,
+      checkInFeatures,
+    } = req.query;
 
     const filters = {};
 
     if (collections) {
-      filters.collections = { $in: collections.split(',') };
+      filters.collections = { $in: collections.split(",") };
     }
 
     if (categories) {
-      filters.categories = { $in: categories.split(',') };
+      filters.categories = { $in: categories.split(",") };
     }
 
     if (accommodationTypes) {
-      filters.accommodationType = { $in: accommodationTypes.split(',') };
+      filters.accommodationType = { $in: accommodationTypes.split(",") };
     }
 
     if (checkInFeatures) {
-      filters.checkInFeatures = { $in: checkInFeatures.split(',') };
+      filters.checkInFeatures = { $in: checkInFeatures.split(",") };
     }
 
     const Hotels = await hotelModel.find(filters);
@@ -543,17 +550,19 @@ const getHotelsByFilters = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while retrieving the hotels.' });
+    res
+      .status(500)
+      .json({ error: "An error occurred while retrieving the hotels." });
   }
 };
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
   const { hotelid, roomid } = req.params;
-  
+
   const { type, bedTypes, price } = req.body;
 
   try {
-    const hotel = await hotelModel.findById(hotelid)
+    const hotel = await hotelModel.findById(hotelid);
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
@@ -593,5 +602,5 @@ module.exports = {
   UpdateHotel,
   getHotels,
   getOffers,
-  updateRoom
+  updateRoom,
 };
