@@ -6,6 +6,7 @@ const { Server } = require("socket.io");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const multer = require("multer");
+const upload = multer()
 const Razorpay = require("razorpay");
 
 const route = require("./routes/route")
@@ -13,6 +14,7 @@ const route = require("./routes/route")
 
 const app = express();
 app.use(cors());
+app.use(upload.none())
 app.use(express.json());
 
 const server = createServer(app);
