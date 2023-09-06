@@ -93,17 +93,20 @@ const Partner = () => {
 	);
 	const [images, setImages] = useState([]);
 	const [hotelOwnerName, setHotelOwnerName] = useState("");
+	const [roomDetails,setRoomDetails]=useState([{}])
 	const [ownerContactDetails, setOwnerContactDetails] = useState("");
 	const [receptionContactDetails, setReceptionContactDetails] = useState("");
 	const [hotelEmail, setHotelEmail] = useState("");
 	const [generalManagerContact, setGeneralManagerContact] = useState("");
 	const [salesManagerContact, setSalesManagerContact] = useState("");
 	const [hotelName, setHotelName] = useState("");
+	const [description,setDescription] =useState("")
 	const [street, setStreet] = useState("");
 	const [city, setCity] = useState("");
 	const [countryState, setCountryState] = useState("");
 	const [zip, setZip] = useState("");
 	const [landmark, setLandmark] = useState("");
+	const [destination,setDestination] = useState("")
 	const [starRating, setstarRating] = useState("");
 	const [propertyType, setPropertyType] = useState("");
 
@@ -155,6 +158,7 @@ const Partner = () => {
 	const [returnPolicy, setReturnPolicy] = useState("");
 	const [checkInOut, setCheckInOut] = useState("");
 
+
 	
 
 	const handlePartnerSubmit = async (event) => {
@@ -169,11 +173,18 @@ const Partner = () => {
 		formData.append("generalManagerContact", generalManagerContact);
 		formData.append("salesManagerContact", salesManagerContact);
 		formData.append("hotelName", hotelName);
+		for(const detail of roomDetails){
+			formData.append("roomDetails[type]",detail.type)
+			formData.append("roomDetails[bedTypes]",detail.bedTypes)
+			formData.append("roomDetails[price]",detail.price)
+		}
+		formData.append("description",description)
 		formData.append("street", street);
 		formData.append("city", city);
 		formData.append("state", countryState);
 		formData.append("zip", zip);
 		formData.append("landmark", landmark);
+		formData.append("destination", destination);
 		formData.append("starRating", starRating);
 		formData.append("propertyType", propertyType);
 		//see here
@@ -498,6 +509,7 @@ const Partner = () => {
 	const navItems = [
 		"Hotel Contact Information",
 		"Basic Information",
+		"Add Rooms",
 		"Hotel Policy",
 		"Hotel Tariff",
 	];
@@ -543,7 +555,12 @@ const Partner = () => {
 	if (location.pathname !== "/partner") {
 		return null;
 	}
-
+	const handleRoomDetailsChange = (index, field, value) => {
+		const updatedRoomDetails = [...roomDetails];
+		updatedRoomDetails[index][field] = value;
+		setRoomDetails(updatedRoomDetails);
+	  };
+	
 	return (
 		<div>
 			<nav>
@@ -643,13 +660,26 @@ const Partner = () => {
 									onChange={(e) => setHotelName(e.target.value)}
 								/>
 							</div>
+							
+        {/* <button type="button" onClick={addRoomDetail}>
+          Add Room Detail
+        </button> */}
+							<div className='street'>
+								<label htmlFor='street'>Decription:</label>
+								<input
+									type='text'
+									id='street'
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+								/>
+							</div>
 							<div className='street'>
 								<label htmlFor='street'>Street:</label>
 								<input
 									type='text'
 									id='street'
-									value={street}
-									onChange={(e) => setStreet(e.target.value)}
+									value={destination}
+									onChange={(e) => setDestination(e.target.value)}
 								/>
 							</div>
 							<div className='cities'>
@@ -1582,7 +1612,59 @@ const Partner = () => {
 						</div>
 					</div>
 				)}
+				
+				<div className='room-content'>
+        {activeNavItem === "Add Rooms" && (
+          <>
+		  <div className="disclaimer"> for now you are only permitted to Add Standard Room, After confirmation of your partnership you can add more</div>
+            {roomDetails.map((room, index) => (
+              <div key={index}>
+                <label>
+  Room Type
+  <select
+    value={room.type || "Standard"}
+	className="room-input"
+    onChange={(e) =>
+      handleRoomDetailsChange(index, "type", e.target.value)
+    }
+  >
+    <option value="">Select Room Type</option>
+    <option value="Standard">Standard</option>
+    <option value="Deluxe">Deluxe</option>
+    <option value="King Size">King Size</option>
+  </select>
+</label>
+<label>
+  Bed Type
+  <select
+    value={room.bedTypes || "Single"}
+	className="room-input"
+    onChange={(e) =>
+      handleRoomDetailsChange(index, "bedType", e.target.value)
+    }
+  >
+    <option value="">Select Bed Type</option>
+    <option value="Double">Double</option>
+    <option value="Single">Single</option>
+  </select>
+</label>
 
+                <label>
+                  Price
+                  <input
+                    type="number"
+                    value={room.price || ""}
+					className="room-input"
+                    onChange={(e) =>
+                      handleRoomDetailsChange(index, "price", e.target.value)
+                    }
+                  />
+                </label>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
 				{activeNavItem === "Hotel Policy" && (
 					<div>
 						<h3>Hotel Policy</h3>
