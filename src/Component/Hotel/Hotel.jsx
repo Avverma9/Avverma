@@ -394,17 +394,19 @@ function HotelList() {
                     }}
                   >
                     <div className="rupeedetail">
-                      <p className={styles["search-result-price"]}>
-                        <FontAwesomeIcon
-                          icon={faInr}
-                          className={styles["rupees"]}
-                        />{" "}
-                        {result.price}
-                        <span className={styles["detail"]}>
-                          per room per night
-                        </span>
-                      </p>
-                    </div>
+  <p className={styles["search-result-price"]}>
+    <FontAwesomeIcon
+      icon={faInr}
+      className={styles["rupees"]}
+    />{" "}
+    {result.roomDetails && result.roomDetails.length > 0
+      ? result.roomDetails[0].price
+      : "N/A"}
+    <span className={styles["detail"]}>
+      per room per night
+    </span>
+  </p>
+</div>
                     <div
                       className="flex-button"
                       style={{
