@@ -1,123 +1,14 @@
-import {
-	faAirFreshener,
-	faBaby,
-	faBars,
-	faBathtub,
-	faBottleWater,
-	faBrush,
-	faBusinessTime,
-	faCheck,
-	faCoffee,
-	faDesktop,
-	faHandsWash,
-	faHeartCircleCheck,
-	faHotel,
-	faInr,
-	faLock,
-	faParking,
-	faRestroom,
-	faSchoolFlag,
-	faShirt,
-	faShoePrints,
-	faShower,
-	faSmokingBan,
-	faSpa,
-	faSwimmingPool,
-	faTrowel,
-	faTv,
-	faUmbrellaBeach,
-	faWifi,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./partner.css";
 
 const Partner = () => {
 	const location = useLocation();
-
-
 	//see here
-
-	const [DeskServicesChecked, setDeskServicesChecked] = useState(false)
-	const [Atm, setAtm] = useState(false)
-	const [AirConditioning, setAirConditioning] = useState(false)
-	const [AirportShuttleFree, setAirportShuttleFree] = useState(false)
-	const [AirportShuttleSurcharge, setAirportShuttleSurcharge] = useState(false)
-	const [BBQpicnicArea, setBBQpicnicArea] = useState(false)
-	const [BabySitting, setBabySitting] = useState(false)
-	const [BaggageStorage, setBaggageStorage] = useState(false)
-	const [Bar, setBar] = useState(false)
-	const [Bathrobe, setBathrobe] = useState(false)
-	const [Beach, setBeach] = useState(false)
-	const [BeachFront, setBeachFront] = useState(false)
-	const [Billiard, setBilliard] = useState(false)
-	const [BusinessCenter, setBusinessCenter] = useState(false)
-	const [CableTV, setCableTV] = useState(false)
-	const [CarRental, setCarRental] = useState(false)
-	const [Casino, setCasino] = useState(false)
-	const [CleanDisinfect, setCleanDisinfect] = useState(false)
-	const [CoffeeTea, setCoffeeTea] = useState(false)
-	const [CoffeeMaker, setCoffeeMaker] = useState(false)
-	const [ComplimentaryBottledWater, setComplimentaryBottledWater] = useState(false)
-	const [ComplimentaryToiletries, setComplimentaryToiletries] = useState(false)
-	const [ComplimentaryBreakfast, setComplimentaryBreakfast] = useState(false)
-	const [ConclergeDesk, setConclergeDesk] = useState(false)
-	const [ContinentalBreakfast, setContinentalBreakfast] = useState(false)
-	const [CurrencyExchange, setCurrencyExchange] = useState(false)
-	const [Dinner, setDinner] = useState(false)
-	const [DryCleaning, setDryCleaning] = useState(false)
-	const [Elevators, setElevators] = useState(false)
-	const [ExecutiveSuite, setExecutiveSuite] = useState(false)
-	const [Fishing, setFishing] = useState(false)
-	const [FitnessCenter, setFitnessCenter] = useState(false)
-	const [FreeParking, setFreeParking] = useState(false)
-	const [FreeWirelessInternet, setFreeWirelessInternet] = useState(false)
-	const [GameRoom, setGameRoom] = useState(false)
-	const [GoodShowers, setGoodShowers] = useState(false)
-	const [GroceryShoppingServiceAvailable, setGroceryShoppingServiceAvailable] = useState(false)
-	const [HairDryer, setHairDryer] = useState(false)
-	const [HouseKeeping, setHouseKeeping] = useState(false)
-	const [IndoorParking, setIndoorParking] = useState(false)
-	const [IndoorPool, setIndoorPool] = useState(false)
-	const [IroningService, setIroningService] = useState(false)
-	const [Jacuzzi, setJacuzzi] = useState(false)
-	const [KitchenFacility, setKitchenFacility] = useState(false)
-	const [Laundary, setLaundary] = useState(false)
-	const [Library, setLibrary] = useState(false)
-	const [Lockers, setLockers] = useState(false)
-	const [Lunch, setLunch] = useState(false)
-	const [MeetingBanquetFacilities, setMeetingBanquetFacilities] = useState(false)
-	const [Microwave, setMicrowave] = useState(false)
-	const [Newspaper, setNewspaper] = useState(false)
-	const [NightclubDJ, setNightclubDJ] = useState(false)
-	const [NonSmokingRooms, setNonSmokingRooms] = useState(false)
-	const [OnSiteRestaurant, setOnSiteRestaurant] = useState(false)
-	const [PaidParking, setPaidParking] = useState(false)
-	const [PetFriendly, setPetFriendly] = useState(false)
-	const [Playground, setPlayground] = useState(false)
-	const [PrivateBeacharea, setPrivateBeacharea] = useState(false)
-	const [Refrigerator, setRefrigerator] = useState(false)
-	const [RoomService, setRoomService] = useState(false)
-	const [Safe, setSafe] = useState(false)
-	const [SatelliteTv, setSatelliteTv] = useState(false)
-	const [Shoeshine, setShoeshine] = useState(false)
-
-	const [Shops, setShops] = useState(false)
-	const [SocialDistancing, setSocialDistancing] = useState(false)
-	const [GiftShop, setGiftShop] = useState(false)
-	const [Spa, setSpa] = useState(false)
-	const [SwimmingPool, setSwimmingPool] = useState(false)
-	const [Tabletennis, setTabletennis] = useState(false)
-	const [Telephone, setTelephone] = useState(false)
-	const [Television, setTelevision] = useState(false)
-	const [Tenniscourt, setTenniscourt] = useState(false)
-	const [TourDesk, setTourDesk] = useState(false)
-	const [Towels, setTowels] = useState(false)
-	const [TurkishSteambath, setTurkishSteambath] = useState(false)
-	const [valetparking, setvaletparking] = useState(false)
-	const [VendingMachine, setVendingMachine] = useState(false)
-
+	const [DeskServicesChecked,setDeskServicesChecked] = useState(false)
+	const [Atm,setAtm] =useState(false)
 
 
 	const [activeNavItem, setActiveNavItem] = useState(
@@ -125,19 +16,22 @@ const Partner = () => {
 	);
 	const [images, setImages] = useState([]);
 	const [amenities, setAmenities] = useState([]);
-
+	
 	const [hotelOwnerName, setHotelOwnerName] = useState("");
+	const [roomDetails,setRoomDetails]=useState([{}])
 	const [ownerContactDetails, setOwnerContactDetails] = useState("");
 	const [receptionContactDetails, setReceptionContactDetails] = useState("");
 	const [hotelEmail, setHotelEmail] = useState("");
 	const [generalManagerContact, setGeneralManagerContact] = useState("");
 	const [salesManagerContact, setSalesManagerContact] = useState("");
 	const [hotelName, setHotelName] = useState("");
+	const [description,setDescription] =useState("")
 	const [street, setStreet] = useState("");
 	const [city, setCity] = useState("");
 	const [countryState, setCountryState] = useState("");
 	const [zip, setZip] = useState("");
 	const [landmark, setLandmark] = useState("");
+	const [destination,setDestination] = useState("")
 	const [starRating, setstarRating] = useState("");
 	const [propertyType, setPropertyType] = useState("");
 
@@ -190,14 +84,7 @@ const Partner = () => {
 	const [checkInOut, setCheckInOut] = useState("");
 
 
-
-
-	const handleImageUpload = (event, index) => {
-		const file = event.target.files[0];
-		const updatedImages = [...images];
-		updatedImages[index] = file;
-		setImages(updatedImages.slice(0, 6));
-	};
+	
 
 	const handlePartnerSubmit = async (event) => {
 		event.preventDefault();
@@ -211,11 +98,18 @@ const Partner = () => {
 		formData.append("generalManagerContact", generalManagerContact);
 		formData.append("salesManagerContact", salesManagerContact);
 		formData.append("hotelName", hotelName);
+		for(const detail of roomDetails){
+			formData.append("roomDetails[type]",detail.type)
+			formData.append("roomDetails[bedTypes]",detail.bedTypes)
+			formData.append("roomDetails[price]",detail.price)
+		}
+		formData.append("description",description)
 		formData.append("street", street);
 		formData.append("city", city);
 		formData.append("state", countryState);
 		formData.append("zip", zip);
 		formData.append("landmark", landmark);
+		formData.append("destination", destination);
 		formData.append("starRating", starRating);
 		formData.append("propertyType", propertyType);
 		//see here
@@ -514,8 +408,11 @@ const Partner = () => {
 		formData.append("offBulkBookingMAp", offbulkbookingmap);
 		formData.append("offTrippleSharingMAp", offtripplesharingmap);
 		formData.append("offMoreThanFourMAp", offmore4roommap);
-		formData.append(`images`, images);
-
+		formData.append("images", images);
+		for (let i = 0; i < images.length; i++) {
+			const file = images[i];
+			formData.append("images", file);
+		}
 		try {
 			const response = await fetch(
 				"https://hotel-backend-tge7.onrender.com/hotels/create/new",
@@ -527,7 +424,7 @@ const Partner = () => {
 
 			if (response.ok) {
 				alert("data has created")
-
+				
 			} else {
 				console.log("failed");
 			}
@@ -539,20 +436,17 @@ const Partner = () => {
 	const navItems = [
 		"Hotel Contact Information",
 		"Basic Information",
+		"Add Rooms",
 		"Hotel Policy",
 		"Hotel Tariff",
 	];
 
-	const defaultImages = [
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022019310-Room.jpg",
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022443531-bathroom.jpeg",
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022416654-parking.jpg",
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022425620-Lane.jpg",
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022404482-resturant.jpg",
-		"https://avvermabucket.s3.ap-south-1.amazonaws.com/1688022435744-Front.jpg",
-	];
+	
 
-	const [uploadimage, setUploadimage] = useState("");
+	const handleChange = (e) => {
+		const files = e.target.files;
+		setImages([...images, ...files]);
+	};
 
 	const handleNavItemClick = (navItem) => {
 		if (navItem === "Basic Information") {
@@ -588,7 +482,12 @@ const Partner = () => {
 	if (location.pathname !== "/partner") {
 		return null;
 	}
-
+	const handleRoomDetailsChange = (index, field, value) => {
+		const updatedRoomDetails = [...roomDetails];
+		updatedRoomDetails[index][field] = value;
+		setRoomDetails(updatedRoomDetails);
+	  };
+	
 	return (
 		<div>
 			<nav>
@@ -688,13 +587,26 @@ const Partner = () => {
 									onChange={(e) => setHotelName(e.target.value)}
 								/>
 							</div>
+							
+        {/* <button type="button" onClick={addRoomDetail}>
+          Add Room Detail
+        </button> */}
+							<div className='street'>
+								<label htmlFor='street'>Decription:</label>
+								<input
+									type='text'
+									id='street'
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+								/>
+							</div>
 							<div className='street'>
 								<label htmlFor='street'>Street:</label>
 								<input
 									type='text'
 									id='street'
-									value={street}
-									onChange={(e) => setStreet(e.target.value)}
+									value={destination}
+									onChange={(e) => setDestination(e.target.value)}
 								/>
 							</div>
 							<div className='cities'>
@@ -887,33 +799,36 @@ const Partner = () => {
 					<div>
 						<h3>Basic Information</h3>
 						<div className='uploadimages1'>
-							{[...Array(6)].map((_, index) => (
-								<div className='images' key={index}>
-									<label htmlFor={`imageUpload${index}`}>
-										{images[index] ? (
-											<img
-												src={URL.createObjectURL(images[index])}
-												alt={`Selected Image ${index + 1}`}
-											/>
-										) : (
-											<img
-												className='default-image'
-												src={defaultImages[index]}
-												alt={`Default Image ${index + 1}`}
-											/>
-										)}
-									</label>
-									<div className='image-container6'>
-										<input
-											type='file'
-											id={`imageUpload${index}`}
-											accept='image/*'
-											onChange={(event) => handleImageUpload(event, index)}
-											className='imgbutton'
-										/>
-									</div>
-								</div>
-							))}
+						<div>
+					<label htmlFor=''>Room</label>
+					<input type='file' onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor=''>Bathroom</label>
+
+					<input type='file' onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor=''>Parking</label>
+
+					<input type='file' onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor=''>lane</label>
+
+					<input type='file' onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor=''>Front</label>
+
+					<input type='file' onChange={handleChange} />
+				</div>
+				<div>
+					<label htmlFor=''>Reception</label>
+
+					<input type='file' onChange={handleChange} />
+				</div>
+						
 						</div>
 
 						<div className='amenity-container5'>
@@ -1623,352 +1538,468 @@ const Partner = () => {
 								{/* <label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Room Services")}
-										value='Room Services'
-										checked={amenities.includes("Room Services")}
+										onChange={() => setAirportShuttleFree(!AirportShuttleFree)}
+										checked={AirportShuttleFree}
 									/>
-									<FontAwesomeIcon icon={faRestroom} />
-									Room Services
+									Airport Shuttle (Free)
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Clean And Disinfect")}
-										value='Clean And Disinfect'
-										checked={amenities.includes("Clean And Disinfect")}
+										onChange={() => setAirportShuttleSurcharge(!AirportShuttleSurcharge)}
+										checked={AirportShuttleSurcharge}
 									/>
-									<FontAwesomeIcon icon={faHandsWash} />
-									Clean & Disinfect
+									Airport Shuttle Surcharge
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("School Diatacing")}
-										value='School Diatacing'
-										checked={amenities.includes("School Diatacing")}
+										onChange={() => setBBQpicnicArea(!BBQpicnicArea)}
+										checked={BBQpicnicArea}
 									/>
-									<FontAwesomeIcon icon={faSchoolFlag} />
-									School Diatacing
+									BBQ picnic Area
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Free Parking")}
-										value='Free Parking'
-										checked={amenities.includes("Free Parking")}
+										onChange={() => setBabySitting(!BabySitting)}
+										checked={BabySitting}
 									/>
-									<FontAwesomeIcon icon={faParking} />
-									Free Parking
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("House Keeping")}
-										value='House Keeping'
-										checked={amenities.includes("House Keeping")}
-									/>
-									<FontAwesomeIcon icon={faBrush} />
-									House Keeping
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Towels")}
-										value='Towels'
-										checked={amenities.includes("Towels")}
-									/>
-									<FontAwesomeIcon icon={faTrowel} />
-									Towels
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Complimentary Tolietries")}
-										value='Complimentary Tolietries'
-										checked={amenities.includes("Complimentary Tolietries")}
-									/>
-									<FontAwesomeIcon icon={faHandsWash} />
-									Complimentary Tolietries
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Good Showers")}
-										value='Good Showers'
-										checked={amenities.includes("Good Showers")}
-									/>
-									<FontAwesomeIcon icon={faShower} />
-									Good Showers
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Cable Tv")}
-										value='Cable Tv'
-										checked={amenities.includes("Cable Tv")}
-									/>
-									<FontAwesomeIcon icon={faTv} />
-									Cable Tv
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) =>
-											setAmenities("Complimentary Bottled Water")
-										}
-										value='Complimentary Bottled Water'
-										checked={amenities.includes("Complimentary Bottled Water")}
-									/>
-									<FontAwesomeIcon icon={faBottleWater} />
-									Complimentary Bottled Water
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Swimming Pool")}
-										value='Swimming Pool'
-										checked={amenities.includes("Swimming Pool")}
-									/>
-									<FontAwesomeIcon icon={faSwimmingPool} />
-									Swimming Pool
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("On-site Restaurant")}
-										value='On-site Restaurant'
-										checked={amenities.includes("On-site Restaurant")}
-									/>
-									<FontAwesomeIcon icon={faHotel} />
-									On-site Restaurant
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Hair Dryer")}
-										value='Hair Dryer'
-										checked={amenities.includes("Hair Dryer")}
-									/>
-									<FontAwesomeIcon icon={faAirFreshener} />
-									Hair Dryer
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Fitness Center")}
-										value='Fitness Center'
-										checked={amenities.includes("Fitness Center")}
-									/>
-									<FontAwesomeIcon icon={faHeartCircleCheck} />
-									Fitness Center
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Conclerge Desk")}
-										value='Conclerge Desk'
-										checked={amenities.includes("Conclerge Desk")}
-									/>
-									<FontAwesomeIcon icon={faDesktop} />
-									Conclerge Desk
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Spa")}
-										value='Spa'
-										checked={amenities.includes("Spa")}
-									/>
-									<FontAwesomeIcon icon={faSpa} />
-									Spa
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Dry Cleaning")}
-										value='Dry Cleaning'
-										checked={amenities.includes("Dry Cleaning")}
-									/>
-									<FontAwesomeIcon icon={faAirFreshener} />
-									Dry Cleaning
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Bathrobe")}
-										value='Bathrobe'
-										checked={amenities.includes("Bathrobe")}
-									/>
-									<FontAwesomeIcon icon={faBathtub} />
-									Bathrobe
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) =>
-											setAmenities("24 Hour Front Desk Service")
-										}
-										value='24 Hour Front Desk Service'
-										checked={amenities.includes("24 Hour Front Desk Service")}
-									/>
-									<FontAwesomeIcon icon={faCheck} />
-									24 Hours Front Desk Service
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Bar")}
-										value='Bar'
-										checked={amenities.includes("Bar")}
-									/>
-									<FontAwesomeIcon icon={faBars} />
-									Bar
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Coffee/Tea")}
-										value='Coffee/Tea'
-										checked={amenities.includes("Coffee/Tea")}
-									/>
-									<FontAwesomeIcon icon={faCoffee} />
-									Coffee/Tea
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Non Smoking Rooms")}
-										value='Non Smoking Rooms'
-										checked={amenities.includes("Non Smoking Rooms")}
-									/>
-									<FontAwesomeIcon icon={faSmokingBan} />
-									Non Smoking Rooms
-								</label>
-								<br />
-								<label>
-									<input
-										type='checkbox'
-										onChange={(e) => setAmenities("Baby Sitting")}
-										value='Baby Sitting'
-										checked={amenities.includes("Baby Sitting")}
-									/>
-									<FontAwesomeIcon icon={faBaby} />
 									Baby Sitting
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Picnic Area")}
-										value='Picnic Area'
-										checked={amenities.includes("Picnic Area")}
+										onChange={() => setBaggageStorage(!BaggageStorage)}
+										checked={BaggageStorage}
 									/>
-									<FontAwesomeIcon icon={faUmbrellaBeach} />
-									Picnic Area
+									Baggage Storage
+								</label>
+								<br />
+								{/* here */}
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setBar(!Bar)}
+										checked={Bar}
+									/>
+									Bar
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Currency Exchange")}
-										value='Currency Exchange'
-										checked={amenities.includes("Currency Exchange")}
+										onChange={() => setBathrobe(!Bathrobe)}
+										checked={Bathrobe}
 									/>
-									<FontAwesomeIcon icon={faInr} />
+									Bathrobe
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setBeach(!Beach)}
+										checked={Beach}
+									/>
+									Beach
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setBeachFront(!BeachFront)}
+										checked={BeachFront}
+									/>
+									Beach Front
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setBilliard(!Billiard)}
+										checked={Billiard}
+									/>
+									Billiard
+								</label>
+								<br />
+								{/* here last */}
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setBusinessCenter(!BusinessCenter)}
+										checked={BusinessCenter}
+									/>
+									Business Center
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCableTV(!CableTV)}
+										checked={CableTV}
+									/>
+									Cable TV
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCarRental(!CarRental)}
+										checked={CarRental}
+									/>
+									Car Rental
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCasino(!Casino)}
+										checked={Casino}
+									/>
+									Casino
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCleanDisinfect(!CleanDisinfect)}
+										checked={CleanDisinfect}
+									/>
+									Clean & Disinfect
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCoffeeTea(!CoffeeTea)}
+										checked={CoffeeTea}
+									/>
+									Coffee/Tea
+								</label>
+								<br />
+								{/* last to last */}
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCoffeeMaker(!CoffeeMaker)}
+										checked={CoffeeMaker}
+									/>
+									Coffee Maker
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setComplimentaryBottledWater(!ComplimentaryBottledWater)}
+										checked={ComplimentaryBottledWater}
+									/>
+									Complimentary Bottled Water
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setComplimentaryToiletries(!ComplimentaryToiletries)}
+										checked={ComplimentaryToiletries}
+									/>
+									Complimentary Toiletries
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setComplimentaryBreakfast(!ComplimentaryBreakfast)}
+										checked={ComplimentaryBreakfast}
+									/>
+									Complimentary Breakfast
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setConclergeDesk(!ConclergeDesk)}
+										checked={ConclergeDesk}
+									/>
+									Conclerge Desk
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setContinentalBreakfast(!ContinentalBreakfast)}
+										checked={ContinentalBreakfast}
+									/>
+									Continental Breakfast
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setCurrencyExchange(!CurrencyExchange)}
+										checked={CurrencyExchange}
+									/>
 									Currency Exchange
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Indoor Pool")}
-										value='Indoor Pool'
-										checked={amenities.includes("Indoor Pool")}
+										onChange={() => setDinner(!Dinner)}
+										checked={Dinner}
 									/>
-									<FontAwesomeIcon icon={faSwimmingPool} />
+									Dinner
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setDryCleaning(!DryCleaning)}
+										checked={DryCleaning}
+									/>
+									Dry Cleaning
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setElevators(!Elevators)}
+										checked={Elevators}
+									/>
+									Elevators
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setExecutiveSuite(!ExecutiveSuite)}
+										checked={ExecutiveSuite}
+									/>
+									Executive Suite
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setFishing(!Fishing)}
+										checked={Fishing}
+									/>
+									Fishing
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setFitnessCenter(!FitnessCenter)}
+										checked={FitnessCenter}
+									/>
+									Fitness Center
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setFreeParking(!FreeParking)}
+										checked={FreeParking}
+									/>
+									Free Parking
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setFreeWirelessInternet(!FreeWirelessInternet)}
+										checked={FreeWirelessInternet}
+									/>
+									Free Wireless Internet
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setGameRoom(!GameRoom)}
+										checked={GameRoom}
+									/>
+									GameRoom
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setGoodShowers(!GoodShowers)}
+										checked={GoodShowers}
+									/>
+									Good Showers
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setGroceryShoppingServiceAvailable(!GroceryShoppingServiceAvailable)}
+										checked={GroceryShoppingServiceAvailable}
+									/>
+									Grocery Shopping Service Available
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setHairDryer(!HairDryer)}
+										checked={HairDryer}
+									/>
+									Hair Dryer
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setHouseKeeping(!HouseKeeping)}
+										checked={HouseKeeping}
+									/>
+									House Keeping
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setIndoorParking(!IndoorParking)}
+										checked={IndoorParking}
+									/>
+									Indoor Parking
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setIndoorPool(!IndoorPool)}
+										checked={IndoorPool}
+									/>
 									Indoor Pool
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Shoesshine")}
-										value='Shoesshine'
-										checked={amenities.includes("Shoesshine")}
+										onChange={() => setIroningService(!IroningService)}
+										checked={IroningService}
 									/>
-									<FontAwesomeIcon icon={faShoePrints} />
-									Shoesshine
+									Ironing Service
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Tour Desk")}
-										value='Tour Desk'
-										checked={amenities.includes("Tour Desk")}
+										onChange={() => setJacuzzi(!Jacuzzi)}
+										checked={Jacuzzi}
 									/>
-									<FontAwesomeIcon icon={faCheck} />
-									Tour Desk
+									Jacuzzi
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Loundry")}
-										value='Loundry'
-										checked={amenities.includes("Loundry")}
+										onChange={() => setKitchenFacility(!KitchenFacility)}
+										checked={KitchenFacility}
 									/>
-									<FontAwesomeIcon icon={faShirt} />
-									Loundry
+									Kitchen Facility
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Lockers")}
-										value='Lockers'
-										checked={amenities.includes("Lockers")}
+										onChange={() => setLaundary(!Laundary)}
+										checked={Laundary}
 									/>
-									<FontAwesomeIcon icon={faLock} />
+									Laundary
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setLibrary(!Library)}
+										checked={Library}
+									/>
+									Library
+								</label>
+								<br />
+								<label>
+									<input
+										type='checkbox'
+										onChange={() => setLockers(!Lockers)}
+										checked={Lockers}
+									/>
 									Lockers
 								</label>
 								<br />
 								<label>
 									<input
 										type='checkbox'
-										onChange={(e) => setAmenities("Business Center")}
-										value='Business Center'
-										checked={amenities.includes("Business Center")}
+										onChange={() => setLunch(!Lunch)}
+										checked={Lunch}
 									/>
 									<FontAwesomeIcon icon={faBusinessTime} />
 									Business Center
-								</label> */}
+								</label>
 							</div>
 						</div>
 					</div>
 				)}
+				
+				<div className='room-content'>
+        {activeNavItem === "Add Rooms" && (
+          <>
+		  <div className="disclaimer"> for now you are only permitted to Add Standard Room, After confirmation of your partnership you can add more</div>
+            {roomDetails.map((room, index) => (
+              <div key={index}>
+                <label>
+  Room Type
+  <select
+    value={room.type || "Standard"}
+	className="room-input"
+    onChange={(e) =>
+      handleRoomDetailsChange(index, "type", e.target.value)
+    }
+  >
+    <option value="">Select Room Type</option>
+    <option value="Standard">Standard</option>
+    <option value="Deluxe">Deluxe</option>
+    <option value="King Size">King Size</option>
+  </select>
+</label>
+<label>
+  Bed Type
+  <select
+    value={room.bedTypes || "Single"}
+	className="room-input"
+    onChange={(e) =>
+      handleRoomDetailsChange(index, "bedType", e.target.value)
+    }
+  >
+    <option value="">Select Bed Type</option>
+    <option value="Double">Double</option>
+    <option value="Single">Single</option>
+  </select>
+</label>
 
+                <label>
+                  Price
+                  <input
+                    type="number"
+                    value={room.price || ""}
+					className="room-input"
+                    onChange={(e) =>
+                      handleRoomDetailsChange(index, "price", e.target.value)
+                    }
+                  />
+                </label>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
 				{activeNavItem === "Hotel Policy" && (
 					<div>
 						<h3>Hotel Policy</h3>

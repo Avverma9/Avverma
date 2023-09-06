@@ -39,7 +39,6 @@ import BookingDetails from "../Hotel/BookingDetails";
 
 const BookNowPage = ({ userData }) => {
   const { offerId } = useParams();
-  const isSignedIn = localStorage.getItem("isSignedIn")
   const [offerData, setOfferData] = useState(null);
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
@@ -302,9 +301,7 @@ const BookNowPage = ({ userData }) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
   };
-  if(!isSignedIn){
-    return null
-  }
+
   return (
     <>
       <div className="container-p-4">
@@ -647,9 +644,9 @@ const BookNowPage = ({ userData }) => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
-                        <p>{item?.type}</p>
-                        <p>{item?.bedTypes}</p>
-                        <p>{item?.price}</p>
+                        <p>Room Type : {item?.type}</p>
+                        <p>Bed Type : {item?.bedTypes}</p>
+                        <p>Price : {item?.price}</p>
                       </div>
                       <div className="card-detail-img">
                         <img src={hotelImages[0]} alt="hotelImage" />

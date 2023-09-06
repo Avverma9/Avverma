@@ -272,7 +272,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("1", e.target.checked)}
+                onChange={(e) => handleRatingChange("1 Star", e.target.checked)}
               />
               1 Star
             </label>
@@ -280,7 +280,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("2", e.target.checked)}
+                onChange={(e) => handleRatingChange("2 Star", e.target.checked)}
               />
               2 Star
             </label>
@@ -288,7 +288,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("3", e.target.checked)}
+                onChange={(e) => handleRatingChange("3 Star", e.target.checked)}
               />
               3 Star
             </label>
@@ -296,7 +296,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("4", e.target.checked)}
+                onChange={(e) => handleRatingChange("4 Star", e.target.checked)}
               />
               4 Star
             </label>
@@ -304,7 +304,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("5", e.target.checked)}
+                onChange={(e) => handleRatingChange("5 Star", e.target.checked)}
               />
               5 Star
             </label>
@@ -315,7 +315,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("1", e.target.checked)}
+                onChange={(e) => handleRatingChange("1 Star", e.target.checked)}
               />
               1 Star
             </label>
@@ -323,7 +323,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("2", e.target.checked)}
+                onChange={(e) => handleRatingChange("2 Star", e.target.checked)}
               />
               2 Star
             </label>
@@ -331,7 +331,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("3", e.target.checked)}
+                onChange={(e) => handleRatingChange("3 Star", e.target.checked)}
               />
               3 Star
             </label>
@@ -339,7 +339,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("4", e.target.checked)}
+                onChange={(e) => handleRatingChange("4 Star", e.target.checked)}
               />
               4 Star
             </label>

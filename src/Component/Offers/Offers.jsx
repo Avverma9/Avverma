@@ -34,8 +34,7 @@ const Offers = () => {
   const location = useLocation();
   const [data, setData] = useState([]);
   const isSignedIn = localStorage.getItem("isSignedIn")
-  const [expandedOfferId, setExpandedOfferId] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+
   const navigate = useNavigate();
   useEffect(() => {
     fetch("https://hotel-backend-tge7.onrender.com/get/offers/main/hotels")
@@ -47,9 +46,7 @@ const Offers = () => {
   if (location.pathname !== "/") {
     return null;
   }
-if(!isSignedIn){
-  return null
-}
+
   const handleBookNow = (offerId) => {
     navigate(`/book-now/${offerId}`);
   };

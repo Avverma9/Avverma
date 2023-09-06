@@ -698,7 +698,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
               <div className="card">
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {bookingDetails.roomtype}
+                  Room Type: {bookingDetails.type}
                 </p>
 
                 <p className="noofroom">
@@ -788,9 +788,9 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
-                        <p>{item?.type}</p>
-                        <p>{item?.bedTypes}</p>
-                        <p>{item?.price}</p>
+                        <p>Room Type : {item?.type}</p>
+                        <p>Bed Type : {item?.bedTypes}</p>
+                        <p>Price : {item?.price}</p>
                       </div>
                       <div className="card-detail-img">
                         <img src={hotelImages[0]} alt="hotelImage" />

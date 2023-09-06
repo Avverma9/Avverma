@@ -9,9 +9,7 @@ const Header = () => {
   const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
   const navigate = useNavigate()
 
-  if(!isSignedIn){
-    return null
-  }
+
   return (
     <>
   

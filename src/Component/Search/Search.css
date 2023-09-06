@@ -268,3 +268,54 @@ label {
 }
 
 }
+
+
+
+
+/* Assuming you have a CSS file (e.g., Search.css) for your component */
+
+/* Styles for the Nearby button */
+.nearby-button {
+  margin-top: -52px; 
+  margin-left: 198px;
+
+}
+
+.nearby-button button {
+
+  color: #000000; /* Button text color */
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.nearby-button button:disabled {
+  
+  cursor: not-allowed;
+}
+
+/* Positioning the Nearby button next to the search input's placeholder */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input-text {
+  flex: 1;
+  margin-right: 10px; /* Spacing between the input and button */
+}
+
+/* Adjustments for smaller screens (optional) */
+@media (max-width: 768px) {
+  .input-text {
+    flex: 100%; /* Full width on smaller screens */
+    margin-right: 0; /* No spacing on smaller screens */
+    margin-bottom: 10px; /* Space below the input on smaller screens */
+  }
+}
+
+
+
+
+
+

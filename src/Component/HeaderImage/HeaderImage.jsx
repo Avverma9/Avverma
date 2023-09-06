@@ -26,9 +26,7 @@ const HeaderImage = () => {
   if (render !== "/home" && render !== "/") {
     return null;
   }
-  if(!isSignedIn){
-    return null
-  }
+
   return (
     <div className="header">
       <div className="city">
