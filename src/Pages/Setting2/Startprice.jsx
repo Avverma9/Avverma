@@ -234,7 +234,7 @@ function Startprice() {
   ];
 
 
-  console.log(auctions)
+  // console.log(auctions)
 
 
 

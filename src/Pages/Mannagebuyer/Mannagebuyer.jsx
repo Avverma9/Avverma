@@ -22,14 +22,14 @@ export const Mannagebuyer = () => {
         },
       });
       const res = await response.json();
-      console.log(res.data);
+      // console.log(res.data);
       setManagebuyer(res.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  console.log(managebuyer);
+  // console.log(managebuyer);
 
   useEffect(() => {
     fetchmanagebuyer();

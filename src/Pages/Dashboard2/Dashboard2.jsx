@@ -102,7 +102,7 @@ function Dashboard2() {
         },
       });
       const data = await response.json();
-      console.log(data.data.count?.users.length);
+      // console.log(data.data.count?.users.length);
 
       setDashboard(data.data.count);
     } catch (error) {

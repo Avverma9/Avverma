@@ -24,7 +24,7 @@ function Addregion() {
         }
       );
       const res = await response.json();
-      console.log(res.data, "Region");
+      // console.log(res.data, "Region");
       setRegion(res.data);
     } catch (error) {
       console.error(error);

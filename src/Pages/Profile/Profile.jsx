@@ -51,7 +51,7 @@ export const Profile = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.data);
+        // console.log(data.data);
         setData(data.data);
       }
     } catch (error) {
@@ -73,7 +73,7 @@ export const Profile = () => {
       );
       const data = await response.json();
       if (response.ok) {
-        console.log(data.data[0]);
+        // console.log(data.data[0]);
         setLoggedUser(data.data[0]);
       }
     } catch (error) {

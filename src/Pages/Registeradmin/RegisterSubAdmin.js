@@ -76,7 +76,7 @@ function RegisterSubAdmin() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.data);
+        // console.log(data.data);
         setData(data.data);
       }
     } catch (error) {

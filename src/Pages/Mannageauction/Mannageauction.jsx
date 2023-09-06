@@ -330,7 +330,7 @@ export const MannageAuction = () => {
   const handleRowSelected = (state) => {
     setExportView(state.selectedRows);
   };
-  console.log(auctions);
+  // console.log(auctions);
   return (
     <>
       <DataTable

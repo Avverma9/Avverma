@@ -83,7 +83,7 @@ function Addseller() {
         }
       );
       const res = await response.json();
-      console.log(res.data, "Sellers");
+      // console.log(res.data, "Sellers");
       setSellerData(res.data);
     } catch (error) {
       console.error(error);
