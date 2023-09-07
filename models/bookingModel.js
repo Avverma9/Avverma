@@ -50,7 +50,7 @@ const bookingSchema = new mongoose.Schema({
   },
   bookingStatus: {
     type: String,
-    enum: ["success", "failed", "cancelled","checkedIn","checkedOut"],
+    enum: ["success", "failed", "cancelled","checkedIn","checkedOut","noshow"],
     default: "success",
   },
   cardDetails: {

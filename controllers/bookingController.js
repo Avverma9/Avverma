@@ -154,7 +154,18 @@ const getFailedBookings = async (req, res) => {
  res.json(failedBooking)
 };
 
-
+const getCancelledBookings = async (req, res) => {
+  const bookings = await bookingModel.find().sort({createdAt: -1})
+  const failedBooking= bookings.filter(booking=>booking.bookingStatus === "cancelled")
+  res.json(failedBooking)
+ };
+ 
+ const getNoShowBookings = async (req, res) => {
+  const bookings = await bookingModel.find().sort({createdAt: -1})
+  const failedBooking= bookings.filter(booking=>booking.bookingStatus === "noshow")
+  res.json(failedBooking)
+ };
+ 
 //==================================================================================
 
 const cancelBooking = async (req, res) => {
@@ -250,4 +261,6 @@ module.exports = {
   getCancelledBooking,
   getCheckingBooking,
   updateBooking,
+  getCancelledBookings,
+  getNoShowBookings
 }
