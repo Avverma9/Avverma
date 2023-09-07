@@ -58,6 +58,7 @@ router.put(
 );
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
 router.post("/:hotelId/roomDetails", hotelController.addRoomToHotel);
+router.delete("/:hotelId/delete", hotelController.deleteRoom);
 
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);

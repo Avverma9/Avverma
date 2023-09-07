@@ -352,8 +352,8 @@ const UpdateHotel = async function (req, res) {
 const increaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
   const addRoom = await hotelModel.findById(id);
-    addRoom.numRooms += 1;
-    const updatedRoom = await addRoom.save()
+  addRoom.numRooms += 1;
+  const updatedRoom = await addRoom.save();
   res.json(updatedRoom);
 };
 //=============================get hotel by amenities===========================//
@@ -366,7 +366,7 @@ const getByQuery = async (req, res) => {
     hotelOwnerName,
     roomType, // Change this to roomType
   } = req.query;
-  
+
   let query = {};
 
   if (amenities) {
@@ -401,8 +401,7 @@ const getByQuery = async (req, res) => {
 //================================================================================================
 const searchHotels = async (req, res) => {
   try {
-    const { city, startDate, endDate, guests, numRooms, localId } =
-      req.query;
+    const { city, startDate, endDate, guests, numRooms, localId } = req.query;
 
     const searchQuery = {};
 
@@ -604,29 +603,58 @@ const updateRoom = async (req, res) => {
 };
 //==================================add new room===============================================
 const addRoomToHotel = async function (req, res) {
-
   const { hotelId } = req.params;
   const { type, bedTypes, price } = req.body;
   try {
     const hotel = await hotelModel.findById(hotelId);
     if (!hotel) {
-      return res.status(404).json({ error: 'Hotel not found' });
+      return res.status(404).json({ error: "Hotel not found" });
     }
     const newDetails = {
-       type : type,
-        bedTypes : bedTypes,
-         price : price
-    }
+      type: type,
+      bedTypes: bedTypes,
+      price: price,
+    };
     hotel.roomDetails.push(newDetails);
     await hotel.save();
 
     return res.status(200).json(hotel);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-  }
+};
+//=============================delete room======================================================
+const deleteRoom = async function (req, res) {
+  const { hotelId } = req.params;
+  const { roomId } = req.body;
 
+  try {
+    const hotel = await hotelModel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    const roomIndex = hotel.roomDetails.findIndex(
+      (room) => room._id.toString() === roomId
+    );
+
+    if (roomIndex === -1) {
+      return res
+        .status(404)
+        .json({ error: "Room detail not found in the hotel" });
+    }
+
+    hotel.roomDetails.splice(roomIndex, 1);
+
+    await hotel.save();
+
+    return res.status(200).json(hotel);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 //================================================================================================
 module.exports = {
@@ -645,4 +673,5 @@ module.exports = {
   updateRoom,
   increaseRoomToHotel,
   addRoomToHotel,
+  deleteRoom,
 };
