@@ -1,0 +1,6 @@
+.mytable{
+    width : 100% !important ; 
+  }
+  .mytable td {
+    text-align: left;
+  }

@@ -72,7 +72,7 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
           onClick={() => navigate("check-in-booking")}
         >
           <MdCheckCircle
-            className={selectedNav === "Checking Booking" ? `text-primary` : ``}
+            className={selectedNav === "CheckedIn Booking" ? `text-primary` : ``}
             onMouseLeave={() => setToolTip("")}
             onMouseEnter={hoverHandler}
             data-bs-toggle="tooltip"
@@ -80,9 +80,9 @@ export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
             title={toolTip}
           />
           <p
-            className={selectedNav === "Checking Booking" ? `text-primary` : ``}
+            className={selectedNav === "CheckedIn Booking" ? `text-primary` : ``}
           >
-            Checking Booking
+            CheckedIn Booking
           </p>
         </button>
         <button

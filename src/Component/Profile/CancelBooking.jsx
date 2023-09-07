@@ -63,7 +63,7 @@ export const CancelBooking = ({ toast }) => {
       .get("https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking")
       .then((res) => {
         console.log(res.data, "CancelledData");
-        setCanceledBookings(res.data.canceledBookings);
+        setCanceledBookings(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -122,7 +122,7 @@ export const CancelBooking = ({ toast }) => {
         </Modal.Footer>
       </Modal>
 
-      {canceledBookings.length > 0 && (
+      {0 > 0 && (
           <>
          <div className="_title">
   <h1>Canceled Booking History</h1>
