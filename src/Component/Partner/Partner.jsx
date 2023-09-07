@@ -101,6 +101,7 @@ const Partner = () => {
 	const [salesManagerContact, setSalesManagerContact] = useState("");
 	const [hotelName, setHotelName] = useState("");
 	const [description,setDescription] =useState("")
+	const [numRooms,setNumRooms] = useState("")
 	const [street, setStreet] = useState("");
 	const [city, setCity] = useState("");
 	const [countryState, setCountryState] = useState("");
@@ -180,6 +181,7 @@ const Partner = () => {
 		}
 		formData.append("description",description)
 		formData.append("street", street);
+		formData.append("numRooms",numRooms)
 		formData.append("city", city);
 		formData.append("state", countryState);
 		formData.append("zip", zip);
@@ -665,7 +667,7 @@ const Partner = () => {
           Add Room Detail
         </button> */}
 							<div className='street'>
-								<label htmlFor='street'>Decription:</label>
+								<label htmlFor='street'>Description :</label>
 								<input
 									type='text'
 									id='street'
@@ -673,13 +675,14 @@ const Partner = () => {
 									onChange={(e) => setDescription(e.target.value)}
 								/>
 							</div>
+							
 							<div className='street'>
 								<label htmlFor='street'>Street:</label>
 								<input
 									type='text'
 									id='street'
-									value={destination}
-									onChange={(e) => setDestination(e.target.value)}
+									value={street}
+									onChange={(e) => setStreet(e.target.value)}
 								/>
 							</div>
 							<div className='cities'>
@@ -717,8 +720,8 @@ const Partner = () => {
 								<input
 									type='text'
 									id='landmark'
-									value={landmark}
-									onChange={(e) => setLandmark(e.target.value)}
+									value={destination}
+									onChange={(e) => setDestination(e.target.value)}
 								/>
 							</div>
 						</div>
@@ -1616,7 +1619,8 @@ const Partner = () => {
 				<div className='room-content'>
         {activeNavItem === "Add Rooms" && (
           <>
-		  <div className="disclaimer"> for now you are only permitted to Add Standard Room, After confirmation of your partnership you can add more</div>
+		  <div className="disclaimer"> For now you are only permitted to Add Standard Room, After confirmation of your partnership you can add more</div>
+		  <hr />
             {roomDetails.map((room, index) => (
               <div key={index}>
                 <label>
@@ -1629,23 +1633,66 @@ const Partner = () => {
     }
   >
     <option value="">Select Room Type</option>
-    <option value="Standard">Standard</option>
-    <option value="Deluxe">Deluxe</option>
-    <option value="King Size">King Size</option>
+<option value="Standard Room">Standard Room</option>
+<option value="Deluxe Room">Deluxe Room</option>
+<option value="Double Room">Double Room</option>
+<option value="Double or Twin">Double or Twin</option>
+<option value="Deluxe King Room">Deluxe King Room</option>
+<option value="Family Room">Family Room</option>
+<option value="Business Double Room">Business Double Room</option>
+<option value="Two Bedroom Apartment">Two Bedroom Apartment</option>
+<option value="Free Stay">Free Stay</option>
+<option value="Three Bedroom Apartment">Three Bedroom Apartment</option>
+<option value="Deluxe One Bed Room">Deluxe One Bed Room</option>
+<option value="Deluxe Twin Room">Deluxe Twin Room</option>
+<option value="Twin">Twin</option>
+<option value="Two Bedroom Suite">Two Bedroom Suite</option>
+<option value="Executive Studio">Executive Studio</option>
+<option value="Executive Suite">Executive Suite</option>
+<option value="Executive Room">Executive Room</option>
+<option value="Superior">Superior</option>
+<option value="Junior Suite">Junior Suite</option>
+<option value="One Bedroom Suite">One Bedroom Suite</option>
+<option value="One Bedroom Apartment">One Bedroom Apartment</option>
+<option value="Partition Room">Partition Room</option>
+<option value="Quadrupel">Quadrupel</option>
+<option value="Royal Two Bedroom Suite">Royal Two Bedroom Suite</option>
+<option value="Single Room">Single Room</option>
+<option value="Six Bed">Six Bed</option>
+<option value="Small Private Partition Room">Small Private Partition Room</option>
+<option value="Standard One Bedroom Apartment">Standard One Bedroom Apartment</option>
+<option value="Standard Studio With King Bed">Standard Studio With King Bed</option>
+<option value="Standard Studio with Twin Bed">Standard Studio with Twin Bed</option>
+<option value="Standard Three Bedroom Apartment">Standard Three Bedroom Apartment</option>
+<option value="Standard Two Bedroom Apartment">Standard Two Bedroom Apartment</option>
+
   </select>
 </label>
 <label>
   Bed Type
   <select
-    value={room.bedTypes || "Single"}
+    value={room.bedTypes || "Single Bed"}
 	className="room-input"
     onChange={(e) =>
       handleRoomDetailsChange(index, "bedType", e.target.value)
     }
   >
     <option value="">Select Bed Type</option>
-    <option value="Double">Double</option>
-    <option value="Single">Single</option>
+	<option value="Single">Single Bed</option>
+<option value="Bunk">Bunk Bed</option>
+<option value="DayBed">DayBed</option>
+<option value="KingSize">King Size</option>
+<option value="KingBedOrQueenBed">King Bed Or Queen Bed</option>
+<option value="KingOrTwin">King or Twin</option>
+<option value="KingPlusTwin">King+Twin</option>
+<option value="MurphyBed">Murphy Bed</option>
+<option value="KingSizePlusQueenSize">King Size + Queen Size</option>
+<option value="QueenSize">Queen Size</option>
+<option value="TrundleBed">Trundle Bed</option>
+<option value="TwinPlusKingPlusQueen">Twin+King+Queen</option>
+<option value="Twin">Twin Bed</option>
+<option value="KingBedOrQueenBedOrTwinBed">King Bed or Queen Bed or Twin Bed</option>
+
   </select>
 </label>
 
@@ -1660,6 +1707,10 @@ const Partner = () => {
                     }
                   />
                 </label>
+				<label >
+					Available rooms :
+					<input type="number" value={numRooms} onChange={(e)=>setNumRooms(e.target.value)}/>
+				</label>
               </div>
             ))}
           </>

@@ -8,7 +8,6 @@ import "./HeaderImage.css";
 
 const HeaderImage = () => {
   const location = useLocation();
-  const isSignedIn = localStorage.getItem("isSignedIn")
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const openDropdown = () => {
     setDropdownOpen(true);
