@@ -353,6 +353,7 @@ const increaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
   const addRoom = await hotelModel.findById(id);
   addRoom.numRooms += 1;
+  await addRoom.save()
   res.json(addRoom);
 };
 //=============================get hotel by amenities===========================//
