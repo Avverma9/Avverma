@@ -456,9 +456,16 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
               <div className="pricing">
-                <FontAwesomeIcon icon={faInr} className="indianrupee" />
-                {bookingDetails.roomDetails[0].price}
-              </div>
+  {bookingDetails.roomDetails && bookingDetails.roomDetails.length > 0 ? (
+    <>
+      <FontAwesomeIcon icon={faInr} className="indianrupee" />
+      {bookingDetails.roomDetails[0].price}
+    </>
+  ) : (
+    <span>No pricing information available</span>
+  )}
+</div>
+
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
                   Description:
