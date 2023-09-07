@@ -401,13 +401,13 @@ const getByQuery = async (req, res) => {
 //================================================================================================
 const searchHotels = async (req, res) => {
   try {
-    const { destination, startDate, endDate, guests, numRooms, localId } =
+    const { city, startDate, endDate, guests, numRooms, localId } =
       req.query;
 
     const searchQuery = {};
 
-    if (destination) {
-      searchQuery.destination = { $regex: new RegExp(destination, "i") };
+    if (city) {
+      searchQuery.city = { $regex: new RegExp(city, "i") };
     }
 
     if (startDate && endDate) {
@@ -473,9 +473,9 @@ const getOffers = async (req, res) => {
 };
 //============================get by city============================================//
 const getCity = async function (req, res) {
-  const { destination } = req.body;
+  const { city } = req.body;
   const hotels = await hotelModel
-    .findOne({ destination: destination })
+    .findOne({ city: city })
     .sort({ createdAt: -1 });
 
   res.json(hotels);
