@@ -8,17 +8,12 @@ const hotelController = require("../controllers/hotelController");
 const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
-
 const bookingController = require("../controllers/bookingController");
-
 const emailController = require("../controllers/emailController")
 const foodController = require("../controllers/foodController")
 const carouselController = require("../controllers/carouselController")
 const DashboardUser = require("../controllers/dashboardUser");
-
-// const otpController = require("../controllers/otpController")
 const couponController = require("../controllers/couponController")
-const roomController = require("../controllers/roomController")
 
 
 
@@ -56,6 +51,9 @@ router.get('/hotels/filters', hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all",hotelController.getCity)
 router.get("/hotels/query/get/by",hotelController.getByQuery)
 router.put("/update/new/created/hotel/room/:hotelid/:roomid",hotelController.updateRoom)
+router.post("/increase/room/:id",hotelController.increaseRoomToHotel)
+router.post("/:hotelId/roomDetails",hotelController.addRoomToHotel)
+
 
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
@@ -115,11 +113,6 @@ router.post("/login/dashboard/user",DashboardUser.loginUser)
 router.post('/coupon',couponController.MakeCoupon )
 router.get('/coupon/:code',couponController.ApplyCoupon)
 router.get('/coupon/get/all', couponController.GetAllCoupons);
-//===============================rooms=======================================
-router.post ("/create/new/room/:id",roomController.createRoom)
-router.get("/get/new/room/:id",roomController.getRoomsByHotelId)
-router.get("/get/new/room/by/room/:id",roomController.getRoomsById)
-router.get("/get/all/new/room",roomController.getAllRooms)
 
 
 

@@ -2,6 +2,7 @@ const hotelModel = require("../models/hotelModel");
 const createHotel = async (req, res) => {
   try {
     const {
+      images,
       hotelName,
       hotelOwnerName,
       roomDetails,
@@ -78,7 +79,7 @@ const createHotel = async (req, res) => {
       offMoreThanFourMAp,
     } = req.body;
 
-    const images = req.files.map((file) => file.location);
+    // const images = req.files.map((file) => file.location);
 
     const hotelData = {
       images,
@@ -347,7 +348,13 @@ const UpdateHotel = async function (req, res) {
     data: updatedHotel,
   });
 };
-
+//=======================================add room=====================================
+const increaseRoomToHotel = async function (req, res) {
+  const { id } = req.params;
+  const addRoom = await hotelModel.findById(id);
+  addRoom.numRooms += 1;
+  res.json(addRoom);
+};
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
   const {
@@ -588,7 +595,33 @@ const updateRoom = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+//==================================add new room===============================================
+const addRoomToHotel = async function (req, res) {
 
+  const { hotelId } = req.params;
+  const { type, bedTypes, price } = req.body;
+  try {
+    const hotel = await hotelModel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ error: 'Hotel not found' });
+    }
+    const newDetails = {
+       type : type,
+        bedTypes : bedTypes,
+         price : price
+    }
+    hotel.roomDetails.push(newDetails);
+    await hotel.save();
+
+    return res.status(200).json(hotel);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+  }
+
+
+//================================================================================================
 module.exports = {
   createHotel,
   searchHotels,
@@ -603,4 +636,6 @@ module.exports = {
   getHotels,
   getOffers,
   updateRoom,
+  increaseRoomToHotel,
+  addRoomToHotel,
 };

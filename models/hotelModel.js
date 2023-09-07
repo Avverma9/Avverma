@@ -12,16 +12,13 @@ const hotelsSchema = new mongoose.Schema({
   roomDetails: [
     {
       type: {
-        type: String,
-        default: "Standard",
+        type: String
       },
       bedTypes: {
-        type: String,
-        default:"Normal"
+        type: String
       },
       price: {
-        type: Number,
-        default: 800,
+        type: Number
       },
     },
   ],
