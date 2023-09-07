@@ -361,11 +361,12 @@ const getByQuery = async (req, res) => {
   const {
     amenities,
     bedTypes,
-    roomTypes,
     starRating,
     propertyType,
     hotelOwnerName,
+    roomType, // Change this to roomType
   } = req.query;
+  
   let query = {};
 
   if (amenities) {
@@ -373,21 +374,26 @@ const getByQuery = async (req, res) => {
   }
 
   if (bedTypes) {
-    query.bedTypes = { $in: bedTypes };
+    query.roomDetails = { $elemMatch: { bedTypes: { $in: bedTypes } } };
   }
 
-  if (roomTypes) {
-    query.roomTypes = { $in: roomTypes };
-  }
   if (starRating) {
     query.starRating = { $in: starRating };
   }
+
   if (propertyType) {
     query.propertyType = { $in: propertyType };
   }
+
   if (hotelOwnerName) {
     query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, "i") };
   }
+
+  if (roomType) {
+    // Use $elemMatch to search within the roomDetails array
+    query.roomDetails = { $elemMatch: { type: { $in: roomType } } };
+  }
+
   const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
 };
