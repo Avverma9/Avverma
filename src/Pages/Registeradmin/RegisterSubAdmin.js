@@ -350,6 +350,8 @@ function RegisterSubAdmin() {
           </div>
         </form>
       </div>
+      <div style={{marginTop:"160px"}}>
+
       <DataTable
         title={
           <h1 style={{ fontWeight: "500", margin: "10px 0" }}>
@@ -362,6 +364,7 @@ function RegisterSubAdmin() {
         fixedHeader
         fixedHeaderScrollHeight="75vh"
       />
+      </div>
     </>
   );
 }

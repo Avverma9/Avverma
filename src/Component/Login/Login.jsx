@@ -13,6 +13,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    if (!username || !password) {
+      alert("Email and password are required.");
+      return;
+    }
+  
     try {
       const response = await fetch("http://13.48.45.18:4008/admin/login", {
         method: "POST",
@@ -25,17 +31,24 @@ const Login = () => {
         }),
       });
       const data = await response.json();
-      console.log(data);
+  
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("adminId", data.data._id);
         navigate("/mannage-auction");
+      } else {
+        if (data.data.message === "incorrect password") {
+          alert("Incorrect password. Please try again.");
+        } else {
+          alert("An error occurred while processing your request.");
+        }
       }
     } catch (error) {
       console.error(error);
+      alert("An error occurred while processing your request.");
     }
   };
-
+  
   function isValidEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
   }

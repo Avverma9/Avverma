@@ -6,7 +6,8 @@ export const PrevBtn = () => {
   const navigate = useNavigate();
   return (
     <button className="_prev-btn" onClick={() => navigate(-1)}>
-      <FaLeftLong />
+      {/* <FaLeftLong /> */}
+       Back
     </button>
   );
 };
