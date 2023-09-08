@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import './ConfirmBooking.module.css'
 
 const styles = {
   tableContainer: {
@@ -15,7 +16,7 @@ const styles = {
     border: "1px solid #ccc",
   },
   circularImage: {
-    width: "50px", 
+    width: "50px",
     height: "50px",
     borderRadius: "50%",
     overflow: "hidden",
@@ -35,8 +36,8 @@ export const ConfirmBooking = ({ toast }) => {
     const id = localStorage.getItem("userId")
     console.log(id, "myId")
     try {
-      const response = await axios.get(`http://localhost:5000/bookingsConfirm/${id}`)
-      const { bookings } = response.data;
+      const response = await axios.get(`https://hotel-backend-tge7.onrender.com/bookingsConfirm/${id}`)
+      const bookings = response.data;
       console.log(bookings, "backend data");
       setBookingDetails(bookings);
     } catch (error) {
@@ -70,7 +71,71 @@ export const ConfirmBooking = ({ toast }) => {
 
       {bookingDetails && bookingDetails.length > 0 ? (
         <>
-          <div style={styles.tableContainer}>
+          {
+            bookingDetails.map((bookingDetails) => {
+              return (<>
+ <div className="card" style={{ display: "inline-block" , width: "18rem" , marginBottom : "12px" , marginRight : "30px"}}>
+            <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." />
+            <table className="mytable">
+              <tr>
+                <td><strong>Booking ID</strong></td>
+                <td>{bookingDetails.bookingId}</td>
+              </tr>
+              <tr>
+                <td><strong>Booking Date</strong></td>
+                <td>{bookingDetails.createdAt.substring(0,10)}</td>
+              </tr>
+              <tr>
+                <td><strong>Booking Time</strong></td>
+                <td>{bookingDetails.createdAt.substring(11,19)}</td>
+              </tr>
+              <tr>
+                <td><strong>Status</strong></td>
+                <td>{bookingDetails.bookingStatus}</td>
+              </tr>
+              <tr>
+                <td><strong>Hotel</strong></td>
+                <td>{bookingDetails.hotelName}</td>
+              </tr>
+              <tr>
+                <td><strong>Destination Name</strong></td>
+                <td>{bookingDetails.destination}</td>
+              </tr>
+              <tr>
+                <td><strong>Guests</strong></td>
+                <td>{bookingDetails.guests}</td>
+              </tr>
+              <tr>
+                <td><strong>Food Items</strong></td>
+                <td>{bookingDetails.foodItems.length &&  bookingDetails.foodItems.map((e)=>{return (<><ul><li>{e.name}</li></ul></>)})}</td>
+              </tr>
+              <tr>
+                <td><strong>Check-In Date</strong></td>
+                <td>{bookingDetails.checkInDate ? bookingDetails.checkInDate.substring(0, 10) : ""}</td>
+              </tr>
+              <tr>
+                <td><strong>Check-Out Date</strong></td>
+                <td>{bookingDetails.checkOutDate ? bookingDetails.checkOutDate.substring(0, 10) : ""}</td>
+              </tr>
+              <tr>
+                <td><strong>Check-In Time</strong></td>
+                <td>{bookingDetails.checkInTime}</td>
+              </tr>
+              <tr>
+                <td><strong>Check-Out Time</strong></td>
+                <td>{bookingDetails.checkOutTime}</td>
+              </tr>
+              <tr>
+                <td><strong>Price</strong></td>
+                <td>{bookingDetails.price}</td>
+              </tr>
+            </table>
+          </div>
+              </>)
+            })
+          }
+         
+          {/* <div style={styles.tableContainer}>
             <table style={styles.table}>
               <thead>
                 <tr>
@@ -116,7 +181,7 @@ export const ConfirmBooking = ({ toast }) => {
                   ))}
               </tbody>
             </table>
-          </div>;
+          </div>; */}
         </>
       ) : (
         <p>No Data Found...</p>
