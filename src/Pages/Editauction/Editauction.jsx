@@ -13,10 +13,12 @@ export const Editauction = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
-  const [photoVideo, setPhotoVideo] = useState([]);
-  const [uploadPVFile, setUploadPVFile] = useState(null);
+  const [photoVideo, setPhotoVideo] = useState(null);
+  // const [uploadPVFile, setUploadPVFile] = useState(null);
   const [valuationFile, setValuationFile] = useState(null);
   const [rcValue, setRcValue] = useState(true);
+  const [selectedPaymentTerm, setSelectedPaymentTerm] = useState('');
+
 
   const handleRCChange = (e) => {
     setRcValue(e.target.value === "true");
@@ -32,8 +34,9 @@ export const Editauction = () => {
 
   const handleUploadPVChange = (e) => {
     const file = e.target.files[0];
-    setUploadPVFile(file);
+    setPhotoVideo(file);
   };
+  
 
   const handleValuationFileChange = (e) => {
     const file = e.target.files[0];
@@ -75,16 +78,19 @@ export const Editauction = () => {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-
+      
       if (!response.ok) {
         throw new Error("API request failed");
       }
-
+      
       const { data } = await response.json();
       console.log("Auction Data:", data);
+      const selectedTerm = data[0]?.paymentTerm || '';
+      setSelectedPaymentTerm(selectedTerm);
       setPhotoVideo(data[0]?.photoVideo || []);
-
+      console.log("photoVideo:", data[0]?.photoVideo);
       setAuctionData(data);
+
     } catch (error) {
       console.error("API Error:", error);
     }
@@ -116,75 +122,78 @@ export const Editauction = () => {
     setSelectedOption(event.target.value);
   };
 
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = {
-      region: event.target.region.value,
-      category: event.target.category.value,
-      seller: event.target.seller.value,
-      productName: event.target.productName.value,
-      registrationNumber: event.target.registrationNumber.value,
-      agreementNumber: event.target.agreementNumber.value,
-      rc: rcValue,
-      startPrice: event.target.startPrice.value,
-      reservePrice: event.target.reservePrice.value,
-      // startTime: event.target.startTime.value,
-      // startDate: event.target.startDate.value,
-      // endTime: event.target.endTime.value,
-      // endDate: event.target.endDate.value,
-      // fuelType:
-      //   document.querySelector('input[name="fuel"]:checked')?.value || "",
-      parkingName: event.target.parkingName.value,
-      parkingAddress: event.target.parkingAddress.value,
-      yearOfManufacture: event.target.yearOfManufacture.value,
-      paymentTerm: event.target.paymentTerm.value,
-      quotationValidity: event.target.quotationValidity.value,
-      auctionFees: event.target.auctionFees.value,
-      auctionTerm: event.target.auctionTerm.value,
-      uploadPV: uploadPVFile,
-      // valuationFile: valuationFile,
-      photoVideo: uploadPVFile ? [uploadPVFile] : photoVideo,
-    };
-
+    
+    console.log("photoVideo:", photoVideo);
+    console.log("Previous Value:", auctionData[0]?.photoVideo[0]);
+  
+    const formData = new FormData();
+    formData.append("region", event.target.region.value);
+    formData.append("category", event.target.category.value);
+    formData.append("seller", event.target.seller.value);
+    formData.append("productName", event.target.productName.value);
+    formData.append("registrationNumber", event.target.registrationNumber.value);
+    formData.append("agreementNumber", event.target.agreementNumber.value);
+    formData.append("rc", rcValue);
+    formData.append("startPrice", event.target.startPrice.value);
+    formData.append("reservePrice", event.target.reservePrice.value);
+    formData.append("parkingName", event.target.parkingName.value);
+    formData.append("parkingAddress", event.target.parkingAddress.value);
+    formData.append("yearOfManufacture", event.target.yearOfManufacture.value);
+    formData.append("paymentTerm", event.target.paymentTerm.value);
+    formData.append("quotationValidity", event.target.quotationValidity.value);
+    formData.append("auctionFees", event.target.auctionFees.value);
+    formData.append("auctionTerm", event.target.auctionTerm.value);
+    if (photoVideo) {
+      formData.append("files", photoVideo);
+    } else {
+      formData.append("files", auctionData[0]?.photoVideo[0]);
+    }
+  
     const response = await fetch(`${BASE_URL}/admin/auction/update/${urlId.id}`, {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: formData,
     });
-    console.log("Form Data:", formData);
-
+  
     const responseData = await response.json();
-
-
+  
     if (responseData.message === "Auction updated") {
       alert("Auction Data Updated")
-    }else if( responseData.message === "Something went wrong"){
+    } else if (responseData.message === "Something went wrong") {
       alert("Something went wrong")
-      navigate("/settings");
     } else {
-      // Error handling
       console.error("Error adding auction:", response.statusText);
     }
   };
-
+  
+  
   //StartTime Formate changing 
   const startTime = new Date(auctionData[0]?.startTime);
-const startTimeHours = startTime.getHours().toString().padStart(2, '0');
-const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
+  const startTimeHours = startTime.getHours().toString().padStart(2, '0');
+  const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
 
 
- //End Time Format Changing 
- const EndTime = new Date(auctionData[0]?.endTime);
- const EndTimeHours = EndTime.getHours().toString().padStart(2, '0');
- const EndTimeMinutes = EndTime.getMinutes().toString().padStart(2, '0');
+  //End Time Format Changing 
+  const EndTime = new Date(auctionData[0]?.endTime);
+  const EndTimeHours = EndTime.getHours().toString().padStart(2, '0');
+  const EndTimeMinutes = EndTime.getMinutes().toString().padStart(2, '0');
 
-//  const handleAddAuctionTiming = () => {
-//   navigate(`/set-auction-timing/${auctionId}`);
-// }
+  //  const handleAddAuctionTiming = () => {
+  //   navigate(`/set-auction-timing/${auctionId}`);
+  // }\
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-GB', options).split('/').reverse().join('-');
+  };
+
+
 
   return (
     <>
@@ -268,12 +277,12 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           <label htmlFor="RC">
             <p>RC</p>
             <div className="rc-input">
-              <input type="radio" id="true" name="rc"   checked={rcValue === true}
-              onChange={handleRCChange} />
+              <input type="radio" id="true" name="rc" checked={rcValue === true}
+                onChange={handleRCChange} />
               <label for="yes">Yes</label>
-              <input type="radio" id="false" name="rc" 
-               checked={rcValue === false}
-               onChange={handleRCChange}/>
+              <input type="radio" id="false" name="rc"
+                checked={rcValue === false}
+                onChange={handleRCChange} />
               <label for="no">No</label>
             </div>
           </label>
@@ -394,7 +403,7 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
             />
           </label>
           <label htmlFor="menufecture-year">
-            <p>Year of Menufecture</p>
+            <p>Year of Manufacture</p>
             <input
               type="text"
               name="yearOfManufacture"
@@ -414,8 +423,8 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
             <select
               className="basic-multi-select-inputs"
               name="paymentTerm"
-              value={selectedOption}
-              onChange={handleOptionChange}
+              value={selectedPaymentTerm}
+              onChange={(e) => setSelectedPaymentTerm(e.target.value)}
             >
               <option value="" disabled>
                 Select an option
@@ -425,6 +434,8 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
               <option value="upi">UPI</option>
               <option value="net-banking">Net Banking</option>
             </select>
+
+
           </label>
           <label htmlFor="quatation-validity">
             <p>Quatation Validity</p>
@@ -433,7 +444,12 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
               name="quotationValidity"
               placeholder="Quatation Validity"
               className="basic-multi-select-inputs"
-          
+              value={formatDate(auctionData[0]?.quotationValidity)}
+              onChange={(e) => {
+                const newData = { ...auctionData };
+                newData[0].quotationValidity = e.target.value;
+                setAuctionData(newData);
+              }}
             />
           </label>
           <label htmlFor="auction-fees">
@@ -473,17 +489,17 @@ const startTimeMinutes = startTime.getMinutes().toString().padStart(2, '0');
           </div>
         </div>
         <div className="cont-2">
-        <label htmlFor="add-video">
+          <label>
             <p>Upload Photo/Video</p>
             <input
               type="file"
-              name="uploadPV"
+              name="photoVideo"
               placeholder=""
               onChange={handleUploadPVChange}
               className="basic-multi-select-inputs"
             />
           </label>
-          <label htmlFor="add-file">
+          <label >
             <p>Add Valuation File</p>
             <input
               type="file"

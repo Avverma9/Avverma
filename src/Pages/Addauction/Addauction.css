@@ -55,7 +55,7 @@ input[type="file"] {
 .cont-2 input {
   width: 100%;
   height: 40px;
-  display: none;
+  /* display: none; */
 }
 .submit-btn {
   padding: 10px;
@@ -103,3 +103,7 @@ form select {
   margin-top: 10px;
 }
 
+.valuation-file-Input{
+  height: 40px;
+  width: 37.2%;
+}

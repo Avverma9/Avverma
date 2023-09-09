@@ -10,10 +10,10 @@ export const Addauction = () => {
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSeller, setSelectedSeller] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(""); 
+  const [selectedOption, setSelectedOption] = useState("");
 
   const [photoVideo, setphotoVideo] = useState(null);
-  const [valuationFile, setValuationFile] = useState(null);
+  // const [valuationFile, setValuationFile] = useState(null);
   const [rcValue, setRcValue] = useState(true);
 
   const handleRCChange = (e) => {
@@ -26,10 +26,10 @@ export const Addauction = () => {
     setphotoVideo(file);
   };
 
-  const handleValuationFileChange = (e) => {
-    const file = e.target.files[0];
-    setValuationFile(file);
-  };
+  // const handleValuationFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setValuationFile(file);
+  // };
 
   const getCategory = async () => {
     const response = await fetch(`${BASE_URL}/admin/category/getAll`);
@@ -159,30 +159,35 @@ export const Addauction = () => {
     formData.append("quotationValidity", event.target.quotationValidity.value);
     formData.append("auctionFees", event.target.auctionFees.value);
     formData.append("auctionTerm", event.target.auctionTerm.value);
+    formData.append("otherInformation", event.target.otherInformation.value)
     formData.append("files", photoVideo);
-    // formData.append("valuationFile", valuationFile);
-  
+    formData.append("valuationFile", event.target.valuationFile.value);
+
     const response = await fetch(`${BASE_URL}/admin/auction/add`, {
       method: "POST",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
-      body: formData, 
+      body: formData,
     });
-  
-    if (response.ok && response.status === 200) {
+       
+    const responseData = await response.json()
+    if (responseData.message === "Auction created successfully") {
       console.log("Auction successfully added.");
       alert("New Auction Added");
     } else {
-      console.error("Error adding auction:", response.statusText);
+      console.error("Error adding auction:", responseData.statusText);
+      if (responseData.message === "auction for this user is already added") {
+        alert("Auction for this user is already added");
+      }
     }
   };
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 
 
   return (
@@ -419,10 +424,25 @@ export const Addauction = () => {
           <div className="textarea">
             <label htmlFor="text-area">
               <p>Other Information </p>
-              <textarea name="" id="" cols="30" rows="10"></textarea>
+              <textarea type="text"
+               name="otherInformation"
+                id="" cols="30" 
+                rows="10"
+                placeholder="Add additional Info here"
+                ></textarea>
             </label>
           </div>
+          <label htmlFor="valuation-file">
+            <p>Valuation file </p>
+            <input
+              type="text"
+              name="valuationFile"
+              placeholder="Valuation file link"
+              className="valuation-file-Input"
+            />
+          </label>
         </div>
+        
         <div className="cont-2">
           <label htmlFor="add-video">
             <p>
@@ -438,21 +458,25 @@ export const Addauction = () => {
               className="basic-multi-select-inputs"
             />
           </label>
-          <label htmlFor="add-file">
+          {/* <label >
             <p>
               <GrUpload />
               Add Valuation File
             </p>
             <input
-              type="file"
+              type="text"
               id="add-file"
               name="valuationFile"
-              placeholder=""
+              placeholder="Add Valuation file link"
               onChange={handleValuationFileChange}
               className="basic-multi-select-inputs"
             />
-          </label>
+          </label> */}
+          
+
+
         </div>
+        
         <div className="submit-btn-1">
           <button type="submit" className="submit-btn">
             Submit

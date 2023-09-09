@@ -18,7 +18,7 @@ export const Pushnotification = () => {
     const response = await fetch(`${BASE_URL}/admin/region/getAll`);
     const { data } = await response.json();
     setSelectedRegion(data);
-    console.log(data, "REGION DATA");
+    // console.log(data, "REGION DATA");
   };
 
   useEffect(() => {

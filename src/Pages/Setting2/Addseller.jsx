@@ -153,13 +153,13 @@ function Addseller() {
   ];
 
   // Filtered Data
-  const filteredData = sellerData.filter((row) => {
+  const filteredData = sellerData ? sellerData.filter((row) => {
     if (!selectedFilter) {
       return true;
     } else {
       return row.name.toLowerCase().includes(searchInput.toLowerCase());
     }
-  });
+  }):[];
 
   return (
     <>
