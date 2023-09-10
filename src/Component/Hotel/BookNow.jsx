@@ -69,6 +69,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
+  const [scrollPos, setScrollPos] = useState(null);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -100,6 +101,10 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // useEffect(() => {
+  //   window.scrollTo(scrollPos);
+  // }, [scrollPos]);
 
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
@@ -398,9 +403,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   }, [selectedGuests, selectedRooms]);
 
   useScrollPosition(({ prevPos, currPos }) => {
-    console.log(currPos.x);
-    console.log(currPos.y);
-    // setPos
+    setScrollPos(currPos);
   });
 
   return (
@@ -1022,6 +1025,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
                 toast={toast}
+                scrollPos={scrollPos}
               />
             </div>
           </div>

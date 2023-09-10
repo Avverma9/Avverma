@@ -35,6 +35,7 @@ const BookingDetails = ({
   offerDetails,
   offerPriceLess,
   toast,
+  scrollPos,
 }) => {
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
@@ -272,7 +273,11 @@ const BookingDetails = ({
               </div>
             </div>
             <div className={styles.pencil_icon}>
-              <span className={styles.penci_ico}>
+              <span
+                className={styles.penci_ico}
+                style={{ cursor: "pointer" }}
+                // onClick={() => setScrollPos({ x: 0, y: -1922.25 })}
+              >
                 <BsPencil />
               </span>
             </div>
