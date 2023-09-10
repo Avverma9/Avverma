@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 // import { type } from "@testing-library/user-event/dist/type";
 
 const Sidebar = ({
@@ -38,6 +39,7 @@ const Sidebar = ({
   clearFilters,
   setDataAvailable,
 }) => {
+  const location = useLocation();
   //Filter Api
   useEffect(() => {
     const propertyTypeQueryParam = selectedPropertyTypes.join(",");
@@ -69,20 +71,37 @@ const Sidebar = ({
   ]);
 
   useEffect(() => {
-    if (minValue > 400 || maxValue < 4000) {
+    setHotels([]);
+    const queryString = localStorage.getItem("searchQuery");
+    console.log(queryString);
+    if (location.pathname !== "/search/results") {
+      // Why not working
+      if (minValue > 400 || maxValue < 4000) {
+        axios
+          .get(
+            `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
+          )
+          .then((data) => {
+            if (data.status === 200) {
+              setHotels(data.data);
+            }
+          })
+          .catch((error) => console.log(error));
+      } else {
+        axios
+          .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
+          // .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
+          .then((data) => {
+            if (data.status === 200) {
+              setHotels(data.data);
+            }
+          })
+          .catch((error) => console.log(error));
+      }
+    } else if (location.pathname === "/search/results") {
       axios
-        .get(
-          `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
-        )
-        .then((data) => {
-          if (data.status === 200) {
-            setHotels(data.data);
-          }
-        })
-        .catch((error) => console.log(error));
-    } else {
-      axios
-        .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
+        // .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
+        .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
         .then((data) => {
           if (data.status === 200) {
             setHotels(data.data);
@@ -99,7 +118,7 @@ const Sidebar = ({
         label.textContent = `₹${maxValue}`;
       }
     });
-  }, [maxValue, minValue]);
+  }, [maxValue, minValue, location.pathname, setHotels]);
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>
@@ -714,7 +733,6 @@ const Sidebar = ({
                 }
               />
               Superior Room
-           
             </label>
             <label>
               {" "}
@@ -775,8 +793,6 @@ const Sidebar = ({
               />
               Business Double Room
             </label>
-       
-       
           </>
         )}
         <button
@@ -1007,7 +1023,12 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
+                onChange={(e) =>
+                  handleamenity(
+                    "Airport Shuttle Service (Surcharge)",
+                    e.target.value
+                  )
+                }
               />
               Airport Shuttle Service (Surcharge)
             </label>
@@ -1546,9 +1567,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) =>
-                  handleamenity("Gift Shop", e.target.value)
-                }
+                onChange={(e) => handleamenity("Gift Shop", e.target.value)}
               />
               Gift Shop
             </label>
@@ -1689,7 +1708,12 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
+                onChange={(e) =>
+                  handleamenity(
+                    "Airport Shuttle Service (Surcharge)",
+                    e.target.value
+                  )
+                }
               />
               Airport Shuttle Service (Surcharge)
             </label>

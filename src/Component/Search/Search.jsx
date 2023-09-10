@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Search.css";
 import moment from "moment";
-import {MdMyLocation} from 'react-icons/md'
+import { MdMyLocation } from "react-icons/md";
 import { getSearchState } from "../redux/SearchSlice";
 import { useDispatch } from "react-redux";
 
@@ -26,7 +26,7 @@ const SearchComponent = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-  
+    localStorage.removeItem("searchQuery");
     // Format start date and end date
     const startDate = searchData.startDate
       ? moment(searchData.startDate).format("YYYY-MM-DD")
@@ -34,22 +34,29 @@ const SearchComponent = () => {
     const endDate = searchData.endDate
       ? moment(searchData.endDate).format("YYYY-MM-DD")
       : "";
-  
+
     const queryString = new URLSearchParams({
-      city: searchData.destination, // Change to 'destination' instead of 'city'
+      // startDate,
+      // endDate,
+      city: searchData.destination,
+      // guests: searchData.guests,
+      // numRooms: searchData.numRooms,
+      // localId: searchData.localId ? "true" : "",
+      // moreOptions: searchData.moreOptions,
     }).toString();
-  
+    localStorage.setItem("searchQuery", queryString);
     // Fetch search results from the API
-    fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setSearchResults(data);
-        dispatch(getSearchState(data));
-        navigate("/search/results");
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
-      });
+    // fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setSearchResults(data);
+    //     dispatch(getSearchState(data));
+    //     navigate("/search/results");
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error fetching search results:", error);
+    //   });
+    navigate("/search/results");
   };
 
   // Function to fetch nearby hotels based on user's current location
@@ -88,7 +95,9 @@ const SearchComponent = () => {
         }).toString();
 
         // Fetch nearby hotels from the API
-        fetch(`https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`)
+        fetch(
+          `https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`
+        )
           .then((response) => response.json())
           .then((data) => {
             setSearchResults(data);
@@ -163,7 +172,6 @@ const SearchComponent = () => {
                   startDate: date,
                 }))
               }
-       
               className="input-startdate"
               placeholderText="Check-in"
               dateFormat="dd-MM-yyyy"
@@ -181,7 +189,6 @@ const SearchComponent = () => {
                   endDate: date,
                 }))
               }
-            
               className="input-enddate"
               placeholderText="Check-out"
               dateFormat="dd-MM-yyyy"
@@ -210,7 +217,6 @@ const SearchComponent = () => {
               name="guests"
               value={searchData.guests}
               onChange={handleInputChange}
-        
               className="input-guests"
             >
               {renderOptions(1, 1000, "Guests")}
@@ -224,7 +230,6 @@ const SearchComponent = () => {
               name="numRooms"
               value={searchData.numRooms}
               onChange={handleInputChange}
-              
               className="input-rooms"
             >
               {renderOptions(1, 4, "Rooms")}
@@ -273,9 +278,8 @@ const SearchComponent = () => {
           onClick={fetchNearbyHotels}
           disabled={nearbyLoading}
         >
-          <MdMyLocation/> Nearby 
+          <MdMyLocation /> Nearby
         </button>
-
       </div>
 
       <div className="search-results">

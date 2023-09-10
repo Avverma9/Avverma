@@ -37,13 +37,15 @@ const BookingDetails = ({
   toast,
   scrollPos,
 }) => {
+  console.log(userData);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
+    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (roomPrice * selectedRooms + foodPrice) * 100,
-      currency: data.currency,
+      amount: data?.payment.amount * 100,
+      currency: data?.payment.currency,
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -375,18 +377,18 @@ const BookingDetails = ({
                 </span>
               </div>
             </div> */}
-            {isOffer === false && (
-              <div className={styles.pri}>
-                <div className={styles.pri1}>Total Price</div>
-                <div className={styles.pri2}>
-                  <span className={styles.p}>
-                    <FaRupeeSign />
-                    {roomPrice * selectedRooms + foodPrice}
-                  </span>
-                </div>
+            {/* {isOffer === false && ( */}
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Total Price</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {roomPrice * selectedRooms + foodPrice}
+                </span>
               </div>
-            )}
-            {isOffer === true && (
+            </div>
+            {/* )} */}
+            {/* {isOffer === true && (
               <div className={styles.pri}>
                 <div className={styles.pri1}>Discounted Price</div>
                 <div className={styles.pri2}>
@@ -400,7 +402,7 @@ const BookingDetails = ({
                   </span>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
 
           {openPaymentModule === false ? (
