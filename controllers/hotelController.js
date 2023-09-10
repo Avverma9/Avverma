@@ -2,7 +2,7 @@ const hotelModel = require("../models/hotelModel");
 const createHotel = async (req, res) => {
   try {
     const {
-      images,
+    
       hotelName,
       hotelOwnerName,
       roomDetails,
@@ -79,7 +79,7 @@ const createHotel = async (req, res) => {
       offMoreThanFourMAp,
     } = req.body;
 
-    // const images = req.files.map((file) => file.location);
+    const images = req.files.map((file) => file.location);
 
     const hotelData = {
       images,
