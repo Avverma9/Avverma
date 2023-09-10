@@ -10,7 +10,7 @@ function Imgslide({ resultId }) {
     const fetchImages = async () => {
       try {
         const response = await fetch(
-          "https://hotel-backend-tge7.onrender.com/get/all/hotels"
+          "https://hotel-backend-tge7.onrender.com/get/main/get/hotels"
         );
         const data = await response.json();
         const allImages = data.map((result) => result.images).flat();

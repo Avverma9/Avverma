@@ -4,6 +4,7 @@ import './Dropdown.css';
 
 const StateItem = ({ state, cities }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const navigate = useNavigate();
 
   const handleMouseEnter = () => {
@@ -17,7 +18,7 @@ const StateItem = ({ state, cities }) => {
   const handleCityClick = (city) => {
     navigate(`/cities/${city}`); 
   };
-
+ 
   return (
     <div
       className="stateItem"

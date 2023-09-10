@@ -272,7 +272,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("1", e.target.checked)}
+                onChange={(e) => handleRatingChange("1 star", e.target.checked)}
               />
               1 Star
             </label>
@@ -280,7 +280,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("2", e.target.checked)}
+                onChange={(e) => handleRatingChange("2 star", e.target.checked)}
               />
               2 Star
             </label>
@@ -288,7 +288,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("3", e.target.checked)}
+                onChange={(e) => handleRatingChange("3 star", e.target.checked)}
               />
               3 Star
             </label>
@@ -296,7 +296,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("4", e.target.checked)}
+                onChange={(e) => handleRatingChange("4 star", e.target.checked)}
               />
               4 Star
             </label>
@@ -304,7 +304,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("5", e.target.checked)}
+                onChange={(e) => handleRatingChange("5 star", e.target.checked)}
               />
               5 Star
             </label>
@@ -315,7 +315,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("1", e.target.checked)}
+                onChange={(e) => handleRatingChange("1 star", e.target.checked)}
               />
               1 Star
             </label>
@@ -323,7 +323,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("2", e.target.checked)}
+                onChange={(e) => handleRatingChange("2 star", e.target.checked)}
               />
               2 Star
             </label>
@@ -331,7 +331,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("3", e.target.checked)}
+                onChange={(e) => handleRatingChange("3 star", e.target.checked)}
               />
               3 Star
             </label>
@@ -339,7 +339,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleRatingChange("4", e.target.checked)}
+                onChange={(e) => handleRatingChange("4 star", e.target.checked)}
               />
               4 Star
             </label>
@@ -714,16 +714,7 @@ const Sidebar = ({
                 }
               />
               Superior Room
-            </label>
-            <label>
-              {" "}
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  handleroomtype("Superior Twin Room", e.target.checked)
-                }
-              />
-              Superior Twin Room
+           
             </label>
             <label>
               {" "}
@@ -784,36 +775,8 @@ const Sidebar = ({
               />
               Business Double Room
             </label>
-            <label>
-              {" "}
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  handleroomtype("Deluxe King Room", e.target.checked)
-                }
-              />
-              Deluxe King Room
-            </label>
-            <label>
-              {" "}
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  handleroomtype("Deluxe One Bed Room Suite", e.target.checked)
-                }
-              />
-              Deluxe One Bed Room
-            </label>
-            <label>
-              {" "}
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  handleroomtype("Deluxe Room", e.target.checked)
-                }
-              />
-              Deluxe Room
-            </label>
+       
+       
           </>
         )}
         <button
@@ -1007,7 +970,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("24-hour front desk service", e.target.value)
+                  handleamenity("24-hour Front Desk Service", e.target.value)
                 }
               />
               24-hour Front Desk Service
@@ -1016,7 +979,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("ATM on site", e.target.value)}
+                onChange={(e) => handleamenity("ATM on Site", e.target.value)}
               />
               ATM on Site
             </label>
@@ -1035,7 +998,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Airport shuttle(free)", e.target.value)
+                  handleamenity("Airport Shuttle (Free)", e.target.value)
                 }
               />
               Airport Shuttle (Free)
@@ -1044,7 +1007,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("", e.target.value)}
+                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
               />
               Airport Shuttle Service (Surcharge)
             </label>
@@ -1121,7 +1084,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Business center", e.target.value)
+                  handleamenity("Business Center", e.target.value)
                 }
               />
               Business Center
@@ -1138,7 +1101,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Car rental", e.target.value)}
+                onChange={(e) => handleamenity("Car Rental", e.target.value)}
               />
               Car Rental
             </label>
@@ -1172,7 +1135,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Coffeemaker", e.target.value)}
+                onChange={(e) => handleamenity("Coffee Maker", e.target.value)}
               />
               Coffee Maker
             </label>
@@ -1201,7 +1164,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Complimentary breakfast", e.target.value)
+                  handleamenity("Complimentary Breakfast", e.target.value)
                 }
               />
               Complimentary Breakfast
@@ -1211,7 +1174,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Concierge desk", e.target.value)
+                  handleamenity("Concierge Desk", e.target.value)
                 }
               />
               Conclerge Desk
@@ -1231,7 +1194,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Currency exchange", e.target.value)
+                  handleamenity("Currency Exchange", e.target.value)
                 }
               />
               Currency Exchange
@@ -1248,7 +1211,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Dry cleaning", e.target.value)}
+                onChange={(e) => handleamenity("Dry Cleaning", e.target.value)}
               />
               Dry Cleaning
             </label>
@@ -1310,7 +1273,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Game room", e.target.value)}
+                onChange={(e) => handleamenity("Game Room", e.target.value)}
               />
               Game Room
             </label>
@@ -1347,7 +1310,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Housekeeping", e.target.value)}
+                onChange={(e) => handleamenity("House Keeping", e.target.value)}
               />
               House Keeping
             </label>
@@ -1356,7 +1319,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Indoor parking", e.target.value)
+                  handleamenity("Indoor Parking", e.target.value)
                 }
               />
               Indoor Parking
@@ -1365,7 +1328,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Indoor pool", e.target.value)}
+                onChange={(e) => handleamenity("Indoor Pool", e.target.value)}
               />
               Indoor Pool
             </label>
@@ -1374,7 +1337,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Ironing service", e.target.value)
+                  handleamenity("Ironing Service", e.target.value)
                 }
               />
               Ironing Service
@@ -1384,7 +1347,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Jacuzzi(Hot Tub)", e.target.value)
+                  handleamenity("Jacuzzi (hot tub)", e.target.value)
                 }
               />
               Jacuzzi (hot tub)
@@ -1403,7 +1366,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Laundry", e.target.value)}
+                onChange={(e) => handleamenity("Laundary", e.target.value)}
               />
               Laundary
             </label>
@@ -1470,7 +1433,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Non-smoking rooms", e.target.value)
+                  handleamenity("Non Smoking Rooms", e.target.value)
                 }
               />
               Non Smoking Rooms
@@ -1480,7 +1443,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("On-site Restaurant", e.target.value)
+                  handleamenity("On Site Restaurant", e.target.value)
                 }
               />
               On Site Restaurant
@@ -1497,7 +1460,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Pet-friendly", e.target.value)}
+                onChange={(e) => handleamenity("Pet Friendly", e.target.value)}
               />
               Pet Friendly
             </label>
@@ -1514,7 +1477,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Private brach area", e.target.value)
+                  handleamenity("Private Beach area", e.target.value)
                 }
               />
               Private Beach area
@@ -1547,7 +1510,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("SatelliteTV", e.target.value)}
+                onChange={(e) => handleamenity("Satellite Tv", e.target.value)}
               />
               Satellite Tv
             </label>
@@ -1564,7 +1527,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Shops(on site)", e.target.value)
+                  handleamenity("Shops (on Site)", e.target.value)
                 }
               />
               Shops (on Site)
@@ -1584,7 +1547,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Souvenir/Gift Shop", e.target.value)
+                  handleamenity("Gift Shop", e.target.value)
                 }
               />
               Gift Shop
@@ -1667,7 +1630,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Valet Parking", e.target.value)}
+                onChange={(e) => handleamenity("Valet parking", e.target.value)}
               />
               valet parking
             </label>
@@ -1689,7 +1652,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("24-hour front desk service", e.target.value)
+                  handleamenity("24-hour Front Desk Service", e.target.value)
                 }
               />
               24-hour Front Desk Service
@@ -1698,7 +1661,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("ATM on site", e.target.value)}
+                onChange={(e) => handleamenity("ATM on Site", e.target.value)}
               />
               ATM on Site
             </label>
@@ -1717,7 +1680,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("Airport shuttle(free)", e.target.value)
+                  handleamenity("Airport Shuttle (Free)", e.target.value)
                 }
               />
               Airport Shuttle (Free)
@@ -1726,7 +1689,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("", e.target.value)}
+                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
               />
               Airport Shuttle Service (Surcharge)
             </label>
@@ -1735,7 +1698,7 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleamenity("BBQ/Picnic area", e.target.value)
+                  handleamenity("BBQ/picnic area", e.target.value)
                 }
               />
               BBQ/picnic area

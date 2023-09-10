@@ -351,7 +351,7 @@ const BookNowPage = ({ userData }) => {
               </div>
               <div className="pricing">
                 <FontAwesomeIcon icon={faInr} className="indianrupee" />
-                {offerData.price}
+                {offerData.roomDetails[0].price}
               </div>
               <div className="offer-data">
                 <p style={{ fontSize: "20px" }}>Offer:{offerData.offers}</p>
@@ -644,9 +644,9 @@ const BookNowPage = ({ userData }) => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
-                        <p>{item?.type}</p>
-                        <p>{item?.bedTypes}</p>
-                        <p>{item?.price}</p>
+                        <p>Room Type : {item?.type}</p>
+                        <p>Bed Type : {item?.bedTypes}</p>
+                        <p>Price : {item?.price}</p>
                       </div>
                       <div className="card-detail-img">
                         <img src={hotelImages[0]} alt="hotelImage" />

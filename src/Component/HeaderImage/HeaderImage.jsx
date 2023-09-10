@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+
 import "./HeaderImage.css";
 
 const HeaderImage = () => {

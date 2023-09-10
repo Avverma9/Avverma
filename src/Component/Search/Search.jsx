@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./Search.css";
 import moment from "moment";
+import {MdMyLocation} from 'react-icons/md'
 import { getSearchState } from "../redux/SearchSlice";
 import { useDispatch } from "react-redux";
 
@@ -19,13 +20,13 @@ const SearchComponent = () => {
     localId: false,
     maritalStatus: "unmarried",
     moreOptions: "",
-    
   });
   const [searchResults, setSearchResults] = useState([]);
+  const [nearbyLoading, setNearbyLoading] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
-
+  
     // Format start date and end date
     const startDate = searchData.startDate
       ? moment(searchData.startDate).format("YYYY-MM-DD")
@@ -33,23 +34,16 @@ const SearchComponent = () => {
     const endDate = searchData.endDate
       ? moment(searchData.endDate).format("YYYY-MM-DD")
       : "";
-
+  
     const queryString = new URLSearchParams({
-      destination: searchData.destination,
-      startDate,
-      endDate,
-      guests: searchData.guests,
-      numRooms: searchData.numRooms,
-      localId: searchData.localId ? "true" : "",
-      moreOptions: searchData.moreOptions,
+      city: searchData.destination, // Change to 'destination' instead of 'city'
     }).toString();
-
+  
     // Fetch search results from the API
     fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
       .then((response) => response.json())
       .then((data) => {
         setSearchResults(data);
-        console.log(data[0], "Search results");
         dispatch(getSearchState(data));
         navigate("/search/results");
       })
@@ -57,7 +51,61 @@ const SearchComponent = () => {
         console.error("Error fetching search results:", error);
       });
   };
-  //====== /search/results
+
+  // Function to fetch nearby hotels based on user's current location
+  const fetchNearbyHotels = () => {
+    setNearbyLoading(true);
+
+    // Check if geolocation is available in the browser
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        const { latitude, longitude } = position.coords;
+
+        // Add latitude and longitude to the search data
+        setSearchData((prevState) => ({
+          ...prevState,
+          latitude,
+          longitude,
+        }));
+
+        // Format start date and end date
+        const startDate = searchData.startDate
+          ? moment(searchData.startDate).format("YYYY-MM-DD")
+          : "";
+        const endDate = searchData.endDate
+          ? moment(searchData.endDate).format("YYYY-MM-DD")
+          : "";
+
+        const queryString = new URLSearchParams({
+          latitude,
+          longitude,
+          startDate,
+          endDate,
+          guests: searchData.guests,
+          numRooms: searchData.numRooms,
+          localId: searchData.localId ? "true" : "",
+          moreOptions: searchData.moreOptions,
+        }).toString();
+
+        // Fetch nearby hotels from the API
+        fetch(`https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setSearchResults(data);
+            dispatch(getSearchState(data));
+            navigate("/search/results");
+          })
+          .catch((error) => {
+            console.error("Error fetching nearby hotels:", error);
+          })
+          .finally(() => {
+            setNearbyLoading(false);
+          });
+      });
+    } else {
+      console.log("Geolocation is not available in this browser.");
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -96,32 +144,32 @@ const SearchComponent = () => {
           type="text"
           id="destination"
           name="destination"
-          placeholder="Search Your Hotel and Destination"
-          value={searchData.destination}
+          placeholder="Search By City"
+          value={searchData.city}
           onChange={handleInputChange}
           required
           className="input-text"
         />
 
         <div className="date-picker">
-        <div className="start-date">
-        <DatePicker
-          id="start-date"
-          name="startDate"
-          selected={searchData.startDate}
-          onChange={(date) =>
-            setSearchData((prevState) => ({
-              ...prevState,
-              startDate: date,
-            }))
-          }
-          required
-          className="input-startdate"
-          placeholderText="Check-in"
-          dateFormat="dd-MM-yyyy"
-          utcOffset={-1 * new Date().getTimezoneOffset()}
-        />
-      </div>
+          <div className="start-date">
+            <DatePicker
+              id="start-date"
+              name="startDate"
+              selected={searchData.startDate}
+              onChange={(date) =>
+                setSearchData((prevState) => ({
+                  ...prevState,
+                  startDate: date,
+                }))
+              }
+       
+              className="input-startdate"
+              placeholderText="Check-in"
+              dateFormat="dd-MM-yyyy"
+              utcOffset={-1 * new Date().getTimezoneOffset()}
+            />
+          </div>
           <div className="end-date">
             <DatePicker
               id="endDate"
@@ -133,10 +181,10 @@ const SearchComponent = () => {
                   endDate: date,
                 }))
               }
-              required
+            
               className="input-enddate"
               placeholderText="Check-out"
-              dateFormat="dd-MM-yyyy" // Set the desired date format
+              dateFormat="dd-MM-yyyy"
               utcOffset={-1 * new Date().getTimezoneOffset()}
             />
           </div>
@@ -162,7 +210,7 @@ const SearchComponent = () => {
               name="guests"
               value={searchData.guests}
               onChange={handleInputChange}
-              required
+        
               className="input-guests"
             >
               {renderOptions(1, 1000, "Guests")}
@@ -176,7 +224,7 @@ const SearchComponent = () => {
               name="numRooms"
               value={searchData.numRooms}
               onChange={handleInputChange}
-              required
+              
               className="input-rooms"
             >
               {renderOptions(1, 4, "Rooms")}
@@ -218,6 +266,17 @@ const SearchComponent = () => {
           <button type="submit">Search</button>
         </div>
       </form>
+
+      <div className="nearby-button">
+        <button
+          type="button"
+          onClick={fetchNearbyHotels}
+          disabled={nearbyLoading}
+        >
+          <MdMyLocation/> Nearby 
+        </button>
+
+      </div>
 
       <div className="search-results">
         {searchResults.map((result) => (

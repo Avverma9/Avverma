@@ -4,13 +4,13 @@ import {
   MDBFooter,
   MDBContainer,
   MDBIcon,
-  MDBInput,
   MDBCol,
   MDBRow,
   MDBBtn,
 } from "mdb-react-ui-kit";
 
 const Footer = () => {
+
   return (
     <MDBFooter className="text-center" color="white" bgColor="dark">
       <MDBContainer className="p-4">
