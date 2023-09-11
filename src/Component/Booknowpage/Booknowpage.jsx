@@ -351,7 +351,7 @@ const BookNowPage = ({ userData }) => {
               </div>
               <div className="pricing">
                 <FontAwesomeIcon icon={faInr} className="indianrupee" />
-                {offerData.price}
+                {offerData.roomDetails[0].price}
               </div>
               <div className="offer-data">
                 <p style={{ fontSize: "20px" }}>Offer:{offerData.offers}</p>

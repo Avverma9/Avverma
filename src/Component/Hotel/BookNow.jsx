@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
-import { CiStar } from "react-icons/ci";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
 import {
@@ -42,6 +41,7 @@ import { Rating } from "react-simple-star-rating";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 export default function BookNow({ refresh, reset, userData, toast }) {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
@@ -402,7 +402,10 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     console.log(currPos.y);
     // setPos
   });
-
+  const isSignedIn = localStorage.getItem("isSignedIn")
+  if(!isSignedIn){
+    navigate("/signin")
+  }
   return (
     <>
       <div className="container-p-4">
@@ -453,9 +456,16 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
               <div className="pricing">
-                <FontAwesomeIcon icon={faInr} className="indianrupee" />
-                {bookingDetails.price}
-              </div>
+  {bookingDetails.roomDetails && bookingDetails.roomDetails.length > 0 ? (
+    <>
+      <FontAwesomeIcon icon={faInr} className="indianrupee" />
+      {bookingDetails.roomDetails[0].price}
+    </>
+  ) : (
+    <span>No pricing information available</span>
+  )}
+</div>
+
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
                   Description:

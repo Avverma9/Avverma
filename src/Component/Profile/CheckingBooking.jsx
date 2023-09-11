@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";

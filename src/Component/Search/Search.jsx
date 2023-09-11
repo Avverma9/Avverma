@@ -26,7 +26,7 @@ const SearchComponent = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-
+  
     // Format start date and end date
     const startDate = searchData.startDate
       ? moment(searchData.startDate).format("YYYY-MM-DD")
@@ -34,17 +34,11 @@ const SearchComponent = () => {
     const endDate = searchData.endDate
       ? moment(searchData.endDate).format("YYYY-MM-DD")
       : "";
-
+  
     const queryString = new URLSearchParams({
-      destination: searchData.destination,
-      startDate,
-      endDate,
-      guests: searchData.guests,
-      numRooms: searchData.numRooms,
-      localId: searchData.localId ? "true" : "",
-      moreOptions: searchData.moreOptions,
+      city: searchData.destination, // Change to 'destination' instead of 'city'
     }).toString();
-
+  
     // Fetch search results from the API
     fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
       .then((response) => response.json())
@@ -150,8 +144,8 @@ const SearchComponent = () => {
           type="text"
           id="destination"
           name="destination"
-          placeholder="Search Your Hotel and Destination"
-          value={searchData.destination}
+          placeholder="Search By City"
+          value={searchData.city}
           onChange={handleInputChange}
           required
           className="input-text"
@@ -169,7 +163,7 @@ const SearchComponent = () => {
                   startDate: date,
                 }))
               }
-              required
+       
               className="input-startdate"
               placeholderText="Check-in"
               dateFormat="dd-MM-yyyy"
@@ -187,7 +181,7 @@ const SearchComponent = () => {
                   endDate: date,
                 }))
               }
-              required
+            
               className="input-enddate"
               placeholderText="Check-out"
               dateFormat="dd-MM-yyyy"
@@ -216,7 +210,7 @@ const SearchComponent = () => {
               name="guests"
               value={searchData.guests}
               onChange={handleInputChange}
-              required
+        
               className="input-guests"
             >
               {renderOptions(1, 1000, "Guests")}
@@ -230,7 +224,7 @@ const SearchComponent = () => {
               name="numRooms"
               value={searchData.numRooms}
               onChange={handleInputChange}
-              required
+              
               className="input-rooms"
             >
               {renderOptions(1, 4, "Rooms")}

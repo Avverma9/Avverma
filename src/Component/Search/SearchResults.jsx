@@ -224,15 +224,13 @@ export default function SearchResults() {
 
               <p className="search-result-guests"><FontAwesomeIcon icon={faPerson} className='guest' /> {result.guests}Guest</p>
               <p className='search-result-rooms'><FontAwesomeIcon icon={faHotel} className='room' />{result.numRooms} Room <span style={{ color: '#5963ff', fontWeight: '502' }}>Available</span></p>
-              <p className='search-result-price'><FontAwesomeIcon icon={faInr} className='rupees' /> {result.price}<span className='detail'>per room per night</span></p>
+              <p className='search-result-price'><FontAwesomeIcon icon={faInr} className='rupees' /> {result.roomDetails[0].price}<span className='detail'>per room per night</span></p>
               <hr />
               <p className="search-result-availability">Local ID: {result.availability}</p>
               <hr />
 
               <div className="button-container-searchresult">
-                <button className="view-details-button-searchresult" onClick={() => toggleDetails(result._id)}>
-                  View Details
-                </button>
+                
                 <button className="book-now-button-searchresult"
                   onClick={() => handleBuy(result._id)}
                 >Book Now</button>

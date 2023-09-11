@@ -8,8 +8,6 @@ import SearchComponent from '../Search/Search';
 
 const CarouselPage = () => {
   const location = useLocation();
-  const navigate = useNavigate()
-  const isSignedIn = localStorage.getItem("isSignedIn")
   const [slideIndex, setSlideIndex] = useState(0);
   const slides = [
     'https://cdn0.desidime.com/cdn-cgi/image/fit=contain,f=auto,onerror=redirect,w=1200,h=675,q=90/attachments/photos/876716/original/OffersinAmazonSummerSale2023.png',
@@ -39,9 +37,7 @@ const CarouselPage = () => {
   if (location.pathname !== '/') {
     return null;
   }
-  if(!isSignedIn){
-    navigate("/signin")
-  }
+
   return (
     <div className="carousel">
       {slides.map((slide, index) => (
