@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./partner.css";
+import '../Profile/ConfirmBooking.module.css'
 
 const Partner = () => {
   const location = useLocation();
@@ -630,7 +631,7 @@ const Partner = () => {
                   onChange={(e) => setGeneralManagerContact(e.target.value)}
                 />
               </div>
-              <div className="salesmanagercontact">
+              <div className="salesmanagercontact" style={{ position: "relative", left: "-20px" }}>
                 <label htmlFor="salesManagerContact">
                   Sales Manager Contact Details:
                 </label>
@@ -645,7 +646,7 @@ const Partner = () => {
 
             <h3>Hotel Details & Location</h3>
             <div className="group3">
-              <div className="hotelName">
+              <div className="street">
                 <label htmlFor="hotelName">Hotel Name:</label>
                 <input
                   type="text"
@@ -658,7 +659,7 @@ const Partner = () => {
               {/* <button type="button" onClick={addRoomDetail}>
           Add Room Detail
         </button> */}
-              <div className="street">
+              <div className="street" style={{ marginLeft: "15px" }}>
                 <label htmlFor="description">Description :</label>
                 <input
                   type="text"
@@ -719,58 +720,71 @@ const Partner = () => {
             </div>
 
             <h3>Hotel Star Rating</h3>
-            <input
-              type="radio"
-              id="starone"
-              name="starRating"
-              value="1 star"
-              onChange={(e) => setstarRating(e.target.value)}
-              checked={starRating === "1 star"}
-            />
-            <label htmlFor="starone">1 Star</label>
+
+            <table style={{ width: "100%" }}>
+              <tr>
+                <td><input
+                  type="radio"
+                  id="starone"
+                  name="starRating"
+                  value="1 star"
+                  onChange={(e) => setstarRating(e.target.value)}
+                  checked={starRating === "1 star"}
+                />
+                  <label htmlFor="starone">1 Star</label></td>
+                <td><input
+                  type="radio"
+                  id="startwo"
+                  name="starRating"
+                  value="2 star"
+                  onChange={(e) => setstarRating(e.target.value)}
+                  checked={starRating === "2 star"}
+                />
+                  <label htmlFor="startwo">2 Star</label></td>
+                <td><input
+                  type="radio"
+                  id="starthree"
+                  name="starRating"
+                  value="3 star"
+                  onChange={(e) => setstarRating(e.target.value)}
+                  checked={starRating === "3 star"}
+                />
+                  <label htmlFor="starthree">3 Star</label></td>
+              </tr>
+            </table>
+
+            <table style={{ width: "65%" }}>
+              <tr>
+                <td><input
+                  type="radio"
+                  id="starfour"
+                  name="starRating"
+                  value="4 star"
+                  onChange={(e) => setstarRating(e.target.value)}
+                  checked={starRating === "4 star"}
+                />
+                  <label htmlFor="starfour">4 Star</label></td>
+                <td><input
+                  type="radio"
+                  id="starfive"
+                  name="starRating"
+                  value="5 star"
+                  onChange={(e) => setstarRating(e.target.value)}
+                  checked={starRating === "5 star"}
+                />
+                  <label htmlFor="starfive">5 Star</label></td>
+              </tr>
+            </table>
+
+
             <br />
-            <input
-              type="radio"
-              id="startwo"
-              name="starRating"
-              value="2 star"
-              onChange={(e) => setstarRating(e.target.value)}
-              checked={starRating === "2 star"}
-            />
-            <label htmlFor="startwo">2 Star</label>
-            <br />
-            <input
-              type="radio"
-              id="starthree"
-              name="starRating"
-              value="3 star"
-              onChange={(e) => setstarRating(e.target.value)}
-              checked={starRating === "3 star"}
-            />
-            <label htmlFor="starthree">3 Star</label>
-            <br />
-            <input
-              type="radio"
-              id="starfour"
-              name="starRating"
-              value="4 star"
-              onChange={(e) => setstarRating(e.target.value)}
-              checked={starRating === "4 star"}
-            />
-            <label htmlFor="starfour">4 Star</label>
-            <br />
-            <input
-              type="radio"
-              id="starfive"
-              name="starRating"
-              value="5 star"
-              onChange={(e) => setstarRating(e.target.value)}
-              checked={starRating === "5 star"}
-            />
-            <label htmlFor="starfive">5 Star</label>
+
 
             <h3>Your Property Type</h3>
-            <input
+
+            <table style={{width : "100%"}}>
+              <tr>
+                <td><input
               type="radio"
               id="apartment"
               name="propertyType"
@@ -778,9 +792,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Apartment"}
             />
-            <label htmlFor="Apartment">Apartment</label>
-            <br />
-            <input
+            <label htmlFor="Apartment">Apartment</label></td>
+                <td><input
               type="radio"
               id="guesthouse"
               name="propertyType"
@@ -788,9 +801,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Guest House"}
             />
-            <label htmlFor="guesthouse">Guest House</label>
-            <br />
-            <input
+            <label htmlFor="guesthouse">Guest House</label></td>
+                <td><input
               type="radio"
               id="holiday"
               name="propertyType"
@@ -798,9 +810,10 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Holiday Home"}
             />
-            <label htmlFor="holiday">Holiday Home</label>
-            <br />
-            <input
+            <label htmlFor="holiday">Holiday Home</label></td>
+              </tr>
+              <tr>
+                <td><input
               type="radio"
               id="homestay"
               name="propertyType"
@@ -808,10 +821,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Homestay"}
             />
-            <label htmlFor="homestay">Homestay</label>
-            <br />
-
-            <input
+            <label htmlFor="homestay">Homestay</label></td>
+                <td><input
               type="radio"
               id="hostel"
               name="propertyType"
@@ -819,9 +830,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Hostel"}
             />
-            <label htmlFor="hostel">Hostel</label>
-            <br />
-            <input
+            <label htmlFor="hostel">Hostel</label></td>
+                <td><input
               type="radio"
               id="hotel"
               name="propertyType"
@@ -829,9 +839,10 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Hotel"}
             />
-            <label htmlFor="hotel">Hotel</label>
-            <br />
-            <input
+            <label htmlFor="hotel">Hotel</label></td>
+              </tr>
+              <tr>
+                <td><input
               type="radio"
               id="hotelapartment"
               name="propertyType"
@@ -839,9 +850,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Hotel Aprtment"}
             />
-            <label htmlFor="hotelaprtment">Hotel Aprtment</label>
-            <br />
-            <input
+            <label htmlFor="hotelaprtment">Hotel Aprtment</label></td>
+                <td><input
               type="radio"
               id="resort"
               name="propertyType"
@@ -849,9 +859,8 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Resort"}
             />
-            <label htmlFor="resort">Resort</label>
-            <br />
-            <input
+            <label htmlFor="resort">Resort</label></td>
+                <td><input
               type="radio"
               id="villa"
               name="propertyType"
@@ -859,7 +868,11 @@ const Partner = () => {
               onChange={(e) => setPropertyType(e.target.value)}
               checked={propertyType === "Villa"}
             />
-            <label htmlFor="villa">Villa</label>
+            <label htmlFor="villa">Villa</label></td>
+              </tr>
+            </table>
+            
+            
           </div>
         )}
 
@@ -1626,6 +1639,7 @@ const Partner = () => {
         <div className="room-content">
           {activeNavItem === "Add Rooms" && (
             <>
+
               <div className="disclaimer">
                 {" "}
                 For now you are only permitted to Add Standard Room, After
@@ -1634,136 +1648,144 @@ const Partner = () => {
               <hr />
               {roomDetails.map((room, index) => (
                 <div key={index}>
-                  <label>
-                    Room Type
-                    <select
-                      value={room.type || "Standard"}
-                      className="room-input"
-                      onChange={(e) =>
-                        handleRoomDetailsChange(index, "type", e.target.value)
-                      }
-                    >
-                      <option value="">Select Room Type</option>
-                      <option value="Standard Room">Standard Room</option>
-                      <option value="Deluxe Room">Deluxe Room</option>
-                      <option value="Double Room">Double Room</option>
-                      <option value="Double or Twin">Double or Twin</option>
-                      <option value="Deluxe King Room">Deluxe King Room</option>
-                      <option value="Family Room">Family Room</option>
-                      <option value="Business Double Room">
-                        Business Double Room
-                      </option>
-                      <option value="Two Bedroom Apartment">
-                        Two Bedroom Apartment
-                      </option>
-                      <option value="Free Stay">Free Stay</option>
-                      <option value="Three Bedroom Apartment">
-                        Three Bedroom Apartment
-                      </option>
-                      <option value="Deluxe One Bed Room">
-                        Deluxe One Bed Room
-                      </option>
-                      <option value="Deluxe Twin Room">Deluxe Twin Room</option>
-                      <option value="Twin">Twin</option>
-                      <option value="Two Bedroom Suite">
-                        Two Bedroom Suite
-                      </option>
-                      <option value="Executive Studio">Executive Studio</option>
-                      <option value="Executive Suite">Executive Suite</option>
-                      <option value="Executive Room">Executive Room</option>
-                      <option value="Superior">Superior</option>
-                      <option value="Junior Suite">Junior Suite</option>
-                      <option value="One Bedroom Suite">
-                        One Bedroom Suite
-                      </option>
-                      <option value="One Bedroom Apartment">
-                        One Bedroom Apartment
-                      </option>
-                      <option value="Partition Room">Partition Room</option>
-                      <option value="Quadrupel">Quadrupel</option>
-                      <option value="Royal Two Bedroom Suite">
-                        Royal Two Bedroom Suite
-                      </option>
-                      <option value="Single Room">Single Room</option>
-                      <option value="Six Bed">Six Bed</option>
-                      <option value="Small Private Partition Room">
-                        Small Private Partition Room
-                      </option>
-                      <option value="Standard One Bedroom Apartment">
-                        Standard One Bedroom Apartment
-                      </option>
-                      <option value="Standard Studio With King Bed">
-                        Standard Studio With King Bed
-                      </option>
-                      <option value="Standard Studio with Twin Bed">
-                        Standard Studio with Twin Bed
-                      </option>
-                      <option value="Standard Three Bedroom Apartment">
-                        Standard Three Bedroom Apartment
-                      </option>
-                      <option value="Standard Two Bedroom Apartment">
-                        Standard Two Bedroom Apartment
-                      </option>
-                    </select>
-                  </label>
-                  <label>
-                    Bed Type
-                    <select
-                      value={room.bedTypes || "Single Bed"}
-                      className="room-input"
-                      onChange={(e) =>
-                        handleRoomDetailsChange(
-                          index,
-                          "bedTypes",
-                          e.target.value
-                        )
-                      }
-                    >
-                      <option value="">Select Bed Type</option>
-                      <option value="Single">Single Bed</option>
-                      <option value="Bunk">Bunk Bed</option>
-                      <option value="DayBed">DayBed</option>
-                      <option value="KingSize">King Size</option>
-                      <option value="KingBedOrQueenBed">
-                        King Bed Or Queen Bed
-                      </option>
-                      <option value="KingOrTwin">King or Twin</option>
-                      <option value="KingPlusTwin">King+Twin</option>
-                      <option value="MurphyBed">Murphy Bed</option>
-                      <option value="KingSizePlusQueenSize">
-                        King Size + Queen Size
-                      </option>
-                      <option value="QueenSize">Queen Size</option>
-                      <option value="TrundleBed">Trundle Bed</option>
-                      <option value="TwinPlusKingPlusQueen">
-                        Twin+King+Queen
-                      </option>
-                      <option value="Twin">Twin Bed</option>
-                      <option value="KingBedOrQueenBedOrTwinBed">
-                        King Bed or Queen Bed or Twin Bed
-                      </option>
-                    </select>
-                  </label>
+                  <table style={{ width: "100%" }}>
+                    <tr>
+                      <td><strong>Room Type</strong></td>
+                      <td><select
+                        value={room.type || "Standard"}
+                        className="room-input"
+                        onChange={(e) =>
+                          handleRoomDetailsChange(index, "type", e.target.value)
+                        }
+                      >
+                        <option value="">Select Room Type</option>
+                        <option value="Standard Room">Standard Room</option>
+                        <option value="Deluxe Room">Deluxe Room</option>
+                        <option value="Double Room">Double Room</option>
+                        <option value="Double or Twin">Double or Twin</option>
+                        <option value="Deluxe King Room">Deluxe King Room</option>
+                        <option value="Family Room">Family Room</option>
+                        <option value="Business Double Room">
+                          Business Double Room
+                        </option>
+                        <option value="Two Bedroom Apartment">
+                          Two Bedroom Apartment
+                        </option>
+                        <option value="Free Stay">Free Stay</option>
+                        <option value="Three Bedroom Apartment">
+                          Three Bedroom Apartment
+                        </option>
+                        <option value="Deluxe One Bed Room">
+                          Deluxe One Bed Room
+                        </option>
+                        <option value="Deluxe Twin Room">Deluxe Twin Room</option>
+                        <option value="Twin">Twin</option>
+                        <option value="Two Bedroom Suite">
+                          Two Bedroom Suite
+                        </option>
+                        <option value="Executive Studio">Executive Studio</option>
+                        <option value="Executive Suite">Executive Suite</option>
+                        <option value="Executive Room">Executive Room</option>
+                        <option value="Superior">Superior</option>
+                        <option value="Junior Suite">Junior Suite</option>
+                        <option value="One Bedroom Suite">
+                          One Bedroom Suite
+                        </option>
+                        <option value="One Bedroom Apartment">
+                          One Bedroom Apartment
+                        </option>
+                        <option value="Partition Room">Partition Room</option>
+                        <option value="Quadrupel">Quadrupel</option>
+                        <option value="Royal Two Bedroom Suite">
+                          Royal Two Bedroom Suite
+                        </option>
+                        <option value="Single Room">Single Room</option>
+                        <option value="Six Bed">Six Bed</option>
+                        <option value="Small Private Partition Room">
+                          Small Private Partition Room
+                        </option>
+                        <option value="Standard One Bedroom Apartment">
+                          Standard One Bedroom Apartment
+                        </option>
+                        <option value="Standard Studio With King Bed">
+                          Standard Studio With King Bed
+                        </option>
+                        <option value="Standard Studio with Twin Bed">
+                          Standard Studio with Twin Bed
+                        </option>
+                        <option value="Standard Three Bedroom Apartment">
+                          Standard Three Bedroom Apartment
+                        </option>
+                        <option value="Standard Two Bedroom Apartment">
+                          Standard Two Bedroom Apartment
+                        </option>
+                      </select></td>
+                    </tr>
 
-                  <label>
-                    Price
-                    <input
-                      type="number"
-                      value={room.price || ""}
-                      className="room-input"
-                      onChange={(e) =>
-                        handleRoomDetailsChange(index, "price", e.target.value)
-                      }
-                    />
-                  </label>
-                  <label>
-                    Available rooms :
-                    <input
-                      type="number"
-                      value={numRooms}
-                      onChange={(e) => setNumRooms(e.target.value)}
-                    />
-                  </label>
+
+                    {/* </label> */}
+                    <tr>
+                      <td><strong>Bed Type</strong></td>
+                      <td><select
+                        value={room.bedTypes || "Single Bed"}
+                        className="room-input"
+                        onChange={(e) =>
+                          handleRoomDetailsChange(
+                            index,
+                            "bedTypes",
+                            e.target.value
+                          )
+                        }
+                      >
+                        <option value="">Select Bed Type</option>
+                        <option value="Single">Single Bed</option>
+                        <option value="Bunk">Bunk Bed</option>
+                        <option value="DayBed">DayBed</option>
+                        <option value="KingSize">King Size</option>
+                        <option value="KingBedOrQueenBed">
+                          King Bed Or Queen Bed
+                        </option>
+                        <option value="KingOrTwin">King or Twin</option>
+                        <option value="KingPlusTwin">King+Twin</option>
+                        <option value="MurphyBed">Murphy Bed</option>
+                        <option value="KingSizePlusQueenSize">
+                          King Size + Queen Size
+                        </option>
+                        <option value="QueenSize">Queen Size</option>
+                        <option value="TrundleBed">Trundle Bed</option>
+                        <option value="TwinPlusKingPlusQueen">
+                          Twin+King+Queen
+                        </option>
+                        <option value="Twin">Twin Bed</option>
+                        <option value="KingBedOrQueenBedOrTwinBed">
+                          King Bed or Queen Bed or Twin Bed
+                        </option>
+                      </select></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Price</strong></td>
+                      <td><input
+                        type="number"
+                        value={room.price || ""}
+                        className="room-input"
+                        onChange={(e) =>
+                          handleRoomDetailsChange(index, "price", e.target.value)
+                        }
+                      /></td>
+                    </tr>
+
+                    <tr>
+                      <td><strong>Available rooms</strong></td>
+                      <td><input
+                        type="number"
+                        value={numRooms}
+                        onChange={(e) => setNumRooms(e.target.value)}
+                      /></td>
+                    </tr>
+                    <br />
+                  </table>
+
+
                 </div>
               ))}
             </>
@@ -1774,233 +1796,235 @@ const Partner = () => {
             <h3>Hotel Policy</h3>
             <form onSubmit={handlePartnerSubmit}>
               <div className="radioinputs">
-                <label>1-Outside Food</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="outsideFoodPolicy"
-                    value="allowed"
-                    onChange={(e) => setOutsideFoodPolicy(e.target.value)}
-                    checked={outsideFoodPolicy === "allowed"}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="outsideFoodPolicy"
-                    value="notAllowed"
-                    checked={outsideFoodPolicy === "notAllowed"}
-                    onChange={(e) => setOutsideFoodPolicy(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>2-Cancellation</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="cancellationpolicy"
-                    value="allowed"
-                    checked={cancellationpolicy === "allowed"}
-                    onChange={(e) => setCancellationpolicy(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="cancellationpolicy"
-                    value="notAllowed"
-                    checked={cancellationpolicy === "notAllowed"}
-                    onChange={(e) => setCancellationpolicy(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>3-Select Your Payment Mode You Accepted</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="paymentmode"
-                    value="online"
-                    checked={paymentMode === "online"}
-                    onChange={(e) => setPaymentMode(e.target.value)}
-                  />
-                  Online
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="paymentmode"
-                    value="offline"
-                    checked={paymentMode === "offline"}
-                    onChange={(e) => setPaymentMode(e.target.value)}
-                  />
-                  Offline
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="paymentmode"
-                    value="both"
-                    checked={paymentMode === "both"}
-                    onChange={(e) => setPaymentMode(e.target.value)}
-                  />
-                  Online & Offline both
-                </label>
-                <br />
-                <label>4-Pets Allowed</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="pets"
-                    value="allowed"
-                    checked={pets === "allowed"}
-                    onChange={(e) => setPets(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="pets"
-                    value="notAllowed"
-                    checked={pets === "notAllowed"}
-                    onChange={(e) => setPets(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>5-Bachelor Allowed</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="Bachelorallow"
-                    value="allowed"
-                    checked={bachelor === "allowed"}
-                    onChange={(e) => setBachelor(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="Bachelorallow"
-                    value="notAllowed"
-                    checked={bachelor === "notAllowed"}
-                    onChange={(e) => setBachelor(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>6-Smoking Allowed</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="smokingallow"
-                    value="allowed"
-                    checked={smoking === "allowed"}
-                    onChange={(e) => setSmoking(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="smokingallow"
-                    value="notAllowed"
-                    checked={smoking === "notAllowed"}
-                    onChange={(e) => setSmoking(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>7-Alcohol Allowed</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="Alcohol"
-                    value="allowed"
-                    checked={alcohol === "allowed"}
-                    onChange={(e) => setAlcohol(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="Alcohol"
-                    value="notAllowed"
-                    checked={alcohol === "notAllowed"}
-                    onChange={(e) => setAlcohol(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>8-Unmarried Couples</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="unmarriedcouples"
-                    value="allowed"
-                    checked={unmarriedcouples === "allowed"}
-                    onChange={(e) => setUnmarriedcouples(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="unmarriedcouples"
-                    value="notAllowed"
-                    checked={unmarriedcouples === "notAllowed"}
-                    onChange={(e) => setUnmarriedcouples(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
-                <label>9-International Guest Allowed</label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="internationalcouple"
-                    value="allowed"
-                    checked={internationalcouple === "allowed"}
-                    onChange={(e) => setInternationalcouple(e.target.value)}
-                  />
-                  Allowed
-                </label>
-                <br />
-                <label>
-                  <input
-                    type="radio"
-                    name="internationalcouple"
-                    value="notAllowed"
-                    checked={internationalcouple === "notAllowed"}
-                    onChange={(e) => setInternationalcouple(e.target.value)}
-                  />
-                  Not Allowed
-                </label>
-                <br />
+
+                <table>
+                  <tr>
+                    <td><strong>1-Outside Food</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="outsideFoodPolicy"
+                        value="allowed"
+                        onChange={(e) => setOutsideFoodPolicy(e.target.value)}
+                        checked={outsideFoodPolicy === "allowed"}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="outsideFoodPolicy"
+                        value="notAllowed"
+                        checked={outsideFoodPolicy === "notAllowed"}
+                        onChange={(e) => setOutsideFoodPolicy(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+
+                  {/* <br /> */}
+
+                  <tr>
+                    <td><strong>2-Cancellation</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="cancellationpolicy"
+                        value="allowed"
+                        checked={cancellationpolicy === "allowed"}
+                        onChange={(e) => setCancellationpolicy(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="cancellationpolicy"
+                        value="notAllowed"
+                        checked={cancellationpolicy === "notAllowed"}
+                        onChange={(e) => setCancellationpolicy(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+
+
+                  <tr>
+                    <td><strong>3-Select Your Payment Mode You Accepted</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="paymentmode"
+                        value="online"
+                        checked={paymentMode === "online"}
+                        onChange={(e) => setPaymentMode(e.target.value)}
+                      />
+                      Online
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="paymentmode"
+                        value="offline"
+                        checked={paymentMode === "offline"}
+                        onChange={(e) => setPaymentMode(e.target.value)}
+                      />
+                      Offline
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="paymentmode"
+                        value="both"
+                        checked={paymentMode === "both"}
+                        onChange={(e) => setPaymentMode(e.target.value)}
+                      />
+                      Online & Offline both
+                    </label></td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>4-Pets Allowed</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="pets"
+                        value="allowed"
+                        checked={pets === "allowed"}
+                        onChange={(e) => setPets(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="pets"
+                        value="notAllowed"
+                        checked={pets === "notAllowed"}
+                        onChange={(e) => setPets(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+                  <tr>
+                    <td><strong>5-Bachelor Allowed</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="Bachelorallow"
+                        value="allowed"
+                        checked={bachelor === "allowed"}
+                        onChange={(e) => setBachelor(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="Bachelorallow"
+                        value="notAllowed"
+                        checked={bachelor === "notAllowed"}
+                        onChange={(e) => setBachelor(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+                  <tr>
+                    <td><strong>6-Smoking Allowed</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="smokingallow"
+                        value="allowed"
+                        checked={smoking === "allowed"}
+                        onChange={(e) => setSmoking(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="smokingallow"
+                        value="notAllowed"
+                        checked={smoking === "notAllowed"}
+                        onChange={(e) => setSmoking(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+                  <tr>
+                    <td><strong>7-Alcohol Allowed</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="Alcohol"
+                        value="allowed"
+                        checked={alcohol === "allowed"}
+                        onChange={(e) => setAlcohol(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="Alcohol"
+                        value="notAllowed"
+                        checked={alcohol === "notAllowed"}
+                        onChange={(e) => setAlcohol(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>8-Unmarried Couples</strong></td>
+                    <td> <label>
+                      <input
+                        type="radio"
+                        name="unmarriedcouples"
+                        value="allowed"
+                        checked={unmarriedcouples === "allowed"}
+                        onChange={(e) => setUnmarriedcouples(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="unmarriedcouples"
+                        value="notAllowed"
+                        checked={unmarriedcouples === "notAllowed"}
+                        onChange={(e) => setUnmarriedcouples(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+
+                  <tr>
+                    <td><strong>9-International Guest Allowed</strong></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="internationalcouple"
+                        value="allowed"
+                        checked={internationalcouple === "allowed"}
+                        onChange={(e) => setInternationalcouple(e.target.value)}
+                      />
+                      Allowed
+                    </label></td>
+                    <td><label>
+                      <input
+                        type="radio"
+                        name="internationalcouple"
+                        value="notAllowed"
+                        checked={internationalcouple === "notAllowed"}
+                        onChange={(e) => setInternationalcouple(e.target.value)}
+                      />
+                      Not Allowed
+                    </label></td>
+                  </tr>
+                </table>
+
 
                 <hr />
                 <label htmlFor="returnPolicy">
@@ -2114,56 +2138,59 @@ const Partner = () => {
                 <h3>Hotel Tariff</h3>
                 <h6>Off-season</h6>
                 <br />
-                <div className="tariff-container1">
-                  <label htmlFor="offdoublesharing">
-                    Double Sharing:
-                    <input
+
+
+                <table className="mytable1">
+                  <tr>
+                    <td><strong>Double Sharing</strong></td>
+                    <td><input
                       type="text"
                       id="offdoublesharing"
                       value={offDoubleSharing}
                       onChange={(e) => setOffDoubleSharing(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="offquadsharing">
-                    Quad Sharing:
-                    <input
+                    /></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Quad Sharing</strong></td>
+                    <td><input
                       type="text"
                       id="offquadsharing"
                       value={offquadsharing}
                       onChange={(e) => setOffquadsharing(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="offbulkbooking">
-                    Bulk Booking more then 20-30people:
-                    <input
+                    /></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Bulk Booking more then 20-30people:</strong></td>
+                    <td><input
                       type="text"
                       id="offbulkbooking"
                       value={offbulkbooking}
                       onChange={(e) => setOffbulkbooking(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="offtripplesharing">
-                    Tripple Sharing:
-                    <input
+                    /></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tripple Sharing:</strong></td>
+                    <td><input
                       type="text"
                       id="offtripplesharing"
                       onChange={(e) => setOfftripplesharing(e.target.value)}
-                    />
-                  </label>
-                  <label htmlFor="offmore4room">
-                    More then four rooms:
-                    <input
+                    /></td>
+                  </tr>
+                  <tr>
+                    <td><strong>More then four rooms:</strong></td>
+                    <td><input
                       type="text"
                       id="offmore4rooms"
                       value={offmore4room}
                       onChange={(e) => setOffmore4room(e.target.value)}
-                    />
-                  </label>
+                    /></td>
+                  </tr>
+                </table>
+                <div className="tariff-container1">
+
+                  <br />
                   <h6>AP Plan</h6>
-                  <label htmlFor="offDoubleSharingApPlan">
+                  {/* <label htmlFor="offDoubleSharingApPlan">
                     Double Sharing:
                     <input
                       type="text"
@@ -2173,95 +2200,112 @@ const Partner = () => {
                         setOffDoubleSharingApPlan(e.target.value)
                       }
                     />
-                  </label>
+                  </label> */}
+                  <table>
+                    <tr>
+                      <td><strong>Double Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offDoubleSharingApPlan"
+                        value={offDoubleSharingApPlan}
+                        onChange={(e) =>
+                          setOffDoubleSharingApPlan(e.target.value)
+                        }
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quad Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offquadsharingap"
+                        value={offquadsharingap}
+                        onChange={(e) => setOffquadsharingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bulk Booking more then 20-30people:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offbulkbookingap"
+                        value={offbulkbookingap}
+                        onChange={(e) => setOffbulkbookingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tripple Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offtripplesharingap"
+                        value={offtripplesharingap}
+                        onChange={(e) => setOfftripplesharingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>More then four rooms:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offmore4roomsap"
+                        value={offmore4roomap}
+                        onChange={(e) => setOffmore4roomap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <br />
 
-                  <label htmlFor="offquadsharing">
-                    Quad Sharing:
-                    <input
-                      type="text"
-                      id="offquadsharingap"
-                      value={offquadsharingap}
-                      onChange={(e) => setOffquadsharingap(e.target.value)}
-                    />
-                  </label>
+                  </table>
 
-                  <label htmlFor="offbulkbookingap">
-                    Bulk Booking more then 20-30people:
-                    <input
-                      type="text"
-                      id="offbulkbookingap"
-                      value={offbulkbookingap}
-                      onChange={(e) => setOffbulkbookingap(e.target.value)}
-                    />
-                  </label>
 
-                  <label htmlFor="offtripplesharingap">
-                    Tripple Sharing:
-                    <input
-                      type="text"
-                      id="offtripplesharingap"
-                      value={offtripplesharingap}
-                      onChange={(e) => setOfftripplesharingap(e.target.value)}
-                    />
-                  </label>
-                  <label htmlFor="offmore4roomap">
-                    More then four rooms:
-                    <input
-                      type="text"
-                      id="offmore4roomsap"
-                      value={offmore4roomap}
-                      onChange={(e) => setOffmore4roomap(e.target.value)}
-                    />
-                  </label>
                   <h6>Map plan</h6>
-                  <label htmlFor="offdoublesharingmap">
-                    Double Sharing:
-                    <input
-                      type="text"
-                      id="offdoublesharingmap"
-                      value={offDoubleSharingmap}
-                      onChange={(e) => setOffDoubleSharingmap(e.target.value)}
-                    />
-                  </label>
 
-                  <label htmlFor="offquadsharingmap">
-                    Quad Sharing:
-                    <input
-                      type="text"
-                      id="offquadsharingmap"
-                      value={offquadsharingmap}
-                      onChange={(e) => setOffquadsharingmap(e.target.value)}
-                    />
-                  </label>
 
-                  <label htmlFor="offbulkbookingmap">
-                    Bulk Booking more then 20-30people:
-                    <input
-                      type="text"
-                      id="offbulkbookingmap"
-                      value={offbulkbookingmap}
-                      onChange={(e) => setOffbulkbookingmap(e.target.value)}
-                    />
-                  </label>
+                  <table>
+                    <tr>
+                      <td><strong>Double Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offdoublesharingmap"
+                        value={offDoubleSharingmap}
+                        onChange={(e) => setOffDoubleSharingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quad Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offquadsharingmap"
+                        value={offquadsharingmap}
+                        onChange={(e) => setOffquadsharingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bulk Booking more then 20-30people:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offbulkbookingmap"
+                        value={offbulkbookingmap}
+                        onChange={(e) => setOffbulkbookingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tripple Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offtripplesharingmap"
+                        value={offtripplesharingmap}
+                        onChange={(e) => setOfftripplesharingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>More then four rooms:</strong></td>
+                      <td><input
+                        type="text"
+                        id="offmore4roomsmap"
+                        value={offmore4roommap}
+                        onChange={(e) => setOffmore4roommap(e.target.value)}
+                      /></td>
+                    </tr>
 
-                  <label htmlFor="offtripplesharingmap">
-                    Tripple Sharing:
-                    <input
-                      type="text"
-                      id="offtripplesharingmap"
-                      value={offtripplesharingmap}
-                      onChange={(e) => setOfftripplesharingmap(e.target.value)}
-                    />
-                  </label>
-                  <label htmlFor="offmore4roommap">
-                    More then four rooms:
-                    <input
-                      type="text"
-                      id="offmore4roomsmap"
-                      value={offmore4roommap}
-                      onChange={(e) => setOffmore4roommap(e.target.value)}
-                    />
-                  </label>
+                  </table>
+
                 </div>
               </div>
               <div className="tariff">
@@ -2270,7 +2314,56 @@ const Partner = () => {
                 <br />
 
                 <div className="tariff-container1">
-                  <label htmlFor="ondoublesharing">
+                  <table>
+                    <tr>
+                      <td><strong>Double Sharing</strong></td>
+                      <td><input
+                        type="text"
+                        id="ondoublesharing"
+                        value={onDoubleSharing}
+                        onChange={(e) => setOnDoubleSharing(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quad Sharing</strong></td>
+                      <td><input
+                        type="text"
+                        id="onquadsharing"
+                        value={onQuadSharing}
+                        onChange={(e) => setOnQuadSharing(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bulk Booking more then 20-30people</strong></td>
+                      <td><input
+                        type="text"
+                        id="onbulkbooking"
+                        value={onbulkbooking}
+                        onChange={(e) => setOnbulkbooking(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tripple Sharing</strong></td>
+                      <td><input
+                        type="text"
+                        id="ontripplesharing"
+                        value={ontripplesharing}
+                        onChange={(e) => setOntripplesharing(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>More then four rooms:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onmore4rooms"
+                        value={onmore4room}
+                        onChange={(e) => setOnmore4room(e.target.value)}
+                      /></td>
+                    </tr>
+                    <br />
+
+                  </table>
+                  {/* <label htmlFor="ondoublesharing">
                     Double Sharing
                     <input
                       type="text"
@@ -2317,105 +2410,108 @@ const Partner = () => {
                       value={onmore4room}
                       onChange={(e) => setOnmore4room(e.target.value)}
                     />
-                  </label>
+                  </label> */}
                   <h6>AP Plan</h6>
-                  <label htmlFor="ondoublesharingap">
-                    Double Sharing:
-                    <input
-                      type="text"
-                      id="ondoublesharingap"
-                      value={onDoubleSharingap}
-                      onChange={(e) => setOnDoubleSharingap(e.target.value)}
-                    />
-                  </label>
+                  <table>
+                    <tr>
+                      <td><strong>Double Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="ondoublesharingap"
+                        value={onDoubleSharingap}
+                        onChange={(e) => setOnDoubleSharingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quad Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="ondoublesharingap"
+                        value={onDoubleSharingap}
+                        onChange={(e) => setOnDoubleSharingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bulk Booking more then 20-30people:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onbulkbookingap"
+                        value={onbulkbookingap}
+                        onChange={(e) => setOnbulkbookingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tripple Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="ontripplesharingap"
+                        value={ontripplesharingap}
+                        onChange={(e) => setOntripplesharingap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>More then four rooms:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onmore4roomsap"
+                        value={onmore4roomap}
+                        onChange={(e) => setOnmore4roomap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <br />
+                  </table>
 
-                  <label htmlFor="onquadsharingap">
-                    Quad Sharing:
-                    <input
-                      type="text"
-                      id="onquadsharingap"
-                      value={onQuadSharingap}
-                      onChange={(e) => setOnQuadSharingap(e.target.value)}
-                    />
-                  </label>
 
-                  <label htmlFor="onbulkbookingap">
-                    Bulk Booking more then 20-30people:
-                    <input
-                      type="text"
-                      id="onbulkbookingap"
-                      value={onbulkbookingap}
-                      onChange={(e) => setOnbulkbookingap(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="ontripplesharingap">
-                    Tripple Sharing:
-                    <input
-                      type="text"
-                      id="ontripplesharingap"
-                      value={ontripplesharingap}
-                      onChange={(e) => setOntripplesharingap(e.target.value)}
-                    />
-                  </label>
-                  <label htmlFor="ontripplesharing">
-                    More then four rooms:
-                    <input
-                      type="text"
-                      id="onmore4roomsap"
-                      value={onmore4roomap}
-                      onChange={(e) => setOnmore4roomap(e.target.value)}
-                    />
-                  </label>
                   <h6>Map plan</h6>
-                  <label htmlFor="ondoublesharingmap">
-                    Double Sharing:
-                    <input
-                      type="text"
-                      id="ondoublesharingmap"
-                      value={onDoubleSharingmap} //offDoubleSharingMapPlan
-                      onChange={(e) => setOnDoubleSharingmap(e.target.value)} //offDoubleSharingApPlan
-                    />
-                  </label>
 
-                  <label htmlFor="onquadsharingmap">
-                    Quad Sharing:
-                    <input
-                      type="text"
-                      id="onquadsharingmap"
-                      value={onQuadSharingmap}
-                      onChange={(e) => setOnQuadSharingmap(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="onbulkbookingmap">
-                    Bulk Booking more then 20-30people:
-                    <input
-                      type="text"
-                      id="onbulkbookingmap"
-                      value={onbulkbookingmap}
-                      onChange={(e) => setOnbulkbookingmap(e.target.value)}
-                    />
-                  </label>
-
-                  <label htmlFor="ontripplesharingmap">
-                    Tripple Sharing:
-                    <input
-                      type="text"
-                      id="ontripplesharingmap"
-                      value={ontripplesharingmap}
-                      onChange={(e) => setOntripplesharingmap(e.target.value)}
-                    />
-                  </label>
-                  <label htmlFor="onmore4roommap">
-                    More then four rooms:
-                    <input
-                      type="text"
-                      id="onmore4roomsmap"
-                      value={onmore4roommap}
-                      onChange={(e) => setOnmore4roommap(e.target.value)}
-                    />
-                  </label>
+                  <table>
+                    <tr>
+                      <td><strong>Double Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="ondoublesharingmap"
+                        value={onDoubleSharingmap} //offDoubleSharingMapPlan
+                        onChange={(e) => setOnDoubleSharingmap(e.target.value)} //offDoubleSharingApPlan
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Quad Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onquadsharingmap"
+                        value={onQuadSharingmap}
+                        onChange={(e) => setOnQuadSharingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Bulk Booking more then 20-30people:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onbulkbookingmap"
+                        value={onbulkbookingmap}
+                        onChange={(e) => setOnbulkbookingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Tripple Sharing:</strong></td>
+                      <td><input
+                        type="text"
+                        id="ontripplesharingmap"
+                        value={ontripplesharingmap}
+                        onChange={(e) => setOntripplesharingmap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <tr>
+                      <td><strong>More then four rooms:</strong></td>
+                      <td><input
+                        type="text"
+                        id="onmore4roomsmap"
+                        value={onmore4roommap}
+                        onChange={(e) => setOnmore4roommap(e.target.value)}
+                      /></td>
+                    </tr>
+                    <br />
+                  </table>
                 </div>
               </div>
             </div>
