@@ -543,9 +543,6 @@ const Partner = () => {
     }
   };
 
-  const handleCheckboxChange = (event) => {
-    // Handle checkbox change logic here
-  };
 
   if (location.pathname !== "/partner") {
     return null;
