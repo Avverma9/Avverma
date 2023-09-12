@@ -10,7 +10,7 @@ const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const bookingController = require("../controllers/bookingController");
 const emailController = require("../controllers/emailController");
-const foodController = require("../controllers/foodController");
+
 const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
@@ -59,6 +59,7 @@ router.put(
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel)
 router.post("/:hotelId/roomDetails", hotelController.addRoomToHotel)
 router.delete("/:hotelId/delete", hotelController.deleteRoom);
+//=======================================foods===============================================
 router.post("/:hotelId/foodItems",upload,hotelController.addFoodToHotel)   
 router.delete("/:hotelId/foodItems/delete",hotelController.deleteFoods)
 //==================================== STATE ==========================================================
@@ -117,9 +118,6 @@ router.post("/verifyotp", emailController.verifyOtp);
 //================================OTP=====================================//
 // router.post("/sendOtp",otpController.sendOtp)
 
-//===============================food==========================================//
-router.post("/create", upload, foodController.createFood);
-router.get("/get/latest/food", foodController.getFood);
 //===============================Dashboard===========================
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.post("/login/dashboard/user", DashboardUser.loginUser);

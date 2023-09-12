@@ -2,7 +2,6 @@ const hotelModel = require("../models/hotelModel");
 const createHotel = async (req, res) => {
   try {
     const {
-    
       hotelName,
       hotelOwnerName,
       roomDetails,
@@ -463,7 +462,7 @@ const getAllHotels = async (req, res) => {
 //===========================get hotels====================================================//
 const getHotels = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
-  const filterData = hotels.filter((hotel) => hotel.isOffer === false); 
+  const filterData = hotels.filter((hotel) => hotel.isOffer === false);
   res.json(filterData);
 };
 //======================================get offers==========================================//
@@ -627,33 +626,22 @@ const addRoomToHotel = async function (req, res) {
   }
 };
 //====================================add foods to hotel============================================
-const addFoodToHotel = async (req, res) => {
-  const { id } = req.params;
-  const { name, about, price } = req.body;
+const addFoodToHotel = async (request, response) => {
+  const { hotelId } = request.params;
+  const { name,about,price } = request.body;
+  const hotel = await hotelModel.findById(hotelId)
 
-  // Check if hotel with the given id exists
-  const fetchData = await hotelModel.findById(id);
-
-  if (!fetchData) {
-    return res.status(404).json({ error: 'Hotel not found' });
-  }
-
-  const images = req.files.map((file) => file.location);
-  const addFoods = {
+  const images = request.files.map((file)=>file.location)
+  const foods = {
     name,
     images,
     about,
     price,
   };
 
-  // Make sure fetchData.foodItems is an array
-  if (!Array.isArray(fetchData.foodItems)) {
-    fetchData.foodItems = [];
-  }
-
-  fetchData.foodItems.push(addFoods);
-  await fetchData.save();
-  res.json(fetchData);
+  hotel.foodItems.push(foods);
+  await hotel.save()
+  response.json(hotel)
 };
 
 //=====================================delete foods==========================================
@@ -739,5 +727,5 @@ module.exports = {
   addRoomToHotel,
   deleteRoom,
   addFoodToHotel,
-  deleteFoods
+  deleteFoods,
 };

@@ -1,37 +1,14 @@
 const bookingModel = require('../models/bookingModel');
-const CanceledBooking = require('../models/cancelledModel');
-const paymentModel = require('../models/paymentModel');
-const foodModel = require("../models/foodModel")
-
 const hotelModel = require("../models/hotelModel");
 
 
 //==========================================creating booking========================================================================================================
 
-
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
-    const { foodItems } = req.body;
-    let totalFoodPrice = 0;
-    const foodItemsDetails = [];
-
-    for (const foodItem of foodItems) {
-      const food = await foodModel.findById(foodItem._id);
-
-      if (!food) {
-       
-        return res.status(404).json({ success: false, error: "Food item not found" });
-      }
-
-      totalFoodPrice += food.price;
-
-      foodItemsDetails.push({
-        name: food.name,
-        price: food.price,
-      });
-    }
     const {
+      foodItems,
       checkIn,
       checkOut,
       guests,
@@ -46,7 +23,7 @@ const createBooking = async (req, res) => {
 
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
     const totalprice = price * rooms;
-    const foodPrice = totalprice + totalFoodPrice;
+    
 
     const hotel = await hotelModel.findById(hotelId);
     if (!hotel) {
@@ -56,6 +33,11 @@ const createBooking = async (req, res) => {
     if (rooms > hotel.numRooms) {
       return res.status(400).json({ success: false, error: "No rooms available" });
     }
+
+    const foodItemsDetails = hotel.foodItems.map((foodItem) => ({
+      name: foodItem.name,
+      price: foodItem.price,
+    }));
 
     const booking = new bookingModel({
       bookingId,
@@ -67,7 +49,7 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut,
       guests,
       rooms,
-      price: foodPrice,
+      price: totalprice, // Total price should include room price only
       destination,
       foodItems: foodItemsDetails,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
