@@ -1,14 +1,44 @@
-const bookingModel = require('../models/bookingModel');
+const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
-
 
 //==========================================creating booking========================================================================================================
 
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
+    const { foodItems } = req.body;
+    let totalFoodPrice = 0;
+    const foodItemsDetails = [];
+
+    const selectedFoodPrices = [];
+
+    const hotel = await hotelModel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ success: false, error: "Hotel not found" });
+    }
+
+    for (const foodItem of foodItems) {
+      const selectedFood = hotel.foodItems.find(
+        (item) => item._id == foodItem._id
+      );
+
+      if (!selectedFood) {
+        return res
+          .status(404)
+          .json({ success: false, error: "Food item not found" });
+      }
+
+      totalFoodPrice += selectedFood.price;
+
+      foodItemsDetails.push({
+        name: selectedFood.name,
+        price: selectedFood.price,
+      });
+
+      selectedFoodPrices.push(selectedFood.price);
+    }
+
     const {
-      foodItems,
       checkIn,
       checkOut,
       guests,
@@ -21,23 +51,16 @@ const createBooking = async (req, res) => {
       destination,
     } = req.body;
 
-    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
-    const totalprice = price * rooms;
-    
-
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ success: false, error: "Hotel not found" });
-    }
+    const bookingId = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    ).toString();
+    const totalprice = price * rooms + totalFoodPrice;
 
     if (rooms > hotel.numRooms) {
-      return res.status(400).json({ success: false, error: "No rooms available" });
+      return res
+        .status(400)
+        .json({ success: false, error: "No rooms available" });
     }
-
-    const foodItemsDetails = hotel.foodItems.map((foodItem) => ({
-      name: foodItem.name,
-      price: foodItem.price,
-    }));
 
     const booking = new bookingModel({
       bookingId,
@@ -49,11 +72,11 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut,
       guests,
       rooms,
-      price: totalprice, // Total price should include room price only
+      price: totalprice,
       destination,
       foodItems: foodItemsDetails,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      images, // Assuming images is a string
+      images,
     });
 
     hotel.numRooms -= rooms;
@@ -67,50 +90,66 @@ const createBooking = async (req, res) => {
   }
 };
 
-
-
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  const booking= await bookingModel.find().sort({createdAt: -1})
-  const confirmedBookings = booking.filter(booking=>booking.bookingStatus === "success") //dashboard
-  res.json(confirmedBookings)
+  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const confirmedBookings = booking.filter(
+    (booking) => booking.bookingStatus === "success"
+  ); //dashboard
+  res.json(confirmedBookings);
 };
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
-  const {id} = req.params
-  const booking= await bookingModel.find({user:id}) // hotel
-  const details = booking.filter(confirmed=>confirmed.bookingStatus === "success")
-  res.json(details)
+  const { id } = req.params;
+  const booking = await bookingModel.find({ user: id }); // hotel
+  const details = booking.filter(
+    (confirmed) => confirmed.bookingStatus === "success"
+  );
+  res.json(details);
 };
 //=================================
 const getFailedBookingsHotel = async (req, res) => {
-  const {id} = req.params
-  const bookings = await bookingModel.find({user:id}).sort({createdAt: -1})
-  const details = bookings.filter(failed=>failed.bookingStatus === 'failed')
-  res.json(details)
-}
+  const { id } = req.params;
+  const bookings = await bookingModel
+    .find({ user: id })
+    .sort({ createdAt: -1 });
+  const details = bookings.filter(
+    (failed) => failed.bookingStatus === "failed"
+  );
+  res.json(details);
+};
 
 const getCancelledBookingHotel = async (req, res) => {
-  const {id} = req.params
-  const booking= await bookingModel.find({user:id}).sort({createdAt: -1})
-  const details = booking.filter(failed=>failed.bookingStatus === 'cancelled')
-  if(!booking)
-  res.status(404).json({success: false , message:"No any booking are here"});
-  
-  res.json(details)
+  const { id } = req.params;
+  const booking = await bookingModel.find({ user: id }).sort({ createdAt: -1 });
+  const details = booking.filter(
+    (failed) => failed.bookingStatus === "cancelled"
+  );
+  if (!booking)
+    res
+      .status(404)
+      .json({ success: false, message: "No any booking are here" });
+
+  res.json(details);
 };
 const getCheckedInHotel = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const bookings = await bookingModel.find({ user: userId }).sort({ createdAt: -1 });
-  
+    const bookings = await bookingModel
+      .find({ user: userId })
+      .sort({ createdAt: -1 });
+
     if (!bookings || bookings.length === 0) {
-      return res.status(404).json({ success: false, message: "No bookings found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "No bookings found" });
     }
 
-    const checkedIn = bookings.filter(booking => booking.bookingStatus === "checkedIn");
+    const checkedIn = bookings.filter(
+      (booking) => booking.bookingStatus === "checkedIn"
+    );
 
     res.json(checkedIn);
   } catch (error) {
@@ -119,35 +158,47 @@ const getCheckedInHotel = async (req, res) => {
   }
 };
 
-const getCheckedOutHotel = async(req,res)=>{
+const getCheckedOutHotel = async (req, res) => {
   const { userId } = req.params;
-  const bookings = await bookingModel.find({ user: userId }).sort({ createdAt: -1 });
-  const checkedOut = bookings.filter(checkedOut=>checkedOut.bookingStatus === "checkedOut")
-  if(!bookings){
-    res.status(404).json({success: false, message: "No such type of booking here"})
+  const bookings = await bookingModel
+    .find({ user: userId })
+    .sort({ createdAt: -1 });
+  const checkedOut = bookings.filter(
+    (checkedOut) => checkedOut.bookingStatus === "checkedOut"
+  );
+  if (!bookings) {
+    res
+      .status(404)
+      .json({ success: false, message: "No such type of booking here" });
   }
-  res.json(checkedOut)
-}
+  res.json(checkedOut);
+};
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
- const bookings = await bookingModel.find().sort({createdAt: -1})
- const failedBooking= bookings.filter(booking=>booking.bookingStatus === "failed")
- res.json(failedBooking)
+  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const failedBooking = bookings.filter(
+    (booking) => booking.bookingStatus === "failed"
+  );
+  res.json(failedBooking);
 };
 
 const getCancelledBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({createdAt: -1})
-  const failedBooking= bookings.filter(booking=>booking.bookingStatus === "cancelled")
-  res.json(failedBooking)
- };
- 
- const getNoShowBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({createdAt: -1})
-  const failedBooking= bookings.filter(booking=>booking.bookingStatus === "noshow")
-  res.json(failedBooking)
- };
- 
+  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const failedBooking = bookings.filter(
+    (booking) => booking.bookingStatus === "cancelled"
+  );
+  res.json(failedBooking);
+};
+
+const getNoShowBookings = async (req, res) => {
+  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const failedBooking = bookings.filter(
+    (booking) => booking.bookingStatus === "noshow"
+  );
+  res.json(failedBooking);
+};
+
 //==================================================================================
 
 const cancelBooking = async (req, res) => {
@@ -157,17 +208,21 @@ const cancelBooking = async (req, res) => {
 
     const updatedBooking = await bookingModel.findOneAndUpdate(
       { bookingId },
-      { $set: { bookingStatus: 'Cancelled', cancelledAt } },
+      { $set: { bookingStatus: "Cancelled", cancelledAt } },
       { new: true }
     );
 
     console.log(updatedBooking);
 
     if (!updatedBooking) {
-      return res.status(404).json({ success: false, message: 'Booking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
 
-    res.status(200).json({ success: true, message: 'Booking cancelled successfully' });
+    res
+      .status(200)
+      .json({ success: true, message: "Booking cancelled successfully" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -176,57 +231,69 @@ const cancelBooking = async (req, res) => {
 //===================================================================================
 
 const getCancelledBooking = async (req, res) => {
-  const booking= await bookingModel.find().sort({createdAt: -1})
-  const cancellledBooking = booking.filter(cancelled=>cancelled.bookingStatus === "cancelled" )
-  if(!booking)
-  res.status(404).json({success: false , message:"No any booking are here"});
-  
-  res.json(cancellledBooking)
+  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const cancellledBooking = booking.filter(
+    (cancelled) => cancelled.bookingStatus === "cancelled"
+  );
+  if (!booking)
+    res
+      .status(404)
+      .json({ success: false, message: "No any booking are here" });
+
+  res.json(cancellledBooking);
 };
 //================================================================================
-const getCheckedIn= async(req,res)=>{
-  const booking = await bookingModel.find().sort({createdAt: -1})
-  const checkedIn = booking.filter(checkedIn=>checkedIn.bookingStatus === "checkedIn")
-  if(!booking){
-    res.status(404).json({success: false, message: "No any booking found"})
+const getCheckedIn = async (req, res) => {
+  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const checkedIn = booking.filter(
+    (checkedIn) => checkedIn.bookingStatus === "checkedIn"
+  );
+  if (!booking) {
+    res.status(404).json({ success: false, message: "No any booking found" });
   }
-  res.json(checkedIn)
-}
+  res.json(checkedIn);
+};
 //========================================================================================
-const getCheckedOut = async(req,res)=>{
-  const booking = await bookingModel.find().sort({createdAt: -1})
-  const checkedOut = booking.filter(checkedOut=>checkedOut.bookingStatus === "checkedOut")
-  if(!booking){
-    res.status(404).json({success: false, message: "No such type of booking here"})
+const getCheckedOut = async (req, res) => {
+  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const checkedOut = booking.filter(
+    (checkedOut) => checkedOut.bookingStatus === "checkedOut"
+  );
+  if (!booking) {
+    res
+      .status(404)
+      .json({ success: false, message: "No such type of booking here" });
   }
-  res.json(checkedOut)
-}
+  res.json(checkedOut);
+};
 //====================================================================================
 const getCheckingBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
-    const booking = await bookingModel.findOne({ bookingId }).populate('user');
+    const booking = await bookingModel.findOne({ bookingId }).populate("user");
 
     if (!booking) {
-      return res.status(404).json({ success: false, message: 'Booking not found' });
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
     }
     res.status(200).json({ success: true, booking });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message })
-
+    res.status(500).json({ success: false, error: error.message });
   }
-}
+};
 
 //========================================================================
 const updateBooking = async (req, res) => {
-const {bookingId} = req.params
-const data = req.body
-const updatedData = await bookingModel.findOneAndUpdate({bookingId:bookingId}, {$set:data},{new:true})
-res.json(updatedData)
+  const { bookingId } = req.params;
+  const data = req.body;
+  const updatedData = await bookingModel.findOneAndUpdate(
+    { bookingId: bookingId },
+    { $set: data },
+    { new: true }
+  );
+  res.json(updatedData);
 };
-
-
-
 
 module.exports = {
   createBooking,
@@ -244,5 +311,5 @@ module.exports = {
   getCheckingBooking,
   updateBooking,
   getCancelledBookings,
-  getNoShowBookings
-}
+  getNoShowBookings,
+};
