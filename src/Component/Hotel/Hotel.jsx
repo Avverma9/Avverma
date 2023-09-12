@@ -242,15 +242,15 @@ function HotelList() {
         {dataAvailable ? (
           <div className={styles["search-results"]}>
             {currentData.map((result) => (
-             <div
-             key={result._id}
-             className={`${styles["search-result"]} ${
-               expandedResultId === result._id ? styles["expanded"] : ""
-             }`}
-           >
-                 {result.images.length > 0 && ( // Check if images are available
-      <Imgslide resultId={result._id} />
-    )}
+              <div
+                key={result._id}
+                className={`${styles["search-result"]} ${
+                  expandedResultId === result._id ? styles["expanded"] : ""
+                }`}
+              >
+                {result.images.length > 0 && ( // Check if images are available
+                  <Imgslide resultId={result._id} />
+                )}
                 <div className={styles["search-result-content"]}>
                   <div className={styles["hotel-info"]}>
                     <h3 className={styles["search-result-title"]}>
@@ -261,7 +261,8 @@ function HotelList() {
                         icon={faLocationDot}
                         className={styles["location"]}
                       />
-                      {result.destination}
+                      {result.city},{result.destination},{result.landmark},
+                      {result.zip}
                     </p>
                   </div>
                   <h5 className={styles["hotel-rating"]}>
@@ -394,19 +395,19 @@ function HotelList() {
                     }}
                   >
                     <div className="rupeedetail">
-  <p className={styles["search-result-price"]}>
-    <FontAwesomeIcon
-      icon={faInr}
-      className={styles["rupees"]}
-    />{" "}
-    {result.roomDetails && result.roomDetails.length > 0
-      ? result.roomDetails[0].price
-      : "N/A"}
-    <span className={styles["detail"]}>
-      per room per night
-    </span>
-  </p>
-</div>
+                      <p className={styles["search-result-price"]}>
+                        <FontAwesomeIcon
+                          icon={faInr}
+                          className={styles["rupees"]}
+                        />{" "}
+                        {result.roomDetails && result.roomDetails.length > 0
+                          ? result.roomDetails[0].price
+                          : "N/A"}
+                        <span className={styles["detail"]}>
+                          per room per night
+                        </span>
+                      </p>
+                    </div>
                     <div
                       className="flex-button"
                       style={{

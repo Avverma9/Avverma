@@ -104,7 +104,7 @@ function Noida() {
         })
         .catch(error => console.log(error));
     } else {
-      axios.get('https://hotel-backend-tge7.onrender.com/hotels?destination=Noida')
+      axios.get('https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?destination=Noida')
         .then(data => {
           if (data.status === 200) {
             setHotels(data.data);
@@ -184,7 +184,7 @@ function Noida() {
         {/* </div> */}
 
         <div className="search-results" style={{ flex: "0 0 70%" }}>
-          {hotels.map((result) => (
+          { hotels.length > 0 && hotels.map((result) => (
             <div
               key={result._id}
               className={`search-result ${

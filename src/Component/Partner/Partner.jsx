@@ -94,6 +94,7 @@ const Partner = () => {
   const [images, setImages] = useState([]);
   const [hotelOwnerName, setHotelOwnerName] = useState("");
   const [roomDetails, setRoomDetails] = useState([{}]);
+  const [foodItems,setFoodItems] = useState([{}])
   const [ownerContactDetails, setOwnerContactDetails] = useState("");
   const [receptionContactDetails, setReceptionContactDetails] = useState("");
   const [hotelEmail, setHotelEmail] = useState("");
@@ -175,6 +176,12 @@ const Partner = () => {
       formData.append("roomDetails[type]", detail.type);
       formData.append("roomDetails[bedTypes]", detail.bedTypes);
       formData.append("roomDetails[price]", detail.price);
+    }
+    for(const detail of foodItems) {
+      formData.append("foodItems[name]", detail.name);
+      formData.append("foodItems[images]", detail.images);
+      formData.append("foodItems[about]", detail.about);
+      formData.append("foodItems[price]",detail.price)
     }
     formData.append("description", description);
     formData.append("street", street);
@@ -507,6 +514,7 @@ const Partner = () => {
     "Hotel Contact Information",
     "Basic Information",
     "Add Rooms",
+     "Add Foods",
     "Hotel Policy",
     "Hotel Tariff",
   ];
@@ -552,6 +560,30 @@ const Partner = () => {
     updatedRoomDetails[index][field] = value;
     setRoomDetails(updatedRoomDetails);
   };
+  const handleFoodDetailsChange = (index, field, value) => {
+    const updatedFoodDetails = [...foodItems];
+    updatedFoodDetails[index][field] = value;
+    setFoodItems(updatedFoodDetails);
+  };
+  const handleFoodImageChange = (index, selectedFile) => {
+    // Ensure that the selectedFile is not undefined or null
+    if (selectedFile) {
+      // Create a new FileReader to read the selected file
+      const reader = new FileReader();
+  
+      // Define an event handler for when the file is loaded
+      reader.onload = (e) => {
+        const updatedFoodDetails = [...foodItems];
+        // Update the 'images' property of the selected food item with the data URL of the image
+        updatedFoodDetails[index].images = e.target.result;
+        setFoodItems(updatedFoodDetails);
+      };
+  
+      // Read the selected file as a data URL
+      reader.readAsDataURL(selectedFile);
+    }
+  };
+  
 
   return (
     <div>
@@ -1788,6 +1820,83 @@ const Partner = () => {
             </>
           )}
         </div>
+        <div className="room-content">
+        {activeNavItem === "Add Foods" && (
+            <>
+
+              <div className="disclaimer">
+                {" "}
+                Add foods to your hotel
+              </div>
+              <hr />
+              {foodItems.map((food, index) => (
+                <div key={index}>
+                  <table style={{ width: "100%" }}>
+                    <tr>
+                      <td><strong>Food Name</strong></td>
+                      <td><input
+                        value={food.name || ""}
+                        className="room-input"
+                        onChange={(e) =>
+                          handleFoodDetailsChange(index, "name", e.target.value)
+                        }
+                      />
+                       
+                     </td>
+                    </tr>
+
+
+                    {/* </label> */}
+                    <tr>
+                      <td><strong>Description</strong></td>
+                      <td><input
+                        value={food.about || ""}
+                        className="room-input"
+                        onChange={(e) =>
+                          handleFoodDetailsChange(
+                            index,
+                            "about",
+                            e.target.value
+                          )
+                        }
+                      />
+                      
+                     </td>
+                    </tr>
+                    <tr>
+                <td><strong>Food Picture</strong></td>
+                <td>
+                  <input
+                    type="file"
+                    className="room-input"
+                    onChange={(e) =>
+                      handleFoodImageChange(index, e.target.files[0])
+                    }
+                  />
+                </td>
+              </tr>
+
+                    <tr>
+                      <td><strong>Price</strong></td>
+                      <td>
+  <input
+    type="number"
+    value={food.price}
+    onChange={(e) => handleFoodDetailsChange(index, "price", e.target.value)}
+  />
+</td>
+
+                    </tr>
+                    <br />
+                  </table>
+
+
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+
         {activeNavItem === "Hotel Policy" && (
           <div>
             <h3>Hotel Policy</h3>
