@@ -13,15 +13,21 @@ function Imgslide({ resultId }) {
           "https://hotel-backend-tge7.onrender.com/get/main/get/hotels"
         );
         const data = await response.json();
-        const allImages = data.map((result) => result.images).flat();
-        setImages(allImages);
+
+        // Find the hotel with the matching resultId
+        const hotel = data.find((result) => result._id === resultId);
+
+        // Set images for the specific hotel only
+        if (hotel) {
+          setImages(hotel.images);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchImages();
-  }, []);
+  }, [resultId]); // Add resultId as a dependency to trigger the effect when it changes
 
   const goToNextSlide = () => {
     setSlideIndex((prevIndex) => (prevIndex + 1) % images.length);
