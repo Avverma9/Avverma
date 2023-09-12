@@ -37,7 +37,7 @@ import Ratingrange from "../Hotel/Ratingrange";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import BookingDetails from "../Hotel/BookingDetails";
 
-const BookNowPage = ({ userData }) => {
+const BookNowPage = ({ userData, toast }) => {
   const { offerId } = useParams();
   const [offerData, setOfferData] = useState(null);
   const [hotelImages, setHotelImages] = useState([]);
@@ -140,19 +140,26 @@ const BookNowPage = ({ userData }) => {
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/hotels/${offerId}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch user data");
+        }
+      })
       .then((data) => {
+        console.log(data);
         setOfferData(data);
         setHotelImages(data.images);
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
-        setCheckIn(formatDate(data.startDate));
-        setCheckout(formatDate(data.endDate));
+        // setCheckIn(formatDate(data.startDate));
+        // setCheckout(formatDate(data.endDate));
         setRoomPrice(data?.roomDetails[0].price);
       })
       .catch((error) => console.error(error));
   }, [offerId]);
-  console.log(offerData);
+  console.log(roomPrice);
 
   useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
@@ -863,10 +870,11 @@ const BookNowPage = ({ userData }) => {
                 destination={offerData?.destination}
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
-                roomPrice={roomPrice}
+                roomPrice={offerData?.roomDetails[0].price}
                 isOffer={offerData?.isOffer}
                 offerDetails={offerData?.offerDetails}
                 offerPriceLess={offerData?.offerPriceLess}
+                toast={toast}
               />
             </div>
           </div>

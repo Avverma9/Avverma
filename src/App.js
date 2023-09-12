@@ -282,7 +282,14 @@ function App() {
           <Route path="cities/kolhapur" element={<Kolhapur />} />
           <Route
             path="/book-now/:offerId"
-            element={<BookNowPage refresh={refresh} reset={reset} />}
+            element={
+              <BookNowPage
+                refresh={refresh}
+                reset={reset}
+                userData={userData}
+                toast={toast}
+              />
+            }
           />
           {/* <Route
             path="/bookingDetails"

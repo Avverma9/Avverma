@@ -1,31 +1,49 @@
-import React, { useState,useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import './searchResult.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInr, faStar, faLocationDot, faPerson, faHotel, faTv, faCamera, faSnowflake, faCreditCard, faElevator, faFire, faParking, faWifi, faPaw, faKitchenSet, faCheck, faGlassMartini, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
-import RangeSlider from '../Hotel/Rangeslider/range';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import styles from "../Hotel/hotel.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faWifi,
+  faSnowflake,
+  faDumbbell,
+  faParking,
+  faSwimmingPool,
+  faPaw,
+  faGlassMartini,
+  faSmoking,
+  faStar,
+  faKitchenSet,
+  faTv,
+  faFire,
+  faPowerOff,
+  faCamera,
+  faElevator,
+  faCreditCard,
+  faCheck,
+  faInr,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+
+import RangeSlider from "../Hotel/Rangeslider/range";
+import axios from "axios";
 import Imgslide from "../Hotel/slider/sliderimage";
 import Sidebar from "../Hotel/filtersidebar/Sidebar";
-import axios from "axios";
-import styles from "../Hotel/hotel.module.css";
-import { useNavigate } from 'react-router-dom';
 
-export default function SearchResults() {
-  const searchResults = useSelector((state) => state.searchState);
+function SearchResults() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  const maxVisiblePages = 6;
+
+  const location = useLocation();
+  const [hotels, setHotels] = useState([]); // list of hotels initially when page loaded
   const [expandedResultId, setExpandedResultId] = useState(null);
+  const [reviewCount, setReviewCount] = useState([]);
+  const navigate = useNavigate();
 
-  const toggleDetails = (resultId) => {
-    if (expandedResultId === resultId) {
-      setExpandedResultId(null);
-    } else {
-      setExpandedResultId(resultId);
-    }
-  };
   const [minValue, set_minValue] = useState(400);
   const [maxValue, set_maxValue] = useState(4000);
-  const [hotels, setHotels] = useState([]);
-  const [reviewCount, setReviewCount] = useState([]);
-   const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
+  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
   const [starrating, setStarrating] = useState([]);
   const [roomtype, setRoomtype] = useState([]);
   const [bedtype, setBedtype] = useState([]);
@@ -36,46 +54,9 @@ export default function SearchResults() {
   const [showbedtype, setShowbedtype] = useState(false);
   const [showamenities, setShowamenities] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
-  useEffect(() => {
-    if (minValue > 400 || maxValue < 4000) {
-      axios
-        .get(
-          `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
-        )
-        .then((data) => {
-          if (data.status === 200) {
-            setHotels(data.data);
-          }
-        })
-        .catch((error) => console.log(error));
-    } else {
-      axios
-        .get("https://hotel-backend-tge7.onrender.com/get/all/hotels")
-        .then((data) => {
-          if (data.status === 200) {
-            setHotels(data.data);
-          }
-        })
-        .catch((error) => console.log(error));
-    }
 
-    const labels = document.getElementsByClassName("label");
-    Array.from(labels).forEach((label, index) => {
-      if (index === 0) {
-        label.textContent = `₹${minValue}`;
-      } else if (index === 1) {
-        label.textContent = `₹${maxValue}`;
-      }
-    });
-  }, [maxValue, minValue]);
-  const navigate = useNavigate();
-  const handleBuy = (hotelID) => {
-    // Replace with the logic to handle the booking action
-    console.log(`Book Now: ${hotelID}`);
-    navigate(`/hotels/${hotelID}`);
-  };
-
- const handlePropertyTypeChange = (propertyType, checked) => {
+  //Filter functions
+  const handlePropertyTypeChange = (propertyType, checked) => {
     if (checked) {
       setSelectedPropertyTypes((prevSelected) => [
         ...prevSelected,
@@ -166,175 +147,482 @@ export default function SearchResults() {
     fetchReviewsCount();
   }, [hotels]);
 
+  if (location.pathname !== "/search/results") {
+    return null;
+  }
 
+  const handleBuy = (hotelID) => {
+    // Replace with the logic to handle the booking action
+    console.log(`Book Now: ${hotelID}`);
+    navigate(`/hotels/${hotelID}`);
+  };
 
+  const toggleDetails = (resultId) => {
+    setExpandedResultId((prevResultId) =>
+      prevResultId === resultId ? null : resultId
+    );
+  };
+  // Pagination for Hotels
 
+  const totalItems = hotels && hotels.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = hotels && hotels.slice(startIndex, endIndex);
+
+  const visiblePages = [];
+  const totalPagesToDisplay = Math.min(totalPages, maxVisiblePages);
+  let startPage = 1;
+  let endPage = totalPagesToDisplay;
+
+  if (currentPage > Math.floor(maxVisiblePages / 2)) {
+    startPage = currentPage - Math.floor(maxVisiblePages / 2);
+    endPage = startPage + totalPagesToDisplay - 1;
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = endPage - totalPagesToDisplay + 1;
+    }
+  }
+
+  for (let i = startPage; i <= endPage; i++) {
+    visiblePages.push(i);
+  }
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
-    
-
-    <><div className='whole-data'>
-      <Sidebar
-        minValue={minValue}
-        set_minValue={set_minValue}
-        maxValue={maxValue}
-        set_maxValue={set_maxValue}
-        setHotels={setHotels}
-        selectedPropertyTypes={selectedPropertyTypes}
-        setSelectedPropertyTypes={setSelectedPropertyTypes}
-        starrating={starrating}
-        setStarrating={setStarrating}
-        roomtype={roomtype}
-        setRoomtype={setRoomtype}
-        bedtype={bedtype}
-        setBedtype={setBedtype}
-        amenity={amenity}
-        setAmenity={setAmenity}
-        showall={showall}
-        setShowall={setShowall}
-        showallstar={showallstar}
-        setShowallstar={setShowallstar}
-        showroomtype={showroomtype}
-        setShowroomtype={setShowroomtype}
-        showbedtype={showbedtype}
-        setShowbedtype={setShowbedtype}
-        showamenities={showamenities}
-        setShowamenities={setShowamenities}
-        handlePropertyTypeChange={handlePropertyTypeChange}
-        handleRatingChange={handleRatingChange}
-        handleroomtype={handleroomtype}
-        handlebedtype={handlebedtype}
-        handleamenity={handleamenity}
-        clearFilters={clearFilters}
-        setDataAvailable={setDataAvailable} />
-    </div><hr /><div className="search-results-display">
-        {searchResults.map((result) => (
-          <div key={result._id} className="search-result">
-            <Imgslide />
-
-            <div className="search-result-content-result">
-              <div className='hotel-info'>
-                <h3 className="search-result-title">{result.hotelName}</h3>
-                <h5 className='hotel-rating'>{result.rating}<FontAwesomeIcon icon={faStar} className='fastaricon' /></h5>
-              </div>
-              <hr />
-              <p className="search-result-destination-result"><FontAwesomeIcon icon={faLocationDot} className='hotel-location' />{result.destination}</p>
-
-
-              <p className="search-result-guests"><FontAwesomeIcon icon={faPerson} className='guest' /> {result.guests}Guest</p>
-              <p className='search-result-rooms'><FontAwesomeIcon icon={faHotel} className='room' />{result.numRooms} Room <span style={{ color: '#5963ff', fontWeight: '502' }}>Available</span></p>
-              <p className='search-result-price'><FontAwesomeIcon icon={faInr} className='rupees' /> {result.roomDetails[0].price}<span className='detail'>per room per night</span></p>
-              <hr />
-              <p className="search-result-availability">Local ID: {result.availability}</p>
-              <hr />
-
-              <div className="button-container-searchresult">
-                
-                <button className="book-now-button-searchresult"
-                  onClick={() => handleBuy(result._id)}
-                >Book Now</button>
-              </div>
-
-              {expandedResultId === result._id && (
-                <div>
-                  <div className="amenities">
-                    <h6>More:</h6>
-
-
-                    <ul>
-                      {result.moreOptions.map((option) => {
-                        let icon;
-                        switch (option) {
-                          case 'Pets Allowed':
-                            icon = faPaw;
-                            break;
-                          case 'Alcohol Allowed':
-                            icon = faGlassMartini;
-                            break;
-                          case 'Bachelor Allowed':
-                            icon = faPeopleGroup;
-                            break;
-                          default:
-                            icon = faCheck;
-
-
-
-                        }
-                        return (
-                          <li key={option}>
-                            {icon && <FontAwesomeIcon icon={icon} className="option-icon" />} {option}
-                          </li>
-                        );
-                      })}
-                    </ul>
-
+    <>
+      <div className="whole-data d-flex">
+        <Sidebar
+          minValue={minValue}
+          set_minValue={set_minValue}
+          maxValue={maxValue}
+          set_maxValue={set_maxValue}
+          setHotels={setHotels}
+          selectedPropertyTypes={selectedPropertyTypes}
+          setSelectedPropertyTypes={setSelectedPropertyTypes}
+          starrating={starrating}
+          setStarrating={setStarrating}
+          roomtype={roomtype}
+          setRoomtype={setRoomtype}
+          bedtype={bedtype}
+          setBedtype={setBedtype}
+          amenity={amenity}
+          setAmenity={setAmenity}
+          showall={showall}
+          setShowall={setShowall}
+          showallstar={showallstar}
+          setShowallstar={setShowallstar}
+          showroomtype={showroomtype}
+          setShowroomtype={setShowroomtype}
+          showbedtype={showbedtype}
+          setShowbedtype={setShowbedtype}
+          showamenities={showamenities}
+          setShowamenities={setShowamenities}
+          handlePropertyTypeChange={handlePropertyTypeChange}
+          handleRatingChange={handleRatingChange}
+          handleroomtype={handleroomtype}
+          handlebedtype={handlebedtype}
+          handleamenity={handleamenity}
+          clearFilters={clearFilters}
+          setDataAvailable={setDataAvailable}
+        />
+        {dataAvailable ? (
+          <div className={styles["search-results"]}>
+            {currentData.map((result) => (
+              <div
+                key={result._id}
+                className={`${styles["search-result"]} ${
+                  expandedResultId === result._id ? styles["expanded"] : ""
+                }`}
+              >
+                {result.images.length > 0 && ( // Check if images are available
+                  <Imgslide resultId={result._id} />
+                )}
+                <div className={styles["search-result-content"]}>
+                  <div className={styles["hotel-info"]}>
+                    <h3 className={styles["search-result-title"]}>
+                      {result.hotelName}
+                    </h3>
+                    <p className={styles["search-result-destination"]}>
+                      <FontAwesomeIcon
+                        icon={faLocationDot}
+                        className={styles["location"]}
+                      />
+                      {result.destination}
+                    </p>
                   </div>
+                  <h5 className={styles["hotel-rating"]}>
+                    {result.rating}
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      className={styles["fastar"]}
+                    />
+                  </h5>
+                  <p className={styles["search-result-reviews"]}>
+                    {reviewCount.find((review) => review.hotelId === result._id)
+                      ?.count || "No"}{" "}
+                    Reviews
+                  </p>
+
+                  <div className={styles["amenities"]}>
+                    <ul>
+                      {result.amenities.slice(0, 3).map((amenity) => (
+                        <li key={amenity}>
+                          {amenity === "Free WIFI" && (
+                            <FontAwesomeIcon
+                              icon={faWifi}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "AC" && (
+                            <FontAwesomeIcon
+                              icon={faSnowflake}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "GYM" && (
+                            <FontAwesomeIcon
+                              icon={faDumbbell}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Parking" && (
+                            <FontAwesomeIcon
+                              icon={faParking}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Swimming Pool" && (
+                            <FontAwesomeIcon
+                              icon={faSwimmingPool}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Kitchen" && (
+                            <FontAwesomeIcon
+                              icon={faKitchenSet}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "TV" && (
+                            <FontAwesomeIcon
+                              icon={faTv}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Geyser" && (
+                            <FontAwesomeIcon
+                              icon={faFire}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Power_backup" && (
+                            <FontAwesomeIcon
+                              icon={faPowerOff}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "CCTV" && (
+                            <FontAwesomeIcon
+                              icon={faCamera}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Fire-Extinguisher" && (
+                            <FontAwesomeIcon
+                              icon={faFire}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Elevator" && (
+                            <FontAwesomeIcon
+                              icon={faElevator}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Card-payment" && (
+                            <FontAwesomeIcon
+                              icon={faCreditCard}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity !== "Free WIFI" &&
+                            amenity !== "AC" &&
+                            amenity !== "GYM" &&
+                            amenity !== "Parking" &&
+                            amenity !== "Swimming Pool" &&
+                            amenity !== "Kitchen" &&
+                            amenity !== "TV" &&
+                            amenity !== "Geyser" &&
+                            amenity !== "Power_backup" &&
+                            amenity !== "CCTV" &&
+                            amenity !== "Fire-Extinguisher" &&
+                            amenity !== "Elevator" &&
+                            amenity !== "Card-payment" && (
+                              <>
+                                <FontAwesomeIcon
+                                  icon={faCheck}
+                                  className={styles["fonticon"]}
+                                />
+                              </>
+                            )}
+                          {amenity}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div
+                    className="mixrupeebutton"
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "6px",
+                    }}
+                  >
+                    <div className="rupeedetail">
+                      <p className={styles["search-result-price"]}>
+                        <FontAwesomeIcon
+                          icon={faInr}
+                          className={styles["rupees"]}
+                        />{" "}
+                        {result.roomDetails && result.roomDetails.length > 0
+                          ? result.roomDetails[0].price
+                          : "N/A"}
+                        <span className={styles["detail"]}>
+                          per room per night
+                        </span>
+                      </p>
+                    </div>
+                    <div
+                      className="flex-button"
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "15%",
+                      }}
+                    >
+                      <button
+                        className={styles["view-details-button"]}
+                        onClick={() => handleBuy(result._id)}
+                      >
+                        View Details
+                      </button>
+                      <button
+                        className={styles["book-now-button"]}
+                        onClick={() => handleBuy(result._id)}
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className={styles["search-result-availability"]}>
+                    Local ID: {result.availability}
+                  </p>
                   <hr />
-                  <div className="amenities">
-                    <h6>Amenities:</h6>
-                    <ul>
-                      {result.amenities.map((amenity) => {
-                        let icon;
-                        switch (amenity) {
 
-                          case 'Free WIFI':
-                            icon = faWifi;
-                            break;
-                          case 'GYM':
-                            icon = faPaw;
-                            break;
-                          case 'Geyser':
-                            icon = faFire;
-                            break;
-                          case 'TV':
-                            icon = faTv;
-                            break;
-                          case 'CCTV':
-                            icon = faCamera;
-                            break;
-                          case 'AC':
-                            icon = faSnowflake;
-                            break;
-                          case 'Card-payment':
-                            icon = faCreditCard;
-                            break;
+                  {expandedResultId === result._id && (
+                    <div>
+                      <div className={styles["amenities"]}>
+                        <h6>More:</h6>
+                        <ul>
+                          {result.moreOptions.map((more) => (
+                            <li key={more}>
+                              {more === "Pets Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faPaw}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {more === "Alcohol Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faGlassMartini}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {more === "Smoking Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faSmoking}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {more}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <hr />
 
-                          case 'Parking':
-                            icon = faParking;
-                            break;
-                          case 'Elevator':
-                            icon = faElevator;
-                            break;
-                          case 'Kitchen':
-                            icon = faKitchenSet;
-                            break;
-                          default:
-                            icon = faCheck;
-                        }
-                        return (
-                          <li key={amenity}>
-                            {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {amenity}
-                          </li>
-
-                        );
-                      })}
-
-                    </ul>
-                  </div>
+                      <div className={styles["amenities"]}>
+                        <h6>Amenities:</h6>
+                        <ul>
+                          {result.amenities.map((amenity) => (
+                            <li key={amenity}>
+                              {amenity === "Free WIFI" && (
+                                <FontAwesomeIcon
+                                  icon={faWifi}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "AC" && (
+                                <FontAwesomeIcon
+                                  icon={faSnowflake}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "GYM" && (
+                                <FontAwesomeIcon
+                                  icon={faDumbbell}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Parking" && (
+                                <FontAwesomeIcon
+                                  icon={faParking}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Swimming Pool" && (
+                                <FontAwesomeIcon
+                                  icon={faSwimmingPool}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Kitchen" && (
+                                <FontAwesomeIcon
+                                  icon={faKitchenSet}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "TV" && (
+                                <FontAwesomeIcon
+                                  icon={faTv}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Geyser" && (
+                                <FontAwesomeIcon
+                                  icon={faFire}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Power_backup" && (
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "CCTV" && (
+                                <FontAwesomeIcon
+                                  icon={faCamera}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Fire-Extinguisher" && (
+                                <FontAwesomeIcon
+                                  icon={faFire}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Elevator" && (
+                                <FontAwesomeIcon
+                                  icon={faElevator}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Card-payment" && (
+                                <FontAwesomeIcon
+                                  icon={faCreditCard}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity !== "Free WIFI" &&
+                                amenity !== "AC" &&
+                                amenity !== "GYM" &&
+                                amenity !== "Parking" &&
+                                amenity !== "Swimming Pool" &&
+                                amenity !== "Kitchen" &&
+                                amenity !== "TV" &&
+                                amenity !== "Geyser" &&
+                                amenity !== "Power_backup" &&
+                                amenity !== "CCTV" &&
+                                amenity !== "Fire-Extinguisher" &&
+                                amenity !== "Elevator" &&
+                                amenity !== "Card-payment" && (
+                                  <>
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      className={styles["fonticon"]}
+                                    />
+                                  </>
+                                )}
+                              {amenity}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-              {result.disclaimer ? (
-                <div className="please-note-container">
-                  <p className="please-note-heading">Please Note !!!</p>
-                  <p className="please-note-text">{result.disclaimer}</p>
-                  <p className="please-note-contact">Contact Number: {result.contact}</p>
-                </div>
-              ) : null}
+              </div>
+            ))}
+            <div className="_pagination">
+              <button
+                className={`_pagination-button ${
+                  currentPage === 1
+                    ? "_pagination-inactive"
+                    : "_pagination-active"
+                }`}
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  className={`_pagination-button ${
+                    page === currentPage
+                      ? "_pagination-active"
+                      : "_pagination-inactive"
+                  }`}
+                  onClick={() => handlePageClick(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className={`_pagination-button ${
+                  currentPage === totalPages
+                    ? "_pagination-inactive"
+                    : "_pagination-active"
+                }`}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
             </div>
           </div>
-        ))}
-      </div></>
-    
+        ) : (
+          <h1>No Data Available</h1>
+        )}
+      </div>
+    </>
   );
 }
+
+export default SearchResults;
