@@ -6,6 +6,7 @@ const createHotel = async (req, res) => {
       hotelName,
       hotelOwnerName,
       roomDetails,
+      foodItems,
       description,
       destination,
       price,
@@ -86,6 +87,7 @@ const createHotel = async (req, res) => {
       hotelName,
       hotelOwnerName,
       roomDetails,
+      foodItems,
       description,
       destination,
       price,
@@ -461,7 +463,7 @@ const getAllHotels = async (req, res) => {
 //===========================get hotels====================================================//
 const getHotels = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
-  const filterData = hotels.filter((hotel) => hotel.isOffer === false);
+  const filterData = hotels.filter((hotel) => hotel.isOffer === false); 
   res.json(filterData);
 };
 //======================================get offers==========================================//
@@ -624,6 +626,68 @@ const addRoomToHotel = async function (req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+//====================================add foods to hotel============================================
+const addFoodToHotel = async (req, res) => {
+  const { id } = req.params;
+  const { name, about, price } = req.body;
+
+  // Check if hotel with the given id exists
+  const fetchData = await hotelModel.findById(id);
+
+  if (!fetchData) {
+    return res.status(404).json({ error: 'Hotel not found' });
+  }
+
+  const images = req.files.map((file) => file.location);
+  const addFoods = {
+    name,
+    images,
+    about,
+    price,
+  };
+
+  // Make sure fetchData.foodItems is an array
+  if (!Array.isArray(fetchData.foodItems)) {
+    fetchData.foodItems = [];
+  }
+
+  fetchData.foodItems.push(addFoods);
+  await fetchData.save();
+  res.json(fetchData);
+};
+
+//=====================================delete foods==========================================
+const deleteFoods = async function (req, res) {
+  const { hotelId } = req.params;
+  const { foodId } = req.body;
+
+  try {
+    const hotel = await hotelModel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    const foodIndex = hotel.foodItems.findIndex(
+      (food) => food._id.toString() === foodId
+    );
+
+    if (foodIndex === -1) {
+      return res
+        .status(404)
+        .json({ error: "Room detail not found in the hotel" });
+    }
+
+    hotel.foodItems.splice(foodIndex, 1);
+
+    await hotel.save();
+
+    return res.status(200).json(hotel);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 //=============================delete room======================================================
 const deleteRoom = async function (req, res) {
   const { hotelId } = req.params;
@@ -674,4 +738,6 @@ module.exports = {
   increaseRoomToHotel,
   addRoomToHotel,
   deleteRoom,
+  addFoodToHotel,
+  deleteFoods
 };
