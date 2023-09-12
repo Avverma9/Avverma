@@ -69,47 +69,50 @@ const Sidebar = ({
     setHotels,
     setDataAvailable,
   ]);
+  const queryString = localStorage.getItem("searchQuery");
 
   useEffect(() => {
-    setHotels([]);
-    const queryString = localStorage.getItem("searchQuery");
     console.log(queryString);
-    if (location.pathname !== "/search/results") {
-      // Why not working
-      if (minValue > 400 || maxValue < 4000) {
-        axios
-          .get(
-            `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
-          )
-          .then((data) => {
-            if (data.status === 200) {
-              setHotels(data.data);
-            }
-          })
-          .catch((error) => console.log(error));
-      } else {
-        axios
-          .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
-          // .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
-          .then((data) => {
-            if (data.status === 200) {
-              setHotels(data.data);
-            }
-          })
-          .catch((error) => console.log(error));
-      }
-    } else if (location.pathname === "/search/results") {
+    setHotels([]);
+    if (minValue > 400 || maxValue < 4000) {
       axios
-        // .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
-        .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
+        .get(
+          `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
+        )
         .then((data) => {
           if (data.status === 200) {
-            setHotels(data.data);
+            let hotelData = data.data;
+            setHotels(hotelData);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else
+    if (
+      location.pathname === "/search/results" &&
+      queryString !== (null || undefined || "")
+    ) {
+      axios
+        .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
+        .then((data) => {
+          let hotelData = data.data;
+          if (data.status === 200) {
+            setHotels(hotelData);
+            console.log(hotelData);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      axios
+        .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
+        .then((data) => {
+          let hotelData = data.data;
+          if (data.status === 200) {
+            setHotels(hotelData);
+            console.log(hotelData);
           }
         })
         .catch((error) => console.log(error));
     }
-
     const labels = document.getElementsByClassName("label");
     Array.from(labels).forEach((label, index) => {
       if (index === 0) {
@@ -118,7 +121,7 @@ const Sidebar = ({
         label.textContent = `₹${maxValue}`;
       }
     });
-  }, [maxValue, minValue, location.pathname, setHotels]);
+  }, [maxValue, minValue, location.pathname, setHotels, queryString]);
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>
