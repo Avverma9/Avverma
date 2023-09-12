@@ -133,6 +133,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
         setHotelOwnerName(data?.hotelOwnerName);
+        setMeals(data?.foodItems);
         // setCheckIn(convertDate(bookingDetails.startDate));
         // setCheckOut(convertDate(bookingDetails.endDate));
       })
@@ -140,24 +141,24 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         console.log(error);
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate]);
-
-  useEffect(() => {
-    fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
-      .then((response) => {
-        console.log(response, "RESPONSE");
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Failed to fetch user data");
-        }
-      })
-      .then((data) => {
-        setMeals(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  console.log(meals);
+  // useEffect(() => {
+  //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
+  //     .then((response) => {
+  //       console.log(response, "RESPONSE");
+  //       if (response.ok) {
+  //         return response.json();
+  //       } else {
+  //         throw new Error("Failed to fetch user data");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       setMeals(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     setHotelReviews([]);
@@ -546,8 +547,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 <p className="morehead">More:</p>
                 <div className="moreitem">
                   {hotelMoreOpt &&
-                    hotelMoreOpt !== [] &&
-                    hotelMoreOpt !== undefined &&
+                    hotelMoreOpt !== ([] || undefined) &&
                     hotelMoreOpt.map((option, index) => {
                       let icon;
                       // eslint-disable-next-line default-case
