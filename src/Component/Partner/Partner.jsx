@@ -487,7 +487,7 @@ const Partner = () => {
     }
     try {
       const response = await fetch(
-        "https://hotel-backend-tge7.onrender.com/hotels/create/new",
+        "https://hotel-backend-tge7.onrender.com/data/hotels-new/post/upload/data",
         {
           method: "POST",
           body: formData,
