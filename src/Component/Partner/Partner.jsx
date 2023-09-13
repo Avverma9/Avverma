@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./partner.css";
-import '../Profile/ConfirmBooking.module.css'
+import '../Profile/confirmBooking.css'
 
 const Partner = () => {
   const location = useLocation();

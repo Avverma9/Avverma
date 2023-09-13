@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
+import './confirmBooking.css'
 
 export const CheckingBooking = () => {
   const [bookingId, setBookingId] = useState(null);
@@ -95,7 +96,7 @@ export const CheckingBooking = () => {
           {
             checkedInBooking.map((bookingDetails) => {
               return (<>
-                <div className="card" style={{ display: "inline-block", width: "18rem", marginBottom: "12px", marginRight: "30px" }}>
+                <div className="card" style={{ display: "inline-block", width: "22rem", marginLeft : "-10px" , marginBottom: "12px", marginRight: "30px" }}>
                   <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." />
                   <table className="mytable">
                     <tr>
@@ -128,7 +129,7 @@ export const CheckingBooking = () => {
                     </tr>
                     <tr>
                       <td><strong>Food Items</strong></td>
-                      <td>{bookingDetails.foodItems.length && bookingDetails.foodItems.map((e) => { return (<><ul><li>{e.name}</li></ul></>) })}</td>
+                      <td>{bookingDetails.foodItems.length && bookingDetails.foodItems.map((e) => { return (<>{e.name},</>) })}</td>
                     </tr>
                     <tr>
                       <td><strong>Check-In Date</strong></td>
@@ -142,15 +143,18 @@ export const CheckingBooking = () => {
                       <td><strong>Check-In Time</strong></td>
                       <td>{bookingDetails.checkInTime}</td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td><strong>Check-Out Time</strong></td>
                       <td>{bookingDetails.checkOutTime}</td>
-                    </tr>
+                    </tr> */}
                     <tr>
                       <td><strong>Price</strong></td>
                       <td>{bookingDetails.price}</td>
                     </tr>
                   </table>
+                  <center>
+                    <button type="button" class="btn btn-primary" style={{fontSize : "14px" , padding : '5px 10px '}}>View Details</button>
+                  </center>
                 </div>
               </>)
             })
