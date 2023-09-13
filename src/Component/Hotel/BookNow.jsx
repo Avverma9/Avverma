@@ -30,7 +30,7 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from "react-icons/bi";
-import {MdCurrencyRupee} from "react-icons/md";
+import { MdCurrencyRupee } from "react-icons/md";
 import { FaStar, FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
@@ -607,11 +607,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                       <p>
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
-                          <input
-                            type="text"
-                            value="11 AM"
-                            onChange={(e) => setCheckOutDate(e.target.value)}
-                          />
+                          <input type="text" value="11 AM" />
                         </span>
                       </p>
                     </div>
@@ -787,40 +783,40 @@ export default function BookNow({ refresh, reset, userData, toast }) {
               </div>
 
               <div className="cust-detail">Choose your room:</div>
-              <div className="upperhead"><div className="upperhead-text">Selected Category</div></div>
+              <div className="upperhead">
+                <div className="upperhead-text">Selected Category</div>
+              </div>
               {bookingDetails &&
                 bookingDetails?.roomDetails &&
                 bookingDetails?.roomDetails.map((item, index) => (
-                  
-                  
                   <div
-                  
                     className="card"
                     style={{
                       width: "100%",
-                      
+
                       background: "#fff",
                     }}
                   >
-                  
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
-                        
                       </div>
                       <div className="card-detail-img">
                         <img src={hotelImages[0]} alt="hotelImage" />
                       </div>
                     </div>
                     <div className="downhead">
-                    <p className="price-total"><MdCurrencyRupee className="r-sign"/>{item?.price}</p>
-                    <button
-                      className="select-btn"
-                      onClick={() => selectRoomHandler(index, item?.price)}
-                    >
-                      {index === selectedRoomBtn ? "Selected" : "Select"}
-                    </button>
+                      <p className="price-total">
+                        <MdCurrencyRupee className="r-sign" />
+                        {item?.price}
+                      </p>
+                      <button
+                        className="select-btn"
+                        onClick={() => selectRoomHandler(index, item?.price)}
+                      >
+                        {index === selectedRoomBtn ? "Selected" : "Select"}
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -1033,6 +1029,8 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 setSelectedGuests={setSelectedGuests}
                 checkIn={checkInDate}
                 checkOut={checkOutDate}
+                setCheckOutDate={setCheckOutDate}
+                setCheckInDate={setCheckInDate}
                 hotelimage={firstImageURL}
                 destination={bookingDetails.destination}
                 foodIdArr={foodIdArr}
