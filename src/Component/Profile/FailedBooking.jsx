@@ -122,9 +122,6 @@ export const FailedBooking = () => {
                     <td>{bookingDetails.price}</td>
                   </tr>
                 </table>
-                <center>
-                  <button type="button" class="btn btn-primary" style={{fontSize : "14px" , padding : '5px 10px '}}>View Details</button>
-                </center>
               </div>
             </>)
           })

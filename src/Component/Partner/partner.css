@@ -179,16 +179,15 @@ input[type="email"] {
 
 .uploadimages1 .image-container6 .imgbutton {
   position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -200%);
-
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -200%);
 }
 .uploadimages1 {
   display: flex;
   flex-wrap: wrap;
 }
-.tariff-contain-all{
+.tariff-contain-all {
   display: flex;
   gap: 7%;
   width: fit-content;
@@ -227,8 +226,8 @@ table {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  
-  /* line-height: 2.5; */
+
+  line-height: 2.5;
 }
 
 .amenities1 {
@@ -345,15 +344,6 @@ table {
   .tariff {
     margin-top: 25px;
   }
-
-  .group2 .salesManagerContact{
-    position: relative !important;
-    left: -20px !important;
-  }
-  /* .street{
-    position: relative !important;
-    left: 10px !important;
-  } */
   #hotelOwnerName,
   #ownerContactDetails,
   #receptionContactDetails,
@@ -410,7 +400,4 @@ table {
   .landmark {
     width: 30%;
   }
-}
-.table-checkin{
-  margin-left: 28vw;
 }

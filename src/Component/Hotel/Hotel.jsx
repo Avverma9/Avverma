@@ -261,8 +261,7 @@ function HotelList() {
                         icon={faLocationDot}
                         className={styles["location"]}
                       />
-                      {result.city},{result.destination},{result.landmark},
-                      {result.zip}
+                      {result.destination}
                     </p>
                   </div>
                   <h5 className={styles["hotel-rating"]}>

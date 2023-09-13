@@ -257,8 +257,9 @@
 }
 
 .card-detail-img img {
-  width: 150px;
-  height: 100px;
+  width: 212px;
+  height: 160px;
+  border-radius: 10px;
 }
 
 .card-detail-info p {
@@ -274,6 +275,28 @@
   border: solid 1px #d7d7d7;
   font-size: 18px;
   font-weight: 500;
+  
+  background-color: #23e163;
+  color: white;
+  
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+.card .select-btn:hover{
+  width: 200px;
+  padding: 5px 0;
+  border-radius: 4px;
+  border: solid 1px #d7d7d7;
+  font-size: 18px;
+  font-weight: 500;
+  
+  background-color: #1bac4b;
+  color: white;
+  
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
 }
 
 .cust-detail {
@@ -1114,4 +1137,30 @@
   font-weight: 600;
   color: #dc3545;
   margin-top: 30px;
+}
+.upperhead{
+  height: 22px;
+  background-image: linear-gradient(to right,#797f9d,#d4d1da);
+  border-radius: 4px 4px 0px 0px;
+}
+.upperhead-text{
+  color: white;
+  font-weight: bold;
+  display: flex;
+  padding-left: 18px;
+  padding-top: 0px;
+  font-size: 14px;
+  -webkit-box-align: center;
+  align-items: center;
+}
+.downhead{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+}
+.downhead .price-total{
+  font-size: 22px;
+  font-weight: bold;
+  color:red;
 }
