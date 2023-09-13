@@ -1,0 +1,15 @@
+.mytable{
+    width : 100% !important ; 
+    margin-left: 2vw ;
+    /* height : 20vh ;  */
+    /* margin: auto; */
+    font-size : 13px 
+  }
+.mytable td {
+  text-align: left;
+  /* margin-left: 10px ; */
+}
+
+.mytable tr td{ 
+  padding: 2px ;
+}

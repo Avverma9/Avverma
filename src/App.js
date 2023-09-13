@@ -108,7 +108,7 @@ import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
-
+import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
 function App() {
   // console.log(search)
   const [refresh, setRefresh] = useState(1);
@@ -208,6 +208,7 @@ function App() {
             <Route path="no-show-booking" element={<NoShowBooking />} />
             <Route path="failed-booking" element={<FailedBooking />} />
             <Route path="reviews" element={<MyReviewSection />} />
+            <Route path="view-details" element={<ViewDetailsModal />} />
             <Route
               path="complaints"
               element={
