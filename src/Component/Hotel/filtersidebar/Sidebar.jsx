@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 // import { type } from "@testing-library/user-event/dist/type";
 
 const Sidebar = ({
@@ -38,6 +39,7 @@ const Sidebar = ({
   clearFilters,
   setDataAvailable,
 }) => {
+  const location = useLocation();
   //Filter Api
   useEffect(() => {
     const propertyTypeQueryParam = selectedPropertyTypes.join(",");
@@ -67,8 +69,11 @@ const Sidebar = ({
     setHotels,
     setDataAvailable,
   ]);
+  const queryString = localStorage.getItem("searchQuery");
 
   useEffect(() => {
+    console.log(queryString);
+    setHotels([]);
     if (minValue > 400 || maxValue < 4000) {
       axios
         .get(
@@ -76,7 +81,23 @@ const Sidebar = ({
         )
         .then((data) => {
           if (data.status === 200) {
-            setHotels(data.data);
+            let hotelData = data.data;
+            setHotels(hotelData);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else
+    if (
+      location.pathname === "/search/results" &&
+      queryString !== (null || undefined || "")
+    ) {
+      axios
+        .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
+        .then((data) => {
+          let hotelData = data.data;
+          if (data.status === 200) {
+            setHotels(hotelData);
+            console.log(hotelData);
           }
         })
         .catch((error) => console.log(error));
@@ -84,13 +105,14 @@ const Sidebar = ({
       axios
         .get("https://hotel-backend-tge7.onrender.com/get/main/get/hotels")
         .then((data) => {
+          let hotelData = data.data;
           if (data.status === 200) {
-            setHotels(data.data);
+            setHotels(hotelData);
+            console.log(hotelData);
           }
         })
         .catch((error) => console.log(error));
     }
-
     const labels = document.getElementsByClassName("label");
     Array.from(labels).forEach((label, index) => {
       if (index === 0) {
@@ -99,7 +121,7 @@ const Sidebar = ({
         label.textContent = `₹${maxValue}`;
       }
     });
-  }, [maxValue, minValue]);
+  }, [maxValue, minValue, location.pathname, setHotels, queryString]);
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>
@@ -714,7 +736,6 @@ const Sidebar = ({
                 }
               />
               Superior Room
-           
             </label>
             <label>
               {" "}
@@ -775,8 +796,6 @@ const Sidebar = ({
               />
               Business Double Room
             </label>
-       
-       
           </>
         )}
         <button
@@ -1007,7 +1026,12 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
+                onChange={(e) =>
+                  handleamenity(
+                    "Airport Shuttle Service (Surcharge)",
+                    e.target.value
+                  )
+                }
               />
               Airport Shuttle Service (Surcharge)
             </label>
@@ -1546,9 +1570,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) =>
-                  handleamenity("Gift Shop", e.target.value)
-                }
+                onChange={(e) => handleamenity("Gift Shop", e.target.value)}
               />
               Gift Shop
             </label>
@@ -1689,7 +1711,12 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handleamenity("Airport Shuttle Service (Surcharge)", e.target.value)}
+                onChange={(e) =>
+                  handleamenity(
+                    "Airport Shuttle Service (Surcharge)",
+                    e.target.value
+                  )
+                }
               />
               Airport Shuttle Service (Surcharge)
             </label>

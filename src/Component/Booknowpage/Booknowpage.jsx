@@ -153,6 +153,7 @@ const BookNowPage = ({ userData, toast }) => {
         setHotelImages(data.images);
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
+        setMeals(data?.foodItems);
         // setCheckIn(formatDate(data.startDate));
         // setCheckout(formatDate(data.endDate));
         setRoomPrice(data?.roomDetails[0].price);
@@ -161,23 +162,23 @@ const BookNowPage = ({ userData, toast }) => {
   }, [offerId]);
   console.log(roomPrice);
 
-  useEffect(() => {
-    fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
-      .then((response) => {
-        console.log(response, "RESPONSE");
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Failed to fetch user data");
-        }
-      })
-      .then((data) => {
-        setMeals(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
+  //     .then((response) => {
+  //       console.log(response, "RESPONSE");
+  //       if (response.ok) {
+  //         return response.json();
+  //       } else {
+  //         throw new Error("Failed to fetch user data");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       setMeals(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   if (!offerData) {
     return <div>Loading...</div>;

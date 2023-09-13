@@ -41,7 +41,7 @@ import { Rating } from "react-simple-star-rating";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 export default function BookNow({ refresh, reset, userData, toast }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
@@ -69,6 +69,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
+  const [scrollPos, setScrollPos] = useState(null);
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -101,6 +102,10 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     window.scrollTo(0, 0);
   }, []);
 
+  // useEffect(() => {
+  //   window.scrollTo(scrollPos);
+  // }, [scrollPos]);
+
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
     value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
@@ -128,6 +133,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
         setHotelOwnerName(data?.hotelOwnerName);
+        setMeals(data?.foodItems);
         // setCheckIn(convertDate(bookingDetails.startDate));
         // setCheckOut(convertDate(bookingDetails.endDate));
       })
@@ -135,24 +141,24 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         console.log(error);
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate]);
-
-  useEffect(() => {
-    fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
-      .then((response) => {
-        console.log(response, "RESPONSE");
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Failed to fetch user data");
-        }
-      })
-      .then((data) => {
-        setMeals(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  console.log(meals);
+  // useEffect(() => {
+  //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
+  //     .then((response) => {
+  //       console.log(response, "RESPONSE");
+  //       if (response.ok) {
+  //         return response.json();
+  //       } else {
+  //         throw new Error("Failed to fetch user data");
+  //       }
+  //     })
+  //     .then((data) => {
+  //       setMeals(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
     setHotelReviews([]);
@@ -398,14 +404,9 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   }, [selectedGuests, selectedRooms]);
 
   useScrollPosition(({ prevPos, currPos }) => {
-    console.log(currPos.x);
-    console.log(currPos.y);
-    // setPos
+    setScrollPos(currPos);
   });
-  const isSignedIn = localStorage.getItem("isSignedIn")
-  if(!isSignedIn){
-    navigate("/signin")
-  }
+
   return (
     <>
       <div className="container-p-4">
@@ -456,15 +457,16 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
               <div className="pricing">
-  {bookingDetails.roomDetails && bookingDetails.roomDetails.length > 0 ? (
-    <>
-      <FontAwesomeIcon icon={faInr} className="indianrupee" />
-      {bookingDetails.roomDetails[0].price}
-    </>
-  ) : (
-    <span>No pricing information available</span>
-  )}
-</div>
+                {bookingDetails.roomDetails &&
+                bookingDetails.roomDetails.length > 0 ? (
+                  <>
+                    <FontAwesomeIcon icon={faInr} className="indianrupee" />
+                    {bookingDetails.roomDetails[0].price}
+                  </>
+                ) : (
+                  <span>No pricing information available</span>
+                )}
+              </div>
 
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
@@ -545,8 +547,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 <p className="morehead">More:</p>
                 <div className="moreitem">
                   {hotelMoreOpt &&
-                    hotelMoreOpt !== [] &&
-                    hotelMoreOpt !== undefined &&
+                    hotelMoreOpt !== ([] || undefined) &&
                     hotelMoreOpt.map((option, index) => {
                       let icon;
                       // eslint-disable-next-line default-case
@@ -1032,6 +1033,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
                 toast={toast}
+                scrollPos={scrollPos}
               />
             </div>
           </div>
