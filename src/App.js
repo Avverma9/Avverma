@@ -109,7 +109,6 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 
-
 function App() {
   // console.log(search)
   const [refresh, setRefresh] = useState(1);
@@ -229,7 +228,12 @@ function App() {
           <Route
             path="/hotels/:id"
             element={
-              <BookNow refresh={refresh} reset={reset} userData={userData} />
+              <BookNow
+                refresh={refresh}
+                reset={reset}
+                userData={userData}
+                toast={toast}
+              />
             }
           />
           <Route path="/cities/jaipur" element={<Jaipur />} />
@@ -278,10 +282,19 @@ function App() {
           <Route path="cities/kolhapur" element={<Kolhapur />} />
           <Route
             path="/book-now/:offerId"
-            element={<BookNowPage refresh={refresh} reset={reset} />}
+            element={
+              <BookNowPage
+                refresh={refresh}
+                reset={reset}
+                userData={userData}
+                toast={toast}
+              />
+            }
           />
-          <Route path="/bookingDetails" element={<BookingDetails/>}/>
-          
+          {/* <Route
+            path="/bookingDetails"
+            element={<BookingDetails userData={userData} />}
+          /> */}
         </Routes>
         <Footer />
       </div>

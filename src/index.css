@@ -1,5 +1,3 @@
-
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -22,6 +20,12 @@ a {
 ._underLine {
   border: 1px solid #94a3b8;
 }
-.ruler{
+.ruler {
   display: none !important;
+}
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  cursor: pointer !important;
 }

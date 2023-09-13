@@ -11,12 +11,12 @@ import { AiOutlineClose } from "react-icons/ai";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 const BookingDetails = ({
+  hotelOwnerName,
   hotelName,
-  price,
+  // price,
   foodPrice,
-  hotelId,
+  hotelID,
   userId,
   currency,
   userData,
@@ -24,13 +24,28 @@ const BookingDetails = ({
   selectedGuests,
   setSelectedRooms,
   setSelectedGuests,
+  checkIn,
+  checkOut,
+  hotelimage,
+  destination,
+  foodIdArr,
+  setFoodIdArr,
+  roomPrice,
+  isOffer,
+  offerDetails,
+  offerPriceLess,
+  toast,
+  scrollPos,
 }) => {
+  console.log(userData);
+  const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
+    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (price * selectedRooms + foodPrice) * 100,
-      currency: data.currency,
+      amount: data?.payment.amount * 100,
+      currency: data?.payment.currency,
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -57,27 +72,68 @@ const BookingDetails = ({
   };
 
   const handleBooking = (paymentStatus) => {
-    //  const bookingData = {
-    //    userId: userId,
-    //    hotelId: hotelId,
-    //    hotelName: hotelName,
-    //    checkIn: checkIn,
-    //    checkOut: checkOut,
-    //    guests: guests,
-    //    rooms: rooms,
-    //    price: amount,
-    //    paymentStatus: paymentStatus,
-    //    images: hotelimage,
-    //    destination: destination,
-    //  };
-    console.log(paymentStatus);
+    const bookingData = {
+      // user: userId,
+      // hotel: hotelID,
+      hotelName: hotelName,
+      hotelOwnerName: hotelOwnerName,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      guests: selectedGuests,
+      rooms: selectedRooms,
+      price: roomPrice,
+      paymentStatus: paymentStatus,
+      images: hotelimage,
+      destination: destination,
+      foodItems: foodIdArr,
+    };
+    if (userData && userData.email && paymentStatus === "success") {
+      axios
+        .post(
+          `https://hotel-backend-tge7.onrender.com/booking/${userId}/${hotelID}`,
+          bookingData
+        )
+        .then((res) => {
+          console.log(res.status);
+          setFoodIdArr([]);
+
+          if (res.status === 201) {
+            toast.success("Booking created successfully");
+          }
+
+          // if (userData.email) {
+          //   axios
+          //     .post(
+          //       "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
+          //       {
+          //         bookingData: bookingData,
+          //         email: userData.email,
+          //       }
+          //     )
+          //     .then((res) => {
+          //       console.log(res);
+          //     })
+          //     .catch((err) => {
+          //       console.log(err);
+          //     });
+          // } else {
+          //   console.log("User data does not have a valid email");
+          // }
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } else {
+      console.log("User data, email, or payment status is not valid");
+    }
   };
 
   const handlePayment = async () => {
     const data = {
-      hotelId: hotelId,
+      // hotelOwnerName: hotelOwnerName,
+      hotelId: hotelID,
       userId: userId,
-      amount: price * selectedRooms + foodPrice,
+      amount: roomPrice * selectedRooms + foodPrice,
       currency: currency,
     };
     try {
@@ -101,14 +157,6 @@ const BookingDetails = ({
   const handledatechange2 = (date) => {
     setSelectdatecheckout(date);
   };
-  const [selectdates, setSelectDates] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const toggleDatePicker = () => {
-    setShowDatePicker(!showDatePicker);
-  };
-
-  
   //for add room and guest
   const [isopen, setIsopen] = useState(false);
 
@@ -116,6 +164,13 @@ const BookingDetails = ({
     setIsopen(!isopen);
   };
 
+  const paymentSelect = () => {
+    setOpenPaymentModule(true);
+  };
+
+  const handlePayatCheckin = () => {
+    handleBooking("success");
+  };
 
   return (
     <>
@@ -125,7 +180,7 @@ const BookingDetails = ({
             <div className={styles.head}>
               <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {price}
+                {roomPrice}
               </span>
               {/* <span>1999</span> */}
               {/* <span>81% off</span> */}
@@ -135,33 +190,39 @@ const BookingDetails = ({
           <div className={styles.check_room}>
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
-                <div className={styles.check_in_in_in}>
-                <div className={styles.span}>
-                  <span className={styles.check_in_real} onClick={toggleDatePicker}>
-                    {selectdate && <p> {selectdate.toDateString()}</p>}
-                  </span>
-                  
-                  {showDatePicker && (
-                    <DatePicker
-                      selected={selectdate}
-                      onChange={handledatechange}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-in Date"
-                    />
-                  )}
+                <div
+                  className={styles.check_in_in_in}
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check In{" "}
+                    </h4>
+                    <span className={styles.check_in_real}>
+                      <DatePicker
+                        selected={selectdate}
+                        onChange={handledatechange}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-in Date"
+                      />
+                      {selectdate && <p> {selectdate.toDateString()}</p>}
+                    </span>
                   </div>
-<div className={styles.span}>
-                  <span className={styles.check_out_real} onClick={toggleDatePicker}>
-                  {selectdatecheckout && <p> {selectdatecheckout.toDateString()}</p>}
-                  </span>
-                  {showDatePicker&&(
-                    <DatePicker
-                      selected={selectdatecheckout}
-                      onChange={handledatechange2}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-out Date"
-                    />
-                  )}
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check Out{" "}
+                    </h4>
+                    <span className={styles.check_out_real}>
+                      <DatePicker
+                        selected={selectdatecheckout}
+                        onChange={handledatechange2}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-out Date"
+                      />
+                      {selectdatecheckout && (
+                        <p> {selectdatecheckout.toDateString()}</p>
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -214,7 +275,11 @@ const BookingDetails = ({
               </div>
             </div>
             <div className={styles.pencil_icon}>
-              <span className={styles.penci_ico}>
+              <span
+                className={styles.penci_ico}
+                style={{ cursor: "pointer" }}
+                // onClick={() => setScrollPos({ x: 0, y: -1922.25 })}
+              >
                 <BsPencil />
               </span>
             </div>
@@ -262,31 +327,27 @@ const BookingDetails = ({
               </label>
             </div>
           </div> */}
-          {/* <div className={styles.wizard}>
-            <div className={styles.wizardf}>
-              <div className={styles.wizard_in}>
-                <div className={styles.wizardf1}>
-                  Wizard Blue Membership Charge
+          {isOffer === true && (
+            <div className={styles.wizard}>
+              <div className={styles.wizardf}>
+                <div className={styles.wizard_in}>
+                  <div className={styles.wizardf1}>{offerDetails}</div>
+                  {/* <div className={styles.wizardf2}>
+                    Get additional discounts of
+                  </div> */}
                 </div>
-                <div className={styles.wizardf2}>
-                  Get additional benefits upto <FaRupeeSign />
-                  1000
-                </div>
-              </div>
-              <div className={styles.wizard_inin}>
-                <div className={styles.rightwizard}>
-                  <div className={styles.rswizard}>
-                    <FaRupeeSign />
-                    99
-                  </div>
-                  <div className={styles.rs2wizard}>
-                    <FaRupeeSign />
-                    199
+                <div className={styles.wizard_inin}>
+                  <div className={styles.rightwizard}>
+                    <div className={styles.rswizard}>{offerPriceLess}% off</div>
+                    {/* <div className={styles.rs2wizard}>
+                      <FaRupeeSign />
+                      199
+                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
-          </div> */}
+          )}
 
           <div className={styles.pricechart}>
             <div className={styles.pri}>
@@ -294,7 +355,7 @@ const BookingDetails = ({
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * selectedRooms}
+                  {roomPrice * selectedRooms}
                 </span>
               </div>
             </div>
@@ -316,22 +377,65 @@ const BookingDetails = ({
                 </span>
               </div>
             </div> */}
+            {/* {isOffer === false && ( */}
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>
                 <span className={styles.p}>
                   <FaRupeeSign />
-                  {price * selectedRooms + foodPrice}
+                  {roomPrice * selectedRooms + foodPrice}
                 </span>
               </div>
             </div>
+            {/* )} */}
+            {/* {isOffer === true && (
+              <div className={styles.pri}>
+                <div className={styles.pri1}>Discounted Price</div>
+                <div className={styles.pri2}>
+                  <span className={styles.p}>
+                    <FaRupeeSign />
+                    {roomPrice * selectedRooms +
+                      foodPrice -
+                      ((roomPrice * selectedRooms + foodPrice) *
+                        offerPriceLess) /
+                        100}
+                  </span>
+                </div>
+              </div>
+            )} */}
           </div>
+
+          {openPaymentModule === false ? (
+            <div className={styles.btn_payment}>
+              <button className="payment-btn" onClick={paymentSelect}>
+                Make Payment
+              </button>
+            </div>
+          ) : (
+            <>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayment}>Pay Now</button>
+              </div>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayatCheckin}>Pay at Hotel</button>
+              </div>
+              <div className={styles.btn_payment}>
+                <button
+                  style={{ backgroundColor: "#ff0000" }}
+                  onClick={() => setOpenPaymentModule(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-      <div className={styles.btn_payment}>
-        <button className="payment-btn" onClick={handlePayment}>
-          Make Payment
-        </button>
       </div>
     </>
   );

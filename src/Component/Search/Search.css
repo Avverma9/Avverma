@@ -6,29 +6,25 @@
 .input-checkbox,
 .input-select-marital,
 .input-select-more {
-  
+  flex: 1;
   padding: 1px;
   border: 1px solid #ccc;
-  
+  border-radius: 4px;
   background-color: #ffffff;
   font-size: 12px;
 }
 
 .date-picker {
-  
-  
-
-}
-.search-container{
-  position: absolute;
-  top: 0px;
+  flex-basis: 100%;
+  display: flex;
+  gap: 10px;
 }
 
 .guest-room {
-
+  flex-basis: 100%;
   display: flex;
   align-items: center;
-  
+  gap: 10px;
 }
 
 label {
@@ -37,7 +33,6 @@ label {
   cursor: pointer;
   font-size: 12px;
   gap: 7px;
-  
 }
 
 .overlay {
@@ -53,7 +48,7 @@ label {
 }
 
 .overlay form {
-  width: 100vw;
+  width: 320px;
   padding: 15px;
   background-color: #ffffff;
   border-radius: 5px;
@@ -62,44 +57,39 @@ label {
 
 .overlay input,
 .overlay select {
-  
-  width: 35%;
+  margin-bottom: 3px;
+  width: 95%;
   padding: 8px;
   border: 1px solid #ccc;
-
+  border-radius: 3px;
 }
 
 .overlay .search-form {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
-  height: 200px;
-  background: #ffffffa6;
-  
 }
 
 .overlay .input-text {
   margin-bottom: 8px;
-  padding: 20px;
-  border-top-left-radius: 15px;
 }
 
 .overlay .date-picker {
   display: flex;
-
+  margin-bottom: 8px;
 }
 
 .overlay .date-picker > div {
-
-
+  flex: 1;
+  margin-right: 8px;
 }
 
 .overlay .input-startdate,
 .overlay .input-enddate {
   width: 100%;
-  padding: 20px;
+  padding: 8px;
   border: 1px solid #ccc;
-  
+  border-radius: 3px;
 }
 
 .overlay .input-guests,
@@ -108,64 +98,32 @@ label {
 .overlay .input-select-marital,
 .overlay .input-select-more {
   width: 100%;
-  padding: 20px;
+  padding: 8px;
   border: 1px solid #ccc;
-  
-}
-.overlay .input-select-marital{
-  padding: 21px;
+  border-radius: 3px;
 }
 
-.btnn {
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 15%;
-  
-}
-.butn-sub{
-  margin-top: 0 !important;
-  
+  margin-top: 10px;
 }
 
-.btnn button {
+.btn button {
 
-  padding: 19px;
+  padding: 5px 1px;
   /* margin-left: 10px; */
   background-color: #03b109;
   color: #fff;
   font-size: 14px;
   width: 80px;
   cursor: pointer;
-  width: 100%;
-  border-top-right-radius:15px ;
-  border-top-left-radius:0px;
-  border-bottom-left-radius:0px ;
-
-  
 }
 
-.btnn button:hover {
+.btn button:hover {
   background-color: #45a049;
 }
-.search-form{
-  justify-content: center;
-}
-.guests{
-  width: 100%;
-padding: 20px;
-border: 1px solid #ccc;
-  border-right: none;
-  background: white;
-}
-.rooms{
-  width: 100%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-left: none;
-  background-color: white;
-}
-
 /*RESPONSE CSS*/
 
 /* Media Query for small screens */
@@ -198,9 +156,7 @@ border: 1px solid #ccc;
   align-items: center;
   gap: 5px;
 }
-.guest-room p{
-  margin-bottom: 0 !important;
-}
+
 label {
   display: flex;
   align-items: center;
@@ -220,7 +176,6 @@ label {
   justify-content: center;
   align-items: center;
 }
-
 
 .overlay form {
   width: 190px;
@@ -278,14 +233,14 @@ label {
   border-radius: 3px;
 }
 
-.btnn {
+.btn {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 5px;
 }
 
-.btnn button {
+.btn button {
   padding: 3px 1px;
   margin-left: 5px;
   background-color: #03b109;
@@ -295,18 +250,72 @@ label {
   cursor: pointer;
 }
 
-.btnn button:hover {
+.btn button:hover {
   background-color: #45a049;
 }
-.guest-room .guestss{
+.guests p{
   font-size: 10px;
-  margin-bottom: 0px !important;
+  margin-bottom: 0;
 }
 .rooms p{
   font-size: 10px;
   margin-bottom: 0;
 
 }
-
+.more-options p{
+  font-size: 10px;
+  margin-bottom: 0;
+}
 
 }
+
+
+
+
+/* Assuming you have a CSS file (e.g., Search.css) for your component */
+
+/* Styles for the Nearby button */
+.nearby-button {
+  margin-top: -52px; 
+  margin-left: 198px;
+
+}
+
+.nearby-button button {
+
+  color: #000000; /* Button text color */
+  border: none;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.nearby-button button:disabled {
+  
+  cursor: not-allowed;
+}
+
+/* Positioning the Nearby button next to the search input's placeholder */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input-text {
+  flex: 1;
+  margin-right: 10px; /* Spacing between the input and button */
+}
+
+/* Adjustments for smaller screens (optional) */
+@media (max-width: 768px) {
+  .input-text {
+    flex: 100%; /* Full width on smaller screens */
+    margin-right: 0; /* No spacing on smaller screens */
+    margin-bottom: 10px; /* Space below the input on smaller screens */
+  }
+}
+
+
+
+
+
+

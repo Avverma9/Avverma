@@ -54,6 +54,7 @@ function HotelList() {
   const [showroomtype, setShowroomtype] = useState(false);
   const [showbedtype, setShowbedtype] = useState(false);
   const [showamenities, setShowamenities] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(true);
 
   //Filter functions
   const handlePropertyTypeChange = (propertyType, checked) => {
@@ -158,13 +159,10 @@ function HotelList() {
   };
 
   const toggleDetails = (resultId) => {
-    if (expandedResultId === resultId) {
-      setExpandedResultId(null);
-    } else {
-      setExpandedResultId(resultId);
-    }
+    setExpandedResultId((prevResultId) =>
+      prevResultId === resultId ? null : resultId
+    );
   };
-
   // Pagination for Hotels
 
   const totalItems = hotels && hotels.length;
@@ -239,378 +237,390 @@ function HotelList() {
           handlebedtype={handlebedtype}
           handleamenity={handleamenity}
           clearFilters={clearFilters}
+          setDataAvailable={setDataAvailable}
         />
-        <div className={styles["search-results"]}>
-          {currentData.map((result) => (
-            <div
-              key={result._id}
-              className={`${styles["search-result"]} ${
-                expandedResultId === result._id ? styles["expanded"] : ""
-              }`}
-            >
-              <Imgslide />
-              <div className={styles["search-result-content"]}>
-                <div className={styles["hotel-info"]}>
-                  <h3 className={styles["search-result-title"]}>
-                    {result.hotelName}
-                  </h3>
-                  <p className={styles["search-result-destination"]}>
-                    <FontAwesomeIcon
-                      icon={faLocationDot}
-                      className={styles["location"]}
-                    />
-                    {result.destination}
-                  </p>
-                </div>
-                <h5 className={styles["hotel-rating"]}>
-                  {result.rating}
-                  <FontAwesomeIcon icon={faStar} className={styles["fastar"]} />
-                </h5>
-                <p className={styles["search-result-reviews"]}>
-                  {reviewCount.find((review) => review.hotelId === result._id)
-                    ?.count || "No"}{" "}
-                  Reviews
-                </p>
-
-                <div className={styles["amenities"]}>
-                  <ul>
-                    {result.amenities.slice(0, 3).map((amenity) => (
-                      <li key={amenity}>
-                        {amenity === "Free WIFI" && (
-                          <FontAwesomeIcon
-                            icon={faWifi}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "AC" && (
-                          <FontAwesomeIcon
-                            icon={faSnowflake}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "GYM" && (
-                          <FontAwesomeIcon
-                            icon={faDumbbell}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Parking" && (
-                          <FontAwesomeIcon
-                            icon={faParking}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Swimming Pool" && (
-                          <FontAwesomeIcon
-                            icon={faSwimmingPool}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Kitchen" && (
-                          <FontAwesomeIcon
-                            icon={faKitchenSet}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "TV" && (
-                          <FontAwesomeIcon
-                            icon={faTv}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Geyser" && (
-                          <FontAwesomeIcon
-                            icon={faFire}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Power_backup" && (
-                          <FontAwesomeIcon
-                            icon={faPowerOff}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "CCTV" && (
-                          <FontAwesomeIcon
-                            icon={faCamera}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Fire-Extinguisher" && (
-                          <FontAwesomeIcon
-                            icon={faFire}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Elevator" && (
-                          <FontAwesomeIcon
-                            icon={faElevator}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity === "Card-payment" && (
-                          <FontAwesomeIcon
-                            icon={faCreditCard}
-                            className={styles["fonticon"]}
-                          />
-                        )}
-                        {amenity !== "Free WIFI" &&
-                          amenity !== "AC" &&
-                          amenity !== "GYM" &&
-                          amenity !== "Parking" &&
-                          amenity !== "Swimming Pool" &&
-                          amenity !== "Kitchen" &&
-                          amenity !== "TV" &&
-                          amenity !== "Geyser" &&
-                          amenity !== "Power_backup" &&
-                          amenity !== "CCTV" &&
-                          amenity !== "Fire-Extinguisher" &&
-                          amenity !== "Elevator" &&
-                          amenity !== "Card-payment" && (
-                            <>
-                              <FontAwesomeIcon
-                                icon={faCheck}
-                                className={styles["fonticon"]}
-                              />
-                            </>
-                          )}
-                        {amenity}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div
-                  className="mixrupeebutton"
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    marginTop: "6px",
-                  }}
-                >
-                  <div className="rupeedetail">
-                    <p className={styles["search-result-price"]}>
+        {dataAvailable ? (
+          <div className={styles["search-results"]}>
+            {currentData.map((result) => (
+              <div
+                key={result._id}
+                className={`${styles["search-result"]} ${
+                  expandedResultId === result._id ? styles["expanded"] : ""
+                }`}
+              >
+                {result.images.length > 0 && ( // Check if images are available
+                  <Imgslide resultId={result._id} />
+                )}
+                <div className={styles["search-result-content"]}>
+                  <div className={styles["hotel-info"]}>
+                    <h3 className={styles["search-result-title"]}>
+                      {result.hotelName}
+                    </h3>
+                    <p className={styles["search-result-destination"]}>
                       <FontAwesomeIcon
-                        icon={faInr}
-                        className={styles["rupees"]}
-                      />{" "}
-                      {result.price}
-                      <span className={styles["detail"]}>
-                        per room per night
-                      </span>
+                        icon={faLocationDot}
+                        className={styles["location"]}
+                      />
+                      {result.destination}
                     </p>
                   </div>
+                  <h5 className={styles["hotel-rating"]}>
+                    {result.rating}
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      className={styles["fastar"]}
+                    />
+                  </h5>
+                  <p className={styles["search-result-reviews"]}>
+                    {reviewCount.find((review) => review.hotelId === result._id)
+                      ?.count || "No"}{" "}
+                    Reviews
+                  </p>
+
+                  <div className={styles["amenities"]}>
+                    <ul>
+                      {result.amenities.slice(0, 3).map((amenity) => (
+                        <li key={amenity}>
+                          {amenity === "Free WIFI" && (
+                            <FontAwesomeIcon
+                              icon={faWifi}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "AC" && (
+                            <FontAwesomeIcon
+                              icon={faSnowflake}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "GYM" && (
+                            <FontAwesomeIcon
+                              icon={faDumbbell}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Parking" && (
+                            <FontAwesomeIcon
+                              icon={faParking}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Swimming Pool" && (
+                            <FontAwesomeIcon
+                              icon={faSwimmingPool}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Kitchen" && (
+                            <FontAwesomeIcon
+                              icon={faKitchenSet}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "TV" && (
+                            <FontAwesomeIcon
+                              icon={faTv}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Geyser" && (
+                            <FontAwesomeIcon
+                              icon={faFire}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Power_backup" && (
+                            <FontAwesomeIcon
+                              icon={faPowerOff}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "CCTV" && (
+                            <FontAwesomeIcon
+                              icon={faCamera}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Fire-Extinguisher" && (
+                            <FontAwesomeIcon
+                              icon={faFire}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Elevator" && (
+                            <FontAwesomeIcon
+                              icon={faElevator}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity === "Card-payment" && (
+                            <FontAwesomeIcon
+                              icon={faCreditCard}
+                              className={styles["fonticon"]}
+                            />
+                          )}
+                          {amenity !== "Free WIFI" &&
+                            amenity !== "AC" &&
+                            amenity !== "GYM" &&
+                            amenity !== "Parking" &&
+                            amenity !== "Swimming Pool" &&
+                            amenity !== "Kitchen" &&
+                            amenity !== "TV" &&
+                            amenity !== "Geyser" &&
+                            amenity !== "Power_backup" &&
+                            amenity !== "CCTV" &&
+                            amenity !== "Fire-Extinguisher" &&
+                            amenity !== "Elevator" &&
+                            amenity !== "Card-payment" && (
+                              <>
+                                <FontAwesomeIcon
+                                  icon={faCheck}
+                                  className={styles["fonticon"]}
+                                />
+                              </>
+                            )}
+                          {amenity}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
                   <div
-                    className="flex-button"
+                    className="mixrupeebutton"
                     style={{
                       display: "flex",
-                      flexDirection: "row",
-                      gap: "15%",
+                      justifyContent: "space-between",
+                      marginTop: "6px",
                     }}
                   >
-                    <button
-                      className={styles["view-details-button"]}
-                      onClick={() => handleBuy(result._id)}
-                    >
-                      View Details
-                    </button>
-                    <button
-                      className={styles["book-now-button"]}
-                      onClick={() => handleBuy(result._id)}
-                    >
-                      Book Now
-                    </button>
-                  </div>
-                </div>
-
-                <p className={styles["search-result-availability"]}>
-                  Local ID: {result.availability}
-                </p>
-                <hr />
-
-                {expandedResultId === result._id && (
-                  <div>
-                    <div className={styles["amenities"]}>
-                      <h6>More:</h6>
-                      <ul>
-                        {result.moreOptions.map((more) => (
-                          <li key={more}>
-                            {more === "Pets Allowed" && (
-                              <FontAwesomeIcon
-                                icon={faPaw}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {more === "Alcohol Allowed" && (
-                              <FontAwesomeIcon
-                                icon={faGlassMartini}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {more === "Smoking Allowed" && (
-                              <FontAwesomeIcon
-                                icon={faSmoking}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {more}
-                          </li>
-                        ))}
-                      </ul>
+                    <div className="rupeedetail">
+                      <p className={styles["search-result-price"]}>
+                        <FontAwesomeIcon
+                          icon={faInr}
+                          className={styles["rupees"]}
+                        />{" "}
+                        {result.roomDetails && result.roomDetails.length > 0
+                          ? result.roomDetails[0].price
+                          : "N/A"}
+                        <span className={styles["detail"]}>
+                          per room per night
+                        </span>
+                      </p>
                     </div>
-                    <hr />
+                    <div
+                      className="flex-button"
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "15%",
+                      }}
+                    >
+                      <button
+                        className={styles["view-details-button"]}
+                        onClick={() => handleBuy(result._id)}
+                      >
+                        View Details
+                      </button>
+                      <button
+                        className={styles["book-now-button"]}
+                        onClick={() => handleBuy(result._id)}
+                      >
+                        Book Now
+                      </button>
+                    </div>
+                  </div>
 
-                    <div className={styles["amenities"]}>
-                      <h6>Amenities:</h6>
-                      <ul>
-                        {result.amenities.map((amenity) => (
-                          <li key={amenity}>
-                            {amenity === "Free WIFI" && (
-                              <FontAwesomeIcon
-                                icon={faWifi}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "AC" && (
-                              <FontAwesomeIcon
-                                icon={faSnowflake}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "GYM" && (
-                              <FontAwesomeIcon
-                                icon={faDumbbell}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Parking" && (
-                              <FontAwesomeIcon
-                                icon={faParking}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Swimming Pool" && (
-                              <FontAwesomeIcon
-                                icon={faSwimmingPool}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Kitchen" && (
-                              <FontAwesomeIcon
-                                icon={faKitchenSet}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "TV" && (
-                              <FontAwesomeIcon
-                                icon={faTv}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Geyser" && (
-                              <FontAwesomeIcon
-                                icon={faFire}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Power_backup" && (
-                              <FontAwesomeIcon
-                                icon={faPowerOff}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "CCTV" && (
-                              <FontAwesomeIcon
-                                icon={faCamera}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Fire-Extinguisher" && (
-                              <FontAwesomeIcon
-                                icon={faFire}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Elevator" && (
-                              <FontAwesomeIcon
-                                icon={faElevator}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity === "Card-payment" && (
-                              <FontAwesomeIcon
-                                icon={faCreditCard}
-                                className={styles["fonticon"]}
-                              />
-                            )}
-                            {amenity !== "Free WIFI" &&
-                              amenity !== "AC" &&
-                              amenity !== "GYM" &&
-                              amenity !== "Parking" &&
-                              amenity !== "Swimming Pool" &&
-                              amenity !== "Kitchen" &&
-                              amenity !== "TV" &&
-                              amenity !== "Geyser" &&
-                              amenity !== "Power_backup" &&
-                              amenity !== "CCTV" &&
-                              amenity !== "Fire-Extinguisher" &&
-                              amenity !== "Elevator" &&
-                              amenity !== "Card-payment" && (
-                                <>
-                                  <FontAwesomeIcon
-                                    icon={faCheck}
-                                    className={styles["fonticon"]}
-                                  />
-                                </>
+                  <p className={styles["search-result-availability"]}>
+                    Local ID: {result.availability}
+                  </p>
+                  <hr />
+
+                  {expandedResultId === result._id && (
+                    <div>
+                      <div className={styles["amenities"]}>
+                        <h6>More:</h6>
+                        <ul>
+                          {result.moreOptions.map((more) => (
+                            <li key={more}>
+                              {more === "Pets Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faPaw}
+                                  className={styles["fonticon"]}
+                                />
                               )}
-                            {amenity}
-                          </li>
-                        ))}
-                      </ul>
+                              {more === "Alcohol Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faGlassMartini}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {more === "Smoking Allowed" && (
+                                <FontAwesomeIcon
+                                  icon={faSmoking}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {more}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <hr />
+
+                      <div className={styles["amenities"]}>
+                        <h6>Amenities:</h6>
+                        <ul>
+                          {result.amenities.map((amenity) => (
+                            <li key={amenity}>
+                              {amenity === "Free WIFI" && (
+                                <FontAwesomeIcon
+                                  icon={faWifi}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "AC" && (
+                                <FontAwesomeIcon
+                                  icon={faSnowflake}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "GYM" && (
+                                <FontAwesomeIcon
+                                  icon={faDumbbell}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Parking" && (
+                                <FontAwesomeIcon
+                                  icon={faParking}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Swimming Pool" && (
+                                <FontAwesomeIcon
+                                  icon={faSwimmingPool}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Kitchen" && (
+                                <FontAwesomeIcon
+                                  icon={faKitchenSet}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "TV" && (
+                                <FontAwesomeIcon
+                                  icon={faTv}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Geyser" && (
+                                <FontAwesomeIcon
+                                  icon={faFire}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Power_backup" && (
+                                <FontAwesomeIcon
+                                  icon={faPowerOff}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "CCTV" && (
+                                <FontAwesomeIcon
+                                  icon={faCamera}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Fire-Extinguisher" && (
+                                <FontAwesomeIcon
+                                  icon={faFire}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Elevator" && (
+                                <FontAwesomeIcon
+                                  icon={faElevator}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity === "Card-payment" && (
+                                <FontAwesomeIcon
+                                  icon={faCreditCard}
+                                  className={styles["fonticon"]}
+                                />
+                              )}
+                              {amenity !== "Free WIFI" &&
+                                amenity !== "AC" &&
+                                amenity !== "GYM" &&
+                                amenity !== "Parking" &&
+                                amenity !== "Swimming Pool" &&
+                                amenity !== "Kitchen" &&
+                                amenity !== "TV" &&
+                                amenity !== "Geyser" &&
+                                amenity !== "Power_backup" &&
+                                amenity !== "CCTV" &&
+                                amenity !== "Fire-Extinguisher" &&
+                                amenity !== "Elevator" &&
+                                amenity !== "Card-payment" && (
+                                  <>
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      className={styles["fonticon"]}
+                                    />
+                                  </>
+                                )}
+                              {amenity}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-          <div className="_pagination">
-            <button
-              className={`_pagination-button ${
-                currentPage === 1
-                  ? "_pagination-inactive"
-                  : "_pagination-active"
-              }`}
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Prev
-            </button>
-            {visiblePages.map((page) => (
-              <button
-                key={page}
-                className={`_pagination-button ${
-                  page === currentPage
-                    ? "_pagination-active"
-                    : "_pagination-inactive"
-                }`}
-                onClick={() => handlePageClick(page)}
-              >
-                {page}
-              </button>
             ))}
-            <button
-              className={`_pagination-button ${
-                currentPage === totalPages
-                  ? "_pagination-inactive"
-                  : "_pagination-active"
-              }`}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
+            <div className="_pagination">
+              <button
+                className={`_pagination-button ${
+                  currentPage === 1
+                    ? "_pagination-inactive"
+                    : "_pagination-active"
+                }`}
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+              >
+                Prev
+              </button>
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  className={`_pagination-button ${
+                    page === currentPage
+                      ? "_pagination-active"
+                      : "_pagination-inactive"
+                  }`}
+                  onClick={() => handlePageClick(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className={`_pagination-button ${
+                  currentPage === totalPages
+                    ? "_pagination-inactive"
+                    : "_pagination-active"
+                }`}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <h1>No Data Available</h1>
+        )}
       </div>
     </>
   );

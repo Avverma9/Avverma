@@ -33,11 +33,11 @@ import "./Offers.css";
 const Offers = () => {
   const location = useLocation();
   const [data, setData] = useState([]);
-  const [expandedOfferId, setExpandedOfferId] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const isSignedIn = localStorage.getItem("isSignedIn")
+
   const navigate = useNavigate();
   useEffect(() => {
-    fetch("https://hotel-backend-tge7.onrender.com/offers")
+    fetch("https://hotel-backend-tge7.onrender.com/get/offers/main/hotels")
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error(error));

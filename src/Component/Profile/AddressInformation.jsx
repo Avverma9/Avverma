@@ -2,11 +2,12 @@ import { useState } from "react";
 
 export const AddressInformation = ({ userData, reset, refresh }) => {
   const [address, setAddress] = useState("");
-
+ const isSignedIn = localStorage.getItem("isSignedIn")
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
+     
       formData.append("address", address !== "" ? address : userData?.address);
 
       const userId = localStorage.getItem("userId");
@@ -31,7 +32,9 @@ export const AddressInformation = ({ userData, reset, refresh }) => {
       // Handle error state
     }
   };
-
+  if(!isSignedIn){
+    return null
+  }
   return (
     <div>
       <>

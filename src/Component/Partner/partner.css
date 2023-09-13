@@ -190,7 +190,9 @@ transform: translate(-50%, -200%);
 }
 .tariff-contain-all{
   display: flex;
-  gap: 30%;
+  gap: 7%;
+  width: fit-content;
+  margin: auto;
 }
 
 .image-container {
@@ -226,7 +228,7 @@ table {
   flex-direction: column;
   flex-wrap: wrap;
   
-  line-height: 2.5;
+  /* line-height: 2.5; */
 }
 
 .amenities1 {
@@ -337,12 +339,21 @@ table {
     font-size: 10px;
   }
   .tariff-container1 {
-    gap: 1%;
-    line-height: 2.5;
+    gap: 0%;
+    /* line-height: 2.5; */
   }
   .tariff {
     margin-top: 25px;
   }
+
+  .group2 .salesManagerContact{
+    position: relative !important;
+    left: -20px !important;
+  }
+  /* .street{
+    position: relative !important;
+    left: 10px !important;
+  } */
   #hotelOwnerName,
   #ownerContactDetails,
   #receptionContactDetails,
@@ -399,4 +410,7 @@ table {
   .landmark {
     width: 30%;
   }
+}
+.table-checkin{
+  margin-left: 28vw;
 }

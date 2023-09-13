@@ -1,5 +1,6 @@
+/* eslint-disable no-unreachable */
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
 
 export const CheckingBooking = () => {
@@ -9,13 +10,37 @@ export const CheckingBooking = () => {
   const [checkOutDate, setCheckOutDate] = useState(null);
   const [isEditingCheckIn, setIsEditingCheckIn] = useState(false);
   const [isEditingCheckOut, setIsEditingCheckOut] = useState(false);
+  const [checkedInBooking, setcheckedInBooking] = useState(null);
+
+
+  const fetchBookingDetails = useCallback(async () => {
+    const id = localStorage.getItem("userId")
+    console.log(id, "myId")
+    try {
+      const response = await axios.get(`https://hotel-backend-tge7.onrender.com/booking/getCheckedIn`)
+      // console.log(response.data);
+      // console.log("hello")
+      const bookings = response.data;
+
+      // console.log(bookings, "backend data");
+      setcheckedInBooking(bookings);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error fetching booking details");
+    }
+  }, [setcheckedInBooking, toast]);
+
+  useEffect(() => {
+    fetchBookingDetails();
+  }, []);
+
 
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `https://hotel-backend-tge7.onrender.com/getbooking/${bookingId}`
+        `https://hotel-backend-tge7.onrender.com/bookingsCheckedIn/${bookingId}`
       );
-      console.log(response.data, "RESPONSE");
+      // console.log(response.data, "RESPONSE");
 
       if (response.status === 200) {
         setBookingDetails(response.data.booking);
@@ -63,9 +88,89 @@ export const CheckingBooking = () => {
   return (
     <>
       <div className="_title">
-        <h1>Checking Booking</h1>
+        <h1>CheckedIn Booking</h1>
       </div>
+      {(checkedInBooking && checkedInBooking.length > 0) ?
+        <>
+          {
+            checkedInBooking.map((bookingDetails) => {
+              return (<>
+                <div className="card" style={{ display: "inline-block", width: "18rem", marginBottom: "12px", marginRight: "30px" }}>
+                  <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." />
+                  <table className="mytable">
+                    <tr>
+                      <td><strong>Booking ID</strong></td>
+                      <td>{bookingDetails.bookingId}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Booking Date</strong></td>
+                      <td>{bookingDetails.createdAt.substring(0, 10)}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Booking Time</strong></td>
+                      <td>{bookingDetails.createdAt.substring(11, 19)}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Status</strong></td>
+                      <td>{bookingDetails.bookingStatus}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Hotel</strong></td>
+                      <td>{bookingDetails.hotelName}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Destination Name</strong></td>
+                      <td>{bookingDetails.destination}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Guests</strong></td>
+                      <td>{bookingDetails.guests}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Food Items</strong></td>
+                      <td>{bookingDetails.foodItems.length && bookingDetails.foodItems.map((e) => { return (<><ul><li>{e.name}</li></ul></>) })}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Check-In Date</strong></td>
+                      <td>{bookingDetails.checkInDate ? bookingDetails.checkInDate.substring(0, 10) : ""}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Check-Out Date</strong></td>
+                      <td>{bookingDetails.checkOutDate ? bookingDetails.checkOutDate.substring(0, 10) : ""}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Check-In Time</strong></td>
+                      <td>{bookingDetails.checkInTime}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Check-Out Time</strong></td>
+                      <td>{bookingDetails.checkOutTime}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Price</strong></td>
+                      <td>{bookingDetails.price}</td>
+                    </tr>
+                  </table>
+                </div>
+              </>)
+            })
+          }
+        </>
+        :
+        <h6>Fetching Details....</h6>
+      }
+    </>
+  )
 
+
+
+
+  return (
+    <>
+      <div className="_title">
+        <h1>CheckedIn Booking</h1>
+      </div>
+      {/* 
       <div className="_fields_col">
         <input type="text" onChange={(e) => setBookingId(e.target.value)} />
         <span>Provide the BookingId</span>
@@ -73,7 +178,7 @@ export const CheckingBooking = () => {
 
       <button className="profile_body_button" onClick={handleSearch}>
         Check
-      </button>
+      </button> */}
 
       {bookingDetails && (
         <>
@@ -124,7 +229,7 @@ export const CheckingBooking = () => {
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
                         min={new Date().toISOString().slice(0, 10)}
-                        max={checkOutDate ? checkOutDate : undefined} 
+                        max={checkOutDate ? checkOutDate : undefined}
                       />
                     ) : (
                       <p>
@@ -186,6 +291,9 @@ export const CheckingBooking = () => {
               </div>
             </div>
           </div>
+
+
+
         </>
       )}
     </>

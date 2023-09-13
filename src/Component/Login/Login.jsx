@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, json } from "react-router-dom";
 import "./Login.css";
 import Google from "../SingGoogle/Google.jsx";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
@@ -16,6 +16,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
 
+
   const handleSignIn = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Set loading state to true while making the request
@@ -28,7 +29,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email}),
         }
       );
 
@@ -61,10 +62,6 @@ const Login = () => {
     navigate("/otplogin")
   }
 
-  if (location.pathname !== "/signin") {
-    return null;
-  }
-
   const handleForgotPassword = () => {
     navigate("/passwordChangeMail"); 
   };
@@ -72,6 +69,7 @@ const Login = () => {
 
   return (
     <div className="card-signin">
+      <h4>You must have registerd for Google login/booking</h4>
       {isLoading && (
         <img
           src="https://i.pinimg.com/originals/65/ba/48/65ba488626025cff82f091336fbf94bb.gif"
