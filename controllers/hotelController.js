@@ -365,6 +365,7 @@ const getByQuery = async (req, res) => {
     starRating,
     propertyType,
     hotelOwnerName,
+    hotelEmail,
     roomType, // Change this to roomType
   } = req.query;
 
@@ -388,6 +389,9 @@ const getByQuery = async (req, res) => {
 
   if (hotelOwnerName) {
     query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, "i") };
+  }
+  if (hotelOwnerName) {
+    query.hotelEmail = { $regex: new RegExp(hotelEmail, "i") };
   }
 
   if (roomType) {
