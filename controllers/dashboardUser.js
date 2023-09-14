@@ -15,7 +15,7 @@ const loginUser = async function(req,res){
  if(!loggedUser){
     res.status(400).json({message: "login failed"})
  }else {
-     res.status(200).json({message:"Logged in as",loggedUserImage: loggedUser.images, loggedUserId: loggedUser._id, loggedUserName: loggedUser.name})
+     res.status(200).json({message:"Logged in as",loggedUserImage: loggedUser.images, loggedUserId: loggedUser._id, loggedUserName: loggedUser.name, loggedUserEmail: loggedUser.email})
  }
 
 }
