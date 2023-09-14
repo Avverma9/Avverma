@@ -275,25 +275,25 @@
   border: solid 1px #d7d7d7;
   font-size: 18px;
   font-weight: 500;
-  
+
   background-color: #23e163;
   color: white;
-  
+
   border-radius: 4px;
   cursor: pointer;
   margin: 0 5px;
 }
-.card .select-btn:hover{
+.card .select-btn:hover {
   width: 200px;
   padding: 5px 0;
   border-radius: 4px;
   border: solid 1px #d7d7d7;
   font-size: 18px;
   font-weight: 500;
-  
+
   background-color: #1bac4b;
   color: white;
-  
+
   border-radius: 4px;
   cursor: pointer;
   margin: 0 5px;
@@ -1138,12 +1138,12 @@
   color: #dc3545;
   margin-top: 30px;
 }
-.upperhead{
+.upperhead {
   height: 22px;
-  background-image: linear-gradient(to right,#797f9d,#d4d1da);
+  background-image: linear-gradient(to right, #797f9d, #d4d1da);
   border-radius: 4px 4px 0px 0px;
 }
-.upperhead-text{
+.upperhead-text {
   color: white;
   font-weight: bold;
   display: flex;
@@ -1153,14 +1153,20 @@
   -webkit-box-align: center;
   align-items: center;
 }
-.downhead{
+.downhead {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  
 }
-.downhead .price-total{
+.downhead .price-total {
   font-size: 22px;
   font-weight: bold;
-  color:red;
+  color: red;
+}
+.bookingDetailstickyScroll {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 1% 5% 0 0;
+  background-color: white;
 }

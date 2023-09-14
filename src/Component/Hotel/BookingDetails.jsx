@@ -7,6 +7,7 @@ import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
+import { BiBed } from "react-icons/bi";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,13 +34,18 @@ const BookingDetails = ({
   foodIdArr,
   setFoodIdArr,
   roomPrice,
+  bedtype,
   isOffer,
   offerDetails,
   offerPriceLess,
   toast,
   scrollPos,
+  setScrollPos,
+  changeScrollPos,
+  bookingRef,
+  selectRoomRef,
 }) => {
-  console.log(userData);
+  console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
     console.log(data);
@@ -160,11 +166,11 @@ const BookingDetails = ({
     setSelectdatecheckout(date);
   };
   //for add room and guest
-  const [isopen, setIsopen] = useState(false);
+  // const [isopen, setIsopen] = useState(false);
 
-  const togglePopup = () => {
-    setIsopen(!isopen);
-  };
+  // const togglePopup = () => {
+  //   setIsopen(!isopen);
+  // };
 
   const paymentSelect = () => {
     setOpenPaymentModule(true);
@@ -231,10 +237,15 @@ const BookingDetails = ({
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in} onClick={togglePopup}>
+                <div
+                  className={styles.guest_in_in}
+                  onClick={() => {
+                    changeScrollPos(bookingRef.current);
+                  }}
+                >
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
-                {isopen && (
+                {/* {isopen && (
                   <div className={styles.popup}>
                     <div className={styles.roompo}>
                       <button onClick={togglePopup}>
@@ -263,24 +274,26 @@ const BookingDetails = ({
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>
           <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
-                <CiMobile1 />
+                <BiBed />
               </span>
               <div className={styles.textnew}>
-                <span className={styles.textc}>Spot On Non Ac</span>
+                <span className={styles.textc}>{bedtype}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
               <span
                 className={styles.penci_ico}
                 style={{ cursor: "pointer" }}
-                // onClick={() => setScrollPos({ x: 0, y: -1922.25 })}
+                onClick={() => {
+                  changeScrollPos(selectRoomRef.current);
+                }}
               >
                 <BsPencil />
               </span>
