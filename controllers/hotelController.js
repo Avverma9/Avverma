@@ -390,7 +390,7 @@ const getByQuery = async (req, res) => {
   if (hotelOwnerName) {
     query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, "i") };
   }
-  if (hotelOwnerName) {
+  if (hotelEmail) {
     query.hotelEmail = { $regex: new RegExp(hotelEmail, "i") };
   }
 
