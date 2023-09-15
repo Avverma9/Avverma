@@ -822,7 +822,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handlebedtype("Daybed", e.target.value)}
+                onChange={(e) => handlebedtype("DayBed", e.target.value)}
               />
               DayBed
             </label>

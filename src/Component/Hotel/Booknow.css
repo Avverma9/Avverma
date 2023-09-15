@@ -694,9 +694,8 @@
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 50%;
   }
-
   .card p {
     margin-bottom: 5px;
     font-size: 10px;
@@ -1098,11 +1097,11 @@
 }
 
 .img-thali {
-  width: 100%;
+  width: 50%;
 }
 
 .img-thali img {
-  width: 100%;
+  width: 50%;
 }
 
 .card-body h5 {
