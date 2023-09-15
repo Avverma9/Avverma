@@ -155,8 +155,10 @@ const BookNowPage = ({ userData, toast }) => {
         setHotelMoreOpt(data.moreOptions);
         setMeals(data?.foodItems);
         // setCheckIn(formatDate(data.startDate));
-        // setCheckout(formatDate(data.endDate));
-        setRoomPrice(data?.roomDetails[0].price);
+        // setCheckout(formatDate(data.endDate))
+        setRoomPrice(
+          (prevprice) => prevprice - prevprice + data?.roomDetails[0].price
+        );
       })
       .catch((error) => console.error(error));
   }, [offerId]);
@@ -307,7 +309,7 @@ const BookNowPage = ({ userData, toast }) => {
 
   const selectRoomHandler = (index, rprice) => {
     setSelectedRoomBtn(index);
-    setRoomPrice(rprice);
+    setRoomPrice((prevprice) => prevprice - prevprice + rprice);
   };
 
   return (
@@ -871,7 +873,7 @@ const BookNowPage = ({ userData, toast }) => {
                 destination={offerData?.destination}
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
-                roomPrice={offerData?.roomDetails[0].price}
+                roomPrice={roomPrice}
                 isOffer={offerData?.isOffer}
                 offerDetails={offerData?.offerDetails}
                 offerPriceLess={offerData?.offerPriceLess}

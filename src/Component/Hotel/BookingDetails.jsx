@@ -7,6 +7,7 @@ import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
+import { BiBed } from "react-icons/bi";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -26,23 +27,33 @@ const BookingDetails = ({
   setSelectedGuests,
   checkIn,
   checkOut,
+  setCheckOutDate,
+  setCheckInDate,
   hotelimage,
   destination,
   foodIdArr,
   setFoodIdArr,
   roomPrice,
+  bedtype,
   isOffer,
   offerDetails,
   offerPriceLess,
   toast,
+  scrollPos,
+  setScrollPos,
+  changeScrollPos,
+  bookingRef,
+  selectRoomRef,
 }) => {
+  console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
+    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (roomPrice * selectedRooms + foodPrice) * 100,
-      currency: data.currency,
+      amount: data?.payment.amount * 100,
+      currency: data?.payment.currency,
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -74,8 +85,8 @@ const BookingDetails = ({
       // hotel: hotelID,
       hotelName: hotelName,
       hotelOwnerName: hotelOwnerName,
-      checkIn: checkIn,
-      checkOut: checkOut,
+      checkIn: selectdate,
+      checkOut: selectdatecheckout,
       guests: selectedGuests,
       rooms: selectedRooms,
       price: roomPrice,
@@ -155,11 +166,11 @@ const BookingDetails = ({
     setSelectdatecheckout(date);
   };
   //for add room and guest
-  const [isopen, setIsopen] = useState(false);
+  // const [isopen, setIsopen] = useState(false);
 
-  const togglePopup = () => {
-    setIsopen(!isopen);
-  };
+  // const togglePopup = () => {
+  //   setIsopen(!isopen);
+  // };
 
   const paymentSelect = () => {
     setOpenPaymentModule(true);
@@ -226,10 +237,15 @@ const BookingDetails = ({
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in} onClick={togglePopup}>
+                <div
+                  className={styles.guest_in_in}
+                  onClick={() => {
+                    changeScrollPos(bookingRef.current);
+                  }}
+                >
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
-                {isopen && (
+                {/* {isopen && (
                   <div className={styles.popup}>
                     <div className={styles.roompo}>
                       <button onClick={togglePopup}>
@@ -258,21 +274,27 @@ const BookingDetails = ({
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>
           <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
-                <CiMobile1 />
+                <BiBed />
               </span>
               <div className={styles.textnew}>
-                <span className={styles.textc}>Spot On Non Ac</span>
+                <span className={styles.textc}>{bedtype}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
-              <span className={styles.penci_ico}>
+              <span
+                className={styles.penci_ico}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  changeScrollPos(selectRoomRef.current);
+                }}
+              >
                 <BsPencil />
               </span>
             </div>
@@ -370,18 +392,18 @@ const BookingDetails = ({
                 </span>
               </div>
             </div> */}
-            {isOffer === false && (
-              <div className={styles.pri}>
-                <div className={styles.pri1}>Total Price</div>
-                <div className={styles.pri2}>
-                  <span className={styles.p}>
-                    <FaRupeeSign />
-                    {roomPrice * selectedRooms + foodPrice}
-                  </span>
-                </div>
+            {/* {isOffer === false && ( */}
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Total Price</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {roomPrice * selectedRooms + foodPrice}
+                </span>
               </div>
-            )}
-            {isOffer === true && (
+            </div>
+            {/* )} */}
+            {/* {isOffer === true && (
               <div className={styles.pri}>
                 <div className={styles.pri1}>Discounted Price</div>
                 <div className={styles.pri2}>
@@ -395,7 +417,7 @@ const BookingDetails = ({
                   </span>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
 
           {openPaymentModule === false ? (

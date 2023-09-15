@@ -30,6 +30,7 @@ import {
   faPeopleGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from "react-icons/bi";
+import { MdCurrencyRupee } from "react-icons/md";
 import { FaStar, FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
@@ -69,7 +70,8 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
-  const [scrollPos, setScrollPos] = useState(null);
+  const [bedtype, setBedtype] = useState("");
+  const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -87,6 +89,9 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
 
+  const bookingRef = useRef(null);
+  const selectRoomRef = useRef(null);
+
   const expanddescription = () => {
     setExpand(!expand);
   };
@@ -102,9 +107,13 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     window.scrollTo(0, 0);
   }, []);
 
-  // useEffect(() => {
-  //   window.scrollTo(scrollPos);
-  // }, [scrollPos]);
+  const changeScrollPos = (ref) => {
+    window.scrollTo({
+      top: ref.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
@@ -132,6 +141,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
+        setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
         setMeals(data?.foodItems);
         // setCheckIn(convertDate(bookingDetails.startDate));
@@ -382,9 +392,10 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     setMyRating(rate);
   };
 
-  const selectRoomHandler = (index, rprice) => {
+  const selectRoomHandler = (index, rprice, bed) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
+    setBedtype(bed);
   };
 
   const showPopup = () => {
@@ -606,11 +617,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                       <p>
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
-                          <input
-                            type="text"
-                            value="11 AM"
-                            onChange={(e) => setCheckOutDate(e.target.value)}
-                          />
+                          <input type="text" value="11 AM" />
                         </span>
                       </p>
                     </div>
@@ -705,7 +712,9 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                   ))}
                 </div>
               </div>
-              <div className="cust-detail">Booking Details:</div>
+              <div className="cust-detail" ref={bookingRef}>
+                Booking Details:
+              </div>
               <div className="card">
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
@@ -785,7 +794,12 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </p>
               </div>
 
-              <div className="cust-detail">Choose your room:</div>
+              <div className="cust-detail" ref={selectRoomRef}>
+                Choose your room:
+              </div>
+              <div className="upperhead">
+                <div className="upperhead-text">Selected Category</div>
+              </div>
               {bookingDetails &&
                 bookingDetails?.roomDetails &&
                 bookingDetails?.roomDetails.map((item, index) => (
@@ -793,7 +807,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                     className="card"
                     style={{
                       width: "100%",
-                      margin: "15px 0",
+
                       background: "#fff",
                     }}
                   >
@@ -801,18 +815,25 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                       <div className="card-detail-info flex-fill">
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
-                        <p>Price : {item?.price}</p>
                       </div>
                       <div className="card-detail-img">
                         <img src={hotelImages[0]} alt="hotelImage" />
                       </div>
                     </div>
-                    <button
-                      className="select-btn"
-                      onClick={() => selectRoomHandler(index, item?.price)}
-                    >
-                      {index === selectedRoomBtn ? "Selected" : "Select"}
-                    </button>
+                    <div className="downhead">
+                      <p className="price-total">
+                        <MdCurrencyRupee className="r-sign" />
+                        {item?.price}
+                      </p>
+                      <button
+                        className="select-btn"
+                        onClick={() =>
+                          selectRoomHandler(index, item?.price, item?.bedTypes)
+                        }
+                      >
+                        {index === selectedRoomBtn ? "Selected" : "Select"}
+                      </button>
+                    </div>
                   </div>
                 ))}
               {writeReview !== true && (
@@ -1008,7 +1029,13 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
             </div>
-            <div className="bookingDetailsticky">
+            <div
+              className={
+                scrollPos.y <= -733.5
+                  ? "bookingDetailstickyScroll"
+                  : "bookingDetailsticky"
+              }
+            >
               <BookingDetails
                 hotelOwnerName={hotelOwnerName}
                 hotelName={bookingDetails.hotelName}
@@ -1024,16 +1051,23 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 setSelectedGuests={setSelectedGuests}
                 checkIn={checkInDate}
                 checkOut={checkOutDate}
+                setCheckOutDate={setCheckOutDate}
+                setCheckInDate={setCheckInDate}
                 hotelimage={firstImageURL}
                 destination={bookingDetails.destination}
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
                 roomPrice={roomPrice}
+                bedtype={bedtype}
                 isOffer={bookingDetails?.isOffer}
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
                 toast={toast}
                 scrollPos={scrollPos}
+                setScrollPos={setScrollPos}
+                changeScrollPos={changeScrollPos}
+                bookingRef={bookingRef}
+                selectRoomRef={selectRoomRef}
               />
             </div>
           </div>
