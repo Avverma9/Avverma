@@ -36,6 +36,8 @@ import { Rating } from "react-simple-star-rating";
 import Ratingrange from "../Hotel/Ratingrange";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import BookingDetails from "../Hotel/BookingDetails";
+import { MdCurrencyRupee } from "react-icons/md";
+import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 const BookNowPage = ({ userData, toast }) => {
   const { offerId } = useParams();
@@ -59,8 +61,14 @@ const BookNowPage = ({ userData, toast }) => {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
+  const [bedtype, setBedtype] = useState("");
+  const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
+  const [prevScrollPos, setPrevScrollPos] = useState({ x: 0, y: 0 });
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
+
+  const bookingRef = useRef(null);
+  const selectRoomRef = useRef(null);
 
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
@@ -129,6 +137,10 @@ const BookNowPage = ({ userData, toast }) => {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${offerId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -154,15 +166,19 @@ const BookNowPage = ({ userData, toast }) => {
         setHotelAmenities(data.amenities);
         setHotelMoreOpt(data.moreOptions);
         setMeals(data?.foodItems);
-        // setCheckIn(formatDate(data.startDate));
-        // setCheckout(formatDate(data.endDate))
         setRoomPrice(
           (prevprice) => prevprice - prevprice + data?.roomDetails[0].price
         );
+        setBedtype(data?.roomDetails[0].bedTypes);
       })
       .catch((error) => console.error(error));
   }, [offerId]);
   console.log(roomPrice);
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    setPrevScrollPos(prevPos);
+    setScrollPos(currPos);
+  });
 
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
@@ -301,15 +317,24 @@ const BookNowPage = ({ userData, toast }) => {
     setFoodPrice(foodPrice + fprice);
   };
 
+  const changeScrollPos = (ref) => {
+    window.scrollTo({
+      top: ref.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
     value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
     setSelectedRooms(value);
   };
 
-  const selectRoomHandler = (index, rprice) => {
+  const selectRoomHandler = (index, rprice, bed) => {
     setSelectedRoomBtn(index);
-    setRoomPrice((prevprice) => prevprice - prevprice + rprice);
+    setRoomPrice(rprice);
+    setBedtype(bed);
   };
 
   return (
@@ -511,60 +536,65 @@ const BookNowPage = ({ userData, toast }) => {
                 <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
               </div>
 
-              <div className="_meals-container">
-                <h1>Enjoy meals during your stay</h1>
-                <div className="d-flex gap-3">
-                  {meals.map((m, i) => (
-                    <div className="card w-50 h-25 mb-3" key={m._id}>
-                      <div className="row-g-0">
-                        <div className="img-thali">
-                          <img
-                            src={m.images[0]}
-                            className="img-fluid rounded-start"
-                            alt="..."
-                          />
-                        </div>
-                        <div className="col-md-8">
-                          <div className="card-body">
-                            <h5 className="card-title">{m.name}</h5>
-                            {/* <p className="card-text">{m.description}</p> */}
-                            <p className="card-text">
-                              <small className="text-body-secondary">
-                                {m.price}
-                              </small>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row g-0">
-                        <div className="col-md-12">
-                          <button
-                            type="button"
-                            className="btn btn-primary w-100 d-flex mt-4"
-                            onClick={() => foodPriceHandler(i, m.price, m._id)}
-                            key={i}
-                          >
-                            {addingFood && indexedButton === i ? (
-                              <div
-                                className="spinner-border spinner-border-sm text-white"
-                                role="status"
-                              >
-                                <span className="sr-only">Loading...</span>
-                              </div>
-                            ) : (
-                              "Add"
-                            )}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <div className="cust-detail">Enjoy meals during your stay:</div>
 
-              <div className="cust-detail">Booking Details:</div>
+              {meals.map((m, i) => (
+                <div
+                  className="card"
+                  style={{
+                    width: "75%",
+                    minWidth: "480px",
+                    background: "#fff",
+                  }}
+                  key={m._id}
+                >
+                  <div className="d-flex align-items-center">
+                    <div className="card-detail-info flex-fill">
+                      <p>Item Name : {m.name}</p>
+                      <p>Item Description : {m.about}</p>
+                    </div>
+                    <div className="card-detail-img">
+                      <img src={m.images[0]} alt="..." />
+                    </div>
+                  </div>
+                  <div className="downhead">
+                    <p className="price-total">
+                      <MdCurrencyRupee className="r-sign" />
+                      {m.price}
+                    </p>
+                    <button
+                      type="button"
+                      className=" mt-4 select-btn"
+                      onClick={() => foodPriceHandler(i, m.price, m._id)}
+                      key={i}
+                    >
+                      {addingFood && indexedButton === i ? (
+                        <div
+                          className="spinner-border spinner-border-sm text-white"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        "Add"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              <div className="cust-detail" ref={bookingRef}>
+                Booking Details:
+              </div>
               <div className="card">
-                <p className="roomtype">
+                <p
+                  className="roomtype"
+                  style={{
+                    width: "75%",
+                    minWidth: "480px",
+                    background: "#fff",
+                  }}
+                >
                   <FontAwesomeIcon icon={faHotel} className="icon" />
                   Room Type: {offerData.roomtype}
                 </p>
@@ -640,15 +670,17 @@ const BookNowPage = ({ userData, toast }) => {
                 </p>
               </div>
 
-              <div className="cust-detail">Choose your room:</div>
+              <div className="cust-detail" ref={selectRoomRef}>
+                Choose your room:
+              </div>
               {offerData &&
                 offerData?.roomDetails &&
                 offerData?.roomDetails.map((item, index) => (
                   <div
                     className="card"
                     style={{
-                      width: "100%",
-                      margin: "15px 0",
+                      width: "75%",
+                      minWidth: "480px",
                       background: "#fff",
                     }}
                   >
@@ -664,7 +696,9 @@ const BookNowPage = ({ userData, toast }) => {
                     </div>
                     <button
                       className="select-btn"
-                      onClick={() => selectRoomHandler(index, item?.price)}
+                      onClick={() =>
+                        selectRoomHandler(index, item?.price, item?.bedTypes)
+                      }
                     >
                       {index === selectedRoomBtn ? "Selected" : "Select"}
                     </button>
@@ -823,41 +857,18 @@ const BookNowPage = ({ userData, toast }) => {
                       ))
                     : null}
                 </div>
-
-                <div className="_pagination">
-                  <button
-                    className="_pagination-button"
-                    onClick={handlePrevPage}
-                    disabled={currentPage === 1}
-                  >
-                    Prev
-                  </button>
-                  {visiblePages.map((page) => (
-                    <button
-                      key={page}
-                      className={`_pagination-button ${
-                        page === currentPage ? "_pagination-active" : ""
-                      }`}
-                      onClick={() => handlePageClick(page)}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                  <button
-                    className="_pagination-button"
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                  >
-                    Next
-                  </button>
-                </div>
               </div>
             </div>
-            <div className="bookingDetailsticky">
+            <div
+              className={
+                scrollPos.y <= -733.5
+                  ? "bookingDetailstickyScroll"
+                  : "bookingDetailsticky"
+              }
+            >
               <BookingDetails
                 hotelOwnerName={offerData?.hotelOwnerName}
                 hotelName={offerData?.hotelName}
-                // price={bookingDetails.price}
                 foodPrice={foodPrice}
                 hotelID={offerData?._id}
                 userId={userId}
@@ -865,21 +876,48 @@ const BookNowPage = ({ userData, toast }) => {
                 userData={userData}
                 selectedRooms={selectedRooms}
                 selectedGuests={selectedGuests}
-                setSelectedRooms={setSelectedRooms}
-                setSelectedGuests={setSelectedGuests}
-                checkIn={checkin}
-                checkOut={checkout}
                 hotelimage={firstImageURL}
                 destination={offerData?.destination}
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
                 roomPrice={roomPrice}
+                bedtype={bedtype}
                 isOffer={offerData?.isOffer}
                 offerDetails={offerData?.offerDetails}
                 offerPriceLess={offerData?.offerPriceLess}
                 toast={toast}
+                changeScrollPos={changeScrollPos}
+                bookingRef={bookingRef}
+                selectRoomRef={selectRoomRef}
               />
             </div>
+          </div>
+          <div className="_pagination">
+            <button
+              className="_pagination-button"
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            {visiblePages.map((page) => (
+              <button
+                key={page}
+                className={`_pagination-button ${
+                  page === currentPage ? "_pagination-active" : ""
+                }`}
+                onClick={() => handlePageClick(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className="_pagination-button"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

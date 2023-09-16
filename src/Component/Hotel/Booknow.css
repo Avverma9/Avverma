@@ -32,6 +32,7 @@
 .hotel-details1 {
   margin-bottom: 10px;
   margin-left: 10%;
+  width: calc(85% - 425px);
 }
 
 .hotel-details1 .hotel-name1 {
@@ -924,8 +925,7 @@
 }
 
 ._pagination {
-  float: right;
-  margin-right: 10%;
+  margin: 0 5% 0 auto;
 }
 
 ._pagination-button {
@@ -1060,6 +1060,7 @@
 
 .bookingflex {
   display: flex;
+  width: 100%;
 }
 
 .bookingDetailsticky {
@@ -1169,4 +1170,5 @@
   right: 0;
   margin: 1% 5% 0 0;
   background-color: white;
+  z-index: 1;
 }
