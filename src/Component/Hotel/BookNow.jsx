@@ -797,7 +797,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
               <div className="cust-detail" ref={selectRoomRef}>
                 Choose your room:
               </div>
-         
+
               {bookingDetails &&
                 bookingDetails?.roomDetails &&
                 bookingDetails?.roomDetails.map((item, index) => (
@@ -807,6 +807,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                       width: "75%",
                       minWidth: "480px",
                       background: "#fff",
+                      margin: "20px 0",
                     }}
                   >
                     <div className="d-flex align-items-center">

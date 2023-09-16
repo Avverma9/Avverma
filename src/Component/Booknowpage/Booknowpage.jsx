@@ -45,8 +45,6 @@ const BookNowPage = ({ userData, toast }) => {
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
-  const [checkin, setCheckIn] = useState("");
-  const [checkout, setCheckout] = useState("");
   const [expand, setExpand] = useState(false);
   const [offerReviews, setOfferReviews] = useState([]);
   const [myReview, setMyReview] = useState("");
@@ -526,7 +524,6 @@ const BookNowPage = ({ userData, toast }) => {
                           <input
                             type="text"
                             value="11 AM"
-                            onChange={(e) => setCheckout(e.target.value)}
                           />
                         </span>
                       </p>
@@ -586,15 +583,15 @@ const BookNowPage = ({ userData, toast }) => {
               <div className="cust-detail" ref={bookingRef}>
                 Booking Details:
               </div>
-              <div className="card">
-                <p
-                  className="roomtype"
-                  style={{
-                    width: "75%",
-                    minWidth: "480px",
-                    background: "#fff",
-                  }}
-                >
+              <div
+                className="card"
+                style={{
+                  width: "75%",
+                  minWidth: "480px",
+                  background: "#fff",
+                }}
+              >
+                <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
                   Room Type: {offerData.roomtype}
                 </p>
@@ -682,6 +679,7 @@ const BookNowPage = ({ userData, toast }) => {
                       width: "75%",
                       minWidth: "480px",
                       background: "#fff",
+                      margin: "20px 0",
                     }}
                   >
                     <div className="d-flex align-items-center">
