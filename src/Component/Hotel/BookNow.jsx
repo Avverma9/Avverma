@@ -39,7 +39,6 @@ import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
 import { Rating } from "react-simple-star-rating";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 export default function BookNow({ refresh, reset, userData, toast }) {
   const navigate = useNavigate();
@@ -69,8 +68,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
   const [bedtype, setBedtype] = useState("");
-  const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
-  const [prevScrollPos, setPrevScrollPos] = useState({ x: 0, y: 0 });
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -88,8 +85,22 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
 
+  const [positionTop, setpositionTop] = useState(0);
+
   const bookingRef = useRef(null);
   const selectRoomRef = useRef(null);
+  const bookingDetailsEndRef = useRef();
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScrollPosition(window.scrollY);
+    });
+    if (scrollPosition >= bookingDetailsEndRef.current.offsetTop) {
+      setpositionTop(bookingDetailsEndRef.current.offsetTop - scrollPosition);
+    } else setpositionTop(0);
+  }, [scrollPosition]);
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -408,11 +419,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     // }
   }, [selectedGuests, selectedRooms]);
 
-  useScrollPosition(({ prevPos, currPos }) => {
-    setPrevScrollPos(prevPos);
-    setScrollPos(currPos);
-  });
-
   return (
     <>
       <div className="container-p-4">
@@ -704,6 +710,8 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                   </div>
                 </div>
               ))}
+
+              <div ref={bookingDetailsEndRef} />
 
               <div className="cust-detail" ref={bookingRef}>
                 Booking Details:
@@ -1000,13 +1008,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
             </div>
-            <div
-              className={
-                scrollPos.y <= -733.5
-                  ? "bookingDetailstickyScroll"
-                  : "bookingDetailsticky"
-              }
-            >
+            <div className="bookingDetailsticky">
               <BookingDetails
                 hotelOwnerName={hotelOwnerName}
                 hotelName={bookingDetails.hotelName}
@@ -1030,6 +1032,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 changeScrollPos={changeScrollPos}
                 bookingRef={bookingRef}
                 selectRoomRef={selectRoomRef}
+                positionTop={positionTop}
               />
             </div>
           </div>

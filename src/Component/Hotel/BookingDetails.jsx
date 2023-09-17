@@ -35,6 +35,7 @@ const BookingDetails = ({
   changeScrollPos,
   bookingRef,
   selectRoomRef,
+  positionTop,
 }) => {
   // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
@@ -152,7 +153,13 @@ const BookingDetails = ({
 
   return (
     <>
-      <div className="new-booking-details">
+      <div
+        className="new-booking-details"
+        style={{
+          position: "sticky",
+          top: Math.round(positionTop * 1),
+        }}
+      >
         <div className={styles.main}>
           <div className={styles.headupper}>
             <div className={styles.head}>

@@ -925,7 +925,7 @@
 }
 
 ._pagination {
-  margin: 0 5% 0 auto;
+  margin: 0px 5% 2% auto;
 }
 
 ._pagination-button {
@@ -1064,7 +1064,9 @@
 }
 
 .bookingDetailsticky {
-  margin-right: 5%;
+  margin: 1% 5% 0 0;
+  background-color: white;
+  z-index: 1;
 }
 ._meals-container h1 {
   font-size: 25px;
@@ -1163,12 +1165,4 @@
   font-size: 22px;
   font-weight: bold;
   color: red;
-}
-.bookingDetailstickyScroll {
-  position: fixed;
-  top: 0;
-  right: 0;
-  margin: 1% 5% 0 0;
-  background-color: white;
-  z-index: 1;
 }

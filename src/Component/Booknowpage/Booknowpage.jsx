@@ -37,7 +37,6 @@ import Ratingrange from "../Hotel/Ratingrange";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import BookingDetails from "../Hotel/BookingDetails";
 import { MdCurrencyRupee } from "react-icons/md";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
 const BookNowPage = ({ userData, toast }) => {
   const { offerId } = useParams();
@@ -60,13 +59,8 @@ const BookNowPage = ({ userData, toast }) => {
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
   const [bedtype, setBedtype] = useState("");
-  const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
-  const [prevScrollPos, setPrevScrollPos] = useState({ x: 0, y: 0 });
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
-
-  const bookingRef = useRef(null);
-  const selectRoomRef = useRef(null);
 
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
@@ -126,6 +120,24 @@ const BookNowPage = ({ userData, toast }) => {
     sliderRef.current.slickNext();
   };
 
+  const [positionTop, setpositionTop] = useState(0);
+
+  const bookingRef = useRef(null);
+  const selectRoomRef = useRef(null);
+  const targetBookingRef = useRef();
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScrollPosition(window.scrollY);
+    });
+
+    if (scrollPosition >= targetBookingRef.current.offsetTop) {
+      setpositionTop(targetBookingRef.current.offsetTop - scrollPosition);
+    } else setpositionTop(0);
+  }, [scrollPosition]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       slideToNext();
@@ -172,11 +184,6 @@ const BookNowPage = ({ userData, toast }) => {
       .catch((error) => console.error(error));
   }, [offerId]);
   console.log(roomPrice);
-
-  useScrollPosition(({ prevPos, currPos }) => {
-    setPrevScrollPos(prevPos);
-    setScrollPos(currPos);
-  });
 
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
@@ -521,10 +528,7 @@ const BookNowPage = ({ userData, toast }) => {
                       <p>
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
-                          <input
-                            type="text"
-                            value="11 AM"
-                          />
+                          <input type="text" value="11 AM" />
                         </span>
                       </p>
                     </div>
@@ -579,6 +583,8 @@ const BookNowPage = ({ userData, toast }) => {
                   </div>
                 </div>
               ))}
+
+              <div ref={targetBookingRef} />
 
               <div className="cust-detail" ref={bookingRef}>
                 Booking Details:
@@ -857,13 +863,7 @@ const BookNowPage = ({ userData, toast }) => {
                 </div>
               </div>
             </div>
-            <div
-              className={
-                scrollPos.y <= -733.5
-                  ? "bookingDetailstickyScroll"
-                  : "bookingDetailsticky"
-              }
-            >
+            <div className="bookingDetailsticky">
               <BookingDetails
                 hotelOwnerName={offerData?.hotelOwnerName}
                 hotelName={offerData?.hotelName}
@@ -887,6 +887,7 @@ const BookNowPage = ({ userData, toast }) => {
                 changeScrollPos={changeScrollPos}
                 bookingRef={bookingRef}
                 selectRoomRef={selectRoomRef}
+                positionTop={positionTop}
               />
             </div>
           </div>
