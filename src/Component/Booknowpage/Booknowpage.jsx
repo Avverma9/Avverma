@@ -537,7 +537,9 @@ const BookNowPage = ({ userData, toast }) => {
                 <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
               </div>
 
-              <div className="cust-detail">Enjoy meals during your stay:</div>
+              {meals && meals.length > 0 ? (
+                <div className="cust-detail">Enjoy meals during your stay:</div>
+              ) : null}
 
               {meals.map((m, i) => (
                 <div
@@ -888,36 +890,39 @@ const BookNowPage = ({ userData, toast }) => {
                 bookingRef={bookingRef}
                 selectRoomRef={selectRoomRef}
                 positionTop={positionTop}
+                meals={meals}
               />
             </div>
           </div>
-          <div className="_pagination">
-            <button
-              className="_pagination-button"
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Prev
-            </button>
-            {visiblePages.map((page) => (
+          {totalItems > itemsPerPage ? (
+            <div className="_pagination">
               <button
-                key={page}
-                className={`_pagination-button ${
-                  page === currentPage ? "_pagination-active" : ""
-                }`}
-                onClick={() => handlePageClick(page)}
+                className="_pagination-button"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
               >
-                {page}
+                Prev
               </button>
-            ))}
-            <button
-              className="_pagination-button"
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  className={`_pagination-button ${
+                    page === currentPage ? "_pagination-active" : ""
+                  }`}
+                  onClick={() => handlePageClick(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className="_pagination-button"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </>

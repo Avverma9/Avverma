@@ -36,6 +36,7 @@ const BookingDetails = ({
   bookingRef,
   selectRoomRef,
   positionTop,
+  meals,
 }) => {
   // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
@@ -321,15 +322,17 @@ const BookingDetails = ({
                 </span>
               </div>
             </div>
-            <div className={styles.pri}>
-              <div className={styles.pri1}>Food Items:</div>
-              <div className={styles.pri2}>
-                <span className={styles.p}>
-                  <FaRupeeSign />
-                  {foodPrice}
-                </span>
+            {meals && meals.length > 0 ? (
+              <div className={styles.pri}>
+                <div className={styles.pri1}>Food Items:</div>
+                <div className={styles.pri2}>
+                  <span className={styles.p}>
+                    <FaRupeeSign />
+                    {foodPrice}
+                  </span>
+                </div>
               </div>
-            </div>
+            ) : null}
             {/* <div className={styles.pri}>
               <div className={styles.pri1}>Your Saving</div>
               <div className={styles.pri2}>
