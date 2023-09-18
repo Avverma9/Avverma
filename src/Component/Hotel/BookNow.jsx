@@ -40,7 +40,7 @@ import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
 import { Rating } from "react-simple-star-rating";
 
-export default function BookNow({ refresh, reset, userData, toast }) {
+export default function BookNow({ userData, toast }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -191,7 +191,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setRevCount(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
-  }, [hotelID, reset]);
+  }, [hotelID]);
 
   // Pagination for Reviews
 
@@ -280,8 +280,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
           setMyReview("");
           setMyRating(0);
           setWriteReview(false);
-          // window.location.reload();
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -301,9 +299,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     ).then((response) => {
       try {
         if (response.status === 200) {
-          // const data = response.json();
-          // window.location.reload();
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -334,7 +329,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
           setIsUpdatingReview(false);
           setReviewId("");
           setUpdatedReview("");
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -893,7 +887,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </>
               )}
 
-              <div className="reviews" key={refresh}>
+              <div className="reviews">
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
                   <Ratingrange />

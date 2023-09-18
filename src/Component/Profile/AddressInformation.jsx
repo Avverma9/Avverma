@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const AddressInformation = ({ userData, reset, refresh }) => {
+export const AddressInformation = ({ userData }) => {
   const [address, setAddress] = useState("");
  const isSignedIn = localStorage.getItem("isSignedIn")
   const handleUpdate = async (e) => {
@@ -20,16 +20,12 @@ export const AddressInformation = ({ userData, reset, refresh }) => {
       );
       console.log(response);
       if (response.ok) {
-        // setProfileUpdated(true);// Call the onUpdateDone callback
-        // handleClose()
         setAddress("");
-        reset();
       } else {
         throw new Error("Failed to update profile");
       }
     } catch (error) {
       console.error(error);
-      // Handle error state
     }
   };
   if(!isSignedIn){
@@ -41,7 +37,7 @@ export const AddressInformation = ({ userData, reset, refresh }) => {
         <div className="_title">
           <h1>Address</h1>
         </div>
-        <div className="_fields" key={refresh}>
+        <div className="_fields">
           <textarea type="text" rows="1" value={userData?.address} />
           <textarea
             placeholder="Enter New Address"

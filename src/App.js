@@ -110,12 +110,6 @@ import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
 function App() {
-  // console.log(search)
-  const [refresh, setRefresh] = useState(1);
-  const reset = () => {
-    setRefresh(Math.random());
-  };
-
   const [userData, setUserData] = useState(null);
 
   const userDetails = getLocalStorage("loggedUser");
@@ -178,10 +172,7 @@ function App() {
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route
-            path="/profile"
-            element={<Profile refresh={refresh} reset={reset} />}
-          >
+          <Route path="/profile" element={<Profile />}>
             <Route
               index
               element={
@@ -190,8 +181,6 @@ function App() {
                   userData={userData}
                   isSignedIn={isSignedIn}
                   userDetails={userDetails}
-                  reset={reset}
-                  refresh={refresh}
                 />
               }
             />
@@ -214,8 +203,6 @@ function App() {
               element={
                 <ComplaintsSection
                   userData={userData}
-                  reset={reset}
-                  refresh={refresh}
                   isSignedIn={isSignedIn}
                 />
               }
@@ -228,14 +215,7 @@ function App() {
           <Route path="/search/results" element={<SearchResults />} />
           <Route
             path="/hotels/:id"
-            element={
-              <BookNow
-                refresh={refresh}
-                reset={reset}
-                userData={userData}
-                toast={toast}
-              />
-            }
+            element={<BookNow userData={userData} toast={toast} />}
           />
           <Route path="/cities/jaipur" element={<Jaipur />} />
           <Route path="/cities/kota" element={<Kota />} />
@@ -283,14 +263,7 @@ function App() {
           <Route path="cities/kolhapur" element={<Kolhapur />} />
           <Route
             path="/book-now/:offerId"
-            element={
-              <BookNowPage
-                refresh={refresh}
-                reset={reset}
-                userData={userData}
-                toast={toast}
-              />
-            }
+            element={<BookNowPage userData={userData} toast={toast} />}
           />
           {/* <Route
             path="/bookingDetails"

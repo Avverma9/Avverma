@@ -2,10 +2,9 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
-
 const styles = {
   tableContainer: {
-    maxHeight: "400px", 
+    maxHeight: "400px",
     overflowY: "auto",
   },
   table: {
@@ -17,15 +16,15 @@ const styles = {
     border: "1px solid #ccc",
   },
   circularImage: {
-    width: "50px", 
+    width: "50px",
     height: "50px",
-    borderRadius: "50%", 
-    overflow: "hidden", 
+    borderRadius: "50%",
+    overflow: "hidden",
   },
   circularImageImg: {
     width: "100%",
     height: "100%",
-    objectFit: "cover", 
+    objectFit: "cover",
   },
 };
 
@@ -58,9 +57,11 @@ export const CancelBooking = ({ toast }) => {
       });
   };
 
-  const fetchCanceledBookings= () => {
+  const fetchCanceledBookings = useCallback(() => {
     axios
-      .get("https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking")
+      .get(
+        "https://hotel-backend-tge7.onrender.com/booking/getCancelledBooking"
+      )
       .then((res) => {
         console.log(res.data, "CancelledData");
         setCanceledBookings(res.data);
@@ -69,7 +70,7 @@ export const CancelBooking = ({ toast }) => {
         console.log(err);
         toast.error("Failed to fetch canceled bookings.");
       });
-  };
+  }, [toast]);
 
   // const fetchCanceledBookings = useCallback(() => {
   //   const id = localStorage.getItem("userId")
@@ -90,7 +91,7 @@ export const CancelBooking = ({ toast }) => {
 
   useEffect(() => {
     fetchCanceledBookings();
-  }, []);
+  }, [fetchCanceledBookings]);
 
   return (
     <>
@@ -122,58 +123,56 @@ export const CancelBooking = ({ toast }) => {
         </Modal.Footer>
       </Modal>
 
-      {0 > 0 && (
-          <>
-         <div className="_title">
-  <h1>Canceled Booking History</h1>
-</div>
-<div style={styles.tableContainer}>
-  <table style={styles.table}>
-    <thead>
-      <tr>
-        <th style={styles.cell}>Sr</th>
-        <th style={styles.cell}>Hotel Image</th>
-        <th style={styles.cell}>Booking ID</th>
-        <th style={styles.cell}>Hotel Name</th>
-        <th style={styles.cell}>Destination</th>
-        {/* <th>Check-In Date</th>
-        <th>Check-Out Date</th> */}
-        <th style={styles.cell}>Cancelled at</th>
-        <th style={styles.cell}>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {canceledBookings.map((booking,index) => (
-        <tr key={booking._id}>
-            <td style={styles.cell}>{index+1}</td>
-          <td style={styles.cell}>
-            <div style={styles.circularImage}>
-              <img
-                className="hotelimage"
-                src={booking.images}
-                alt="Hotel"
-                style={styles.circularImageImg}
-              />
-            </div>
-          </td>
-          <td style={styles.cell}>{booking.bookingId}</td>
-          <td style={styles.cell}>{booking.hotelName}</td>
-          <td style={styles.cell}>{booking.destination}</td>
-          {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
+      {/* {0 > 0 && ( */}
+      <>
+        <div className="_title">
+          <h1>Canceled Booking History</h1>
+        </div>
+        <div style={styles.tableContainer}>
+          <table style={styles.table}>
+            <thead>
+              <tr>
+                <th style={styles.cell}>Sr</th>
+                <th style={styles.cell}>Hotel Image</th>
+                <th style={styles.cell}>Booking ID</th>
+                <th style={styles.cell}>Hotel Name</th>
+                <th style={styles.cell}>Destination</th>
+                <th style={styles.cell}>Cancelled at</th>
+                <th style={styles.cell}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {canceledBookings.map((booking, index) => (
+                <tr key={booking._id}>
+                  <td style={styles.cell}>{index + 1}</td>
+                  <td style={styles.cell}>
+                    <div style={styles.circularImage}>
+                      <img
+                        className="hotelimage"
+                        src={booking.images}
+                        alt="Hotel"
+                        style={styles.circularImageImg}
+                      />
+                    </div>
+                  </td>
+                  <td style={styles.cell}>{booking.bookingId}</td>
+                  <td style={styles.cell}>{booking.hotelName}</td>
+                  <td style={styles.cell}>{booking.destination}</td>
+                  {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
           <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
-          <td style={styles.cell}>
-            {new Date(booking.cancelledAt).toLocaleDateString()}
-          </td>
-          <td style={{ ...styles.cell, color: "red" }}>
-            {booking.bookingStatus}
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-        </>
-      )}
+                  <td style={styles.cell}>
+                    {new Date(booking.cancelledAt).toLocaleDateString()}
+                  </td>
+                  <td style={{ ...styles.cell, color: "red" }}>
+                    {booking.bookingStatus}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+      {/* )} */}
     </>
   );
 };
