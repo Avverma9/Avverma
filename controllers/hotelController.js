@@ -395,7 +395,7 @@ const getByQuery = async (req, res) => {
   }
 
   if (roomType) {
-    // Use $elemMatch to search within the roomDetails array
+ 
     query.roomDetails = { $elemMatch: { type: { $in: roomType } } };
   }
 
@@ -538,7 +538,6 @@ const getHotelsByFilters = async (req, res) => {
       collections,
       categories,
       accommodationTypes,
-      hotelFacilities,
       checkInFeatures,
     } = req.query;
 
@@ -610,24 +609,17 @@ const updateRoom = async (req, res) => {
 const addRoomToHotel = async function (req, res) {
   const { hotelId } = req.params;
   const { type, bedTypes, price } = req.body;
-  try {
     const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
+    const images = req.files.map((file)=>file.location)
     const newDetails = {
-      type: type,
-      bedTypes: bedTypes,
-      price: price,
+      type,
+      images,
+      bedTypes,
+      price,
     };
     hotel.roomDetails.push(newDetails);
     await hotel.save();
-
     return res.status(200).json(hotel);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
 };
 //====================================add foods to hotel============================================
 const addFoodToHotel = async (request, response) => {
