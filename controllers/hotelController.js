@@ -606,21 +606,46 @@ const updateRoom = async (req, res) => {
   }
 };
 //==================================add new room===============================================
+// const addRoomToHotel = async function (req, res) {
+//   const { hotelId } = req.params;
+//   const { type, bedTypes, price } = req.body;
+//     const hotel = await hotelModel.findById(hotelId);
+//     const images = req.files.map((file)=>file.location)
+//     const newDetails = {
+//       type,
+//       images,
+//       bedTypes,
+//       price,
+//     };
+//     hotel.roomDetails.push(newDetails);
+//     await hotel.save();
+//     return res.status(200).json(hotel);
+// };
 const addRoomToHotel = async function (req, res) {
+
   const { hotelId } = req.params;
   const { type, bedTypes, price } = req.body;
+  try {
     const hotel = await hotelModel.findById(hotelId);
     const images = req.files.map((file)=>file.location)
+    if (!hotel) {
+      return res.status(404).json({ error: 'Hotel not found' });
+    }
     const newDetails = {
-      type,
-      images,
-      bedTypes,
-      price,
-    };
+       type : type,
+       images : images,
+        bedTypes : bedTypes,
+         price : price
+    }
     hotel.roomDetails.push(newDetails);
     await hotel.save();
+
     return res.status(200).json(hotel);
-};
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+  }
 //====================================add foods to hotel============================================
 const addFoodToHotel = async (request, response) => {
   const { hotelId } = request.params;
