@@ -395,7 +395,6 @@ const getByQuery = async (req, res) => {
   }
 
   if (roomType) {
- 
     query.roomDetails = { $elemMatch: { type: { $in: roomType } } };
   }
 
@@ -534,12 +533,8 @@ const getHotelsByLocalID = async (req, res) => {
 //=============================================================================================
 const getHotelsByFilters = async (req, res) => {
   try {
-    const {
-      collections,
-      categories,
-      accommodationTypes,
-      checkInFeatures,
-    } = req.query;
+    const { collections, categories, accommodationTypes, checkInFeatures } =
+      req.query;
 
     const filters = {};
 
@@ -606,53 +601,38 @@ const updateRoom = async (req, res) => {
   }
 };
 //==================================add new room===============================================
-// const addRoomToHotel = async function (req, res) {
-//   const { hotelId } = req.params;
-//   const { type, bedTypes, price } = req.body;
-//     const hotel = await hotelModel.findById(hotelId);
-//     const images = req.files.map((file)=>file.location)
-//     const newDetails = {
-//       type,
-//       images,
-//       bedTypes,
-//       price,
-//     };
-//     hotel.roomDetails.push(newDetails);
-//     await hotel.save();
-//     return res.status(200).json(hotel);
-// };
 const addRoomToHotel = async function (req, res) {
-
   const { hotelId } = req.params;
-  const { type, bedTypes, price } = req.body;
+  const { images, type, bedTypes, price } = req.body;
+
   try {
     const hotel = await hotelModel.findById(hotelId);
-    const images = req.files.map((file)=>file.location)
     if (!hotel) {
-      return res.status(404).json({ error: 'Hotel not found' });
+      return res.status(404).json({ error: "Hotel not found" });
     }
+const images = req.files.map((file)=>file.location)
     const newDetails = {
-       type : type,
-       images : images,
-        bedTypes : bedTypes,
-         price : price
-    }
+      images,
+      type,
+      bedTypes,
+      price,
+    };
     hotel.roomDetails.push(newDetails);
     await hotel.save();
 
     return res.status(200).json(hotel);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-  }
+};
 //====================================add foods to hotel============================================
 const addFoodToHotel = async (request, response) => {
   const { hotelId } = request.params;
-  const { name,about,price } = request.body;
-  const hotel = await hotelModel.findById(hotelId)
+  const { name, about, price } = request.body;
+  const hotel = await hotelModel.findById(hotelId);
 
-  const images = request.files.map((file)=>file.location)
+  const images = request.files.map((file) => file.location);
   const foods = {
     name,
     images,
@@ -661,8 +641,8 @@ const addFoodToHotel = async (request, response) => {
   };
 
   hotel.foodItems.push(foods);
-  await hotel.save()
-  response.json(hotel)
+  await hotel.save();
+  response.json(hotel);
 };
 
 //=====================================delete foods==========================================

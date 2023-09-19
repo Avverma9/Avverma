@@ -57,7 +57,7 @@ router.put(
   hotelController.updateRoom
 );
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel)
-router.post("/:hotelId/roomDetails", hotelController.addRoomToHotel)
+router.post("/:hotelId/roomDetails",upload, hotelController.addRoomToHotel)
 router.delete("/:hotelId/delete", hotelController.deleteRoom);
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems",upload,hotelController.addFoodToHotel)   

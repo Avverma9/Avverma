@@ -11,11 +11,17 @@ const hotelsSchema = new mongoose.Schema(
       type: String,
     },
     roomDetails: [
-      {
-      type:String,
-      images : [String],
-      bedTypes:String,
-      price:Number,
+      { 
+        images : [String],
+        type: {
+          type: String,
+        },
+        bedTypes: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
       },
     ],
     foodItems: [
