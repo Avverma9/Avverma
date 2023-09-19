@@ -32,6 +32,7 @@
 .hotel-details1 {
   margin-bottom: 10px;
   margin-left: 10%;
+  width: calc(85% - 425px);
 }
 
 .hotel-details1 .hotel-name1 {
@@ -694,8 +695,9 @@
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    width: 50%;
+    width: 100%;
   }
+
   .card p {
     margin-bottom: 5px;
     font-size: 10px;
@@ -923,8 +925,7 @@
 }
 
 ._pagination {
-  float: right;
-  margin-right: 10%;
+  margin: 0 5% 0 auto;
 }
 
 ._pagination-button {
@@ -1059,6 +1060,7 @@
 
 .bookingflex {
   display: flex;
+  width: 100%;
 }
 
 .bookingDetailsticky {
@@ -1097,11 +1099,11 @@
 }
 
 .img-thali {
-  width: 50%;
+  width: 100%;
 }
 
 .img-thali img {
-  width: 50%;
+  width: 100%;
 }
 
 .card-body h5 {
@@ -1168,4 +1170,5 @@
   right: 0;
   margin: 1% 5% 0 0;
   background-color: white;
+  z-index: 1;
 }

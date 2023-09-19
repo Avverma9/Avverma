@@ -15,7 +15,6 @@ import "react-datepicker/dist/react-datepicker.css";
 const BookingDetails = ({
   hotelOwnerName,
   hotelName,
-  // price,
   foodPrice,
   hotelID,
   userId,
@@ -23,12 +22,6 @@ const BookingDetails = ({
   userData,
   selectedRooms,
   selectedGuests,
-  setSelectedRooms,
-  setSelectedGuests,
-  checkIn,
-  checkOut,
-  setCheckOutDate,
-  setCheckInDate,
   hotelimage,
   destination,
   foodIdArr,
@@ -39,13 +32,11 @@ const BookingDetails = ({
   offerDetails,
   offerPriceLess,
   toast,
-  scrollPos,
-  setScrollPos,
   changeScrollPos,
   bookingRef,
   selectRoomRef,
 }) => {
-  console.log(scrollPos);
+  // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
     console.log(data);
@@ -81,8 +72,6 @@ const BookingDetails = ({
 
   const handleBooking = (paymentStatus) => {
     const bookingData = {
-      // user: userId,
-      // hotel: hotelID,
       hotelName: hotelName,
       hotelOwnerName: hotelOwnerName,
       checkIn: selectdate,
@@ -108,25 +97,6 @@ const BookingDetails = ({
           if (res.status === 201) {
             toast.success("Booking created successfully");
           }
-
-          // if (userData.email) {
-          //   axios
-          //     .post(
-          //       "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
-          //       {
-          //         bookingData: bookingData,
-          //         email: userData.email,
-          //       }
-          //     )
-          //     .then((res) => {
-          //       console.log(res);
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          // } else {
-          //   console.log("User data does not have a valid email");
-          // }
         })
         .catch((err) => {
           toast.error(err);
@@ -245,36 +215,6 @@ const BookingDetails = ({
                 >
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
-                {/* {isopen && (
-                  <div className={styles.popup}>
-                    <div className={styles.roompo}>
-                      <button onClick={togglePopup}>
-                        <AiOutlineClose />
-                      </button>
-                      <div className={styles.headpop}>
-                        <h5>Add Room and Guest</h5>
-                      </div>
-                      <div className={styles.flex_room_guests}>
-                        <div className={styles.roomsec}>
-                          <label>Rooms</label>
-                          <input
-                            type="number"
-                            value={selectedRooms}
-                            onChange={(e) => setSelectedRooms(e.target.value)}
-                          />
-                        </div>
-                        <div className={styles.guestpop}>
-                          <label>Guest</label>
-                          <input
-                            type="number"
-                            value={selectedGuests}
-                            onChange={(e) => setSelectedGuests(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
               </div>
             </div>
           </div>

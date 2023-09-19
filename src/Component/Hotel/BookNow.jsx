@@ -53,8 +53,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [hotelImages, setHotelImages] = useState([]);
   const [hotelMoreOpt, setHotelMoreOpt] = useState([]);
   const [hotelAmenities, setHotelAmenities] = useState([]);
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
 
@@ -72,6 +70,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [roomPrice, setRoomPrice] = useState(0);
   const [bedtype, setBedtype] = useState("");
   const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
+  const [prevScrollPos, setPrevScrollPos] = useState({ x: 0, y: 0 });
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -131,9 +130,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         }
       })
       .then((data) => {
-        console.log(data?.hotelOwnerName);
-        console.log(params.id);
-        console.log(hotelID);
         setBookingDetails(data);
         setHotelID(data._id);
         setHotelImages(data.images);
@@ -144,13 +140,11 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
         setMeals(data?.foodItems);
-        // setCheckIn(convertDate(bookingDetails.startDate));
-        // setCheckOut(convertDate(bookingDetails.endDate));
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [params, bookingDetails.startDate, bookingDetails.endDate]);
+  }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
   console.log(meals);
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
@@ -415,6 +409,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   }, [selectedGuests, selectedRooms]);
 
   useScrollPosition(({ prevPos, currPos }) => {
+    setPrevScrollPos(prevPos);
     setScrollPos(currPos);
   });
 
@@ -662,60 +657,65 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                   </div>
                 </div>
               </div> */}
-              <div className="_meals-container">
-                <h1>Enjoy meals during your stay</h1>
-                <div className="d-flex gap-3">
-                  {meals.map((m, i) => (
-                    <div className="card w-50 h-25 mb-3" key={m._id}>
-                      <div className="row-g-0">
-                        <div className="img-thali">
-                          <img
-                            src={m.images[0]}
-                            className="img-fluid rounded-start"
-                            alt="..."
-                          />
-                        </div>
-                        <div className="col-md-8">
-                          <div className="card-body">
-                            <h5 className="card-title">{m.name}</h5>
-                            {/* <p className="card-text">{m.description}</p> */}
-                            <p className="card-text">
-                              <small className="text-body-secondary">
-                                {m.price}
-                              </small>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row g-0">
-                        <div className="col-md-12">
-                          <button
-                            type="button"
-                            className="btn btn-primary w-100 d-flex mt-4"
-                            onClick={() => foodPriceHandler(i, m.price, m._id)}
-                            key={i}
-                          >
-                            {addingFood && indexedButton === i ? (
-                              <div
-                                className="spinner-border spinner-border-sm text-white"
-                                role="status"
-                              >
-                                <span className="sr-only">Loading...</span>
-                              </div>
-                            ) : (
-                              "Add"
-                            )}
-                          </button>
-                        </div>
-                      </div>
+
+              <div className="cust-detail">Enjoy meals during your stay:</div>
+
+              {meals.map((m, i) => (
+                <div
+                  className="card"
+                  style={{
+                    width: "75%",
+                    minWidth: "480px",
+                    background: "#fff",
+                  }}
+                  key={m._id}
+                >
+                  <div className="d-flex align-items-center">
+                    <div className="card-detail-info flex-fill">
+                      <p>Item Name : {m.name}</p>
+                      <p>Item Description : {m.about}</p>
                     </div>
-                  ))}
+                    <div className="card-detail-img">
+                      <img src={m.images[0]} alt="..." />
+                    </div>
+                  </div>
+                  <div className="downhead">
+                    <p className="price-total">
+                      <MdCurrencyRupee className="r-sign" />
+                      {m.price}
+                    </p>
+                    <button
+                      type="button"
+                      className=" mt-4 select-btn"
+                      onClick={() => foodPriceHandler(i, m.price, m._id)}
+                      key={i}
+                    >
+                      {addingFood && indexedButton === i ? (
+                        <div
+                          className="spinner-border spinner-border-sm text-white"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        "Add"
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ))}
+
               <div className="cust-detail" ref={bookingRef}>
                 Booking Details:
               </div>
-              <div className="card">
+              <div
+                className="card"
+                style={{
+                  width: "75%",
+                  minWidth: "480px",
+                  background: "#fff",
+                }}
+              >
                 <p className="roomtype">
                   <FontAwesomeIcon icon={faHotel} className="icon" />
                   Room Type: {bookingDetails.type}
@@ -797,18 +797,17 @@ export default function BookNow({ refresh, reset, userData, toast }) {
               <div className="cust-detail" ref={selectRoomRef}>
                 Choose your room:
               </div>
-              <div className="upperhead">
-                <div className="upperhead-text">Selected Category</div>
-              </div>
+
               {bookingDetails &&
                 bookingDetails?.roomDetails &&
                 bookingDetails?.roomDetails.map((item, index) => (
                   <div
                     className="card"
                     style={{
-                      width: "100%",
-
+                      width: "75%",
+                      minWidth: "480px",
                       background: "#fff",
+                      margin: "20px 0",
                     }}
                   >
                     <div className="d-flex align-items-center">
@@ -826,7 +825,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                         {item?.price}
                       </p>
                       <button
-                        className="select-btn"
+                        className="select-btn mt-4"
                         onClick={() =>
                           selectRoomHandler(index, item?.price, item?.bedTypes)
                         }
@@ -999,34 +998,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                       ))
                     : null}
                 </div>
-                {/* <p className='reviewdetail'>{bookingDetails.reviews}</p> */}
-                <div className="_pagination">
-                  <button
-                    className="_pagination-button"
-                    onClick={handlePrevPage}
-                    disabled={currentPage === 1}
-                  >
-                    Prev
-                  </button>
-                  {visiblePages.map((page) => (
-                    <button
-                      key={page}
-                      className={`_pagination-button ${
-                        page === currentPage ? "_pagination-active" : ""
-                      }`}
-                      onClick={() => handlePageClick(page)}
-                    >
-                      {page}
-                    </button>
-                  ))}
-                  <button
-                    className="_pagination-button"
-                    onClick={handleNextPage}
-                    disabled={currentPage === totalPages}
-                  >
-                    Next
-                  </button>
-                </div>
               </div>
             </div>
             <div
@@ -1039,7 +1010,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
               <BookingDetails
                 hotelOwnerName={hotelOwnerName}
                 hotelName={bookingDetails.hotelName}
-                // price={bookingDetails.price}
                 foodPrice={foodPrice}
                 hotelID={hotelID}
                 userId={userId}
@@ -1047,12 +1017,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 userData={userData}
                 selectedRooms={selectedRooms}
                 selectedGuests={selectedGuests}
-                setSelectedRooms={setSelectedRooms}
-                setSelectedGuests={setSelectedGuests}
-                checkIn={checkInDate}
-                checkOut={checkOutDate}
-                setCheckOutDate={setCheckOutDate}
-                setCheckInDate={setCheckInDate}
                 hotelimage={firstImageURL}
                 destination={bookingDetails.destination}
                 foodIdArr={foodIdArr}
@@ -1063,32 +1027,39 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 offerDetails={bookingDetails?.offerDetails}
                 offerPriceLess={bookingDetails?.offerPriceLess}
                 toast={toast}
-                scrollPos={scrollPos}
-                setScrollPos={setScrollPos}
                 changeScrollPos={changeScrollPos}
                 bookingRef={bookingRef}
                 selectRoomRef={selectRoomRef}
               />
             </div>
           </div>
-          {/* <CheckOut
-            rating={bookingDetails.rating}
-            hoteldescription={bookingDetails.description}
-            hotelName={bookingDetails.hotelName}
-            hotelId={bookingDetails._id}
-            userId={userId}
-            amount={Number(bookingDetails.price)}
-            currency="INR"
-            userData={userData}
-            checkIn={checkInDate}
-            checkOut={checkOutDate}
-            guests={selectedGuests}
-            rooms={selectedRooms}
-            hotelimage={firstImageURL}
-            destination={bookingDetails.destination}
-            paymentMethod={bookingDetails.paymentMethod}
-          /> */}
-          {/* <button>Book Now</button> */}
+          <div className="_pagination">
+            <button
+              className="_pagination-button"
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+            {visiblePages.map((page) => (
+              <button
+                key={page}
+                className={`_pagination-button ${
+                  page === currentPage ? "_pagination-active" : ""
+                }`}
+                onClick={() => handlePageClick(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className="_pagination-button"
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </>
