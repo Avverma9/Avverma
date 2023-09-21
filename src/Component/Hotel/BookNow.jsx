@@ -89,7 +89,7 @@ export default function BookNow({ userData, toast }) {
 
   const bookingRef = useRef(null);
   const selectRoomRef = useRef(null);
-  const bookingDetailsEndRef = useRef();
+  const bookingDetailsEndRef = useRef(0);
 
   const [scrollPosition, setScrollPosition] = useState(0);
 

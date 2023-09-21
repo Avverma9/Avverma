@@ -124,7 +124,7 @@ const BookNowPage = ({ userData, toast }) => {
 
   const bookingRef = useRef(null);
   const selectRoomRef = useRef(null);
-  const targetBookingRef = useRef();
+  const targetBookingRef = useRef(0);
 
   const [scrollPosition, setScrollPosition] = useState(0);
 
