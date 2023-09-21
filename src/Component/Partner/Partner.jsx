@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./partner.css";
-import "../Profile/ConfirmBooking.module.css";
+import "../Profile/confirmBooking.css";
 
 const Partner = () => {
   const location = useLocation();
@@ -94,6 +94,7 @@ const Partner = () => {
   const [images, setImages] = useState([]);
   const [hotelOwnerName, setHotelOwnerName] = useState("");
   const [roomDetails, setRoomDetails] = useState([{}]);
+  const [foodItems, setFoodItems] = useState([{}]);
   const [ownerContactDetails, setOwnerContactDetails] = useState("");
   const [receptionContactDetails, setReceptionContactDetails] = useState("");
   const [hotelEmail, setHotelEmail] = useState("");
@@ -173,8 +174,16 @@ const Partner = () => {
     formData.append("hotelName", hotelName);
     for (const detail of roomDetails) {
       formData.append("roomDetails[type]", detail.type);
+      formData.append("roomDetails[images]", detail.images);
       formData.append("roomDetails[bedTypes]", detail.bedTypes);
+
       formData.append("roomDetails[price]", detail.price);
+    }
+    for (const detail of foodItems) {
+      formData.append("foodItems[name]", detail.name);
+      formData.append("foodItems[images]", detail.images);
+      formData.append("foodItems[about]", detail.about);
+      formData.append("foodItems[price]", detail.price);
     }
     formData.append("description", description);
     formData.append("street", street);
@@ -507,6 +516,7 @@ const Partner = () => {
     "Hotel Contact Information",
     "Basic Information",
     "Add Rooms",
+    "Add Foods",
     "Hotel Policy",
     "Hotel Tariff",
   ];
@@ -546,10 +556,52 @@ const Partner = () => {
   if (location.pathname !== "/partner") {
     return null;
   }
+
+  const handleFoodDetailsChange = (index, field, value) => {
+    const updatedFoodDetails = [...foodItems];
+    updatedFoodDetails[index][field] = value;
+    setFoodItems(updatedFoodDetails);
+  };
+  const handleFoodImageChange = (index, selectedFile) => {
+    // Ensure that the selectedFile is not undefined or null
+    if (selectedFile) {
+      // Create a new FileReader to read the selected file
+      const reader = new FileReader();
+
+      // Define an event handler for when the file is loaded
+      reader.onload = (e) => {
+        const updatedFoodDetails = [...foodItems];
+        // Update the 'images' property of the selected food item with the data URL of the image
+        updatedFoodDetails[index].images = e.target.result;
+        setFoodItems(updatedFoodDetails);
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(selectedFile);
+    }
+  };
   const handleRoomDetailsChange = (index, field, value) => {
     const updatedRoomDetails = [...roomDetails];
     updatedRoomDetails[index][field] = value;
     setRoomDetails(updatedRoomDetails);
+  };
+  const handleRoomImageChange = (index, selectedFile) => {
+    // Ensure that the selectedFile is not undefined or null
+    if (selectedFile) {
+      // Create a new FileReader to read the selected file
+      const reader = new FileReader();
+
+      // Define an event handler for when the file is loaded
+      reader.onload = (e) => {
+        const updatedRoomDetails = [...roomDetails];
+        // Update the 'images' property of the selected food item with the data URL of the image
+        updatedRoomDetails[index].images = e.target.result;
+        setRoomDetails(updatedRoomDetails);
+      };
+
+      // Read the selected file as a data URL
+      reader.readAsDataURL(selectedFile);
+    }
   };
 
   return (
@@ -1760,6 +1812,20 @@ const Partner = () => {
                         </select>
                       </td>
                     </tr>
+                    <tr>
+                      <td>
+                        <strong>Room Picture</strong>
+                      </td>
+                      <td>
+                        <input
+                          type="file"
+                          className="room-input"
+                          onChange={(e) =>
+                            handleRoomImageChange(index, e.target.files[0])
+                          }
+                        />
+                      </td>
+                    </tr>
 
                     {/* </label> */}
                     <tr>
@@ -1856,7 +1922,7 @@ const Partner = () => {
                         <strong>Food Name</strong>
                       </td>
                       <td>
-                        <input
+                        <select
                           value={food.name || ""}
                           className="room-input"
                           onChange={(e) =>
@@ -1866,7 +1932,49 @@ const Partner = () => {
                               e.target.value
                             )
                           }
-                        />
+                        >
+                          <option value="">Select food type</option>
+                          <option value="Biryani">Biryani</option>
+                          <option value="ButterChicken">Butter Chicken</option>
+                          <option value="PaneerTikka">Paneer Tikka</option>
+                          <option value="MasalaDosa">Masala Dosa</option>
+                          <option value="CholeBhature">Chole Bhature</option>
+                          <option value="RoganJosh">Rogan Josh</option>
+                          <option value="Dhokla">Dhokla</option>
+                          <option value="TandooriChicken">
+                            Tandoori Chicken
+                          </option>
+                          <option value="AlooParatha">Aloo Paratha</option>
+                          <option value="GulabJamun">Gulab Jamun</option>
+                          <option value="Dosa">Dosa</option>
+                          <option value="Idli">Idli</option>
+                          <option value="Vada">Vada</option>
+                          <option value="Sambhar">Sambhar</option>
+                          <option value="Uttapam">Uttapam</option>
+                          <option value="Bisi Bele Bath">Bisi Bele Bath</option>
+                          <option value="Pongal">Pongal</option>
+                          <option value="Rasam">Rasam</option>
+                          <option value="Coconut Chutney">
+                            Coconut Chutney
+                          </option>
+                          <option value="Fish Curry">Fish Curry</option>
+                          <option value="FrenchFries">French Fries</option>
+                          <option value="Burgers">Burgers</option>
+                          <option value="Pizza">Pizza</option>
+                          <option value="HotDogs">Hot Dogs</option>
+                          <option value="IceCream">Ice Cream</option>
+                          <option value="PotatoChips">Potato Chips</option>
+                          <option value="CandyBars">Candy Bars</option>
+                          <option value="Soda">
+                            Soda (Carbonated Soft Drinks)
+                          </option>
+                          <option value="ChickenNuggets">
+                            Chicken Nuggets
+                          </option>
+                          <option value="ChocolateChipCookies">
+                            Chocolate Chip Cookies
+                          </option>
+                        </select>
                       </td>
                     </tr>
 
@@ -1919,190 +2027,6 @@ const Partner = () => {
                               e.target.value
                             )
                           }
-                        />
-                      </td>
-                    </tr>
-                    <br />
-                  </table>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-
-        <div className="room-content">
-          {activeNavItem === "Add Rooms" && (
-            <>
-              <div className="disclaimer">
-                {" "}
-                For now you are only permitted to Add Standard Room, After
-                confirmation of your partnership you can add more
-              </div>
-              <hr />
-              {roomDetails.map((room, index) => (
-                <div key={index}>
-                  <table style={{ width: "100%" }}>
-                    <tr>
-                      <td>
-                        <strong>Room Type</strong>
-                      </td>
-                      <td>
-                        <select
-                          value={room.type || "Standard"}
-                          className="room-input"
-                          onChange={(e) =>
-                            handleRoomDetailsChange(
-                              index,
-                              "type",
-                              e.target.value
-                            )
-                          }
-                        >
-                          <option value="">Select Room Type</option>
-                          <option value="Standard Room">Standard Room</option>
-                          <option value="Deluxe Room">Deluxe Room</option>
-                          <option value="Double Room">Double Room</option>
-                          <option value="Double or Twin">Double or Twin</option>
-                          <option value="Deluxe King Room">
-                            Deluxe King Room
-                          </option>
-                          <option value="Family Room">Family Room</option>
-                          <option value="Business Double Room">
-                            Business Double Room
-                          </option>
-                          <option value="Two Bedroom Apartment">
-                            Two Bedroom Apartment
-                          </option>
-                          <option value="Free Stay">Free Stay</option>
-                          <option value="Three Bedroom Apartment">
-                            Three Bedroom Apartment
-                          </option>
-                          <option value="Deluxe One Bed Room">
-                            Deluxe One Bed Room
-                          </option>
-                          <option value="Deluxe Twin Room">
-                            Deluxe Twin Room
-                          </option>
-                          <option value="Twin">Twin</option>
-                          <option value="Two Bedroom Suite">
-                            Two Bedroom Suite
-                          </option>
-                          <option value="Executive Studio">
-                            Executive Studio
-                          </option>
-                          <option value="Executive Suite">
-                            Executive Suite
-                          </option>
-                          <option value="Executive Room">Executive Room</option>
-                          <option value="Superior">Superior</option>
-                          <option value="Junior Suite">Junior Suite</option>
-                          <option value="One Bedroom Suite">
-                            One Bedroom Suite
-                          </option>
-                          <option value="One Bedroom Apartment">
-                            One Bedroom Apartment
-                          </option>
-                          <option value="Partition Room">Partition Room</option>
-                          <option value="Quadrupel">Quadrupel</option>
-                          <option value="Royal Two Bedroom Suite">
-                            Royal Two Bedroom Suite
-                          </option>
-                          <option value="Single Room">Single Room</option>
-                          <option value="Six Bed">Six Bed</option>
-                          <option value="Small Private Partition Room">
-                            Small Private Partition Room
-                          </option>
-                          <option value="Standard One Bedroom Apartment">
-                            Standard One Bedroom Apartment
-                          </option>
-                          <option value="Standard Studio With King Bed">
-                            Standard Studio With King Bed
-                          </option>
-                          <option value="Standard Studio with Twin Bed">
-                            Standard Studio with Twin Bed
-                          </option>
-                          <option value="Standard Three Bedroom Apartment">
-                            Standard Three Bedroom Apartment
-                          </option>
-                          <option value="Standard Two Bedroom Apartment">
-                            Standard Two Bedroom Apartment
-                          </option>
-                        </select>
-                      </td>
-                    </tr>
-
-                    {/* </label> */}
-                    <tr>
-                      <td>
-                        <strong>Bed Type</strong>
-                      </td>
-                      <td>
-                        <select
-                          value={room.bedTypes || "Single Bed"}
-                          className="room-input"
-                          onChange={(e) =>
-                            handleRoomDetailsChange(
-                              index,
-                              "bedTypes",
-                              e.target.value
-                            )
-                          }
-                        >
-                          <option value="">Select Bed Type</option>
-                          <option value="Single">Single Bed</option>
-                          <option value="Bunk">Bunk Bed</option>
-                          <option value="DayBed">DayBed</option>
-                          <option value="KingSize">King Size</option>
-                          <option value="KingBedOrQueenBed">
-                            King Bed Or Queen Bed
-                          </option>
-                          <option value="KingOrTwin">King or Twin</option>
-                          <option value="KingPlusTwin">King+Twin</option>
-                          <option value="MurphyBed">Murphy Bed</option>
-                          <option value="KingSizePlusQueenSize">
-                            King Size + Queen Size
-                          </option>
-                          <option value="QueenSize">Queen Size</option>
-                          <option value="TrundleBed">Trundle Bed</option>
-                          <option value="TwinPlusKingPlusQueen">
-                            Twin+King+Queen
-                          </option>
-                          <option value="Twin">Twin Bed</option>
-                          <option value="KingBedOrQueenBedOrTwinBed">
-                            King Bed or Queen Bed or Twin Bed
-                          </option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Price</strong>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={room.price || ""}
-                          className="room-input"
-                          onChange={(e) =>
-                            handleRoomDetailsChange(
-                              index,
-                              "price",
-                              e.target.value
-                            )
-                          }
-                        />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <strong>Available rooms</strong>
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={numRooms}
-                          onChange={(e) => setNumRooms(e.target.value)}
                         />
                       </td>
                     </tr>

@@ -8,6 +8,7 @@ import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiBed } from "react-icons/bi";
+import { BiBed } from "react-icons/bi";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,6 +29,7 @@ const BookingDetails = ({
   setFoodIdArr,
   roomPrice,
   bedtype,
+  bedtype,
   isOffer,
   offerDetails,
   offerPriceLess,
@@ -42,9 +44,12 @@ const BookingDetails = ({
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
   const handleOpenRazorpay = (data) => {
     console.log(data);
+    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
+      amount: data?.payment.amount * 100,
+      currency: data?.payment.currency,
       amount: data?.payment.amount * 100,
       currency: data?.payment.currency,
       prefill: {
@@ -76,6 +81,8 @@ const BookingDetails = ({
     const bookingData = {
       hotelName: hotelName,
       hotelOwnerName: hotelOwnerName,
+      checkIn: selectdate,
+      checkOut: selectdatecheckout,
       checkIn: selectdate,
       checkOut: selectdatecheckout,
       guests: selectedGuests,
@@ -221,6 +228,12 @@ const BookingDetails = ({
                     changeScrollPos(bookingRef.current);
                   }}
                 >
+                <div
+                  className={styles.guest_in_in}
+                  onClick={() => {
+                    changeScrollPos(bookingRef.current);
+                  }}
+                >
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
               </div>
@@ -230,12 +243,21 @@ const BookingDetails = ({
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
                 <BiBed />
+                <BiBed />
               </span>
               <div className={styles.textnew}>
+                <span className={styles.textc}>{bedtype}</span>
                 <span className={styles.textc}>{bedtype}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
+              <span
+                className={styles.penci_ico}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  changeScrollPos(selectRoomRef.current);
+                }}
+              >
               <span
                 className={styles.penci_ico}
                 style={{ cursor: "pointer" }}
@@ -354,6 +376,18 @@ const BookingDetails = ({
             </div>
             {/* )} */}
             {/* {isOffer === true && (
+            {/* {isOffer === false && ( */}
+            <div className={styles.pri}>
+              <div className={styles.pri1}>Total Price</div>
+              <div className={styles.pri2}>
+                <span className={styles.p}>
+                  <FaRupeeSign />
+                  {roomPrice * selectedRooms + foodPrice}
+                </span>
+              </div>
+            </div>
+            {/* )} */}
+            {/* {isOffer === true && (
               <div className={styles.pri}>
                 <div className={styles.pri1}>Discounted Price</div>
                 <div className={styles.pri2}>
@@ -367,6 +401,7 @@ const BookingDetails = ({
                   </span>
                 </div>
               </div>
+            )} */}
             )} */}
           </div>
 

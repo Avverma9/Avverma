@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
+import  {FcCallback} from 'react-icons/fc'
 import { Link, useNavigate } from "react-router-dom";
 
 import "./Header.css";
 
 const Header = () => {
-  const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
-  const navigate = useNavigate()
-
+  const isSignedIn = localStorage.getItem("isSignedIn") === "true";
+  const navigate = useNavigate();
 
   return (
     <>
-  
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
           <Link className="navbar-brand" to="/">
@@ -33,32 +32,32 @@ const Header = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-
+         
+    
           <div
             className="collapse navbar-collapse flex-grow-0"
             id="navbarNavDropdown"
           >
             <ul className="navbar-nav gap-3">
-            {!isSignedIn && (
-             <li className="nav-item p-0">
-             <div className="d-flex gap-3">
-               <Link
-                 className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                 to="/register"
-               >
-                 <BsBoxArrowInRight /> <>Register</>
-               </Link>
-               <Link
-                 className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                 to="/signin"
-               >
-                 <BsBoxArrowInRight /> <>Login</>
-               </Link>
-             </div>
-           </li>
-            )}
+              {!isSignedIn && (
+                <li className="nav-item p-0">
+                  <div className="d-flex gap-3">
+                    <Link
+                      className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                      to="/register"
+                    >
+                      <BsBoxArrowInRight /> <>Register</>
+                    </Link>
+                    <Link
+                      className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
+                      to="/signin"
+                    >
+                      <BsBoxArrowInRight /> <>Login</>
+                    </Link>
+                  </div>
+                </li>
+              )}
 
-           
               <>
                 <li className="nav-item dropdown p-0">
                   <Link
@@ -123,9 +122,9 @@ const Header = () => {
                   </Link>
                 </li>
               </>
-      
-          </ul>
+            </ul>
           </div>
+          <div className="call-details">  <p> Call <FcCallback/> to Hotel </p> <hr /> <p>9576630507</p> </div>
         </div>
       </nav>
     </>

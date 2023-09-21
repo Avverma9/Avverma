@@ -31,6 +31,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import { MdCurrencyRupee } from "react-icons/md";
+import { MdCurrencyRupee } from "react-icons/md";
 import { FaStar, FaTelegramPlane } from "react-icons/fa";
 import "./Booknow.css";
 import CheckOut from "../Payment/CheckOut";
@@ -124,6 +125,13 @@ export default function BookNow({ userData, toast }) {
       behavior: "smooth",
     });
   };
+  const changeScrollPos = (ref) => {
+    window.scrollTo({
+      top: ref.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
@@ -150,12 +158,14 @@ export default function BookNow({ userData, toast }) {
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
         setBedtype(data?.roomDetails[0].bedTypes);
+        setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
         setMeals(data?.foodItems);
       })
       .catch((error) => {
         console.log(error);
       });
+  }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
   }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
   console.log(meals);
   // useEffect(() => {
@@ -393,8 +403,10 @@ export default function BookNow({ userData, toast }) {
   };
 
   const selectRoomHandler = (index, rprice, bed) => {
+  const selectRoomHandler = (index, rprice, bed) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
+    setBedtype(bed);
     setBedtype(bed);
   };
 
@@ -413,6 +425,10 @@ export default function BookNow({ userData, toast }) {
     //   setSelectedRooms(selectedRooms + 1);
     // }
   }, [selectedGuests, selectedRooms]);
+
+  useScrollPosition(({ prevPos, currPos }) => {
+    setScrollPos(currPos);
+  });
 
   return (
     <>
@@ -614,6 +630,7 @@ export default function BookNow({ userData, toast }) {
                         <span className="booking-label"></span>{" "}
                         <span className="booking-date">
                           <input type="text" value="11 AM" />
+                          <input type="text" value="11 AM" />
                         </span>
                       </p>
                     </div>
@@ -803,6 +820,10 @@ export default function BookNow({ userData, toast }) {
                 Choose your room:
               </div>
 
+              <div className="cust-detail" ref={selectRoomRef}>
+                Choose your room:
+              </div>
+
               {bookingDetails &&
                 bookingDetails?.roomDetails &&
                 bookingDetails?.roomDetails.map((item, index) => (
@@ -811,7 +832,10 @@ export default function BookNow({ userData, toast }) {
                     style={{
                       width: "75%",
                       minWidth: "480px",
+                      width: "75%",
+                      minWidth: "480px",
                       background: "#fff",
+                      margin: "20px 0",
                       margin: "20px 0",
                     }}
                   >
@@ -824,6 +848,21 @@ export default function BookNow({ userData, toast }) {
                         <img src={hotelImages[0]} alt="hotelImage" />
                       </div>
                     </div>
+                    <div className="downhead">
+                      <p className="price-total">
+                        <MdCurrencyRupee className="r-sign" />
+                        {item?.price}
+                      </p>
+                      <button
+                        className="select-btn mt-4"
+                        onClick={() =>
+                          selectRoomHandler(index, item?.price, item?.bedTypes)
+                        }
+                      >
+                        {index === selectedRoomBtn ? "Selected" : "Select"}
+                      </button>
+                    </div>
+                  </div>
                     <div className="downhead">
                       <p className="price-total">
                         <MdCurrencyRupee className="r-sign" />
