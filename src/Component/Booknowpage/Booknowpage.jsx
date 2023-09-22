@@ -62,9 +62,6 @@ const BookNowPage = ({ userData, toast }) => {
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
 
-  const bookingRef = useRef(null);
-  const selectRoomRef = useRef(null);
-
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
 
@@ -154,10 +151,6 @@ const BookNowPage = ({ userData, toast }) => {
   }, []);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     fetch(`https://hotel-backend-tge7.onrender.com/getReviews/${offerId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -187,19 +180,10 @@ const BookNowPage = ({ userData, toast }) => {
           (prevprice) => prevprice - prevprice + data?.roomDetails[0].price
         );
         setBedtype(data?.roomDetails[0].bedTypes);
-        setRoomPrice(
-          (prevprice) => prevprice - prevprice + data?.roomDetails[0].price
-        );
-        setBedtype(data?.roomDetails[0].bedTypes);
       })
       .catch((error) => console.error(error));
   }, [offerId]);
   console.log(roomPrice);
-
-  useScrollPosition(({ prevPos, currPos }) => {
-    setPrevScrollPos(prevPos);
-    setScrollPos(currPos);
-  });
 
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
@@ -346,14 +330,6 @@ const BookNowPage = ({ userData, toast }) => {
     });
   };
 
-  const changeScrollPos = (ref) => {
-    window.scrollTo({
-      top: ref.offsetTop,
-      left: 0,
-      behavior: "smooth",
-    });
-  };
-
   const handleRoomChange = (e) => {
     let value = parseInt(e.target.value, 10);
     value = isNaN(value) ? 1 : Math.min(Math.max(value, 1), 4);
@@ -361,10 +337,8 @@ const BookNowPage = ({ userData, toast }) => {
   };
 
   const selectRoomHandler = (index, rprice, bed) => {
-  const selectRoomHandler = (index, rprice, bed) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
-    setBedtype(bed);
     setBedtype(bed);
   };
 
@@ -704,9 +678,6 @@ const BookNowPage = ({ userData, toast }) => {
               <div className="cust-detail" ref={selectRoomRef}>
                 Choose your room:
               </div>
-              <div className="cust-detail" ref={selectRoomRef}>
-                Choose your room:
-              </div>
               {offerData &&
                 offerData?.roomDetails &&
                 offerData?.roomDetails.map((item, index) => (
@@ -715,10 +686,7 @@ const BookNowPage = ({ userData, toast }) => {
                     style={{
                       width: "75%",
                       minWidth: "480px",
-                      width: "75%",
-                      minWidth: "480px",
                       background: "#fff",
-                      margin: "20px 0",
                       margin: "20px 0",
                     }}
                   >
@@ -734,9 +702,6 @@ const BookNowPage = ({ userData, toast }) => {
                     </div>
                     <button
                       className="select-btn"
-                      onClick={() =>
-                        selectRoomHandler(index, item?.price, item?.bedTypes)
-                      }
                       onClick={() =>
                         selectRoomHandler(index, item?.price, item?.bedTypes)
                       }

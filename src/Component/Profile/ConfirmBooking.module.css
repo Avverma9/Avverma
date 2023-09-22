@@ -1,6 +1,129 @@
-.mytable{
-    width : 100% !important ; 
-  }
-  .mytable td {
-    text-align: left;
-  }
+.bookingHeader h2 {
+  color: #435062;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.bookingDetails {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 10px 5px 20px 5px;
+  border-bottom: 1px solid #dbdde0;
+}
+
+.bookingDetails img {
+  width: 120px;
+  height: 80px;
+}
+
+.bookingDetails h4 {
+  color: #596069;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.bookingDetails h6 {
+  color: #7d858f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.link {
+  color: #ea6565;
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+}
+
+.bookingRowOne {
+  text-align: start;
+}
+
+.bookingRowTwo {
+  text-align: end;
+}
+
+.modalContainer {
+  padding: 10px 15px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modalHeader button {
+  background-color: #fff;
+  color: #435062;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.print {
+  padding: 2px 5px !important;
+  border: 2px solid #7d858f !important;
+  border-radius: 3px;
+  width: 120px;
+}
+
+.print span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #7d858f;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.borderBottom {
+  border-bottom: 1px solid #7d858f;
+  margin: 15px 0;
+}
+
+.body h4 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.body h6 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.body span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4d4f52;
+}
+
+.body p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4d4f52;
+}
+
+.body img {
+  width: 120px;
+  height: 80px;
+}
+
+.errorText {
+  color: #ea6565 !important;
+  font-weight: 700 !important;
+}
