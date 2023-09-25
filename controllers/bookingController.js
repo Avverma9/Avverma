@@ -102,7 +102,7 @@ const getConfirmedBookings = async (req, res) => {
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const { id } = req.params;
-  const booking = await bookingModel.find({ user: id }); // hotel
+  const booking = await bookingModel.find({ user: id }).sort({createdAt: -1}) // hotel
   const details = booking.filter(
     (confirmed) => confirmed.bookingStatus === "success"
   );
@@ -208,7 +208,7 @@ const cancelBooking = async (req, res) => {
 
     const updatedBooking = await bookingModel.findOneAndUpdate(
       { bookingId },
-      { $set: { bookingStatus: "Cancelled", cancelledAt } },
+      { $set: { bookingStatus: "cancelled", cancelledAt } },
       { new: true }
     );
 
