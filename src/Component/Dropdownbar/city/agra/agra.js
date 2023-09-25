@@ -124,7 +124,7 @@ function Agra() {
         .catch((error) => console.log(error));
     } else {
       axios
-        .get("https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?destination=Agra")
+        .get("https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?city=Agra")
         .then((data) => {
           if (data.status === 200) {
             setHotels(data.data);
