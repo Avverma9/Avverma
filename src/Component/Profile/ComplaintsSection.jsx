@@ -7,8 +7,6 @@ export const ComplaintsSection = ({
   isSignedIn,
   userDetails,
   userData,
-  reset,
-  refresh,
 }) => {
   const [raiseComplaint, setRaiseComplaint] = useState(false);
   const [newComplaint, setNewComplaint] = useState("");
@@ -50,7 +48,6 @@ export const ComplaintsSection = ({
           const data = response.json();
           // data.then(res => window.alert(res.message))
           setRaiseComplaint(false);
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -116,7 +113,7 @@ export const ComplaintsSection = ({
 
             <div className="ms-4 me-4 text-wrap" style={{ width: "80%" }}>
               <p>Grand Hotel</p>
-              <p className="sub_Title" key={refresh}>
+              <p className="sub_Title">
                 {complaint.complaintDescription}
               </p>
             </div>

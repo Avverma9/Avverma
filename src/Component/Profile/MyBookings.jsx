@@ -11,7 +11,7 @@ import {
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
-export const MyBookings = ({ selectedNav, navHandler, reset, refresh }) => {
+export const MyBookings = ({ selectedNav, navHandler}) => {
   const [isExpanded, setExpanded] = useState(false);
   const [toolTip, setToolTip] = useState("");
   const { getCollapseProps, getToggleProps } = useCollapse({ isExpanded });

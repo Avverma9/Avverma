@@ -1230,6 +1230,7 @@ const Partner = () => {
                   Continental Breakfast
                 </label>
                 <br />
+                {/* last to last */}
                 <label>
                   <input
                     type="checkbox"
@@ -2036,7 +2037,6 @@ const Partner = () => {
             </>
           )}
         </div>
-
         {activeNavItem === "Hotel Policy" && (
           <div>
             <h3>Hotel Policy</h3>

@@ -39,9 +39,8 @@ import Avatar from "react-avatar";
 import BookingDetails from "./BookingDetails";
 import Ratingrange from "./Ratingrange";
 import { Rating } from "react-simple-star-rating";
-import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 
-export default function BookNow({ refresh, reset, userData, toast }) {
+export default function BookNow({ userData, toast }) {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -69,8 +68,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
   const [bedtype, setBedtype] = useState("");
-  const [scrollPos, setScrollPos] = useState({ x: 0, y: 0 });
-  const [prevScrollPos, setPrevScrollPos] = useState({ x: 0, y: 0 });
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
 
@@ -88,8 +85,22 @@ export default function BookNow({ refresh, reset, userData, toast }) {
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
 
+  const [positionTop, setpositionTop] = useState(0);
+
   const bookingRef = useRef(null);
   const selectRoomRef = useRef(null);
+  const bookingDetailsEndRef = useRef(0);
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setScrollPosition(window.scrollY);
+    });
+    if (scrollPosition >= bookingDetailsEndRef.current.offsetTop) {
+      setpositionTop(bookingDetailsEndRef.current.offsetTop - scrollPosition);
+    } else setpositionTop(0);
+  }, [scrollPosition]);
 
   const expanddescription = () => {
     setExpand(!expand);
@@ -130,6 +141,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         }
       })
       .then((data) => {
+        console.log(data?.foodItems, "144");
         setBookingDetails(data);
         setHotelID(data._id);
         setHotelImages(data.images);
@@ -179,7 +191,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
         setRevCount(data?.countRating);
         console.log(data?.reviews[0].review, "JTRSLUYFI:UG");
       });
-  }, [hotelID, reset]);
+  }, [hotelID]);
 
   // Pagination for Reviews
 
@@ -268,8 +280,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
           setMyReview("");
           setMyRating(0);
           setWriteReview(false);
-          // window.location.reload();
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -289,9 +299,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     ).then((response) => {
       try {
         if (response.status === 200) {
-          // const data = response.json();
-          // window.location.reload();
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -322,7 +329,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
           setIsUpdatingReview(false);
           setReviewId("");
           setUpdatedReview("");
-          reset();
         }
       } catch (error) {
         console.log(error);
@@ -407,11 +413,6 @@ export default function BookNow({ refresh, reset, userData, toast }) {
     //   setSelectedRooms(selectedRooms + 1);
     // }
   }, [selectedGuests, selectedRooms]);
-
-  useScrollPosition(({ prevPos, currPos }) => {
-    setPrevScrollPos(prevPos);
-    setScrollPos(currPos);
-  });
 
   return (
     <>
@@ -658,7 +659,9 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div> */}
 
-              <div className="cust-detail">Enjoy meals during your stay:</div>
+              {meals && meals.length > 0 ? (
+                <div className="cust-detail">Enjoy meals during your stay:</div>
+              ) : null}
 
               {meals.map((m, i) => (
                 <div
@@ -704,6 +707,8 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                   </div>
                 </div>
               ))}
+
+              <div ref={bookingDetailsEndRef} />
 
               <div className="cust-detail" ref={bookingRef}>
                 Booking Details:
@@ -882,7 +887,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </>
               )}
 
-              <div className="reviews" key={refresh}>
+              <div className="reviews">
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
                   <Ratingrange />
@@ -1000,13 +1005,7 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 </div>
               </div>
             </div>
-            <div
-              className={
-                scrollPos.y <= -733.5
-                  ? "bookingDetailstickyScroll"
-                  : "bookingDetailsticky"
-              }
-            >
+            <div className="bookingDetailsticky">
               <BookingDetails
                 hotelOwnerName={hotelOwnerName}
                 hotelName={bookingDetails.hotelName}
@@ -1030,36 +1029,40 @@ export default function BookNow({ refresh, reset, userData, toast }) {
                 changeScrollPos={changeScrollPos}
                 bookingRef={bookingRef}
                 selectRoomRef={selectRoomRef}
+                positionTop={positionTop}
+                meals={meals}
               />
             </div>
           </div>
-          <div className="_pagination">
-            <button
-              className="_pagination-button"
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-            >
-              Prev
-            </button>
-            {visiblePages.map((page) => (
+          {totalItems > itemsPerPage ? (
+            <div className="_pagination">
               <button
-                key={page}
-                className={`_pagination-button ${
-                  page === currentPage ? "_pagination-active" : ""
-                }`}
-                onClick={() => handlePageClick(page)}
+                className="_pagination-button"
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
               >
-                {page}
+                Prev
               </button>
-            ))}
-            <button
-              className="_pagination-button"
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+              {visiblePages.map((page) => (
+                <button
+                  key={page}
+                  className={`_pagination-button ${
+                    page === currentPage ? "_pagination-active" : ""
+                  }`}
+                  onClick={() => handlePageClick(page)}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                className="_pagination-button"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </>

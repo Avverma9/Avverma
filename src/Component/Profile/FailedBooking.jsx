@@ -1,307 +1,219 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-
-
-const styles = {
-  tableContainer: {
-    maxHeight: "400px",
-    overflowY: "auto",
-  },
-  table: {
-    width: "100%",
-    borderCollapse: "collapse",
-  },
-  cell: {
-    padding: "10px",
-    border: "1px solid #ccc",
-  },
-  circularImage: {
-    width: "50px",
-    height: "50px",
-    borderRadius: "50%",
-    overflow: "hidden",
-  },
-  circularImageImg: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
-  imgConfig: {
-    height: "100px",
-    width: "150px",
-  }
-};
+import { useCallback, useEffect, useState } from "react";
+import styles from "./ConfirmBooking.module.css";
+import noImage from "../../assets/noImage.jpg";
+import { Modal } from "react-bootstrap";
+import { AiOutlineClose } from "react-icons/ai";
+import moment from "moment";
+import { toast } from "react-toastify";
 
 export const FailedBooking = () => {
-  const [failedBookings, setFailedBookings] = useState([]);
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const [modalData, setmodalData] = useState([]);
+  const [userData, setuserdata] = useState(null);
 
-  const fetchFailedBookings = async () => {
-    const id = localStorage.getItem("userId")
-    try {
-      const response = await axios.get(`https://hotel-backend-tge7.onrender.com/bookingFailed/${id}`);
-      // console.log(response.data);
-      if (response) {
-        setFailedBookings(response.data);
-        console.log("failedBookings", failedBookings);
-      } else {
-        console.error(response.data.error);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setmodalData([]);
+    setShow(false);
+  };
+  const handleShow = (value) => {
+    setmodalData(value);
+    setShow(true);
   };
 
   useEffect(() => {
-    fetchFailedBookings();
+    const id = localStorage.getItem("userId");
+    axios
+      .get(`https://hotel-backend-tge7.onrender.com/get/${id}`)
+      .then((res) => setuserdata(res?.data?.data));
   }, []);
 
-  const formatDate = (dateString) => {
-    const options = { day: "numeric", month: "numeric", year: "numeric" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+  const fetchBookingDetails = useCallback(async () => {
+    const id = localStorage.getItem("userId");
+    console.log(id, "myId");
+    try {
+      const response = await axios.get(
+        `https://hotel-backend-tge7.onrender.com/bookingFailed/${id}`
+      );
+      const bookings = response.data;
+      console.log(bookings, "backend data");
+      setBookingDetails(bookings);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error fetching booking details");
+    }
+  }, [setBookingDetails]);
+
+  useEffect(() => {
+    fetchBookingDetails();
+  }, [fetchBookingDetails]);
 
   return (
     <>
-      <div className="_title">
-        <h1>Failed Booking</h1>
+      <div className={styles.bookingHeader}>
+        <h2>Booking History</h2>
       </div>
-      {failedBookings.length > 0 ? (
+
+      {bookingDetails && bookingDetails.length > 0 ? (
         <>
-          {
-            failedBookings.map((bookingDetails) => {
-              return (<>
-                <div className="card" style={{ display: "inline-block", width: "22rem", marginLeft: "-10px", marginBottom: "12px", marginRight: "30px" }}>
-                  <h5><strong>Booking ID</strong></h5>
+          {bookingDetails.map((bookingDetails) => {
+            return (
+              <>
+                <div className={styles.bookingDetails}>
+                  <img
+                    src={
+                      bookingDetails &&
+                      bookingDetails?.images &&
+                      bookingDetails?.images
+                        ? bookingDetails.images
+                        : noImage
+                    }
+                    alt=""
+                  />
 
-                  <h5 style={{ fontWeight: "lighter" }}>{bookingDetails.bookingId}</h5>
-                  <hr />
-                  <h6>{bookingDetails.hotelName}</h6><br />
-                  <h6>Hotel Destination</h6>
-                  <h6 style={{ fontWeight: "lighter" }}>{bookingDetails.destination}</h6><br />
-                  <h6 style={{ fontSize: "15px" }}>Landmark</h6>
-                  <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." style={styles.imgConfig} />
-                  <hr />
-                  <br />
-
-                  <div className="first" style={{ display: "flex", width: "full", justifyContent: "space-between" }}>
-                    <div className="bookingdate" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                      <h6 style={{ color: "grey" }}>Booking Date</h6>
-                      <h6 style={{ color: "black", fontSize: "15px" }}>{bookingDetails.createdAt.substring(0, 10)}</h6>
-                    </div>
-                    <div className="bookingtime" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                      <h6 style={{ color: "grey" }}>Booking Time</h6>
-                      <h6 style={{ fontSize: "15px" }}>{bookingDetails.createdAt.substring(11, 19)}</h6>
-                    </div>
+                  <div className={styles.bookingRowOne}>
+                    <h4>{bookingDetails?.hotelName}</h4>
+                    {bookingDetails?.checkInDate &&
+                      bookingDetails?.checkOutDate && (
+                        <h6>
+                          <>
+                            {bookingDetails?.checkInDate &&
+                              bookingDetails?.checkInDate.substring(0, 10)}
+                            {"  "}
+                          </>
+                          {"   "}
+                          to{"   "}
+                          <>
+                            {"  "}
+                            {bookingDetails?.checkOutDate &&
+                              bookingDetails?.checkOutDate.substring(0, 10)}
+                          </>
+                        </h6>
+                      )}
+                    {bookingDetails?.guests && bookingDetails?.rooms && (
+                      <h6>
+                        <>
+                          {bookingDetails?.guests}{" "}
+                          <span>
+                            {bookingDetails?.guests > 1 ? "Guests" : "Guest"}
+                          </span>
+                          {"  "}
+                        </>
+                        {"  "},
+                        <>
+                          {"  "}
+                          {bookingDetails?.rooms}{" "}
+                          <span>
+                            {bookingDetails?.rooms > 1 ? "Rooms" : "Room"}
+                          </span>
+                        </>
+                      </h6>
+                    )}
                   </div>
-                  {/* <div className="first" style={{ display: "flex", width: "full", justifyContent: "space-between" }}>
-                    <div className="bookingdate" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                      <h6 style={{ color: "grey" }}>Check-In-Time</h6>
-                      <h6 style={{ color: "black", fontSize: "15px" }}>{bookingDetails.checkInTime}</h6>
-                    </div>
-
-                  </div> */}
-                  {/* <div className="bookingtime" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                    <h6 style={{ color: "grey" }}>Check-Out-Time</h6>
-                    <h6 style={{ fontSize: "15px" }}>{bookingDetails.checkOutTime}</h6>
-                  </div> */}
-
-                  <div className="first" style={{ display: "flex", width: "full", justifyContent: "space-between" }}>
-                    <div className="bookingdate" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                      <h6 style={{ color: "grey" }}>Status</h6>
-                      <h6 style={{ color: "black", fontSize: "15px" }}>{bookingDetails.bookingStatus}</h6>
-                    </div>
-
+                  <div className={styles.bookingRowOne}>
+                    <h6>{bookingDetails?.bookingId}</h6>
                   </div>
-                  <div className="bookingtime" style={{ borderLeft: "2px solid grey", borderRadius: "12px", paddingLeft: "10px", marginBottom: "10px" }}>
-                    <h6 style={{ color: "grey" }}>Guests</h6>
-                    <h6 style={{ fontSize: "15px" }}>{bookingDetails.guests}</h6>
-                  </div>
-
-                  <center>
-                    <button type="button" className="btn btn-primary" style={{ fontSize: "14px", padding: "5px 5px" }} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  <div className={styles.bookingRowTwo}>
+                    <h6>{bookingDetails?.price}</h6>
+                    <button
+                      className={styles.link}
+                      onClick={() => handleShow(bookingDetails)}
+                    >
                       View Details
-                    </button></center>
-
-                    {/* <!-- Modal Starts From Here--> */}
-                  <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1 className="modal-title fs-5" id="exampleModalLabel">Booking Details</h1>
-                          <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-
-                          <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." style={styles.imgConfig} />
-                          <table className="mytable">
-                            <tr>
-                              <td><strong>Booking ID</strong></td>
-                              <td>{bookingDetails.bookingId}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Hotel</strong></td>
-                              <td>{bookingDetails.hotelName}</td>
-                            </tr>
-                            <tr>
-                              <td><strong>Booking Date</strong></td>
-                              <td>{bookingDetails.createdAt.substring(0, 10)}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Booking Time</strong></td>
-                              <td>{bookingDetails.createdAt.substring(11, 19)}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Destination Name</strong></td>
-                              <td>{bookingDetails.destination}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Check-In Date</strong></td>
-                              <td>{bookingDetails.checkInDate ? bookingDetails.checkInDate.substring(0, 10) : ""}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Check-Out Date</strong></td>
-                              <td>{bookingDetails.checkOutDate ? bookingDetails.checkOutDate.substring(0, 10) : ""}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Status</strong></td>
-                              <td>{bookingDetails.bookingStatus}</td>
-                            </tr>
-
-                            <tr >
-                              <td><strong>Guests</strong></td>
-                              <td>{bookingDetails.guests}</td>
-                            </tr>
-
-                           
-                            <tr >
-                              <td><strong>Food Items</strong></td>
-                              <td>{bookingDetails.foodItems.length && bookingDetails.foodItems.map((e) => { return (<><ul><li>{e.name}</li></ul></>) })}</td>
-                            </tr>
-
-                            <tr>
-                              <td><strong>Check-In Time</strong></td>
-                              <td>{bookingDetails.checkInTime}</td>
-                            </tr>
-                            <tr>
-                              <td><strong>Check-Out Time</strong></td>
-                              <td>{bookingDetails.checkOutTime}</td>
-                            </tr>
-                            <tr >
-                              <td><strong>Price</strong></td>
-                              <td>{bookingDetails.price}</td>
-                            </tr>
-                          </table>
-                        </div>
-                        <div className="modal-footer">
-                          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">OK</button>
-                        </div>
-                      </div>
-                    </div>
+                    </button>
                   </div>
-
-                  {/* //Modal Ends Here */}
-
                 </div>
-                {/* <div className="card" style={{ display: "inline-block", width: "18rem", marginBottom: "12px", marginRight: "30px" }}>
-                <img src={`${bookingDetails.images}`} className="card-img-top" alt="..." /> */}
-                {/* <table className="mytable">
-                  <tr>
-                    <td><strong>Booking ID</strong></td>
-                    <td>{bookingDetails.bookingId}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Booking Date</strong></td>
-                    <td>{bookingDetails.createdAt.substring(0, 10)}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Booking Time</strong></td>
-                    <td>{bookingDetails.createdAt.substring(11, 19)}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Status</strong></td>
-                    <td>{bookingDetails.bookingStatus}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Hotel</strong></td>
-                    <td>{bookingDetails.hotelName}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Destination Name</strong></td>
-                    <td>{bookingDetails.destination}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Guests</strong></td>
-                    <td>{bookingDetails.guests}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Food Items</strong></td>
-                    <td>{bookingDetails.foodItems.length && bookingDetails.foodItems.map((e) => { return (<><ul><li>{e.name}</li></ul></>) })}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Check-In Date</strong></td>
-                    <td>{bookingDetails.checkInDate ? bookingDetails.checkInDate.substring(0, 10) : ""}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Check-Out Date</strong></td>
-                    <td>{bookingDetails.checkOutDate ? bookingDetails.checkOutDate.substring(0, 10) : ""}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Check-In Time</strong></td>
-                    <td>{bookingDetails.checkInTime}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Check-Out Time</strong></td>
-                    <td>{bookingDetails.checkOutTime}</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Price</strong></td>
-                    <td>{bookingDetails.price}</td>
-                  </tr>
-                </table> */}
-                {/* <center>
-                  <button type="button" class="btn btn-primary" style={{fontSize : "14px" , padding : '5px 10px '}}>View Details</button>
-                </center> */}
-                {/* </div> */}
-              </>)
-            })
-          }
+              </>
+            );
+          })}
         </>
-
-        // <div style={styles.tableContainer}>
-        //   <table style={styles.table}>
-        //     <thead>
-        //       <tr>
-        //       <th style={styles.cell}>Sr</th>
-        //         <th style={styles.cell}>Booking ID</th>
-        //         <th style={styles.cell}>User Email</th>
-        //         <th style={styles.cell}>Hotel Name</th>
-        //         <th style={styles.cell}>Price</th>
-        //         <th style={styles.cell}>Check-in Date</th>
-        //         <th style={styles.cell}>Check-out Date</th>
-        //         <th style={styles.cell}>Status</th>
-        //       </tr>
-        //     </thead>
-        //     <tbody>
-        //       {failedBookings.map((booking,index) => (
-        //         <tr key={booking.bookingId}>
-        //            <td style={styles.cell}>{index+1}</td>
-        //            <td style={styles.cell}>{booking.bookingId}</td>
-        //           <td style={styles.cell}>{booking.user.email}</td>
-        //           <td style={styles.cell}>{booking.hotel.hotelName}</td>
-        //           <td style={styles.cell}>{booking.price}</td>
-        //           <td style={styles.cell}>{formatDate(booking.checkInDate)}</td>
-        //           <td style={styles.cell}>{formatDate(booking.checkOutDate)}</td>
-        //           <td style={{ ...styles.cell, color: "red" }}>
-        //             {booking.bookingStatus}
-        //           </td>
-        //         </tr>
-        //       ))}
-        //     </tbody>
-        //   </table>
-        // </div>
       ) : (
-        <div className="sub_Title">No Data Found</div>
+        <p>No Data Found...</p>
       )}
+
+      {/* Modal Starts From Here */}
+      <Modal show={show} onHide={handleClose} centered size="xl">
+        <div className={styles.modalContainer}>
+          <div className={styles.modalHeader}>
+            <button className={styles.print}>
+              <span>Print</span>
+            </button>
+            <button onClick={handleClose}>
+              <AiOutlineClose />
+            </button>
+          </div>
+          <div className={styles.modalBody}>
+            <div className={styles.body}>
+              <div>
+                <h4>Booking Id</h4>
+                <p>{modalData?.bookingId}</p>
+              </div>
+              {userData && userData?.name && (
+                <p className={styles.errorText}>
+                  Booked by {userData?.name} failed on{" "}
+                  <span className={styles.errorText}>
+                    {modalData &&
+                    modalData?.createdAt &&
+                    moment(modalData?.createdAt).isoWeekday() === 1
+                      ? "Mon"
+                      : moment(modalData?.createdAt).isoWeekday() === 2
+                      ? "Tue"
+                      : moment(modalData?.createdAt).isoWeekday() === 3
+                      ? "Wed"
+                      : moment(modalData?.createdAt).isoWeekday() === 4
+                      ? "Thu"
+                      : moment(modalData?.createdAt).isoWeekday() === 5
+                      ? "Fri"
+                      : moment(modalData?.createdAt).isoWeekday() === 6
+                      ? "Sat"
+                      : "Sun"}
+                  </span>
+                  {", "}
+                  <span className={styles.errorText}>
+                    {modalData &&
+                      modalData?.createdAt &&
+                      moment(
+                        modalData?.createdAt.substring(0, 10).replace(/-/g, "")
+                      ).format("Do MMMM YYYY")}
+                  </span>
+                </p>
+              )}
+            </div>
+            <div className={styles.borderBottom} />
+            <div className={styles.body}>
+              <div>
+                <h6>
+                  Hotel Name: <span>{modalData?.hotelName}</span>
+                </h6>
+                <h6>
+                  Hotel Owner: <span>{modalData?.hotelOwnerName}</span>
+                </h6>
+              </div>
+              <img
+                src={
+                  modalData && modalData?.images && modalData?.images
+                    ? modalData.images
+                    : noImage
+                }
+                alt=""
+              />
+            </div>
+            <div className={styles.borderBottom} />
+            <div className={styles.body}>
+              <div>
+                <span>Primary Guest</span>
+                <h6>{userData?.name}</h6>
+                <span>Mobile Number</span>
+                <h6>{userData?.mobile}</h6>
+                <span>Email</span>
+                <h6>{userData?.email}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

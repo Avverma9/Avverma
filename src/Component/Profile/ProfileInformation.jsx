@@ -8,8 +8,6 @@ export const ProfileInformation = ({
   isSignedIn,
   userDetails,
   userData,
-  reset,
-  refresh,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -100,7 +98,7 @@ export const ProfileInformation = ({
               />
             )}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="text"
               value={
@@ -122,7 +120,7 @@ export const ProfileInformation = ({
         </>
         <>
           <h1 className="sub_Title">Your Gender</h1>
-          <div className="profile_information_gender" key={refresh}>
+          <div className="profile_information_gender">
             {!isEditing ? (
               userData?.gender === "Male" ? (
                 <>
@@ -184,7 +182,7 @@ export const ProfileInformation = ({
             <h1>Email Address</h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="email"
               value={
@@ -208,7 +206,7 @@ export const ProfileInformation = ({
             <h1>Mobile Number</h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="text"
               value={
@@ -231,7 +229,7 @@ export const ProfileInformation = ({
           <div className="_title">
             <h1>Address</h1>
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <textarea
               placeholder={userData?.address}
               type="text"
@@ -246,7 +244,7 @@ export const ProfileInformation = ({
             <h1>Adhaar</h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="text"
               // value={
@@ -270,7 +268,7 @@ export const ProfileInformation = ({
             <h1>PAN Card</h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="text"
               // value={
@@ -294,7 +292,7 @@ export const ProfileInformation = ({
             <h1>Driving License</h1>
             {/* <input type="button" value="Edit" /> */}
           </div>
-          <div className="_fields" key={refresh}>
+          <div className="_fields">
             <input
               type="text"
               // value={

@@ -13,8 +13,6 @@ export const Sidebar = ({
   selectedNav,
   setSelectednav,
   navHandler,
-  reset,
-  refresh,
 }) => {
   console.log(userData);
   console.log(userDetails);
@@ -55,8 +53,6 @@ export const Sidebar = ({
         <MyBookings
           selectedNav={selectedNav}
           navHandler={navHandler}
-          reset={reset}
-          refresh={refresh}
         />
 
         <Payments />
