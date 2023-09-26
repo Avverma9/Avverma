@@ -3,6 +3,7 @@ import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
 import  {FcCallback} from 'react-icons/fc'
 import { Link, useNavigate } from "react-router-dom";
+import {CiMail} from 'react-icons/ci'
 
 import "./Header.css";
 
@@ -124,7 +125,7 @@ const Header = () => {
               </>
             </ul>
           </div>
-          <div className="call-details">  <p> Call <FcCallback/> to Hotel </p> <hr /> <p>9576630507</p> </div>
+          <div className="call-details">  <p> <FcCallback/> 9917991758 </p> <hr /> <p> <CiMail/> info@hotelroomsstay.com</p> </div>
         </div>
       </nav>
     </>
