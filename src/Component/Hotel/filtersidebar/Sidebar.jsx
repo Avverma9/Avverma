@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 // import { type } from "@testing-library/user-event/dist/type";
 
 const Sidebar = ({
@@ -40,6 +40,8 @@ const Sidebar = ({
   setDataAvailable,
 }) => {
   const location = useLocation();
+  console.log(location.pathname.slice(8));
+  const [city, setCity] = useState("");
   //Filter Api
   useEffect(() => {
     const propertyTypeQueryParam = selectedPropertyTypes.join(",");
@@ -54,12 +56,12 @@ const Sidebar = ({
       )
       .then((data) => {
         if (data.status === 200) {
+          setHotels(null);
           setHotels(data.data);
-          setDataAvailable(data.data.length > 0);
-        }
+          setDataAvailable(data.data.length > 0 ? true : false);
+        } else setHotels([]);
       })
       .catch((error) => console.log(error));
-    setDataAvailable(false);
   }, [
     selectedPropertyTypes,
     roomtype,
@@ -80,14 +82,14 @@ const Sidebar = ({
           `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
         )
         .then((data) => {
+          let hotelData = data.data;
           if (data.status === 200) {
-            let hotelData = data.data;
+            setHotels(null);
             setHotels(hotelData);
-          }
+          } else setHotels([]);
         })
         .catch((error) => console.log(error));
-    } else
-    if (
+    } else if (
       location.pathname === "/search/results" &&
       queryString !== (null || undefined || "")
     ) {
@@ -96,9 +98,25 @@ const Sidebar = ({
         .then((data) => {
           let hotelData = data.data;
           if (data.status === 200) {
+            setHotels(null);
             setHotels(hotelData);
             console.log(hotelData);
-          }
+          } else setHotels([]);
+        })
+        .catch((error) => console.log(error));
+    } else if (location.pathname.slice(1, 7) === "cities") {
+      setCity(location.pathname.slice(8));
+      axios
+        .get(
+          `https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?city=${city}`
+        )
+        .then((data) => {
+          console.log(data.data);
+          let hotelData = data.data;
+          if (data.status === 200) {
+            setHotels(null);
+            setHotels(hotelData);
+          } else setHotels([]);
         })
         .catch((error) => console.log(error));
     } else {
@@ -109,7 +127,7 @@ const Sidebar = ({
           if (data.status === 200) {
             setHotels(hotelData);
             console.log(hotelData);
-          }
+          } else setHotels([]);
         })
         .catch((error) => console.log(error));
     }
@@ -121,7 +139,7 @@ const Sidebar = ({
         label.textContent = `₹${maxValue}`;
       }
     });
-  }, [maxValue, minValue, location.pathname, setHotels, queryString]);
+  }, [maxValue, minValue, location.pathname, setHotels, queryString, city]);
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>

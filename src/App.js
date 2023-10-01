@@ -223,7 +223,7 @@ function App() {
           <Route path="cities/udaipur" element={<Udaipur />} />
           <Route path="cities/bikaner" element={<Bikaner />} />
           <Route path="cities/jodhpur" element={<Jodhpur />} />
-          <Route path="cities/noida" element={<Noida />} />
+          <Route path="/cities/noida" element={<Noida />} />
           <Route path="cities/kanpur" element={<Kanpur />} />
           <Route path="cities/prayagraj" element={<Prayagraj />} />
           <Route path="cities/mathura" element={<Mathura />} />
