@@ -619,7 +619,8 @@ function HotelList() {
             </div>
           </div>
         ) : (
-          <h1>No Data Available</h1>
+          <div className={styles.loading_gif}><img src="https://i.gifer.com/1LBN.gif" alt="" /></div>
+         
         )}
       </div>
     </>

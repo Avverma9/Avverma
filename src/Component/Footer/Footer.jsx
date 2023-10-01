@@ -155,9 +155,7 @@ const Footer = () => {
             <li className='citylist-name'><a href="/cities/nainital" class="text-white">Hotels in Nainital</a></li>
             <li className='citylist-name'><a href="/cities/mussoorie" class="text-white">Hotels in Mussoorie</a></li>
             <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        More hotels
-      </Dropdown.Toggle>
+  
 
       <Dropdown.Menu>
         <Dropdown.Item href="/cities/dehradun">Hotels in Dehradun</Dropdown.Item>

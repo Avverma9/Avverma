@@ -5,7 +5,6 @@ import noImage from "../../assets/noImage.jpg";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import moment from "moment";
-
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [modalData, setmodalData] = useState([]);
