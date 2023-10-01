@@ -511,7 +511,11 @@ const getHotelsByPrice = async function (req, res) {
   try {
     const hotels = await hotelModel
       .find({
-        price: { $gte: minPrice, $lte: maxPrice },
+        roomDetails: {
+          $elemMatch: {
+            price: { $gte: minPrice, $lte: maxPrice }
+          }
+        }
       })
       .exec();
 
@@ -520,6 +524,7 @@ const getHotelsByPrice = async function (req, res) {
     res.status(500).json({ error: "An error occurred" });
   }
 };
+
 //==================================================================================
 
 const getHotelsByLocalID = async (req, res) => {
