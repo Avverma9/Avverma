@@ -428,6 +428,10 @@ input[type="checkbox"] {
     height: auto;
   }
 }
+.loading_gif img{
+  margin-left: 350px;
+  max-width: 300px;
+}
 
 @media only screen and (max-width: 600px) {
   .search-result {
