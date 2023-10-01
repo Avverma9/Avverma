@@ -476,9 +476,14 @@ const getOffers = async (req, res) => {
 };
 //============================get by city============================================//
 const getCity = async function (req, res) {
-  const { city } = req.body;
-  const hotels = await hotelModel
-    .findOne({ city: city })
+  const { city } = req.query;
+  const searchQuery = {};
+
+  if (city) {
+    searchQuery.city = { $regex: new RegExp(city, "i") };
+  }
+
+  const hotels = await hotelModel.find(searchQuery)
     .sort({ createdAt: -1 });
 
   res.json(hotels);
