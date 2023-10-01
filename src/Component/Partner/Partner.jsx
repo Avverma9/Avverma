@@ -504,7 +504,7 @@ const Partner = () => {
       );
 
       if (response.ok) {
-        alert("Your request is recorded, we will contact you soon !");
+
         navigate("/");
       }
     } catch (error) {

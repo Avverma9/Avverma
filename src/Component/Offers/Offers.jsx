@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -54,12 +53,7 @@ const Offers = () => {
 
   return (
     <div className="offers-container">
-      {data && data.map((offer) =>
-       <Cards offer={offer} key={offer._id}/>
-        
-
-      
-       )}
+      {data && data.map((offer) => <Cards offer={offer} key={offer._id} />)}
     </div>
   );
 };
