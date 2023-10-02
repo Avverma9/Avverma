@@ -48,8 +48,21 @@ export const ConfirmBooking = ({ toast }) => {
     fetchBookingDetails();
   }, [fetchBookingDetails]);
 
+  // const formatDate = (dateString) => {
+  //   const options = { day: "numeric", month: "numeric", year: "numeric" };
+  //   return new Date(dateString).toLocaleDateString(undefined, options);
+  // };
+  // console.log(bookingDetails[0]);
   return (
     <>
+      {/* <div>
+        <h1>Confirmed Booking</h1>
+      </div>
+
+      <div>
+        We are pleased to inform you that your booking has been confirmed.
+      </div> */}
+
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
       </div>
@@ -229,17 +242,23 @@ export const ConfirmBooking = ({ toast }) => {
               {modalData && modalData?.rooms && modalData?.guests && (
                 <div>
                   <span>Rooms</span>
-                  <h6>{modalData.rooms}</h6>
+                  <h6>
+                    {modalData &&
+                    modalData?.rooms &&
+                    modalData?.rooms + " " + modalData?.rooms === 1
+                      ? "Room"
+                      : "Rooms"}
+                  </h6>
                   <span>Guests</span>
-                  <h6>{modalData.guests}</h6>
+                  <h6>
+                    {modalData &&
+                    modalData?.guests &&
+                    modalData?.guests + " " + modalData?.guests === 1
+                      ? "Guest"
+                      : "Guests"}
+                  </h6>
                 </div>
               )}
-              {Array.isArray(modalData.foodItems) &&
-                modalData.foodItems.map((e) => (
-                  <div key={e._id}>
-                    <h6>Foods</h6> {e.name}
-                  </div>
-                ))}
             </div>
           </div>
         </div>
