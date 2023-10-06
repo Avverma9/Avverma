@@ -174,14 +174,14 @@ const Partner = () => {
     formData.append("hotelName", hotelName);
     for (const detail of roomDetails) {
       formData.append("roomDetails[type]", detail.type);
-      formData.append("roomDetails[images]", detail.images);
+      // formData.append("roomDetails[images]", detail.images);
       formData.append("roomDetails[bedTypes]", detail.bedTypes);
 
       formData.append("roomDetails[price]", detail.price);
     }
     for (const detail of foodItems) {
       formData.append("foodItems[name]", detail.name);
-      formData.append("foodItems[images]", detail.images);
+      // formData.append("foodItems[images]", detail.images);
       formData.append("foodItems[about]", detail.about);
       formData.append("foodItems[price]", detail.price);
     }
@@ -562,47 +562,47 @@ const Partner = () => {
     updatedFoodDetails[index][field] = value;
     setFoodItems(updatedFoodDetails);
   };
-  const handleFoodImageChange = (index, selectedFile) => {
-    // Ensure that the selectedFile is not undefined or null
-    if (selectedFile) {
-      // Create a new FileReader to read the selected file
-      const reader = new FileReader();
 
-      // Define an event handler for when the file is loaded
-      reader.onload = (e) => {
-        const updatedFoodDetails = [...foodItems];
-        // Update the 'images' property of the selected food item with the data URL of the image
-        updatedFoodDetails[index].images = e.target.result;
-        setFoodItems(updatedFoodDetails);
-      };
 
-      // Read the selected file as a data URL
-      reader.readAsDataURL(selectedFile);
-    }
-  };
+  // const handleFoodImageChange = (index, selectedFile) => {
+  
+  //   if (selectedFile) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       const updatedFoodDetails = [...foodItems];
+  //       updatedFoodDetails[index].images = e.target.result;
+  //       setFoodItems(updatedFoodDetails);
+  //     };
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
+
+
   const handleRoomDetailsChange = (index, field, value) => {
     const updatedRoomDetails = [...roomDetails];
     updatedRoomDetails[index][field] = value;
     setRoomDetails(updatedRoomDetails);
   };
-  const handleRoomImageChange = (index, selectedFile) => {
-    // Ensure that the selectedFile is not undefined or null
-    if (selectedFile) {
-      // Create a new FileReader to read the selected file
-      const reader = new FileReader();
 
-      // Define an event handler for when the file is loaded
-      reader.onload = (e) => {
-        const updatedRoomDetails = [...roomDetails];
-        // Update the 'images' property of the selected food item with the data URL of the image
-        updatedRoomDetails[index].images = e.target.result;
-        setRoomDetails(updatedRoomDetails);
-      };
 
-      // Read the selected file as a data URL
-      reader.readAsDataURL(selectedFile);
-    }
-  };
+  // const handleRoomImageChange = (index, selectedFile) => {
+
+  //   if (selectedFile) {
+    
+  //     const reader = new FileReader();
+
+  
+  //     reader.onload = (e) => {
+  //       const updatedRoomDetails = [...roomDetails];
+       
+  //       updatedRoomDetails[index].images = e.target.result;
+  //       setRoomDetails(updatedRoomDetails);
+  //     };
+
+    
+  //     reader.readAsDataURL(selectedFile);
+  //   }
+  // };
 
   return (
     <div>
@@ -1812,7 +1812,7 @@ const Partner = () => {
                         </select>
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td>
                         <strong>Room Picture</strong>
                       </td>
@@ -1825,7 +1825,7 @@ const Partner = () => {
                           }
                         />
                       </td>
-                    </tr>
+                    </tr> */}
 
                     {/* </label> */}
                     <tr>
@@ -1997,7 +1997,7 @@ const Partner = () => {
                         />
                       </td>
                     </tr>
-                    <tr>
+                    {/* <tr>
                       <td>
                         <strong>Food Picture</strong>
                       </td>
@@ -2010,7 +2010,7 @@ const Partner = () => {
                           }
                         />
                       </td>
-                    </tr>
+                    </tr> */}
 
                     <tr>
                       <td>
