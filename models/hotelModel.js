@@ -12,7 +12,7 @@ const hotelsSchema = new mongoose.Schema(
     },
     roomDetails: [
       { 
-        images : [String],
+        roomImage : [String],
         type: {
           type: String,
         },
@@ -27,7 +27,7 @@ const hotelsSchema = new mongoose.Schema(
     foodItems: [
       {
         name: String,
-        images: [String],
+        foodImage: [String],
         about: String,
         price: Number,
       },
