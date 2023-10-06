@@ -620,9 +620,9 @@ const addRoomToHotel = async function (req, res) {
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
-const roomImage = req.files.map((file)=>file.location)
+const images = req.files.map((file)=>file.location)
     const newDetails = {
-      roomImage,
+      images,
       type,
       bedTypes,
       price,
@@ -642,10 +642,10 @@ const addFoodToHotel = async (request, response) => {
   const { name, about, price } = request.body;
   const hotel = await hotelModel.findById(hotelId);
 
-  const foodImage = request.files.map((file) => file.location);
+  const images = request.files.map((file) => file.location);
   const foods = {
     name,
-    foodImage,
+    images,
     about,
     price,
   };
