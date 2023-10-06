@@ -48,9 +48,9 @@ router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/:id", hotelController.getHotelsById);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
-router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
-router.get("/hotels/filters", hotelController.getHotelsByFilters);
-router.get("/hotels/destination/get/all", hotelController.getCity);
+router.get("/hotelsLocalId", hotelController.getHotelsByLocalID)
+router.get("/hotels/filters", hotelController.getHotelsByFilters)
+router.get("/hotels/destination/get/all", hotelController.getCity)
 router.get("/hotels/query/get/by", hotelController.getByQuery);
 router.put(
   "/update/new/created/hotel/room/:hotelid/:roomid",

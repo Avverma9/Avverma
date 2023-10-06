@@ -613,7 +613,7 @@ const updateRoom = async (req, res) => {
 //==================================add new room===============================================
 const addRoomToHotel = async function (req, res) {
   const { hotelId } = req.params;
-  const { roomImage, type, bedTypes, price } = req.body;
+  const { type, bedTypes, price } = req.body;
 
   try {
     const hotel = await hotelModel.findById(hotelId);
