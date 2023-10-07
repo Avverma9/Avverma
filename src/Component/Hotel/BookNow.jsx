@@ -820,9 +820,10 @@ export default function BookNow({ userData, toast }) {
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
                       </div>
-                      <div className="card-detail-img">
-                        <img src={hotelImages[0]} alt="hotelImage" />
-                      </div>
+                        <div className="card-detail-img">
+    <img src={item.images.length > 0 ? item.images[0] : hotelImages[0]} alt="hotelImage" />
+</div>
+
                     </div>
                     <div className="downhead">
                       <p className="price-total">
