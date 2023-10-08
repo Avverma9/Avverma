@@ -122,7 +122,7 @@ router.post("/verifyotp", emailController.verifyOtp);
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.post("/login/dashboard/user", DashboardUser.loginUser);
 router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
-router.delete("/delete/dashboard/user", DashboardUser.deletePartner);
+router.delete("/delete/dashboard/user/:id", DashboardUser.deletePartner);
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
