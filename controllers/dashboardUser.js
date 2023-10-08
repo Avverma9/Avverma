@@ -17,6 +17,10 @@ const loginUser = async function(req,res){
  }else {
      res.status(200).json({message:"Logged in as",loggedUserImage: loggedUser.images, loggedUserId: loggedUser._id, loggedUserName: loggedUser.name, loggedUserEmail: loggedUser.email})
  }
-
 }
-module.exports={registerUser,loginUser}
+//get all users 
+const getPartners = async function(req,res){
+    const fetchUser = await Dashboard.find()
+    res.json(fetchUser)
+}
+module.exports={registerUser,loginUser,getPartners}

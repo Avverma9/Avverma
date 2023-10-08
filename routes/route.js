@@ -121,7 +121,7 @@ router.post("/verifyotp", emailController.verifyOtp);
 //===============================Dashboard===========================
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.post("/login/dashboard/user", DashboardUser.loginUser);
-
+router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
