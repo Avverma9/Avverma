@@ -3,6 +3,14 @@ const Dashboard= require("../models/dashBoardUserModel")
 // Register ===========================
 const registerUser=async (req,res)=>{
     const {name,email,mobile,password}=req.body
+    const emailExist = await Dashboard.findOne({email:email})
+    const mobileExist = await Dashboard.findOne({mobile:mobile})
+    if(emailExist){
+        return res.status(400).json({message:"Email already existed"})
+    }
+    if(mobileExist){
+        return res.status(400).json({message : "Mobile already existed"})
+    }
     const images= req.files.map((file)=>file.location)
     const created= await Dashboard.create({images,name,email,mobile,password})
     res.status(201).json({message:"Registration Done",created})
@@ -30,4 +38,38 @@ const deletePartner = async function(req,res){
     const deleted= await Dashboard.findByIdAndDelete(id)
     res.status(200).json({ message:"this user is successfully deleted"})
 }
-module.exports={registerUser,loginUser,getPartners,deletePartner}
+//update 
+const updatePartner = async function (req, res) {
+    const { id } = req.params;
+    const { name, email, mobile, password } = req.body;
+
+    // Check if the email is already registered
+    const alreadyRegistered = await Dashboard.findOne({ email: email });
+    const mobileExist = await Dashboard.findOne({ mobile: mobile });
+    if (alreadyRegistered) {
+        return res.status(400).json({ message: "Email already registered" });
+    }
+    if(mobileExist) {
+return res.status(400).json({message: "Mobile number is already existed"})
+    }
+
+    // Update the partner record
+    try {
+        const partnerUpdated = await Dashboard.findByIdAndUpdate(
+            id,
+            { name, email, mobile, password },
+            { new: true }
+        );
+
+        if (!partnerUpdated) {
+            return res.status(404).json({ message: "Partner not found" });
+        }
+
+        res.status(200).json({ message: "User successfully updated" });
+    } catch (error) {
+        console.error("Error updating partner:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+module.exports={registerUser,loginUser,getPartners,deletePartner,updatePartner}
