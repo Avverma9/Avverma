@@ -28,6 +28,6 @@ const getPartners = async function(req,res){
 const deletePartner = async function(req,res){
     const{id}=req.params
     const deleted= await Dashboard.findByIdAndDelete(id)
-    res.json(deleted)
+    res.status(200).json({ message:"this user is successfully deleted"})
 }
 module.exports={registerUser,loginUser,getPartners,deletePartner}
