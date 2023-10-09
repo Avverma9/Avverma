@@ -1,11 +1,20 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const dashboardUser = new mongoose.Schema({
+const dashboardUser = new mongoose.Schema(
+  {
     images: [String],
-    name : String,
-    mobile: Number,
-    email: String,
-    password:String
-},{timestamps:true})
+    name: String,
+    mobile: {
+      type: Number,
+      unique: true,
+    },
+    email: {
+      type: String,
+      unique: true,
+    },
+    password: String,
+  },
+  { timestamps: true }
+);
 
-module.exports=mongoose.model("dashBoardUser",dashboardUser)
+module.exports = mongoose.model("dashBoardUser", dashboardUser);
