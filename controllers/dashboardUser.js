@@ -17,15 +17,33 @@ const registerUser=async (req,res)=>{
 }
 //Login ========================
 
-const loginUser = async function(req,res){
- const {email,password}=req.body
- const loggedUser= await Dashboard.findOne({email:email,password:password})
- if(!loggedUser){
-    res.status(400).json({message: "login failed"})
- }else {
-     res.status(200).json({message:"Logged in as",loggedUserImage: loggedUser.images, loggedUserId: loggedUser._id, loggedUserName: loggedUser.name, loggedUserEmail: loggedUser.email})
- }
-}
+const loginUser = async function (req, res) {
+    const { email, password } = req.body;
+    const emailRegex = new RegExp("^" + email + "$", "i"); // "i" flag for case-insensitive search
+  
+    const loggedUser = await Dashboard.findOne({
+      email: emailRegex,
+      password: password,
+    });
+  
+    if (!loggedUser) {
+      res.status(400).json({ message: "Login failed" });
+    } else {
+      res.status(200).json({
+        message: "Logged in as",
+        loggedUserImage: loggedUser.images,
+        loggedUserId: loggedUser._id,
+        loggedUserName: loggedUser.name,
+        loggedUserEmail: loggedUser.email,
+      });
+    }
+  };
+  
+  
+  
+  
+  
+  
 //get all users 
 const getPartners = async function(req,res){
     const fetchUser = await Dashboard.find()
