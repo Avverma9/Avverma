@@ -123,7 +123,7 @@ router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.post("/login/dashboard/user", DashboardUser.loginUser);
 router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
 router.delete("/delete/dashboard/delete/partner/:id", DashboardUser.deletePartner);
-router.put("/update/dashboard/updated/partner/:id", DashboardUser.updatePartner);
+router.patch("/update/dashboard/updated/partner/:id", DashboardUser.updatePartner);
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);

@@ -43,7 +43,7 @@ const updatePartner = async function (req, res) {
     const { id } = req.params;
     const { name, email, mobile, password } = req.body;
 
-    // Check if the email is already registered
+  
     const alreadyRegistered = await Dashboard.findOne({ email: email });
     const mobileExist = await Dashboard.findOne({ mobile: mobile });
     if (alreadyRegistered) {
@@ -53,7 +53,7 @@ const updatePartner = async function (req, res) {
 return res.status(400).json({message: "Mobile number is already existed"})
     }
 
-    // Update the partner record
+    
     try {
         const partnerUpdated = await Dashboard.findByIdAndUpdate(
             id,
