@@ -51,7 +51,14 @@ const bookingSchema = new mongoose.Schema(
     },
     bookingStatus: {
       type: String,
-      enum: ["success", "failed", "cancelled", "checkedIn", "checkedOut", "noshow"],
+      enum: [
+        "success",
+        "failed",
+        "cancelled",
+        "checkedIn",
+        "checkedOut",
+        "noshow",
+      ],
       default: "success",
     },
     cardDetails: {
@@ -74,28 +81,7 @@ const bookingSchema = new mongoose.Schema(
     },
     createdAt: {
       type: Date,
-      get: (timestamp) => {
-        // Convert MongoDB UTC timestamp to Indian time (IST)
-        if (timestamp) {
-          const utcTimestamp = new Date(timestamp);
-          const istTimestamp = new Date(utcTimestamp);
-          istTimestamp.setMinutes(utcTimestamp.getMinutes() + 330); // UTC + 5:30 hours
-          return istTimestamp;
-        }
-        return null;
-      },
-    },
-    updatedAt: {
-      type: Date,
-      get: (timestamp) => {
-        if (timestamp) {
-          const utcTimestamp = new Date(timestamp);
-          const istTimestamp = new Date(utcTimestamp);
-          istTimestamp.setMinutes(utcTimestamp.getMinutes() + 330); // UTC + 5:30 hours
-          return istTimestamp;
-        }
-        return null;
-      },
+      default: Date.now,
     },
     foodItems: [
       {
@@ -104,7 +90,16 @@ const bookingSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true } // Enable Mongoose default timestamps
+  {
+    timestamps: {
+      currentTime: () => {
+        const currentDate = new Date();
+        // Adjust the timezone offset to UTC +5:30
+        const offset = 330 * 60 * 1000; // 5 hours 30 minutes
+        return new Date(currentDate.getTime() + offset);
+      },
+    },
+  }
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);
