@@ -69,7 +69,7 @@ const Login = () => {
 
   return (
     <div className="card-signin">
-      <h4>You must have registerd for Google login/booking</h4>
+      
       {isLoading && (
         <img
           src="https://i.pinimg.com/originals/65/ba/48/65ba488626025cff82f091336fbf94bb.gif"

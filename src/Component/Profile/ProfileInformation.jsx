@@ -18,57 +18,11 @@ export const ProfileInformation = ({
   const [mobile, setMobile] = useState("");
   const [uimages, setImages] = useState([]);
   const [address, setAddress] = useState("");
-  const [adhaar, setAdhaar] = useState("");
-  const [pan, setPan] = useState("");
-  const [drivingLsc, setDrivingLsc] = useState("");
+
   const navigate = useNavigate("");
 
   const handleUpdate = async (e) => {
-    // e.preventDefault();
-
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("name", uname !== "" ? uname : userData?.name);
-    //   formData.append(
-    //     "password",
-    //     password !== "" ? password : userData?.password
-    //   );
-    //   formData.append("email", email !== "" ? email : userData?.email);
-    //   formData.append("gender", gender !== "" ? gender : userData?.gender);
-    //   formData.append("mobile", mobile !== "" ? mobile : userData?.mobile);
-    //   formData.append("address", address !== "" ? address : userData?.address);
-
-    //   // Append the image only if it is provided by the user
-    //   if (uimages.length > 0) {
-    //     formData.append(
-    //       "images",
-    //       uimages[0] !== "" ? uimages[0] : userData?.images[0]
-    //     ); // Assuming only one image is selected
-    //   }
-    //   const userId = localStorage.getItem("userId");
-    //   const response = await fetch(
-    //     `https://hotel-backend-tge7.onrender.com/update/${userId}`,
-    //     {
-    //       method: "PUT",
-    //       body: formData,
-    //     }
-    //   );
-
-    //   if (response.ok) {
-    //     // Call the onUpdateDone callback
-    //     window.location.reload();
-    //     toast.success("Profile Edited Successfully");
-    //     reset();
-    //     setIsEditing(false);
-    //     navigate("/profile");
-    //   } else {
-    //     throw new Error("Failed to update profile");
-    //   }
-    // } catch (error) {
-    //   toast.error(error);
-    //   console.error(error);
-    //   // Handle error state
-    // }
+    
     getAuth()
       .updateCurrentUser("sSjf8LBaB3TcnacrxeYabqTiKje2", {
         displayName: "Jane Doe",
@@ -239,78 +193,10 @@ export const ProfileInformation = ({
             />
           </div>
         </>
-        <>
-          <div className="_title">
-            <h1>Adhaar</h1>
-            {/* <input type="button" value="Edit" /> */}
-          </div>
-          <div className="_fields">
-            <input
-              type="text"
-              // value={
-              //   !isEditing
-              //     ? !isSignedIn && userDetails
-              //       ? userDetails?.providerData?.phoneNumber
-              //       : userData?.mobile
-              //     : mobile
-              // }
-              onChange={(e) => setAdhaar(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
-            />
-          </div>
-        </>
-        <>
-          <div className="_title">
-            <h1>PAN Card</h1>
-            {/* <input type="button" value="Edit" /> */}
-          </div>
-          <div className="_fields">
-            <input
-              type="text"
-              // value={
-              //   !isEditing
-              //     ? !isSignedIn && userDetails
-              //       ? userDetails?.providerData?.phoneNumber
-              //       : userData?.mobile
-              //     : mobile
-              // }
-              onChange={(e) => setPan(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
-            />
-          </div>
-        </>
-        <>
-          <div className="_title">
-            <h1>Driving License</h1>
-            {/* <input type="button" value="Edit" /> */}
-          </div>
-          <div className="_fields">
-            <input
-              type="text"
-              // value={
-              //   !isEditing
-              //     ? !isSignedIn && userDetails
-              //       ? userDetails?.providerData?.phoneNumber
-              //       : userData?.mobile
-              //     : mobile
-              // }
-              onChange={(e) => setDrivingLsc(e.target.value)}
-              // placeholder={
-              //   !isSignedIn && userDetails
-              //     ? userDetails?.providerData?.phoneNumber
-              //     : userData?.mobile
-              // }
-            />
-          </div>
-        </>
+      
+    
+      
+     
         {isEditing && (
           <>
             <div className="_title">

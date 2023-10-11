@@ -696,11 +696,17 @@ const BookNowPage = ({ userData, toast }) => {
                         <p>Bed Type : {item?.bedTypes}</p>
                         <p>Price : {item?.price}</p>
                       </div>
-                      
-                         <div className="card-detail-img">
-    <img src={item.images.length > 0 ? item.images[0] : hotelImages[0]} alt="hotelImage" />
-</div>
 
+                      <div className="card-detail-img">
+                        <img
+                          src={
+                            item.images.length > 0
+                              ? item.images[0]
+                              : hotelImages[0]
+                          }
+                          alt="hotelImage"
+                        />
+                      </div>
                     </div>
                     <button
                       className="select-btn"

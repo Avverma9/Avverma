@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./BookingDetails.module.css";
 import axios from "axios";
 import { FaRupeeSign } from "react-icons/fa";
@@ -40,6 +41,7 @@ const BookingDetails = ({
 }) => {
   // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
+  const navigate = useNavigate()
   const handleOpenRazorpay = (data) => {
     console.log(data);
     const options = {
@@ -98,6 +100,8 @@ const BookingDetails = ({
 
           if (res.status === 201) {
             toast.success("Booking created successfully");
+            alert("Your booking is done !")
+            navigate("profile/confirm-booking")
           }
         })
         .catch((err) => {
