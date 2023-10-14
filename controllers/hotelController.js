@@ -639,12 +639,13 @@ const images = req.files.map((file)=>file.location)
 //====================================add foods to hotel============================================
 const addFoodToHotel = async (request, response) => {
   const { hotelId } = request.params;
-  const { name, about, price } = request.body;
+  const { name, type, about, price } = request.body;
   const hotel = await hotelModel.findById(hotelId);
 
   const images = request.files.map((file) => file.location);
   const foods = {
     name,
+    type,
     images,
     about,
     price,
