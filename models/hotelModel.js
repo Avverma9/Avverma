@@ -27,7 +27,7 @@ const hotelsSchema = new mongoose.Schema(
     foodItems: [
       {
         name: String,
-        type:String,
+        foodType:String,
         images: [String],
         about: String,
         price: Number,
