@@ -109,6 +109,7 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
+import Kolkata from "./Component/Dropdownbar/city/kolkata/kolkata";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -217,6 +218,7 @@ function App() {
             path="/hotels/:id"
             element={<BookNow userData={userData} toast={toast} />}
           />
+          <Route path="/cities/kolkata" element={<Kolkata />} />
           <Route path="/cities/jaipur" element={<Jaipur />} />
           <Route path="/cities/kota" element={<Kota />} />
           <Route path="/cities/Sawai Madhopur" element={<Sawaimadhopur />} />

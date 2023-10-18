@@ -111,7 +111,7 @@ const Sidebar = ({
           `https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?city=${city}`
         )
         .then((data) => {
-          console.log(data.data);
+          console.log(data, "CITY");
           let hotelData = data.data;
           if (data.status === 200) {
             setHotels(null);

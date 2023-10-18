@@ -155,8 +155,6 @@ button[type="submit-sign"] {
   height: 100%;
   object-fit: cover;
 }
-.input-field {
-}
 
 @media (max-width: 768px) {
   .card-signup {

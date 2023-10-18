@@ -4,10 +4,6 @@ import "./Login.css";
 import Google from "../SingGoogle/Google.jsx";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-
-
-
-
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,7 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
-
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -29,7 +24,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email}),
+          body: JSON.stringify({ email }),
         }
       );
 
@@ -58,14 +53,13 @@ const Login = () => {
     navigate("/register"); // Redirect to the signup page
   };
 
-  const handleOtplogin =()=>{
-    navigate("/otplogin")
-  }
-
-  const handleForgotPassword = () => {
-    navigate("/passwordChangeMail"); 
+  const handleOtplogin = () => {
+    navigate("/otplogin");
   };
 
+  const handleForgotPassword = () => {
+    navigate("/passwordChangeMail");
+  };
 
   return (
     <div className="card-signin">
@@ -81,7 +75,7 @@ const Login = () => {
       <form onSubmit={handleSignIn}>
         <div className="form-group-signin">
           <input
-          style={{border:'2px solid black'}}
+            style={{ border: "2px solid black" }}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -92,45 +86,55 @@ const Login = () => {
         </div>
         <div className="form-group-signin">
           <input
-          style={{border:'2px solid black'}}
+            style={{ border: "2px solid black" }}
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="Enter Your Password"
-            className="input-signin"
+            className="input-signin input-signin-pswd"
           />
           <button
             type="button"
-            className="show-password-button-signin"
+            className="show-password-button-signin pswd-eye-position"
             onClick={togglePasswordVisibility}
-            style={{ position: "relative", bottom: "35px", left: "250px" }}
           >
             {showPassword ? (
               <AiFillEye
-              size={25}
+                size={25}
                 alt="Toggle Password Visibility"
                 className="eye-icon"
               />
             ) : (
-              < AiFillEyeInvisible 
-              size={25}
+              <AiFillEyeInvisible
+                size={25}
                 alt="Toggle Password Visibility"
                 className="eye-icon"
               />
             )}
           </button>
           Forgot Your Password ?
-          <button onClick={handleForgotPassword} className="signup-button">Click Here</button>
+          <button onClick={handleForgotPassword} className="signup-button">
+            Click Here
+          </button>
         </div>
-        <button type="submit-login" disabled={isLoading} className="signin-button">
-      Sign In
-    </button>
-    <button type="submit-otp" onClick={handleOtplogin} disabled={isLoading} className="signin-button">
-      OTP SignIn
-    </button>
+        <button
+          type="submit-login"
+          disabled={isLoading}
+          className="signin-button"
+        >
+          Sign In
+        </button>
+        <button
+          type="submit-otp"
+          onClick={handleOtplogin}
+          disabled={isLoading}
+          className="signin-button"
+        >
+          OTP SignIn
+        </button>
         <Google />
-        
+
         <br />
 
         <div className="dhac">
