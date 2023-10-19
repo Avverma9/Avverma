@@ -57,6 +57,7 @@ export default function BookNow({ userData, toast }) {
 
   const [foodPrice, setFoodPrice] = useState(0);
   const [indexedButton, setIndexedButton] = useState(null);
+  const [foodCount, setFoodCount] = useState({});
   const [revCount, setRevCount] = useState(null);
 
   const [localid, setLocalid] = useState("");
@@ -141,7 +142,11 @@ export default function BookNow({ userData, toast }) {
         }
       })
       .then((data) => {
-        console.log(data?.foodItems, "144");
+        const initialCount = {};
+        data?.foodItems.forEach((item) => {
+          initialCount[item._id] = 0;
+        });
+        setFoodCount(initialCount);
         setBookingDetails(data);
         setHotelID(data._id);
         setHotelImages(data.images);
@@ -157,7 +162,7 @@ export default function BookNow({ userData, toast }) {
         console.log(error);
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
-  console.log(meals);
+
   // useEffect(() => {
   //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
   //     .then((response) => {
@@ -377,9 +382,14 @@ export default function BookNow({ userData, toast }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
-  const foodPriceHandler = (index, fprice, fId) => {
-    setFoodIdArr([...foodIdArr, { _id: fId }]);
-    console.log(foodIdArr);
+  const increasefood = (index, fprice, fId) => {
+    setFoodCount((prevCount) => ({
+      ...prevCount,
+      [fId]: prevCount[fId] + 1,
+    }));
+    const mySet = new Set();
+    const newSet = mySet.add([...foodIdArr, { _id: fId }]);
+    setFoodIdArr(newSet);
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
@@ -387,7 +397,25 @@ export default function BookNow({ userData, toast }) {
     }, 1000);
     setFoodPrice(foodPrice + fprice);
   };
-
+  const decreasefood = (index, fprice, fId) => {
+    setFoodCount((prevCount) => {
+      if (prevCount[fId] > 0) {
+        return { ...prevCount, [fId]: prevCount[fId] - 1 };
+      }
+      return prevCount;
+    });
+    const mySet = new Set();
+    const newSet = mySet.add([...foodIdArr, { _id: fId }]);
+    setFoodIdArr(newSet);
+    setAddingFood(true);
+    setIndexedButton(index);
+    setTimeout(() => {
+      setAddingFood(false);
+    }, 1000);
+    foodCount > 0 && setFoodPrice(foodPrice - fprice);
+    foodCount === 0 && setDisableDecrement(true);
+  };
+  console.log(foodIdArr);
   const handleRating = (rate) => {
     setMyRating(rate);
   };
@@ -687,7 +715,7 @@ export default function BookNow({ userData, toast }) {
                       <MdCurrencyRupee className="r-sign" />
                       {m.price}
                     </p>
-                    <button
+                    {/* <button
                       type="button"
                       className=" mt-4 select-btn"
                       onClick={() => foodPriceHandler(i, m.price, m._id)}
@@ -703,7 +731,67 @@ export default function BookNow({ userData, toast }) {
                       ) : (
                         "Add"
                       )}
-                    </button>
+                    </button> */}
+                    <span
+                      style={{
+                        display: "flex",
+                        gap: "10px",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {foodCount !== 0 && (
+                        <button
+                          ref={decrementRef}
+                          key={i}
+                          onClick={() => decreasefood(i, m.price, m._id)}
+                          style={{
+                            padding: "0px 10px",
+                            background: "#23e163",
+                            border: "none",
+                            color: "white",
+                            fontSize: "20px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          -
+                        </button>
+                      )}
+                      {addingFood && indexedButton === i ? (
+                        <div
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                          style={{ color: "#23e163" }}
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      ) : (
+                        <p
+                          style={{
+                            marginTop: "5px",
+                            fontWeight: "bold",
+                            color: "#333333",
+                          }}
+                        >
+                          {" "}
+                          {foodCount[m._id]}
+                        </p>
+                      )}
+                      <button
+                        key={i}
+                        onClick={() => increasefood(i, m.price, m._id)}
+                        style={{
+                          padding: "0px 10px",
+                          background: "#23e163",
+                          border: "none",
+                          color: "white",
+                          fontSize: "20px",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        +
+                      </button>
+                    </span>
                   </div>
                 </div>
               ))}
