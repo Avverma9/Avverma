@@ -176,7 +176,7 @@ const getCheckedOutHotel = async (req, res) => {
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "failed"
   );
@@ -184,7 +184,7 @@ const getFailedBookings = async (req, res) => {
 };
 
 const getCancelledBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "cancelled"
   );
@@ -192,7 +192,7 @@ const getCancelledBookings = async (req, res) => {
 };
 
 const getNoShowBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 });
+  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "noshow"
   );
@@ -244,7 +244,7 @@ const getCancelledBooking = async (req, res) => {
 };
 //================================================================================
 const getCheckedIn = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const checkedIn = booking.filter(
     (checkedIn) => checkedIn.bookingStatus === "checkedIn"
   );
@@ -255,7 +255,7 @@ const getCheckedIn = async (req, res) => {
 };
 //========================================================================================
 const getCheckedOut = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const checkedOut = booking.filter(
     (checkedOut) => checkedOut.bookingStatus === "checkedOut"
   );
