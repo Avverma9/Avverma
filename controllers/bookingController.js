@@ -93,7 +93,7 @@ const createBooking = async (req, res) => {
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 });
+  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
   const confirmedBookings = booking.filter(
     (booking) => booking.bookingStatus === "success"
   ); //dashboard
