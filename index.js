@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const cors = require("cors");
 const { createServer } = require("http");
@@ -16,7 +17,7 @@ const app = express();
 app.use(cors());
 // app.use(upload.none())
 app.use(express.json());
-
+app.use(bodyParser.urlencoded({ extended: true }));
 const server = createServer(app);
 const io = new Server(server);
 

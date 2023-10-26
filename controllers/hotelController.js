@@ -719,7 +719,21 @@ const deleteRoom = async function (req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+//update hotel amenity 
+const updateAmenity = async(req,res)=>{
+  const { id } = req.params;
+    const { amenities } = req.body;
+    const hotel = await hotelModel.findById(id);
 
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    hotel.amenities = amenities;
+    await hotel.save();
+
+    return res.json({ message: "Amenities updated successfully", hotel });
+}
 //================================================================================================
 module.exports = {
   createHotel,
@@ -740,4 +754,5 @@ module.exports = {
   deleteRoom,
   addFoodToHotel,
   deleteFoods,
+  updateAmenity
 };

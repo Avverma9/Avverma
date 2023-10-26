@@ -94,7 +94,6 @@ const bookingSchema = new mongoose.Schema(
     timestamps: {
       currentTime: () => {
         const currentDate = new Date();
-        // Adjust the timezone offset to UTC +5:30
         const offset = 330 * 60 * 1000; // 5 hours 30 minutes
         return new Date(currentDate.getTime() + offset);
       },
