@@ -47,21 +47,14 @@ export const ConfirmBooking = ({ toast }) => {
   useEffect(() => {
     fetchBookingDetails();
   }, [fetchBookingDetails]);
+  const handlePrint = () => {
+    window.print();
+  };
 
-  // const formatDate = (dateString) => {
-  //   const options = { day: "numeric", month: "numeric", year: "numeric" };
-  //   return new Date(dateString).toLocaleDateString(undefined, options);
-  // };
-  // console.log(bookingDetails[0]);
+ 
   return (
     <>
-      {/* <div>
-        <h1>Confirmed Booking</h1>
-      </div>
-
-      <div>
-        We are pleased to inform you that your booking has been confirmed.
-      </div> */}
+  
 
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
@@ -110,12 +103,12 @@ export const ConfirmBooking = ({ toast }) => {
                           <span>
                             {bookingDetails?.guests > 1 ? "Guests" : "Guest"}
                           </span>
-                          {"  "}
+                        
                         </>
-                        {"  "},
+                    
                         <>
-                          {"  "}
-                          {bookingDetails?.rooms}{" "}
+                     
+                          {bookingDetails?.rooms}
                           <span>
                             {bookingDetails?.rooms > 1 ? "Rooms" : "Room"}
                           </span>
@@ -144,11 +137,11 @@ export const ConfirmBooking = ({ toast }) => {
         <p>No Data Found...</p>
       )}
 
-      {/* Modal Starts From Here */}
+   
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            <button className={styles.print}>
+            <button onClick={handlePrint} className={styles.print}>
               <span>Print</span>
             </button>
             <button onClick={handleClose}>
@@ -199,7 +192,10 @@ export const ConfirmBooking = ({ toast }) => {
                   Hotel Name: <span>{modalData?.hotelName}</span>
                 </h6>
                 <h6>
-                  Hotel Owner: <span>{modalData?.hotelOwnerName}</span>
+                Booking Status: <span>{modalData?.bookingStatus}</span>
+                </h6>
+                <h6>
+                Price: <span>{modalData?.price}</span>
                 </h6>
               </div>
               <img
@@ -243,19 +239,12 @@ export const ConfirmBooking = ({ toast }) => {
                 <div>
                   <span>Rooms</span>
                   <h6>
-                    {modalData &&
-                    modalData?.rooms &&
-                    modalData?.rooms + " " + modalData?.rooms === 1
-                      ? "Room"
-                      : "Rooms"}
+                    {modalData?.rooms}
                   </h6>
                   <span>Guests</span>
                   <h6>
-                    {modalData &&
-                    modalData?.guests &&
-                    modalData?.guests + " " + modalData?.guests === 1
-                      ? "Guest"
-                      : "Guests"}
+                    {
+                    modalData?.guests}
                   </h6>
                 </div>
               )}

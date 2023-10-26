@@ -193,7 +193,7 @@ function App() {
               element={<ConfirmBooking toast={toast} />}
             />
             <Route path="check-in-booking" element={<CheckingBooking />} />
-            <Route path="check-out-booking" element={<CheckOutBooking />} />
+            <Route path="check-out-booking" element={<CheckOutBooking/>} />
             <Route path="no-show-booking" element={<NoShowBooking />} />
             <Route path="failed-booking" element={<FailedBooking />} />
             <Route path="reviews" element={<MyReviewSection />} />

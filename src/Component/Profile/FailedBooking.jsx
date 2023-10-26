@@ -5,9 +5,7 @@ import noImage from "../../assets/noImage.jpg";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import moment from "moment";
-import { toast } from "react-toastify";
-
-export const FailedBooking = () => {
+export const FailedBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [modalData, setmodalData] = useState([]);
   const [userData, setuserdata] = useState(null);
@@ -44,14 +42,20 @@ export const FailedBooking = () => {
       console.log(error);
       toast.error("Error fetching booking details");
     }
-  }, [setBookingDetails]);
+  }, [setBookingDetails, toast]);
 
   useEffect(() => {
     fetchBookingDetails();
   }, [fetchBookingDetails]);
+  const handlePrint = () => {
+    window.print();
+  };
 
+ 
   return (
     <>
+  
+
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
       </div>
@@ -99,12 +103,12 @@ export const FailedBooking = () => {
                           <span>
                             {bookingDetails?.guests > 1 ? "Guests" : "Guest"}
                           </span>
-                          {"  "}
+                        
                         </>
-                        {"  "},
+                    
                         <>
-                          {"  "}
-                          {bookingDetails?.rooms}{" "}
+                     
+                          {bookingDetails?.rooms}
                           <span>
                             {bookingDetails?.rooms > 1 ? "Rooms" : "Room"}
                           </span>
@@ -133,11 +137,11 @@ export const FailedBooking = () => {
         <p>No Data Found...</p>
       )}
 
-      {/* Modal Starts From Here */}
+   
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            <button className={styles.print}>
+            <button onClick={handlePrint} className={styles.print}>
               <span>Print</span>
             </button>
             <button onClick={handleClose}>
@@ -151,9 +155,9 @@ export const FailedBooking = () => {
                 <p>{modalData?.bookingId}</p>
               </div>
               {userData && userData?.name && (
-                <p className={styles.errorText}>
-                  Booked by {userData?.name} failed on{" "}
-                  <span className={styles.errorText}>
+                <p>
+                  Booked by {userData?.name} on{" "}
+                  <span>
                     {modalData &&
                     modalData?.createdAt &&
                     moment(modalData?.createdAt).isoWeekday() === 1
@@ -171,7 +175,7 @@ export const FailedBooking = () => {
                       : "Sun"}
                   </span>
                   {", "}
-                  <span className={styles.errorText}>
+                  <span>
                     {modalData &&
                       modalData?.createdAt &&
                       moment(
@@ -188,7 +192,10 @@ export const FailedBooking = () => {
                   Hotel Name: <span>{modalData?.hotelName}</span>
                 </h6>
                 <h6>
-                  Hotel Owner: <span>{modalData?.hotelOwnerName}</span>
+                Booking Status: <span>{modalData?.bookingStatus}</span>
+                </h6>
+                <h6>
+                Price: <span>{modalData?.price}</span>
                 </h6>
               </div>
               <img
@@ -210,6 +217,37 @@ export const FailedBooking = () => {
                 <span>Email</span>
                 <h6>{userData?.email}</h6>
               </div>
+              {modalData &&
+                modalData?.checkInDate &&
+                modalData?.checkOutDate && (
+                  <div>
+                    <span>Check In</span>
+                    <h6>
+                      {modalData &&
+                        modalData?.checkInDate &&
+                        modalData?.checkInDate.substring(0, 10)}
+                    </h6>
+                    <span>Check Out</span>
+                    <h6>
+                      {modalData &&
+                        modalData?.checkOutDate &&
+                        modalData?.checkOutDate.substring(0, 10)}
+                    </h6>
+                  </div>
+                )}
+              {modalData && modalData?.rooms && modalData?.guests && (
+                <div>
+                  <span>Rooms</span>
+                  <h6>
+                    {modalData?.rooms}
+                  </h6>
+                  <span>Guests</span>
+                  <h6>
+                    {
+                    modalData?.guests}
+                  </h6>
+                </div>
+              )}
             </div>
           </div>
         </div>

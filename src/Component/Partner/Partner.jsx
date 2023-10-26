@@ -721,7 +721,7 @@ const Partner = () => {
               </div>
 
               <div className="street">
-                <label htmlFor="street">Address:</label>
+                <label htmlFor="street">Street:</label>
                 <input
                   type="text"
                   id="street"
