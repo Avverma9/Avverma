@@ -24,17 +24,17 @@ const bookingSchema = new mongoose.Schema(
       type: String,
     },
     checkInDate: {
-      type: Date,
+      type: String,
     },
     checkOutDate: {
-      type: Date,
+      type: String,
     },
     checkInTime: {
-      type: Date,
+      type: String,
      
     },
     checkOutTime: {
-      type: Date,
+      type: String,
     },
     guests: {
       type: Number,
