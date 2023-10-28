@@ -28,6 +28,7 @@ const BookingDetails = ({
   foodIdArr,
   setFoodIdArr,
   roomPrice,
+  roomType,
   bedtype,
   isOffer,
   offerDetails,
@@ -236,6 +237,7 @@ const BookingDetails = ({
                 <BiBed />
               </span>
               <div className={styles.textnew}>
+              <span className={styles.textc}>{roomType}, </span>
                 <span className={styles.textc}>{bedtype}</span>
               </div>
             </div>

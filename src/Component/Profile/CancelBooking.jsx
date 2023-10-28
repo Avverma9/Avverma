@@ -161,7 +161,7 @@ export const CancelBooking = ({ toast }) => {
                   {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
           <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
                   <td style={styles.cell}>
-                    {new Date(booking.cancelledAt).toLocaleDateString()}
+                    {new Date(booking.createdAt).toLocaleDateString()}
                   </td>
                   <td style={{ ...styles.cell, color: "red" }}>
                     {booking.bookingStatus}

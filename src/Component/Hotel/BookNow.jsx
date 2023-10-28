@@ -56,6 +56,7 @@ export default function BookNow({ userData, toast }) {
   const [selectedGuests, setSelectedGuests] = useState(1);
 
   const [foodPrice, setFoodPrice] = useState(0);
+  const [foodCounts, setFoodCounts] = useState({});
   const [indexedButton, setIndexedButton] = useState(null);
   const [revCount, setRevCount] = useState(null);
 
@@ -67,6 +68,7 @@ export default function BookNow({ userData, toast }) {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
+  const [roomType, setRoomType] = useState("");
   const [bedtype, setBedtype] = useState("");
 
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
@@ -149,6 +151,7 @@ export default function BookNow({ userData, toast }) {
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
+        setRoomType(data?.roomDetails[0].type)
         setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
         setMeals(data?.foodItems);
@@ -377,14 +380,53 @@ export default function BookNow({ userData, toast }) {
   const firstImageURL = bookingDetails.images?.[0];
   console.log(firstImageURL, "gggggggggggggggggggggggg");
 
+  const removeFoodHandler = (fId, price) => {
+    if (foodCounts[fId] > 1) {
+      // If there are more than one of the item, decrease the count
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: prevFoodCounts[fId] - 1,
+      }));
+    } else {
+      // If there's only one item, remove it from the counts
+      const { [fId]: _, ...restCounts } = foodCounts;
+      setFoodCounts(restCounts);
+    }
+
+    // Remove the food item from the foodIdArr
+    setFoodIdArr(foodIdArr.filter((item) => item._id !== fId));
+
+    // Update the total price by subtracting the item's price
+    setFoodPrice(foodPrice - price);
+  };
+
   const foodPriceHandler = (index, fprice, fId) => {
+    // Check if the food item is already in the foodCounts state
+    if (foodCounts[fId]) {
+      // If it exists, increment the count
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: prevFoodCounts[fId] + 1,
+      }));
+    } else {
+      // If it doesn't exist, set the count to 1
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: 1,
+      }));
+    }
+
+    // Add the food item to the foodIdArr state
     setFoodIdArr([...foodIdArr, { _id: fId }]);
-    console.log(foodIdArr);
+
+    // You can use the same code as before for the loading spinner
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
       setAddingFood(false);
     }, 1000);
+
+    // Update the total price
     setFoodPrice(foodPrice + fprice);
   };
 
@@ -395,6 +437,7 @@ export default function BookNow({ userData, toast }) {
   const selectRoomHandler = (index, rprice, bed) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
+    setRoomType(roomType)
     setBedtype(bed);
   };
 
@@ -689,7 +732,7 @@ export default function BookNow({ userData, toast }) {
                     </p>
                     <button
                       type="button"
-                      className=" mt-4 select-btn"
+                      className="mt-4 select-btn"
                       onClick={() => foodPriceHandler(i, m.price, m._id)}
                       key={i}
                     >
@@ -701,9 +744,25 @@ export default function BookNow({ userData, toast }) {
                           <span className="sr-only">Loading...</span>
                         </div>
                       ) : (
-                        "Add"
+                        <>
+                          <span
+                            onClick={() => removeFoodHandler(m._id, m.price)}
+                          >
+                            +
+                          </span>
+                          {foodCounts[m._id] ? `(${foodCounts[m._id]})` : "Add"}
+                        </>
                       )}
                     </button>
+                    {foodCounts[m._id] && (
+                      <button
+                        type="button"
+                        className="mt-4 select-btn"
+                        onClick={() => removeFoodHandler(m._id, m.price)}
+                      >
+                        <span>-</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -820,10 +879,16 @@ export default function BookNow({ userData, toast }) {
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
                       </div>
-                        <div className="card-detail-img">
-    <img src={item.images.length > 0 ? item.images[0] : hotelImages[0]} alt="hotelImage" />
-</div>
-
+                      <div className="card-detail-img">
+                        <img
+                          src={
+                            item.images.length > 0
+                              ? item.images[0]
+                              : hotelImages[0]
+                          }
+                          alt="hotelImage"
+                        />
+                      </div>
                     </div>
                     <div className="downhead">
                       <p className="price-total">
@@ -833,7 +898,7 @@ export default function BookNow({ userData, toast }) {
                       <button
                         className="select-btn mt-4"
                         onClick={() =>
-                          selectRoomHandler(index, item?.price, item?.bedTypes)
+                          selectRoomHandler(index, item?.price, item?.type, item?.bedTypes)
                         }
                       >
                         {index === selectedRoomBtn ? "Selected" : "Select"}
@@ -1022,6 +1087,7 @@ export default function BookNow({ userData, toast }) {
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
                 roomPrice={roomPrice}
+                roomType={roomType}
                 bedtype={bedtype}
                 isOffer={bookingDetails?.isOffer}
                 offerDetails={bookingDetails?.offerDetails}
