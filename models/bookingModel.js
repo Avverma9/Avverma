@@ -60,6 +60,7 @@ const bookingSchema = new mongoose.Schema(
       ],
       default: "success",
     },
+    cancellationReason:String,
     cardDetails: {
       type: String,
       default: null,
