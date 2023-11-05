@@ -537,7 +537,12 @@ const getHotelsByPrice = async function (req, res) {
 };
 
 //==================================================================================
-
+const deleteHotelById = async function(req,res){
+  const {id}=req.params
+  const deletedData= await hotelModel.findByIdAndDelete(id)
+  res.json(deletedData)
+}
+//===========================================================
 const getHotelsByLocalID = async (req, res) => {
   const { localId } = req.params;
 
@@ -766,5 +771,6 @@ module.exports = {
   deleteRoom,
   addFoodToHotel,
   deleteFoods,
-  updateAmenity
+  updateAmenity,
+  deleteHotelById
 };
