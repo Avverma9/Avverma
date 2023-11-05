@@ -44,6 +44,7 @@ router.post("/data/hotels-new/post/upload/data", upload, hotelController.createH
 router.patch("/hotels/update/:id", hotelController.UpdateHotel);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
+router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/:id", hotelController.getHotelsById);

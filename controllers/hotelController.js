@@ -462,6 +462,17 @@ const getAllHotels = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const getAllRejectedHotels = async (req, res) => {
+  try {
+    const hotels = await hotelModel.find().sort({ createdAt: -1 });
+    const hotelsData = hotels.filter(
+      (accepted) => accepted.isAccepted === false
+    );
+    res.json(hotelsData);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 //===========================get hotels====================================================//
 const getHotels = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
@@ -739,6 +750,7 @@ module.exports = {
   createHotel,
   searchHotels,
   getAllHotels,
+  getAllRejectedHotels,
   getHotelsById,
   getHotelsByPrice,
   getHotelsByLocalID,
