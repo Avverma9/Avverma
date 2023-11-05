@@ -92,7 +92,7 @@ const hotelsSchema = new mongoose.Schema(
     },
     isAccepted: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     categories: [String],
     collections: [String],
