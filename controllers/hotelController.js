@@ -175,79 +175,7 @@ const createHotel = async (req, res) => {
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
-  const {
-    hotelName,
-    hotelOwnerName,
-    description,
-    destination,
-    price,
-    startDate,
-    endDate,
-    guests,
-    numRooms,
-    localId,
-    maritalStatus,
-    hotelsPolicy,
-    amenities,
-    reviews,
-    rating,
-    categories,
-    collections,
-    accommodationType,
-    starRating,
-    propertyType,
-    isOffer,
-    offerDetails,
-    offerPriceLess,
-    contact,
-    ownerContactDetails,
-    hotelEmail,
-    street,
-    city,
-    state,
-    zip,
-    landmark,
-    outsideFoodPolicy,
-    cancellationPolicy,
-    paymentMode,
-    petsAllowed,
-    bachelorAllowed,
-    smokingAllowed,
-    alcoholAllowed,
-    unmarriedCouplesAllowed,
-    internationalGuestAllowed,
-    returnPolicy,
-    onDoubleSharing,
-    onQuadSharing,
-    onBulkBooking,
-    onTrippleSharing,
-    onMoreThanFour,
-    offDoubleSharing,
-    offQuadSharing,
-    offBulkBooking,
-    offTrippleSharing,
-    offMoreThanFour,
-    onDoubleSharingAp,
-    onQuadSharingAp,
-    onBulkBookingAp,
-    onTrippleSharingAp,
-    onMoreThanFourAp,
-    offDoubleSharingAp,
-    offQuadSharingAp,
-    offBulkBookingAp,
-    offTrippleSharingAp,
-    offMoreThanFourAp,
-    onDoubleSharingMAp,
-    onQuadSharingMAp,
-    onBulkBookingMAp,
-    onTrippleSharingMAp,
-    onMoreThanFourMAp,
-    offDoubleSharingMAp,
-    offQuadSharingMAp,
-    offBulkBookingMAp,
-    offTrippleSharingMAp,
-    offMoreThanFourMAp,
-  } = req.body;
+  const {isAccepted,isOffer} = req.body;
 
   let images = [];
 
@@ -259,86 +187,7 @@ const UpdateHotel = async function (req, res) {
       images = user.images;
     }
   }
-  const updatedHotel = await hotelModel.findByIdAndUpdate(
-    id,
-    {
-      images,
-      hotelName,
-      hotelOwnerName,
-      description,
-      destination,
-      price,
-      startDate,
-      endDate,
-      guests,
-      numRooms,
-      localId,
-      maritalStatus,
-      hotelsPolicy,
-      amenities,
-      reviews,
-      rating,
-      categories,
-      collections,
-      accommodationType,
-      starRating,
-      propertyType,
-      isOffer,
-      offerDetails,
-      offerPriceLess,
-      contact,
-      ownerContactDetails,
-      hotelEmail,
-      street,
-      city,
-      state,
-      zip,
-      landmark,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingAp,
-      onQuadSharingAp,
-      onBulkBookingAp,
-      onTrippleSharingAp,
-      onMoreThanFourAp,
-      offDoubleSharingAp,
-      offQuadSharingAp,
-      offBulkBookingAp,
-      offTrippleSharingAp,
-      offMoreThanFourAp,
-      onDoubleSharingMAp,
-      onQuadSharingMAp,
-      onBulkBookingMAp,
-      onTrippleSharingMAp,
-      onMoreThanFourMAp,
-      offDoubleSharingMAp,
-      offQuadSharingMAp,
-      offBulkBookingMAp,
-      offTrippleSharingMAp,
-      offMoreThanFourMAp,
-    },
-    {
-      new: true,
-    }
-  );
+  const updatedHotel = await hotelModel.findByIdAndUpdate(id,{images,isOffer,isAccepted},{new: true});
 
   if (!updatedHotel) {
     return res.status(404).json({ error: "Hotel not found" });
@@ -494,8 +343,7 @@ const getCity = async function (req, res) {
     searchQuery.city = { $regex: new RegExp(city, "i") };
   }
 
-  const hotels = await hotelModel.find(searchQuery)
-    .sort({ createdAt: -1 });
+  const hotels = await hotelModel.find(searchQuery).sort({ createdAt: -1 });
 
   res.json(hotels);
 };
@@ -524,9 +372,9 @@ const getHotelsByPrice = async function (req, res) {
       .find({
         roomDetails: {
           $elemMatch: {
-            price: { $gte: minPrice, $lte: maxPrice }
-          }
-        }
+            price: { $gte: minPrice, $lte: maxPrice },
+          },
+        },
       })
       .exec();
 
@@ -537,11 +385,11 @@ const getHotelsByPrice = async function (req, res) {
 };
 
 //==================================================================================
-const deleteHotelById = async function(req,res){
-  const {id}=req.params
-  const deletedData= await hotelModel.findByIdAndDelete(id)
-  res.json(deletedData)
-}
+const deleteHotelById = async function (req, res) {
+  const { id } = req.params;
+  const deletedData = await hotelModel.findByIdAndDelete(id);
+  res.json(deletedData);
+};
 //===========================================================
 const getHotelsByLocalID = async (req, res) => {
   const { localId } = req.params;
@@ -636,7 +484,7 @@ const addRoomToHotel = async function (req, res) {
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
-const images = req.files.map((file)=>file.location)
+    const images = req.files.map((file) => file.location);
     const newDetails = {
       images,
       type,
@@ -735,21 +583,21 @@ const deleteRoom = async function (req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-//update hotel amenity 
-const updateAmenity = async(req,res)=>{
+//update hotel amenity
+const updateAmenity = async (req, res) => {
   const { id } = req.params;
-    const { amenities } = req.body;
-    const hotel = await hotelModel.findById(id);
+  const { amenities } = req.body;
+  const hotel = await hotelModel.findById(id);
 
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
+  if (!hotel) {
+    return res.status(404).json({ message: "Hotel not found" });
+  }
 
-    hotel.amenities = amenities;
-    await hotel.save();
+  hotel.amenities = amenities;
+  await hotel.save();
 
-    return res.json({ message: "Amenities updated successfully", hotel });
-}
+  return res.json({ message: "Amenities updated successfully", hotel });
+};
 //================================================================================================
 module.exports = {
   createHotel,
@@ -772,5 +620,5 @@ module.exports = {
   addFoodToHotel,
   deleteFoods,
   updateAmenity,
-  deleteHotelById
+  deleteHotelById,
 };
