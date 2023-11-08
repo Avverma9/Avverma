@@ -619,8 +619,9 @@ function HotelList() {
             </div>
           </div>
         ) : (
-          <div className={styles.loading_gif}><img src="https://i.gifer.com/1LBN.gif" alt="" /></div>
-         
+          <div className={styles.loading_gif}>
+            <img src="https://i.gifer.com/1LBN.gif" alt="" />
+          </div>
         )}
       </div>
     </>

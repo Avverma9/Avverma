@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import './Home.css';
-
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import "./Home.css";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper/modules";
 function Home() {
-  const location =useLocation()
+  const location = useLocation();
   const [images, setImages] = useState([]);
-  const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('https://hotel-backend-tge7.onrender.com/get/second/carousel');
+        const response = await fetch(
+          "https://hotel-backend-tge7.onrender.com/get/second/carousel"
+        );
         const data = await response.json();
-        const allImages = data.map(result => result.images).flat();
+        const allImages = data.map((result) => result.images).flat();
         setImages(allImages);
       } catch (error) {
         console.log(error);
@@ -22,36 +27,26 @@ function Home() {
     fetchImages();
   }, []);
 
-  const goToNextSlide = () => {
-    setSlideIndex(prevIndex => (prevIndex + 1) % images.length);
-  };
-
-  const goToPreviousSlide = () => {
-    setSlideIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
-  };
-if(location.pathname !== "/"){
-  return null
-}
+  if (location.pathname !== "/") {
+    return null;
+  }
 
   return (
-    <div className="slider-img02">
-      {images.length > 0 && (
-        <div className="slider-container02">
-          <img
-            src={images[slideIndex]}
-            alt={`Slide ${slideIndex + 1}`}
-            style={{ display: 'block' }}
-          />
-          <div className="slider-arrows02">
-            <div className="slider-arrow-left-arrow02" onClick={goToPreviousSlide}>
-              &lt;
-            </div>
-            <div className="slider-arrow-right-arrow02" onClick={goToNextSlide}>
-              &gt;
-            </div>
-          </div>
-        </div>
-      )}
+    <div className="img_wrapper">
+      <Swiper
+        spaceBetween={50}
+        slidesPerView={1}
+        autoplay={{ delay: 2500 }}
+        navigation={true}
+        modules={[Autoplay, Navigation]}
+      >
+        {images &&
+          images.map((item, idx) => (
+            <SwiperSlide key={idx}>
+              <img src={item} alt="" />
+            </SwiperSlide>
+          ))}
+      </Swiper>
     </div>
   );
 }

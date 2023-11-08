@@ -142,12 +142,7 @@ const BookingDetails = ({
   const handledatechange2 = (date) => {
     setSelectdatecheckout(date);
   };
-  //for add room and guest
-  // const [isopen, setIsopen] = useState(false);
 
-  // const togglePopup = () => {
-  //   setIsopen(!isopen);
-  // };
 
   const paymentSelect = () => {
     setOpenPaymentModule(true);
@@ -173,8 +168,7 @@ const BookingDetails = ({
                 <FaRupeeSign className={styles.rupee_sign} />
                 {roomPrice}
               </span>
-              {/* <span>1999</span> */}
-              {/* <span>81% off</span> */}
+            
             </div>
             <div className={styles.inclusive_tex}>Inclusive of all taxes</div>
           </div>
@@ -237,8 +231,8 @@ const BookingDetails = ({
                 <BiBed />
               </span>
               <div className={styles.textnew}>
-              <span className={styles.textc}>{roomType}, </span>
-                <span className={styles.textc}>{bedtype}</span>
+         
+                <span className={styles.textc}>{bedtype}-{roomType}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
@@ -253,65 +247,18 @@ const BookingDetails = ({
               </span>
             </div>
           </div>
-          {/* <div className={styles.offerdata}>
-            <span className={styles.percenticon}>
-              <BiSolidOffer />
-            </span>
-            <div className={styles.textpercentage}>
-              <div className={styles.fioffer}>
-                <span className={styles.textoff}>First Coupen Applied</span>
-                <div className={styles.textoffdiv}>More offer</div>
-              </div>
-              <div className={styles.seoffer}>
-                <span className={styles.offerspan}>
-                  <FaRupeeSign />
-                  -529
-                </span>
-                <label htmlFor="offercheckbox">
-                  <input type="checkbox" id="offercheckbox" />
-                </label>
-              </div>
-            </div>
-          </div> */}
-          {/* <div className={styles.offerapplied}>
-            <div className={styles.fside}>
-              <span className={styles.icon_a}>
-                <AiOutlineCodepenCircle />
-              </span>
-              <span className={styles.textf}>
-                Money Applied
-                <div className={styles.down_text}>
-                  (<FaRupeeSign />
-                  90 Extra)
-                </div>
-              </span>
-            </div>
-            <div className={styles.sside}>
-              <span className={styles.labelr}>
-                <FaRupeeSign />
-                -89
-              </span>
-              <label htmlFor="checkboxr">
-                <input type="checkbox" id="checkboxr" />
-              </label>
-            </div>
-          </div> */}
+          
           {isOffer === true && (
             <div className={styles.wizard}>
               <div className={styles.wizardf}>
                 <div className={styles.wizard_in}>
                   <div className={styles.wizardf1}>{offerDetails}</div>
-                  {/* <div className={styles.wizardf2}>
-                    Get additional discounts of
-                  </div> */}
+                 
                 </div>
                 <div className={styles.wizard_inin}>
                   <div className={styles.rightwizard}>
                     <div className={styles.rswizard}>{offerPriceLess}% off</div>
-                    {/* <div className={styles.rs2wizard}>
-                      <FaRupeeSign />
-                      199
-                    </div> */}
+                  
                   </div>
                 </div>
               </div>
@@ -339,16 +286,7 @@ const BookingDetails = ({
                 </div>
               </div>
             ) : null}
-            {/* <div className={styles.pri}>
-              <div className={styles.pri1}>Your Saving</div>
-              <div className={styles.pri2}>
-                <span className={styles.p}>
-                  <FaRupeeSign />
-                  650
-                </span>
-              </div>
-            </div> */}
-            {/* {isOffer === false && ( */}
+       
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>
@@ -358,22 +296,8 @@ const BookingDetails = ({
                 </span>
               </div>
             </div>
-            {/* )} */}
-            {/* {isOffer === true && (
-              <div className={styles.pri}>
-                <div className={styles.pri1}>Discounted Price</div>
-                <div className={styles.pri2}>
-                  <span className={styles.p}>
-                    <FaRupeeSign />
-                    {roomPrice * selectedRooms +
-                      foodPrice -
-                      ((roomPrice * selectedRooms + foodPrice) *
-                        offerPriceLess) /
-                        100}
-                  </span>
-                </div>
-              </div>
-            )} */}
+           
+           
           </div>
 
           {openPaymentModule === false ? (
