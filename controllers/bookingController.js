@@ -298,7 +298,7 @@ const updateBooking = async (req, res) => {
 const getAllFilterBookings = async (req, res) => {
   try {
     const { user } = req.params;
-    const { bookingStatus } = req.body;
+    const { bookingStatus } = req.query;
     const filter = { user, bookingStatus };
    
     const bookings = await bookingModel.find(filter);
