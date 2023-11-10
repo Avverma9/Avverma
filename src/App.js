@@ -100,8 +100,8 @@ import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
 import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
-import { CheckingBooking } from "./Component/Profile/CheckingBooking";
-import { CheckOutBooking } from "./Component/Profile/CheckOutBooking";
+
+
 import { NoShowBooking } from "./Component/Profile/NoShowBooking";
 import { FailedBooking } from "./Component/Profile/FailedBooking";
 import { MyReviewSection } from "./Component/Profile/MyReviewSection";
@@ -192,10 +192,8 @@ function App() {
               path="confirm-booking"
               element={<ConfirmBooking toast={toast} />}
             />
-            <Route path="check-in-booking" element={<CheckingBooking />} />
-            <Route path="check-out-booking" element={<CheckOutBooking/>} />
-            <Route path="no-show-booking" element={<NoShowBooking />} />
-            <Route path="failed-booking" element={<FailedBooking />} />
+         
+   
             <Route path="reviews" element={<MyReviewSection />} />
             <Route path="view-details" element={<ViewDetailsModal />} />
             <Route

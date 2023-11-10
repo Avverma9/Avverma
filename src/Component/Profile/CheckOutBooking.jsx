@@ -36,9 +36,6 @@ export const CheckOutBooking = ({ toast }) => {
     console.log(id, "myId")
     try {
       const response = await axios.get(`https://hotel-backend-tge7.onrender.com/bookingsCheckedOut/${id}`)
-      // console.log("kds" , response)
-      // const  bookings  = response.data;
-      // console.log(bookings, "backend data");
       setBookingDetails(response.data);
     } catch (error) {
       console.log(error);

@@ -127,3 +127,51 @@
   color: #ea6565 !important;
   font-weight: 700 !important;
 }
+.selectContainer {
+  margin-top: 10px;
+  position: relative;
+}
+
+.selectOption {
+  font-size: 16px;
+  color: #333;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Hover state */
+.selectOption:hover {
+  background-color: #f5f5f5;
+}
+
+/* Focus state */
+.selectOption:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Disabled state */
+.selectOption:disabled {
+  opacity: 0.7;
+}
+
+/* Styles for the option tag */
+.selectOptionOption {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Styles for the arrow icon (you can replace this with your own icon) */
+.selectArrowIcon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}

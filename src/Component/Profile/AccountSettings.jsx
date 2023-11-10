@@ -10,7 +10,7 @@ export const AccountSettings = ({ navHandler }) => {
         onClick={navHandler}
       >
         <FaUser className="svg_logo" />
-        <h2>Profile Information</h2>
+         <h2> <a href="/profile"> Profile Information</a> </h2>
       </div>
       <div
         className="sideBar_options_section_collapse"

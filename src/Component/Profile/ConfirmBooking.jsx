@@ -11,6 +11,7 @@ export const ConfirmBooking = ({ toast }) => {
   const [userData, setuserdata] = useState(null);
 
   const [show, setShow] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState("success");
 
   const handleClose = () => {
     setmodalData([]);
@@ -29,24 +30,34 @@ export const ConfirmBooking = ({ toast }) => {
   }, []);
 
   const fetchBookingDetails = useCallback(async () => {
-    const id = localStorage.getItem("userId");
-    console.log(id, "myId");
+    const user = localStorage.getItem("userId");
     try {
       const response = await axios.get(
-        `https://hotel-backend-tge7.onrender.com/bookingsConfirm/${id}`
+        `https://hotel-backend-tge7.onrender.com/get/all/filtered/booking/by/${user}`,
+        {
+          params: {
+            bookingStatus: selectedStatus,
+          },
+        }
       );
+  
       const bookings = response.data;
       console.log(bookings, "backend data");
       setBookingDetails(bookings);
     } catch (error) {
       console.log(error);
-      toast.error("Error fetching booking details");
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Error fetching booking details";
+      toast.error(errorMessage);
     }
-  }, [setBookingDetails, toast]);
-
+  }, [selectedStatus, setBookingDetails, toast]);
+  
   useEffect(() => {
     fetchBookingDetails();
-  }, [fetchBookingDetails]);
+  }, [fetchBookingDetails, selectedStatus]);
+  
   const handlePrint = () => {
     window.print();
   };
@@ -59,6 +70,21 @@ export const ConfirmBooking = ({ toast }) => {
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
       </div>
+      <div className={styles.selectContainer}>
+        <select
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
+          className={styles.selectOption}
+        >
+          <option value="success">Confirmed</option>
+          <option value="failed">Failed</option>
+          <option value="checkedIn">Checked In</option>
+          <option value="checkedOut">Checked Out</option>
+          <option value="cancelled">Cancelled</option>
+          <option value="noshow">No show</option>
+        </select>
+      </div>
+
 
       {bookingDetails && bookingDetails.length > 0 ? (
         <>

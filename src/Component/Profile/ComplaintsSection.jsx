@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { FaTelegramPlane } from "react-icons/fa";
 import Avatar from "react-avatar";
-
+import axios from "axios";
+import "./Complaint.css"
+import {RiDeleteBin6Line} from 'react-icons/ri'
+import {GrStatusUnknown} from 'react-icons/gr'
 export const ComplaintsSection = ({
   isSignedIn,
   userDetails,
@@ -11,7 +14,9 @@ export const ComplaintsSection = ({
   const [raiseComplaint, setRaiseComplaint] = useState(false);
   const [newComplaint, setNewComplaint] = useState("");
   const [complaints, setComplaints] = useState([]);
+  const [existingComplaint, setExistingComplaint] = useState(false);
 
+ 
   useEffect(() => {
     fetch(
       `https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`,
@@ -28,31 +33,71 @@ export const ComplaintsSection = ({
         console.log(error);
       }
     });
-  }, [userData]);
+  }, [userData, raiseComplaint]); // Added raiseComplaint as a dependency
 
-  const postComplaintHandler = () => {
-    fetch(
-      `https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          complaintDescription: newComplaint,
-        }),
-      }
-    ).then((response) => {
+  useEffect(() => {
+    setExistingComplaint(complaints.length > 0);
+  }, [complaints]);
+
+  const postComplaintHandler = async () => {
+    if (existingComplaint) {
+      window.alert("You already have a pending complaint. Please wait for a reply.");
+    } else {
       try {
+        const response = await fetch(
+          `https://hotel-backend-tge7.onrender.com/complaint/${userData?._id}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              complaintDescription: newComplaint,
+            }),
+          }
+        );
+
         if (response.status === 200) {
-          const data = response.json();
-          // data.then(res => window.alert(res.message))
+          const data = await response.json();
           setRaiseComplaint(false);
+
+          // Fetch the updated list of complaints to refresh the component
+          const updatedComplaintsResponse = await fetch(
+            `https://hotel-backend-tge7.onrender.com/complaints/${userData?._id}`,
+            {
+              method: "GET",
+            }
+          );
+
+          if (updatedComplaintsResponse.status === 200) {
+            const updatedData = await updatedComplaintsResponse.json();
+            setComplaints(updatedData.data);
+          }
         }
       } catch (error) {
         console.log(error);
       }
-    });
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if(window.confirm("do you really want to remove this complaint ?")){
+
+    
+    try {
+      const response = await axios.delete(
+        `https://hotel-backend-tge7.onrender.com/compaints/delete/by/id/${id}`
+      );
+      if (response.status === 200) {
+        // Remove the deleted complaint from the state
+        setComplaints((prevComplaints) =>
+          prevComplaints.filter((deleted) => deleted._id !== id)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   };
 
   return (
@@ -61,7 +106,14 @@ export const ComplaintsSection = ({
         <h1 className="flex-grow-1">Complaints</h1>
         <button
           className="raise_complaint"
-          onClick={() => setRaiseComplaint(true)}
+          onClick={() => {
+            // If there is an existing complaint, prevent raising a new one
+            if (existingComplaint) {
+              window.alert("You already have a pending complaint. Please wait for a reply.");
+            } else {
+              setRaiseComplaint(true);
+            }
+          }}
         >
           Raise Complaint
         </button>
@@ -91,36 +143,35 @@ export const ComplaintsSection = ({
       )}
 
       {complaints.map((complaint) => (
-        <>
-          <div className="complains_section mt-4" key={complaint._id}>
-            {/* <img src={userData?.images[0]} alt="Profile Pic" /> */}
+        <div className="complains_section mt-4" key={complaint._id}>
+          <Avatar
+            name={
+              !isSignedIn && userDetails
+                ? userDetails?.displayName
+                : userData?.name
+            }
+            src={
+              !isSignedIn && userDetails
+                ? userDetails?.photoURL
+                : userData?.images[0]
+            }
+            round={true}
+            size="35"
+            className="react-avatar"
+          />
 
-            <Avatar
-              name={
-                !isSignedIn && userDetails
-                  ? userDetails?.displayName
-                  : userData?.name
-              }
-              src={
-                !isSignedIn && userDetails
-                  ? userDetails?.photoURL
-                  : userData?.images[0]
-              }
-              round={true}
-              size="35"
-              className="react-avatar" // onClick={editProfileHandler}
-            />
-
-            <div className="ms-4 me-4 text-wrap" style={{ width: "80%" }}>
-              <p>Grand Hotel</p>
-              <p className="sub_Title">
-                {complaint.complaintDescription}
-              </p>
-            </div>
+          <div className="ms-4 me-4 text-wrap" style={{ width: "80%" }}>
+           
+            <p className="sub_Title">
+              {complaint.complaintDescription}
+            </p>
+            <p className="sub_Title">
+              Status <GrStatusUnknown/> : {complaint.status}
+            </p>
+            <RiDeleteBin6Line onClick={()=>handleDelete(complaint._id)}/>
           </div>
-          <div style={{ border: "1px solid #94a3b8" }}></div>
-        </>
+        </div>
       ))}
     </>
   );
-}
+};

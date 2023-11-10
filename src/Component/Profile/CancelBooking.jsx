@@ -72,22 +72,6 @@ export const CancelBooking = ({ toast }) => {
       });
   }, [toast]);
 
-  // const fetchCanceledBookings = useCallback(() => {
-  //   const id = localStorage.getItem("userId")
-  //   console.log(id, "myId")
-  //   axios
-  //     .get(
-  //       `http://localhost:5000/booking/getCancelledBooking/${id}`
-  //     )
-  //     .then((res) => {
-  //       console.log(res.data, "CancelledData");
-  //       setCanceledBookings(res.data.canceledBookings);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       toast.error("Failed to fetch canceled bookings.");
-  //     });
-  // }, [toast]);
 
   useEffect(() => {
     fetchCanceledBookings();
@@ -158,10 +142,9 @@ export const CancelBooking = ({ toast }) => {
                   <td style={styles.cell}>{booking.bookingId}</td>
                   <td style={styles.cell}>{booking.hotelName}</td>
                   <td style={styles.cell}>{booking.destination}</td>
-                  {/* <td>{new Date(booking.checkInDate).toLocaleDateString()}</td>
-          <td>{new Date(booking.checkOutDate).toLocaleDateString()}</td> */}
+                
                   <td style={styles.cell}>
-                    {new Date(booking.createdAt).toLocaleDateString()}
+                    {new Date(booking.cancelledAt).toLocaleDateString()}
                   </td>
                   <td style={{ ...styles.cell, color: "red" }}>
                     {booking.bookingStatus}
