@@ -111,7 +111,7 @@ router.get(
 );
 router.get("/bookingsCheckedIn/:id", bookingController.getCheckedInHotel);
 router.get("/bookingsCheckedOut/:id", bookingController.getCheckedOutHotel);
-
+router.get("/get/all/filtered/booking/by/:user",bookingController.getAllFilterBookings)
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail);
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

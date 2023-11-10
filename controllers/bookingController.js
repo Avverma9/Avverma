@@ -294,6 +294,26 @@ const updateBooking = async (req, res) => {
   );
   res.json(updatedData);
 };
+//==========================================================getallBookingByID=======================
+const getAllFilterBookings = async (req, res) => {
+  try {
+    const { user } = req.params;
+    const { bookingStatus } = req.body;
+    const filter = { user, bookingStatus };
+   
+    const bookings = await bookingModel.find(filter);
+    if(bookings.length === 0){
+      return res.status(400).json({message:`No any ${bookingStatus} bookings found`})
+    }
+    res.json(bookings);
+  } catch (error) {
+    console.error("Error in getAllFilterBookings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+
 
 module.exports = {
   createBooking,
@@ -312,4 +332,5 @@ module.exports = {
   updateBooking,
   getCancelledBookings,
   getNoShowBookings,
+  getAllFilterBookings
 };
