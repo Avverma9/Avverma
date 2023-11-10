@@ -122,5 +122,10 @@ const getComplaintsByUserId = async (req, res) => {
     }
   };
 
-
-module.exports = { createComplaint,approveComplaint,getComplaintsByUserId };
+//=======================delete a complaint=============================================
+const deleteComplaint = async function (req,res){
+  const {id} = req.params
+  const deletedData = await complaintModel.findByIdAndDelete(id)
+  res.json(deletedData)
+}
+module.exports = { createComplaint,approveComplaint,getComplaintsByUserId,deleteComplaint };

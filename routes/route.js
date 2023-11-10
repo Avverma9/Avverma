@@ -22,6 +22,7 @@ router.patch(
   complaintController.approveComplaint
 );
 router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
+router.delete("/compaints/delete/by/id/:id",complaintController.deleteComplaint)
 //==============================carousel====================================//
 router.post(
   "/create/second/carousel",
