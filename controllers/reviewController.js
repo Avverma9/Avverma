@@ -99,27 +99,38 @@ const getReviewsByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const reviews = await reviewModel.find({ user: userId }).sort({createdAt: -1});
+    const reviews = await reviewModel.find({ user: userId }).sort({ createdAt: -1 });
+    let countRating = reviews.length;
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
 
-    const hotelIds = reviews.map((review) => review.hotel);
-    const hotels = await hotelModel.find({ _id: { $in: hotelIds } }).select(["hotelName", "images"]);
+    const user = await userModel.findById(userId).select(["name", "images"]);
 
-    const reviewData = reviews.map((review) => {
-      const hotel = hotels.find((hotel) => hotel._id.toString() === review.hotel.toString());
-      return {
-        review,
-        hotelName: hotel.hotelName,
-        hotelImages: hotel.images[0]
-      };
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const reviewData = reviews.map((review) => ({
+      review,
+      user: {
+        name: user.name,
+        images: user.images,
+      },
+    }));
+
+    res.status(200).json({
+      user: {
+        name: user.name,
+        images: user.images,
+      },
+      reviews: reviewData,
+      countRating,
     });
-
-    res.status(200).json({ reviews: reviewData });
   } catch (error) {
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

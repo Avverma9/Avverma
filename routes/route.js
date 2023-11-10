@@ -22,7 +22,10 @@ router.patch(
   complaintController.approveComplaint
 );
 router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
-router.delete("/compaints/delete/by/id/:id",complaintController.deleteComplaint)
+router.delete(
+  "/compaints/delete/by/id/:id",
+  complaintController.deleteComplaint
+);
 //==============================carousel====================================//
 router.post(
   "/create/second/carousel",
@@ -41,7 +44,11 @@ router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);
 
 //===================================== HOTEL ===========================================================
-router.post("/data/hotels-new/post/upload/data", upload, hotelController.createHotel);
+router.post(
+  "/data/hotels-new/post/upload/data",
+  upload,
+  hotelController.createHotel
+);
 router.patch("/hotels/update/:id", hotelController.UpdateHotel);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
@@ -51,21 +58,24 @@ router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/:id", hotelController.getHotelsById);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
-router.get("/hotelsLocalId", hotelController.getHotelsByLocalID)
-router.get("/hotels/filters", hotelController.getHotelsByFilters)
-router.get("/hotels/destination/get/all", hotelController.getCity)
+router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
+router.get("/hotels/filters", hotelController.getHotelsByFilters);
+router.get("/hotels/destination/get/all", hotelController.getCity);
 router.get("/hotels/query/get/by", hotelController.getByQuery);
 router.put(
   "/update/new/created/hotel/room/:hotelid/:roomid",
   hotelController.updateRoom
 );
-router.post("/increase/room/:id", hotelController.increaseRoomToHotel)
-router.post("/:hotelId/roomDetails",upload, hotelController.addRoomToHotel)
-router.delete("/:hotelId/delete/a/create/room/from/db", hotelController.deleteRoom);
-router.patch("/hotels/update/amenity/:id",hotelController.updateAmenity)
+router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
+router.post("/:hotelId/roomDetails", upload, hotelController.addRoomToHotel);
+router.delete(
+  "/:hotelId/delete/a/create/room/from/db",
+  hotelController.deleteRoom
+);
+router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
 //=======================================foods===============================================
-router.post("/:hotelId/foodItems",upload,hotelController.addFoodToHotel);
-router.delete("/:hotelId/foodItems/delete",hotelController.deleteFoods);
+router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
+router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
 router.get("/statesData", stateController.getStateData);
@@ -111,7 +121,10 @@ router.get(
 );
 router.get("/bookingsCheckedIn/:id", bookingController.getCheckedInHotel);
 router.get("/bookingsCheckedOut/:id", bookingController.getCheckedOutHotel);
-router.get("/get/all/filtered/booking/by/:user",bookingController.getAllFilterBookings)
+router.get(
+  "/get/all/filtered/booking/by/:user",
+  bookingController.getAllFilterBookings
+);
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail);
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);
@@ -126,8 +139,14 @@ router.post("/verifyotp", emailController.verifyOtp);
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.post("/login/dashboard/user", DashboardUser.loginUser);
 router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
-router.delete("/delete/dashboard/delete/partner/:id", DashboardUser.deletePartner);
-router.patch("/update/dashboard/updated/partner/:id", DashboardUser.updatePartner);
+router.delete(
+  "/delete/dashboard/delete/partner/:id",
+  DashboardUser.deletePartner
+);
+router.patch(
+  "/update/dashboard/updated/partner/:id",
+  DashboardUser.updatePartner
+);
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
