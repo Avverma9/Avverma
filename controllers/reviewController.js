@@ -120,10 +120,22 @@ const getReviewsByUserId = async (req, res) => {
       },
     }));
 
+    // Get hotel information for the first review (assuming all reviews have the same hotel)
+    const firstReview = reviews[0];
+    const hotel = await hotelModel.findById(firstReview.hotel).select(["hotelName", "images"]);
+
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
     res.status(200).json({
       user: {
         name: user.name,
         images: user.images,
+      },
+      hotel: {
+        hotelName: hotel.hotelName,
+        images: hotel.images,
       },
       reviews: reviewData,
       countRating,
@@ -133,6 +145,7 @@ const getReviewsByUserId = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 //=================================================================================================
 const updateReview = async (req, res) => {
