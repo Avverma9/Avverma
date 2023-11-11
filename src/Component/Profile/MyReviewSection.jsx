@@ -1,53 +1,79 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatDate } from "../../utils/_dateFuntions";
+import "./MyReviewSection.css";
 
 export const MyReviewSection = () => {
   const userId = localStorage.getItem("userId");
   const [currentUserReviews, setCurrentUserReviews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://hotel-backend-tge7.onrender.com/reviewDatas/${userId}`, {
-      method: "GET",
-    }).then((response) => {
+    const fetchData = async () => {
       try {
+        const response = await fetch(`https://hotel-backend-tge7.onrender.com/reviewDatas/${userId}`, {
+          method: "GET",
+        });
+
         if (response.status === 200) {
-          const data = response.json();
-          data.then((res) => setCurrentUserReviews(res.reviews));
+          const res = await response.json();
+          setCurrentUserReviews(res.reviews);
+          setIsLoading(false);
+        } else {
+          console.error("Failed to fetch data");
+          setIsLoading(false);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        setIsLoading(false);
       }
-    });
+    };
+
+    fetchData();
   }, [userId]);
 
-  console.log(currentUserReviews, "FCCTCTYZEZCRXZERTXCTYOCTYO");
   return (
-    <>
-      <div className="_title">
-        <h1>My Reviews</h1>
-      </div>
+    <div className="my-review-section">
+      <h4 className="section-title">My Reviews</h4>
 
-      <>
-        {currentUserReviews && currentUserReviews.length !== 0
-          ? [...currentUserReviews].reverse().map((review) => (
-              <div className="review_container" key={review.review._id}>
-                <div className="hotel_image">
-                  <img src={review.hotelImages} alt={review.hotelName} />
-                </div>
-                <div className="review_content">
-                  <div className="review_content_header">
-                    <h4>{review.hotelName}</h4>
-                    <p>{formatDate(review.review.createdAt)}</p>
+      {isLoading ? (
+        <div className="shimmer-loading-container">
+          <div className="shimmer-loading-content"></div>
+          <div className="shimmer-loading-content"></div>
+          <div className="shimmer-loading-content"></div>
+        </div>
+      ) : (
+        <>
+          {currentUserReviews && currentUserReviews.length !== 0 ? (
+            [...currentUserReviews]
+              .reverse()
+              .map((review) => (
+                <div className="review-container" key={review.review._id}>
+                  <div className="hotel-image">
+                    {review.hotel.images[0] && (
+                      <img
+                        src={review.hotel.images[0]}
+                        alt={`${review.hotel.hotelName} Image`}
+                        style={{ maxWidth: '100px', maxHeight: '100px' }}
+                      />
+                    )}
                   </div>
-                  <div className="review_content_body">
-                    <p>{review.review.comment}</p>
+                  <div className="review-content">
+                    <div className="review-content-header">
+                      <p>You gave a review on {review.hotel.hotelName} hotel at {formatDate(review.review.createdAt)}</p>
+                     <hr />
+                    </div>
+                    <div className="review-content-body">
+                      <p>{review.review.comment}</p>
+                      <p>Rating: {review.review.rating}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))
-          : "NO Reviews Posted Yet"}
-      </>
-    </>
+              ))
+          ) : (
+            "NO Reviews Posted Yet"
+          )}
+        </>
+      )}
+    </div>
   );
 };
