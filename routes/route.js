@@ -90,7 +90,7 @@ router.get("/getReviews/:hotelId", reviewController.getReviewsByHotelId);
 router.get("/reviewDatas/:userId", reviewController.getReviewsByUserId);
 router.put("/update/:userId/:hotelId/:reviewId", reviewController.updateReview);
 router.delete(
-  "/delete/:userId/:hotelId/:reviewId",
+  "/delete/:reviewId",
   reviewController.deleteReview
 );
 //============================= BOOKING =======================================

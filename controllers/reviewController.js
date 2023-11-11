@@ -176,10 +176,10 @@ const updateReview = async (req, res) => {
 //==========================================================================================================
 
 const deleteReview = async (req, res) => {
-  const { userId, hotelId, reviewId } = req.params;
+  const {reviewId } = req.params;
 
   try {
-    const result = await reviewModel.deleteOne({ user: userId, hotel: hotelId, _id: reviewId });
+    const result = await reviewModel.deleteOne({_id: reviewId });
 
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Review not found' });
