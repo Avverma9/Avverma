@@ -118,9 +118,7 @@ const getReviewsByUserId = async (req, res) => {
       const hotel = await hotelModel.findById(review.hotel).select(["hotelName", "images"]);
 
       if (!hotel) {
-        // Handle the case where a hotel is not found for a specific review
-        console.error(`Hotel not found for review with ID ${review._id}`);
-        continue; // Skip this review and continue with the next one
+         continue; 
       }
 
       reviewData.push({
