@@ -100,7 +100,7 @@ const getReviewsByUserId = async (req, res) => {
     const { userId } = req.params;
 
     const reviews = await reviewModel.find({ user: userId }).sort({ createdAt: -1 });
-    let countRating = reviews.length;
+    
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
@@ -112,33 +112,34 @@ const getReviewsByUserId = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const reviewData = reviews.map((review) => ({
-      review,
-      user: {
-        name: user.name,
-        images: user.images,
-      },
-    }));
+    const reviewData = [];
 
-    // Get hotel information for the first review (assuming all reviews have the same hotel)
-    const firstReview = reviews[0];
-    const hotel = await hotelModel.findById(firstReview.hotel).select(["hotelName", "images"]);
+    for (const review of reviews) {
+      const hotel = await hotelModel.findById(review.hotel).select(["hotelName", "images"]);
 
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
+      if (!hotel) {
+        // Handle the case where a hotel is not found for a specific review
+        console.error(`Hotel not found for review with ID ${review._id}`);
+        continue; // Skip this review and continue with the next one
+      }
+
+      reviewData.push({
+        review,
+        user: {
+          name: user.name,
+          images: user.images,
+        },
+        hotel: {
+          hotelName: hotel.hotelName,
+          images: hotel.images,
+        },
+      });
     }
 
     res.status(200).json({
-      user: {
-        name: user.name,
-        images: user.images,
-      },
-      hotel: {
-        hotelName: hotel.hotelName,
-        images: hotel.images,
-      },
+     
       reviews: reviewData,
-      countRating,
+     
     });
   } catch (error) {
     console.error(error);
