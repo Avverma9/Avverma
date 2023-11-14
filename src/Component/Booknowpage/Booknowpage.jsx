@@ -49,6 +49,7 @@ const BookNowPage = ({ userData, toast }) => {
   const [myReview, setMyReview] = useState("");
   const userId = localStorage.getItem("userId");
   const [myrating, setMyRating] = useState(0);
+  const [foodCounts, setFoodCounts] = useState({});
   const [isUpdatingReview, setIsUpdatingReview] = useState(false);
   const [reviewId, setReviewId] = useState("");
   const [updatedReview, setUpdatedReview] = useState("");
@@ -185,23 +186,7 @@ const BookNowPage = ({ userData, toast }) => {
   }, [offerId]);
   console.log(roomPrice);
 
-  // useEffect(() => {
-  //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
-  //     .then((response) => {
-  //       console.log(response, "RESPONSE");
-  //       if (response.ok) {
-  //         return response.json();
-  //       } else {
-  //         throw new Error("Failed to fetch user data");
-  //       }
-  //     })
-  //     .then((data) => {
-  //       setMeals(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
 
   if (!offerData) {
     return <div>Loading...</div>;
@@ -312,16 +297,55 @@ const BookNowPage = ({ userData, toast }) => {
 
   const firstImageURL = offerData?.images?.[0];
 
+  const removeFoodHandler = (fId, price) => {
+    if (foodCounts[fId] > 1) {
+      // If there are more than one of the item, decrease the count
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: prevFoodCounts[fId] - 1,
+      }));
+    } else {
+      // If there's only one item, remove it from the counts
+      const { [fId]: _, ...restCounts } = foodCounts;
+      setFoodCounts(restCounts);
+    }
+
+    // Remove the food item from the foodIdArr
+    setFoodIdArr(foodIdArr.filter((item) => item._id !== fId));
+
+    // Update the total price by subtracting the item's price
+    setFoodPrice(foodPrice - price);
+  };
+
   const foodPriceHandler = (index, fprice, fId) => {
+    // Check if the food item is already in the foodCounts state
+    if (foodCounts[fId]) {
+      // If it exists, increment the count
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: prevFoodCounts[fId] + 1,
+      }));
+    } else {
+      // If it doesn't exist, set the count to 1
+      setFoodCounts((prevFoodCounts) => ({
+        ...prevFoodCounts,
+        [fId]: 1,
+      }));
+    }
+
+    // Add the food item to the foodIdArr state
     setFoodIdArr([...foodIdArr, { _id: fId }]);
+
+    // You can use the same code as before for the loading spinner
     setAddingFood(true);
     setIndexedButton(index);
     setTimeout(() => {
       setAddingFood(false);
     }, 1000);
+
+    // Update the total price
     setFoodPrice(foodPrice + fprice);
   };
-
   const changeScrollPos = (ref) => {
     window.scrollTo({
       top: ref.offsetTop,
@@ -567,7 +591,7 @@ const BookNowPage = ({ userData, toast }) => {
                     </p>
                     <button
                       type="button"
-                      className=" mt-4 select-btn"
+                      className="mt-4 select-btn"
                       onClick={() => foodPriceHandler(i, m.price, m._id)}
                       key={i}
                     >
@@ -579,12 +603,29 @@ const BookNowPage = ({ userData, toast }) => {
                           <span className="sr-only">Loading...</span>
                         </div>
                       ) : (
-                        "Add"
+                        <>
+                          <span
+                            onClick={() => removeFoodHandler(m._id, m.price)}
+                          >
+                            +
+                          </span>
+                          {foodCounts[m._id] ? `(${foodCounts[m._id]})` : "Add"}
+                        </>
                       )}
                     </button>
+                    {foodCounts[m._id] && (
+                      <button
+                        type="button"
+                        className="mt-4 select-btn"
+                        onClick={() => removeFoodHandler(m._id, m.price)}
+                      >
+                        <span>-</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
+
 
               <div ref={targetBookingRef} />
 

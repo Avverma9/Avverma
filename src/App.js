@@ -53,10 +53,10 @@ import Noida from "./Component/Dropdownbar/city/noida/noida";
 import Kanpur from "./Component/Dropdownbar/city/kanpur/kanpur";
 import Prayagraj from "./Component/Dropdownbar/city/pryagraj/pryagraj";
 import Mathura from "./Component/Dropdownbar/city/mathura/mathura";
-import Lucknow from "./Component/Dropdownbar/city/lucknow/lucknow";
+import Lucknow from "./Component/Dropdownbar/city/lucknow/Lucknow.jsx";
 import Varanasi from "./Component/Dropdownbar/city/varanasi/varanasi";
 import Agra from "./Component/Dropdownbar/city/agra/agra";
-import Indore from "./Component/Dropdownbar/city/indore/indore";
+import Indore from "./Component/Dropdownbar/city/indore/indore.jsx";
 import Bhopal from "./Component/Dropdownbar/city/Bhopal/bhopal";
 import Jabalpur from "./Component/Dropdownbar/city/jabalpur/jabalpur";
 import Gwalior from "./Component/Dropdownbar/city/gwalior/gwalior";
@@ -154,7 +154,8 @@ function App() {
         <UserSettings />
         <Partner />
         <PunjabPage />
-
+        <Lucknow />
+        <Indore/>
         <Maharashtrapage />
         <Goapage />
         <Tamilnadupage />
@@ -225,10 +226,10 @@ function App() {
           <Route path="cities/kanpur" element={<Kanpur />} />
           <Route path="cities/prayagraj" element={<Prayagraj />} />
           <Route path="cities/mathura" element={<Mathura />} />
-          <Route path="cities/lucknow" element={<Lucknow />} />
+         
           <Route path="cities/varanasi" element={<Varanasi />} />
           <Route path="cities/agra" element={<Agra />} />
-          <Route path="cities/Indore" element={<Indore />} />
+         
           <Route path="cities/bhopal" element={<Bhopal />} />
           <Route path="cities/jabalpur" element={<Jabalpur />} />
           <Route path="cities/gwalior" element={<Gwalior />} />

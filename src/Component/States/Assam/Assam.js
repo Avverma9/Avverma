@@ -45,13 +45,15 @@ const fetchNearbyHotels = (destination) => {
 
 
   useEffect(() => {
+    if(location.pathname !== "/state/assam"){
     fetch(URL)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }
+}, [location.pathname]);
 
   
 
