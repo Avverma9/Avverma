@@ -9,11 +9,12 @@ const Keralapage = () => {
   const [data, setData] = useState({});
   
   useEffect(() => {
+    if (location.pathname !== "/state/kerala") {
     fetch(URL)
       .then((response) => response.json())
       .then((responseData) => setData(responseData))
       .catch((error) => console.error("Error:", error));
-  }, []);
+  }}, [location.pathname]);
   
   if (location.pathname !== "/state/kerala") {
     return null;

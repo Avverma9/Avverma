@@ -9,6 +9,7 @@ const Gujratpage = () => {
   const [data, setData] = useState({});
   
   useEffect(() => {
+    if (location.pathname !== "/state/gujrat") {
     const fetchData = async () => {
       try {
         const response = await fetch(URL);
@@ -20,7 +21,7 @@ const Gujratpage = () => {
     };
     
     fetchData();
-  }, []);
+  }}, [location.pathname]);
   
   if (location.pathname !== "/state/gujrat") {
     return null;

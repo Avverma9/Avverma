@@ -9,6 +9,7 @@ const Kernatakapage = () => {
   const [data, setData] = useState({});
   
   useEffect(() => {
+    if (location.pathname !== "/state/karnataka") {
     const fetchData = async () => {
       try {
         const response = await fetch(URL);
@@ -20,7 +21,7 @@ const Kernatakapage = () => {
     };
     
     fetchData();
-  }, []);
+  }}, [location.pathname]);
   
   if (location.pathname !== "/state/karnataka") {
     return null;

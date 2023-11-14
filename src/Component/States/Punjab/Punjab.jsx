@@ -9,10 +9,12 @@ const PunjabPage = () => {
   const URL = "https://hotel-backend-tge7.onrender.com/statesData?state=Punjab";
   const [data, setData] = React.useState({});
   React.useEffect(() => {
+    if (location.pathname !== "/state/punjab"){
    axios.get(`${URL}`).then((resp) => {
     setData(resp.data);
    })
-  }, []);
+  }}, [location.pathname]);
+  
   if (location.pathname !== "/state/punjab"){
     return null
   }

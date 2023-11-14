@@ -6,8 +6,9 @@ import "./Haryana.css";
 const Haryanapage = () => {
   const URL = "https://hotel-backend-tge7.onrender.com/statesData?state=Haryana";
   const [data, setData] = useState({});
-  
+  const location = useLocation();
   useEffect(() => {
+    if (location.pathname !== "/state/haryana") {
     const fetchData = async () => {
       try {
         const response = await fetch(URL);
@@ -19,9 +20,9 @@ const Haryanapage = () => {
     };
     
     fetchData();
-  }, []);
+  }}, [location.pathname]);
   
-  const location = useLocation();
+ 
   
   if (location.pathname !== "/state/haryana") {
     return null;

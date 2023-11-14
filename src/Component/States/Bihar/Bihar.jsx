@@ -9,17 +9,20 @@ const Biharpage = () => {
   const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname !== "/state/bihar") {
     fetch(URL)
       .then((response) => response.json())
       .then((data) => {
         setData(data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }  }, [location.pathname]);
 
+ 
   if (location.pathname !== "/state/bihar") {
-    return null;
+    return null
   }
+
 
   return (
     <div>

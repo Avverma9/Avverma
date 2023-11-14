@@ -10,7 +10,7 @@ margin-left: 200px;
 
 .hotel-container {
   display: flex;
-  width: 70%;
+  width: 90%;
   margin: 20px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -82,7 +82,7 @@ h1 {
   font-size: 1rem;
   display: flex;
   flex-direction: column-reverse;
-  margin-left: 400px;
+  margin-left: 350px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
@@ -107,14 +107,14 @@ h1 {
 }
 
 .img_wrapper {
-  width: 30%;
+  width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .swiper-container {
-  width: 100%;
+  width: 600px;
   height: 300px; /* Adjust the height as needed */
 }
 
@@ -125,13 +125,58 @@ h1 {
 }
 
 img {
-  width: 250px;
+  width: 500px;
   height: 400px;
-  object-fit: cover;
+  
 }
 
 hr {
   margin: 20px 0;
   border: none;
   border-top: 1px solid #ddd;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #007bff;
+  margin: 0 4px;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #007bff;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pagination button:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination button:disabled {
+  color: #999;
+  cursor: not-allowed;
+}
+
+.pagination .break-me {
+  cursor: default;
+  color: #999;
+}
+
+.pagination input {
+  width: 50px;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  margin: 0 4px;
+  text-align: center;
 }

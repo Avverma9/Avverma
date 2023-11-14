@@ -10,6 +10,7 @@ const Goapage = () => {
   const [data, setData] = useState({});
   
   useEffect(() => {
+    if (location.pathname !== "/state/goa") {
     const fetchData = async () => {
       try {
         const response = await fetch(URL);
@@ -21,7 +22,7 @@ const Goapage = () => {
     };
     
     fetchData();
-  }, []);
+  }}, [location.pathname]);
   
   if (location.pathname !== "/state/goa") {
     return null;

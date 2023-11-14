@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 import "../lucknow/lucknow.css";
 
 
-export default function Lucknow() {
+export default function Jaipur() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -20,9 +20,9 @@ export default function Lucknow() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.pathname === "/cities/Lucknow") {
+    if (location.pathname === "/cities/Jaipur") {
       fetch(
-        "https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?city=lucknow"
+        "https://hotel-backend-tge7.onrender.com/hotels/destination/get/all?city=jaipur"
       )
         .then((res) => res.json())
         .then((data) => setData(data))
@@ -30,7 +30,7 @@ export default function Lucknow() {
     }
   }, [location.pathname]);
 
-  if (location.pathname !== "/cities/Lucknow") {
+  if (location.pathname !== "/cities/Jaipur") {
     return null;
   }
 

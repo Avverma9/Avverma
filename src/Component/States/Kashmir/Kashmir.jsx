@@ -9,6 +9,7 @@ const Kashmirpage = () => {
   const [data, setData] = useState({});
   
   useEffect(() => {
+    if (location.pathname !== "/state/kashmir") {
     const fetchData = async () => {
       try {
         const response = await fetch(URL);
@@ -20,7 +21,7 @@ const Kashmirpage = () => {
     };
     
     fetchData();
-  }, []);
+  }}, [location.pathname]);
   
   if (location.pathname !== "/state/kashmir") {
     return null;

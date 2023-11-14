@@ -9,10 +9,11 @@ const Maharashtrapage = () => {
   const URL = "https://hotel-backend-tge7.onrender.com/statesData?state=Maharashtra";
   const [data, setData] = React.useState({});
   React.useEffect(() => {
+    if (location.pathname !== "/state/maharashtra"){
    axios.get(`${URL}`).then((resp) => {
     setData(resp.data);
    })
-  }, []);
+  }}, [location.pathname]);
   if (location.pathname !== "/state/maharashtra"){
     return null
   }
