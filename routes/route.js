@@ -50,6 +50,7 @@ router.post(
   hotelController.createHotel
 );
 router.patch("/hotels/update/:id", hotelController.UpdateHotel);
+router.patch("/hotels/update/info/:id", hotelController.UpdateHotelInfo);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);

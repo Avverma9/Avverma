@@ -198,6 +198,83 @@ const UpdateHotel = async function (req, res) {
     data: updatedHotel,
   });
 };
+//================================update hotel info =================================================
+const UpdateHotelInfo = async(req,res)=>{
+  const { id } = req.params;
+  const {
+    hotelName,
+    hotelOwnerName,
+    description,
+    destination,
+    numRooms,
+    localId,
+    accommodationType,
+    starRating,
+    propertyType,
+    contact,
+    ownerContactDetails,
+    generalManagerContact,
+    salesManagerContact,
+    receptionContactDetails,
+    hotelEmail,
+    street,
+    city,
+    state,
+    zip,
+    landmark
+  } = req.body;
+
+  let images = [];
+
+  if (req.files && req.files.length > 0) {
+    images = req.files.map((file) => file.location);
+  } else {
+    const user = await hotelModel.findById(id);
+    if (user) {
+      images = user.images;
+    }
+  }
+  const updatedHotel = await hotelModel.findByIdAndUpdate(
+    id,
+    {
+      images,
+      hotelName,
+      hotelOwnerName,
+      description,
+      destination,
+      numRooms,
+      localId,
+      accommodationType,
+      starRating,
+      propertyType,
+      contact,
+      ownerContactDetails,
+      generalManagerContact,
+      salesManagerContact,
+      receptionContactDetails,
+      hotelEmail,
+      street,
+      city,
+      state,
+      zip,
+      landmark
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedHotel) {
+    return res.status(404).json({ error: "Hotel not found" });
+  }
+
+  return res.status(200).json({
+    status: true,
+    data: updatedHotel,
+  });
+}
+
+
 //=======================================add room=====================================
 const increaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
@@ -621,4 +698,5 @@ module.exports = {
   deleteFoods,
   updateAmenity,
   deleteHotelById,
+  UpdateHotelInfo
 };
