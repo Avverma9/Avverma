@@ -434,11 +434,11 @@ export default function BookNow({ userData, toast }) {
     setMyRating(rate);
   };
 
-  const selectRoomHandler = (index, rprice, bed) => {
+  const selectRoomHandler = (index, rprice, bedtype,roomType) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
     setRoomType(roomType)
-    setBedtype(bed);
+    setBedtype(bedtype);
   };
 
   const showPopup = () => {

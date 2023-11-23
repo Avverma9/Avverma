@@ -232,7 +232,7 @@ const BookingDetails = ({
               </span>
               <div className={styles.textnew}>
          
-                <span className={styles.textc}>{bedtype}-{roomType}</span>
+                <span className={styles.textc}>{roomType}-{bedtype}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
