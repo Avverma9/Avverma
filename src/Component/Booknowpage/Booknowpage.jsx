@@ -10,7 +10,7 @@ import {
   faStar,
   faPerson,
   faHotel,
-  faPeopleArrows,
+
   faIdCard,
   faRestroom,
   faInr,
@@ -59,7 +59,9 @@ const BookNowPage = ({ userData, toast }) => {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
+  
   const [bedtype, setBedtype] = useState("");
+  const [roomType, setRoomType] = useState("");
   const [addingFood, setAddingFood] = useState(false);
   const [foodIdArr, setFoodIdArr] = useState([]);
 
@@ -181,10 +183,10 @@ const BookNowPage = ({ userData, toast }) => {
           (prevprice) => prevprice - prevprice + data?.roomDetails[0].price
         );
         setBedtype(data?.roomDetails[0].bedTypes);
+        setRoomType(data?.roomDetails[0].type); // Use setRoomType here
       })
       .catch((error) => console.error(error));
   }, [offerId]);
-  console.log(roomPrice);
 
 
 
@@ -360,10 +362,11 @@ const BookNowPage = ({ userData, toast }) => {
     setSelectedRooms(value);
   };
 
-  const selectRoomHandler = (index, rprice, bed) => {
+  const selectRoomHandler = (index, rprice, bedtype,roomType) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
-    setBedtype(bed);
+    setRoomType(roomType)
+    setBedtype(bedtype);
   };
 
   return (
@@ -644,7 +647,10 @@ const BookNowPage = ({ userData, toast }) => {
                   <FontAwesomeIcon icon={faHotel} className="icon" />
                   Room Type: {offerData.roomtype}
                 </p>
-
+                <p className="roomtype">
+                  <FontAwesomeIcon icon={faHotel} className="icon" />
+                  Room Type: {offerData.roomtype}
+                </p>
                 <p className="noofroom">
                   <FontAwesomeIcon icon={faRestroom} className="icon" />
                   Rooms:
@@ -752,7 +758,7 @@ const BookNowPage = ({ userData, toast }) => {
                     <button
                       className="select-btn"
                       onClick={() =>
-                        selectRoomHandler(index, item?.price, item?.bedTypes)
+                        selectRoomHandler(index, item?.price, item?.bedTypes,item?.type)
                       }
                     >
                       {index === selectedRoomBtn ? "Selected" : "Select"}
@@ -930,6 +936,7 @@ const BookNowPage = ({ userData, toast }) => {
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
                 roomPrice={roomPrice}
+                roomType={roomType}
                 bedtype={bedtype}
                 isOffer={offerData?.isOffer}
                 offerDetails={offerData?.offerDetails}
