@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import "./Home.css";
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation } from "swiper/modules";
+import { useLocation } from "react-router-dom";
+
 function Home() {
-  const location = useLocation();
   const [images, setImages] = useState([]);
+  const location = useLocation()
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const intervalRef = useRef();
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -25,28 +23,45 @@ function Home() {
     };
 
     fetchImages();
+
+    return () => {
+      // Clear the interval when the component unmounts
+      clearInterval(intervalRef.current);
+    };
   }, []);
 
+  useEffect(() => {
+    // Set up autoplay
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prevIndex) =>
+        prevIndex === images.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 2500);
+
+    return () => {
+      // Clear the interval when the component updates
+      clearInterval(intervalRef.current);
+    };
+  }, [currentIndex, images.length]);
   if (location.pathname !== "/") {
+    return null;
+  }
+  if (!images.length) {
     return null;
   }
 
   return (
-    <div className="img_wrapper">
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        autoplay={{ delay: 2500 }}
-        navigation={true}
-        modules={[Autoplay, Navigation]}
-      >
-        {images &&
-          images.map((item, idx) => (
-            <SwiperSlide key={idx}>
-              <img src={item} alt="" />
-            </SwiperSlide>
-          ))}
-      </Swiper>
+    <div className="slide-container">
+      <div className="swiper-container">
+        {images.map((item, idx) => (
+          <div
+            key={idx}
+            className={`slide ${idx === currentIndex ? "active" : ""}`}
+          >
+            <img src={item} alt="" />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

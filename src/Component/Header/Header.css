@@ -13,6 +13,14 @@
   margin-right: 150px ;
 }
 
+.call-details:hover {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  background-color: #d5db82;
+  width: 300px; 
+  margin-right: 150px ;
+}
 
 .call-details p {
   margin: 0; /* Remove default margin */

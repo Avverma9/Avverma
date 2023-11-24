@@ -18,7 +18,7 @@ const Header = () => {
           <Link className="navbar-brand" to="/">
             <img
               className="_nav-logo"
-              src="https://www.freepnglogos.com/uploads/hotel-logo-png/download-building-hotel-clipart-png-33.png"
+              src="https://avverma.s3.ap-south-1.amazonaws.com/1700594386565-Untitled-removebg-preview.png"
               alt="Logo"
             />
           </Link>
