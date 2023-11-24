@@ -102,6 +102,7 @@ import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
+import Result from "./Component/Search/Result.jsx";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -163,6 +164,7 @@ function App() {
         <Gujratpage />
         <Kashmirpage />
         <Haryanapage />
+        <Result/>
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -204,7 +206,7 @@ function App() {
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
           <Route path="state" element={<HeaderImage />} />
-          <Route path="/search/results" element={<SearchResults />} />
+          <Route path="/search/results/:city" element={<SearchResults />} />
           <Route
             path="/hotels/:id"
             element={<BookNow userData={userData} toast={toast} />}

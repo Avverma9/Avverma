@@ -34,47 +34,34 @@ const SearchComponent = () => {
     const endDate = searchData.endDate
       ? moment(searchData.endDate).format("YYYY-MM-DD")
       : "";
-
+  
     const queryString = new URLSearchParams({
-      // startDate,
-      // endDate,
       city: searchData.destination,
-      // guests: searchData.guests,
-      // numRooms: searchData.numRooms,
-      // localId: searchData.localId ? "true" : "",
-      // moreOptions: searchData.moreOptions,
+      startDate,
+      endDate,
     }).toString();
     localStorage.setItem("searchQuery", queryString);
-    // Fetch search results from the API
-    // fetch(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setSearchResults(data);
-    //     dispatch(getSearchState(data));
-    //     navigate("/search/results");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching search results:", error);
-    //   });
-    navigate("/search/results");
+  
+    // Append the city to the URL when navigating
+    navigate(`/search/results/${searchData.destination}`);
   };
+  
 
-  // Function to fetch nearby hotels based on user's current location
   const fetchNearbyHotels = () => {
     setNearbyLoading(true);
-
+  
     // Check if geolocation is available in the browser
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         const { latitude, longitude } = position.coords;
-
+  
         // Add latitude and longitude to the search data
         setSearchData((prevState) => ({
           ...prevState,
           latitude,
           longitude,
         }));
-
+  
         // Format start date and end date
         const startDate = searchData.startDate
           ? moment(searchData.startDate).format("YYYY-MM-DD")
@@ -82,39 +69,43 @@ const SearchComponent = () => {
         const endDate = searchData.endDate
           ? moment(searchData.endDate).format("YYYY-MM-DD")
           : "";
-
-        const queryString = new URLSearchParams({
-          latitude,
-          longitude,
-          startDate,
-          endDate,
-          guests: searchData.guests,
-          numRooms: searchData.numRooms,
-          localId: searchData.localId ? "true" : "",
-          moreOptions: searchData.moreOptions,
-        }).toString();
-
-        // Fetch nearby hotels from the API
-        fetch(
-          `https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`
-        )
-          .then((response) => response.json())
-          .then((data) => {
-            setSearchResults(data);
-            dispatch(getSearchState(data));
-            navigate("/search/results");
-          })
-          .catch((error) => {
-            console.error("Error fetching nearby hotels:", error);
-          })
-          .finally(() => {
-            setNearbyLoading(false);
-          });
+  
+        // Check if latitude and longitude are available
+        if (latitude && longitude) {
+          const queryString = new URLSearchParams({
+            latitude,
+            longitude,
+            startDate,
+            endDate,
+            guests: searchData.guests,
+            numRooms: searchData.numRooms,
+            localId: searchData.localId ? "true" : "",
+            moreOptions: searchData.moreOptions,
+          }).toString();
+  
+          // Fetch nearby hotels from the API
+          fetch(
+            `https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              setSearchResults(data);
+              dispatch(getSearchState(data));
+              navigate("/search/results");
+            })
+            .catch((error) => {
+              console.error("Error fetching nearby hotels:", error);
+            })
+            .finally(() => {
+              setNearbyLoading(false);
+            });
+        }
       });
     } else {
       console.log("Geolocation is not available in this browser.");
     }
   };
+  
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
