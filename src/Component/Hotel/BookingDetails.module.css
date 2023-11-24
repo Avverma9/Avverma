@@ -44,9 +44,9 @@
 }
 .btn_payment button {
   border-radius: 4px;
-  background-color: rgb(26, 182, 79);
+  background-color: rgba(29, 26, 182, 0.548);
   border: 0px;
-  color: rgb(255, 255, 255);
+  color: rgb(17, 9, 9);
   font-size: 16px;
   font-weight: bold;
   line-height: 1.2;

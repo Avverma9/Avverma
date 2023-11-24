@@ -722,8 +722,13 @@ export default function BookNow({ userData, toast }) {
                       <p>Item Description : {m.about}</p>
                     </div>
                     <div className="card-detail-img">
-                      <img src={m.images[0]} alt="..." />
-                    </div>
+    {m.images[0] ? (
+        <img src={m.images[0]} alt="..." />
+    ) : (
+        <img src="https://www.adityabirlacapital.com/healthinsurance/active-together/wp-content/uploads/2018/10/Unhealthy-Food-Chart.jpg" alt="Default Image" />
+    )}
+</div>
+
                   </div>
                   <div className="downhead">
                     <p className="price-total">
@@ -912,7 +917,7 @@ export default function BookNow({ userData, toast }) {
                     className="writeReview"
                     onClick={() => setWriteReview(true)}
                   >
-                    Write a Review
+                    Write a Review ...
                   </h6>
                 </>
               )}
@@ -956,6 +961,7 @@ export default function BookNow({ userData, toast }) {
               <div className="reviews">
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
+                  
                   <Ratingrange />
 
                   {currentData

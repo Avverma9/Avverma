@@ -16,7 +16,7 @@ const StateItem = ({ state, cities }) => {
   };
 
   const handleCityClick = (city) => {
-    navigate(`/cities/${city}`);
+    navigate(`/search/results/${city}`);
   };
 
   return (

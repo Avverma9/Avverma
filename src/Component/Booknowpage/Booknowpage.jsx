@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./Booknowpage.css";
+import "../Hotel/Booknow.css";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -584,8 +584,13 @@ const BookNowPage = ({ userData, toast }) => {
                       <p>Item Description : {m.about}</p>
                     </div>
                     <div className="card-detail-img">
-                      <img src={m.images[0]} alt="..." />
-                    </div>
+    {m.images[0] ? (
+        <img src={m.images[0]} alt="..." />
+    ) : (
+        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fHw%3D" alt="Default Image" />
+    )}
+</div>
+
                   </div>
                   <div className="downhead">
                     <p className="price-total">
@@ -772,7 +777,7 @@ const BookNowPage = ({ userData, toast }) => {
                     className="writeReview"
                     onClick={() => setWriteReview(true)}
                   >
-                    Write a Review
+                    Write a Review ...
                   </h6>
                 </>
               )}

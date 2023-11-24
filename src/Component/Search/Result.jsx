@@ -117,26 +117,32 @@ export default function Result() {
 
     return (
         <div className="lucknow-page-container">
-
-            {displayData}
-
-            <div className="pagination">
-                <button onClick={handlePrev} disabled={currentPage === 1}>
-                    Previous
-                </button>
-                {Array.from({ length: pageCount }, (_, index) => (
-                    <button
-                        key={index}
-                        onClick={() => changePage(index + 1)}
-                        className={currentPage === index + 1 ? "active" : ""}
-                    >
-                        {index + 1}
+        {data.length === 0 ? (
+            <img src="https://media.giphy.com/avatars/404academy/kGwR3uDrUKPI.gif" alt="No hotels found" />
+        ) : (
+            <>
+                {displayData}
+                <div className="pagination">
+                    <button onClick={handlePrev} disabled={currentPage === 1}>
+                        Previous
                     </button>
-                ))}
-                <button onClick={handleNext} disabled={currentPage === pageCount}>
-                    Next
-                </button>
-            </div>
-        </div>
+                    {Array.from({ length: pageCount }, (_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => changePage(index + 1)}
+                            className={currentPage === index + 1 ? "active" : ""}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                    <button onClick={handleNext} disabled={currentPage === pageCount}>
+                        Next
+                    </button>
+                </div>
+            </>
+        )}
+    </div>
+    
+
     );
 }
