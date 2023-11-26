@@ -18,21 +18,19 @@ export default function Result() {
     const itemsPerPage = 5;
     const location = useLocation();
     const navigate = useNavigate();
-    const path = location.pathname
-    const city = path.substring(path.lastIndexOf("/" + 1))
-
+    
+    
     useEffect(() => {
         const path = location.pathname;
         const city = path.substring(path.lastIndexOf("/") + 1);
-
-        if (location.pathname === `/search/results/${city}`) {
-            fetch(`https://hotel-backend-tge7.onrender.com/search?city=${city}`)
-                .then((res) => res.json())
-                .then((data) => setData(data))
-                .catch((error) => console.error(error));
-        }
-    }, [location.pathname]);
-
+        let apiUrl = `https://hotel-backend-tge7.onrender.com/search?city=${city}`;
+        fetch(apiUrl)
+            .then((res) => res.json())
+            .then((data) => setData(data))
+            .catch((error) => console.error(error));
+    }, [location.pathname, location.search]);
+    
+    
     if (!location.pathname.includes("/search/results/")) {
         return null;
     }
@@ -40,7 +38,8 @@ export default function Result() {
     const handleBook = (id) => {
         navigate(`/hotels/${id}`);
     };
-
+ 
+    
 
     const pageCount = Math.ceil(data.length / itemsPerPage);
 
@@ -75,11 +74,11 @@ export default function Result() {
                         </div>
                     </div>
                     <div className="price-tag">
-                        <h5>
-                            <FaRupeeSign /> {hotel.roomDetails[0].price}{" "}
-                        </h5>
-                        <p>Per room per night</p>
-                    </div>
+    <h5>
+        <FaRupeeSign /> {hotel.roomDetails?.[0]?.price}{" "}
+    </h5>
+    <p>Per room per night</p>
+</div>
                     <div className="amenities">
                         <MdRoomService /> Amenities <WiDirectionRight />{" "}
                         {hotel.amenities.slice(0, 5).join(" , ")}
@@ -116,7 +115,9 @@ export default function Result() {
     };
 
     return (
+        <>
         <div className="lucknow-page-container">
+
         {data.length === 0 ? (
             <img src="https://media.giphy.com/avatars/404academy/kGwR3uDrUKPI.gif" alt="No hotels found" />
         ) : (
@@ -142,6 +143,7 @@ export default function Result() {
             </>
         )}
     </div>
+    </>
     
 
     );

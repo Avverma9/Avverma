@@ -125,7 +125,7 @@ const Header = () => {
               </>
             </ul>
           </div>
-          <div className="call-details">  <p> <FcCallback/> 9917991758 </p> <hr /> <p> <CiMail/> info@hotelroomsstay.com</p> </div>
+          <div className="call-details">  <p> Call us <FcCallback/> 9917991758 </p> <hr /> <p> Write us on <CiMail/> info@hotelroomsstay.com</p> </div>
         </div>
       </nav>
     </>

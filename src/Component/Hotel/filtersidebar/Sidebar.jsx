@@ -90,9 +90,11 @@ const Sidebar = ({
         })
         .catch((error) => console.log(error));
     } else if (
-      location.pathname === "/search/results" &&
+      (location.pathname === "/search/results"
+       ) &&
       queryString !== (null || undefined || "")
-    ) {
+    ) 
+     {
       axios
         .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
         .then((data) => {
