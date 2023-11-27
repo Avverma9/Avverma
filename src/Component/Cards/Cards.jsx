@@ -5,12 +5,15 @@ import { BiRupee } from "react-icons/bi";
 import { MdLocationOn, MdRoomPreferences } from "react-icons/md";
 import { BsStarFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+
 export const Cards = ({ offer }) => {
   console.log(offer);
   const navigate = useNavigate();
+
   const handleBookNow = (offerId) => {
     navigate(`/book-now/${offerId}`);
   };
+
   return (
     <div className="_card" onClick={() => handleBookNow(offer._id)}>
       <header
@@ -32,12 +35,21 @@ export const Cards = ({ offer }) => {
           </p>
         </div>
         <p class="_date">
-          <MdRoomPreferences />{" "}
-          {offer.roomDetails && offer?.roomDetails[0]?.type}
+          <MdRoomPreferences /> {offer.roomDetails && offer?.roomDetails[0]?.type}
         </p>
         <p class="_date">
           <BiRupee /> {offer.roomDetails && offer?.roomDetails[0]?.price}
         </p>
+        {offer.isOffer && (
+  
+    <div className="offer-intro">
+
+    <p>{offer.offerDetails} Get {offer.offerPriceLess}% Less</p>
+    </div>
+  
+)}
+
+
         <h2 style={{ color: "#3e4152" }}>{offer.offers}</h2>
         <p class="_body-content">{offer.description}</p>
         <button className="_card-button">

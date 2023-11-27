@@ -541,35 +541,27 @@ const BookNowPage = ({ userData, toast }) => {
                 </div>
               </div>
 
-              <div className="hotel-policies">
-                <div className="hotel-policyheading">Hotel Policies:</div>
-                <div className="bookcardmain">
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check in</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input type="text" value="12 PM" />
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check out</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input type="text" value="11 AM" />
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p className="hotel-policy"> {offerData.hotelsPolicy}</p>
-              </div>
+              <div class="information-card">
+    <div className="hotel-policies">
+        <div className="hotel-policyheading">Hotel Policies:</div>
+        <p className="hotel-policy">{offerData.hotelsPolicy}</p>
+        <hr />
+        <h5>Check-in</h5>
+        <p>{offerData.checkInPolicy}</p>
+        <br />
+        <h5>Check-out</h5>
+        <p>{offerData.checkOutPolicy}</p>
+        <hr />
+        <h5>Outside food:</h5>{offerData.outsideFoodPolicy}
+        <hr />
+        <div className="customer-welcome">
+            <p>{offerData.customerWelcomeNote}</p>
+        </div>
+        
+         
+    </div>
+    <button className="view-additional" > View more</button>
+</div>
 
               {meals && meals.length > 0 ? (
                 <div className="cust-detail">Enjoy meals during your stay:</div>

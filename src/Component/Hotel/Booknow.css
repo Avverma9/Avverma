@@ -309,7 +309,7 @@
 }
 
 .hotel-policyheading {
-  font-size: 25px;
+  font-size: 20px;
   font-weight: bold;
   color: black;
   margin-top: 25px;
@@ -730,7 +730,7 @@
   }
 
   .hotel-policyheading {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     color: black;
     margin-top: 5px;
@@ -1165,4 +1165,60 @@
   font-size: 22px;
   font-weight: bold;
   color: red;
+}
+.information-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-policies {
+  font-family: Arial, sans-serif;
+}
+
+.hotel-policyheading {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.h5 {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.hotel-policy, h5, p {
+  margin-bottom: 10px;
+}
+
+hr {
+  border: 1px solid #ddd;
+}
+
+.customer-welcome {
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+/* Style for the "Outside food" section */
+h5 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.view-additional {
+  background-color: rgba(52, 152, 219, 0.171);
+  color: #080505;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.view-additional:hover {
+  background-color: #e4dbc4;
 }

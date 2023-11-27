@@ -103,6 +103,10 @@ const Partner = () => {
   const [hotelName, setHotelName] = useState("");
   const [description, setDescription] = useState("");
   const [numRooms, setNumRooms] = useState("");
+  const [hotelsPolicy,setHotelsPolicy] = useState("")
+  const [customerWelcomeNote,setCustomerWelcomeNote]= useState("")
+  const [checkOutPolicy,setCheckOutPolicy]=useState("")
+  const [checkInPolicy,setCheckInPolicy]=useState("")
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [countryState, setCountryState] = useState("");
@@ -158,6 +162,7 @@ const Partner = () => {
   const [unmarriedcouples, setUnmarriedcouples] = useState("");
   const [internationalcouple, setInternationalcouple] = useState("");
   const [returnPolicy, setReturnPolicy] = useState("");
+ 
   const [checkInOut, setCheckInOut] = useState("");
 
   const handlePartnerSubmit = async (event) => {
@@ -186,6 +191,10 @@ const Partner = () => {
       formData.append("foodItems[price]", detail.price);
     }
     formData.append("description", description);
+    formData.append("hotelsPolicy",hotelsPolicy)
+    formData.append("checkInPolicy",checkInPolicy)
+    formData.append("checkOutPolicy",checkOutPolicy)
+    formData.append("customerWelcomeNote",customerWelcomeNote)
     formData.append("street", street);
     formData.append("numRooms", numRooms);
     formData.append("city", city);
@@ -452,6 +461,7 @@ const Partner = () => {
     formData.append("unmarriedCouplesAllowed", unmarriedcouples);
     formData.append("internationalGuestAllowed", internationalcouple);
     formData.append("returnPolicy", returnPolicy);
+   
     // formData.append("checkInOut", checkInOut);
 
     formData.append("onDoubleSharing", onDoubleSharing);
@@ -2344,7 +2354,42 @@ const Partner = () => {
                   value={returnPolicy}
                   onChange={(e) => setReturnPolicy(e.target.value)}
                 />
-
+   <label htmlFor="returnPolicy">
+                  Hotel Policy:
+                </label>
+                <textarea
+                  type="text"
+                  id="returnPolicy"
+                  value={hotelsPolicy}
+                  onChange={(e) => setHotelsPolicy(e.target.value)}
+                />
+                  <label htmlFor="returnPolicy">
+                  Check-In Policy:
+                </label>
+                <textarea
+                  type="text"
+                  id="returnPolicy"
+                  value={checkInPolicy}
+                  onChange={(e) => setCheckInPolicy(e.target.value)}
+                />
+                  <label htmlFor="returnPolicy">
+                  Check-Out Policy:
+                </label>
+                <textarea
+                  type="text"
+                  id="returnPolicy"
+                  value={checkOutPolicy}
+                  onChange={(e) => setCheckOutPolicy(e.target.value)}
+                />
+                  <label htmlFor="returnPolicy">
+                  Customer welcome note:
+                </label>
+                <textarea
+                  type="text"
+                  id="returnPolicy"
+                  value={customerWelcomeNote}
+                  onChange={(e) => setCustomerWelcomeNote(e.target.value)}
+                />
                 {/* <label htmlFor='checkInOut'>Check-In and Check-Out:</label>
 								<input
 									type='text'

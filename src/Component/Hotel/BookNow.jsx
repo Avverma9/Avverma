@@ -643,73 +643,33 @@ export default function BookNow({ userData, toast }) {
                     })}
                 </div>
               </div>
+{/* policy details are here */}
+              <div class="information-card">
+    <div className="hotel-policies">
+        <div className="hotel-policyheading">Hotel Policies:</div>
+        <p className="hotel-policy">{bookingDetails.hotelsPolicy}</p>
+        <hr />
+        <h5>Check-in</h5>
+        <p>{bookingDetails.checkInPolicy}</p>
+        <br />
+        <h5>Check-out</h5>
+        <p>{bookingDetails.checkOutPolicy}</p>
+        <hr />
+        <h5>Outside food:</h5>{bookingDetails.outsideFoodPolicy}
+        <hr />
+        <div className="customer-welcome">
+            <p>{bookingDetails.customerWelcomeNote}</p>
+        </div>
+        
+         
+    </div>
+    <button className="view-additional" > View more</button>
+</div>
 
-              <div className="hotel-policies">
-                <div className="hotel-policyheading">Hotel Policies:</div>
-                <div className="bookcardmain">
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check in</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input type="text" value="12 PM" />
-                        </span>
-                      </p>
-                    </div>
-                  </div>
+{/* policy details ends  here */}
 
-                  <div className="booking-card">
-                    <h2 className="booking-card-title">Check out</h2>
-                    <div className="booking-card-content">
-                      <p>
-                        <span className="booking-label"></span>{" "}
-                        <span className="booking-date">
-                          <input type="text" value="11 AM" />
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p className="hotel-policy"> {bookingDetails.hotelsPolicy}</p>
-              </div>
 
-              {/* <div className="bookcardmain">
-                <div className="booking-card">
-                  <h2 className="booking-card-title">Check in</h2>
-                  <div className="booking-card-content">
-                    <p>
-                      <span className="booking-label"></span>{" "}
-                      <span className="booking-date">
-                        <input
-                          type="date"
-                          value={checkInDate}
-                          onChange={(e) => setCheckInDate(e.target.value)}
-                          min={getCurrentDate()}
-                        />
-                      </span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="booking-card">
-                  <h2 className="booking-card-title">Check out</h2>
-                  <div className="booking-card-content">
-                    <p>
-                      <span className="booking-label"></span>{" "}
-                      <span className="booking-date">
-                        <input
-                          type="date"
-                          value={checkOutDate}
-                          onChange={(e) => setCheckOutDate(e.target.value)}
-                          min={checkInDate}
-                          disabled={!checkInDate}
-                        />
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div> */}
+            
 
               {meals && meals.length > 0 ? (
                 <div className="cust-detail">Enjoy meals during your stay:</div>
