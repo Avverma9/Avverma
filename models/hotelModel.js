@@ -43,8 +43,14 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    offerDetails: String,
-    offerPriceLess: Number,
+    offerDetails:{
+      default: "N/A",
+      type: String,
+    },
+    offerPriceLess:{
+      default : 0,
+     type: Number,
+    },
 
     startDate: {
       type: Date,
