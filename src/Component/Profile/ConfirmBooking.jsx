@@ -40,7 +40,7 @@ export const ConfirmBooking = ({ toast }) => {
           },
         }
       );
-  
+
       const bookings = response.data;
       console.log(bookings, "backend data");
       setBookingDetails(bookings);
@@ -53,19 +53,19 @@ export const ConfirmBooking = ({ toast }) => {
       toast.error(errorMessage);
     }
   }, [selectedStatus, setBookingDetails, toast]);
-  
+
   useEffect(() => {
     fetchBookingDetails();
   }, [fetchBookingDetails, selectedStatus]);
-  
+
   const handlePrint = () => {
     window.print();
   };
 
- 
+
   return (
     <>
-  
+
 
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
@@ -95,8 +95,8 @@ export const ConfirmBooking = ({ toast }) => {
                   <img
                     src={
                       bookingDetails &&
-                      bookingDetails?.images &&
-                      bookingDetails?.images
+                        bookingDetails?.images &&
+                        bookingDetails?.images
                         ? bookingDetails.images
                         : noImage
                     }
@@ -111,10 +111,12 @@ export const ConfirmBooking = ({ toast }) => {
                           <>
                             {bookingDetails?.checkInDate &&
                               bookingDetails?.checkInDate.substring(0, 10)}
-                            {"  "}
+
                           </>
-                          {"   "}
-                          to{"   "}
+                          {"  "}
+                        {"  "}
+                          to
+                          {"  "}
                           <>
                             {"  "}
                             {bookingDetails?.checkOutDate &&
@@ -127,16 +129,14 @@ export const ConfirmBooking = ({ toast }) => {
                         <>
                           {bookingDetails?.guests}{" "}
                           <span>
-                            {bookingDetails?.guests > 1 ? "Guests" : "Guest"}
+                            {bookingDetails?.guests > 1 ? " - Guests" : " - Guest"} ,
                           </span>
-                        
                         </>
-                    
+
                         <>
-                     
                           {bookingDetails?.rooms}
                           <span>
-                            {bookingDetails?.rooms > 1 ? "Rooms" : "Room"}
+                            {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
                           </span>
                         </>
                       </h6>
@@ -163,7 +163,7 @@ export const ConfirmBooking = ({ toast }) => {
         <p>No Data Found...</p>
       )}
 
-   
+
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
@@ -185,20 +185,20 @@ export const ConfirmBooking = ({ toast }) => {
                   Booked by {userData?.name} on{" "}
                   <span>
                     {modalData &&
-                    modalData?.createdAt &&
-                    moment(modalData?.createdAt).isoWeekday() === 1
+                      modalData?.createdAt &&
+                      moment(modalData?.createdAt).isoWeekday() === 1
                       ? "Mon"
                       : moment(modalData?.createdAt).isoWeekday() === 2
-                      ? "Tue"
-                      : moment(modalData?.createdAt).isoWeekday() === 3
-                      ? "Wed"
-                      : moment(modalData?.createdAt).isoWeekday() === 4
-                      ? "Thu"
-                      : moment(modalData?.createdAt).isoWeekday() === 5
-                      ? "Fri"
-                      : moment(modalData?.createdAt).isoWeekday() === 6
-                      ? "Sat"
-                      : "Sun"}
+                        ? "Tue"
+                        : moment(modalData?.createdAt).isoWeekday() === 3
+                          ? "Wed"
+                          : moment(modalData?.createdAt).isoWeekday() === 4
+                            ? "Thu"
+                            : moment(modalData?.createdAt).isoWeekday() === 5
+                              ? "Fri"
+                              : moment(modalData?.createdAt).isoWeekday() === 6
+                                ? "Sat"
+                                : "Sun"}
                   </span>
                   {", "}
                   <span>
@@ -218,10 +218,10 @@ export const ConfirmBooking = ({ toast }) => {
                   Hotel Name: <span>{modalData?.hotelName}</span>
                 </h6>
                 <h6>
-                Booking Status: <span>{modalData?.bookingStatus}</span>
+                  Booking Status: <span>{modalData?.bookingStatus}</span>
                 </h6>
                 <h6>
-                Price: <span>{modalData?.price}</span>
+                  Price: <span>{modalData?.price}</span>
                 </h6>
               </div>
               <img
@@ -270,7 +270,7 @@ export const ConfirmBooking = ({ toast }) => {
                   <span>Guests</span>
                   <h6>
                     {
-                    modalData?.guests}
+                      modalData?.guests}
                   </h6>
                 </div>
               )}

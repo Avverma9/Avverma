@@ -75,6 +75,16 @@ const BookingDetails = ({
     rzp.open();
   };
 
+  const discountedRoomPrice =
+    isOffer && offerPriceLess
+      ? roomPrice - (roomPrice * offerPriceLess) / 100
+      : roomPrice;
+
+  const totalAccommodationPrice = discountedRoomPrice * selectedRooms;
+
+  const totalPrice = totalAccommodationPrice + foodPrice;
+
+
   const handleBooking = (paymentStatus) => {
     const bookingData = {
       hotelName: hotelName,
@@ -131,9 +141,15 @@ const BookingDetails = ({
       console.log(err);
     }
   };
-  //for date picker
-  const [selectdate, setSelectdate] = useState(new Date());
-  const [selectdatecheckout, setSelectdatecheckout] = useState(new Date());
+  const initialCheckInDate = new Date();
+  initialCheckInDate.setDate(initialCheckInDate.getDate() + 1);
+
+  // Set default check-out date to one day after check-in date
+  const initialCheckOutDate = new Date(initialCheckInDate);
+  initialCheckOutDate.setDate(initialCheckOutDate.getDate() + 1);
+
+  const [selectdate, setSelectdate] = useState(initialCheckInDate);
+  const [selectdatecheckout, setSelectdatecheckout] = useState(initialCheckOutDate);
 
   const handledatechange = (date) => {
     setSelectdate(date);
@@ -164,9 +180,14 @@ const BookingDetails = ({
         <div className={styles.main}>
           <div className={styles.headupper}>
             <div className={styles.head}>
-              <span>
+            <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {roomPrice}
+                {isOffer && offerPriceLess && (
+                  <span className={styles.original_price}>
+                    <del>{roomPrice}</del>
+                  </span>
+                )}
+                {discountedRoomPrice}
               </span>
             
             </div>
@@ -269,9 +290,9 @@ const BookingDetails = ({
             <div className={styles.pri}>
               <div className={styles.pri1}>Accomodation:</div>
               <div className={styles.pri2}>
-                <span className={styles.p}>
+              <span className={styles.p}>
                   <FaRupeeSign />
-                  {roomPrice * selectedRooms}
+                  {totalAccommodationPrice}
                 </span>
               </div>
             </div>
@@ -279,7 +300,7 @@ const BookingDetails = ({
               <div className={styles.pri}>
                 <div className={styles.pri1}>Food Items:</div>
                 <div className={styles.pri2}>
-                  <span className={styles.p}>
+                <span className={styles.p}>
                     <FaRupeeSign />
                     {foodPrice}
                   </span>
@@ -290,9 +311,9 @@ const BookingDetails = ({
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>
-                <span className={styles.p}>
+              <span className={styles.p}>
                   <FaRupeeSign />
-                  {roomPrice * selectedRooms + foodPrice}
+                  {totalPrice}
                 </span>
               </div>
             </div>

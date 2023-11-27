@@ -421,8 +421,15 @@ const BookNowPage = ({ userData, toast }) => {
                 {offerData.roomDetails[0].price}
               </div>
               <div className="offer-data">
-                <p style={{ fontSize: "20px" }}>Offer:{offerData.offers}</p>
-              </div>
+  {offerData.isOffer && (
+    <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
+    {offerData.offerDetails} get {offerData.offerPriceLess}% less
+  </p>
+  
+  )}
+</div>
+
+
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
                   Description:

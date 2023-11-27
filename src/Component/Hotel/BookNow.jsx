@@ -513,9 +513,18 @@ export default function BookNow({ userData, toast }) {
                     <FontAwesomeIcon icon={faInr} className="indianrupee" />
                     {bookingDetails.roomDetails[0].price}
                   </>
+
                 ) : (
                   <span>No pricing information available</span>
                 )}
+                <div className="offer-data">
+  {bookingDetails.isOffer && (
+    <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
+    {bookingDetails.offerDetails} get {bookingDetails.offerPriceLess}% less
+  </p>
+  
+  )}
+</div>
               </div>
 
               <div className="hotel-descrip">
