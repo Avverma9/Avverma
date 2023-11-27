@@ -71,14 +71,9 @@ const hotelsSchema = new mongoose.Schema(
     maritalStatus: {
       type: String,
     },
-    hotelsPolicy: [{
-     checkInTime : String,
-     checkOutTime:String,
-     welcomeNote:String,
-     secondWelcomeNote:String,
-     moreDetails:String
-    }],
-    
+    hotelsPolicy: {
+      type: String,
+    },
     amenities: {
       type: [String],
       default: [],
