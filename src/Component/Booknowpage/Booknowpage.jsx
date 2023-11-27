@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Hotel/Booknow.css";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
@@ -59,7 +60,7 @@ const BookNowPage = ({ userData, toast }) => {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
-  
+  const navigate=useNavigate()
   const [bedtype, setBedtype] = useState("");
   const [roomType, setRoomType] = useState("");
   const [addingFood, setAddingFood] = useState(false);
@@ -368,7 +369,10 @@ const BookNowPage = ({ userData, toast }) => {
     setRoomType(roomType)
     setBedtype(bedtype);
   };
-
+  const handleViewMore=(id)=>{
+    navigate(`/policy-page/${id}`)
+  }
+  
   return (
     <>
       <div className="container-p-4">
@@ -558,9 +562,9 @@ const BookNowPage = ({ userData, toast }) => {
             <p>{offerData.customerWelcomeNote}</p>
         </div>
         
-         
+        
     </div>
-    <button className="view-additional" > View more</button>
+    <button className="view-additional" onClick={()=>handleViewMore(offerData._id)}> View more</button>
 </div>
 
               {meals && meals.length > 0 ? (

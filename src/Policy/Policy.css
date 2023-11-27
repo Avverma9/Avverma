@@ -1,0 +1,159 @@
+
+.policy-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .policy-container h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 28px;
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+  }
+  
+  table th {
+    background-color: #0e0a0a;
+    font-weight: bold;
+  }
+  
+  hr {
+    margin: 30px 0;
+    border: 0;
+    border-top: 2px solid #fa1717;
+  }
+  
+  li {
+    margin-bottom: 15px;
+    font-size: 18px;
+    line-height: 1.0;
+  }
+  
+  .policy-container p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .policy-container th {
+    font-size: 20px;
+  }
+  
+  .policy-container li {
+    list-style: none;
+    margin-bottom: 15px;
+    padding-left: 25px;
+    position: relative;
+  }
+  
+  .policy-container li:before {
+    content: "\2022";
+    color: #333;
+    font-size: 20px;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .policy-container a {
+    color: #007bff;
+    text-decoration: underline;
+  }
+  
+  .policy-container a:hover {
+    color: #0056b3;
+  }
+
+@keyframes fadeIn {
+    from {
+      
+      transform: translateY(-20px);
+    }
+    to {
+      
+      transform: translateY(0);
+    }
+  }
+  
+  .hotelName {
+    position: relative;
+    text-align: center;
+    margin: 50px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out; 
+  }
+  
+ 
+  .hotelName p {
+
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out; 
+  }
+  
+
+  .hotelName:hover p {
+    animation: fadeIn 1s ease-in-out forwards;
+    color: #ff6600; 
+    transform: scale(1.1) rotate(2deg); 
+  }
+  
+  .hotelName::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgb(255, 7, 7), rgb(248, 13, 13));
+    transform: translateX(-50%);
+    z-index: -1;
+  }
+ 
+  .hotelName {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+
+  .hotelName:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background-color: #f5f5f5;
+  }
+  
+
+  .policy-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.policy-item {
+    width: calc(20% - 10px); 
+}
+
+
+.policy-icon {
+    margin-right: 5px; 
+}

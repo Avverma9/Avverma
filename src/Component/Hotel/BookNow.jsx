@@ -161,23 +161,7 @@ export default function BookNow({ userData, toast }) {
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
   console.log(meals);
-  // useEffect(() => {
-  //   fetch(`https://hotel-backend-tge7.onrender.com/get/latest/food`)
-  //     .then((response) => {
-  //       console.log(response, "RESPONSE");
-  //       if (response.ok) {
-  //         return response.json();
-  //       } else {
-  //         throw new Error("Failed to fetch user data");
-  //       }
-  //     })
-  //     .then((data) => {
-  //       setMeals(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+
 
   useEffect(() => {
     setHotelReviews([]);
@@ -456,6 +440,11 @@ export default function BookNow({ userData, toast }) {
     //   setSelectedRooms(selectedRooms + 1);
     // }
   }, [selectedGuests, selectedRooms]);
+  
+const handleViewMore=(id)=>{
+  navigate(`/policy-page/${id}`)
+}
+
 
   return (
     <>
@@ -663,7 +652,7 @@ export default function BookNow({ userData, toast }) {
         
          
     </div>
-    <button className="view-additional" > View more</button>
+    <button className="view-additional" onClick={()=>handleViewMore(bookingDetails._id)}> View more</button>
 </div>
 
 {/* policy details ends  here */}

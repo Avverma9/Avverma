@@ -60,6 +60,7 @@ import { Customizebooking } from "./Component/Payment/Customizebooking";
 import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
 import Result from "./Component/Search/Result.jsx";
+import Policy from "./Policy/Policy.jsx";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -93,11 +94,12 @@ function App() {
         <ToastContainer />
         <HeaderImage />
         <Dropdownbar />
-
+<Policy/>
         <Carousel />
 
         <Home />
         <Offers />
+        
         <Hotel />
         <ChatBox />
         <PopupCard />
