@@ -74,6 +74,8 @@ const hotelsSchema = new mongoose.Schema(
     hotelsPolicy: {
       type: String,
     },
+    checkInPolicy:String,
+    checkOutPolicy:String,
     amenities: {
       type: [String],
       default: [],
