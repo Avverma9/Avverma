@@ -61,6 +61,7 @@ import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
 import Result from "./Component/Search/Result.jsx";
 import Policy from "./Policy/Policy.jsx";
+import FilterSidebar from "./Component/Search/FilterSidebar.jsx";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -95,6 +96,7 @@ function App() {
         <HeaderImage />
         <Dropdownbar />
 <Policy/>
+
         <Carousel />
 
         <Home />
