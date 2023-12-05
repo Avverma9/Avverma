@@ -29,11 +29,12 @@ export default function Result() {
   const [showallstar, setShowallstar] = useState(false);
   const [showroomtype, setShowroomtype] = useState(false);
   const [showbedtype, setShowbedtype] = useState(false);
-  const [showamenities, setShowamenities] = useState(false);
- 
+  const [showamenities, setShowamenities] = useState(false); 
+  const path = location.pathname;
+ const city = path.substring(path.lastIndexOf("/") + 1);
   useEffect(() => {
-    const path = location.pathname;
-    const city = path.substring(path.lastIndexOf("/") + 1);
+   
+    
     let apiUrl = `https://hotel-backend-tge7.onrender.com/search?city=${city}`;
     fetch(apiUrl)
       .then((res) => res.json())
@@ -41,7 +42,7 @@ export default function Result() {
       .catch((error) => console.error(error));
   }, [location.pathname, location.search]);
 
-  if (!location.pathname.includes("/search/results/")) {
+  if (!location.pathname.includes(`/search/results/${city}`)) {
     return null;
   }
 
