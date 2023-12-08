@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import './Policy.css';
 
 const Policy = () => {
+  const navigate= useNavigate()
   const [data, setData] = useState("");
   const location = useLocation();
   const path = location.pathname;
@@ -37,9 +38,12 @@ const Policy = () => {
     
   };
 
-
+const handleExit = ()=>{
+  navigate(`/hotels/${id}`)
+}
   return (
     <div className="policy-container">
+      <button className="exit-button" onClick={handleExit}>Exit</button>
         <div className="hotelName"><p>Hotel Rooms-stay</p></div>
     
     <h3>{data.hotelName}</h3>
