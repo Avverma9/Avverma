@@ -681,6 +681,18 @@ const updateAmenity = async (req, res) => {
 
   return res.json({ message: "Amenities updated successfully", hotel });
 };
+
+const getHotelsState = async function (req, res) {
+ const getState = await hotelModel.find()
+ const finalData= getState.map(stateData=>stateData.state)
+ res.json(finalData)
+};
+const getHotelsCity = async function (req, res) {
+  const getCity = await hotelModel.find()
+  const finalData= getCity.map(cityData=>cityData.city)
+  res.json(finalData)
+ };
+ 
 //================================================================================================
 module.exports = {
   createHotel,
@@ -704,5 +716,7 @@ module.exports = {
   deleteFoods,
   updateAmenity,
   deleteHotelById,
-  UpdateHotelInfo
+  UpdateHotelInfo,
+  getHotelsState,
+  getHotelsCity
 };
