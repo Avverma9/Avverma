@@ -687,12 +687,27 @@ const getHotelsState = async function (req, res) {
  const finalData= getState.map(stateData=>stateData.state)
  res.json(finalData)
 };
+
 const getHotelsCity = async function (req, res) {
-  const getCity = await hotelModel.find()
-  const finalData= getCity.map(cityData=>cityData.city)
-  res.json(finalData)
- };
- 
+  try {
+    const { state } = req.query;
+    
+    if (!state) {
+      return res.status(400).json({ error: 'State parameter is missing' });
+    }
+
+    const hotelsInState = await hotelModel.find({ state });
+
+    // Extracting only the 'state' field from each document
+    const cityData = hotelsInState.map(hotel => hotel.city);
+
+    res.json(cityData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 //================================================================================================
 module.exports = {
   createHotel,
