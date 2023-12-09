@@ -11,8 +11,8 @@ const hotelsSchema = new mongoose.Schema(
       type: String,
     },
     roomDetails: [
-      { 
-        images : [String],
+      {
+        images: [String],
         type: {
           type: String,
         },
@@ -27,7 +27,7 @@ const hotelsSchema = new mongoose.Schema(
     foodItems: [
       {
         name: String,
-        foodType:String,
+        foodType: String,
         images: [String],
         about: String,
         price: Number,
@@ -43,13 +43,20 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    offerDetails:{
+    offerDetails: {
       default: "N/A",
       type: String,
     },
-    offerPriceLess:{
-      default : 0,
-     type: Number,
+    offerPriceLess: {
+      default: 0,
+      type: Number,
+    },
+    offerExp: {
+      type: Date,
+    },
+    offerStartDate: {
+      type: Date,
+      default: Date.now,
     },
 
     startDate: {
@@ -74,9 +81,9 @@ const hotelsSchema = new mongoose.Schema(
     hotelsPolicy: {
       type: String,
     },
-    checkInPolicy:String,
-    checkOutPolicy:String,
-    customerWelcomeNote:String,
+    checkInPolicy: String,
+    checkOutPolicy: String,
+    customerWelcomeNote: String,
     amenities: {
       type: [String],
       default: [],

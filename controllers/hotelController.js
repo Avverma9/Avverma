@@ -181,7 +181,7 @@ const createHotel = async (req, res) => {
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
-  const {isAccepted,isOffer} = req.body;
+  const {isAccepted,isOffer,offerDetails,offerPriceLess,offerExp} = req.body;
 
   let images = [];
 
