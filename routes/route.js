@@ -74,8 +74,8 @@ router.delete(
   hotelController.deleteRoom
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
-router.get("/see-all/hotels-state",hotelController.getHotelsState)
-router.get("/see-all/hotels-city",hotelController.getHotelsCity)
+router.get("/see-all/hotels-state/get/all/hotels",hotelController.getHotelsState)
+router.get("/see-all/hotels-city/get/city",hotelController.getHotelsCity)
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
 router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);
