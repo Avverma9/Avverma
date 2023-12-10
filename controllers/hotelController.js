@@ -683,23 +683,63 @@ const updateAmenity = async (req, res) => {
 };
 
 const getHotelsState = async function (req, res) {
- const getState = await hotelModel.find()
- const finalData= getState.map(stateData=>stateData.state)
- res.json(finalData)
+  try {
+    const getState = await hotelModel.find();
+    
+    // Use Set to keep track of unique state names
+    const uniqueStatesSet = new Set();
+
+    const finalData = getState.reduce((acc, stateData) => {
+      const stateName = stateData.state;
+
+      // Check if the state name is not already in the Set
+      if (!uniqueStatesSet.has(stateName)) {
+        // Add state name to the Set
+        uniqueStatesSet.add(stateName);
+
+        // Add the state data to the result array
+        acc.push(stateName);
+      }
+
+      return acc;
+    }, []);
+
+    res.json(finalData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
+
 
 const getHotelsCity = async function (req, res) {
   try {
     const { state } = req.query;
-    
+
     if (!state) {
       return res.status(400).json({ error: 'State parameter is missing' });
     }
 
     const hotelsInState = await hotelModel.find({ state });
 
-    // Extracting only the 'state' field from each document
-    const cityData = hotelsInState.map(hotel => hotel.city);
+    // Use Set to keep track of unique city names
+    const uniqueCitiesSet = new Set();
+
+    // Extracting only the 'city' field from each document and filtering out duplicates
+    const cityData = hotelsInState.reduce((acc, hotel) => {
+      const cityName = hotel.city;
+
+      // Check if the city name is not already in the Set
+      if (!uniqueCitiesSet.has(cityName)) {
+        // Add city name to the Set
+        uniqueCitiesSet.add(cityName);
+
+        // Add the city name to the result array
+        acc.push(cityName);
+      }
+
+      return acc;
+    }, []);
 
     res.json(cityData);
   } catch (error) {
