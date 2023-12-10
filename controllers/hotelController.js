@@ -193,7 +193,7 @@ const UpdateHotel = async function (req, res) {
       images = user.images;
     }
   }
-  const updatedHotel = await hotelModel.findByIdAndUpdate(id,{images,isOffer,isAccepted},{new: true});
+  const updatedHotel = await hotelModel.findByIdAndUpdate(id,{images,isOffer,isAccepted,offerDetails,offerPriceLess,offerExp},{new: true});
 
   if (!updatedHotel) {
     return res.status(404).json({ error: "Hotel not found" });
