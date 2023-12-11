@@ -527,36 +527,49 @@ const getHotelsByFilters = async (req, res) => {
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
   const { hotelid, roomid } = req.params;
-
   const { type, bedTypes, price } = req.body;
+  
+  // Assuming images are optional in the request body
+  const images = req.files ? req.files.map(file => file.location) : [];
 
   try {
-    const hotel = await hotelModel.findById(hotelid);
+    // Use lean() to get a plain JavaScript object instead of a mongoose document
+    const hotel = await hotelModel.findById(hotelid).lean();
+
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const roomIndex = hotel.roomDetails.findIndex((room) => room._id == roomid);
+    const roomIndex = hotel.roomDetails.findIndex((room) => room._id.toString() === roomid);
     if (roomIndex === -1) {
       return res.status(404).json({ error: "Room not found" });
     }
 
-    if (type) {
+    // Update only if the field is provided in the request body
+    if (type !== undefined) {
       hotel.roomDetails[roomIndex].type = type;
     }
-    if (bedTypes) {
+    if (bedTypes !== undefined) {
       hotel.roomDetails[roomIndex].bedTypes = bedTypes;
     }
-    if (price) {
+    if (price !== undefined) {
       hotel.roomDetails[roomIndex].price = price;
     }
+    // Update images only if images are provided in the request
+    if (images.length > 0) {
+      hotel.roomDetails[roomIndex].images = images;
+    }
 
-    await hotel.save();
+    // Use updateOne instead of save to update specific fields
+    await hotelModel.updateOne({ _id: hotelid, 'roomDetails._id': roomid }, { $set: { 'roomDetails.$': hotel.roomDetails[roomIndex] } });
+
+    // Return the updated room details
     res.json(hotel.roomDetails[roomIndex]);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 //==================================add new room===============================================
 const addRoomToHotel = async function (req, res) {
   const { hotelId } = req.params;

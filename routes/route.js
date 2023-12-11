@@ -65,6 +65,7 @@ router.get("/hotels/destination/get/all", hotelController.getCity);
 router.get("/hotels/query/get/by", hotelController.getByQuery);
 router.put(
   "/update/new/created/hotel/room/:hotelid/:roomid",
+  upload,
   hotelController.updateRoom
 );
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
@@ -74,8 +75,11 @@ router.delete(
   hotelController.deleteRoom
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
-router.get("/see-all/hotels-state/get/all/hotels",hotelController.getHotelsState)
-router.get("/see-all/hotels-city/get/city",hotelController.getHotelsCity)
+router.get(
+  "/see-all/hotels-state/get/all/hotels",
+  hotelController.getHotelsState
+);
+router.get("/see-all/hotels-city/get/city", hotelController.getHotelsCity);
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
 router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);
@@ -92,10 +96,7 @@ router.get("/getReviews/:hotelId", reviewController.getReviewsByHotelId);
 
 router.get("/reviewDatas/:userId", reviewController.getReviewsByUserId);
 router.put("/update/:userId/:hotelId/:reviewId", reviewController.updateReview);
-router.delete(
-  "/delete/:reviewId",
-  reviewController.deleteReview
-);
+router.delete("/delete/:reviewId", reviewController.deleteReview);
 //============================= BOOKING =======================================
 router.post(
   "/booking/:userId/:hotelId",
