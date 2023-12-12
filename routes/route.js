@@ -63,7 +63,7 @@ router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotels/filters", hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all", hotelController.getCity);
 router.get("/hotels/query/get/by", hotelController.getByQuery);
-router.put(
+router.patch(
   "/update/new/created/hotel/room/:hotelid/:roomid",
   upload,
   hotelController.updateRoom
