@@ -289,6 +289,13 @@ const increaseRoomToHotel = async function (req, res) {
   const updatedRoom = await addRoom.save();
   res.json(updatedRoom);
 };
+const decreaseRoomToHotel = async function (req, res) {
+  const { id } = req.params;
+  const addRoom = await hotelModel.findById(id);
+  addRoom.numRooms -= 1;
+  const updatedRoom = await addRoom.save();
+  res.json(updatedRoom);
+};
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
   const {
@@ -778,6 +785,7 @@ module.exports = {
   getOffers,
   updateRoom,
   increaseRoomToHotel,
+  decreaseRoomToHotel,
   addRoomToHotel,
   deleteRoom,
   addFoodToHotel,

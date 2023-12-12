@@ -1,7 +1,7 @@
 const stateModel = require("../models/stateModel");
 const upload = require("../aws/upload");
 
-//===================================================================================
+//=====================================================================================================
 const createState = async (req, res) => {
   try {
     const { state, text } = req.body;

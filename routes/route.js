@@ -69,6 +69,7 @@ router.put(
   hotelController.updateRoom
 );
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
+router.post("/decrease/room/minus/:id", hotelController.decreaseRoomToHotel)
 router.post("/:hotelId/roomDetails", upload, hotelController.addRoomToHotel);
 router.delete(
   "/:hotelId/delete/a/create/room/from/db",
