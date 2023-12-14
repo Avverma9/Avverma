@@ -594,7 +594,10 @@ const addRoomToHotel = async function (req, res) {
       bedTypes,
       price,
     };
+    
+    
     hotel.roomDetails.push(newDetails);
+    hotel.numRooms += 1;
     await hotel.save();
 
     return res.status(200).json(hotel);
@@ -676,8 +679,13 @@ const deleteRoom = async function (req, res) {
         .json({ error: "Room detail not found in the hotel" });
     }
 
+    // Decrease the numRooms count
+    hotel.numRooms -= 1;
+
+    // Remove the room from the roomDetails array
     hotel.roomDetails.splice(roomIndex, 1);
 
+    // Save the updated hotel document
     await hotel.save();
 
     return res.status(200).json(hotel);
@@ -686,6 +694,7 @@ const deleteRoom = async function (req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 //update hotel amenity
 const updateAmenity = async (req, res) => {
   const { id } = req.params;
