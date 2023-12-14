@@ -60,7 +60,7 @@ default: 1,
     },
     offerStartDate: {
       type: Date,
-      default: Date.now,
+      default: () => new Date().toISOString().split('T')[0], // YYYY-MM-DD format
     },
 
     startDate: {

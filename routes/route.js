@@ -69,13 +69,14 @@ router.patch(
   hotelController.updateRoom
 );
 router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
-router.post("/decrease/room/minus/:id", hotelController.decreaseRoomToHotel)
+router.post("/decrease/room/minus/:id", hotelController.decreaseRoomToHotel);
 router.post("/:hotelId/roomDetails", upload, hotelController.addRoomToHotel);
 router.delete(
   "/:hotelId/delete/a/create/room/from/db",
   hotelController.deleteRoom
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
+router.patch("/hotels/update/coupon/by/:hotelid/:roomid", hotelController.ApplyCoupon);
 router.get(
   "/see-all/hotels-state/get/all/hotels",
   hotelController.getHotelsState
