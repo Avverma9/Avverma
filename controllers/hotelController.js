@@ -674,21 +674,23 @@ const deleteRoom = async function (req, res) {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const roomIndex = hotel.roomDetails.findIndex(
+    const room = hotel.roomDetails.find(
       (room) => room._id.toString() === roomId
     );
 
-    if (roomIndex === -1) {
+    if (!room) {
       return res
         .status(404)
         .json({ error: "Room detail not found in the hotel" });
     }
 
-    // Decrease the numRooms count
-    hotel.numRooms -= 1;
+    // Decrease the numRooms count by the value of room.countRooms
+    hotel.numRooms -= room.countRooms;
 
     // Remove the room from the roomDetails array
-    hotel.roomDetails.splice(roomIndex, 1);
+    hotel.roomDetails = hotel.roomDetails.filter(
+      (room) => room._id.toString() !== roomId
+    );
 
     // Save the updated hotel document
     await hotel.save();
