@@ -290,6 +290,7 @@ const increaseRoomToHotel = async function (req, res) {
   const updatedRoom = await addRoom.save();
   res.json(updatedRoom);
 };
+//====================================================================================
 const decreaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
   const addRoom = await hotelModel.findById(id);
@@ -589,18 +590,18 @@ const addRoomToHotel = async function (req, res) {
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
+    
     const images = req.files.map((file) => file.location);
     const newDetails = {
       images,
       type,
       bedTypes,
       price,
-     countRooms
+      countRooms, // Corrected property name
     };
-    
-    
+
     hotel.roomDetails.push(newDetails);
-    hotel.numRooms += 1;
+    hotel.numRooms += countRooms;
     await hotel.save();
 
     return res.status(200).json(hotel);
@@ -609,6 +610,7 @@ const addRoomToHotel = async function (req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 //====================================add foods to hotel============================================
 const addFoodToHotel = async (request, response) => {
   const { hotelId } = request.params;
