@@ -22,6 +22,10 @@ const hotelsSchema = new mongoose.Schema(
         price: {
           type: Number,
         },
+        countRooms:{
+type: Number,
+default: 1,
+        },
       },
     ],
     foodItems: [

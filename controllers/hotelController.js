@@ -286,6 +286,7 @@ const increaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
   const addRoom = await hotelModel.findById(id);
   addRoom.numRooms += 1;
+  addRoom.roomDetails.countRooms += 1;
   const updatedRoom = await addRoom.save();
   res.json(updatedRoom);
 };
@@ -293,6 +294,7 @@ const decreaseRoomToHotel = async function (req, res) {
   const { id } = req.params;
   const addRoom = await hotelModel.findById(id);
   addRoom.numRooms -= 1;
+  addRoom.roomDetails.countRooms -= 1;
   const updatedRoom = await addRoom.save();
   res.json(updatedRoom);
 };
@@ -580,7 +582,7 @@ const updateRoom = async (req, res) => {
 //==================================add new room===============================================
 const addRoomToHotel = async function (req, res) {
   const { hotelId } = req.params;
-  const { type, bedTypes, price } = req.body;
+  const { type, bedTypes, price, countRooms } = req.body;
 
   try {
     const hotel = await hotelModel.findById(hotelId);
@@ -593,6 +595,7 @@ const addRoomToHotel = async function (req, res) {
       type,
       bedTypes,
       price,
+     countRooms
     };
     
     
