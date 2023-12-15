@@ -22,9 +22,12 @@ const hotelsSchema = new mongoose.Schema(
         price: {
           type: Number,
         },
-        countRooms:{
-type: Number,
-default: 1,
+        originalPrice: {
+          type: Number,
+        },
+        countRooms: {
+          type: Number,
+          default: 1,
         },
       },
     ],
@@ -60,7 +63,7 @@ default: 1,
     },
     offerStartDate: {
       type: Date,
-      default: () => new Date().toISOString().split('T')[0], // YYYY-MM-DD format
+      default: () => new Date().toISOString().split("T")[0], // YYYY-MM-DD format
     },
 
     startDate: {

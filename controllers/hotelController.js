@@ -812,65 +812,49 @@ cron.schedule('0 0 * * *', async () => {
 const ApplyCoupon = async (req, res) => {
   const { hotelid, roomid } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
-
-  // Set offerStartDate to the current date
   const offerStartDate = new Date().toISOString().split('T')[0];
 
   try {
-    // Find the hotel by ID
     const hotel = await hotelModel.findById(hotelid);
-
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    // Find the room by ID within the hotel
     const room = hotel.roomDetails.find((room) => room._id.toString() === roomid);
-
     if (!room) {
       return res.status(404).json({ error: "Room not found in the hotel" });
     }
 
-    // Store the original room price
     const originalPrice = room.price;
-
-    // Update the offer details including offerStartDate
     const updatedHotel = await hotelModel.findByIdAndUpdate(
       hotelid,
       { offerDetails, offerExp, offerPriceLess, isOffer, offerStartDate },
       { new: true }
     );
 
-    // Check if the offer has expired
     const hasOfferExpired = new Date() >= new Date(offerExp);
+    const updatedRoom = updatedHotel.roomDetails.find((room) => room._id.toString() === roomid);
 
-    // Apply offerPriceLess percentage reduction to the specified room's price
-    if (isOffer) {
-      const discountPercentage = offerPriceLess / 100;
-
-      // Update the price for the specified room
-      const updatedRoom = updatedHotel.roomDetails.find((room) => room._id.toString() === roomid);
-
-      if (updatedRoom) {
-        if (hasOfferExpired) {
-          // Offer has expired, revert the room price to its original value
-          updatedRoom.price = originalPrice;
-        } else {
-          // Offer is still valid, apply the discount
-          updatedRoom.price -= updatedRoom.price * discountPercentage;
-        }
+    if (updatedRoom) {
+      if (hasOfferExpired || new Date(offerExp) <= new Date()) {
+        // If the offer has expired or the offerExp date is less than or equal to the current date
+        // Set the price to the originalPrice
+        updatedRoom.price = updatedRoom.originalPrice;
+      } else {
+        // If the offer is still valid, apply the discount
+        const discountPercentage = offerPriceLess / 100;
+        updatedRoom.price -= updatedRoom.price * discountPercentage;
       }
-
-      // Save the updated hotel document
-      await updatedHotel.save();
     }
 
+    await updatedHotel.save();
     res.json(updatedHotel);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 
 
