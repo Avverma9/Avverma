@@ -838,12 +838,16 @@ const ApplyCoupon = async (req, res) => {
     if (updatedRoom) {
       if (hasOfferExpired || new Date(offerExp) <= new Date()) {
         // If the offer has expired or the offerExp date is less than or equal to the current date
-        // Set the price to the originalPrice
-        updatedRoom.price = updatedRoom.originalPrice;
+        // Set the price back to the originalPrice
+        updatedRoom.price = updatedRoom.originalPrice || originalPrice; // Use originalPrice if available
+        // Remove the originalPrice field as the offer has expired
+        delete updatedRoom.originalPrice;
       } else {
         // If the offer is still valid, apply the discount
         const discountPercentage = offerPriceLess / 100;
         updatedRoom.price -= updatedRoom.price * discountPercentage;
+        // Store originalPrice in the room model
+        updatedRoom.originalPrice = originalPrice;
       }
     }
 
