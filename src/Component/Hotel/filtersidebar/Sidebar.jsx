@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
@@ -43,33 +43,68 @@ const Sidebar = ({
   console.log(location.pathname.slice(8));
   const [city, setCity] = useState("");
   //Filter Api
-  useEffect(() => {
-    const propertyTypeQueryParam = selectedPropertyTypes.join(",");
-    const roomtypeQueryParam = roomtype.join(",");
-    const starRatingQueryParam = starrating.join(",");
-    const bedtypeQueryparam = bedtype.join(",");
-    const amenitiesQueryparams = amenity.join(",");
+  const firstRender = useRef(true);
 
-    axios
-      .get(
-        `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`
-      )
-      .then((data) => {
-        if (data.status === 200) {
-          setHotels(null);
-          setHotels(data.data);
-          setDataAvailable(data.data.length > 0 ? true : false);
-        } else setHotels([]);
-      })
-      .catch((error) => console.log(error));
+  useEffect(() => {
+    // Function to fetch data from the API
+    const fetchData = () => {
+      const propertyTypeQueryParam = selectedPropertyTypes.join(',');
+      const roomtypeQueryParam = roomtype.join(',');
+      const starRatingQueryParam = starrating.join(',');
+      const bedtypeQueryparam = bedtype.join(',');
+      const amenitiesQueryparams = amenity.join(',');
+
+      const priceFilterUrl = `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`;
+
+      // Add price range parameters if they are set
+      if (minValue > 400 || maxValue < 4000) {
+        priceFilterUrl += `&minPrice=${minValue}&maxPrice=${maxValue}`;
+      }
+
+      axios
+        .get(priceFilterUrl)
+        .then((data) => {
+          if (data.status === 200) {
+            setHotels(data.data);
+            setDataAvailable(data.data.length > 0);
+          } else {
+            setHotels([]);
+          }
+        })
+        .catch((error) => console.log(error));
+    };
+
+    // Check if it's the first render
+    if (firstRender.current) {
+      // Make the API call on the first render
+      firstRender.current = false;
+      fetchData();
+    } else {
+      // Check if all query parameters are empty
+      if (
+        selectedPropertyTypes.length === 0 &&
+        roomtype.length === 0 &&
+        starrating.length === 0 &&
+        bedtype.length === 0 &&
+        amenity.length === 0
+      ) {
+        // No need to make the API call if all query parameters are empty
+        setHotels([]);
+        setDataAvailable(false);
+        return;
+      }
+
+      // Make the API call with updated parameters
+      fetchData();
+    }
   }, [
     selectedPropertyTypes,
     roomtype,
     starrating,
     bedtype,
     amenity,
-    setHotels,
-    setDataAvailable,
+    minValue,
+    maxValue,
   ]);
   const queryString = localStorage.getItem("searchQuery");
 

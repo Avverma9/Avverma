@@ -54,7 +54,7 @@ export default function BookNow({ userData, toast }) {
   const [hotelAmenities, setHotelAmenities] = useState([]);
   const [selectedRooms, setSelectedRooms] = useState(1);
   const [selectedGuests, setSelectedGuests] = useState(1);
-
+  const [displayCount, setDisplayCount] = useState(5);
   const [foodPrice, setFoodPrice] = useState(0);
   const [foodCounts, setFoodCounts] = useState({});
   const [indexedButton, setIndexedButton] = useState(null);
@@ -67,6 +67,7 @@ export default function BookNow({ userData, toast }) {
   const [hotelReviews, setHotelReviews] = useState([]);
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
+  const [originalPrice,setOriginalPrice] = useState(0)
   const [roomPrice, setRoomPrice] = useState(0);
   const [roomType, setRoomType] = useState("");
   const [bedtype, setBedtype] = useState("");
@@ -151,6 +152,7 @@ export default function BookNow({ userData, toast }) {
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
+        setOriginalPrice(data?.roomDetails[0].originalPrice)
         setRoomType(data?.roomDetails[0].type)
         setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
@@ -418,9 +420,10 @@ export default function BookNow({ userData, toast }) {
     setMyRating(rate);
   };
 
-  const selectRoomHandler = (index, rprice, bedtype,roomType) => {
+  const selectRoomHandler = (index, rprice,originalRoomPrice,bedtype,roomType) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
+    setOriginalPrice(originalRoomPrice)
     setRoomType(roomType)
     setBedtype(bedtype);
   };
@@ -445,7 +448,13 @@ const handleViewMore=(id)=>{
   navigate(`/policy-page/${id}`)
 }
 
+const showMore = () => {
+  setDisplayCount(hotelAmenities.length);
+};
 
+const showLess = () => {
+  setDisplayCount(5);
+};
   return (
     <>
       <div className="container-p-4">
@@ -507,12 +516,12 @@ const handleViewMore=(id)=>{
                   <span>No pricing information available</span>
                 )}
                 <div className="offer-data">
-  {bookingDetails.isOffer && (
-    <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
+  {bookingDetails?.roomDetails?.originalPrice && bookingDetails.roomDetails.originalPrice > bookingDetails.roomDetails.price && (
+  <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
     {bookingDetails.offerDetails} get {bookingDetails.offerPriceLess}% less
   </p>
-  
-  )}
+)}
+
 </div>
               </div>
 
@@ -537,60 +546,64 @@ const handleViewMore=(id)=>{
                   </button>
                 )}
               </div>
-              <p className="amenity-section">
-                <p className="amenity-word">Amenities: </p>
-                <div className="amenityclass">
-                  {hotelAmenities.map((option, index) => {
-                    let icon;
-                    switch (option) {
-                      case "GYM":
-                        icon = faDumbbell;
-                        break;
-                      case "Free WIFI":
-                        icon = faWifi;
-                        break;
+              <div className="amenity-section">
+      <div className="amenity-word">Amenities:</div>
+      <div className="amenityclass">
+        {hotelAmenities &&
+          hotelAmenities.slice(0, displayCount).map((option, index) => {
+            let icon;
+            switch (option) {
+              case "GYM":
+                icon = faDumbbell;
+                break;
+              case "Wifi":
+                icon = faWifi;
+                break;
+              case "Parking":
+                icon = faParking;
+                break;
+              case "Geyser":
+                icon = faFire;
+                break;
+              case "TV":
+                icon = faTv;
+                break;
+              case "CCTV":
+                icon = faCamera;
+                break;
+              case "AC":
+                icon = faSnowflake;
+                break;
+              case "Card-payment":
+                icon = faCreditCard;
+                break;
+              case "Elevator":
+                icon = faElevator;
+                break;
+              case "Kitchen":
+                icon = faKitchenSet;
+                break;
+              default:
+                icon = faCheck;
+            }
+            return (
+              <div key={index} className="amenity-item">
+                {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {option}
+              </div>
+            );
+          })}
+        {hotelAmenities.length > 5 && (
+          <div className="show-more-less">
+            {displayCount === 5 ? (
+              <button onClick={showMore}>Show More</button>
+            ) : (
+              <button onClick={showLess}>Show Less</button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
 
-                      case "Parking":
-                        icon = faParking;
-                        break;
-                      case "Geyser":
-                        icon = faFire;
-                        break;
-                      case "TV":
-                        icon = faTv;
-                        break;
-                      case "CCTV":
-                        icon = faCamera;
-                        break;
-                      case "AC":
-                        icon = faSnowflake;
-                        break;
-                      case "Card-payment":
-                        icon = faCreditCard;
-                        break;
-                      case "Elevator":
-                        icon = faElevator;
-                        break;
-                      case "Kitchen":
-                        icon = faKitchenSet;
-                        break;
-                      default:
-                        icon = faCheck;
-                    }
-                    return (
-                      <p key={index}>
-                        {icon && (
-                          <FontAwesomeIcon
-                            icon={icon}
-                            className="amenity-icon"
-                          />
-                        )}{" "}
-                        {option}
-                      </p>
-                    );
-                  })}
-                </div>
-              </p>
               <div className="moreopt">
                 <p className="morehead">More:</p>
                 <div className="moreitem">
@@ -841,6 +854,22 @@ const handleViewMore=(id)=>{
                       <div className="card-detail-info flex-fill">
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
+                        
+                        {bookingDetails.isOffer && (
+  <div>
+    <p>
+      {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
+    </p>
+    {item?.originalPrice > item?.price && (
+      <del>{item?.originalPrice}</del>
+    )}
+  </div>
+)}
+
+
+
+
+                        {/* <p>Original Price : {item?.originalPrice}</p> */}
                       </div>
                       <div className="card-detail-img">
                         <img
@@ -854,14 +883,10 @@ const handleViewMore=(id)=>{
                       </div>
                     </div>
                     <div className="downhead">
-                      <p className="price-total">
-                        <MdCurrencyRupee className="r-sign" />
-                        {item?.price}
-                      </p>
                       <button
                         className="select-btn mt-4"
                         onClick={() =>
-                          selectRoomHandler(index, item?.price, item?.type, item?.bedTypes)
+                          selectRoomHandler(index, item?.price, item?.originalPrice, item?.type, item?.bedTypes)
                         }
                       >
                         {index === selectedRoomBtn ? "Selected" : "Select"}
@@ -1051,6 +1076,7 @@ const handleViewMore=(id)=>{
                 foodIdArr={foodIdArr}
                 setFoodIdArr={setFoodIdArr}
                 roomPrice={roomPrice}
+                originalPrice={originalPrice}
                 roomType={roomType}
                 bedtype={bedtype}
                 isOffer={bookingDetails?.isOffer}

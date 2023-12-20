@@ -153,7 +153,7 @@ export default function Result() {
             </div>
            
           </div>
-          {hotel.isOffer && (
+          {hotel.roomDetails.originalPrice > hotel.roomDetails.price && (
             <div className="offer-intro">
                 
               <p>{hotel.offerDetails} get {hotel.offerPriceLess}% less </p>

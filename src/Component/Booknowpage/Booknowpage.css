@@ -818,3 +818,19 @@
     left: -1px;
   }
 }
+.show-more-less {
+  margin-top: 10px;
+}
+
+.show-more-less button {
+  background-color: #0f68c72c;
+  color: #000000;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.show-more-less button:hover {
+  background-color: #5acdfa;
+}
+

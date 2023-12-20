@@ -40,7 +40,7 @@ export const Cards = ({ offer }) => {
         <p class="_date">
           <BiRupee /> {offer.roomDetails && offer?.roomDetails[0]?.price}
         </p>
-        {offer.isOffer && (
+        {offer.roomDetails.originalPrice > offer.roomDetails.price && (
   
     <div className="offer-intro">
 

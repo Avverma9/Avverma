@@ -72,7 +72,7 @@ const BookNowPage = ({ userData, toast }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
-
+  const [displayCount, setDisplayCount] = useState(5);
   const [writeReview, setWriteReview] = useState(false);
 
   // Pagination for Reviews
@@ -372,7 +372,13 @@ const BookNowPage = ({ userData, toast }) => {
   const handleViewMore=(id)=>{
     navigate(`/policy-page/${id}`)
   }
-  
+  const showMore = () => {
+    setDisplayCount(hotelAmenities.length);
+  };
+
+  const showLess = () => {
+    setDisplayCount(5);
+  };
   return (
     <>
       <div className="container-p-4">
@@ -425,12 +431,12 @@ const BookNowPage = ({ userData, toast }) => {
                 {offerData.roomDetails[0].price}
               </div>
               <div className="offer-data">
-  {offerData.isOffer && (
-    <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
+              {offerData?.roomDetails?.originalPrice && offerData.roomDetails.originalPrice > offerData.roomDetails.price && (
+  <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
     {offerData.offerDetails} get {offerData.offerPriceLess}% less
   </p>
-  
-  )}
+)}
+
 </div>
 
 
@@ -456,60 +462,63 @@ const BookNowPage = ({ userData, toast }) => {
                 )}
               </div>
               <div className="amenity-section">
-                <div className="amenity-word">Amenities:</div>
-                <div className="amenityclass">
-                  {hotelAmenities &&
-                    hotelAmenities.map((option, index) => {
-                      let icon;
-                      switch (option) {
-                        case "GYM":
-                          icon = faDumbbell;
-                          break;
-                        case "Wifi":
-                          icon = faWifi;
-                          break;
-                        case "Parking":
-                          icon = faParking;
-                          break;
-                        case "Geyser":
-                          icon = faFire;
-                          break;
-                        case "TV":
-                          icon = faTv;
-                          break;
-                        case "CCTV":
-                          icon = faCamera;
-                          break;
-                        case "AC":
-                          icon = faSnowflake;
-                          break;
-                        case "Card-payment":
-                          icon = faCreditCard;
-                          break;
-                        case "Elevator":
-                          icon = faElevator;
-                          break;
-                        case "Kitchen":
-                          icon = faKitchenSet;
-                          break;
-                        default:
-                          icon = faCheck;
-                      }
-                      return (
-                        <div key={index} className="amenity-item">
-                          {icon && (
-                            <FontAwesomeIcon
-                              icon={icon}
-                              className="amenity-icon"
-                            />
-                          )}{" "}
-                          {option}
-                        </div>
-                      );
-                    })}
-                </div>
+      <div className="amenity-word">Amenities:</div>
+      <div className="amenityclass">
+        {hotelAmenities &&
+          hotelAmenities.slice(0, displayCount).map((option, index) => {
+            let icon;
+            switch (option) {
+              case "GYM":
+                icon = faDumbbell;
+                break;
+              case "Wifi":
+                icon = faWifi;
+                break;
+              case "Parking":
+                icon = faParking;
+                break;
+              case "Geyser":
+                icon = faFire;
+                break;
+              case "TV":
+                icon = faTv;
+                break;
+              case "CCTV":
+                icon = faCamera;
+                break;
+              case "AC":
+                icon = faSnowflake;
+                break;
+              case "Card-payment":
+                icon = faCreditCard;
+                break;
+              case "Elevator":
+                icon = faElevator;
+                break;
+              case "Kitchen":
+                icon = faKitchenSet;
+                break;
+              default:
+                icon = faCheck;
+            }
+            return (
+              <div key={index} className="amenity-item">
+                {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {option}
               </div>
-
+            );
+          })}
+        {hotelAmenities.length > 5 && (
+          <div className="show-more-less">
+            {displayCount === 5 ? (
+              <button onClick={showMore}>Show More</button>
+            ) : (
+              <button onClick={showLess}>Show Less</button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  
               <div className="moreopt">
                 <p className="morehead">More:</p>
                 <div className="moreitem">
@@ -749,7 +758,16 @@ const BookNowPage = ({ userData, toast }) => {
                       <div className="card-detail-info flex-fill">
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
-                        <p>Price : {item?.price}</p>
+                        {offerData.isOffer && (
+  <div>
+    <p>
+      {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
+    </p>
+    {item?.originalPrice > item?.price && (
+      <del>{item?.originalPrice}</del>
+    )}
+  </div>
+)}
                       </div>
 
                       <div className="card-detail-img">

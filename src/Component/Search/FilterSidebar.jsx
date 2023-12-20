@@ -44,6 +44,19 @@ const FilterSidebar = ({
   const [city, setCity] = useState("");
   //Filter Api
   useEffect(() => {
+    // Check if at least one query parameter has a value
+    if (
+      selectedPropertyTypes.length === 0 &&
+      roomtype.length === 0 &&
+      starrating.length === 0 &&
+      bedtype.length === 0 &&
+      amenity.length === 0 &&
+      (minValue <= 400 || maxValue >= 4000)
+    ) {
+      // No need to make the API call if all query parameters are empty
+      return;
+    }
+  
     const propertyTypeQueryParam = selectedPropertyTypes.join(",");
     const roomtypeQueryParam = roomtype.join(",");
     const starRatingQueryParam = starrating.join(",");
@@ -64,7 +77,9 @@ const FilterSidebar = ({
           setData(null);
           setData(data.data);
           setDataAvailable(data.data.length > 0 ? true : false);
-        } else setData([]);
+        } else {
+          setData([]);
+        }
       })
       .catch((error) => console.log(error));
   }, [
