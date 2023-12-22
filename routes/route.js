@@ -10,7 +10,7 @@ const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const bookingController = require("../controllers/bookingController");
 const emailController = require("../controllers/emailController");
-
+const adminController = require("../controllers/adminController")
 const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
@@ -153,6 +153,9 @@ router.patch(
   "/update/dashboard/updated/partner/:id",
   DashboardUser.updatePartner
 );
+//============================ADMIN===========================================
+router.post("/auth/register/new-admin/page",upload,adminController.register)
+router.post("/auth/login/new-admin/page",adminController.signIn)
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
