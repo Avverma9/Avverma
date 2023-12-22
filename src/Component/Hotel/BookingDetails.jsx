@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./BookingDetails.module.css";
 import axios from "axios";
 import { FaRupeeSign } from "react-icons/fa";
@@ -7,6 +8,7 @@ import { BsPencil } from "react-icons/bs";
 import { BiSolidOffer } from "react-icons/bi";
 import { AiOutlineCodepenCircle } from "react-icons/ai";
 import { AiOutlineClose } from "react-icons/ai";
+import { BiBed } from "react-icons/bi";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -14,7 +16,6 @@ import "react-datepicker/dist/react-datepicker.css";
 const BookingDetails = ({
   hotelOwnerName,
   hotelName,
-  // price,
   foodPrice,
   hotelID,
   userId,
@@ -22,26 +23,33 @@ const BookingDetails = ({
   userData,
   selectedRooms,
   selectedGuests,
-  setSelectedRooms,
-  setSelectedGuests,
-  checkIn,
-  checkOut,
   hotelimage,
   destination,
   foodIdArr,
   setFoodIdArr,
   roomPrice,
-  originalPrice,
+  roomType,
+  bedtype,
   isOffer,
   offerDetails,
   offerPriceLess,
+  toast,
+  changeScrollPos,
+  bookingRef,
+  selectRoomRef,
+  positionTop,
+  meals,
 }) => {
+  // console.log(scrollPos);
+  const [openPaymentModule, setOpenPaymentModule] = useState(false);
+  const navigate = useNavigate()
   const handleOpenRazorpay = (data) => {
+    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
-      amount: (roomPrice * selectedRooms + foodPrice) * 100,
-      currency: data.currency,
+      amount: data?.payment.amount * 100,
+      currency: data?.payment.currency,
       prefill: {
         name: userData.name,
         email: userData.email,
@@ -67,18 +75,26 @@ const BookingDetails = ({
     rzp.open();
   };
 
+  const discountedRoomPrice =
+    isOffer && offerPriceLess
+      ? roomPrice - (roomPrice * offerPriceLess) / 100
+      : roomPrice;
+
+  const totalAccommodationPrice = discountedRoomPrice * selectedRooms;
+
+  const totalPrice = totalAccommodationPrice + foodPrice;
+
+
   const handleBooking = (paymentStatus) => {
     const bookingData = {
-      user: userId,
-      hotel: hotelID,
       hotelName: hotelName,
       hotelOwnerName: hotelOwnerName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
+      checkIn: selectdate,
+      checkOut: selectdatecheckout,
       guests: selectedGuests,
       rooms: selectedRooms,
-      price: roomPrice * selectedRooms + foodPrice,
-      bookingStatus: paymentStatus,
+      price: roomPrice,
+      paymentStatus: paymentStatus,
       images: hotelimage,
       destination: destination,
       foodItems: foodIdArr,
@@ -90,30 +106,17 @@ const BookingDetails = ({
           bookingData
         )
         .then((res) => {
-          console.log(res.data, "Booking created successfully", bookingData);
+          console.log(res.status);
           setFoodIdArr([]);
 
-          // if (userData.email) {
-          //   axios
-          //     .post(
-          //       "https://hotel-backend-tge7.onrender.com/SendBookingEmail",
-          //       {
-          //         bookingData: bookingData,
-          //         email: userData.email,
-          //       }
-          //     )
-          //     .then((res) => {
-          //       console.log(res);
-          //     })
-          //     .catch((err) => {
-          //       console.log(err);
-          //     });
-          // } else {
-          //   console.log("User data does not have a valid email");
-          // }
+          if (res.status === 201) {
+            toast.success("Booking created successfully");
+            alert("Your booking is done !")
+            navigate("profile/confirm-booking")
+          }
         })
         .catch((err) => {
-          console.log(err);
+          toast.error(err);
         });
     } else {
       console.log("User data, email, or payment status is not valid");
@@ -138,9 +141,15 @@ const BookingDetails = ({
       console.log(err);
     }
   };
-  //for date picker
-  const [selectdate, setSelectdate] = useState(new Date());
-  const [selectdatecheckout, setSelectdatecheckout] = useState(new Date());
+  const initialCheckInDate = new Date();
+  initialCheckInDate.setDate(initialCheckInDate.getDate() + 1);
+
+  // Set default check-out date to one day after check-in date
+  const initialCheckOutDate = new Date(initialCheckInDate);
+  initialCheckOutDate.setDate(initialCheckOutDate.getDate() + 1);
+
+  const [selectdate, setSelectdate] = useState(initialCheckInDate);
+  const [selectdatecheckout, setSelectdatecheckout] = useState(initialCheckOutDate);
 
   const handledatechange = (date) => {
     setSelectdate(date);
@@ -149,127 +158,128 @@ const BookingDetails = ({
   const handledatechange2 = (date) => {
     setSelectdatecheckout(date);
   };
-  //for add room and guest
-  const [isopen, setIsopen] = useState(false);
 
-  const togglePopup = () => {
-    setIsopen(!isopen);
+
+  const paymentSelect = () => {
+    setOpenPaymentModule(true);
+  };
+
+  const handlePayatCheckin = () => {
+    handleBooking("success");
   };
 
   return (
     <>
-      <div className="new-booking-details">
+      <div
+        className="new-booking-details"
+        style={{
+          position: "sticky",
+          top: Math.round(positionTop * 1),
+        }}
+      >
         <div className={styles.main}>
           <div className={styles.headupper}>
             <div className={styles.head}>
-              <span>
+            <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {roomPrice}
+                {isOffer && offerPriceLess && (
+                  <span className={styles.original_price}>
+                    <del>{roomPrice}</del>
+                  </span>
+                )}
+                {discountedRoomPrice}
               </span>
-              {/* <span>1999</span> */}
-              {/* <span>81% off</span> */}
+            
             </div>
             <div className={styles.inclusive_tex}>Inclusive of all taxes</div>
           </div>
           <div className={styles.check_room}>
             <div className={styles.check_in}>
               <div className={styles.check_in_in}>
-                <div className={styles.check_in_in_in}>
-                  <h4>Check In </h4>
-                  <span className={styles.check_in_real}>
-                    <DatePicker
-                      selected={selectdate}
-                      onChange={handledatechange}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-in Date"
-                    />
-                    {selectdate && <p> {selectdate.toDateString()}</p>}
-                  </span>
-                  <h4>Check Out </h4>
-                  <span className={styles.check_out_real}>
-                    <DatePicker
-                      selected={selectdatecheckout}
-                      onChange={handledatechange2}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Check-out Date"
-                    />
-                    {selectdatecheckout && (
-                      <p> {selectdatecheckout.toDateString()}</p>
-                    )}
-                  </span>
+                <div
+                  className={styles.check_in_in_in}
+                  style={{ display: "flex", gap: "10px" }}
+                >
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check In{" "}
+                    </h4>
+                    <span className={styles.check_in_real}>
+                      <DatePicker
+                        selected={selectdate}
+                        onChange={handledatechange}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-in Date"
+                      />
+                      {selectdate && <p> {selectdate.toDateString()}</p>}
+                    </span>
+                  </div>
+                  <div>
+                    <h4 style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Check Out{" "}
+                    </h4>
+                    <span className={styles.check_out_real}>
+                      <DatePicker
+                        selected={selectdatecheckout}
+                        onChange={handledatechange2}
+                        dateFormat="dd/MM/yyyy"
+                        placeholderText="Check-out Date"
+                      />
+                      {selectdatecheckout && (
+                        <p> {selectdatecheckout.toDateString()}</p>
+                      )}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
             <div className={styles.guest}>
               <div className={styles.guest_in}>
-                <div className={styles.guest_in_in} onClick={togglePopup}>
+                <div
+                  className={styles.guest_in_in}
+                  onClick={() => {
+                    changeScrollPos(bookingRef.current);
+                  }}
+                >
                   {selectedRooms} Room , {selectedGuests} Guest
                 </div>
-                {isopen && (
-                  <div className={styles.popup}>
-                    <div className={styles.roompo}>
-                      <button onClick={togglePopup}>
-                        <AiOutlineClose />
-                      </button>
-                      <div className={styles.headpop}>
-                        <h5>Add Room and Guest</h5>
-                      </div>
-                      <div className={styles.flex_room_guests}>
-                        <div className={styles.roomsec}>
-                          <label>Rooms</label>
-                          <input
-                            type="number"
-                            value={selectedRooms}
-                            onChange={(e) => setSelectedRooms(e.target.value)}
-                          />
-                        </div>
-                        <div className={styles.guestpop}>
-                          <label>Guest</label>
-                          <input
-                            type="number"
-                            value={selectedGuests}
-                            onChange={(e) => setSelectedGuests(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>
           <div className={styles.facilities}>
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}>
-                <CiMobile1 />
+                <BiBed />
               </span>
               <div className={styles.textnew}>
-                <span className={styles.textc}>Spot On Non Ac</span>
+         
+                <span className={styles.textc}>{roomType}-{bedtype}</span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
-              <span className={styles.penci_ico}>
+              <span
+                className={styles.penci_ico}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  changeScrollPos(selectRoomRef.current);
+                }}
+              >
                 <BsPencil />
               </span>
             </div>
           </div>
-
-          {originalPrice > roomPrice && (
+          
+          {isOffer === true && (
             <div className={styles.wizard}>
               <div className={styles.wizardf}>
                 <div className={styles.wizard_in}>
                   <div className={styles.wizardf1}>{offerDetails}</div>
-                  {/* <div className={styles.wizardf2}>
-                    Get additional discounts of
-                  </div> */}
+                 
                 </div>
                 <div className={styles.wizard_inin}>
                   <div className={styles.rightwizard}>
                     <div className={styles.rswizard}>{offerPriceLess}% off</div>
-                    {/* <div className={styles.rs2wizard}>
-                      <FaRupeeSign />
-                      199
-                    </div> */}
+                  
                   </div>
                 </div>
               </div>
@@ -280,46 +290,68 @@ const BookingDetails = ({
             <div className={styles.pri}>
               <div className={styles.pri1}>Accomodation:</div>
               <div className={styles.pri2}>
-                <span className={styles.p}>
+              <span className={styles.p}>
                   <FaRupeeSign />
-                  {roomPrice * selectedRooms}
+                  {totalAccommodationPrice}
                 </span>
               </div>
             </div>
-            <div className={styles.pri}>
-              <div className={styles.pri1}>Food Items:</div>
-              <div className={styles.pri2}>
+            {meals && meals.length > 0 ? (
+              <div className={styles.pri}>
+                <div className={styles.pri1}>Food Items:</div>
+                <div className={styles.pri2}>
                 <span className={styles.p}>
-                  <FaRupeeSign />
-                  {foodPrice}
-                </span>
+                    <FaRupeeSign />
+                    {foodPrice}
+                  </span>
+                </div>
               </div>
-            </div>
-            {/* <div className={styles.pri}>
-              <div className={styles.pri1}>Your Saving</div>
-              <div className={styles.pri2}>
-                <span className={styles.p}>
-                  <FaRupeeSign />
-                  650
-                </span>
-              </div>
-            </div> */}
+            ) : null}
+       
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>
-                <span className={styles.p}>
+              <span className={styles.p}>
                   <FaRupeeSign />
-                  {roomPrice * selectedRooms + foodPrice}
+                  {totalPrice}
                 </span>
               </div>
             </div>
+           
+           
           </div>
+
+          {openPaymentModule === false ? (
+            <div className={styles.btn_payment}>
+              <button className="payment-btn" onClick={paymentSelect}>
+                Make Payment
+              </button>
+            </div>
+          ) : (
+            <>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayment}>Pay Now</button>
+              </div>
+              <div
+                className={styles.btn_payment}
+                style={{ marginBottom: "15px" }}
+              >
+                <button onClick={handlePayatCheckin}>Pay at Hotel</button>
+              </div>
+              <div className={styles.btn_payment}>
+                <button
+                  style={{ backgroundColor: "#ff0000" }}
+                  onClick={() => setOpenPaymentModule(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-      <div className={styles.btn_payment}>
-        <button className="payment-btn" onClick={handlePayment}>
-          Make Payment
-        </button>
       </div>
     </>
   );
