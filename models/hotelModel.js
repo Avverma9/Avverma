@@ -7,6 +7,7 @@ const hotelsSchema = new mongoose.Schema(
     hotelName: {
       type: String,
     },
+    description:String,
     hotelOwnerName: {
       type: String,
     },
