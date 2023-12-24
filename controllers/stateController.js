@@ -7,20 +7,38 @@ const createState = async (req, res) => {
     const { state, text } = req.body;
     const images = req.files.map((file) => file.location);
 
-    const newState = await stateModel.create({ state, images, text });
+    // Check if the state already exists
+    const existingState = await stateModel.findOne({ state });
 
-    res.status(201).json({
-      message: "State created successfully",
-      data: newState,
-    });
+    if (existingState) {
+      // If the state exists, update the existing document
+      existingState.images.push(...images);
+      existingState.text.push(text);
+
+      await existingState.save();
+
+      res.status(200).json({
+        message: "State updated successfully",
+        data: existingState,
+      });
+    } else {
+      // If the state doesn't exist, create a new document
+      const newState = await stateModel.create({ state, images, text });
+
+      res.status(201).json({
+        message: "State created successfully",
+        data: newState,
+      });
+    }
   } catch (error) {
-    console.error("Error creating state:", error);
+    console.error("Error creating/updating state:", error);
     res.status(500).json({
-      message: "Failed to create state",
+      message: "Failed to create/update state",
       error: error.message,
     });
   }
 };
+
 
 
 //==========================================================================================
