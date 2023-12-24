@@ -60,7 +60,7 @@ const hotelsSchema = new mongoose.Schema(
       type: Number,
     },
     offerExp: {
-      type: Date,
+      type: Date
     },
     offerStartDate: {
       type: Date,

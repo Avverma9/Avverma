@@ -77,6 +77,7 @@ router.delete(
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
 router.patch("/hotels/update/coupon/by/:hotelid/:roomid", hotelController.ApplyCoupon);
+router.patch("/remove/hotels-offer/update/coupon/by/:id/:roomid",hotelController.expireOffer)
 router.get(
   "/see-all/hotels-state/get/all/hotels",
   hotelController.getHotelsState
