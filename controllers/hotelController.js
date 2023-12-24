@@ -901,8 +901,31 @@ const expireOffer = async function (req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+//=============================================================
+const getByRoom= async (req, res) => {
+  const roomType = req.params.roomType;
 
+  try {
+    const hotel = await hotelModel.findOne({ "roomDetails.type": roomType })
+    .select("_id roomDetails");
 
+  if (!hotel) {
+    return res.status(404).json({ message: "No hotel found for the specified room type." });
+  }
+
+  // Extract only the roomDetails for the specified type
+  const standardRoom = hotel.roomDetails.find(room => room.type === roomType);
+
+  if (!standardRoom) {
+    return res.status(404).json({ message: "No data found for the specified room type." });
+  }
+
+  res.json({ hotels: { _id: hotel._id, roomDetails: [standardRoom] } });
+} catch (error) {
+  console.error(error);
+  res.status(500).json({ message: "Internal Server Error" });
+}
+}
 
 
 
@@ -935,5 +958,6 @@ module.exports = {
   getHotelsState,
   getHotelsCity,
   ApplyCoupon,
-  expireOffer
+  expireOffer,
+  getByRoom,
 };
