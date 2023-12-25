@@ -793,7 +793,10 @@ const checkAndUpdateOffers = async () => {
     // Update room prices to their original values
     for (const hotel of expiredOffers) {
       for (const room of hotel.roomDetails) {
-        room.price = room.originalPrice;
+        // Check if originalPrice exists before updating price
+        if (room.originalPrice !== undefined) {
+          room.price = room.originalPrice;
+        }
       }
       await hotel.save();
     }
@@ -808,6 +811,7 @@ const checkAndUpdateOffers = async () => {
 cron.schedule('0 0 * * *', async () => {
   await checkAndUpdateOffers();
 });
+
 //==================================================================================
 const ApplyCoupon = async (req, res) => {
   const { hotelid, roomid } = req.params;
