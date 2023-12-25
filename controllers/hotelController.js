@@ -902,30 +902,38 @@ const expireOffer = async function (req, res) {
   }
 };
 //=============================================================
-const getByRoom= async (req, res) => {
+const getByRoom = async (req, res) => {
   const roomType = req.params.roomType;
 
   try {
     const hotel = await hotelModel.findOne({ "roomDetails.type": roomType })
-    .select("_id roomDetails");
+      .select("_id roomDetails hotelName"); // Include hotelName in the select projection
 
-  if (!hotel) {
-    return res.status(404).json({ message: "No hotel found for the specified room type." });
+    if (!hotel) {
+      return res.status(404).json({ message: "No hotel found for the specified room type." });
+    }
+
+    // Extract only the roomDetails for the specified type
+    const standardRoom = hotel.roomDetails.find(room => room.type === roomType);
+
+    if (!standardRoom) {
+      return res.status(404).json({ message: "No data found for the specified room type." });
+    }
+
+    // Include hotelName in the response
+    res.json({
+      hotels: {
+        _id: hotel._id,
+        hotelName: hotel.hotelName,
+        roomDetails: [standardRoom]
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-
-  // Extract only the roomDetails for the specified type
-  const standardRoom = hotel.roomDetails.find(room => room.type === roomType);
-
-  if (!standardRoom) {
-    return res.status(404).json({ message: "No data found for the specified room type." });
-  }
-
-  res.json({ hotels: { _id: hotel._id, roomDetails: [standardRoom] } });
-} catch (error) {
-  console.error(error);
-  res.status(500).json({ message: "Internal Server Error" });
 }
-}
+
 
 
 
