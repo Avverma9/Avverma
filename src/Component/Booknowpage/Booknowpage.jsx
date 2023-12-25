@@ -409,6 +409,18 @@ const BookNowPage = ({ userData, toast }) => {
             <div className="hotel-details1">
               <div className="flex-rating">
                 <div className="name-location">
+                <div className="offer-data">
+                {offerData?.roomDetails && offerData.roomDetails.length > 0 &&
+  offerData.roomDetails.map((room, index) => (
+    room?.originalPrice !== undefined &&
+    room.originalPrice > room.price && (
+      <p key={index} style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
+        {offerData.offerDetails} get {offerData.offerPriceLess}% less</p>
+    )
+  ))}
+
+
+</div>
                   <h2 className="hotel-name1">{offerData.hotelName}</h2>
 
                   <p className="location-booknow">{offerData.destination}</p>
@@ -660,14 +672,7 @@ const BookNowPage = ({ userData, toast }) => {
                   background: "#fff",
                 }}
               >
-                <p className="roomtype">
-                  <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {offerData.roomtype}
-                </p>
-                <p className="roomtype">
-                  <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {offerData.roomtype}
-                </p>
+               
                 <p className="noofroom">
                   <FontAwesomeIcon icon={faRestroom} className="icon" />
                   Rooms:
@@ -760,11 +765,13 @@ const BookNowPage = ({ userData, toast }) => {
                         <p>Bed Type : {item?.bedTypes}</p>
                         {offerData.isOffer && (
   <div>
+    
+    
     <p>
       {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
     </p>
     {item?.originalPrice > item?.price && (
-      <del>{item?.originalPrice}</del>
+      <del>Original Price :{item?.originalPrice}</del>
     )}
   </div>
 )}

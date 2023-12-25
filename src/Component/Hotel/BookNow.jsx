@@ -855,7 +855,7 @@ const showLess = () => {
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
                         
-                        {bookingDetails.isOffer && (
+                       
   <div>
     <p>
       {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
@@ -864,7 +864,7 @@ const showLess = () => {
       <del>{item?.originalPrice}</del>
     )}
   </div>
-)}
+
 
 
 

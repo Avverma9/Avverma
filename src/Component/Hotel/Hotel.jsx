@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import { BiSolidOffer } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./hotel.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -251,6 +252,18 @@ function HotelList() {
                     )}
                     <div className={styles["search-result-content"]}>
                       <div className={styles["hotel-info"]}>
+
+                      {result.offerDetails === "N/A" ? null : (
+  <>
+    <BiSolidOffer />
+    <p style={{ color: 'blue', fontWeight: 'bold' }}>{result.offerDetails}</p>
+  </>
+)}
+
+
+
+
+
                         <h3 className={styles["search-result-title"]}>
                           {result.hotelName}
                         </h3>

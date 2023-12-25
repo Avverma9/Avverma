@@ -93,7 +93,7 @@ function App() {
       <div>
         <Header />
         <ToastContainer />
-        <HeaderImage />
+        {/* <HeaderImage /> */}
         <Dropdownbar />
 <Policy/>
 
@@ -108,7 +108,7 @@ function App() {
 
         <UserSettings />
         <Partner />
-        <PunjabPage />
+        {/* <PunjabPage />
        
         <Maharashtrapage />
         <Goapage />
@@ -123,7 +123,7 @@ function App() {
         <Kernatakapage />
         <Gujratpage />
         <Kashmirpage />
-        <Haryanapage />
+        <Haryanapage /> */}
         <Result/>
         <Routes>
           <Route path="/signin" element={<Login />} />
