@@ -892,7 +892,7 @@ const expireOffer = async function (req, res) {
       updatedHotel.roomDetails[roomIndex].price = updatedHotel.roomDetails[roomIndex].originalPrice;
 
       // Check if offerDetails is not present in the room, then update it to "N/A"
-      if (!updatedHotel.roomDetails[roomIndex].offerDetails) {
+      if (updatedHotel.roomDetails[roomIndex].offerDetails) {
         updatedHotel.roomDetails[roomIndex].offerDetails = "N/A";
       }
     } else {
