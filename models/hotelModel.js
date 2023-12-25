@@ -26,6 +26,10 @@ const hotelsSchema = new mongoose.Schema(
         originalPrice: {
           type: Number,
         },
+offerDetails: {
+type:String,
+default:"N/A"
+},
         countRooms: {
           type: Number,
           default: 1,
@@ -50,10 +54,6 @@ const hotelsSchema = new mongoose.Schema(
     isOffer: {
       type: Boolean,
       default: false,
-    },
-    offerDetails: {
-      default: "N/A",
-      type: String,
     },
     offerPriceLess: {
       default: 0,
