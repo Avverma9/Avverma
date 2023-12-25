@@ -29,7 +29,6 @@ const createHotel = async (req, res) => {
       starRating,
       propertyType,
       isOffer,
-      offerDetails,
       offerPriceLess,
       contact,
       ownerContactDetails,
@@ -99,7 +98,6 @@ const createHotel = async (req, res) => {
       guests,
       numRooms,
       isOffer,
-      offerDetails,
       offerPriceLess,
       localId,
       maritalStatus,
@@ -872,7 +870,7 @@ const expireOffer = async function (req, res) {
     const defaultOfferExp = new Date().toISOString().split("T")[0];
 
     const updatedHotel = await hotelModel.findByIdAndUpdate(
-      id, // Pass the actual ID value here
+      id,
       {
         offerExp: offerExp || defaultOfferExp,
         isOffer: isOffer !== undefined ? isOffer : false,
@@ -892,6 +890,11 @@ const expireOffer = async function (req, res) {
     if (roomIndex !== -1) {
       // Set the new price to the originalPrice value
       updatedHotel.roomDetails[roomIndex].price = updatedHotel.roomDetails[roomIndex].originalPrice;
+
+      // Check if offerDetails is not present in the room, then update it to "N/A"
+      if (!updatedHotel.roomDetails[roomIndex].offerDetails) {
+        updatedHotel.roomDetails[roomIndex].offerDetails = "N/A";
+      }
     } else {
       return res.status(404).json({ error: 'Room not found' });
     }
