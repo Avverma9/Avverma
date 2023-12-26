@@ -97,7 +97,7 @@ const FilterSidebar = ({
 
  
   return (
-    <div className={`${styles["vertical-bar"]} ${styles["sticky-FilterSidebar"]}`}>
+    <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>
         <div className={styles.clear_btn_flex}>
           <h3 className="filterhead">Filters</h3>

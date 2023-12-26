@@ -314,7 +314,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 4px;
   width: 70%;
-  height: 70%;
+  height: 90%;
   color: rgb(105, 105, 105);
   border: 1px solid #cdcdcd;
   background: white;
@@ -328,7 +328,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 4px;
   width: 70%;
-  height: 70%;
+  height: 90%;
   font-size: 12px;
 }
 
@@ -430,8 +430,8 @@ input[type="checkbox"] {
   }
 }
 .loading_gif img{
-  margin-left: 350px;
-  max-width: 300px;
+  margin-left: 250px;
+  
 }
 
 @media only screen and (max-width: 600px) {

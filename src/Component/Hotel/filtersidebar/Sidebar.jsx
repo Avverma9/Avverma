@@ -66,33 +66,36 @@ const Sidebar = ({
         .then((data) => {
           if (data.status === 200) {
             setHotels(data.data);
-            setDataAvailable(data.data.length > 0);
+            setDataAvailable(true);
           } else {
             setHotels([]);
+            setDataAvailable(false)
           }
         })
         .catch((error) => console.log(error));
-    };
-
-    // Check if it's the first render
-    if (firstRender.current) {
-      // Make the API call on the first render
-      firstRender.current = false;
-      fetchData();
-    } else {
-      // Check if all query parameters are empty
-      if (
-        selectedPropertyTypes.length === 0 &&
-        roomtype.length === 0 &&
-        starrating.length === 0 &&
-        bedtype.length === 0 &&
-        amenity.length === 0
-      ) {
-        // No need to make the API call if all query parameters are empty
         setHotels([]);
         setDataAvailable(false);
-        return;
-      }
+    };
+
+     // Check if it's the first render
+  if (firstRender.current) {
+    // Make the API call on the first render
+    firstRender.current = false;
+    fetchData();
+  } else {
+    // Check if all query parameters are empty
+    if (
+      selectedPropertyTypes.length === 0 &&
+      roomtype.length === 0 &&
+      starrating.length === 0 &&
+      bedtype.length === 0 &&
+      amenity.length === 0
+    ) {
+      // No need to make the API call if all query parameters are empty
+      setHotels([]);
+      setDataAvailable(false);
+      return;
+    }
 
       // Make the API call with updated parameters
       fetchData();
@@ -117,10 +120,9 @@ const Sidebar = ({
           `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
         )
         .then((data) => {
-          let hotelData = data.data;
+          
           if (data.status === 200) {
-            setHotels(null);
-            setHotels(hotelData);
+            setHotels(data.data);
           } else setHotels([]);
         })
         .catch((error) => console.log(error));
@@ -151,7 +153,7 @@ const Sidebar = ({
           console.log(data.data);
           let hotelData = data.data;
           if (data.status === 200) {
-            setHotels(null);
+          
             setHotels(hotelData);
           } else setHotels([]);
         })
