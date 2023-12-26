@@ -74,7 +74,6 @@ const FilterSidebar = ({
       .get(priceFilterUrl)
       .then((data) => {
         if (data.status === 200) {
-          setData(null);
           setData(data.data);
           setDataAvailable(data.data.length > 0 ? true : false);
         } else {
@@ -88,12 +87,34 @@ const FilterSidebar = ({
     starrating,
     bedtype,
     amenity,
-    minValue,
-    maxValue,
     setData,
     setDataAvailable,
   ]);
-  
+  useEffect(() => {
+   
+    setData([]);
+    if (minValue > 400 || maxValue < 4000) {
+      axios
+        .get(
+          `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
+        )
+        .then((data) => {
+          
+          if (data.status === 200) {
+            setData(data.data);
+          } else setData([]);
+        })
+        .catch((error) => console.log(error));
+    }
+    const labels = document.getElementsByClassName("label");
+    Array.from(labels).forEach((label, index) => {
+      if (index === 0) {
+        label.textContent = `₹${minValue}`;
+      } else if (index === 1) {
+        label.textContent = `₹${maxValue}`;
+      }
+    });
+  }, [maxValue, minValue]);
 
  
   return (

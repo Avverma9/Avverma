@@ -106,8 +106,7 @@ const Sidebar = ({
     starrating,
     bedtype,
     amenity,
-    minValue,
-    maxValue,
+    setHotels,
   ]);
   const queryString = localStorage.getItem("searchQuery");
 
