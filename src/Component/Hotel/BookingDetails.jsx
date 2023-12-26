@@ -75,12 +75,9 @@ const BookingDetails = ({
     rzp.open();
   };
 
-  const discountedRoomPrice =
-    isOffer && offerPriceLess
-      ? roomPrice - (roomPrice * offerPriceLess) / 100
-      : roomPrice;
 
-  const totalAccommodationPrice = discountedRoomPrice * selectedRooms;
+
+  const totalAccommodationPrice = roomPrice * selectedRooms;
 
   const totalPrice = totalAccommodationPrice + foodPrice;
 
@@ -182,12 +179,11 @@ const BookingDetails = ({
             <div className={styles.head}>
             <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-                {isOffer && offerPriceLess && (
-                  <span className={styles.original_price}>
-                    <del>{roomPrice}</del>
+               
+                  <span className={styles.roomPrice}>
+                    {roomPrice}
                   </span>
-                )}
-                {discountedRoomPrice}
+            
               </span>
             
             </div>
@@ -269,22 +265,7 @@ const BookingDetails = ({
             </div>
           </div>
           
-          {isOffer === true && (
-            <div className={styles.wizard}>
-              <div className={styles.wizardf}>
-                <div className={styles.wizard_in}>
-                  <div className={styles.wizardf1}>{offerDetails}</div>
-                 
-                </div>
-                <div className={styles.wizard_inin}>
-                  <div className={styles.rightwizard}>
-                    <div className={styles.rswizard}>{offerPriceLess}% off</div>
-                  
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+          
 
           <div className={styles.pricechart}>
             <div className={styles.pri}>

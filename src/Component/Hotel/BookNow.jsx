@@ -484,13 +484,18 @@ const showLess = () => {
           <div className="bookingflex">
             <div className="hotel-details1">
               <div className="flex-rating">
-                <div className="name-location">
-                  <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
+              <div className="name-location">
+  <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
+  {Array.isArray(bookingDetails.roomDetails) && bookingDetails.roomDetails.map((room, index) => (
+    room.offerDetails !== "N/A" && (
+      <p key={index} className="offer-details" style={{ backgroundColor: 'red', color: 'white' }}>{room.offerDetails}</p>
 
-                  <p className="location-booknow">
-                    {bookingDetails.destination}
-                  </p>
-                </div>
+
+    )
+  ))}
+  <p className="location-booknow">{bookingDetails.destination}</p>
+</div>
+
                 <div className="d-flex flex-column gap-3">
                   <div className="rating0">
                     <div className="staricon">
@@ -852,17 +857,25 @@ const showLess = () => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
+                     
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
                         
                        
   <div>
-    <p>
-      {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
-    </p>
-    {item?.originalPrice > item?.price && (
-      <del>{item?.originalPrice}</del>
-    )}
+  <p style={{ display: 'flex', alignItems: 'center' }}>
+  {item?.originalPrice > item?.price && (
+    <>
+      <span style={{ marginRight: '5px' }}>Special price -</span>
+      <del style={{ color: 'white', backgroundColor: 'red' }}>{item?.originalPrice}</del>
+    </>
+  )}
+  {item?.originalPrice > item?.price ? '' : 'Price'}: {item?.price}
+</p>
+
+
+
+   
   </div>
 
 

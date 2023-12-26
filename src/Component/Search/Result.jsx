@@ -159,17 +159,55 @@ export default function Result() {
               <p>{hotel.offerDetails} get {hotel.offerPriceLess}% less </p>
             </div>
           )}
-          <div className="price-tag">
-            <h5>
-              <FaRupeeSign /> {hotel.isOffer ? calculateDiscountedPrice(hotel) : hotel.roomDetails?.[0]?.price}{" "}
-            </h5>
-         
-              <del>
-                <FaRupeeSign /> {hotel.roomDetails?.[0]?.price}
-              </del>
-           
-            <p>Per room per night</p>
-          </div>
+     <div className="price-tag">
+  {hotel.roomDetails && hotel.roomDetails.length > 0 ? (
+    <>
+      {hotel.roomDetails.some((room) => room.originalPrice && room.originalPrice > room.price) ? (
+        hotel.roomDetails
+          .filter((room) => room.originalPrice && room.originalPrice > room.price)
+          .map((room, index) => (
+            <div key={index}>
+              <h5>
+                <FaRupeeSign />
+                <del>{room.originalPrice}</del> {room.price}
+                {room.offerDetails !== "N/A" && (
+                  <p style={{ color: 'red', fontWeight: 'bold', fontSize: '14px' }}>
+                    {room.offerDetails}
+                  </p>
+                )}
+              </h5>
+              {hotel.isOffer && <p>Per room per night</p>}
+            </div>
+          ))
+      ) : (
+        hotel.roomDetails.map((room, index) => (
+          room.type === "Standard Room" && (
+            <div key={index}>
+              <h5>
+                <FaRupeeSign />
+                {room.price}
+              </h5>
+              {room.offerDetails !== "N/A" && hotel.isOffer && (
+                <p style={{ color: 'red', fontWeight: 'bold', fontSize: '14px' }}>
+                  {room.offerDetails}
+                </p>
+              )}
+              {hotel.isOffer && <p>Per room per night</p>}
+            </div>
+          )
+        ))
+      )}
+    </>
+  ) : (
+    <h5>
+      <FaRupeeSign /> {hotel.isOffer ? calculateDiscountedPrice(hotel) : "N/A"}{" "}
+    </h5>
+  )}
+</div>
+
+
+
+
           <div className="amenities">
             <MdRoomService /> Amenities <WiDirectionRight />{" "}
             {hotel.amenities.slice(0, 5).join(" , ")}

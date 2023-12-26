@@ -410,20 +410,23 @@ const BookNowPage = ({ userData, toast }) => {
               <div className="flex-rating">
                 <div className="name-location">
                 <div className="offer-data">
-                {offerData?.roomDetails && offerData.roomDetails.length > 0 &&
-  offerData.roomDetails.map((room, index) => (
-    room?.originalPrice !== undefined &&
-    room.originalPrice > room.price && (
-      <p key={index} style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
-        {offerData.offerDetails} get {offerData.offerPriceLess}% less</p>
-    )
-  ))}
+                
 
 
 </div>
-                  <h2 className="hotel-name1">{offerData.hotelName}</h2>
+<div className="name-location">
+  <h2 className="hotel-name1">{offerData.hotelName}</h2>
+  {Array.isArray(offerData.roomDetails) && offerData.roomDetails.map((room, index) => (
+    room.offerDetails !== "N/A" && (
+      <p key={index} className="offer-details" style={{ backgroundColor: 'red', color: 'white' }}>{room.offerDetails}</p>
 
-                  <p className="location-booknow">{offerData.destination}</p>
+
+    )
+  ))}
+  <p className="location-booknow">{offerData.destination}</p>
+</div>
+
+            
                 </div>
                 <div className="d-flex flex-column gap-3">
                   <div className="rating0">
@@ -443,11 +446,7 @@ const BookNowPage = ({ userData, toast }) => {
                 {offerData.roomDetails[0].price}
               </div>
               <div className="offer-data">
-              {offerData?.roomDetails?.originalPrice && offerData.roomDetails.originalPrice > offerData.roomDetails.price && (
-  <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
-    {offerData.offerDetails} get {offerData.offerPriceLess}% less
-  </p>
-)}
+              
 
 </div>
 
@@ -763,18 +762,21 @@ const BookNowPage = ({ userData, toast }) => {
                       <div className="card-detail-info flex-fill">
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
-                        {offerData.isOffer && (
-  <div>
-    
-    
-    <p>
-      {item?.originalPrice > item?.price ? 'Offered Price' : 'Price'}: {item?.price}
-    </p>
-    {item?.originalPrice > item?.price && (
-      <del>Original Price :{item?.originalPrice}</del>
-    )}
+                        <div>
+  <p style={{ display: 'flex', alignItems: 'center' }}>
+  {item?.originalPrice > item?.price && (
+    <>
+      <span style={{ marginRight: '5px' }}>Special price -</span>
+      <del style={{ color: 'white', backgroundColor: 'red' }}>{item?.originalPrice}</del>
+    </>
+  )}
+  {item?.originalPrice > item?.price ? '' : 'Price'}: {item?.price}
+</p>
+
+
+
+   
   </div>
-)}
                       </div>
 
                       <div className="card-detail-img">

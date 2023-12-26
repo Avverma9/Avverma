@@ -253,12 +253,17 @@ function HotelList() {
                     <div className={styles["search-result-content"]}>
                       <div className={styles["hotel-info"]}>
 
-                      {result.offerDetails === "N/A" ? null : (
-  <>
-    <BiSolidOffer />
-    <p style={{ color: 'blue', fontWeight: 'bold' }}>{result.offerDetails}</p>
-  </>
-)}
+                      {result.roomDetails.map((room, index) => (
+  <div key={index}>
+    {room.offerDetails === "N/A" ? null : (
+      <>
+        <BiSolidOffer />
+        <p style={{ color: 'blue', fontWeight: 'bold' }}>{room.offerDetails}</p>
+      </>
+    )}
+  </div>
+))}
+
 
 
 
@@ -406,18 +411,46 @@ function HotelList() {
                         }}
                       >
                         <div className="rupeedetail">
-                          <p className={styles["search-result-price"]}>
-                            <FontAwesomeIcon
-                              icon={faInr}
-                              className={styles["rupees"]}
-                            />{" "}
-                            {result.roomDetails && result.roomDetails.length > 0
-                              ? result.roomDetails[0].price
-                              : "N/A"}
-                            <span className={styles["detail"]}>
-                              per room per night
-                            </span>
-                          </p>
+                        <p className={styles["search-result-price"]}>
+  <span className={styles["detail"]}>
+    per room per night
+  </span>
+  {result.roomDetails && result.roomDetails.length > 0 ? (
+    <>
+      {result.roomDetails.some(room => room.originalPrice > room.price) ? (
+        result.roomDetails.map((room, index) => (
+          <div key={index}>
+            {room.originalPrice > room.price ? (
+              <>
+                <FontAwesomeIcon
+                  icon={faInr}
+                  className={styles["rupees"]}
+                />
+                <del>{room.originalPrice}</del>
+                <p style={{ color: 'blue', fontWeight: 'bold', fontSize: '14px', display: 'inline-block' }}>
+                  Offer Price: {room.price}
+                </p>
+              </>
+            ) : null}
+          </div>
+        ))
+      ) : (
+        <>
+          <FontAwesomeIcon
+            icon={faInr}
+            className={styles["rupees"]}
+          />
+          <p style={{ fontSize: '14px', display: 'inline-block', marginLeft: '5px' }}>
+            {result.roomDetails[0].price}
+          </p>
+        </>
+      )}
+    </>
+  ) : (
+    "N/A"
+  )}
+</p>
+
                         </div>
                         <div
                           className="flex-button"

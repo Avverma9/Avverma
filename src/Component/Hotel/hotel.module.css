@@ -311,14 +311,14 @@ input[type="checkbox"] {
 .view-details-button {
   font-family: "Roboto", sans-serif;
   font-weight: bold;
-  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 8px;
-  width: 100%;
+  padding: 4px;
+  width: 70%;
+  height: 70%;
   color: rgb(105, 105, 105);
   border: 1px solid #cdcdcd;
   background: white;
-  font-size: 14px;
+  font-size: 12px;
 }
 .book-now-button {
   font-family: "Roboto", sans-serif;
@@ -326,9 +326,10 @@ input[type="checkbox"] {
   margin: 0px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 8px;
-  width: 100%;
-  font-size: 14px;
+  padding: 4px;
+  width: 70%;
+  height: 70%;
+  font-size: 12px;
 }
 
 /* <<<<<<<<< Temporary merge branch 1 */
