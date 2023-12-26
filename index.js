@@ -29,7 +29,7 @@ const cronJob = () => {
 };
 
 // Schedule the cron job to run every day at midnight (adjust as needed)
-cron.schedule('0 0 * * *', cronJob);
+cron.schedule('0 * * * *', cronJob);
 
 app.use(cors());
 app.use(express.json());

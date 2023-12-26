@@ -783,22 +783,23 @@ const getHotelsCity = async function (req, res) {
   }
 };
 //==============================Apply Coupon=========================================
+
+
 const checkAndUpdateOffers = async () => {
   try {
-    // Find documents where at least one room has an expired offer
-    const hotelsWithExpiredOffers = await hotelModel.find({
-      'roomDetails.offerExp': { $lt: new Date() },
-      'roomDetails.originalPrice': { $exists: true },
-    });
+    // Find documents where offer has expired
+    const expiredOffers = await hotelModel.find({ offerExp: { $lt: new Date() } });
 
-    for (const hotel of hotelsWithExpiredOffers) {
-      for (const room of hotel.roomDetails) {
-        // Check if originalPrice exists before updating price
-        if (room.originalPrice !== undefined) {
+    // Update room prices to their original values
+    for (const hotel of expiredOffers) {
+      hotel.roomDetails = hotel.roomDetails.map((room) => {
+        // Check if the current room object has the originalPrice property
+        if (room.hasOwnProperty('originalPrice')) {
           room.price = room.originalPrice;
-          delete room.originalPrice; // Remove the originalPrice field
         }
-      }
+        return room;
+      });
+
       await hotel.save();
     }
 
@@ -808,13 +809,10 @@ const checkAndUpdateOffers = async () => {
   }
 };
 
-// Schedule the function to run every day at midnight (adjust as needed)
-cron.schedule('0 0 * * *', async () => {
+// Schedule the function to run every hour
+cron.schedule('0 * * * *', async () => {
   await checkAndUpdateOffers();
 });
-
-module.exports = checkAndUpdateOffers; // Export the function for potential use elsewhere
-
 
 //==================================================================================
 
