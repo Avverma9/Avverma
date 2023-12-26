@@ -307,7 +307,7 @@ const getByQuery = async (req, res) => {
     propertyType,
     hotelOwnerName,
     hotelEmail,
-    roomType, // Change this to roomType
+    roomTypes, // Change this to roomType
   } = req.query;
 
   let query = {};
@@ -335,8 +335,8 @@ const getByQuery = async (req, res) => {
     query.hotelEmail = { $regex: new RegExp(hotelEmail, "i") };
   }
 
-  if (roomType) {
-    query.roomDetails = { $elemMatch: { type: { $in: roomType } } };
+  if (roomTypes) {
+    query.roomDetails = { $elemMatch: { type: { $in: roomTypes } } };
   }
 
   const fetchedData = await hotelModel.find(query);
