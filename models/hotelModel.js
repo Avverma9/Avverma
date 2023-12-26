@@ -7,7 +7,7 @@ const hotelsSchema = new mongoose.Schema(
     hotelName: {
       type: String,
     },
-    description:String,
+    description: String,
     hotelOwnerName: {
       type: String,
     },
@@ -26,10 +26,22 @@ const hotelsSchema = new mongoose.Schema(
         originalPrice: {
           type: Number,
         },
-offerDetails: {
-type:String,
-default:"N/A"
-},
+        offerDetails: {
+          type: String,
+          default: "N/A",
+        },
+        offerPriceLess: {
+          default: 0,
+          type: Number,
+        },
+        offerExp: {
+          type: Date,
+        },
+        offerStartDate: {
+          type: Date,
+          default: () => new Date().toISOString().split("T")[0], // YYYY-MM-DD format
+        },
+
         countRooms: {
           type: Number,
           default: 1,
@@ -54,17 +66,6 @@ default:"N/A"
     isOffer: {
       type: Boolean,
       default: false,
-    },
-    offerPriceLess: {
-      default: 0,
-      type: Number,
-    },
-    offerExp: {
-      type: Date
-    },
-    offerStartDate: {
-      type: Date,
-      default: () => new Date().toISOString().split("T")[0], // YYYY-MM-DD format
     },
 
     startDate: {

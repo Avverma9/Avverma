@@ -785,15 +785,18 @@ const getHotelsCity = async function (req, res) {
 //==============================Apply Coupon=========================================
 const checkAndUpdateOffers = async () => {
   try {
-    // Find documents where offer has expired
-    const expiredOffers = await hotelModel.find({ offerExp: { $lt: new Date() } });
+    // Find documents where at least one room has an expired offer
+    const hotelsWithExpiredOffers = await hotelModel.find({
+      'roomDetails.offerExp': { $lt: new Date() },
+      'roomDetails.originalPrice': { $exists: true },
+    });
 
-    // Update room prices to their original values
-    for (const hotel of expiredOffers) {
+    for (const hotel of hotelsWithExpiredOffers) {
       for (const room of hotel.roomDetails) {
         // Check if originalPrice exists before updating price
         if (room.originalPrice !== undefined) {
           room.price = room.originalPrice;
+          delete room.originalPrice; // Remove the originalPrice field
         }
       }
       await hotel.save();
@@ -810,7 +813,11 @@ cron.schedule('0 0 * * *', async () => {
   await checkAndUpdateOffers();
 });
 
+module.exports = checkAndUpdateOffers; // Export the function for potential use elsewhere
+
+
 //==================================================================================
+
 const ApplyCoupon = async (req, res) => {
   const { hotelid, roomid } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
@@ -830,25 +837,31 @@ const ApplyCoupon = async (req, res) => {
     const originalPrice = room.price;
     const updatedHotel = await hotelModel.findByIdAndUpdate(
       hotelid,
-      { offerDetails, offerExp, offerPriceLess, isOffer, offerStartDate },
-      { new: true }
+      {
+        $set: {
+          "roomDetails.$[room].offerDetails": offerDetails,
+          "roomDetails.$[room].offerExp": offerExp,
+          "roomDetails.$[room].offerPriceLess": offerPriceLess,
+          "roomDetails.$[room].offerStartDate": offerStartDate,
+        },
+        isOffer: true, // Assuming isOffer is a top-level field
+      },
+      {
+        new: true,
+        arrayFilters: [{ "room._id": room._id }],
+      }
     );
 
     const hasOfferExpired = new Date() >= new Date(offerExp);
-    const updatedRoom = updatedHotel.roomDetails.find((room) => room._id.toString() === roomid);
+    const updatedRoom = updatedHotel.roomDetails.find((r) => r._id.toString() === roomid);
 
     if (updatedRoom) {
       if (hasOfferExpired || new Date(offerExp) <= new Date()) {
-        // If the offer has expired or the offerExp date is less than or equal to the current date
-        // Set the price back to the originalPrice
-        updatedRoom.price = updatedRoom.originalPrice || originalPrice; // Use originalPrice if available
-        // Remove the originalPrice field as the offer has expired
+        updatedRoom.price = updatedRoom.originalPrice || originalPrice;
         delete updatedRoom.originalPrice;
       } else {
-        // If the offer is still valid, apply the discount
         const discountPercentage = offerPriceLess / 100;
         updatedRoom.price -= updatedRoom.price * discountPercentage;
-        // Store originalPrice in the room model
         updatedRoom.originalPrice = originalPrice;
       }
     }
@@ -861,6 +874,8 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 
+module.exports = ApplyCoupon;
+
 
 //================================remove offer=====================
 const expireOffer = async function (req, res) {
@@ -872,12 +887,14 @@ const expireOffer = async function (req, res) {
     const updatedHotel = await hotelModel.findByIdAndUpdate(
       id,
       {
-        offerExp: offerExp || defaultOfferExp,
         isOffer: isOffer !== undefined ? isOffer : false,
-        offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
-        offerDetails: offerDetails || "N/A",
+        $set: {
+          "roomDetails.$[room].offerExp": offerExp || defaultOfferExp,
+          "roomDetails.$[room].offerPriceLess": offerPriceLess !== undefined ? offerPriceLess : 0,
+          "roomDetails.$[room].offerDetails": offerDetails || "N/A",
+        },
       },
-      { new: true }
+      { new: true, arrayFilters: [{ "room._id": roomid }] }
     );
 
     if (!updatedHotel) {
@@ -908,6 +925,7 @@ const expireOffer = async function (req, res) {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 //=============================================================
 const getByRoom = async (req, res) => {
   const roomType = req.params.roomType;
