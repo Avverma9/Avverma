@@ -253,16 +253,30 @@ function HotelList() {
                     <div className={styles["search-result-content"]}>
                       <div className={styles["hotel-info"]}>
 
-                      {result.roomDetails.map((room, index) => (
-  <div key={index}>
-    {room.offerDetails === "N/A" ? null : (
+                      {result.roomDetails.length > 0 && (
+  <div>
+    {result.roomDetails.some((room) => room.offerDetails !== "N/A") ? (
       <>
         <BiSolidOffer />
-        <p style={{ color: 'blue', fontWeight: 'bold' }}>{room.offerDetails}</p>
+        <p style={{ color: 'blue', fontWeight: 'bold' }}>
+          Offer on multiple rooms
+        </p>
       </>
+    ) : (
+      result.roomDetails.map((room, index) => (
+        <div key={index}>
+          {room.offerDetails === "N/A" ? null : (
+            <>
+              <BiSolidOffer />
+              <p style={{ color: 'blue', fontWeight: 'bold' }}>{room.offerDetails}</p>
+            </>
+          )}
+        </div>
+      ))
     )}
   </div>
-))}
+)}
+
 
 
 
@@ -416,39 +430,35 @@ function HotelList() {
     per room per night
   </span>
   {result.roomDetails && result.roomDetails.length > 0 ? (
-    <>
-      {result.roomDetails.some(room => room.originalPrice > room.price) ? (
-        result.roomDetails.map((room, index) => (
+  (() => {
+    let offerDisplayed = false;
+
+    return result.roomDetails.map((room, index) => {
+      if (!offerDisplayed && room.originalPrice > room.price) {
+        offerDisplayed = true;
+
+        return (
           <div key={index}>
-            {room.originalPrice > room.price ? (
-              <>
-                <FontAwesomeIcon
-                  icon={faInr}
-                  className={styles["rupees"]}
-                />
-                <del>{room.originalPrice}</del>
-                <p style={{ color: 'blue', fontWeight: 'bold', fontSize: '14px', display: 'inline-block' }}>
-                  Offer Price: {room.price}
-                </p>
-              </>
-            ) : null}
+            <FontAwesomeIcon
+              icon={faInr}
+              className={styles["rupees"]}
+            />
+            <del>{room.originalPrice}</del>
+            <p style={{ color: 'blue', fontWeight: 'bold', fontSize: '14px', display: 'inline-block' }}>
+              Offer Price: {room.price}
+            </p>
           </div>
-        ))
-      ) : (
-        <>
-          <FontAwesomeIcon
-            icon={faInr}
-            className={styles["rupees"]}
-          />
-          <p style={{ fontSize: '14px', display: 'inline-block', marginLeft: '5px' }}>
-            {result.roomDetails[0].price}
-          </p>
-        </>
-      )}
-    </>
-  ) : (
-    "N/A"
-  )}
+        );
+      }
+
+      return null;
+    });
+  })()
+) : (
+  "N/A"
+)}
+
+
 </p>
 
                         </div>
