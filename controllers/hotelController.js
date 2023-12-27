@@ -790,15 +790,18 @@ const checkAndUpdateOffers = async () => {
     // Find documents where offer has expired
     const expiredOffers = await hotelModel.find({ offerExp: { $lt: new Date() } });
 
-    // Update room prices to their original values
+    // Update room prices to their original values and set offerDetails to ["N/A"]
     for (const hotel of expiredOffers) {
-      hotel.roomDetails = hotel.roomDetails.map((room) => {
-        // Check if the current room object has the originalPrice property
-        if (room.hasOwnProperty('originalPrice')) {
-          room.price = room.originalPrice;
-        }
-        return room;
-      });
+      for (const room of hotel.roomDetails) {
+        // Update room price to original value
+        room.price = room.originalPrice;
+
+        // Set offerDetails to "N/A"
+        room.offerDetails = "N/A";
+      }
+
+      // Set isOffer to false for the hotel
+      hotel.isOffer = false;
 
       await hotel.save();
     }
@@ -809,8 +812,10 @@ const checkAndUpdateOffers = async () => {
   }
 };
 
-// Schedule the function to run every hour
-cron.schedule('0 * * * *', async () => {
+
+
+// Schedule the function to run every day at midnight (adjust as needed)
+cron.schedule('0 0 * * *', async () => {
   await checkAndUpdateOffers();
 });
 
@@ -990,5 +995,5 @@ module.exports = {
   getHotelsCity,
   ApplyCoupon,
   expireOffer,
-  getByRoom,
+  getByRoom
 };

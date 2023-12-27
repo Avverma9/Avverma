@@ -163,4 +163,6 @@ router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
 
+//==========================
+// router.post("/remove-an-offer",hotelController.checkAndUpdateOffers)
 module.exports = router;
