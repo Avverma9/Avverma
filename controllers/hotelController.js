@@ -831,7 +831,7 @@ const checkAndUpdateOffers = async () => {
 };
 
 // Schedule the function to run every day at midnight (adjust as needed)
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("0 * * * *", async () => {
   await checkAndUpdateOffers();
 });
 
@@ -1021,5 +1021,6 @@ module.exports = {
   getHotelsCity,
   ApplyCoupon,
   expireOffer,
-  getByRoom,
+  getByRoom
+ 
 };
