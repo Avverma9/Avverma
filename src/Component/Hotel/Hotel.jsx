@@ -252,36 +252,40 @@ function HotelList() {
                     )}
                     <div className={styles["search-result-content"]}>
                       <div className={styles["hotel-info"]}>
-
-                      {result.roomDetails.length > 0 && (
-  <div>
-    {result.roomDetails.some((room) => room.offerDetails !== "N/A") ? (
-      <>
-        <BiSolidOffer />
-        <p style={{ color: 'blue', fontWeight: 'bold' }}>
-          Offer on multiple rooms
-        </p>
-      </>
-    ) : (
-      result.roomDetails.map((room, index) => (
-        <div key={index}>
-          {room.offerDetails === "N/A" ? null : (
-            <>
-              <BiSolidOffer />
-              <p style={{ color: 'blue', fontWeight: 'bold' }}>{room.offerDetails}</p>
-            </>
-          )}
-        </div>
-      ))
-    )}
-  </div>
-)}
-
-
-
-
-
-
+                        {result.roomDetails.length > 0 && (
+                          <div>
+                            {result.roomDetails.some(
+                              (room) => room.offerDetails !== "N/A"
+                            ) ? (
+                              <>
+                               
+                                <p
+                                  style={{ color: "red", fontWeight: "bold" }}
+                                > <BiSolidOffer /> {" "}
+                                  Offer !
+                                </p>
+                              </>
+                            ) : (
+                              result.roomDetails.map((room, index) => (
+                                <div key={index}>
+                                  {room.offerDetails === "N/A" ? null : (
+                                    <>
+                                      <BiSolidOffer />
+                                      <p
+                                        style={{
+                                          color: "blue",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        {room.offerDetails}
+                                      </p>
+                                    </>
+                                  )}
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        )}
 
                         <h3 className={styles["search-result-title"]}>
                           {result.hotelName}
@@ -295,7 +299,7 @@ function HotelList() {
                         </p>
                       </div>
                       <h5 className={styles["hotel-rating"]}>
-                        {result.rating}
+                        {result.starRating}
                         <FontAwesomeIcon
                           icon={faStar}
                           className={styles["fastar"]}
@@ -425,42 +429,49 @@ function HotelList() {
                         }}
                       >
                         <div className="rupeedetail">
-                        <p className={styles["search-result-price"]}>
-  <span className={styles["detail"]}>
-    per room per night
-  </span>
-  {result.roomDetails && result.roomDetails.length > 0 ? (
-  (() => {
-    let offerDisplayed = false;
+                          <p className={styles["search-result-price"]}>
+                            <span className={styles["detail"]}>
+                              per room per night
+                            </span>
+                            {result.roomDetails && result.roomDetails.length > 0
+                              ? (() => {
+                                  let offerDisplayed = false;
 
-    return result.roomDetails.map((room, index) => {
-      if (!offerDisplayed && room.originalPrice > room.price) {
-        offerDisplayed = true;
+                                  return result.roomDetails.map(
+                                    (room, index) => {
+                                      if (
+                                        !offerDisplayed &&
+                                        room.originalPrice > room.price
+                                      ) {
+                                        offerDisplayed = true;
 
-        return (
-          <div key={index}>
-            <FontAwesomeIcon
-              icon={faInr}
-              className={styles["rupees"]}
-            />
-            <del>{room.originalPrice}</del>
-            <p style={{ color: 'blue', fontWeight: 'bold', fontSize: '14px', display: 'inline-block' }}>
-              Offer Price: {room.price}
-            </p>
-          </div>
-        );
-      }
+                                        return (
+                                          <div key={index}>
+                                            <FontAwesomeIcon
+                                              icon={faInr}
+                                              className={styles["rupees"]}
+                                            />
+                                            <del>{room.originalPrice}</del>
+                                            <p
+                                              style={{
+                                                color: "blue",
+                                                fontWeight: "bold",
+                                                fontSize: "14px",
+                                                display: "inline-block",
+                                              }}
+                                            >
+                                              Offer Price: {room.price}
+                                            </p>
+                                          </div>
+                                        );
+                                      }
 
-      return null;
-    });
-  })()
-) : (
-  "N/A"
-)}
-
-
-</p>
-
+                                      return null;
+                                    }
+                                  );
+                                })()
+                              : "N/A"}
+                          </p>
                         </div>
                         <div
                           className="flex-button"
@@ -486,8 +497,9 @@ function HotelList() {
                       </div>
 
                       <p className={styles["search-result-availability"]}>
-                        Local ID: {result.availability}
-                      </p>
+  Local ID: {result.localId ? 'Available' : 'Not available'}
+</p>
+
                       <hr />
 
                       {expandedResultId === result._id && (
@@ -497,7 +509,7 @@ function HotelList() {
                             <ul>
                               {result.moreOptions.map((more) => (
                                 <li key={more}>
-                                  {more === "Pets Allowed" && (
+                                  {more === "Pet Friendly" && (
                                     <FontAwesomeIcon
                                       icon={faPaw}
                                       className={styles["fonticon"]}
@@ -527,13 +539,13 @@ function HotelList() {
                             <ul>
                               {result.amenities.map((amenity) => (
                                 <li key={amenity}>
-                                  {amenity === "Free WIFI" && (
+                                  {amenity === "Free Wireless Internet" && (
                                     <FontAwesomeIcon
                                       icon={faWifi}
                                       className={styles["fonticon"]}
                                     />
                                   )}
-                                  {amenity === "AC" && (
+                                  {amenity === "Air Conditioning" && (
                                     <FontAwesomeIcon
                                       icon={faSnowflake}
                                       className={styles["fonticon"]}
@@ -557,13 +569,13 @@ function HotelList() {
                                       className={styles["fonticon"]}
                                     />
                                   )}
-                                  {amenity === "Kitchen" && (
+                                  {amenity === "Kitchen Facility" && (
                                     <FontAwesomeIcon
                                       icon={faKitchenSet}
                                       className={styles["fonticon"]}
                                     />
                                   )}
-                                  {amenity === "TV" && (
+                                  {amenity === "Television" && (
                                     <FontAwesomeIcon
                                       icon={faTv}
                                       className={styles["fonticon"]}
@@ -676,7 +688,10 @@ function HotelList() {
           </div>
         ) : (
           <div className={styles.loading_gif}>
-            <img src="https://assets-v2.lottiefiles.com/a/1484087e-68bf-11ee-abd7-87c3830dcafb/VkYL5tIdNO.png" alt="" />
+            <img
+              src="https://assets-v2.lottiefiles.com/a/1484087e-68bf-11ee-abd7-87c3830dcafb/VkYL5tIdNO.png"
+              alt=""
+            />
           </div>
         )}
       </div>

@@ -35,23 +35,42 @@ export const Cards = ({ offer }) => {
           </p>
         </div>
         <p class="_date">
-          <MdRoomPreferences /> {offer.roomDetails && offer?.roomDetails[0]?.type}
+          <MdRoomPreferences />{" "}
+          {offer.roomDetails && offer?.roomDetails[0]?.type}
         </p>
         <p class="_date">
           <BiRupee /> {offer.roomDetails && offer?.roomDetails[0]?.price}
         </p>
-        {offer.roomDetails.originalPrice > offer.roomDetails.price && (
-  
-    <div className="offer-intro">
+        {offer.roomDetails.map((room, index) => {
+          let hasOfferDetails = false;
 
-    <p>{offer.offerDetails} Get {offer.offerPriceLess}% Less</p>
-    </div>
-  
-)}
+          if (!hasOfferDetails && room.offerDetails !== "N/A") {
+            hasOfferDetails = true;
+            return (
+              <div key={index}>
+                {room.offerDetails !== "N/A" ? (
+                  <p
+                    style={{
+                      color: "red",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {room.offerDetails}
+                  </p>
+                ) : (
+                  <p>No offer details available</p>
+                )}
+              </div>
+            );
+          } else {
+            return null; // Skip rendering for rooms with no offer details after the first room with offer details
+          }
+        })}
 
 
         <h2 style={{ color: "#3e4152" }}>{offer.offers}</h2>
-        <p class="_body-content">{offer.description}</p>
+        <p class="_body-content">{offer.description.substring(0,100)}...</p>
         <button className="_card-button">
           <IoIosArrowForward /> View Details
         </button>

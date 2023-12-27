@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
+import { GrAtm } from "react-icons/gr";
 import {
   faChevronLeft,
   faChevronRight,
@@ -499,7 +500,7 @@ const showLess = () => {
                 <div className="d-flex flex-column gap-3">
                   <div className="rating0">
                     <div className="staricon">
-                      {bookingDetails.rating}
+                      {bookingDetails.starRating}
                       <FontAwesomeIcon icon={faStar} className="staricon" />
                     </div>
                   </div>
@@ -558,25 +559,25 @@ const showLess = () => {
           hotelAmenities.slice(0, displayCount).map((option, index) => {
             let icon;
             switch (option) {
-              case "GYM":
-                icon = faDumbbell;
+              case "24-hour Front Desk Service":
+                icon = faHotel;
                 break;
-              case "Wifi":
+              case "Free Wireless Internet":
                 icon = faWifi;
                 break;
               case "Parking":
                 icon = faParking;
                 break;
-              case "Geyser":
-                icon = faFire;
+              case "ATM on Site":
+                icon = GrAtm;
                 break;
-              case "TV":
+              case "Television":
                 icon = faTv;
                 break;
               case "CCTV":
                 icon = faCamera;
                 break;
-              case "AC":
+              case "Air Conditioning":
                 icon = faSnowflake;
                 break;
               case "Card-payment":
@@ -585,7 +586,7 @@ const showLess = () => {
               case "Elevator":
                 icon = faElevator;
                 break;
-              case "Kitchen":
+              case "Kitchen Facility":
                 icon = faKitchenSet;
                 break;
               default:
@@ -761,10 +762,7 @@ const showLess = () => {
                   background: "#fff",
                 }}
               >
-                <p className="roomtype">
-                  <FontAwesomeIcon icon={faHotel} className="icon" />
-                  Room Type: {bookingDetails.type}
-                </p>
+               
 
                 <p className="noofroom">
                   <FontAwesomeIcon icon={faRestroom} className="icon" />
@@ -835,7 +833,7 @@ const showLess = () => {
 
                 <p className="id">
                   <FontAwesomeIcon icon={faIdCard} className="icon" />
-                  LocalID: {bookingDetails.availability}
+                  LocalID: {bookingDetails.localId? "Available" : "Not Available"}
                 </p>
               </div>
 

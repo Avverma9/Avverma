@@ -11,7 +11,6 @@ import {
   faStar,
   faPerson,
   faHotel,
-
   faIdCard,
   faRestroom,
   faInr,
@@ -60,7 +59,7 @@ const BookNowPage = ({ userData, toast }) => {
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [bedtype, setBedtype] = useState("");
   const [roomType, setRoomType] = useState("");
   const [addingFood, setAddingFood] = useState(false);
@@ -188,8 +187,6 @@ const BookNowPage = ({ userData, toast }) => {
       })
       .catch((error) => console.error(error));
   }, [offerId]);
-
-
 
   if (!offerData) {
     return <div>Loading...</div>;
@@ -363,15 +360,15 @@ const BookNowPage = ({ userData, toast }) => {
     setSelectedRooms(value);
   };
 
-  const selectRoomHandler = (index, rprice, bedtype,roomType) => {
+  const selectRoomHandler = (index, rprice, bedtype, roomType) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
-    setRoomType(roomType)
+    setRoomType(roomType);
     setBedtype(bedtype);
   };
-  const handleViewMore=(id)=>{
-    navigate(`/policy-page/${id}`)
-  }
+  const handleViewMore = (id) => {
+    navigate(`/policy-page/${id}`);
+  };
   const showMore = () => {
     setDisplayCount(hotelAmenities.length);
   };
@@ -409,29 +406,29 @@ const BookNowPage = ({ userData, toast }) => {
             <div className="hotel-details1">
               <div className="flex-rating">
                 <div className="name-location">
-                <div className="offer-data">
-                
-
-
-</div>
-<div className="name-location">
-  <h2 className="hotel-name1">{offerData.hotelName}</h2>
-  {Array.isArray(offerData.roomDetails) && offerData.roomDetails.map((room, index) => (
-    room.offerDetails !== "N/A" && (
-      <p key={index} className="offer-details" style={{ backgroundColor: 'red', color: 'white' }}>{room.offerDetails}</p>
-
-
-    )
-  ))}
-  <p className="location-booknow">{offerData.destination}</p>
-</div>
-
-            
+                  <div className="offer-data"></div>
+                  <div className="name-location">
+                    <h2 className="hotel-name1">{offerData.hotelName}</h2>
+                    {Array.isArray(offerData.roomDetails) &&
+                      offerData.roomDetails.map(
+                        (room, index) =>
+                          room.offerDetails !== "N/A" && (
+                            <p
+                              key={index}
+                              className="offer-details"
+                              style={{ backgroundColor: "red", color: "white" }}
+                            >
+                              {room.offerDetails}
+                            </p>
+                          )
+                      )}
+                    <p className="location-booknow">{offerData.destination}</p>
+                  </div>
                 </div>
                 <div className="d-flex flex-column gap-3">
                   <div className="rating0">
                     <div className="staricon">
-                      {offerData.rating}
+                      {offerData.starRating}
                       <FontAwesomeIcon icon={faStar} className="staricon" />
                     </div>
                   </div>
@@ -445,11 +442,7 @@ const BookNowPage = ({ userData, toast }) => {
                 <FontAwesomeIcon icon={faInr} className="indianrupee" />
                 {offerData.roomDetails[0].price}
               </div>
-              <div className="offer-data">
-              
-
-</div>
-
+              <div className="offer-data"></div>
 
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
@@ -473,63 +466,71 @@ const BookNowPage = ({ userData, toast }) => {
                 )}
               </div>
               <div className="amenity-section">
-      <div className="amenity-word">Amenities:</div>
-      <div className="amenityclass">
-        {hotelAmenities &&
-          hotelAmenities.slice(0, displayCount).map((option, index) => {
-            let icon;
-            switch (option) {
-              case "GYM":
-                icon = faDumbbell;
-                break;
-              case "Wifi":
-                icon = faWifi;
-                break;
-              case "Parking":
-                icon = faParking;
-                break;
-              case "Geyser":
-                icon = faFire;
-                break;
-              case "TV":
-                icon = faTv;
-                break;
-              case "CCTV":
-                icon = faCamera;
-                break;
-              case "AC":
-                icon = faSnowflake;
-                break;
-              case "Card-payment":
-                icon = faCreditCard;
-                break;
-              case "Elevator":
-                icon = faElevator;
-                break;
-              case "Kitchen":
-                icon = faKitchenSet;
-                break;
-              default:
-                icon = faCheck;
-            }
-            return (
-              <div key={index} className="amenity-item">
-                {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {option}
+                <div className="amenity-word">Amenities:</div>
+                <div className="amenityclass">
+                  {hotelAmenities &&
+                    hotelAmenities
+                      .slice(0, displayCount)
+                      .map((option, index) => {
+                        let icon;
+                        switch (option) {
+                          case "GYM":
+                            icon = faDumbbell;
+                            break;
+                          case "Wifi":
+                            icon = faWifi;
+                            break;
+                          case "Parking":
+                            icon = faParking;
+                            break;
+                          case "Geyser":
+                            icon = faFire;
+                            break;
+                          case "TV":
+                            icon = faTv;
+                            break;
+                          case "CCTV":
+                            icon = faCamera;
+                            break;
+                          case "AC":
+                            icon = faSnowflake;
+                            break;
+                          case "Card-payment":
+                            icon = faCreditCard;
+                            break;
+                          case "Elevator":
+                            icon = faElevator;
+                            break;
+                          case "Kitchen":
+                            icon = faKitchenSet;
+                            break;
+                          default:
+                            icon = faCheck;
+                        }
+                        return (
+                          <div key={index} className="amenity-item">
+                            {icon && (
+                              <FontAwesomeIcon
+                                icon={icon}
+                                className="amenity-icon"
+                              />
+                            )}{" "}
+                            {option}
+                          </div>
+                        );
+                      })}
+                  {hotelAmenities.length > 5 && (
+                    <div className="show-more-less">
+                      {displayCount === 5 ? (
+                        <button onClick={showMore}>Show More</button>
+                      ) : (
+                        <button onClick={showLess}>Show Less</button>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            );
-          })}
-        {hotelAmenities.length > 5 && (
-          <div className="show-more-less">
-            {displayCount === 5 ? (
-              <button onClick={showMore}>Show More</button>
-            ) : (
-              <button onClick={showLess}>Show Less</button>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  
+
               <div className="moreopt">
                 <p className="morehead">More:</p>
                 <div className="moreitem">
@@ -566,26 +567,31 @@ const BookNowPage = ({ userData, toast }) => {
               </div>
 
               <div class="information-card">
-    <div className="hotel-policies">
-        <div className="hotel-policyheading">Hotel Policies:</div>
-        <p className="hotel-policy">{offerData.hotelsPolicy}</p>
-        <hr />
-        <h5>Check-in</h5>
-        <p>{offerData.checkInPolicy}</p>
-        <br />
-        <h5>Check-out</h5>
-        <p>{offerData.checkOutPolicy}</p>
-        <hr />
-        <h5>Outside food:</h5>{offerData.outsideFoodPolicy}
-        <hr />
-        <div className="customer-welcome">
-            <p>{offerData.customerWelcomeNote}</p>
-        </div>
-        
-        
-    </div>
-    <button className="view-additional" onClick={()=>handleViewMore(offerData._id)}> View more</button>
-</div>
+                <div className="hotel-policies">
+                  <div className="hotel-policyheading">Hotel Policies:</div>
+                  <p className="hotel-policy">{offerData.hotelsPolicy}</p>
+                  <hr />
+                  <h5>Check-in</h5>
+                  <p>{offerData.checkInPolicy}</p>
+                  <br />
+                  <h5>Check-out</h5>
+                  <p>{offerData.checkOutPolicy}</p>
+                  <hr />
+                  <h5>Outside food:</h5>
+                  {offerData.outsideFoodPolicy}
+                  <hr />
+                  <div className="customer-welcome">
+                    <p>{offerData.customerWelcomeNote}</p>
+                  </div>
+                </div>
+                <button
+                  className="view-additional"
+                  onClick={() => handleViewMore(offerData._id)}
+                >
+                  {" "}
+                  View more
+                </button>
+              </div>
 
               {meals && meals.length > 0 ? (
                 <div className="cust-detail">Enjoy meals during your stay:</div>
@@ -607,13 +613,15 @@ const BookNowPage = ({ userData, toast }) => {
                       <p>Item Description : {m.about}</p>
                     </div>
                     <div className="card-detail-img">
-    {m.images[0] ? (
-        <img src={m.images[0]} alt="..." />
-    ) : (
-        <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fHw%3D" alt="Default Image" />
-    )}
-</div>
-
+                      {m.images[0] ? (
+                        <img src={m.images[0]} alt="..." />
+                      ) : (
+                        <img
+                          src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MTJ8fHxlbnwwfHx8fHw%3D"
+                          alt="Default Image"
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="downhead">
                     <p className="price-total">
@@ -657,7 +665,6 @@ const BookNowPage = ({ userData, toast }) => {
                 </div>
               ))}
 
-
               <div ref={targetBookingRef} />
 
               <div className="cust-detail" ref={bookingRef}>
@@ -671,7 +678,6 @@ const BookNowPage = ({ userData, toast }) => {
                   background: "#fff",
                 }}
               >
-               
                 <p className="noofroom">
                   <FontAwesomeIcon icon={faRestroom} className="icon" />
                   Rooms:
@@ -739,7 +745,7 @@ const BookNowPage = ({ userData, toast }) => {
 
                 <p className="id">
                   <FontAwesomeIcon icon={faIdCard} className="icon" />
-                  LocalID: {offerData.availability}
+                  LocalID: {offerData.localId ? "Available" : "Not Available"}
                 </p>
               </div>
 
@@ -763,20 +769,26 @@ const BookNowPage = ({ userData, toast }) => {
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
                         <div>
-  <p style={{ display: 'flex', alignItems: 'center' }}>
-  {item?.originalPrice > item?.price && (
-    <>
-      <span style={{ marginRight: '5px' }}>Special price -</span>
-      <del style={{ color: 'white', backgroundColor: 'red' }}>{item?.originalPrice}</del>
-    </>
-  )}
-  {item?.originalPrice > item?.price ? '' : 'Price'}: {item?.price}
-</p>
-
-
-
-   
-  </div>
+                          <p style={{ display: "flex", alignItems: "center" }}>
+                            {item?.originalPrice > item?.price && (
+                              <>
+                                <span style={{ marginRight: "5px" }}>
+                                  Special price -
+                                </span>
+                                <del
+                                  style={{
+                                    color: "white",
+                                    backgroundColor: "red",
+                                  }}
+                                >
+                                  {item?.originalPrice}
+                                </del>
+                              </>
+                            )}
+                            {item?.originalPrice > item?.price ? "" : "Price"}:{" "}
+                            {item?.price}
+                          </p>
+                        </div>
                       </div>
 
                       <div className="card-detail-img">
@@ -793,7 +805,12 @@ const BookNowPage = ({ userData, toast }) => {
                     <button
                       className="select-btn"
                       onClick={() =>
-                        selectRoomHandler(index, item?.price, item?.bedTypes,item?.type)
+                        selectRoomHandler(
+                          index,
+                          item?.price,
+                          item?.bedTypes,
+                          item?.type
+                        )
                       }
                     >
                       {index === selectedRoomBtn ? "Selected" : "Select"}
