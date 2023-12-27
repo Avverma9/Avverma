@@ -316,41 +316,50 @@ const getByQuery = async (req, res) => {
     propertyType,
     hotelOwnerName,
     hotelEmail,
-    roomTypes, // Change this to roomType
+    roomTypes,
   } = req.query;
 
-  let query = {};
+  const queryParameters = [
+    { key: 'amenities', value: amenities },
+    { key: 'roomDetails.bedTypes', value: bedTypes },
+    { key: 'starRating', value: starRating },
+    { key: 'propertyType', value: propertyType },
+    { key: 'hotelOwnerName', value: hotelOwnerName },
+    { key: 'hotelEmail', value: hotelEmail },
+    { key: 'roomDetails.type', value: roomTypes },
+  ];
 
-  if (amenities) {
-    query.amenities = { $in: amenities };
+  let fetchedData = [];
+
+  for (const param of queryParameters) {
+    if (param.value) {
+      const query = {};
+
+      if (param.key.includes('roomDetails')) {
+        const elemMatchQuery = {};
+        elemMatchQuery[param.key.split('.')[1]] = Array.isArray(param.value)
+          ? { $in: param.value }
+          : param.value;
+
+        query[param.key] = { $elemMatch: elemMatchQuery };
+      } else {
+        query[param.key] = Array.isArray(param.value)
+          ? { $in: param.value }
+          : param.value;
+      }
+
+      fetchedData = await hotelModel.find(query);
+
+      if (fetchedData.length > 0) {
+        break; // Exit the loop if data is found
+      }
+    }
   }
 
-  if (bedTypes) {
-    query.roomDetails = { $elemMatch: { bedTypes: { $in: bedTypes } } };
-  }
-
-  if (starRating) {
-    query.starRating = { $in: starRating };
-  }
-
-  if (propertyType) {
-    query.propertyType = { $in: propertyType };
-  }
-
-  if (hotelOwnerName) {
-    query.hotelOwnerName = { $regex: new RegExp(hotelOwnerName, "i") };
-  }
-  if (hotelEmail) {
-    query.hotelEmail = { $regex: new RegExp(hotelEmail, "i") };
-  }
-
-  if (roomTypes) {
-    query.roomDetails = { $elemMatch: { type: { $in: roomTypes } } };
-  }
-
-  const fetchedData = await hotelModel.find(query);
   res.json(fetchedData);
 };
+
+
 
 //================================================================================================
 const searchHotels = async (req, res) => {
