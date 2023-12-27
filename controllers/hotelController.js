@@ -1,5 +1,5 @@
 const hotelModel = require("../models/hotelModel");
-const cron = require('node-cron');
+const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
     const {
@@ -180,7 +180,13 @@ const createHotel = async (req, res) => {
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
-  const {isAccepted,isOffer,offerDetails,offerPriceLess,offerExp} = req.body;
+  const {
+    isAccepted,
+    isOffer,
+    offerDetails,
+    offerPriceLess,
+    offerExp,
+  } = req.body;
 
   let images = [];
 
@@ -192,7 +198,11 @@ const UpdateHotel = async function (req, res) {
       images = user.images;
     }
   }
-  const updatedHotel = await hotelModel.findByIdAndUpdate(id,{images,isOffer,isAccepted,offerDetails,offerPriceLess,offerExp},{new: true});
+  const updatedHotel = await hotelModel.findByIdAndUpdate(
+    id,
+    { images, isOffer, isAccepted, offerDetails, offerPriceLess, offerExp },
+    { new: true }
+  );
 
   if (!updatedHotel) {
     return res.status(404).json({ error: "Hotel not found" });
@@ -204,7 +214,7 @@ const UpdateHotel = async function (req, res) {
   });
 };
 //================================update hotel info =================================================
-const UpdateHotelInfo = async(req,res)=>{
+const UpdateHotelInfo = async (req, res) => {
   const { id } = req.params;
   const {
     hotelName,
@@ -226,7 +236,7 @@ const UpdateHotelInfo = async(req,res)=>{
     city,
     state,
     zip,
-    landmark
+    landmark,
   } = req.body;
 
   let images = [];
@@ -262,7 +272,7 @@ const UpdateHotelInfo = async(req,res)=>{
       city,
       state,
       zip,
-      landmark
+      landmark,
     },
     {
       new: true,
@@ -277,8 +287,7 @@ const UpdateHotelInfo = async(req,res)=>{
     status: true,
     data: updatedHotel,
   });
-}
-
+};
 
 //=======================================add room=====================================
 const increaseRoomToHotel = async function (req, res) {
@@ -499,8 +508,12 @@ const getHotelsByLocalID = async (req, res) => {
 //=============================================================================================
 const getHotelsByFilters = async (req, res) => {
   try {
-    const { collections, categories, accommodationTypes, checkInFeatures } =
-      req.query;
+    const {
+      collections,
+      categories,
+      accommodationTypes,
+      checkInFeatures,
+    } = req.query;
 
     const filters = {};
 
@@ -537,9 +550,9 @@ const getHotelsByFilters = async (req, res) => {
 const updateRoom = async (req, res) => {
   const { hotelid, roomid } = req.params;
   const { type, bedTypes, price } = req.body;
-  
+
   // Assuming images are optional in the request body
-  const images = req.files ? req.files.map(file => file.location) : [];
+  const images = req.files ? req.files.map((file) => file.location) : [];
 
   try {
     // Use lean() to get a plain JavaScript object instead of a mongoose document
@@ -549,7 +562,9 @@ const updateRoom = async (req, res) => {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const roomIndex = hotel.roomDetails.findIndex((room) => room._id.toString() === roomid);
+    const roomIndex = hotel.roomDetails.findIndex(
+      (room) => room._id.toString() === roomid
+    );
     if (roomIndex === -1) {
       return res.status(404).json({ error: "Room not found" });
     }
@@ -570,7 +585,10 @@ const updateRoom = async (req, res) => {
     }
 
     // Use updateOne instead of save to update specific fields
-    await hotelModel.updateOne({ _id: hotelid, 'roomDetails._id': roomid }, { $set: { 'roomDetails.$': hotel.roomDetails[roomIndex] } });
+    await hotelModel.updateOne(
+      { _id: hotelid, "roomDetails._id": roomid },
+      { $set: { "roomDetails.$": hotel.roomDetails[roomIndex] } }
+    );
 
     // Return the updated room details
     res.json(hotel.roomDetails[roomIndex]);
@@ -589,7 +607,7 @@ const addRoomToHotel = async function (req, res) {
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
-    
+
     const images = req.files.map((file) => file.location);
     const newDetails = {
       images,
@@ -720,7 +738,7 @@ const updateAmenity = async (req, res) => {
 const getHotelsState = async function (req, res) {
   try {
     const getState = await hotelModel.find();
-    
+
     // Use Set to keep track of unique state names
     const uniqueStatesSet = new Set();
 
@@ -746,13 +764,12 @@ const getHotelsState = async function (req, res) {
   }
 };
 
-
 const getHotelsCity = async function (req, res) {
   try {
     const { state } = req.query;
 
     if (!state) {
-      return res.status(400).json({ error: 'State parameter is missing' });
+      return res.status(400).json({ error: "State parameter is missing" });
     }
 
     const hotelsInState = await hotelModel.find({ state });
@@ -779,16 +796,17 @@ const getHotelsCity = async function (req, res) {
     res.json(cityData);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 //==============================Apply Coupon=========================================
 
-
 const checkAndUpdateOffers = async () => {
   try {
     // Find documents where offer has expired
-    const expiredOffers = await hotelModel.find({ offerExp: { $lt: new Date() } });
+    const expiredOffers = await hotelModel.find({
+      offerExp: { $lt: new Date() },
+    });
 
     // Update room prices to their original values and set offerDetails to ["N/A"]
     for (const hotel of expiredOffers) {
@@ -806,16 +824,14 @@ const checkAndUpdateOffers = async () => {
       await hotel.save();
     }
 
-    console.log('Expired offers processed successfully.');
+    console.log("Expired offers processed successfully.");
   } catch (error) {
-    console.error('Error processing expired offers:', error);
+    console.error("Error processing expired offers:", error);
   }
 };
 
-
-
 // Schedule the function to run every day at midnight (adjust as needed)
-cron.schedule('0 0 * * *', async () => {
+cron.schedule("0 0 * * *", async () => {
   await checkAndUpdateOffers();
 });
 
@@ -824,7 +840,7 @@ cron.schedule('0 0 * * *', async () => {
 const ApplyCoupon = async (req, res) => {
   const { hotelid, roomid } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
-  const offerStartDate = new Date().toISOString().split('T')[0];
+  const offerStartDate = new Date().toISOString().split("T")[0];
 
   try {
     const hotel = await hotelModel.findById(hotelid);
@@ -832,7 +848,9 @@ const ApplyCoupon = async (req, res) => {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const room = hotel.roomDetails.find((room) => room._id.toString() === roomid);
+    const room = hotel.roomDetails.find(
+      (room) => room._id.toString() === roomid
+    );
     if (!room) {
       return res.status(404).json({ error: "Room not found in the hotel" });
     }
@@ -856,7 +874,9 @@ const ApplyCoupon = async (req, res) => {
     );
 
     const hasOfferExpired = new Date() >= new Date(offerExp);
-    const updatedRoom = updatedHotel.roomDetails.find((r) => r._id.toString() === roomid);
+    const updatedRoom = updatedHotel.roomDetails.find(
+      (r) => r._id.toString() === roomid
+    );
 
     if (updatedRoom) {
       if (hasOfferExpired || new Date(offerExp) <= new Date()) {
@@ -879,7 +899,6 @@ const ApplyCoupon = async (req, res) => {
 
 module.exports = ApplyCoupon;
 
-
 //================================remove offer=====================
 const expireOffer = async function (req, res) {
   try {
@@ -893,7 +912,8 @@ const expireOffer = async function (req, res) {
         isOffer: isOffer !== undefined ? isOffer : false,
         $set: {
           "roomDetails.$[room].offerExp": offerExp || defaultOfferExp,
-          "roomDetails.$[room].offerPriceLess": offerPriceLess !== undefined ? offerPriceLess : 0,
+          "roomDetails.$[room].offerPriceLess":
+            offerPriceLess !== undefined ? offerPriceLess : 0,
           "roomDetails.$[room].offerDetails": offerDetails || "N/A",
         },
       },
@@ -901,22 +921,25 @@ const expireOffer = async function (req, res) {
     );
 
     if (!updatedHotel) {
-      return res.status(404).json({ error: 'Hotel not found' });
+      return res.status(404).json({ error: "Hotel not found" });
     }
 
     // Find the room in the updatedHotel's roomDetails array
-    const roomIndex = updatedHotel.roomDetails.findIndex((room) => room._id.toString() === roomid);
+    const roomIndex = updatedHotel.roomDetails.findIndex(
+      (room) => room._id.toString() === roomid
+    );
 
     if (roomIndex !== -1) {
       // Set the new price to the originalPrice value
-      updatedHotel.roomDetails[roomIndex].price = updatedHotel.roomDetails[roomIndex].originalPrice;
+      updatedHotel.roomDetails[roomIndex].price =
+        updatedHotel.roomDetails[roomIndex].originalPrice;
 
       // Check if offerDetails is not present in the room, then update it to "N/A"
       if (updatedHotel.roomDetails[roomIndex].offerDetails) {
         updatedHotel.roomDetails[roomIndex].offerDetails = "N/A";
       }
     } else {
-      return res.status(404).json({ error: 'Room not found' });
+      return res.status(404).json({ error: "Room not found" });
     }
 
     // Save the updatedHotel with the modified roomDetails array
@@ -924,8 +947,8 @@ const expireOffer = async function (req, res) {
 
     res.status(200).json(savedHotel);
   } catch (error) {
-    console.error('Error updating hotel:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating hotel:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -934,18 +957,25 @@ const getByRoom = async (req, res) => {
   const roomType = req.params.roomType;
 
   try {
-    const hotel = await hotelModel.findOne({ "roomDetails.type": roomType })
+    const hotel = await hotelModel
+      .findOne({ "roomDetails.type": roomType })
       .select("_id roomDetails hotelName"); // Include hotelName in the select projection
 
     if (!hotel) {
-      return res.status(404).json({ message: "No hotel found for the specified room type." });
+      return res
+        .status(404)
+        .json({ message: "No hotel found for the specified room type." });
     }
 
     // Extract only the roomDetails for the specified type
-    const standardRoom = hotel.roomDetails.find(room => room.type === roomType);
+    const standardRoom = hotel.roomDetails.find(
+      (room) => room.type === roomType
+    );
 
     if (!standardRoom) {
-      return res.status(404).json({ message: "No data found for the specified room type." });
+      return res
+        .status(404)
+        .json({ message: "No data found for the specified room type." });
     }
 
     // Include hotelName in the response
@@ -953,18 +983,14 @@ const getByRoom = async (req, res) => {
       hotels: {
         _id: hotel._id,
         hotelName: hotel.hotelName,
-        roomDetails: [standardRoom]
-      }
+        roomDetails: [standardRoom],
+      },
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
-
-
-
-
+};
 
 //================================================================================================
 module.exports = {
@@ -995,5 +1021,5 @@ module.exports = {
   getHotelsCity,
   ApplyCoupon,
   expireOffer,
-  getByRoom
+  getByRoom,
 };
