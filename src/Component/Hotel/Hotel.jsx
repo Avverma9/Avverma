@@ -429,49 +429,57 @@ function HotelList() {
                         }}
                       >
                         <div className="rupeedetail">
-                          <p className={styles["search-result-price"]}>
-                            <span className={styles["detail"]}>
-                              per room per night
-                            </span>
-                            {result.roomDetails && result.roomDetails.length > 0
-                              ? (() => {
-                                  let offerDisplayed = false;
+                       
+                        <p className={styles["search-result-price"]}>
+  <span className={styles["detail"]}>
+    per room per night
+  </span>
+  {result.roomDetails && result.roomDetails.length > 0 ? (() => {
+    let regularPrice = null;
+    let offerPrice = null;
 
-                                  return result.roomDetails.map(
-                                    (room, index) => {
-                                      if (
-                                        !offerDisplayed &&
-                                        room.originalPrice > room.price
-                                      ) {
-                                        offerDisplayed = true;
+    result.roomDetails.forEach((room, index) => {
+      if (room.originalPrice > room.price && !offerPrice) {
+        regularPrice = room.originalPrice;
+        offerPrice = room.price;
+      }
+    });
 
-                                        return (
-                                          <div key={index}>
-                                            <FontAwesomeIcon
-                                              icon={faInr}
-                                              className={styles["rupees"]}
-                                            />
-                                            <del>{room.originalPrice}</del>
-                                            <p
-                                              style={{
-                                                color: "blue",
-                                                fontWeight: "bold",
-                                                fontSize: "14px",
-                                                display: "inline-block",
-                                              }}
-                                            >
-                                              Offer Price: {room.price}
-                                            </p>
-                                          </div>
-                                        );
-                                      }
+    if (offerPrice) {
+      return (
+        <div>
+          <FontAwesomeIcon
+            icon={faInr}
+            className={styles["rupees"]}
+          />
+          <del>{regularPrice}</del>
+          <p
+            style={{
+              color: "blue",
+              fontWeight: "bold",
+              fontSize: "14px",
+              display: "inline-block",
+            }}
+          >
+            Offer Price: {offerPrice}
+          </p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <FontAwesomeIcon
+            icon={faInr}
+            className={styles["rupees"]}
+          />
+          {result.roomDetails[0].price}
+        </div>
+      );
+    }
+  })() : "N/A"}
+</p>
 
-                                      return null;
-                                    }
-                                  );
-                                })()
-                              : "N/A"}
-                          </p>
+
                         </div>
                         <div
                           className="flex-button"

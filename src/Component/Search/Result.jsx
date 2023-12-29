@@ -181,7 +181,7 @@ export default function Result() {
           ))
       ) : (
         hotel.roomDetails.map((room, index) => (
-          room.type === "Standard Room" && (
+          room.type === "Standard Room" ||(index === 0 && room.type !== "Standard Room") ?( // Corrected line
             <div key={index}>
               <h5>
                 <FaRupeeSign />
@@ -194,7 +194,7 @@ export default function Result() {
               )}
               {hotel.isOffer && <p>Per room per night</p>}
             </div>
-          )
+          ) : null // Added null to handle the case where the condition is not met
         ))
       )}
     </>

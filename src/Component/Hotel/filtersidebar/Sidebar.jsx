@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
@@ -48,11 +48,11 @@ const Sidebar = ({
   useEffect(() => {
     // Function to fetch data from the API
     const fetchData = () => {
-      const propertyTypeQueryParam = selectedPropertyTypes.join(',');
-      const roomtypeQueryParam = roomtype.join(',');
-      const starRatingQueryParam = starrating.join(',');
-      const bedtypeQueryparam = bedtype.join(',');
-      const amenitiesQueryparams = amenity.join(',');
+      const propertyTypeQueryParam = selectedPropertyTypes.join(",");
+      const roomtypeQueryParam = roomtype.join(",");
+      const starRatingQueryParam = starrating.join(",");
+      const bedtypeQueryparam = bedtype.join(",");
+      const amenitiesQueryparams = amenity.join(",");
 
       const priceFilterUrl = `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`;
 
@@ -69,33 +69,33 @@ const Sidebar = ({
             setDataAvailable(true);
           } else {
             setHotels([]);
-            setDataAvailable(false)
+            setDataAvailable(false);
           }
         })
         .catch((error) => console.log(error));
-        setHotels([]);
-        setDataAvailable(false);
-    };
-
-     // Check if it's the first render
-  if (firstRender.current) {
-    // Make the API call on the first render
-    firstRender.current = false;
-    fetchData();
-  } else {
-    // Check if all query parameters are empty
-    if (
-      selectedPropertyTypes.length === 0 &&
-      roomtype.length === 0 &&
-      starrating.length === 0 &&
-      bedtype.length === 0 &&
-      amenity.length === 0
-    ) {
-      // No need to make the API call if all query parameters are empty
       setHotels([]);
       setDataAvailable(false);
-      return;
-    }
+    };
+
+    // Check if it's the first render
+    if (firstRender.current) {
+      // Make the API call on the first render
+      firstRender.current = false;
+      fetchData();
+    } else {
+      // Check if all query parameters are empty
+      if (
+        selectedPropertyTypes.length === 0 &&
+        roomtype.length === 0 &&
+        starrating.length === 0 &&
+        bedtype.length === 0 &&
+        amenity.length === 0
+      ) {
+        // No need to make the API call if all query parameters are empty
+        setHotels([]);
+        setDataAvailable(false);
+        return;
+      }
 
       // Make the API call with updated parameters
       fetchData();
@@ -119,18 +119,15 @@ const Sidebar = ({
           `https://hotel-backend-tge7.onrender.com/hotels/price/get/by?minPrice=${minValue}&maxPrice=${maxValue}`
         )
         .then((data) => {
-          
           if (data.status === 200) {
             setHotels(data.data);
           } else setHotels([]);
         })
         .catch((error) => console.log(error));
     } else if (
-      (location.pathname === "/search/results"
-       ) &&
+      location.pathname === "/search/results" &&
       queryString !== (null || undefined || "")
-    ) 
-     {
+    ) {
       axios
         .get(`https://hotel-backend-tge7.onrender.com/search?${queryString}`)
         .then((data) => {
@@ -152,7 +149,6 @@ const Sidebar = ({
           console.log(data.data);
           let hotelData = data.data;
           if (data.status === 200) {
-          
             setHotels(hotelData);
           } else setHotels([]);
         })

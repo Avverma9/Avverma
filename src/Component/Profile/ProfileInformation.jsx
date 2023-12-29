@@ -222,18 +222,7 @@ export const ProfileInformation = ({
         )}
         {isEditing && (
           <>
-            <div className="_title">
-              <h1>Profile Image</h1>
-              {/* <input type="button" value="Edit" /> */}
-            </div>
-            <div className="_fields">
-              <input
-                type="file"
-                id="images"
-                accept="image/*"
-                onChange={(e) => setImages(e.target.files)}
-              />
-            </div>
+          
           </>
         )}
       </div>
