@@ -514,8 +514,9 @@ const Partner = () => {
       );
 
       if (response.ok) {
-
+         
         navigate("/");
+        windows.location.reload()
       }
     } catch (error) {
       console.log("Error:", error);

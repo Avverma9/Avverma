@@ -258,11 +258,9 @@ function HotelList() {
                               (room) => room.offerDetails !== "N/A"
                             ) ? (
                               <>
-                               
-                                <p
-                                  style={{ color: "red", fontWeight: "bold" }}
-                                > <BiSolidOffer /> {" "}
-                                  Offer !
+                                <p style={{ color: "red", fontWeight: "bold" }}>
+                                  {" "}
+                                  <BiSolidOffer /> Offer !
                                 </p>
                               </>
                             ) : (
@@ -429,57 +427,59 @@ function HotelList() {
                         }}
                       >
                         <div className="rupeedetail">
-                       
-                        <p className={styles["search-result-price"]}>
-  <span className={styles["detail"]}>
-    per room per night
-  </span>
-  {result.roomDetails && result.roomDetails.length > 0 ? (() => {
-    let regularPrice = null;
-    let offerPrice = null;
+                          <p className={styles["search-result-price"]}>
+                            <span className={styles["detail"]}>
+                              per room per night
+                            </span>
+                            {result.roomDetails && result.roomDetails.length > 0
+                              ? (() => {
+                                  let regularPrice = null;
+                                  let offerPrice = null;
 
-    result.roomDetails.forEach((room, index) => {
-      if (room.originalPrice > room.price && !offerPrice) {
-        regularPrice = room.originalPrice;
-        offerPrice = room.price;
-      }
-    });
+                                  result.roomDetails.forEach((room, index) => {
+                                    if (
+                                      room.originalPrice > room.price &&
+                                      !offerPrice
+                                    ) {
+                                      regularPrice = room.originalPrice;
+                                      offerPrice = room.price;
+                                    }
+                                  });
 
-    if (offerPrice) {
-      return (
-        <div>
-          <FontAwesomeIcon
-            icon={faInr}
-            className={styles["rupees"]}
-          />
-          <del>{regularPrice}</del>
-          <p
-            style={{
-              color: "blue",
-              fontWeight: "bold",
-              fontSize: "14px",
-              display: "inline-block",
-            }}
-          >
-            Offer Price: {offerPrice}
-          </p>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <FontAwesomeIcon
-            icon={faInr}
-            className={styles["rupees"]}
-          />
-          {result.roomDetails[0].price}
-        </div>
-      );
-    }
-  })() : "N/A"}
-</p>
-
-
+                                  if (offerPrice) {
+                                    return (
+                                      <div>
+                                        <FontAwesomeIcon
+                                          icon={faInr}
+                                          className={styles["rupees"]}
+                                        />
+                                        <del>{regularPrice}</del>
+                                        <p
+                                          style={{
+                                            color: "blue",
+                                            fontWeight: "bold",
+                                            fontSize: "14px",
+                                            display: "inline-block",
+                                          }}
+                                        >
+                                          Offer Price: {offerPrice}
+                                        </p>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div>
+                                        <FontAwesomeIcon
+                                          icon={faInr}
+                                          className={styles["rupees"]}
+                                        />
+                                        {result.roomDetails[0].price}
+                                      </div>
+                                    );
+                                  }
+                                })()
+                              : "N/A"}
+                          </p>
                         </div>
                         <div
                           className="flex-button"
@@ -505,8 +505,9 @@ function HotelList() {
                       </div>
 
                       <p className={styles["search-result-availability"]}>
-  Local ID: {result.localId ? 'Available' : 'Not available'}
-</p>
+                        Local ID:{" "}
+                        {result.localId ? "Available" : "Not available"}
+                      </p>
 
                       <hr />
 
