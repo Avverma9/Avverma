@@ -26,8 +26,9 @@ const Partner = () => {
   const [CleanDisinfect, setCleanDisinfect] = useState(false);
   const [CoffeeTea, setCoffeeTea] = useState(false);
   const [CoffeeMaker, setCoffeeMaker] = useState(false);
-  const [ComplimentaryBottledWater, setComplimentaryBottledWater] =
-    useState(false);
+  const [ComplimentaryBottledWater, setComplimentaryBottledWater] = useState(
+    false
+  );
   const [ComplimentaryToiletries, setComplimentaryToiletries] = useState(false);
   const [ComplimentaryBreakfast, setComplimentaryBreakfast] = useState(false);
   const [ConclergeDesk, setConclergeDesk] = useState(false);
@@ -43,8 +44,10 @@ const Partner = () => {
   const [FreeWirelessInternet, setFreeWirelessInternet] = useState(false);
   const [GameRoom, setGameRoom] = useState(false);
   const [GoodShowers, setGoodShowers] = useState(false);
-  const [GroceryShoppingServiceAvailable, setGroceryShoppingServiceAvailable] =
-    useState(false);
+  const [
+    GroceryShoppingServiceAvailable,
+    setGroceryShoppingServiceAvailable,
+  ] = useState(false);
   const [HairDryer, setHairDryer] = useState(false);
   const [HouseKeeping, setHouseKeeping] = useState(false);
   const [IndoorParking, setIndoorParking] = useState(false);
@@ -56,8 +59,9 @@ const Partner = () => {
   const [Library, setLibrary] = useState(false);
   const [Lockers, setLockers] = useState(false);
   const [Lunch, setLunch] = useState(false);
-  const [MeetingBanquetFacilities, setMeetingBanquetFacilities] =
-    useState(false);
+  const [MeetingBanquetFacilities, setMeetingBanquetFacilities] = useState(
+    false
+  );
   const [Microwave, setMicrowave] = useState(false);
   const [Newspaper, setNewspaper] = useState(false);
   const [NightclubDJ, setNightclubDJ] = useState(false);
@@ -103,10 +107,10 @@ const Partner = () => {
   const [hotelName, setHotelName] = useState("");
   const [description, setDescription] = useState("");
   const [numRooms, setNumRooms] = useState("");
-  const [hotelsPolicy,setHotelsPolicy] = useState("")
-  const [customerWelcomeNote,setCustomerWelcomeNote]= useState("")
-  const [checkOutPolicy,setCheckOutPolicy]=useState("")
-  const [checkInPolicy,setCheckInPolicy]=useState("")
+  const [hotelsPolicy, setHotelsPolicy] = useState("");
+  const [customerWelcomeNote, setCustomerWelcomeNote] = useState("");
+  const [checkOutPolicy, setCheckOutPolicy] = useState("");
+  const [checkInPolicy, setCheckInPolicy] = useState("");
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [countryState, setCountryState] = useState("");
@@ -162,7 +166,7 @@ const Partner = () => {
   const [unmarriedcouples, setUnmarriedcouples] = useState("");
   const [internationalcouple, setInternationalcouple] = useState("");
   const [returnPolicy, setReturnPolicy] = useState("");
- 
+
   const [checkInOut, setCheckInOut] = useState("");
 
   const handlePartnerSubmit = async (event) => {
@@ -191,10 +195,10 @@ const Partner = () => {
       formData.append("foodItems[price]", detail.price);
     }
     formData.append("description", description);
-    formData.append("hotelsPolicy",hotelsPolicy)
-    formData.append("checkInPolicy",checkInPolicy)
-    formData.append("checkOutPolicy",checkOutPolicy)
-    formData.append("customerWelcomeNote",customerWelcomeNote)
+    formData.append("hotelsPolicy", hotelsPolicy);
+    formData.append("checkInPolicy", checkInPolicy);
+    formData.append("checkOutPolicy", checkOutPolicy);
+    formData.append("customerWelcomeNote", customerWelcomeNote);
     formData.append("street", street);
     formData.append("numRooms", numRooms);
     formData.append("city", city);
@@ -461,7 +465,7 @@ const Partner = () => {
     formData.append("unmarriedCouplesAllowed", unmarriedcouples);
     formData.append("internationalGuestAllowed", internationalcouple);
     formData.append("returnPolicy", returnPolicy);
-   
+
     // formData.append("checkInOut", checkInOut);
 
     formData.append("onDoubleSharing", onDoubleSharing);
@@ -514,9 +518,8 @@ const Partner = () => {
       );
 
       if (response.ok) {
-         
         navigate("/");
-        window.location.reload()
+        window.location.reload();
       }
     } catch (error) {
       console.log("Error:", error);
@@ -554,7 +557,43 @@ const Partner = () => {
       setActiveNavItem(navItems[nextIndex]);
     }
   };
+  //===================================================================================
+  const handlePolicyTextareaChange = (e) => {
+    let inputValue = e.target.value;
 
+    // If the first line doesn't start with a bullet point, add it
+    if (!inputValue.startsWith("\u2022 ")) {
+      inputValue = "\u2022 " + inputValue;
+    }
+
+    setReturnPolicy(inputValue);
+  };
+
+  const handlePolicyTextareaKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent the default behavior of the Enter key (newline)
+
+      // Insert a bullet point at the beginning of the new line
+      setReturnPolicy((prevValue) => prevValue + "\n\u2022 ");
+    }
+  };
+  //===============================================================================
+  const handleHotelPolicyChange = (e) => {
+    let inputValue = e.target.value;
+
+    // If the first line doesn't start with a bullet point, add it
+    if (!inputValue.startsWith("\u2022 ")) {
+      inputValue = "\u2022 " + inputValue;
+    }
+    setHotelsPolicy(inputValue);
+  };
+  const handleHotelPolicyAreaKeyDownChange = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setHotelsPolicy((prevValue) => prevValue + "\n\u2022");
+    }
+  };
+  //======================================================================================
   const handlePrevClick = () => {
     const currentIndex = navItems.indexOf(activeNavItem);
     const prevIndex = currentIndex - 1;
@@ -574,46 +613,11 @@ const Partner = () => {
     setFoodItems(updatedFoodDetails);
   };
 
-
-  // const handleFoodImageChange = (index, selectedFile) => {
-  
-  //   if (selectedFile) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       const updatedFoodDetails = [...foodItems];
-  //       updatedFoodDetails[index].images = e.target.result;
-  //       setFoodItems(updatedFoodDetails);
-  //     };
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
-
-
   const handleRoomDetailsChange = (index, field, value) => {
     const updatedRoomDetails = [...roomDetails];
     updatedRoomDetails[index][field] = value;
     setRoomDetails(updatedRoomDetails);
   };
-
-
-  // const handleRoomImageChange = (index, selectedFile) => {
-
-  //   if (selectedFile) {
-    
-  //     const reader = new FileReader();
-
-  
-  //     reader.onload = (e) => {
-  //       const updatedRoomDetails = [...roomDetails];
-       
-  //       updatedRoomDetails[index].images = e.target.result;
-  //       setRoomDetails(updatedRoomDetails);
-  //     };
-
-    
-  //     reader.readAsDataURL(selectedFile);
-  //   }
-  // };
 
   return (
     <div>
@@ -743,6 +747,7 @@ const Partner = () => {
               <div className="cities">
                 <label htmlFor="city">City:</label>
                 <input
+                  required
                   type="text"
                   id="city"
                   value={city}
@@ -771,7 +776,7 @@ const Partner = () => {
                 />
               </div>
               <div className="landmark">
-                <label htmlFor="landmark">Landmark</label>
+                <label htmlFor="landmark">On boarding Address</label>
                 <input
                   type="text"
                   id="landmark"
@@ -2349,42 +2354,36 @@ const Partner = () => {
                 <label htmlFor="returnPolicy">
                   Describe your return policy:
                 </label>
-                <input
+                <textarea
                   type="text"
                   id="returnPolicy"
                   value={returnPolicy}
-                  onChange={(e) => setReturnPolicy(e.target.value)}
+                  onChange={handlePolicyTextareaChange}
+                  onKeyDown={handlePolicyTextareaKeyDown}
                 />
-   <label htmlFor="returnPolicy">
-                  Hotel Policy:
-                </label>
+                <label htmlFor="returnPolicy">Hotel Policy:</label>
                 <textarea
                   type="text"
                   id="returnPolicy"
                   value={hotelsPolicy}
-                  onChange={(e) => setHotelsPolicy(e.target.value)}
+                  onChange={handleHotelPolicyChange}
+                  onKeyDown={handleHotelPolicyAreaKeyDownChange}
                 />
-                  <label htmlFor="returnPolicy">
-                  Check-In Policy:
-                </label>
+                <label htmlFor="returnPolicy">Check-In Policy:</label>
                 <textarea
                   type="text"
                   id="returnPolicy"
                   value={checkInPolicy}
                   onChange={(e) => setCheckInPolicy(e.target.value)}
                 />
-                  <label htmlFor="returnPolicy">
-                  Check-Out Policy:
-                </label>
+                <label htmlFor="returnPolicy">Check-Out Policy:</label>
                 <textarea
                   type="text"
                   id="returnPolicy"
                   value={checkOutPolicy}
                   onChange={(e) => setCheckOutPolicy(e.target.value)}
                 />
-                  <label htmlFor="returnPolicy">
-                  Customer welcome note:
-                </label>
+                <label htmlFor="returnPolicy">Customer welcome note:</label>
                 <textarea
                   type="text"
                   id="returnPolicy"
