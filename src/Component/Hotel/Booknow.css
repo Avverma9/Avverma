@@ -59,55 +59,55 @@
   font-weight: bold;
 }
 
-/* Overall container styling */
+/* Add these styles to your CSS file */
+
 .amenity-section {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #f5f5f513; /* Light background color */
- 
-  font-family: 'Arial', sans-serif;
- 
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-/* Title styling */
 .amenity-word {
   font-size: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 10px;
 }
 
-/* Container for amenity items */
+.hr {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
 .amenityclass {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px; /* Space between items */
 }
 
-/* Styling for each amenity item */
 .amenity-item {
+  width: 30%; /* Set each item to 25% width for 4 items in a row */
+  font-size: 14px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  padding: 10px 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #333;
-  transition: transform 0.3s ease;
+  margin-bottom: 10px;
 }
 
-/* Icon styling */
 .amenity-icon {
-  margin-right: 10px;
-  color: #007bff;
-  font-size: 20px;
+  margin-right: 5px;
 }
 
-/* Hover effect on amenity items */
-.amenity-item:hover {
-  transform: scale(1.05);
+.show-more-less {
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
 }
 
 
@@ -347,7 +347,7 @@ button:hover {
   font-weight: 500;
 
   background-color: #1bac4b00;
-  color: rgb(243, 35, 35);
+  color: rgb(243, 77, 35);
 
   border-radius: 4px;
   cursor: pointer;
@@ -1239,6 +1239,6 @@ h5 {
 }
 
 .show-more-less button:hover {
-  background-color: #e42c14;
+  background-color: #14e4e4;
 }
 
