@@ -567,7 +567,7 @@ const BookNowPage = ({ userData, toast }) => {
               </div>
 
               <div class="information-card">
-              <div className="hotel-policies">
+                <div className="hotel-policies">
                   <div className="hotel-policyheading">Hotel Policies</div>
                   <hr />
                   <p>
