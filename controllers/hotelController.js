@@ -338,14 +338,14 @@ const getByQuery = async (req, res) => {
       if (param.key.includes('roomDetails')) {
         const elemMatchQuery = {};
         elemMatchQuery[param.key.split('.')[1]] = Array.isArray(param.value)
-          ? { $in: param.value }
-          : param.value;
+          ? { $in: param.value.map(val => new RegExp(val, 'i')) }
+          : new RegExp(param.value, 'i');
 
-        query[param.key] = { $elemMatch: elemMatchQuery };
+        query['roomDetails'] = { $elemMatch: elemMatchQuery };
       } else {
         query[param.key] = Array.isArray(param.value)
-          ? { $in: param.value }
-          : param.value;
+          ? { $in: param.value.map(val => new RegExp(val, 'i')) }
+          : new RegExp(param.value, 'i');
       }
 
       fetchedData = await hotelModel.find(query);
@@ -358,6 +358,8 @@ const getByQuery = async (req, res) => {
 
   res.json(fetchedData);
 };
+
+
 
 
 
