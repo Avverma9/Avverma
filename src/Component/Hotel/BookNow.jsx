@@ -68,7 +68,7 @@ export default function BookNow({ userData, toast }) {
   const [hotelReviews, setHotelReviews] = useState([]);
   const [meals, setMeals] = useState([]);
   const [selectedRoomBtn, setSelectedRoomBtn] = useState(0);
-  const [originalPrice,setOriginalPrice] = useState(0)
+  const [originalPrice, setOriginalPrice] = useState(0);
   const [roomPrice, setRoomPrice] = useState(0);
   const [roomType, setRoomType] = useState("");
   const [bedtype, setBedtype] = useState("");
@@ -153,8 +153,8 @@ export default function BookNow({ userData, toast }) {
         setHotelMoreOpt(data.moreOptions);
         setLocalid(data.localId);
         setRoomPrice(data?.roomDetails[0].price);
-        setOriginalPrice(data?.roomDetails[0].originalPrice)
-        setRoomType(data?.roomDetails[0].type)
+        setOriginalPrice(data?.roomDetails[0].originalPrice);
+        setRoomType(data?.roomDetails[0].type);
         setBedtype(data?.roomDetails[0].bedTypes);
         setHotelOwnerName(data?.hotelOwnerName);
         setMeals(data?.foodItems);
@@ -164,7 +164,6 @@ export default function BookNow({ userData, toast }) {
       });
   }, [params, bookingDetails.startDate, bookingDetails.endDate, hotelID]);
   console.log(meals);
-
 
   useEffect(() => {
     setHotelReviews([]);
@@ -421,11 +420,17 @@ export default function BookNow({ userData, toast }) {
     setMyRating(rate);
   };
 
-  const selectRoomHandler = (index, rprice,originalRoomPrice,bedtype,roomType) => {
+  const selectRoomHandler = (
+    index,
+    rprice,
+    originalRoomPrice,
+    bedtype,
+    roomType
+  ) => {
     setSelectedRoomBtn(index);
     setRoomPrice(rprice);
-    setOriginalPrice(originalRoomPrice)
-    setRoomType(roomType)
+    setOriginalPrice(originalRoomPrice);
+    setRoomType(roomType);
     setBedtype(bedtype);
   };
 
@@ -444,18 +449,18 @@ export default function BookNow({ userData, toast }) {
     //   setSelectedRooms(selectedRooms + 1);
     // }
   }, [selectedGuests, selectedRooms]);
-  
-const handleViewMore=(id)=>{
-  navigate(`/policy-page/${id}`)
-}
 
-const showMore = () => {
-  setDisplayCount(hotelAmenities.length);
-};
+  const handleViewMore = (id) => {
+    navigate(`/policy-page/${id}`);
+  };
 
-const showLess = () => {
-  setDisplayCount(5);
-};
+  const showMore = () => {
+    setDisplayCount(hotelAmenities.length);
+  };
+
+  const showLess = () => {
+    setDisplayCount(5);
+  };
   return (
     <>
       <div className="container-p-4">
@@ -485,17 +490,25 @@ const showLess = () => {
           <div className="bookingflex">
             <div className="hotel-details1">
               <div className="flex-rating">
-              <div className="name-location">
-  <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
-  {Array.isArray(bookingDetails.roomDetails) && bookingDetails.roomDetails.map((room, index) => (
-    room.offerDetails !== "N/A" && (
-      <p key={index} className="offer-details" style={{ backgroundColor: 'red', color: 'white' }}>{room.offerDetails}</p>
-
-
-    )
-  ))}
-  <p className="location-booknow">{bookingDetails.destination}</p>
-</div>
+                <div className="name-location">
+                  <h2 className="hotel-name1">{bookingDetails.hotelName}</h2>
+                  {Array.isArray(bookingDetails.roomDetails) &&
+                    bookingDetails.roomDetails.map(
+                      (room, index) =>
+                        room.offerDetails !== "N/A" && (
+                          <p
+                            key={index}
+                            className="offer-details"
+                            style={{ backgroundColor: "red", color: "white" }}
+                          >
+                            {room.offerDetails}
+                          </p>
+                        )
+                    )}
+                  <p className="location-booknow">
+                    {bookingDetails.destination}
+                  </p>
+                </div>
 
                 <div className="d-flex flex-column gap-3">
                   <div className="rating0">
@@ -517,24 +530,32 @@ const showLess = () => {
                     <FontAwesomeIcon icon={faInr} className="indianrupee" />
                     {bookingDetails.roomDetails[0].price}
                   </>
-
                 ) : (
                   <span>No pricing information available</span>
                 )}
                 <div className="offer-data">
-  {bookingDetails?.roomDetails?.originalPrice && bookingDetails.roomDetails.originalPrice > bookingDetails.roomDetails.price && (
-  <p style={{ fontSize: "14px", backgroundColor: "red", color: "white"}}>
-    {bookingDetails.offerDetails} get {bookingDetails.offerPriceLess}% less
-  </p>
-)}
-
-</div>
+                  {bookingDetails?.roomDetails?.originalPrice &&
+                    bookingDetails.roomDetails.originalPrice >
+                      bookingDetails.roomDetails.price && (
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          backgroundColor: "red",
+                          color: "white",
+                        }}
+                      >
+                        {bookingDetails.offerDetails} get{" "}
+                        {bookingDetails.offerPriceLess}% less
+                      </p>
+                    )}
+                </div>
               </div>
 
               <div className="hotel-descrip">
                 <p className={`description1 ${expand ? "expanded" : ""}`}>
-                  Description:
-                </p>{" "}
+                  Description
+                </p>
+                <hr />
                 <p
                   className={`description-content ${expand ? "expanded" : ""}`}
                 >
@@ -553,65 +574,73 @@ const showLess = () => {
                 )}
               </div>
               <div className="amenity-section">
-      <div className="amenity-word">Amenities:</div>
-      <div className="amenityclass">
-        {hotelAmenities &&
-          hotelAmenities.slice(0, displayCount).map((option, index) => {
-            let icon;
-            switch (option) {
-              case "24-hour Front Desk Service":
-                icon = faHotel;
-                break;
-              case "Free Wireless Internet":
-                icon = faWifi;
-                break;
-              case "Parking":
-                icon = faParking;
-                break;
-              case "ATM on Site":
-                icon = GrAtm;
-                break;
-              case "Television":
-                icon = faTv;
-                break;
-              case "CCTV":
-                icon = faCamera;
-                break;
-              case "Air Conditioning":
-                icon = faSnowflake;
-                break;
-              case "Card-payment":
-                icon = faCreditCard;
-                break;
-              case "Elevator":
-                icon = faElevator;
-                break;
-              case "Kitchen Facility":
-                icon = faKitchenSet;
-                break;
-              default:
-                icon = faCheck;
-            }
-            return (
-              <div key={index} className="amenity-item">
-                {icon && <FontAwesomeIcon icon={icon} className="amenity-icon" />} {option}
+                <div className="amenity-word">Amenities</div>
+                <hr />
+                <div className="amenityclass">
+                  {hotelAmenities &&
+                    hotelAmenities
+                      .slice(0, displayCount)
+                      .map((option, index) => {
+                        let icon;
+                        switch (option) {
+                          case "24-hour Front Desk Service":
+                            icon = faHotel;
+                            break;
+                          case "Free Wireless Internet":
+                            icon = faWifi;
+                            break;
+                          case "Parking":
+                            icon = faParking;
+                            break;
+                          case "ATM on Site":
+                            icon = GrAtm;
+                            break;
+                          case "Television":
+                            icon = faTv;
+                            break;
+                          case "CCTV":
+                            icon = faCamera;
+                            break;
+                          case "Air Conditioning":
+                            icon = faSnowflake;
+                            break;
+                          case "Card-payment":
+                            icon = faCreditCard;
+                            break;
+                          case "Elevator":
+                            icon = faElevator;
+                            break;
+                          case "Kitchen Facility":
+                            icon = faKitchenSet;
+                            break;
+                          default:
+                            icon = faCheck;
+                        }
+                        return (
+                          <div key={index} className="amenity-item">
+                            {icon && (
+                              <FontAwesomeIcon
+                                icon={icon}
+                                className="amenity-icon"
+                              />
+                            )}{" "}
+                            {option}
+                          </div>
+                        );
+                      })}
+                  {hotelAmenities.length > 5 && (
+                    <div className="show-more-less">
+                      {displayCount === 5 ? (
+                        <button onClick={showMore}>Show More</button>
+                      ) : (
+                        <button onClick={showLess}>Show Less</button>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            );
-          })}
-        {hotelAmenities.length > 5 && (
-          <div className="show-more-less">
-            {displayCount === 5 ? (
-              <button onClick={showMore}>Show More</button>
-            ) : (
-              <button onClick={showLess}>Show Less</button>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
 
               <div className="moreopt">
-                <p className="morehead">More:</p>
                 <div className="moreitem">
                   {hotelMoreOpt &&
                     hotelMoreOpt !== ([] || undefined) &&
@@ -651,38 +680,40 @@ const showLess = () => {
                     })}
                 </div>
               </div>
-{/* policy details are here */}
+              {/* policy details are here */}
               <div class="information-card">
-    <div className="hotel-policies">
-        <div className="hotel-policyheading">Hotel Policies:</div>
-        <p className="hotel-policy">{bookingDetails.hotelsPolicy}</p>
-        <hr />
-        <h5>Check-in</h5>
-        <p>{bookingDetails.checkInPolicy}</p>
-        <br />
-        <h5>Check-out</h5>
-        <p>{bookingDetails.checkOutPolicy}</p>
-        <hr />
-        <h5>Outside food:</h5>{bookingDetails.outsideFoodPolicy}
-        <hr />
-        <div className="customer-welcome">
-            <p>{bookingDetails.customerWelcomeNote}</p>
-        </div>
-        
-         
-    </div>
-    <button className="view-additional" onClick={()=>handleViewMore(bookingDetails._id)}> View more</button>
-</div>
+                <div className="hotel-policies">
+                  <div className="hotel-policyheading">Hotel Policies:</div>
+                  <p className="hotel-policy">{bookingDetails.hotelsPolicy}</p>
+                  <hr />
+                  <h5>Check-in</h5>
+                  <p>{bookingDetails.checkInPolicy}</p>
+                  <br />
+                  <h5>Check-out</h5>
+                  <p>{bookingDetails.checkOutPolicy}</p>
+                  <hr />
+                  <h5>Outside food:</h5>
+                  {bookingDetails.outsideFoodPolicy}
+                  <hr />
+                  <div className="customer-welcome">
+                    <p>{bookingDetails.customerWelcomeNote}</p>
+                  </div>
+                </div>
+                <button
+                  className="view-additional"
+                  onClick={() => handleViewMore(bookingDetails._id)}
+                >
+                  {" "}
+                  View more
+                </button>
+              </div>
 
-{/* policy details ends  here */}
-
-
-            
+              {/* policy details ends  here */}
 
               {meals && meals.length > 0 ? (
-                <div className="cust-detail">Enjoy meals during your stay:</div>
+                <div className="cust-detail">Enjoy meals during your stay</div>
               ) : null}
-
+              <hr />
               {meals.map((m, i) => (
                 <div
                   className="card"
@@ -699,13 +730,15 @@ const showLess = () => {
                       <p>Item Description : {m.about}</p>
                     </div>
                     <div className="card-detail-img">
-    {m.images[0] ? (
-        <img src={m.images[0]} alt="..." />
-    ) : (
-        <img src="https://www.adityabirlacapital.com/healthinsurance/active-together/wp-content/uploads/2018/10/Unhealthy-Food-Chart.jpg" alt="Default Image" />
-    )}
-</div>
-
+                      {m.images[0] ? (
+                        <img src={m.images[0]} alt="..." />
+                      ) : (
+                        <img
+                          src="https://www.adityabirlacapital.com/healthinsurance/active-together/wp-content/uploads/2018/10/Unhealthy-Food-Chart.jpg"
+                          alt="Default Image"
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="downhead">
                     <p className="price-total">
@@ -762,8 +795,6 @@ const showLess = () => {
                   background: "#fff",
                 }}
               >
-               
-
                 <p className="noofroom">
                   <FontAwesomeIcon icon={faRestroom} className="icon" />
                   Rooms:
@@ -833,7 +864,8 @@ const showLess = () => {
 
                 <p className="id">
                   <FontAwesomeIcon icon={faIdCard} className="icon" />
-                  LocalID: {bookingDetails.localId? "Available" : "Not Available"}
+                  LocalID:{" "}
+                  {bookingDetails.localId ? "Available" : "Not Available"}
                 </p>
               </div>
 
@@ -855,30 +887,30 @@ const showLess = () => {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
-                     
                         <p>Room Type : {item?.type}</p>
                         <p>Bed Type : {item?.bedTypes}</p>
-                        
-                       
-  <div>
-  <p style={{ display: 'flex', alignItems: 'center' }}>
-  {item?.originalPrice > item?.price && (
-    <>
-      <span style={{ marginRight: '5px' }}>Special price -</span>
-      <del style={{ color: 'white', backgroundColor: 'red' }}>{item?.originalPrice}</del>
-    </>
-  )}
-  {item?.originalPrice > item?.price ? '' : 'Price'}: {item?.price}
-</p>
 
-
-
-   
-  </div>
-
-
-
-
+                        <div>
+                          <p style={{ display: "flex", alignItems: "center" }}>
+                            {item?.originalPrice > item?.price && (
+                              <>
+                                <span style={{ marginRight: "5px" }}>
+                                  Special price -
+                                </span>
+                                <del
+                                  style={{
+                                    color: "white",
+                                    backgroundColor: "red",
+                                  }}
+                                >
+                                  {item?.originalPrice}
+                                </del>
+                              </>
+                            )}
+                            {item?.originalPrice > item?.price ? "" : "Price"}:{" "}
+                            {item?.price}
+                          </p>
+                        </div>
 
                         {/* <p>Original Price : {item?.originalPrice}</p> */}
                       </div>
@@ -897,7 +929,13 @@ const showLess = () => {
                       <button
                         className="select-btn mt-4"
                         onClick={() =>
-                          selectRoomHandler(index, item?.price, item?.originalPrice, item?.type, item?.bedTypes)
+                          selectRoomHandler(
+                            index,
+                            item?.price,
+                            item?.originalPrice,
+                            item?.type,
+                            item?.bedTypes
+                          )
                         }
                       >
                         {index === selectedRoomBtn ? "Selected" : "Select"}
@@ -955,7 +993,7 @@ const showLess = () => {
               <div className="reviews">
                 <div className="reviewhead">
                   <h1>Ratings and reviews</h1>
-                  
+
                   <Ratingrange />
 
                   {currentData
