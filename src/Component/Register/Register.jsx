@@ -66,11 +66,12 @@ const Register = () => {
   }
 
   const handleSignInClick = () => {
-    navigate("/login");
+    navigate("/signin");
   };
 
   return (
     <>
+    <div className="left-side-image"><img src="https://www.careerguide.com/career/wp-content/uploads/2021/10/Boy-Working-From-Home.gif" alt="" /></div>
       <div className="card-signup">
         <form onSubmit={handleFormSubmit} className="form-container">
           <div className="form-input-group">

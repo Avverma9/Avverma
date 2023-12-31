@@ -68,6 +68,8 @@ const Login = () => {
 
 
   return (
+    <>
+    <div className="left-side-image"><img src="https://assets-v2.lottiefiles.com/a/7635dd88-116a-11ee-b318-ffcf40e06a51/IGkyaw4lBV.gif" alt="" /></div>
     <div className="card-signin">
       
       {isLoading && (
@@ -146,6 +148,7 @@ const Login = () => {
       </form>
       <br />
     </div>
+    </>
   );
 };
 

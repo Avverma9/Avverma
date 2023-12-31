@@ -113,7 +113,7 @@
 
 
 button {
-  background-color: #007bff;
+  background-color: #b6d3f1;
   color: #fff;
   border: none;
   padding: 12px 20px;
@@ -124,7 +124,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #d3e4f754;
 }
 
 /* Responsive styling for small screens */

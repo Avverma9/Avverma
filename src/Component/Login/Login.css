@@ -3,13 +3,11 @@
 .card-signin {
   max-width: 400px;
   margin: 0 auto;
-  margin-top: 100px;
+  margin-top: -400px;
+  margin-left: 750px;
   padding: 20px;
   text-align: center;
-  background-color: #f7f7f7;
-  border: 1px solid #dcdcdc;
-  box-shadow: 0px 0px 5px 0px #dcdcdc;
-}
+  }
 
 .loading-image {
   max-width: 100px;
@@ -43,6 +41,7 @@
 .eye-icon {
   color: #555;
   cursor: pointer;
+  margin-top: 18px;
 }
 
 .signin-button {
@@ -65,9 +64,6 @@
   cursor: pointer;
 }
 
-.signup-button:hover {
-  text-decoration: underline;
-}
 
 .dhac {
   margin-top: 20px;

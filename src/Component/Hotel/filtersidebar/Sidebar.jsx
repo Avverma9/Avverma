@@ -436,10 +436,10 @@ const Sidebar = ({
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  handleroomtype("Business Double Room", e.target.checked)
+                  handleroomtype("Standard room", e.target.checked)
                 }
               />
-              Business Double Room
+              Standard Room
             </label>
             <label>
               {" "}
@@ -471,6 +471,17 @@ const Sidebar = ({
               />
               Deluxe Room
             </label>
+            <label>
+              {" "}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleroomtype("Business Double Room", e.target.checked)
+                }
+              />
+              Business Double Room
+            </label>
+
             <label>
               {" "}
               <input
@@ -703,16 +714,7 @@ const Sidebar = ({
               />
               Standard Two Bedroom Apartment
             </label>
-            <label>
-              {" "}
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  handleroomtype("Standard room", e.target.checked)
-                }
-              />
-              Standard Room
-            </label>
+
             <label>
               {" "}
               <input
@@ -848,6 +850,46 @@ const Sidebar = ({
               />
               Business Double Room
             </label>
+            <label>
+              {" "}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleroomtype("Standard Room", e.target.checked)
+                }
+              />
+              Standard Room
+            </label>
+            <label>
+              {" "}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleroomtype("Deluxe Room", e.target.checked)
+                }
+              />
+              Deluxe Room
+            </label>
+            <label>
+              {" "}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleroomtype("Deluxe One Bed Room Suite", e.target.checked)
+                }
+              />
+              Deluxe One Bed Room
+            </label>
+            <label>
+              {" "}
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  handleroomtype("Deluxe King Room", e.target.checked)
+                }
+              />
+              Deluxe King Room
+            </label>
           </>
         )}
         <button
@@ -882,7 +924,7 @@ const Sidebar = ({
               {" "}
               <input
                 type="checkbox"
-                onChange={(e) => handlebedtype("King Size", e.target.value)}
+                onChange={(e) => handlebedtype("KingSize", e.target.value)}
               />
               King Size
             </label>

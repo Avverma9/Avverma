@@ -39,7 +39,7 @@ import BookNow from "./Component/Hotel/BookNow";
 
 
 import Offers from "./Component/Offers/Offers";
-import BookNowPage from "./Component/Booknowpage/Booknowpage";
+
 import Footer from "./Component/Footer/Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -172,14 +172,8 @@ function App() {
             element={<BookNow userData={userData} toast={toast} />}
           />
       
-          <Route
-            path="/book-now/:offerId"
-            element={<BookNowPage userData={userData} toast={toast} />}
-          />
-          {/* <Route
-            path="/bookingDetails"
-            element={<BookingDetails userData={userData} />}
-          /> */}
+          
+          
         </Routes>
         <Footer />
       </div>

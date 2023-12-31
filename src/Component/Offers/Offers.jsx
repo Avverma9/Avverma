@@ -50,10 +50,10 @@ const Offers = () => {
   const handleBookNow = (offerId) => {
     navigate(`/book-now/${offerId}`);
   };
-
+const limitedData=data.slice(0,8)
   return (
     <div className="offers-container">
-      {data && data.map((offer) => <Cards offer={offer} key={offer._id} />)}
+      {limitedData && limitedData.map((offer) => <Cards offer={offer} key={offer._id} />)}
     </div>
   );
 };

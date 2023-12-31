@@ -11,7 +11,7 @@ export const Cards = ({ offer }) => {
   const navigate = useNavigate();
 
   const handleBookNow = (offerId) => {
-    navigate(`/book-now/${offerId}`);
+    navigate(`/hotels/${offerId}`);
   };
 
   return (
