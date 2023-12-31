@@ -567,15 +567,63 @@ const BookNowPage = ({ userData, toast }) => {
               </div>
 
               <div class="information-card">
-                <div className="hotel-policies">
-                  <div className="hotel-policyheading">Hotel Policies:</div>
-                  <p className="hotel-policy">{offerData.hotelsPolicy}</p>
+              <div className="hotel-policies">
+                  <div className="hotel-policyheading">Hotel Policies</div>
+                  <hr />
+                  <p>
+                    {offerData.hotelsPolicy &&
+                    offerData.hotelsPolicy.includes("\n")
+                      ? offerData.hotelsPolicy
+                          .split("\n")
+                          .map((point, index) => (
+                            <span key={index}>
+                              {index > 0 && <br />}{" "}
+                              {/* Add line break if not the first line */}
+                              {point.trim()}
+                            </span>
+                          ))
+                      : offerData.hotelsPolicy}
+                  </p>
                   <hr />
                   <h5>Check-in</h5>
-                  <p>{offerData.checkInPolicy}</p>
+                  <hr />
+                  <div>
+                    <p>
+                      {offerData.checkInPolicy &&
+                      offerData.checkInPolicy.includes("\n")
+                        ? offerData.checkInPolicy
+                            .split("\n")
+                            .map((point, index) => (
+                              <span key={index}>
+                                {index > 0 && <br />}{" "}
+                                {/* Add line break if not the first line */}
+                                {point.trim()}
+                              </span>
+                            ))
+                        : offerData.checkInPolicy}
+                    </p>
+                  </div>
+
                   <br />
                   <h5>Check-out</h5>
-                  <p>{offerData.checkOutPolicy}</p>
+                  <hr />
+                  <div>
+                    <p>
+                      {offerData.checkOutPolicy &&
+                      offerData.checkOutPolicy.includes("\n")
+                        ? offerData.checkOutPolicy
+                            .split("\n")
+                            .map((point, index) => (
+                              <span key={index}>
+                                {index > 0 && <br />}{" "}
+                                {/* Add line break if not the first line */}
+                                {point.trim()}
+                              </span>
+                            ))
+                        : offerData.checkOutPolicy}
+                    </p>
+                  </div>
+
                   <hr />
                   <h5>Outside food:</h5>
                   {offerData.outsideFoodPolicy}

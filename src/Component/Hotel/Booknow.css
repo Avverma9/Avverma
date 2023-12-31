@@ -110,11 +110,7 @@
   transform: scale(1.05);
 }
 
-/* Show more/less button styling */
-.show-more-less {
-  margin-top: 15px;
-  text-align: center;
-}
+
 
 button {
   background-color: #007bff;
@@ -1232,9 +1228,7 @@ h5 {
 .view-additional:hover {
   background-color: #e4dbc4;
 }
-.show-more-less {
-  margin-top: 10px;
-}
+
 
 .show-more-less button {
   background-color: #ffffff2c;
@@ -1245,6 +1239,6 @@ h5 {
 }
 
 .show-more-less button:hover {
-  background-color: #1467e4;
+  background-color: #e42c14;
 }
 

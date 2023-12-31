@@ -683,14 +683,62 @@ export default function BookNow({ userData, toast }) {
               {/* policy details are here */}
               <div class="information-card">
                 <div className="hotel-policies">
-                  <div className="hotel-policyheading">Hotel Policies:</div>
-                  <p className="hotel-policy">{bookingDetails.hotelsPolicy}</p>
+                  <div className="hotel-policyheading">Hotel Policies</div>
+                  <hr />
+                  <p>
+                    {bookingDetails.hotelsPolicy &&
+                    bookingDetails.hotelsPolicy.includes("\n")
+                      ? bookingDetails.hotelsPolicy
+                          .split("\n")
+                          .map((point, index) => (
+                            <span key={index}>
+                              {index > 0 && <br />}{" "}
+                              {/* Add line break if not the first line */}
+                              {point.trim()}
+                            </span>
+                          ))
+                      : bookingDetails.hotelsPolicy}
+                  </p>
                   <hr />
                   <h5>Check-in</h5>
-                  <p>{bookingDetails.checkInPolicy}</p>
+                  <hr />
+                  <div>
+                    <p>
+                      {bookingDetails.checkInPolicy &&
+                      bookingDetails.checkInPolicy.includes("\n")
+                        ? bookingDetails.checkInPolicy
+                            .split("\n")
+                            .map((point, index) => (
+                              <span key={index}>
+                                {index > 0 && <br />}{" "}
+                                {/* Add line break if not the first line */}
+                                {point.trim()}
+                              </span>
+                            ))
+                        : bookingDetails.checkInPolicy}
+                    </p>
+                  </div>
+
                   <br />
                   <h5>Check-out</h5>
-                  <p>{bookingDetails.checkOutPolicy}</p>
+                  <hr />
+                  <div>
+                    <p>
+                      {bookingDetails.checkOutPolicy &&
+                      bookingDetails.checkOutPolicy.includes("\n")
+                        ? bookingDetails.checkOutPolicy
+                            .split("\n")
+                            .map((point, index) => (
+                              <span key={index}>
+                                {index > 0 && <br />}{" "}
+                                {/* Add line break if not the first line */}
+                                {point.trim()}
+                              </span>
+                            ))
+                        : bookingDetails.checkOutPolicy}
+                    </p>
+                  </div>
+
                   <hr />
                   <h5>Outside food:</h5>
                   {bookingDetails.outsideFoodPolicy}

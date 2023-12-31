@@ -593,6 +593,38 @@ const Partner = () => {
       setHotelsPolicy((prevValue) => prevValue + "\n\u2022");
     }
   };
+//========================================================
+  const handleCheckInPolicyChange = (e) => {
+    let inputValue = e.target.value;
+
+    // If the first line doesn't start with a bullet point, add it
+    if (!inputValue.startsWith("\u2022 ")) {
+      inputValue = "\u2022 " + inputValue;
+    }
+    setCheckInPolicy(inputValue);
+  };
+  const handleCheckInPolicyAreaKeyDownChange = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setCheckInPolicy((prevValue) => prevValue + "\n\u2022");
+    }
+  };
+  //============================================================
+  const handleCheckOutPolicyChange = (e) => {
+    let inputValue = e.target.value;
+
+    // If the first line doesn't start with a bullet point, add it
+    if (!inputValue.startsWith("\u2022 ")) {
+      inputValue = "\u2022 " + inputValue;
+    }
+    setCheckOutPolicy(inputValue);
+  };
+  const handleCheckOutPolicyAreaKeyDownChange = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setCheckOutPolicy((prevValue) => prevValue + "\n\u2022");
+    }
+  };
   //======================================================================================
   const handlePrevClick = () => {
     const currentIndex = navItems.indexOf(activeNavItem);
@@ -2374,14 +2406,16 @@ const Partner = () => {
                   type="text"
                   id="returnPolicy"
                   value={checkInPolicy}
-                  onChange={(e) => setCheckInPolicy(e.target.value)}
+                  onKeyDown={handleCheckInPolicyAreaKeyDownChange}
+                  onChange={handleCheckInPolicyChange}
                 />
                 <label htmlFor="returnPolicy">Check-Out Policy:</label>
                 <textarea
                   type="text"
                   id="returnPolicy"
                   value={checkOutPolicy}
-                  onChange={(e) => setCheckOutPolicy(e.target.value)}
+                  onKeyDown={handleCheckOutPolicyAreaKeyDownChange}
+                  onChange={handleCheckOutPolicyChange}
                 />
                 <label htmlFor="returnPolicy">Customer welcome note:</label>
                 <textarea
