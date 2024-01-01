@@ -17,26 +17,9 @@ import Hotel from "./Component/Hotel/Hotel.jsx";
 
 import UserSettings from "./Component/Profile/UserAction";
 import Partner from "./Component/Partner/Partner";
-import PunjabPage from "./Component/States/Punjab/Punjab";
-
-import Maharashtrapage from "./Component/States/Maharashtra/Maharashtra";
-import Assampage from "./Component/States/Assam/Assam";
-import Goapage from "./Component/States/Goa/Goa";
-import Tamilnadupage from "./Component/States/Tamilnadu/Tamilnadu";
-import Uttarpradeshpage from "./Component/States/Uttarpradesh/Uttarpradesh";
-import Delhipage from "./Component/States/Delhi/Delhi";
-import Westbengalpage from "./Component/States/Westbengal/Westbengal";
-import Rajasthanpage from "./Component/States/Rajasthan/Rajasthan";
-import Keralapage from "./Component/States/Kerala/Kerala";
-import Biharpage from "./Component/States/Bihar/Bihar";
-import Kernatakapage from "./Component/States/Karnataka/Karnataka";
-import Gujratpage from "./Component/States/Gujrat/Gujrat";
-import Kashmirpage from "./Component/States/Kashmir/Kashmir";
-import Haryanapage from "./Component/States/Haryana/Haryana";
 import SearchResults from "./Component/Search/SearchResults";
-import Dropdownbar from "./Component/Dropdownbar/Dropdown";
-import BookNow from "./Component/Hotel/BookNow";
 
+import BookNow from "./Component/Hotel/BookNow";
 
 import Offers from "./Component/Offers/Offers";
 
@@ -50,7 +33,6 @@ import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
 import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
-
 
 import { NoShowBooking } from "./Component/Profile/NoShowBooking";
 import { FailedBooking } from "./Component/Profile/FailedBooking";
@@ -93,38 +75,18 @@ function App() {
       <div>
         <Header />
         <ToastContainer />
-        {/* <HeaderImage /> */}
-        <Dropdownbar />
-<Policy/>
-
+        <HeaderImage />
+        <Policy />
         <Carousel />
-
         <Home />
         <Offers />
-        
         <Hotel />
         <ChatBox />
         <PopupCard />
-
         <UserSettings />
         <Partner />
-        {/* <PunjabPage />
-       
-        <Maharashtrapage />
-        <Goapage />
-        <Tamilnadupage />
-        <Uttarpradeshpage />
-        <Delhipage />
-        <Westbengalpage />
-        <Rajasthanpage />
-        <Keralapage />
-        <Biharpage />
-        <Assampage />
-        <Kernatakapage />
-        <Gujratpage />
-        <Kashmirpage />
-        <Haryanapage /> */}
-        <Result/>
+
+        <Result />
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -148,8 +110,7 @@ function App() {
               path="confirm-booking"
               element={<ConfirmBooking toast={toast} />}
             />
-         
-   
+
             <Route path="reviews" element={<MyReviewSection />} />
             <Route path="view-details" element={<ViewDetailsModal />} />
             <Route
@@ -171,9 +132,6 @@ function App() {
             path="/hotels/:id"
             element={<BookNow userData={userData} toast={toast} />}
           />
-      
-          
-          
         </Routes>
         <Footer />
       </div>

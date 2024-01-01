@@ -56,9 +56,9 @@ const HeaderImage = () => {
           <p className="city-name">Punjab</p>
           {dropdownOpen && (
             <div className="dropdown-menu">
-              <a href="/cities/amritsar">Amritsar</a>
-              <a href="/cities/jalandhar">Jalandhar</a>
-              <a href="/cities/ludhiana">Ludhiana</a>
+              <a href="/search/results/amritsar">Amritsar</a>
+              <a href="/search/results/jalandhar">Jalandhar</a>
+              <a href="/search/results/ludhiana">Ludhiana</a>
             </div>
           )}
         </div>
@@ -73,9 +73,9 @@ const HeaderImage = () => {
           <p className="city-name">Maharashtra</p>
           {dropdownOpen && (
             <div className="dropdown-menu">
-              <a href="/cities/mumbai">Mumbai</a>
-              <a href="/cities/Nagpur">Nagpur</a>
-              <a href="/cities/pune">Pune</a>
+              <a href="/search/results/mumbai">Mumbai</a>
+              <a href="/search/results/Nagpur">Nagpur</a>
+              <a href="/search/results/pune">Pune</a>
             </div>
           )}
         </div>
@@ -90,9 +90,9 @@ const HeaderImage = () => {
           <p className="city-name">Goa</p>
           {dropdownOpen && (
             <div className="dropdown-menu">
-              <a href="/cities/panaji">Panaji</a>
-              <a href="/cities/mapuja">Mapuja</a>
-              <a href="/cities/ponda">Ponda</a>
+              <a href="/search/results/panaji">Panaji</a>
+              <a href="/search/results/mapuja">Mapuja</a>
+              <a href="/search/results/ponda">Ponda</a>
             </div>
           )}
         </div>
@@ -107,9 +107,9 @@ const HeaderImage = () => {
           <p className="city-name">Tamil Nadu</p>
           {dropdownOpen&&(
             <div className="dropdown-menu">
-            <a href="/cities/chennai">Chennai</a>
-            <a href="/cities/madurai">Madurai</a>
-            <a href="/cities/coimbatore">Coimbatore</a>
+            <a href="/search/results/chennai">Chennai</a>
+            <a href="/search/results/madurai">Madurai</a>
+            <a href="/search/results/coimbatore">Coimbatore</a>
             </div>
           )}
         </div>
@@ -124,9 +124,9 @@ const HeaderImage = () => {
           <p className="city-name">Uttar Pradesh</p>
           {dropdownOpen&&(
             <div className="dropdown-menu">
-            <a href="/cities/Noida" >Noida</a>
-            <a href="/cities/kanpur">Kanpur</a>
-            <a href="/cities/lucknow">Lucknow</a>
+            <a href="/search/results/Noida" >Noida</a>
+            <a href="/search/results/kanpur">Kanpur</a>
+            <a href="/search/results/lucknow">Lucknow</a>
             </div>
           )}
         </div>
@@ -141,8 +141,8 @@ const HeaderImage = () => {
           <p className="city-name">Delhi</p>
           {dropdownOpen&&(
             <div className="dropdown-menu">
-            <a href="/cities/delhi" >Delhi</a>
-            <a href="/cities/new-delhi">New Delhi</a>
+            <a href="/search/results/delhi" >Delhi</a>
+            <a href="/search/results/new-delhi">New Delhi</a>
             
             </div>
           )}
@@ -158,9 +158,9 @@ const HeaderImage = () => {
           <p className="city-name">West Bengal</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/kolkata">Kolkata</a>
-              <a href="/cities/durgapur">Durgapur</a>
-              <a href="/cities/asansol">Asansol</a>
+              <a href="/search/results/kolkata">Kolkata</a>
+              <a href="/search/results/durgapur">Durgapur</a>
+              <a href="/search/results/asansol">Asansol</a>
             </div>
           )}
         </div>
@@ -175,10 +175,10 @@ const HeaderImage = () => {
           <p className="city-name">Rajasthan</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-            <a href="/cities/Jaipur">Jaipur</a>
-            <a href="/cities/kota">Kota</a>
-            <a href="cities/Sawai Madhopur">Sawai Madhopur</a>
-            <a href="/cities/tonk">Tonk</a>
+            <a href="/search/results/Jaipur">Jaipur</a>
+            <a href="/search/results/kota">Kota</a>
+            <a href="search/results/Sawai Madhopur">Sawai Madhopur</a>
+            <a href="/search/results/tonk">Tonk</a>
             </div>
           )}
         </div>
@@ -193,9 +193,9 @@ const HeaderImage = () => {
           <p className="city-name">Kerala</p>
           {dropdownOpen&&(
             <div className="dropdown-menu">
-            <a href="/cities/kochi">Kochi</a>
-            <a href="/cities/kannur">Kannur</a>
-            <a href="/cities/kollam">Kollam</a>
+            <a href="/search/results/kochi">Kochi</a>
+            <a href="/search/results/kannur">Kannur</a>
+            <a href="/search/results/kollam">Kollam</a>
             </div>
           )}
         </div>
@@ -210,9 +210,9 @@ const HeaderImage = () => {
           <p className="city-name">Bihar</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/patna">Patna</a>
-              <a href="/cities/bhagalpur">Bhagalpur</a>
-              <a href="/cities/gaya">Gaya</a>
+              <a href="/search/results/patna">Patna</a>
+              <a href="/search/results/bhagalpur">Bhagalpur</a>
+              <a href="/search/results/gaya">Gaya</a>
             </div>
           )}
         </div>
@@ -227,9 +227,9 @@ const HeaderImage = () => {
           <p className="city-name">Assam</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/guwahati">Guwahati</a>
-              <a href="/cities/tezpur">Tezpur</a>
-              <a href="/cities/silchar">Silchar</a>
+              <a href="/search/results/guwahati">Guwahati</a>
+              <a href="/search/results/tezpur">Tezpur</a>
+              <a href="/search/results/silchar">Silchar</a>
             </div>
           )}
         </div>
@@ -244,9 +244,9 @@ const HeaderImage = () => {
           <p className="city-name">Karnataka</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/bengaluru">Bengaluru</a>
-              <a href="/cities/mysuru">Mysuru</a>
-              <a href="/cities/mangaluru">Mangaluru</a>
+              <a href="/search/results/bengaluru">Bengaluru</a>
+              <a href="/search/results/mysuru">Mysuru</a>
+              <a href="/search/results/mangaluru">Mangaluru</a>
             </div>
           )}
         </div>
@@ -261,9 +261,9 @@ const HeaderImage = () => {
           <p className="city-name">Gujrat</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/surat">Surat</a>
-              <a href="/cities/ahmedabad">Ahemadabad</a>
-              <a href="/cities/rajkot">Rajkot</a>
+              <a href="/search/results/surat">Surat</a>
+              <a href="/search/results/ahmedabad">Ahemadabad</a>
+              <a href="/search/results/rajkot">Rajkot</a>
             </div>
           )}
         </div>
@@ -278,9 +278,9 @@ const HeaderImage = () => {
           <p className="city-name">Jammu & Kashmir</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/jammu">Jammu</a>
-              <a href="/cities/srinagar">Srinagar</a>
-              <a href="/cities/doda">Doda</a>
+              <a href="/search/results/jammu">Jammu</a>
+              <a href="/search/results/srinagar">Srinagar</a>
+              <a href="/search/results/doda">Doda</a>
             </div>
           )}
         </div>
@@ -295,9 +295,9 @@ const HeaderImage = () => {
           <p className="city-name">Haryana</p>
           {openDropdown&&(
             <div className="dropdown-menu">
-              <a href="/cities/panipat">Panipat</a>
-              <a href="/cities/gurugram">Gurugram</a>
-              <a href="/cities/hisar">Hisar</a>
+              <a href="/search/results/panipat">Panipat</a>
+              <a href="/search/results/gurugram">Gurugram</a>
+              <a href="/search/results/hisar">Hisar</a>
             </div>
           )}
         </div>

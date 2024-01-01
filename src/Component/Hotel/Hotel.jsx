@@ -293,23 +293,21 @@ function HotelList() {
                             icon={faLocationDot}
                             className={styles["location"]}
                           />
-                          {result.destination}
+                          {result.destination.substring(0, 65)}
                         </p>
                       </div>
                       <h5 className={styles["hotel-rating"]}>
-                        {result.starRating}
+                        {result.starRating.substring(0, 2)}
                         <FontAwesomeIcon
                           icon={faStar}
                           className={styles["fastar"]}
                         />
                       </h5>
-                      <p className={styles["search-result-reviews"]}>
-                        {reviewCount.find(
-                          (review) => review.hotelId === result._id
-                        )?.count || "No"}{" "}
-                        Reviews
-                      </p>
-
+                    <h5 className={styles["hotel-reviewcount"]}> {reviewCount.find(
+                        (review) => review.hotelId === result._id
+                      )?.count || "0"}{" "}
+                      Reviews</h5>
+                     
                       <div className={styles["amenities"]}>
                         <ul>
                           {result.amenities.slice(0, 3).map((amenity) => (
@@ -417,7 +415,6 @@ function HotelList() {
                           ))}
                         </ul>
                       </div>
-
                       <div
                         className="mixrupeebutton"
                         style={{
@@ -428,9 +425,6 @@ function HotelList() {
                       >
                         <div className="rupeedetail">
                           <p className={styles["search-result-price"]}>
-                            <span className={styles["detail"]}>
-                              per room per night
-                            </span>
                             {result.roomDetails && result.roomDetails.length > 0
                               ? (() => {
                                   let regularPrice = null;
@@ -480,6 +474,9 @@ function HotelList() {
                                 })()
                               : "N/A"}
                           </p>
+                          <span className={styles["detail"]}>
+                              per room per night
+                            </span>
                         </div>
                         <div
                           className="flex-button"
@@ -493,24 +490,21 @@ function HotelList() {
                             className={styles["view-details-button"]}
                             onClick={() => handleBuy(result._id)}
                           >
-                            View Details
+                            View
                           </button>
                           <button
                             className={styles["book-now-button"]}
                             onClick={() => handleBuy(result._id)}
                           >
-                            Book Now
+                            Book
                           </button>
                         </div>
                       </div>
-
                       <p className={styles["search-result-availability"]}>
                         Local ID:{" "}
                         {result.localId ? "Available" : "Not available"}
                       </p>
-
                       <hr />
-
                       {expandedResultId === result._id && (
                         <div>
                           <div className={styles["amenities"]}>

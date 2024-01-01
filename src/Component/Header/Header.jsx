@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
+import { FaHandHoldingMedical } from "react-icons/fa";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
 import  {FcCallback} from 'react-icons/fc'
 import { Link, useNavigate } from "react-router-dom";
@@ -67,7 +68,7 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <BsPerson />
+                    <FaHandHoldingMedical />
                     <>Become a Partner</>
                   </Link>
                   <ul className="dropdown-menu">

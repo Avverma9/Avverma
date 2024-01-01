@@ -56,7 +56,7 @@
 }
 
 .search-result-destination {
-  font-size: 18px;
+  font-size: 13px;
   margin-bottom: 10px;
   color: #606060;
   font-weight: 501;
@@ -111,25 +111,6 @@
   font-size: 12px;
   margin: 10px 0;
 }
-
-.view-details-button,
-.book-now-button {
-  width: 20%;
-  margin: 0;
-  padding: 0;
-  font-size: 9px;
-  text-align: center;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* <<<<<<<<< Temporary merge branch 1 */
-/* ========= */
-
-/* >>>>>>>>> Temporary merge branch 2 */
 
 .amenities {
   margin-top: 30px;
@@ -242,7 +223,7 @@ input[type="checkbox"]:checked + span {
 hr {
   border: none;
   border-top: 8px solid #ddd;
-  margin: 20px 0;
+  
 }
 
 /* Optional styles for the RangeSlider component */
@@ -274,7 +255,7 @@ input[type="checkbox"] {
 /* Add more custom styles as needed */
 
 .search-result-title {
-  font-size: 22px;
+  font-size: 18px;
   color: black;
   font-weight: bold;
   margin-bottom: 10px;
@@ -289,12 +270,16 @@ input[type="checkbox"] {
   background-color: #257725;
   padding: 8px;
   border-radius: 3px;
-  width: 80px;
+  width: 50px;
   justify-content: center;
 }
-
+.hotel-reviewcount{
+  color: red;
+  font-size: small;
+  font-family: cursive;
+}
 .fastar {
-  margin-right: 5px;
+  margin-left: 8px;
 }
 
 .detail {
@@ -314,7 +299,7 @@ input[type="checkbox"] {
   text-transform: uppercase;
   padding: 4px;
   width: 70%;
-  height: 90%;
+  height: 70%;
   color: rgb(105, 105, 105);
   border: 1px solid #cdcdcd;
   background: white;
@@ -327,26 +312,25 @@ input[type="checkbox"] {
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 4px;
+  color: rgb(0, 0, 0);
+  border: 1px solid #cdcdcd;
+  background: rgb(40, 124, 235);
   width: 70%;
-  height: 90%;
+  height: 70%;
   font-size: 12px;
 }
 
-/* <<<<<<<<< Temporary merge branch 1 */
-/* ========= */
-
-/* >>>>>>>>> Temporary merge branch 2 */
 
 .book-now-button:hover {
   /* ... previous styles ... */
-  background-color: #0056b3;
+  background-color: #ffe8de;
   transform: translateY(-3px);
   transition: 0.3s;
 }
 
 @media only screen and (max-width: 1010px) {
   .search-result-title {
-    font-size: 18px;
+    font-size: 15px;
   }
   .search-result-destination {
     font-size: 10px;
