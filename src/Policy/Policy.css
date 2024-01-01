@@ -11,8 +11,8 @@
 }
 
 .exit-button {
-  background-color: #e44d26;
-  color: #fff;
+  background-color: #e6b4a800;
+  color: #000000;
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -21,7 +21,7 @@
 }
 
 .exit-button:hover {
-  background-color: #d63717;
+  background-color: #77777796;
 }
 
 .hotelName {
@@ -84,4 +84,4 @@ p {
   color: #555;
 }
 
-/* Add more styles as needed */
+

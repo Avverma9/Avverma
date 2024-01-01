@@ -42,7 +42,7 @@ const BookingDetails = ({
 }) => {
   // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleOpenRazorpay = (data) => {
     console.log(data);
     const options = {
@@ -75,12 +75,9 @@ const BookingDetails = ({
     rzp.open();
   };
 
-
-
   const totalAccommodationPrice = roomPrice * selectedRooms;
 
   const totalPrice = totalAccommodationPrice + foodPrice;
-
 
   const handleBooking = (paymentStatus) => {
     const bookingData = {
@@ -108,8 +105,8 @@ const BookingDetails = ({
 
           if (res.status === 201) {
             toast.success("Booking created successfully");
-            alert("Your booking is done !")
-            navigate("profile/confirm-booking")
+            alert("Your booking is done !");
+            navigate("profile/confirm-booking");
           }
         })
         .catch((err) => {
@@ -146,7 +143,9 @@ const BookingDetails = ({
   initialCheckOutDate.setDate(initialCheckOutDate.getDate() + 1);
 
   const [selectdate, setSelectdate] = useState(initialCheckInDate);
-  const [selectdatecheckout, setSelectdatecheckout] = useState(initialCheckOutDate);
+  const [selectdatecheckout, setSelectdatecheckout] = useState(
+    initialCheckOutDate
+  );
 
   const handledatechange = (date) => {
     setSelectdate(date);
@@ -155,7 +154,6 @@ const BookingDetails = ({
   const handledatechange2 = (date) => {
     setSelectdatecheckout(date);
   };
-
 
   const paymentSelect = () => {
     setOpenPaymentModule(true);
@@ -177,15 +175,11 @@ const BookingDetails = ({
         <div className={styles.main}>
           <div className={styles.headupper}>
             <div className={styles.head}>
-            <span>
+              <span>
                 <FaRupeeSign className={styles.rupee_sign} />
-               
-                  <span className={styles.roomPrice}>
-                    {roomPrice}
-                  </span>
-            
+
+                <span className={styles.roomPrice}>{roomPrice}</span>
               </span>
-            
             </div>
             <div className={styles.inclusive_tex}>Inclusive of all taxes</div>
           </div>
@@ -244,12 +238,12 @@ const BookingDetails = ({
           </div>
           <div className={styles.facilities}>
             <div className={styles.pen_icon}>
-              <span className={styles.icon_pen}>
-                <BiBed />
-              </span>
+              <span className={styles.icon_pen}></span>
               <div className={styles.textnew}>
-         
-                <span className={styles.textc}>{roomType}-{bedtype}</span>
+                <span className={styles.textc}> <BiBed /> &nbsp;
+                  {roomType} &nbsp;& {bedtype} 
+                 
+                </span>
               </div>
             </div>
             <div className={styles.pencil_icon}>
@@ -264,14 +258,12 @@ const BookingDetails = ({
               </span>
             </div>
           </div>
-          
-          
 
           <div className={styles.pricechart}>
             <div className={styles.pri}>
               <div className={styles.pri1}>Accomodation:</div>
               <div className={styles.pri2}>
-              <span className={styles.p}>
+                <span className={styles.p}>
                   <FaRupeeSign />
                   {totalAccommodationPrice}
                 </span>
@@ -281,25 +273,23 @@ const BookingDetails = ({
               <div className={styles.pri}>
                 <div className={styles.pri1}>Food Items:</div>
                 <div className={styles.pri2}>
-                <span className={styles.p}>
+                  <span className={styles.p}>
                     <FaRupeeSign />
                     {foodPrice}
                   </span>
                 </div>
               </div>
             ) : null}
-       
+
             <div className={styles.pri}>
               <div className={styles.pri1}>Total Price</div>
               <div className={styles.pri2}>
-              <span className={styles.p}>
+                <span className={styles.p}>
                   <FaRupeeSign />
                   {totalPrice}
                 </span>
               </div>
             </div>
-           
-           
           </div>
 
           {openPaymentModule === false ? (

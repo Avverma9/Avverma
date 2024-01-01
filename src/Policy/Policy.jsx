@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { TbDoorExit } from "react-icons/tb";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import "./Policy.css";
 
@@ -46,14 +47,9 @@ const Policy = () => {
   };
   return (
     <div className="policy-container">
-      <button className="exit-button" onClick={handleExit}>
-        Exit
-      </button>
-      <div className="hotelName">
-        <p>Hotel Rooms-stay</p>
-      </div>
-      <hr />
-
+      <p className="exit-button"><TbDoorExit onClick={handleExit}/> Exit . . </p>
+       
+      
       <h3>{data.hotelName}</h3>
       <hr />
       <table>

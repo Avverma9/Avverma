@@ -48,7 +48,7 @@
 
 .hotel-details1 .hotel-descrip {
   color: rgb(112, 112, 112);
-  width: 50%;
+  width: 95%;
   margin-bottom: 50px;
   margin-top: 44px;
 }
@@ -62,7 +62,7 @@
 /* Add these styles to your CSS file */
 
 .amenity-section {
-  width: 100%;
+  width: 95%;
   margin-bottom: 20px;
 }
 
@@ -110,8 +110,6 @@ button {
   border-radius: 3px;
 }
 
-
-
 button {
   background-color: #b6d3f1;
   color: #fff;
@@ -133,9 +131,6 @@ button:hover {
     width: calc(50% - 15px);
   }
 }
-
-
-
 
 .slider-navigation {
   position: absolute;
@@ -234,11 +229,12 @@ button:hover {
 
 .viewMoreBtn,
 .viewLessBtn {
-  border: none;
-  background: white;
+  border: #000000;
+  border-radius: 25px;
+  background: rgb(241, 142, 142);
   display: flex;
   justify-content: flex-end;
-  color: blue;
+  color: rgb(2, 2, 2);
 }
 
 .staricon {
@@ -281,8 +277,6 @@ button:hover {
 .card {
   background-color: #f2f2f2;
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   width: 50%;
 }
 
@@ -312,15 +306,15 @@ button:hover {
 }
 
 .card-detail-img img {
-  width: 212px;
-  height: 160px;
-  border-radius: 10px;
+  width: 152px;
+  height: 120px;
+
 }
 
 .card-detail-info p {
   font-size: 18px;
   font-weight: 500;
-  color: #6b7280;
+  color: #000000;
 }
 
 .card .select-btn {
@@ -355,25 +349,12 @@ button:hover {
 }
 
 .cust-detail {
-  font-size: 18px;
-  font-weight: bold;
-  color: black;
-  margin-top: 25px;
-  margin-bottom: 20px;
-  padding: 15px;
-  background-color: #f8f9fa; /* Light background color */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.3s ease; /* Add scale transition */
+  overflow: hidden;
+  white-space: initial;
+  margin: 0 auto;
+  letter-spacing: 2px;
+  font-weight: bold; /* Add this line to make the text bold */
 }
-
-.cust-detail:hover {
-  background-color: #e0e0e0; /* Background color on hover */
-  transform: scale(1.05); /* Scale effect on hover */
-}
-
 
 .hotel-policyheading {
   font-size: 20px;
@@ -384,7 +365,7 @@ button:hover {
 }
 
 .hotel-policies {
-  width: 50%;
+  width: 95%;
   margin-top: 50px;
 }
 
@@ -499,8 +480,8 @@ button:hover {
 }
 
 .create_new_reviews .post_review_button {
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 40px;
   background-color: #2563eb;
   border: none;
   border-radius: 50%;
@@ -630,7 +611,6 @@ button:hover {
     font-size: 10px;
   }
 
-
   .slider-navigation {
     position: absolute;
     top: 50%;
@@ -739,8 +719,6 @@ button:hover {
   .card {
     background-color: #f2f2f2;
     padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
   }
 
@@ -766,8 +744,6 @@ button:hover {
   .card .maritalstatus .icon {
     color: #dc3545;
   }
-
-
 
   .hotel-policyheading {
     font-size: 10px;
@@ -1207,8 +1183,6 @@ button:hover {
   color: red;
 }
 
-
-
 /* Style for the "Outside food" section */
 h5 {
   font-size: 18px;
@@ -1229,9 +1203,10 @@ h5 {
   background-color: #e4dbc4;
 }
 
-
 .show-more-less button {
-  background-color: #ffffff2c;
+  background-color: #e93b3b91;
+  border: #000000;
+  border-radius: 25px;
   color: #000000;
   padding: 5px 10px;
   border: none;
@@ -1241,4 +1216,3 @@ h5 {
 .show-more-less button:hover {
   background-color: #14e4e4;
 }
-

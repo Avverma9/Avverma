@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { LuBedDouble } from "react-icons/lu";
+import { BiSolidOffer } from "react-icons/bi";
 import Slider from "react-slick";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDate, getCurrentDate } from "../../utils/_dateFuntions";
@@ -445,13 +447,11 @@ export default function BookNow({ userData, toast }) {
     if (selectedRooms * 3 < selectedGuests && selectedRooms <= 4) {
       setSelectedGuests(selectedRooms * 3);
     }
-    // if (selectedGuests % 3 !== 0 && selectedRooms < 4) {
-    //   setSelectedRooms(selectedRooms + 1);
-    // }
   }, [selectedGuests, selectedRooms]);
 
   const handleViewMore = (id) => {
     navigate(`/policy-page/${id}`);
+    window.scrollTo(0, 0);
   };
 
   const showMore = () => {
@@ -755,11 +755,13 @@ export default function BookNow({ userData, toast }) {
                   View more
                 </button>
               </div>
-
+              <br />
               {/* policy details ends  here */}
 
               {meals && meals.length > 0 ? (
-                <div className="cust-detail">Enjoy meals during your stay</div>
+                <div class="cust-detail">
+                  Enjoy spicy food during your journey
+                </div>
               ) : null}
               <hr />
               {meals.map((m, i) => (
@@ -774,8 +776,11 @@ export default function BookNow({ userData, toast }) {
                 >
                   <div className="d-flex align-items-center">
                     <div className="card-detail-info flex-fill">
-                      <p>Item Name : {m.name}</p>
-                      <p>Item Description : {m.about}</p>
+                      <p>{m.name}</p>
+                      <hr />
+                      <p style={{ color: "green", fontSize: "14px" }}>
+                        {m.about}
+                      </p>
                     </div>
                     <div className="card-detail-img">
                       {m.images[0] ? (
@@ -831,10 +836,11 @@ export default function BookNow({ userData, toast }) {
               ))}
 
               <div ref={bookingDetailsEndRef} />
-
+              <br />
               <div className="cust-detail" ref={bookingRef}>
-                Booking Details:
+                Booking Details
               </div>
+              <br />
               <div
                 className="card"
                 style={{
@@ -916,9 +922,9 @@ export default function BookNow({ userData, toast }) {
                   {bookingDetails.localId ? "Available" : "Not Available"}
                 </p>
               </div>
-
+              <br />
               <div className="cust-detail" ref={selectRoomRef}>
-                Choose your room:
+                Choose your room
               </div>
 
               {bookingDetails &&
@@ -935,15 +941,21 @@ export default function BookNow({ userData, toast }) {
                   >
                     <div className="d-flex align-items-center">
                       <div className="card-detail-info flex-fill">
-                        <p>Room Type : {item?.type}</p>
-                        <p>Bed Type : {item?.bedTypes}</p>
+                        <p>{item?.type}</p>
+                        <hr />
+                        <p>
+                          {item?.bedTypes}{" "}
+                          <span style={{ marginLeft: "5px" }}>
+                            <LuBedDouble />
+                          </span>
+                        </p>
 
                         <div>
                           <p style={{ display: "flex", alignItems: "center" }}>
                             {item?.originalPrice > item?.price && (
                               <>
                                 <span style={{ marginRight: "5px" }}>
-                                  Special price -
+                                  <BiSolidOffer /> Offer price -
                                 </span>
                                 <del
                                   style={{
