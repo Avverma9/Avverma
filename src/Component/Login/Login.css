@@ -3,10 +3,15 @@
 .card-signin {
   max-width: 400px;
   margin: 0 auto;
-  margin-top: -400px;
+  margin-top: -600px;
   margin-left: 750px;
+  background-color: #f7f7f7;
+  border: 1px solid #dcdcdc;
+  border-radius: 45px;
+  box-shadow: 0px 0px 5px 0px #dcdcdc;
   padding: 20px;
   text-align: center;
+  margin-bottom: 80px;
   }
 
 .loading-image {
@@ -23,9 +28,6 @@
 .input-signin {
   width: 100%;
   padding: 10px;
-  font-size: 16px;
-  border-radius: 5px;
-  outline: none;
 }
 
 .show-password-button-signin {
@@ -45,27 +47,47 @@
 }
 
 .signin-button {
-  width: 100%;
+  width: 35%;
   padding: 10px;
   font-size: 18px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #bdbfc2;
+  color: #000000;
   border: none;
-  border-radius: 5px;
+  border-radius: 45px;
   cursor: pointer;
   margin-top: 10px;
+  margin-right: 20px;
 }
-
+.otp-signin-button {
+  width: 35%;
+  padding: 10px;
+  font-size: 18px;
+  background-color: #bdbfc2;
+  color: #000000;
+  border: none;
+  border-radius: 45px;
+  cursor: pointer;
+  margin-top: 10px;
+  justify-content: space-around;
+}
 .signup-button {
   background-color: transparent;
   border: none;
   color: #007bff;
   font-weight: bold;
   cursor: pointer;
+
 }
 
 
 .dhac {
   margin-top: 20px;
   font-size: 16px;
+}
+
+.left-side-image img{
+  margin-top: 80px;
+  margin-bottom: 100px;
+  width: 600px;
+  height: 500px;
 }

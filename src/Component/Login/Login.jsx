@@ -69,7 +69,7 @@ const Login = () => {
 
   return (
     <>
-    <div className="left-side-image"><img src="https://assets-v2.lottiefiles.com/a/7635dd88-116a-11ee-b318-ffcf40e06a51/IGkyaw4lBV.gif" alt="" /></div>
+    <div className="left-side-image"><img src="https://assets-v2.lottiefiles.com/a/6beb774c-1166-11ee-a6f1-4788c8724adf/E9TtaYgKZu.gif" alt="" /></div>
     <div className="card-signin">
       
       {isLoading && (
@@ -126,10 +126,10 @@ const Login = () => {
           <button onClick={handleForgotPassword} className="signup-button">Click Here</button>
         </div>
         <button type="submit-login" disabled={isLoading} className="signin-button">
-      Sign In
+      Sign-in
     </button>
-    <button type="submit-otp" onClick={handleOtplogin} disabled={isLoading} className="signin-button">
-      OTP SignIn
+    <button type="submit-otp" onClick={handleOtplogin} disabled={isLoading} className="otp-signin-button">
+      OTP Sign-in
     </button>
         <Google />
         

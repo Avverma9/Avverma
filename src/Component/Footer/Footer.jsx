@@ -1,5 +1,5 @@
 import React from "react";
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
 import { useLocation } from "react-router-dom";
 import {
   MDBFooter,
@@ -22,9 +22,7 @@ const Footer = () => {
     marginTop: isSearchResultsPath ? "250px" : "0", // Adjust the value based on your preference
   };
   return (
-    <MDBFooter style={footerStyle}
-    color="white"
-    bgColor="dark">
+    <MDBFooter style={footerStyle} color="white" bgColor="dark">
       <MDBContainer className="p-4">
         <section className="mb-4">
           <MDBBtn
@@ -151,41 +149,94 @@ const Footer = () => {
                   </a>
                 </li>
               </ul>
-            
             </MDBCol>
 
             <MDBCol lg="3" md="6" className="mb-4 mb-md-0">
-             
-
               <ul className="list-unstyled mb-0">
-              <li className='citylist-name'><a href="/cities/patna" class="text-white">Hotels in Patna</a></li>
-            <li className='citylist-name'><a href="/cities/vadodara" class="text-white">Hotels in Vadodara</a></li>
-            <li className='citylist-name'><a href="/cities/surat" class="text-white">Hotels in Surat</a></li>
-            <li className='citylist-name'><a href="/cities/ratlam" class="text-white">Hotels in Ratlam</a></li>
-            <li className='citylist-name'><a href="/cities/gwalior" class="text-white">Hotels in Gwalior</a></li>
-            <li className='citylist-name'><a href="/cities/rishikesh" class="text-white">Hotels in Rishikesh</a></li>
-            <li className='citylist-name'><a href="/cities/nainital" class="text-white">Hotels in Nainital</a></li>
-            <li className='citylist-name'><a href="/cities/mussoorie" class="text-white">Hotels in Mussoorie</a></li>
-            <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        More hotels
-      </Dropdown.Toggle>
+                <li className="citylist-name">
+                  <a href="/cities/patna" class="text-white">
+                    Hotels in Patna
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/vadodara" class="text-white">
+                    Hotels in Vadodara
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/surat" class="text-white">
+                    Hotels in Surat
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/ratlam" class="text-white">
+                    Hotels in Ratlam
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/gwalior" class="text-white">
+                    Hotels in Gwalior
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/rishikesh" class="text-white">
+                    Hotels in Rishikesh
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/nainital" class="text-white">
+                    Hotels in Nainital
+                  </a>
+                </li>
+                <li className="citylist-name">
+                  <a href="/cities/mussoorie" class="text-white">
+                    Hotels in Mussoorie
+                  </a>
+                </li>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    More hotels
+                  </Dropdown.Toggle>
 
-      <Dropdown.Menu>
-        <Dropdown.Item href="/cities/dehradun">Hotels in Dehradun</Dropdown.Item>
-        <Dropdown.Item href="/cities/haridwar">Hotels in Haridwar</Dropdown.Item>
-       
-        <Dropdown.Item href="/cities/jamnagar">Hotels in Jamnagar</Dropdown.Item>
-        <Dropdown.Item href="/cities/bhopal">Hotels in Bhopal</Dropdown.Item> <Dropdown.Item href="/cities/jamnagar">Something else</Dropdown.Item>
-        <Dropdown.Item href="/cities/noida">Hotels in Noida</Dropdown.Item>
-        <Dropdown.Item href="/cities/lucknow">Hotels in Lucknow</Dropdown.Item>
-        <Dropdown.Item href="/cities/jabalpur">Hotels in Jabalpur</Dropdown.Item>
-        <Dropdown.Item href="/cities/indore">Hotels in Indore</Dropdown.Item>
-       
-        <Dropdown.Item href="/cities/nalanda" >Hotels in Nalanda</Dropdown.Item> <Dropdown.Item href="/cities/nalanda" >Something else</Dropdown.Item>
-        <Dropdown.Item  href="/cities/gaya" >Hotels in Gaya</Dropdown.Item>
-      </Dropdown.Menu>
-    </Dropdown>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/cities/dehradun">
+                      Hotels in Dehradun
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/haridwar">
+                      Hotels in Haridwar
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/jamnagar">
+                      Hotels in Jamnagar
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/bhopal">
+                      Hotels in Bhopal
+                    </Dropdown.Item>{" "}
+                    <Dropdown.Item href="/cities/jamnagar">
+                      Something else
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/noida">
+                      Hotels in Noida
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/lucknow">
+                      Hotels in Lucknow
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/jabalpur">
+                      Hotels in Jabalpur
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/indore">
+                      Hotels in Indore
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/nalanda">
+                      Hotels in Nalanda
+                    </Dropdown.Item>{" "}
+                    <Dropdown.Item href="/cities/nalanda">
+                      Something else
+                    </Dropdown.Item>
+                    <Dropdown.Item href="/cities/gaya">
+                      Hotels in Gaya
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
               </ul>
             </MDBCol>
 
@@ -223,10 +274,10 @@ const Footer = () => {
         className="text-center p-3"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
-        Copyright © Shivila Technologies Private Limited, 2023<br />
-         <a className="text-white" href="https://mdbootstrap.com/">
-      All Rights Reserved, Developed By Shivila Technologies pvt ltd
-
+        Copyright © Freelancer's Private Limited, 2024
+        <br />
+        <a className="text-white" href="https://mdbootstrap.com/">
+          All Rights Reserved, Developed By Shivila Technologies pvt ltd
         </a>
       </div>
     </MDBFooter>
