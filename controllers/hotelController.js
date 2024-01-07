@@ -1,4 +1,5 @@
 const hotelModel = require("../models/hotelModel");
+const month=require("../models/monthlyPriceModel")
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
@@ -320,13 +321,13 @@ const getByQuery = async (req, res) => {
   } = req.query;
 
   const queryParameters = [
-    { key: 'amenities', value: amenities },
-    { key: 'roomDetails.bedTypes', value: bedTypes },
-    { key: 'starRating', value: starRating },
-    { key: 'propertyType', value: propertyType },
-    { key: 'hotelOwnerName', value: hotelOwnerName },
-    { key: 'hotelEmail', value: hotelEmail },
-    { key: 'roomDetails.type', value: roomTypes },
+    { key: "amenities", value: amenities },
+    { key: "roomDetails.bedTypes", value: bedTypes },
+    { key: "starRating", value: starRating },
+    { key: "propertyType", value: propertyType },
+    { key: "hotelOwnerName", value: hotelOwnerName },
+    { key: "hotelEmail", value: hotelEmail },
+    { key: "roomDetails.type", value: roomTypes },
   ];
 
   let fetchedData = [];
@@ -335,17 +336,17 @@ const getByQuery = async (req, res) => {
     if (param.value) {
       const query = {};
 
-      if (param.key.includes('roomDetails')) {
+      if (param.key.includes("roomDetails")) {
         const elemMatchQuery = {};
-        elemMatchQuery[param.key.split('.')[1]] = Array.isArray(param.value)
-          ? { $in: param.value.map(val => new RegExp(val, 'i')) }
-          : new RegExp(param.value, 'i');
+        elemMatchQuery[param.key.split(".")[1]] = Array.isArray(param.value)
+          ? { $in: param.value.map((val) => new RegExp(val, "i")) }
+          : new RegExp(param.value, "i");
 
-        query['roomDetails'] = { $elemMatch: elemMatchQuery };
+        query["roomDetails"] = { $elemMatch: elemMatchQuery };
       } else {
         query[param.key] = Array.isArray(param.value)
-          ? { $in: param.value.map(val => new RegExp(val, 'i')) }
-          : new RegExp(param.value, 'i');
+          ? { $in: param.value.map((val) => new RegExp(val, "i")) }
+          : new RegExp(param.value, "i");
       }
 
       fetchedData = await hotelModel.find(query);
@@ -358,10 +359,6 @@ const getByQuery = async (req, res) => {
 
   res.json(fetchedData);
 };
-
-
-
-
 
 //================================================================================================
 const searchHotels = async (req, res) => {
@@ -1002,6 +999,45 @@ const getByRoom = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+//=================================Update price monthly============================================
+const monthlyPrice = async function (req, res) {
+  try {
+    const { roomId } = req.params;
+    const { id } = req.params;
+    const room = await month.findById(roomId);
+    const hotelRoom = await hotelModel.findOne({ 'roomDetails._id': id });
+    if (!room || !hotelRoom) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+
+    // Extract relevant information from the retrieved data
+    const monthDateFromMonthModel = room.monthDate;
+    const currentMonthFromHotelModel = hotelRoom.roomDetails.currentMonth;
+
+    // Check if the monthDate and currentMonth are equal
+    const isMonthMatching = monthDateFromMonthModel === currentMonthFromHotelModel;
+
+    // Perform actions based on the comparison result
+    if (isMonthMatching) {
+      // Update the price in roomDetails of hotelModel with monthPrice
+      hotelRoom.roomDetails.price = room.monthPrice;
+
+      // Save the updated hotelModel document
+      await hotelRoom.save();
+
+      // Respond with success message
+      return res.status(200).json({ message: 'Month is matching, price updated' });
+    } else {
+      // The monthDate and currentMonth are not equal
+      // Do something else here
+      return res.status(200).json({ message: 'Month is not matching' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 //================================================================================================
 module.exports = {
@@ -1032,6 +1068,7 @@ module.exports = {
   getHotelsCity,
   ApplyCoupon,
   expireOffer,
-  getByRoom
- 
+  getByRoom,
+  monthlyPrice
+
 };

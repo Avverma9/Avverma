@@ -13,6 +13,10 @@ const hotelsSchema = new mongoose.Schema(
     },
     roomDetails: [
       {
+        currentMonth:{
+          type:Date,
+          default:() => new Date().toISOString().split("T")[0],
+        },
         images: [String],
         type: {
           type: String,

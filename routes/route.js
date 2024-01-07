@@ -5,6 +5,7 @@ const complaintController = require("../controllers/complaintController");
 const userController = require("../controllers/userController");
 const welcomeController = require("../controllers/welcomeController");
 const hotelController = require("../controllers/hotelController");
+const month=require("../controllers/monthlyPriceController")
 const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
@@ -163,6 +164,8 @@ router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
 
-//==========================
+//==========================monthly price==========================//
+router.post("/monthly-set-room-price/:roomId",month.newMonth)
+
 // router.post("/remove-an-offer",hotelController.checkAndUpdateOffers)
 module.exports = router;

@@ -1,4 +1,3 @@
-
 const nodemailer = require("nodemailer");
 const userModel = require("../models/userModel");
 const crypto = require("crypto");
@@ -16,8 +15,8 @@ const transporter = nodemailer.createTransport({
 const BookingMail = async (req, res) => {
   const { bookingData, email } = req.body;
 
-  const totalprice = bookingData.price * bookingData.rooms 
-  console.log(totalprice)
+  const totalprice = bookingData.price * bookingData.rooms;
+  console.log(totalprice);
 
   const mailOptions = {
     from: "hotelbookingtesting@gmail.com",
@@ -25,7 +24,6 @@ const BookingMail = async (req, res) => {
     subject: "Booking Confirmation",
     text: `Dear User,\n\nYour booking at ${bookingData.hotelName} has been confirmed.\n\nCheck-in date: ${bookingData.checkIn}\nCheck-out date: ${bookingData.checkOut}\nTotal guests: ${bookingData.guests}\n\nTotal price: ${totalprice}\n\nThank you for choosing our service.\n\nRegards,\nYour Hotel Team`,
   };
-
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -36,7 +34,7 @@ const BookingMail = async (req, res) => {
       res.status(200).json({ message: "Email sent successfully" });
     }
   });
-}
+};
 
 //Reset Password Mail
 const sendPasswordMail = async (req, res) => {
@@ -52,7 +50,6 @@ const sendPasswordMail = async (req, res) => {
     user.resetPasswordToken = token;
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
-
 
     const resetLink = `https://youtube-bbrv.onrender.com/resetPassword/${token}`;
     const mailOptions = {
@@ -70,13 +67,12 @@ const sendPasswordMail = async (req, res) => {
     return res.status(200).json({
       message: "Password reset email sent successfully. Check your email.",
       token: token,
-    });;
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 //Reset Password
 const resetPassword = async (req, res) => {
@@ -109,9 +105,6 @@ const resetPassword = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
-
 
 //Send OTP to email
 const sendOTPEmail = async (req, res) => {
@@ -172,12 +165,22 @@ const verifyOtp = async (req, res) => {
     user.otpExpires = undefined;
     await user.save();
 
-    return res.status(200).json({ message: "OTP verified. User can now log in.",userId: user._id });
+    return res
+      .status(200)
+      .json({
+        message: "OTP verified. User can now log in.",
+        userId: user._id,
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-
-module.exports = { BookingMail, resetPassword, sendPasswordMail, sendOTPEmail,verifyOtp }
+module.exports = {
+  BookingMail,
+  resetPassword,
+  sendPasswordMail,
+  sendOTPEmail,
+  verifyOtp,
+};
