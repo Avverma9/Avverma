@@ -5,13 +5,13 @@ const complaintController = require("../controllers/complaintController");
 const userController = require("../controllers/userController");
 const welcomeController = require("../controllers/welcomeController");
 const hotelController = require("../controllers/hotelController");
-const month=require("../controllers/monthlyPriceController")
+const month = require("../controllers/monthlyPriceController");
 const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
 const reviewController = require("../controllers/reviewController");
 const bookingController = require("../controllers/bookingController");
 const emailController = require("../controllers/emailController");
-const adminController = require("../controllers/adminController")
+const adminController = require("../controllers/adminController");
 const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
@@ -77,14 +77,20 @@ router.delete(
   hotelController.deleteRoom
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
-router.patch("/hotels/update/coupon/by/:hotelid/:roomid", hotelController.ApplyCoupon);
-router.patch("/remove/hotels-offer/update/coupon/by/:id/:roomid",hotelController.expireOffer)
+router.patch(
+  "/hotels/update/coupon/by/:hotelid/:roomid",
+  hotelController.ApplyCoupon
+);
+router.patch(
+  "/remove/hotels-offer/update/coupon/by/:id/:roomid",
+  hotelController.expireOffer
+);
 router.get(
   "/see-all/hotels-state/get/all/hotels",
   hotelController.getHotelsState
 );
 router.get("/see-all/hotels-city/get/city", hotelController.getHotelsCity);
-router.get("/get-hotels/by-room/:roomType",hotelController.getByRoom)
+router.get("/get-hotels/by-room/:roomType", hotelController.getByRoom);
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
 router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);
@@ -157,16 +163,15 @@ router.patch(
   DashboardUser.updatePartner
 );
 //============================ADMIN===========================================
-router.post("/auth/register/new-admin/page",upload,adminController.register)
-router.post("/auth/login/new-admin/page",adminController.signIn)
+router.post("/auth/register/new-admin/page", upload, adminController.register);
+router.post("/auth/login/new-admin/page", adminController.signIn);
 // /=================================Coupon======================================//
 router.post("/coupon", couponController.MakeCoupon);
 router.get("/coupon/:code", couponController.ApplyCoupon);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
 
 //==========================monthly price==========================//
-router.post("/monthly-set-room-price/:roomId",month.newMonth)
-router.put("/change-monthly-price/hotel-room",hotelController.monthlyPrice)
+router.post("/monthly-set-room-price/:roomId", month.newMonth);
+router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
 
-// router.post("/remove-an-offer",hotelController.checkAndUpdateOffers)
 module.exports = router;

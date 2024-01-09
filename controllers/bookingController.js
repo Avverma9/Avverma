@@ -1,5 +1,6 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
+const month = require("../models/monthlyPriceModel")
 
 //==========================================creating booking========================================================================================================
 
@@ -90,10 +91,15 @@ const createBooking = async (req, res) => {
   }
 };
 
+
+
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const confirmedBookings = booking.filter(
     (booking) => booking.bookingStatus === "success"
   ); //dashboard
@@ -102,7 +108,7 @@ const getConfirmedBookings = async (req, res) => {
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const { id } = req.params;
-  const booking = await bookingModel.find({ user: id }).sort({createdAt: -1}) // hotel
+  const booking = await bookingModel.find({ user: id }).sort({ createdAt: -1 }); // hotel
   const details = booking.filter(
     (confirmed) => confirmed.bookingStatus === "success"
   );
@@ -176,7 +182,10 @@ const getCheckedOutHotel = async (req, res) => {
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "failed"
   );
@@ -184,7 +193,10 @@ const getFailedBookings = async (req, res) => {
 };
 
 const getCancelledBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "cancelled"
   );
@@ -192,7 +204,10 @@ const getCancelledBookings = async (req, res) => {
 };
 
 const getNoShowBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "noshow"
   );
@@ -229,7 +244,6 @@ const cancelBooking = async (req, res) => {
 };
 
 //===================================================================================
-
 const getCancelledBooking = async (req, res) => {
   const booking = await bookingModel.find().sort({ createdAt: -1 });
   const cancellledBooking = booking.filter(
@@ -244,7 +258,10 @@ const getCancelledBooking = async (req, res) => {
 };
 //================================================================================
 const getCheckedIn = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const checkedIn = booking.filter(
     (checkedIn) => checkedIn.bookingStatus === "checkedIn"
   );
@@ -255,7 +272,10 @@ const getCheckedIn = async (req, res) => {
 };
 //========================================================================================
 const getCheckedOut = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const checkedOut = booking.filter(
     (checkedOut) => checkedOut.bookingStatus === "checkedOut"
   );
@@ -300,10 +320,12 @@ const getAllFilterBookings = async (req, res) => {
     const { user } = req.params;
     const { bookingStatus } = req.query;
     const filter = { user, bookingStatus };
-   
+
     const bookings = await bookingModel.find(filter);
-    if(bookings.length === 0){
-      return res.status(400).json({message:`No any ${bookingStatus} bookings found`})
+    if (bookings.length === 0) {
+      return res
+        .status(400)
+        .json({ message: `No any ${bookingStatus} bookings found` });
     }
     res.json(bookings);
   } catch (error) {
@@ -311,9 +333,6 @@ const getAllFilterBookings = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
-
 
 module.exports = {
   createBooking,
@@ -332,5 +351,5 @@ module.exports = {
   updateBooking,
   getCancelledBookings,
   getNoShowBookings,
-  getAllFilterBookings
+  getAllFilterBookings,
 };
