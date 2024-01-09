@@ -2,7 +2,113 @@ const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
 
 //==========================================creating booking========================================================================================================
+/* const createBooking = async (req, res) => {
+  try {
+    const { userId, hotelId } = req.params;
+    const { foodItems, checkIn, checkOut } = req.body;
+    let totalFoodPrice = 0;
+    const foodItemsDetails = [];
+    const selectedFoodPrices = [];
 
+    const hotel = await hotelModel.findById(hotelId);
+    if (!hotel) {
+      return res.status(404).json({ success: false, error: "Hotel not found" });
+    }
+
+    const selectedFoodPrices = [];
+
+    for (const foodItem of foodItems) {
+      const selectedFood = hotel.foodItems.find(
+        (item) => item._id == foodItem._id
+      );
+
+      if (!selectedFood) {
+        return res
+          .status(404)
+          .json({ success: false, error: "Food item not found" });
+      }
+
+      totalFoodPrice += selectedFood.price;
+
+      foodItemsDetails.push({
+        name: selectedFood.name,
+        price: selectedFood.price,
+      });
+
+      selectedFoodPrices.push(selectedFood.price);
+    }
+
+    const {
+      guests,
+      rooms,
+      price,
+      paymentStatus,
+      hotelName,
+      hotelOwnerName,
+      images,
+      destination,
+    } = req.body;
+
+    const bookingId = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    ).toString();
+    const totalprice = price * rooms + totalFoodPrice;
+
+    if (rooms > hotel.numRooms) {
+      return res
+        .status(400)
+        .json({ success: false, error: "No rooms available" });
+    }
+
+    const monthlyRooms = await month.find();
+
+    for (const room of monthlyRooms) {
+      for (const roomDetails of hotel.roomDetails) {
+        if (String(room.roomId) === String(roomDetails._id)) {
+          const roomCheckIn = room.checkIn;
+          const roomCheckOut = room.checkOut;
+
+          if (roomCheckIn <= checkIn && roomCheckOut >= checkOut) {
+            roomDetails.price += room.monthPrice;
+
+            console.log("Before save");
+            await hotel.save();
+            console.log("After save");
+          } else {
+            return res.status(400).json({ error: "Date not matched." });
+          }
+        }
+      }
+    }
+
+    const booking = new bookingModel({
+      bookingId,
+      user: userId,
+      hotel: hotelId,
+      hotelName,
+      hotelOwnerName,
+      checkInDate: checkIn,
+      checkOutDate: checkOut,
+      guests,
+      rooms,
+      price: totalprice,
+      destination,
+      foodItems: foodItemsDetails,
+      bookingStatus: paymentStatus === "success" ? "success" : "failed",
+      images,
+    });
+
+    hotel.numRooms -= rooms;
+    await hotel.save();
+
+    const savedBooking = await booking.save();
+
+    res.status(201).json({ success: true, data: savedBooking });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+ */
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
