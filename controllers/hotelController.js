@@ -1,5 +1,5 @@
 const hotelModel = require("../models/hotelModel");
-const month=require("../models/monthlyPriceModel")
+const month = require("../models/monthlyPriceModel");
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
@@ -905,8 +905,6 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 
-module.exports = ApplyCoupon;
-
 //================================remove offer=====================
 const expireOffer = async function (req, res) {
   try {
@@ -1002,42 +1000,43 @@ const getByRoom = async (req, res) => {
 //=================================Update price monthly============================================
 const monthlyPrice = async function (req, res) {
   try {
-    const { roomId } = req.params;
-    const { id } = req.params;
-    const room = await month.findById(roomId);
-    const hotelRoom = await hotelModel.findOne({ 'roomDetails._id': id });
-    if (!room || !hotelRoom) {
-      return res.status(404).json({ error: 'Data not found' });
+    // Assuming month and hotelModel are Mongoose models
+    const rooms = await month.find();
+    const currentDate = new Date();
+    const hotels = await hotelModel.find();
+
+    for (const room of rooms) {
+      for (const hotel of hotels) {
+        for (const roomDetails of hotel.roomDetails) {
+          // Assuming the _id comparison is the key
+          if (String(room.roomId) === String(roomDetails._id)) {
+            const roomDate = room.monthDate;
+
+            if (roomDate <= currentDate) {
+              roomDetails.price += room.monthPrice;
+
+              console.log("Before save");
+              await hotel.save();
+              console.log("After save");
+            } else {
+              return res.status(400).json({ error: "Date not matched." });
+            }
+          }
+        }
+      }
     }
 
-    // Extract relevant information from the retrieved data
-    const monthDateFromMonthModel = room.monthDate;
-    const currentMonthFromHotelModel = hotelRoom.roomDetails.currentMonth;
-
-    // Check if the monthDate and currentMonth are equal
-    const isMonthMatching = monthDateFromMonthModel === currentMonthFromHotelModel;
-
-    // Perform actions based on the comparison result
-    if (isMonthMatching) {
-      // Update the price in roomDetails of hotelModel with monthPrice
-      hotelRoom.roomDetails.price = room.monthPrice;
-
-      // Save the updated hotelModel document
-      await hotelRoom.save();
-
-      // Respond with success message
-      return res.status(200).json({ message: 'Month is matching, price updated' });
-    } else {
-      // The monthDate and currentMonth are not equal
-      // Do something else here
-      return res.status(200).json({ message: 'Month is not matching' });
-    }
+    // Move the response outside the loop if all dates match
+    res.status(200).json({ message: "Monthly prices updated successfully." });
   } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error("Error in monthlyPrice:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
+cron.schedule("0 0 * * *", async () => {
+  await monthlyPrice();
+});
 
 //================================================================================================
 module.exports = {
@@ -1069,6 +1068,5 @@ module.exports = {
   ApplyCoupon,
   expireOffer,
   getByRoom,
-  monthlyPrice
-
+  monthlyPrice,
 };
