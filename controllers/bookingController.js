@@ -1,6 +1,5 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
-const monthModel = require("../models/monthlyPriceModel")
 
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
@@ -9,6 +8,7 @@ const createBooking = async (req, res) => {
     const { foodItems } = req.body;
     let totalFoodPrice = 0;
     const foodItemsDetails = [];
+
     const selectedFoodPrices = [];
 
     const hotel = await hotelModel.findById(hotelId);
@@ -50,30 +50,16 @@ const createBooking = async (req, res) => {
       destination,
     } = req.body;
 
-    // Assuming monthModel has properties monthDate and monthPrice
-    const roomPrice = await monthModel.findOne({ 
-      hotelId: hotelId,
-      $and: [
-        { monthDate: { $lte: checkIn } },
-        { monthDate: { $gte: checkOut } }
-      ]
-    });
-    
-    let totalPrice = price * rooms + totalFoodPrice;
-
-    if (roomPrice) {
-      totalPrice += roomPrice.monthPrice;
-    }
+    const bookingId = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    ).toString();
+    const totalprice = price * rooms + totalFoodPrice;
 
     if (rooms > hotel.numRooms) {
       return res
         .status(400)
         .json({ success: false, error: "No rooms available" });
     }
-
-    const bookingId = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    ).toString();
 
     const booking = new bookingModel({
       bookingId,
@@ -85,7 +71,7 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut,
       guests,
       rooms,
-      price: totalPrice,
+      price: totalprice,
       destination,
       foodItems: foodItemsDetails,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
@@ -102,7 +88,6 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 //================================================================================================================================================
 

@@ -171,7 +171,7 @@ router.get("/coupon/:code", couponController.ApplyCoupon);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
 
 //==========================monthly price==========================//
-router.post("/monthly-set-room-price/:roomId", month.newMonth);
+router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
 
 module.exports = router;

@@ -1033,9 +1033,13 @@ const monthlyPrice = async function (req, res) {
   }
 };
 
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("0 0 1 * *", async () => {
   await monthlyPrice();
 });
+// The first 0 represents the minute (00).
+// The second 0 represents the hour (00).
+// The 1 in the third position represents the day of the month (1st).
+// The * in the fourth and fifth positions represents any month and any day of the week.
 
 //================================================================================================
 module.exports = {
