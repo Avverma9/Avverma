@@ -1,5 +1,6 @@
 const hotelModel = require("../models/hotelModel");
 const month = require("../models/monthlyPriceModel");
+
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
@@ -1000,7 +1001,7 @@ const getByRoom = async (req, res) => {
 //=================================Update price monthly============================================
 const monthlyPrice = async function (req, res) {
   try {
-    // Assuming month and hotelModel are Mongoose models
+    
     const rooms = await month.find();
     const currentDate = new Date();
     const hotels = await hotelModel.find();
@@ -1008,16 +1009,14 @@ const monthlyPrice = async function (req, res) {
     for (const room of rooms) {
       for (const hotel of hotels) {
         for (const roomDetails of hotel.roomDetails) {
-          // Assuming the _id comparison is the key
+       
           if (String(room.roomId) === String(roomDetails._id)) {
             const roomDate = room.monthDate;
 
             if (roomDate <= currentDate) {
               roomDetails.price += room.monthPrice;
-
-              console.log("Before save");
               await hotel.save();
-              console.log("After save");
+              
             } else {
               return res.status(400).json({ error: "Date not matched." });
             }
@@ -1026,7 +1025,7 @@ const monthlyPrice = async function (req, res) {
       }
     }
 
-    // Move the response outside the loop if all dates match
+    
     res.status(200).json({ message: "Monthly prices updated successfully." });
   } catch (error) {
     console.error("Error in monthlyPrice:", error);

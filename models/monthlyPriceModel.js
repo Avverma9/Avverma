@@ -5,6 +5,11 @@ const monthPriceSchema = new mongoose.Schema({
     ref: "hotels.roomDetails",
     unique: true,
   },
+  hotelId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"hotels",
+    unique:true,
+  },
   monthDate: {
     type: Date,
   },

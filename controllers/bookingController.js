@@ -1,121 +1,14 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
+const monthModel = require("../models/monthlyPriceModel")
 
 //==========================================creating booking========================================================================================================
-/* const createBooking = async (req, res) => {
-  try {
-    const { userId, hotelId } = req.params;
-    const { foodItems, checkIn, checkOut } = req.body;
-    let totalFoodPrice = 0;
-    const foodItemsDetails = [];
-    const selectedFoodPrices = [];
-
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ success: false, error: "Hotel not found" });
-    }
-
-    const selectedFoodPrices = [];
-
-    for (const foodItem of foodItems) {
-      const selectedFood = hotel.foodItems.find(
-        (item) => item._id == foodItem._id
-      );
-
-      if (!selectedFood) {
-        return res
-          .status(404)
-          .json({ success: false, error: "Food item not found" });
-      }
-
-      totalFoodPrice += selectedFood.price;
-
-      foodItemsDetails.push({
-        name: selectedFood.name,
-        price: selectedFood.price,
-      });
-
-      selectedFoodPrices.push(selectedFood.price);
-    }
-
-    const {
-      guests,
-      rooms,
-      price,
-      paymentStatus,
-      hotelName,
-      hotelOwnerName,
-      images,
-      destination,
-    } = req.body;
-
-    const bookingId = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    ).toString();
-    const totalprice = price * rooms + totalFoodPrice;
-
-    if (rooms > hotel.numRooms) {
-      return res
-        .status(400)
-        .json({ success: false, error: "No rooms available" });
-    }
-
-    const monthlyRooms = await month.find();
-
-    for (const room of monthlyRooms) {
-      for (const roomDetails of hotel.roomDetails) {
-        if (String(room.roomId) === String(roomDetails._id)) {
-          const roomCheckIn = room.checkIn;
-          const roomCheckOut = room.checkOut;
-
-          if (roomCheckIn <= checkIn && roomCheckOut >= checkOut) {
-            roomDetails.price += room.monthPrice;
-
-            console.log("Before save");
-            await hotel.save();
-            console.log("After save");
-          } else {
-            return res.status(400).json({ error: "Date not matched." });
-          }
-        }
-      }
-    }
-
-    const booking = new bookingModel({
-      bookingId,
-      user: userId,
-      hotel: hotelId,
-      hotelName,
-      hotelOwnerName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
-      guests,
-      rooms,
-      price: totalprice,
-      destination,
-      foodItems: foodItemsDetails,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      images,
-    });
-
-    hotel.numRooms -= rooms;
-    await hotel.save();
-
-    const savedBooking = await booking.save();
-
-    res.status(201).json({ success: true, data: savedBooking });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
- */
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const { foodItems } = req.body;
     let totalFoodPrice = 0;
     const foodItemsDetails = [];
-
     const selectedFoodPrices = [];
 
     const hotel = await hotelModel.findById(hotelId);
@@ -157,16 +50,30 @@ const createBooking = async (req, res) => {
       destination,
     } = req.body;
 
-    const bookingId = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    ).toString();
-    const totalprice = price * rooms + totalFoodPrice;
+    // Assuming monthModel has properties monthDate and monthPrice
+    const roomPrice = await monthModel.findOne({ 
+      hotelId: hotelId,
+      $and: [
+        { monthDate: { $lte: checkIn } },
+        { monthDate: { $gte: checkOut } }
+      ]
+    });
+    
+    let totalPrice = price * rooms + totalFoodPrice;
+
+    if (roomPrice) {
+      totalPrice += roomPrice.monthPrice;
+    }
 
     if (rooms > hotel.numRooms) {
       return res
         .status(400)
         .json({ success: false, error: "No rooms available" });
     }
+
+    const bookingId = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    ).toString();
 
     const booking = new bookingModel({
       bookingId,
@@ -178,7 +85,7 @@ const createBooking = async (req, res) => {
       checkOutDate: checkOut,
       guests,
       rooms,
-      price: totalprice,
+      price: totalPrice,
       destination,
       foodItems: foodItemsDetails,
       bookingStatus: paymentStatus === "success" ? "success" : "failed",
@@ -196,10 +103,14 @@ const createBooking = async (req, res) => {
   }
 };
 
+
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const confirmedBookings = booking.filter(
     (booking) => booking.bookingStatus === "success"
   ); //dashboard
@@ -208,7 +119,7 @@ const getConfirmedBookings = async (req, res) => {
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const { id } = req.params;
-  const booking = await bookingModel.find({ user: id }).sort({createdAt: -1}) // hotel
+  const booking = await bookingModel.find({ user: id }).sort({ createdAt: -1 }); // hotel
   const details = booking.filter(
     (confirmed) => confirmed.bookingStatus === "success"
   );
@@ -282,7 +193,10 @@ const getCheckedOutHotel = async (req, res) => {
 //============================================================================================
 
 const getFailedBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "failed"
   );
@@ -290,7 +204,10 @@ const getFailedBookings = async (req, res) => {
 };
 
 const getCancelledBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "cancelled"
   );
@@ -298,7 +215,10 @@ const getCancelledBookings = async (req, res) => {
 };
 
 const getNoShowBookings = async (req, res) => {
-  const bookings = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const bookings = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const failedBooking = bookings.filter(
     (booking) => booking.bookingStatus === "noshow"
   );
@@ -350,7 +270,10 @@ const getCancelledBooking = async (req, res) => {
 };
 //================================================================================
 const getCheckedIn = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const checkedIn = booking.filter(
     (checkedIn) => checkedIn.bookingStatus === "checkedIn"
   );
@@ -361,7 +284,10 @@ const getCheckedIn = async (req, res) => {
 };
 //========================================================================================
 const getCheckedOut = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 }).populate("user");
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("user");
   const checkedOut = booking.filter(
     (checkedOut) => checkedOut.bookingStatus === "checkedOut"
   );
@@ -406,10 +332,12 @@ const getAllFilterBookings = async (req, res) => {
     const { user } = req.params;
     const { bookingStatus } = req.query;
     const filter = { user, bookingStatus };
-   
+
     const bookings = await bookingModel.find(filter);
-    if(bookings.length === 0){
-      return res.status(400).json({message:`No any ${bookingStatus} bookings found`})
+    if (bookings.length === 0) {
+      return res
+        .status(400)
+        .json({ message: `No any ${bookingStatus} bookings found` });
     }
     res.json(bookings);
   } catch (error) {
@@ -417,9 +345,6 @@ const getAllFilterBookings = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
-
 
 module.exports = {
   createBooking,
@@ -438,5 +363,5 @@ module.exports = {
   updateBooking,
   getCancelledBookings,
   getNoShowBookings,
-  getAllFilterBookings
+  getAllFilterBookings,
 };
