@@ -93,26 +93,21 @@ const perMonthPrice = async function (req, res) {
   try {
     const { hotelId } = req.params;
     const { checkOutDate } = req.body;
-
+console.log(checkOutDate)
     // Assuming you have a Mongoose model named 'Month' for your hotel prices
-    const monthly = await month.findOne({ hotelId: hotelId });
-
+    const monthly = await month.findOne({hotelId:hotelId});
+console.log(monthly.monthDate)
     // Check if the document with the specified hotelId was found
     if (!monthly) {
       return res.status(404).json({ error: 'Hotel not found' });
     }
 
-    const checkOut = new Date(checkOutDate);
-    const monthStartDate = new Date(monthly.monthDate);
+    const dateOfmonth = new Date(monthly.monthDate);
+    const formattedDate = dateOfmonth.toISOString().substring(0, 10);
 
-    if (checkOut >= monthStartDate) {
-      // Calculate the number of months between month start date and check-out date
-      const numberOfMonths = (checkOut.getFullYear() - monthStartDate.getFullYear()) * 12 + checkOut.getMonth() - monthStartDate.getMonth();
 
-      // Calculate the total price based on the number of months and the monthly price
-      const totalPrice = numberOfMonths * monthly.monthPrice;
-
-      res.json({ monthlyPrice: totalPrice });
+    if (checkOutDate >= formattedDate) {
+      res.json({ monthlyPrice: monthly.monthPrice });
     } else {
       res.json({ error: 'Invalid check-out date' });
     }
@@ -122,6 +117,7 @@ const perMonthPrice = async function (req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 //================================================================================================================================================
 
