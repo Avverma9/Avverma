@@ -93,12 +93,21 @@ const perMonthPrice = async function (req, res) {
   try {
     const { hotelId } = req.params;
     const { checkOutDate } = req.body;
-
+console.log(checkOutDate)
     // Assuming you have a Mongoose model named 'Month' for your hotel prices
-    const monthly = await month.findById(hotelId);
- const dateOfmonth = monthly.monthDate
-    if (dateOfmonth <= checkOutDate) {
-      res.json({ roomPrice: monthly.monthPrice }); // Assuming 'price' is the property you want to send
+    const monthly = await month.findOne({hotelId:hotelId});
+console.log(monthly.monthDate)
+    // Check if the document with the specified hotelId was found
+    if (!monthly) {
+      return res.status(404).json({ error: 'Hotel not found' });
+    }
+
+    const dateOfmonth = new Date(monthly.monthDate);
+    const formattedDate = dateOfmonth.toISOString().substring(0, 10);
+
+
+    if (checkOutDate >= formattedDate) {
+      res.json({ roomPrice: monthly.monthPrice });
     } else {
       res.json({ error: 'Invalid check-out date' });
     }
@@ -108,6 +117,7 @@ const perMonthPrice = async function (req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 //================================================================================================================================================
 
