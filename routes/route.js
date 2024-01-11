@@ -173,5 +173,5 @@ router.get("/coupon/get/all", couponController.GetAllCoupons);
 //==========================monthly price==========================//
 router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
-router.get("/get-hotel-monthly-price-increase/:hotelId",bookingController.perMonthPrice)
+router.post("/get-hotel-monthly-price-increase/:hotelId",bookingController.perMonthPrice)
 module.exports = router;
