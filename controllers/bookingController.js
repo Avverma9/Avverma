@@ -1,6 +1,6 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
-
+const month = require("../models/monthlyPriceModel")
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
@@ -86,6 +86,26 @@ const createBooking = async (req, res) => {
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+//=============================================================================
+const perMonthPrice = async function (req, res) {
+  try {
+    const { hotelId } = req.params;
+    const { checkOutDate } = req.body;
+
+    // Assuming you have a Mongoose model named 'Month' for your hotel prices
+    const monthly = await month.findById(hotelId);
+ const dateOfmonth = monthly.monthDate
+    if (dateOfmonth <= checkOutDate) {
+      res.json({ roomPrice: monthly.monthPrice }); // Assuming 'price' is the property you want to send
+    } else {
+      res.json({ error: 'Invalid check-out date' });
+    }
+  } catch (error) {
+    // Handle errors appropriately, for example:
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
@@ -349,4 +369,5 @@ module.exports = {
   getCancelledBookings,
   getNoShowBookings,
   getAllFilterBookings,
+  perMonthPrice
 };
