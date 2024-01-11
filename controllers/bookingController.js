@@ -107,7 +107,7 @@ console.log(monthly.monthDate)
 
 
     if (checkOutDate >= formattedDate) {
-      res.json({ roomPrice: monthly.monthPrice });
+      res.json({ monthlyPrice: monthly.monthPrice });
     } else {
       res.json({ error: 'Invalid check-out date' });
     }
