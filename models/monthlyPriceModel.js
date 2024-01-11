@@ -11,8 +11,4 @@ const monthPriceSchema = new mongoose.Schema({
   monthName: String,
   monthPrice: Number,
 });
-
-
-monthPriceSchema.index({ hotelId: 1 }, { unique: false });
-
 module.exports = mongoose.model("monthlyPrice", monthPriceSchema);
