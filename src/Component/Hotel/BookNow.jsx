@@ -48,7 +48,7 @@ export default function BookNow({ userData, toast }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const maxVisiblePages = 6;
-
+  
   const [bookingDetails, setBookingDetails] = useState({});
   const [hotelID, setHotelID] = useState("");
   const [hotelOwnerName, setHotelOwnerName] = useState([]);

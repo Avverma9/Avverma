@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./BookingDetails.module.css";
 import axios from "axios";
 import { FaRupeeSign } from "react-icons/fa";
-import { CiMobile1 } from "react-icons/ci";
 import { BsPencil } from "react-icons/bs";
-import { BiSolidOffer } from "react-icons/bi";
-import { AiOutlineCodepenCircle } from "react-icons/ai";
-import { AiOutlineClose } from "react-icons/ai";
 import { BiBed } from "react-icons/bi";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -30,9 +25,6 @@ const BookingDetails = ({
   roomPrice,
   roomType,
   bedtype,
-  isOffer,
-  offerDetails,
-  offerPriceLess,
   toast,
   changeScrollPos,
   bookingRef,
@@ -40,11 +32,12 @@ const BookingDetails = ({
   positionTop,
   meals,
 }) => {
-  // console.log(scrollPos);
   const [openPaymentModule, setOpenPaymentModule] = useState(false);
+  const [monthlyRoomPrice, setMonthlyRoomPrice] = useState(null);
+  const [localRoomPrice, setLocalRoomPrice] = useState(0);
   const navigate = useNavigate();
+
   const handleOpenRazorpay = (data) => {
-    console.log(data);
     const options = {
       name: hotelName,
       key: "rzp_test_CE1nBQFs6SwXnC",
@@ -75,7 +68,9 @@ const BookingDetails = ({
     rzp.open();
   };
 
-  const totalAccommodationPrice = roomPrice * selectedRooms;
+  const totalAccommodationPrice =
+    (monthlyRoomPrice !== null ? monthlyRoomPrice : 0) +
+    localRoomPrice * selectedRooms;
 
   const totalPrice = totalAccommodationPrice + foodPrice;
 
@@ -87,12 +82,13 @@ const BookingDetails = ({
       checkOut: selectdatecheckout,
       guests: selectedGuests,
       rooms: selectedRooms,
-      price: roomPrice,
+      price: monthlyRoomPrice !== null ? monthlyRoomPrice : localRoomPrice,
       paymentStatus: paymentStatus,
       images: hotelimage,
       destination: destination,
       foodItems: foodIdArr,
     };
+
     if (userData && userData.email && paymentStatus === "success") {
       axios
         .post(
@@ -119,12 +115,12 @@ const BookingDetails = ({
 
   const handlePayment = async () => {
     const data = {
-      // hotelOwnerName: hotelOwnerName,
       hotelId: hotelID,
       userId: userId,
-      amount: roomPrice * selectedRooms + foodPrice,
+      amount: localRoomPrice * selectedRooms + foodPrice,
       currency: currency,
     };
+
     try {
       const response = await axios.post(
         "https://hotel-backend-tge7.onrender.com/payments",
@@ -135,10 +131,10 @@ const BookingDetails = ({
       console.log(err);
     }
   };
+
   const initialCheckInDate = new Date();
   initialCheckInDate.setDate(initialCheckInDate.getDate() + 1);
 
-  // Set default check-out date to one day after check-in date
   const initialCheckOutDate = new Date(initialCheckInDate);
   initialCheckOutDate.setDate(initialCheckOutDate.getDate() + 1);
 
@@ -146,6 +142,41 @@ const BookingDetails = ({
   const [selectdatecheckout, setSelectdatecheckout] = useState(
     initialCheckOutDate
   );
+
+  const handleMonthly = async () => {
+    const formattedDate = selectdatecheckout.toISOString().split("T")[0];
+  
+    try {
+      const response = await axios.post(
+        `https://hotel-backend-tge7.onrender.com/get-hotel-monthly-price-increase/${hotelID}`,
+        {
+          checkOutDate: formattedDate,
+        }
+      );
+  
+      if (response.data && response.data.monthlyPrice) {
+        setMonthlyRoomPrice(response.data.monthlyPrice);
+      } else {
+        // Set a default value or handle the case when monthlyPrice is null
+        setMonthlyRoomPrice(null);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+  useEffect(() => {
+    // Initial call to update prices
+    handleMonthly();
+  }, []);
+  useEffect(() => {
+    handleMonthly();
+  }, [selectdatecheckout]);
+
+  useEffect(() => {
+    setLocalRoomPrice(roomPrice);
+  }, [roomPrice]);
 
   const handledatechange = (date) => {
     setSelectdate(date);
@@ -162,6 +193,7 @@ const BookingDetails = ({
   const handlePayatCheckin = () => {
     handleBooking("success");
   };
+
 
   return (
     <>
@@ -240,9 +272,10 @@ const BookingDetails = ({
             <div className={styles.pen_icon}>
               <span className={styles.icon_pen}></span>
               <div className={styles.textnew}>
-                <span className={styles.textc}> <BiBed /> &nbsp;
-                  {roomType} &nbsp;& {bedtype} 
-                 
+                <span className={styles.textc}>
+                  {" "}
+                  <BiBed /> &nbsp;
+                  {roomType} &nbsp;& {bedtype}
                 </span>
               </div>
             </div>
