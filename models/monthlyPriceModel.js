@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
+
 const monthPriceSchema = new mongoose.Schema({
-  roomId: {
+  hotelId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "hotels.roomDetails",
-    unique: true,
-  },
-  hotelId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"hotels",
-    unique:true,
+    ref: "hotels",
   },
   monthDate: {
     type: Date,
   },
+  monthName: String,
   monthPrice: Number,
 });
+
+
+monthPriceSchema.index({ hotelId: 1 }, { unique: false });
+
 module.exports = mongoose.model("monthlyPrice", monthPriceSchema);
