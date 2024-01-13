@@ -159,13 +159,12 @@ function HotelList() {
 
   if (
     !location.pathname.includes(`/search/results/${city}`) &&
-    !location.pathname === "/home"
+    location.pathname !== "/home"
   ) {
     return null;
   }
-if(location.pathname === "/"){
-  return null
-}
+
+
   const handleBuy = (hotelID) => {
     // Replace with the logic to handle the booking action
     console.log(`Book Now: ${hotelID}`);

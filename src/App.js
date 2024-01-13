@@ -70,7 +70,7 @@ function App() {
         <HeaderImage />
         <Policy />
         <Carousel />
-        <Home />
+
         <Offers />
         <Hotel />
         <ChatBox />
@@ -80,6 +80,7 @@ function App() {
 
         <Routes>
           <Route path="/signin" element={<Login />} />
+          <Route path="/home" element={<Home/>}/>
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />}>
             <Route
