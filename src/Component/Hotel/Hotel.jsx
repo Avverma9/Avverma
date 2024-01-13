@@ -146,7 +146,21 @@ function HotelList() {
     fetchReviewsCount();
   }, [hotels]);
 
-  if (location.pathname !== "/home") {
+  const path = location.pathname;
+  const city = path.substring(path.lastIndexOf("/") + 1);
+
+  useEffect(() => {
+    let apiUrl = `https://hotel-backend-tge7.onrender.com/search?city=${city}`;
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((hotels) => setHotels(hotels))
+      .catch((error) => console.error(error));
+  }, [location.pathname, location.search]);
+
+  if (
+    !location.pathname.includes(`/search/results/${city}`) &&
+    !location.pathname === "/home"
+  ) {
     return null;
   }
 
@@ -303,11 +317,14 @@ function HotelList() {
                           className={styles["fastar"]}
                         />
                       </h5>
-                    <h5 className={styles["hotel-reviewcount"]}> {reviewCount.find(
-                        (review) => review.hotelId === result._id
-                      )?.count || "0"}{" "}
-                      Reviews</h5>
-                     
+                      <h5 className={styles["hotel-reviewcount"]}>
+                        {" "}
+                        {reviewCount.find(
+                          (review) => review.hotelId === result._id
+                        )?.count || "0"}{" "}
+                        Reviews
+                      </h5>
+
                       <div className={styles["amenities"]}>
                         <ul>
                           {result.amenities.slice(0, 3).map((amenity) => (
@@ -475,8 +492,8 @@ function HotelList() {
                               : "N/A"}
                           </p>
                           <span className={styles["detail"]}>
-                              per room per night
-                            </span>
+                            per room per night
+                          </span>
                         </div>
                         <div
                           className="flex-button"

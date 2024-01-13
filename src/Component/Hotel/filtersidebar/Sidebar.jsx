@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "../hotel.module.css";
 import RangeSlider from "../Rangeslider/range";
 import axios from "axios";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams,useNavigate } from "react-router-dom";
 // import { type } from "@testing-library/user-event/dist/type";
 
 const Sidebar = ({
@@ -36,9 +36,9 @@ const Sidebar = ({
   handleroomtype,
   handlebedtype,
   handleamenity,
-  clearFilters,
   setDataAvailable,
 }) => {
+  const navigate = useNavigate()
   const location = useLocation();
   console.log(location.pathname.slice(8));
   const [city, setCity] = useState("");
@@ -153,15 +153,14 @@ const Sidebar = ({
           } else setHotels([]);
         })
         .catch((error) => console.log(error));
-    } else {
+    } else if (location.pathname === "/home") {
       axios
         .get("https://hotel-backend-tge7.onrender.com/get/all/hotels")
         .then((data) => {
           let hotelData = data.data;
           if (data.status === 200) {
             setHotels(hotelData);
-            console.log(hotelData);
-          } else setHotels([]);
+          } 
         })
         .catch((error) => console.log(error));
     }
@@ -174,6 +173,9 @@ const Sidebar = ({
       }
     });
   }, [maxValue, minValue, location.pathname, setHotels, queryString, city]);
+  const clearFilters =()=>{
+    window.location.reload()
+  }
   return (
     <div className={`${styles["vertical-bar"]} ${styles["sticky-sidebar"]}`}>
       <div className={styles.filt_1st}>

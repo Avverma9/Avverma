@@ -17,7 +17,6 @@ import Hotel from "./Component/Hotel/Hotel.jsx";
 
 import UserSettings from "./Component/Profile/UserAction";
 import Partner from "./Component/Partner/Partner";
-import SearchResults from "./Component/Search/SearchResults";
 
 import BookNow from "./Component/Hotel/BookNow";
 
@@ -33,17 +32,10 @@ import { ProfileInformation } from "./Component/Profile/ProfileInformation";
 import { getLocalStorage } from "./hooks/useLocalStorage";
 import { CancelBooking } from "./Component/Profile/CancelBooking";
 import { ConfirmBooking } from "./Component/Profile/ConfirmBooking";
-
-import { NoShowBooking } from "./Component/Profile/NoShowBooking";
-import { FailedBooking } from "./Component/Profile/FailedBooking";
 import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
-import { Customizebooking } from "./Component/Payment/Customizebooking";
-import BookingDetails from "./Component/Hotel/BookingDetails";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
-import Result from "./Component/Search/Result.jsx";
 import Policy from "./Policy/Policy.jsx";
-import FilterSidebar from "./Component/Search/FilterSidebar.jsx";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -86,7 +78,6 @@ function App() {
         <UserSettings />
         <Partner />
 
-        <Result />
         <Routes>
           <Route path="/signin" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -127,7 +118,7 @@ function App() {
           <Route path="/passwordChangeMail" element={<ConfirmEmail />} />
           <Route path="/otplogin" element={<LoginWithOtp />} />
           <Route path="state" element={<HeaderImage />} />
-          <Route path="/search/results/:city" element={<SearchResults />} />
+
           <Route
             path="/hotels/:id"
             element={<BookNow userData={userData} toast={toast} />}

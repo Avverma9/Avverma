@@ -34,34 +34,33 @@ const SearchComponent = () => {
     const endDate = searchData.endDate
       ? moment(searchData.endDate).format("YYYY-MM-DD")
       : "";
-  
+
     const queryString = new URLSearchParams({
       city: searchData.destination,
       startDate,
       endDate,
     }).toString();
     localStorage.setItem("searchQuery", queryString);
-  
+
     // Append the city to the URL when navigating
     navigate(`/search/results/${searchData.destination}`);
   };
-  
 
   const fetchNearbyHotels = () => {
     setNearbyLoading(true);
-  
+
     // Check if geolocation is available in the browser
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function (position) {
         const { latitude, longitude } = position.coords;
-  
+
         // Add latitude and longitude to the search data
         setSearchData((prevState) => ({
           ...prevState,
           latitude,
           longitude,
         }));
-  
+
         // Format start date and end date
         const startDate = searchData.startDate
           ? moment(searchData.startDate).format("YYYY-MM-DD")
@@ -69,7 +68,7 @@ const SearchComponent = () => {
         const endDate = searchData.endDate
           ? moment(searchData.endDate).format("YYYY-MM-DD")
           : "";
-  
+
         // Check if latitude and longitude are available
         if (latitude && longitude) {
           const queryString = new URLSearchParams({
@@ -82,7 +81,7 @@ const SearchComponent = () => {
             localId: searchData.localId ? "true" : "",
             moreOptions: searchData.moreOptions,
           }).toString();
-  
+
           // Fetch nearby hotels from the API
           fetch(
             `https://hotel-backend-tge7.onrender.com/search/nearby?${queryString}`
@@ -105,7 +104,6 @@ const SearchComponent = () => {
       console.log("Geolocation is not available in this browser.");
     }
   };
-  
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
