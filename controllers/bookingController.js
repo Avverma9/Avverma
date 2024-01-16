@@ -1,6 +1,6 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/hotelModel");
-const month = require("../models/monthlyPriceModel")
+const month = require("../models/monthlyPriceModel");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
@@ -93,31 +93,39 @@ const perMonthPrice = async function (req, res) {
   try {
     const { hotelId } = req.params;
     const { checkOutDate } = req.body;
-console.log(checkOutDate)
-    // Assuming you have a Mongoose model named 'Month' for your hotel prices
-    const monthly = await month.findOne({hotelId:hotelId});
-console.log(monthly.monthDate)
-    // Check if the document with the specified hotelId was found
-    if (!monthly) {
-      return res.status(404).json({ error: 'Hotel not found' });
+    const allMonthlyData = await month.find({
+      hotelId: hotelId,
+      monthDate: { $lte: new Date(checkOutDate) },
+    });
+    if (!allMonthlyData || allMonthlyData.length === 0) {
+      return res
+        .status(404)
+        .json({
+          error: "Hotel not found or no suitable monthly data available",
+        });
     }
 
-    const dateOfmonth = new Date(monthly.monthDate);
-    const formattedDate = dateOfmonth.toISOString().substring(0, 10);
+    const checkOutDateObject = new Date(checkOutDate);
 
+    let closestMonth = null;
+    let closestDateDifference = Infinity;
 
-    if (checkOutDate >= formattedDate) {
-      res.json({ monthlyPrice: monthly.monthPrice });
-    } else {
-      res.json({ error: 'Invalid check-out date' });
+    for (const monthly of allMonthlyData) {
+      const dateOfmonth = new Date(monthly.monthDate);
+      const dateDifference = Math.abs(checkOutDateObject - dateOfmonth);
+      if (dateDifference < closestDateDifference) {
+        closestMonth = monthly;
+        closestDateDifference = dateDifference;
+      }
     }
+
+    // Display the data of the closest month
+    res.json({ monthlyPrice: closestMonth.monthPrice });
   } catch (error) {
-    // Handle errors appropriately, for example:
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 //================================================================================================================================================
 
@@ -379,5 +387,5 @@ module.exports = {
   getCancelledBookings,
   getNoShowBookings,
   getAllFilterBookings,
-  perMonthPrice
+  perMonthPrice,
 };

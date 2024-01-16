@@ -175,5 +175,8 @@ router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.get("/monthly-set-room-price/get/by/:hotelId", month.getPriceByHotelId);
 router.delete("/monthly-set-room-price/delete/price/by/:id", month.deleteById);
 router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
-router.post("/get-hotel-monthly-price-increase/:hotelId",bookingController.perMonthPrice)
+router.post(
+  "/get-hotel-monthly-price-increase/:hotelId",
+  bookingController.perMonthPrice
+);
 module.exports = router;
