@@ -21,4 +21,16 @@ const newMonth = async (req, res) => {
   }
 };
 
-module.exports = { newMonth };
+const getPriceByHotelId= async function(req,res){
+  const {hotelId} = req.params
+  const findData = await month.findById(hotelId)
+  res.json(findData)
+}
+
+const deleteById = async function(req,res){
+  const {hotelId}=req.params
+  const deleteData = await month.findByIdAndDelete(hotelId)
+  res.json({message:"Successfully deleted"})
+}
+
+module.exports = { newMonth,getPriceByHotelId,deleteById};
