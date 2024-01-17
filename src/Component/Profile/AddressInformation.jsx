@@ -35,7 +35,7 @@ export const AddressInformation = ({ userData }) => {
     <div>
       <>
         <div className="_title">
-          <h1>Address</h1>
+          <h3>Address</h3>
         </div>
         <div className="_fields">
           <textarea type="text" rows="1" value={userData?.address} />

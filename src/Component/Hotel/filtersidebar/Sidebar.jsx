@@ -54,7 +54,7 @@ const Sidebar = ({
       const bedtypeQueryparam = bedtype.join(",");
       const amenitiesQueryparams = amenity.join(",");
 
-      const priceFilterUrl = `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`;
+      let priceFilterUrl = `https://hotel-backend-tge7.onrender.com/hotels/query/get/by?propertyType=${propertyTypeQueryParam}&roomTypes=${roomtypeQueryParam}&starRating=${starRatingQueryParam}&bedTypes=${bedtypeQueryparam}&amenities=${amenitiesQueryparams}`;
 
       // Add price range parameters if they are set
       if (minValue > 400 || maxValue < 4000) {

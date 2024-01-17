@@ -145,7 +145,7 @@ const BookingDetails = ({
 
   const handleMonthly = async () => {
     const formattedDate = selectdatecheckout.toISOString().split("T")[0];
-  
+
     try {
       const response = await axios.post(
         `https://hotel-backend-tge7.onrender.com/get-hotel-monthly-price-increase/${hotelID}`,
@@ -153,7 +153,7 @@ const BookingDetails = ({
           checkOutDate: formattedDate,
         }
       );
-  
+
       if (response.status === 200) {
         setMonthlyRoomPrice(response.data.monthlyPrice);
       } else {
@@ -166,8 +166,6 @@ const BookingDetails = ({
       setMonthlyRoomPrice(null);
     }
   };
-  
-  
 
   useEffect(() => {
     // Initial call to update prices
@@ -196,7 +194,6 @@ const BookingDetails = ({
   const handlePayatCheckin = () => {
     handleBooking("success");
   };
-
 
   return (
     <>

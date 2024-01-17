@@ -110,7 +110,7 @@ export const CancelBooking = ({ toast }) => {
       {/* {0 > 0 && ( */}
       <>
         <div className="_title">
-          <h1>Canceled Booking History</h1>
+          <h3>Canceled Booking History</h3>
         </div>
         <div style={styles.tableContainer}>
           <table style={styles.table}>
