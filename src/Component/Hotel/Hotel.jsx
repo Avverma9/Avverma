@@ -164,7 +164,6 @@ function HotelList() {
     return null;
   }
 
-
   const handleBuy = (hotelID) => {
     // Replace with the logic to handle the booking action
     console.log(`Book Now: ${hotelID}`);

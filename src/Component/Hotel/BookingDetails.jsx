@@ -154,16 +154,19 @@ const BookingDetails = ({
         }
       );
   
-      if (response.data && response.data.monthlyPrice) {
+      if (response.status === 200) {
         setMonthlyRoomPrice(response.data.monthlyPrice);
       } else {
-        // Set a default value or handle the case when monthlyPrice is null
+        // Handle error case explicitly and set the state to null
         setMonthlyRoomPrice(null);
       }
     } catch (error) {
       console.error(error);
+      // Handle error case explicitly and set the state to null
+      setMonthlyRoomPrice(null);
     }
   };
+  
   
 
   useEffect(() => {
