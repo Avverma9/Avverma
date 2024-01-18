@@ -8,7 +8,7 @@ const newMonth = async (req, res) => {
     // Use the correct property names when creating the document
     const createdPrice = await month.create({
       hotelId,
-      monthName,
+      monthDate,
       monthPrice,
     });
 
@@ -20,14 +20,16 @@ const newMonth = async (req, res) => {
   }
 };
 
-const getPriceByHotelId= async function(req,res){
+const getPriceByHotelId = async function (req, res) {
   const { hotelId } = req.params;
 
   try {
     const monthlyPrices = await month.find({ hotelId }).exec();
 
     if (!monthlyPrices) {
-      return res.status(404).json({ error: "No monthly prices found for the specified hotelId" });
+      return res
+        .status(404)
+        .json({ error: "No monthly prices found for the specified hotelId" });
     }
 
     return res.status(200).json(monthlyPrices);
@@ -35,12 +37,12 @@ const getPriceByHotelId= async function(req,res){
     console.error("Error fetching monthly prices:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
 
-const deleteById = async function(req,res){
-  const {id}=req.params
-  const deleteData = await month.findByIdAndDelete(id)
-  res.json({message:"Successfully deleted"})
-}
+const deleteById = async function (req, res) {
+  const { id } = req.params;
+  const deleteData = await month.findByIdAndDelete(id);
+  res.json({ message: "Successfully deleted" });
+};
 
-module.exports = { newMonth,getPriceByHotelId,deleteById};
+module.exports = { newMonth, getPriceByHotelId, deleteById };
