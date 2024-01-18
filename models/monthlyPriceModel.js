@@ -8,7 +8,6 @@ const monthPriceSchema = new mongoose.Schema({
   monthDate: {
     type: Date,
   },
-  monthName: String,
   monthPrice: Number,
 });
 module.exports = mongoose.model("monthlyPrice", monthPriceSchema);
