@@ -144,7 +144,7 @@ const BookingDetails = ({
   );
 
   const handleMonthly = async () => {
-    const formattedDate = selectdatecheckout.toISOString().split("T")[0];
+    const formattedDate = selectdate.toISOString().split("T")[0];
 
     try {
       const response = await axios.post(
@@ -173,7 +173,7 @@ const BookingDetails = ({
   }, []);
   useEffect(() => {
     handleMonthly();
-  }, [selectdatecheckout]);
+  }, [selectdate]);
 
   useEffect(() => {
     setLocalRoomPrice(roomPrice);
@@ -233,7 +233,9 @@ const BookingDetails = ({
                         dateFormat="dd/MM/yyyy"
                         placeholderText="Check-in Date"
                       />
-                      {selectdate && <p> {selectdate.toDateString()}</p>}
+                       {selectdatecheckout && (
+                        <p> {selectdatecheckout.toDateString()}</p>
+                      )}
                     </span>
                   </div>
                   <div>
