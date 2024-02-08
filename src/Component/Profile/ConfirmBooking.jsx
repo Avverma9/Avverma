@@ -5,6 +5,7 @@ import noImage from "../../assets/noImage.jpg";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import moment from "moment";
+
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [modalData, setmodalData] = useState([]);
@@ -17,10 +18,19 @@ export const ConfirmBooking = ({ toast }) => {
     setmodalData([]);
     setShow(false);
   };
+
   const handleShow = (value) => {
     setmodalData(value);
     setShow(true);
   };
+
+  const handlePrint = () => {
+    document.body.classList.add('printable');
+    window.print();
+    document.body.classList.remove('printable');
+  };
+
+  
 
   useEffect(() => {
     const id = localStorage.getItem("userId");
@@ -58,15 +68,8 @@ export const ConfirmBooking = ({ toast }) => {
     fetchBookingDetails();
   }, [fetchBookingDetails, selectedStatus]);
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-
   return (
     <>
-
-
       <div className={styles.bookingHeader}>
         <h2>Booking History</h2>
       </div>
@@ -85,84 +88,79 @@ export const ConfirmBooking = ({ toast }) => {
         </select>
       </div>
 
-
       {bookingDetails && bookingDetails.length > 0 ? (
         <>
           {bookingDetails.map((bookingDetails) => {
             return (
-              <>
-                <div className={styles.bookingDetails}>
-                  <img
-                    src={
-                      bookingDetails &&
-                        bookingDetails?.images &&
-                        bookingDetails?.images
-                        ? bookingDetails.images
-                        : noImage
-                    }
-                    alt=""
-                  />
+              <div key={bookingDetails.bookingId} className={styles.bookingDetails}>
+                <img
+                  src={
+                    bookingDetails &&
+                    bookingDetails?.images &&
+                    bookingDetails?.images
+                      ? bookingDetails.images
+                      : noImage
+                  }
+                  alt=""
+                />
 
-                  <div className={styles.bookingRowOne}>
-                    <h4>{bookingDetails?.hotelName}</h4>
-                    {bookingDetails?.checkInDate &&
-                      bookingDetails?.checkOutDate && (
-                        <h6>
-                          <>
-                            {bookingDetails?.checkInDate &&
-                              bookingDetails?.checkInDate.substring(0, 10)}
-
-                          </>
-                          {"  "}
+                <div className={styles.bookingRowOne}>
+                  <h4>{bookingDetails?.hotelName}</h4>
+                  {bookingDetails?.checkInDate && bookingDetails?.checkOutDate && (
+                    <h6>
+                      <>
+                        {bookingDetails?.checkInDate &&
+                          bookingDetails?.checkInDate.substring(0, 10)}
                         {"  "}
-                          to
-                          {"  "}
-                          <>
-                            {"  "}
-                            {bookingDetails?.checkOutDate &&
-                              bookingDetails?.checkOutDate.substring(0, 10)}
-                          </>
-                        </h6>
-                      )}
-                    {bookingDetails?.guests && bookingDetails?.rooms && (
-                      <h6>
-                        <>
-                          {bookingDetails?.guests}{" "}
-                          <span>
-                            {bookingDetails?.guests > 1 ? " - Guests" : " - Guest"} ,
-                          </span>
-                        </>
+                      </>
 
-                        <>
-                          {bookingDetails?.rooms}
-                          <span>
-                            {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
-                          </span>
-                        </>
-                      </h6>
-                    )}
-                  </div>
-                  <div className={styles.bookingRowOne}>
-                    <h6>{bookingDetails?.bookingId}</h6>
-                  </div>
-                  <div className={styles.bookingRowTwo}>
-                    <h6>{bookingDetails?.price}</h6>
-                    <button
-                      className={styles.link}
-                      onClick={() => handleShow(bookingDetails)}
-                    >
-                      View Details
-                    </button>
-                  </div>
+                      {"  "}
+                      to
+                      {"  "}
+                      <>
+                        {"  "}
+                        {bookingDetails?.checkOutDate &&
+                          bookingDetails?.checkOutDate.substring(0, 10)}
+                      </>
+                    </h6>
+                  )}
+                  {bookingDetails?.guests && bookingDetails?.rooms && (
+                    <h6>
+                      <>
+                        {bookingDetails?.guests}{" "}
+                        <span>
+                          {bookingDetails?.guests > 1 ? " - Guests" : " - Guest"} ,
+                        </span>
+                      </>
+
+                      <>
+                        {bookingDetails?.rooms}
+                        <span>
+                          {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
+                        </span>
+                      </>
+                    </h6>
+                  )}
                 </div>
-              </>
+                <div className={styles.bookingRowOne}>
+                  <h6>{bookingDetails?.bookingId}</h6>
+                </div>
+                <div className={styles.bookingRowTwo}>
+                  <h6>{bookingDetails?.price}</h6>
+                  <button
+                    className={styles.link}
+                    onClick={() => handleShow(bookingDetails)}
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
             );
           })}
         </>
       ) : (
         <p>No Data Found...</p>
       )}
-
 
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
@@ -189,16 +187,16 @@ export const ConfirmBooking = ({ toast }) => {
                       moment(modalData?.createdAt).isoWeekday() === 1
                       ? "Mon"
                       : moment(modalData?.createdAt).isoWeekday() === 2
-                        ? "Tue"
-                        : moment(modalData?.createdAt).isoWeekday() === 3
-                          ? "Wed"
-                          : moment(modalData?.createdAt).isoWeekday() === 4
-                            ? "Thu"
-                            : moment(modalData?.createdAt).isoWeekday() === 5
-                              ? "Fri"
-                              : moment(modalData?.createdAt).isoWeekday() === 6
-                                ? "Sat"
-                                : "Sun"}
+                      ? "Tue"
+                      : moment(modalData?.createdAt).isoWeekday() === 3
+                      ? "Wed"
+                      : moment(modalData?.createdAt).isoWeekday() === 4
+                      ? "Thu"
+                      : moment(modalData?.createdAt).isoWeekday() === 5
+                      ? "Fri"
+                      : moment(modalData?.createdAt).isoWeekday() === 6
+                      ? "Sat"
+                      : "Sun"}
                   </span>
                   {", "}
                   <span>
@@ -264,14 +262,9 @@ export const ConfirmBooking = ({ toast }) => {
               {modalData && modalData?.rooms && modalData?.guests && (
                 <div>
                   <span>Rooms</span>
-                  <h6>
-                    {modalData?.rooms}
-                  </h6>
+                  <h6>{modalData?.rooms}</h6>
                   <span>Guests</span>
-                  <h6>
-                    {
-                      modalData?.guests}
-                  </h6>
+                  <h6>{modalData?.guests}</h6>
                 </div>
               )}
             </div>

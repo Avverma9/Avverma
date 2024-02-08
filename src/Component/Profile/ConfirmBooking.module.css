@@ -157,21 +157,37 @@
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
 
-/* Disabled state */
+
 .selectOption:disabled {
   opacity: 0.7;
 }
 
-/* Styles for the option tag */
 .selectOptionOption {
   font-size: 14px;
   color: #333;
 }
 
-/* Styles for the arrow icon (you can replace this with your own icon) */
 .selectArrowIcon {
   position: absolute;
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+
+  .modalContainer * {
+    visibility: visible;
+  }
+
+  .modalContainer {
+      left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
