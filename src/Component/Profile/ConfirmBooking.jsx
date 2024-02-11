@@ -8,35 +8,44 @@ import moment from "moment";
 
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
-  const [modalData, setmodalData] = useState([]);
-  const [userData, setuserdata] = useState(null);
+  const [modalData, setModalData] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("success");
 
   const handleClose = () => {
-    setmodalData([]);
+    setModalData([]);
     setShow(false);
   };
 
   const handleShow = (value) => {
-    setmodalData(value);
+    setModalData(value);
     setShow(true);
   };
 
   const handlePrint = () => {
-    document.body.classList.add('printable');
-    window.print();
-    document.body.classList.remove('printable');
-  };
-
+    // Create a link element for the print stylesheet
+    const printStylesheet = document.createElement('link');
+    printStylesheet.rel = 'stylesheet';
+    printStylesheet.type = 'text/css';
+    printStylesheet.href = 'path-to-your-print-stylesheet.css';
   
-
+    // Append the link element to the head of the document
+    document.head.appendChild(printStylesheet);
+  
+    // Trigger the print window
+    window.print();
+  
+    // Remove the link element after printing
+    document.head.removeChild(printStylesheet);
+  };
+  
   useEffect(() => {
     const id = localStorage.getItem("userId");
     axios
       .get(`https://hotel-backend-tge7.onrender.com/get/${id}`)
-      .then((res) => setuserdata(res?.data?.data));
+      .then((res) => setUserData(res?.data?.data));
   }, []);
 
   const fetchBookingDetails = useCallback(async () => {
@@ -92,7 +101,10 @@ export const ConfirmBooking = ({ toast }) => {
         <>
           {bookingDetails.map((bookingDetails) => {
             return (
-              <div key={bookingDetails.bookingId} className={styles.bookingDetails}>
+              <div
+                key={bookingDetails.bookingId}
+                className={`${styles.bookingDetails} ${styles.pageBreak}`}
+              >
                 <img
                   src={
                     bookingDetails &&
@@ -106,30 +118,33 @@ export const ConfirmBooking = ({ toast }) => {
 
                 <div className={styles.bookingRowOne}>
                   <h4>{bookingDetails?.hotelName}</h4>
-                  {bookingDetails?.checkInDate && bookingDetails?.checkOutDate && (
-                    <h6>
-                      <>
-                        {bookingDetails?.checkInDate &&
-                          bookingDetails?.checkInDate.substring(0, 10)}
+                  {bookingDetails?.checkInDate &&
+                    bookingDetails?.checkOutDate && (
+                      <h6>
+                        <>
+                          {bookingDetails?.checkInDate &&
+                            bookingDetails?.checkInDate.substring(0, 10)}
+                          {"  "}
+                        </>
                         {"  "}
-                      </>
-
-                      {"  "}
-                      to
-                      {"  "}
-                      <>
+                        to
                         {"  "}
-                        {bookingDetails?.checkOutDate &&
-                          bookingDetails?.checkOutDate.substring(0, 10)}
-                      </>
-                    </h6>
-                  )}
+                        <>
+                          {"  "}
+                          {bookingDetails?.checkOutDate &&
+                            bookingDetails?.checkOutDate.substring(0, 10)}
+                        </>
+                      </h6>
+                    )}
                   {bookingDetails?.guests && bookingDetails?.rooms && (
                     <h6>
                       <>
                         {bookingDetails?.guests}{" "}
                         <span>
-                          {bookingDetails?.guests > 1 ? " - Guests" : " - Guest"} ,
+                          {bookingDetails?.guests > 1
+                            ? " - Guests"
+                            : " - Guest"}{" "}
+                          ,
                         </span>
                       </>
 
@@ -183,8 +198,8 @@ export const ConfirmBooking = ({ toast }) => {
                   Booked by {userData?.name} on{" "}
                   <span>
                     {modalData &&
-                      modalData?.createdAt &&
-                      moment(modalData?.createdAt).isoWeekday() === 1
+                    modalData?.createdAt &&
+                    moment(modalData?.createdAt).isoWeekday() === 1
                       ? "Mon"
                       : moment(modalData?.createdAt).isoWeekday() === 2
                       ? "Tue"
