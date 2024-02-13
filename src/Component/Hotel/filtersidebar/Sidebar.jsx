@@ -82,6 +82,7 @@ const Sidebar = ({
       // Make the API call on the first render
       firstRender.current = false;
       fetchData();
+      firstRender.current=true
     } else {
       // Check if all query parameters are empty
       if (
