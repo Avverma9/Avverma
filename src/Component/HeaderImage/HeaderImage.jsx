@@ -1,14 +1,13 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState } from "react";
-import { useLocation, matchPath } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Swipeable } from "react-swipeable";
 
 import "./HeaderImage.css";
 
 const HeaderImage = () => {
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
   const openDropdown = () => {
     setDropdownOpen(true);
   };
@@ -25,11 +24,22 @@ const HeaderImage = () => {
 
   const searchResultsRegex = /^\/search\/results\/(.+)$/;
 
-if (render !== "/home" && render !== "/" && !searchResultsRegex.test(render)) {
-  return null;
-}
+  if (render !== "/home" && render !== "/" && !searchResultsRegex.test(render)) {
+    return null;
+  }
+
+  const handleSwipe = (event) => {
+    // You can handle swipe gestures here
+    // For example, move to the next or previous city
+    if (event.dir === "Left") {
+      // Move to the next city
+    } else if (event.dir === "Right") {
+      // Move to the previous city
+    }
+  };
 
   return (
+    
     <div className="header">
       <div className="city">
         <div className="dropdown">

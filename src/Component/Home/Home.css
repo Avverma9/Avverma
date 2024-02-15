@@ -1,4 +1,4 @@
-/* Default styles for larger screens */
+
 .slide-container {
   margin-top: 20px;
   margin-left: 20px;
@@ -6,116 +6,12 @@
 }
 
 .swiper-container {
-  width: 1200px;
+  max-width: auto;
   height: 300px;
 }
 
 .swiper-container img {
-  width: 1320px;
+  max-width: auto;
   height: 300px;
 }
 
-/* Media query for extra-large screens */
-@media screen and (min-width: 1600px) {
-  .swiper-container {
-    width: 1600px;
-    height: 400px;
-  }
-
-  .swiper-container img {
-    width: 1760px;
-    height: 400px;
-  }
-
-  /* Additional styles for extra-large screens */
-}
-
-/* Media query for large screens */
-@media screen and (min-width: 1200px) {
-  /* Specific styles for large screens */
-  .swiper-container {
-    width: 1320px; /* Adjust the width for large screens */
-    height: 300px; /* Adjust the height for large screens */
-  }
-
-  .swiper-container img {
-    width: 1320px; /* Adjust the width for large screens */
-    height: 300px; /* Adjust the height for large screens */
-  }
-
-  .large-screen-specific {
-    /* Add any other specific styles for large screens here */
-  }
-}
-
-/* Media query for medium-large screens */
-@media screen and (min-width: 1024px) and (max-width: 1199px) {
-  .swiper-container {
-    width: 100%;
-    height: 300px;
-  }
-
-  .swiper-container img {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Additional styles for medium-large screens */
-}
-
-/* Media query for medium-sized screens */
-@media screen and (max-width: 991px) {
-  .swiper-container {
-    width: 100%;
-    height: 250px;
-  }
-
-  .swiper-container img {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Additional styles for medium-sized screens */
-}
-
-/* Media query for small screens */
-@media screen and (max-width: 767px) {
-  .swiper-container {
-    width: 100%;
-    height: 200px;
-  }
-
-  .swiper-container img {
-    width: 100%;
-    height: auto;
-  }
-
-  /* Additional styles for small screens */
-}
-
-/* Media query for extra-small screens */
-@media screen and (max-width: 480px) {
-  .swiper-container {
-    height: 150px;
-  }
-
-  /* Additional styles for extra-small screens */
-}
-
-/* Media query for very small screens, like mobile phones */
-@media screen and (max-width: 320px) {
-  .swiper-container {
-    height: 100px;
-  }
-
-  /* Additional styles for very small screens */
-}
-
-/* Media query for tiny screens */
-@media screen and (max-width: 240px) {
-  .swiper-container {
-    height: 80px;
-  }
-
-  /* Additional styles for tiny screens */
-}
