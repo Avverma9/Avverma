@@ -667,7 +667,11 @@ function HotelList() {
                     </div>
                   </div>
                 ))
-              : "NO DATA FOUND"}
+               :(  <div>
+                  <img src="https://img.freepik.com/premium-vector/no-data-concept-illustration_86047-486.jpg" alt="" style={{ marginTop: "50px",marginRight: '370px', width: '600px', height: '500px' }} />
+      <p style={{ marginTop: "20px",marginLeft: '150px'}}>no any filter selected  or no data found</p>
+      <a href="/home" style={{marginLeft: "250px"}}><button style={{color:"black",fontFamily:"roboto"}}>Reload</button></a>
+                </div>)}
             <div className="_pagination">
               <button
                 className={`_pagination-button ${

@@ -73,8 +73,8 @@ const Sidebar = ({
           }
         })
         .catch((error) => console.log(error));
-      setHotels([]);
-      setDataAvailable(false);
+    
+        setDataAvailable(true);
     };
 
     // Check if it's the first render
