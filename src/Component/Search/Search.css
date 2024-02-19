@@ -48,7 +48,7 @@ label {
 }
 
 .overlay form {
-  width: 320px;
+  width: 64%;
   padding: 15px;
   background-color: #ffffff;
   border-radius: 5px;
@@ -276,11 +276,21 @@ label {
 
 /* Styles for the Nearby button */
 .nearby-button {
-  margin-top: -52px; 
-  margin-left: 198px;
+
+  margin-top: -12%; 
+  margin-left: 38%;
+  
+
 
 }
-
+@media only screen and (max-width: 768px) {
+  .nearby-button {
+    width: 65px;
+    font-size: 10px;
+    margin-top: -31px;
+    margin-left: 55%;
+  }
+}
 .nearby-button button {
 
   color: #000000; /* Button text color */

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { IoStarHalfOutline } from "react-icons/io5";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -144,11 +145,11 @@ export default function Result() {
         </div>
         <div className="content-container">
           <div>
-            <h3>{hotel.hotelName}</h3>
+        
+            <h5 >  {hotel.starRating.substring(0,1)}{" "}<IoStarHalfOutline />{" "}{hotel.hotelName} </h5>
             <div className="hotel-address">
               <h6>
-                <CiLocationOn /> {hotel.city}, {hotel.destination},{" "}
-                {hotel.landmark},{hotel.state}, {hotel.zip}
+                <CiLocationOn /> {hotel.destination},{hotel.city} {" "} {hotel.zip}
               </h6>
             </div>
            
