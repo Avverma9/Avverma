@@ -140,6 +140,7 @@ router.get(
   "/get/all/filtered/booking/by/:user",
   bookingController.getAllFilterBookings
 );
+router.get("/get-all/bookings-details",bookingController.getAll)
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail);
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

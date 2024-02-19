@@ -98,11 +98,9 @@ const perMonthPrice = async function (req, res) {
       monthDate: { $lte: new Date(checkOutDate) },
     });
     if (!allMonthlyData || allMonthlyData.length === 0) {
-      return res
-        .status(404)
-        .json({
-          error: "Hotel not found or no suitable monthly data available",
-        });
+      return res.status(404).json({
+        error: "Hotel not found or no suitable monthly data available",
+      });
     }
 
     const checkOutDateObject = new Date(checkOutDate);
@@ -138,6 +136,11 @@ const getConfirmedBookings = async (req, res) => {
     (booking) => booking.bookingStatus === "success"
   ); //dashboard
   res.json(confirmedBookings);
+};
+const getAll = async (req, res) => {
+  const booking = await bookingModel.find().sort({ createdAt: -1 });
+
+  res.json(booking);
 };
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
@@ -388,4 +391,5 @@ module.exports = {
   getNoShowBookings,
   getAllFilterBookings,
   perMonthPrice,
+  getAll,
 };
