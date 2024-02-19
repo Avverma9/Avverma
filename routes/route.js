@@ -142,6 +142,7 @@ router.get(
 );
 router.get("/get-all/bookings-details",bookingController.getAll)
 router.get("/get-all/bookings-count",bookingController.getBookingCounts)
+router.get("/get-all/sell-count",bookingController.getTotalSell)
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail);
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

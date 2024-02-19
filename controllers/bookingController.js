@@ -142,10 +142,33 @@ const getAll = async (req, res) => {
 
   res.json(booking);
 };
+
 const getBookingCounts = async function(req,res){
   const getCount = await bookingModel.countDocuments({})
   res.json(getCount)
 }
+
+const getTotalSell = async function (req, res) {
+  try {
+    const result = await bookingModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSell: { $sum: '$price' }
+        }
+      }
+    ]);
+
+    // Extract the totalSell value from the result
+    const totalSell = result.length > 0 ? result[0].totalSell : 0;
+
+    res.status(200).json({ totalSell });
+  } catch (error) {
+    console.error('Error getting total sell:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const { id } = req.params;
@@ -396,5 +419,6 @@ module.exports = {
   getAllFilterBookings,
   perMonthPrice,
   getAll,
-  getBookingCounts
+  getBookingCounts,
+  getTotalSell
 };
