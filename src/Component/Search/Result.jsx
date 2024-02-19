@@ -112,7 +112,7 @@ export default function Result() {
   };
 
   const clearFilters = () => {
-    window.location.reload()
+    navigate("/search/results/kolkata")
   };
 
 
