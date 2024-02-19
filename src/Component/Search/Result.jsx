@@ -112,14 +112,7 @@ export default function Result() {
   };
 
   const clearFilters = () => {
-    setSelectedPropertyTypes([]);
-    setRoomtype([]);
-    setStarrating([]);
-    setBedtype([]);
-    setAmenity([]);
-    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-      checkbox.checked = false;
-    });
+    window.location.reload()
   };
 
 
