@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { BsHouse, BsPerson, BsBoxArrowInRight } from "react-icons/bs";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
-import  {FcCallback} from 'react-icons/fc'
+import { FcCallback } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
-import {CiMail} from 'react-icons/ci'
+import { CiMail } from "react-icons/ci";
 
 import "./Header.css";
 
@@ -34,8 +34,7 @@ const Header = () => {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-         
-    
+
           <div
             className="collapse navbar-collapse flex-grow-0"
             id="navbarNavDropdown"
@@ -118,7 +117,7 @@ const Header = () => {
                 <li className="nav-item p-0">
                   <Link
                     className="fw-normal nav-link d-flex justify-content-center-lg align-items-center p-0 gap-1"
-                    to="/home"
+                    to="/search/results/kolkata"
                   >
                     <BsHouse /> <>Home</>
                   </Link>
@@ -126,7 +125,18 @@ const Header = () => {
               </>
             </ul>
           </div>
-          <div className="call-details">  <p> Call us <FcCallback/> 9917991758 </p> <hr /> <p> Write us on <CiMail/> info@hotelroomsstay.com</p> </div>
+          <div className="call-details">
+            {" "}
+            <p>
+              {" "}
+              Call us <FcCallback /> 9917991758{" "}
+            </p>{" "}
+            <hr />{" "}
+            <p>
+              {" "}
+              Write us on <CiMail /> info@hotelroomsstay.com
+            </p>{" "}
+          </div>
         </div>
       </nav>
     </>

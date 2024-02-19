@@ -42,7 +42,7 @@ export default function Result() {
       .catch((error) => console.error(error));
   }, [location.pathname, location.search]);
 
-  if (!location.pathname.includes(`/search/results/${city}`)) {
+  if (!location.pathname.includes(`/search/results/${city}`) && location.pathname !=="/home") {
     return null;
   }
 
@@ -284,10 +284,11 @@ export default function Result() {
 
       <div className="lucknow-page-container">
         {data.length === 0 ? (
-          <img
+          <div style={{marginTop:"345px"}}> <img
             src="https://media.giphy.com/avatars/404academy/kGwR3uDrUKPI.gif"
             alt="No hotels found"
-          />
+          /></div>
+         
         ) : (
           <>
          
