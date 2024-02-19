@@ -1,7 +1,7 @@
 /* lucknow.css */
 
 .lucknow-page-container {
-  margin-top: -760px;
+  margin-top: -105vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,6 +12,7 @@
 .hotel-container {
   display: flex;
   width: 90%;
+  height: 26%;
   margin: 20px;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -21,6 +22,7 @@
 
 .content-container {
   flex: 1;
+  height: 150px;
   padding: 20px;
 }
 
@@ -217,7 +219,7 @@ hr {
   /* lucknow.css */
 
   .lucknow-page-container {
-    margin: -700px 0 0 270px;
+    margin: -105vh 0 0 270px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -227,6 +229,7 @@ hr {
   .hotel-container {
     display: flex;
     width: 90%;
+    height: 6%;
     margin: 20px;
     background: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -236,6 +239,7 @@ hr {
 
   .content-container {
     flex: 1;
+    height: 150px;
     padding: 20px;
   }
 
@@ -391,5 +395,26 @@ hr {
   /* Result.css */
   .result-page-container {
     display: flex;
+  }
+}
+@media only screen and (max-width: 400px) {
+  
+  .lucknow-page-container {
+    margin: -105vh 0 0 270px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hotel-container {
+    display: flex;
+    width: 70%;
+    height: 6%;
+    margin: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
   }
 }

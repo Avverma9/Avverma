@@ -36,6 +36,8 @@ import { MyReviewSection } from "./Component/Profile/MyReviewSection";
 import { ComplaintsSection } from "./Component/Profile/ComplaintsSection";
 import ViewDetailsModal from "./Component/Profile/ViewDetailsModal";
 import Policy from "./Policy/Policy.jsx";
+import FilterSidebar from "./Component/Search/FilterSidebar.jsx";
+import Result from "./Component/Search/Result.jsx";
 function App() {
   const [userData, setUserData] = useState(null);
 
@@ -72,7 +74,9 @@ function App() {
         <Carousel />
 <Home/>
         <Offers />
-        <Hotel />
+        {/* <Hotel /> */}
+        {/* <FilterSidebar/> */}
+        <Result/>
         <ChatBox />
         <PopupCard />
         <UserSettings />
@@ -80,7 +84,7 @@ function App() {
 
         <Routes>
           <Route path="/signin" element={<Login />} />
-          
+          {/* <Route path="/home" element={<Result/>}/> */}
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />}>
             <Route
