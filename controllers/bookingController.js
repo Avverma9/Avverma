@@ -142,6 +142,10 @@ const getAll = async (req, res) => {
 
   res.json(booking);
 };
+const getBookingCounts = async function(req,res){
+  const getCount = await bookingModel.countDocuments({})
+  res.json(getCount)
+}
 //================================hotel booking API ========================
 const getConfirmedBookingsHotel = async (req, res) => {
   const { id } = req.params;
@@ -392,4 +396,5 @@ module.exports = {
   getAllFilterBookings,
   perMonthPrice,
   getAll,
+  getBookingCounts
 };
