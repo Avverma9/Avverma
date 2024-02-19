@@ -71,6 +71,17 @@ const signIn = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+//==========================get count of users===========================//
+const totalUser = async function (req, res) {
+  try {
+    const getall = await userModel.countDocuments({});
+    res.status(200).json({ totalUsers: getall });
+  } catch (error) {
+    console.error('Error fetching total users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 //=====================================================================
 const update = async (req, res) => {
   const { id } = req.params;
@@ -156,4 +167,4 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { createSignup, getUserById, signIn, update, getAllUsers };
+module.exports = { createSignup, getUserById, signIn, update, getAllUsers,totalUser };
