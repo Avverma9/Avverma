@@ -231,7 +231,7 @@ button:hover {
 .viewLessBtn {
   border: #000000;
   border-radius: 25px;
-  background: rgb(241, 142, 142);
+  background: rgb(21, 193, 224);
   display: flex;
   justify-content: flex-end;
   color: rgb(2, 2, 2);
@@ -1204,7 +1204,7 @@ h5 {
 }
 
 .show-more-less button {
-  background-color: #e93b3b91;
+  background-color: #41b9ff;
   border: #000000;
   border-radius: 25px;
   color: #000000;
