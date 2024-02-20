@@ -183,6 +183,16 @@ const getCount = async function(req,res){
   const get= await hotelModel.countDocuments({})
   res.json(get)
 }
+const getCountPendingHotels = async function(req, res) {
+  try {
+    const count = await hotelModel.countDocuments({ isAccepted: false });
+    console.log('Count of pending hotels:', count);
+    res.status(200).json({ count });
+  } catch (error) {
+    console.error('Error while getting count:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
@@ -1076,5 +1086,6 @@ module.exports = {
   expireOffer,
   getByRoom,
   monthlyPrice,
-  getCount
+  getCount,
+  getCountPendingHotels
 };
