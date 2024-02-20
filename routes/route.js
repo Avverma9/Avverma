@@ -91,6 +91,7 @@ router.get(
 );
 router.get("/see-all/hotels-city/get/city", hotelController.getHotelsCity);
 router.get("/get-hotels/by-room/:roomType", hotelController.getByRoom);
+router.get("/get-hotels/count", hotelController.getCount);
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
 router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);

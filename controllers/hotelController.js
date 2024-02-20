@@ -178,7 +178,11 @@ const createHotel = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
+//=================================Count of hotel=============================
+const getCount = async function(req,res){
+  const get= await hotelModel.countDocuments({})
+  res.json({totalHotel:get})
+}
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
@@ -1072,4 +1076,5 @@ module.exports = {
   expireOffer,
   getByRoom,
   monthlyPrice,
+  getCount
 };
