@@ -181,7 +181,7 @@ const createHotel = async (req, res) => {
 //=================================Count of hotel=============================
 const getCount = async function(req,res){
   const get= await hotelModel.countDocuments({})
-  res.json({totalHotel:get})
+  res.json(get)
 }
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
