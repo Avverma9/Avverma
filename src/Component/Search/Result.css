@@ -131,7 +131,7 @@ h1 {
 
 .swiper-container {
   width: 60%;
-  height: 55%; /* Adjust the height as needed */
+  height: 340px; /* Adjust the height as needed */
 }
 
 .swiper-slide {
@@ -142,7 +142,7 @@ h1 {
 
 img {
   width: 99%;
-  height: 55%;
+  height: 340px;
 }
 
 hr {
