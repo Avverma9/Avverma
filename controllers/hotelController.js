@@ -179,10 +179,18 @@ const createHotel = async (req, res) => {
   }
 };
 //=================================Count of hotel=============================
-const getCount = async function(req,res){
-  const get= await hotelModel.countDocuments({})
-  res.json(get)
-}
+const getCount = async function (req, res) {
+  try {
+    const count = await hotelModel.countDocuments({ isAccepted: false });
+    res.json(count);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+//==========================================================================
+
 const getCountPendingHotels = async function(req, res) {
   try {
     const count = await hotelModel.countDocuments({ isAccepted: false });
