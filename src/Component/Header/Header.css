@@ -49,3 +49,8 @@ font-style: bold;
   color: #007bff; /* Change to your preferred color */
 }
 
+@media only screen and (max-width: 600px) {
+  .call-details {
+    display: none;
+  }
+}
