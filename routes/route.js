@@ -17,8 +17,9 @@ const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
 const HeaderLocation= require("../controllers/headerTravel")
 //============================Header location==========================================
-router.post("/add-a/travel/location", HeaderLocation.CreateLocation);
+router.post("/add-a/travel/location",upload,HeaderLocation.createLocation);
 router.get("/get-all/travel/location", HeaderLocation.getLocation);
+router.delete("/delete-by-id/travel/location/:id", HeaderLocation.deleteById);
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
 router.patch(
