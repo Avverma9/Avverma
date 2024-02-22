@@ -15,7 +15,10 @@ const adminController = require("../controllers/adminController");
 const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
-
+const HeaderLocation= require("../controllers/headerTravel")
+//============================Header location==========================================
+router.post("/add-a/travel/location", HeaderLocation.CreateLocation);
+router.get("/get-all/travel/location", HeaderLocation.getLocation);
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
 router.patch(
