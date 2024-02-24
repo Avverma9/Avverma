@@ -181,7 +181,7 @@ const createHotel = async (req, res) => {
 //=================================Count of hotel=============================
 const getCount = async function (req, res) {
   try {
-    const count = await hotelModel.countDocuments({ isAccepted: false });
+    const count = await hotelModel.countDocuments({ isAccepted: true });
     res.json(count);
   } catch (error) {
     console.error(error);
@@ -343,6 +343,22 @@ const getByQuery = async (req, res) => {
     roomTypes,
   } = req.query;
 
+  // Check if there are no query parameters
+  if (
+    !amenities &&
+    !bedTypes &&
+    !starRating &&
+    !propertyType &&
+    !hotelOwnerName &&
+    !hotelEmail &&
+    !roomTypes
+  ) {
+    // Fetch all data where isAccepted is true
+    const allData = await hotelModel.find({ isAccepted: true });
+    res.json(allData);
+    return;
+  }
+
   const queryParameters = [
     { key: "amenities", value: amenities },
     { key: "roomDetails.bedTypes", value: bedTypes },
@@ -361,9 +377,14 @@ const getByQuery = async (req, res) => {
 
       if (param.key.includes("roomDetails")) {
         const elemMatchQuery = {};
-        elemMatchQuery[param.key.split(".")[1]] = Array.isArray(param.value)
-          ? { $in: param.value.map((val) => new RegExp(val, "i")) }
-          : new RegExp(param.value, "i");
+        if (param.key.endsWith("countRooms")) {
+          // Check countRooms greater than 0
+          elemMatchQuery[param.key.split(".")[1]] = { $gt: 0 };
+        } else {
+          elemMatchQuery[param.key.split(".")[1]] = Array.isArray(param.value)
+            ? { $in: param.value.map((val) => new RegExp(val, "i")) }
+            : new RegExp(param.value, "i");
+        }
 
         query["roomDetails"] = { $elemMatch: elemMatchQuery };
       } else {
@@ -371,6 +392,9 @@ const getByQuery = async (req, res) => {
           ? { $in: param.value.map((val) => new RegExp(val, "i")) }
           : new RegExp(param.value, "i");
       }
+
+      // Add check for isAccepted
+      query["isAccepted"] = true;
 
       fetchedData = await hotelModel.find(query);
 
