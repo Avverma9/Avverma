@@ -1,4 +1,4 @@
-const hotelModel = require("../models/hotelModel");
+const hotelModel = require("../models/Hotel/hotelModel");
 const reviewModel = require("../models/reviewModel");
 const userModel = require("../models/userModel");
 

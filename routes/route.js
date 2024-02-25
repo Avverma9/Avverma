@@ -4,7 +4,7 @@ const { upload } = require("../aws/upload");
 const complaintController = require("../controllers/complaintController");
 const userController = require("../controllers/userController");
 const welcomeController = require("../controllers/welcomeController");
-const hotelController = require("../controllers/hotelController");
+const hotelController = require("../controllers/HotelController/hotelController");
 const month = require("../controllers/monthlyPriceController");
 const stateController = require("../controllers/stateController");
 const paymentController = require("../controllers/paymentController");
@@ -16,6 +16,12 @@ const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
 const HeaderLocation= require("../controllers/headerTravel")
+
+
+const policy = require("../controllers/HotelController/policyController")
+
+//==========================================Policy========================
+router.post("/add-a-new/policy-to-your/hotel/:hotelId",policy.createPolicy)
 //============================Header location==========================================
 router.post("/add-a/travel/location",upload,HeaderLocation.createLocation);
 router.get("/get-all/travel/location", HeaderLocation.getLocation);

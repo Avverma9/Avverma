@@ -1,175 +1,25 @@
-const hotelModel = require("../models/hotelModel");
-const month = require("../models/monthlyPriceModel");
+const hotelModel = require("../../models/Hotel/hotelModel");
+const foods = require("../../models/Hotel/foodsModel")
+const amenities = require("../../models/Hotel/amenitiesModel")
+const policy = require("../../models/Hotel/policyModel")
+const month = require("../../models/monthlyPriceModel");
 
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
-    const {
-      hotelName,
-      hotelOwnerName,
-      roomDetails,
-      foodItems,
-      description,
-      destination,
-      price,
-      startDate,
-      endDate,
-      guests,
-      numRooms,
-      localId,
-      maritalStatus,
-      hotelsPolicy,
-      checkInPolicy,
-      checkOutPolicy,
-      customerWelcomeNote,
-      amenities,
-      reviews,
-      rating,
-      categories,
-      collections,
-      accommodationType,
-      starRating,
-      propertyType,
-      isOffer,
-      offerPriceLess,
-      contact,
-      ownerContactDetails,
-      hotelEmail,
-      generalManagerContact,
-      salesManagerContact,
-      street,
-      city,
-      state,
-      zip,
-      landmark,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingAp,
-      onQuadSharingAp,
-      onBulkBookingAp,
-      onTrippleSharingAp,
-      onMoreThanFourAp,
-      offDoubleSharingAp,
-      offQuadSharingAp,
-      offBulkBookingAp,
-      offTrippleSharingAp,
-      offMoreThanFourAp,
-      onDoubleSharingMAp,
-      onQuadSharingMAp,
-      onBulkBookingMAp,
-      onTrippleSharingMAp,
-      onMoreThanFourMAp,
-      offDoubleSharingMAp,
-      offQuadSharingMAp,
-      offBulkBookingMAp,
-      offTrippleSharingMAp,
-      offMoreThanFourMAp,
-    } = req.body;
-
+    const { data,propertyType } = req.body;
     const images = req.files.map((file) => file.location);
 
     const hotelData = {
-      images,
-      hotelName,
-      hotelOwnerName,
-      roomDetails,
-      foodItems,
-      description,
-      destination,
-      price,
-      startDate,
-      endDate,
-      guests,
-      numRooms,
-      isOffer,
-      offerPriceLess,
-      localId,
-      maritalStatus,
-      hotelsPolicy,
-      checkInPolicy,
-      checkOutPolicy,
-      customerWelcomeNote,
-      amenities,
-      reviews,
-      rating,
-      starRating,
+      data,
       propertyType,
-      contact,
-      ownerContactDetails,
-      hotelEmail,
-      generalManagerContact,
-      salesManagerContact,
-      street,
-      city,
-      state,
-      zip,
-      landmark,
-      categories,
-      collections,
-      accommodationType,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingAp,
-      onQuadSharingAp,
-      onBulkBookingAp,
-      onTrippleSharingAp,
-      onMoreThanFourAp,
-      offDoubleSharingAp,
-      offQuadSharingAp,
-      offBulkBookingAp,
-      offTrippleSharingAp,
-      offMoreThanFourAp,
-      onDoubleSharingMAp,
-      onQuadSharingMAp,
-      onBulkBookingMAp,
-      onTrippleSharingMAp,
-      onMoreThanFourMAp,
-      offDoubleSharingMAp,
-      offQuadSharingMAp,
-      offBulkBookingMAp,
-      offTrippleSharingMAp,
-      offMoreThanFourMAp,
+      images,
     };
 
     const savedHotel = await hotelModel.create(hotelData);
 
     return res.status(201).json({
+      message: `Your request is accepted. Kindly note your hotel id (${savedHotel.hotelId}) for future purposes.`,
       status: true,
       data: savedHotel,
     });
@@ -178,6 +28,7 @@ const createHotel = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 //=================================Count of hotel=============================
 const getCount = async function (req, res) {
   try {
@@ -201,6 +52,39 @@ const getCountPendingHotels = async function(req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+//=================================GET HOTEL=================
+exports.getHotelDocs=async(req,res)=>{
+  try {
+  const { hotelId } = req.params;
+
+  // Fetch hotel details
+  const hotelDetails = await hotelModel.findById(hotelId);
+
+  // Fetch food items associated with the hotelId
+  const foodItems = await foods.find({ hotelId: hotelId });
+
+  // Fetch amenities associated with the hotelId
+  const hotelAmenities = await amenities.find({ hotelId: hotelId });
+
+  // Fetch policies associated with the hotelId
+  const hotelPolicies = await policy.find({ hotelId: hotelId });
+
+  // Combine data from different models
+  const combinedData = {
+    hotelDetails,
+    foodItems,
+    hotelAmenities,
+    hotelPolicies,
+  };
+
+  return res.json(combinedData);
+} catch (error) {
+  console.error(error);
+  return res.status(500).json({ error: "Internal Server Error" });
+}
+}
+
+
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;

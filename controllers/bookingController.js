@@ -1,5 +1,5 @@
 const bookingModel = require("../models/bookingModel");
-const hotelModel = require("../models/hotelModel");
+const hotelModel = require("../models/Hotel/hotelModel");
 const month = require("../models/monthlyPriceModel");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
