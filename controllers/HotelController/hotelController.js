@@ -1,18 +1,55 @@
 const hotelModel = require("../../models/Hotel/hotelModel");
-const foods = require("../../models/Hotel/foodsModel")
-const amenities = require("../../models/Hotel/amenitiesModel")
-const policy = require("../../models/Hotel/policyModel")
+const foods = require("../../models/Hotel/foodsModel");
+const amenities = require("../../models/Hotel/amenitiesModel");
+const policy = require("../../models/Hotel/policyModel");
 const month = require("../../models/monthlyPriceModel");
-
+const roomModel = require("../../models/Hotel/roomModel");
+const reviewModel = require("../reviewController");
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
-    const { data,propertyType } = req.body;
+    const {
+      hotelName,
+      description,
+      hotelOwnerName,
+      destination,
+      price,
+      isOffer,
+      startDate,
+      endDate,
+      numRooms,
+      reviews,
+      rating,
+      starRating,
+      propertyType,
+      contact,
+      isAccepted,
+      localId,
+      hotelEmail,
+      generalManagerContact,
+    } = req.body;
+
     const images = req.files.map((file) => file.location);
 
     const hotelData = {
-      data,
+      hotelName,
+      description,
+      hotelOwnerName,
+      destination,
+      price,
+      isOffer,
+      startDate,
+      endDate,
+      numRooms,
+      reviews,
+      rating,
+      starRating,
       propertyType,
+      contact,
+      isAccepted,
+      localId,
+      hotelEmail,
+      generalManagerContact,
       images,
     };
 
@@ -36,65 +73,60 @@ const getCount = async function (req, res) {
     res.json(count);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 //==========================================================================
 
-const getCountPendingHotels = async function(req, res) {
+const getCountPendingHotels = async function (req, res) {
   try {
     const count = await hotelModel.countDocuments({ isAccepted: false });
-    console.log('Count of pending hotels:', count);
+    console.log("Count of pending hotels:", count);
     res.status(200).json({ count });
   } catch (error) {
-    console.error('Error while getting count:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error while getting count:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 //=================================GET HOTEL=================
-exports.getHotelDocs=async(req,res)=>{
+exports.getHotelDocs = async (req, res) => {
   try {
-  const { hotelId } = req.params;
+    const { hotelId } = req.params;
 
-  // Fetch hotel details
-  const hotelDetails = await hotelModel.findById(hotelId);
+    // Fetch hotel details
+    const hotelDetails = await hotelModel.findById(hotelId);
 
-  // Fetch food items associated with the hotelId
-  const foodItems = await foods.find({ hotelId: hotelId });
+    // Fetch food items associated with the hotelId
+    const foodItems = await foods.find({ hotelId: hotelId });
 
-  // Fetch amenities associated with the hotelId
-  const hotelAmenities = await amenities.find({ hotelId: hotelId });
+    // Fetch amenities associated with the hotelId
+    const hotelAmenities = await amenities.find({ hotelId: hotelId });
 
-  // Fetch policies associated with the hotelId
-  const hotelPolicies = await policy.find({ hotelId: hotelId });
+    // Fetch policies associated with the hotelId
+    const hotelPolicies = await policy.find({ hotelId: hotelId });
+    const reviews = await reviewModel.find({ hotelId: hotelId });
+    // Combine data from different models
+    const combinedData = {
+      hotelDetails,
+      foodItems,
+      hotelAmenities,
+      hotelPolicies,
+      reviews,
+    };
 
-  // Combine data from different models
-  const combinedData = {
-    hotelDetails,
-    foodItems,
-    hotelAmenities,
-    hotelPolicies,
-  };
-
-  return res.json(combinedData);
-} catch (error) {
-  console.error(error);
-  return res.status(500).json({ error: "Internal Server Error" });
-}
-}
-
+    return res.json(combinedData);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { id } = req.params;
-  const {
-    isAccepted,
-    isOffer,
-    offerDetails,
-    offerPriceLess,
-    offerExp,
-  } = req.body;
+  const { isAccepted, isOffer, offerDetails, offerPriceLess, offerExp } =
+    req.body;
 
   let images = [];
 
@@ -392,9 +424,24 @@ const getCity = async function (req, res) {
 
 const getHotelsById = async (req, res) => {
   try {
-    const data = req.params.id;
-    const hotels = await hotelModel.findById(data).sort({ createdAt: -1 });
-    res.json(hotels);
+    const hotelId = req.params.hotelId;
+
+    // Assuming you have the necessary models imported
+    const hotel = await hotelModel.findOne({ hotelId });
+    const food = await foods.findOne({ hotelId });
+    const amenity = await amenities.findOne({ hotelId });
+    const rooms = await roomModel.findOne({ hotelId });
+    const policies = await policy.findOne({ hotelId });
+    // Combine data into a single response object
+    const combinedData = {
+      hotels: hotel,
+      foods: food,
+      amenity: amenity,
+      rooms: rooms,
+      policies: policies,
+    };
+
+    res.json(combinedData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -447,12 +494,8 @@ const getHotelsByLocalID = async (req, res) => {
 //=============================================================================================
 const getHotelsByFilters = async (req, res) => {
   try {
-    const {
-      collections,
-      categories,
-      accommodationTypes,
-      checkInFeatures,
-    } = req.query;
+    const { collections, categories, accommodationTypes, checkInFeatures } =
+      req.query;
 
     const filters = {};
 
@@ -931,7 +974,6 @@ const getByRoom = async (req, res) => {
 //=================================Update price monthly============================================
 const monthlyPrice = async function (req, res) {
   try {
-    
     const rooms = await month.find();
     const currentDate = new Date();
     const hotels = await hotelModel.find();
@@ -939,14 +981,12 @@ const monthlyPrice = async function (req, res) {
     for (const room of rooms) {
       for (const hotel of hotels) {
         for (const roomDetails of hotel.roomDetails) {
-       
           if (String(room.roomId) === String(roomDetails._id)) {
             const roomDate = room.monthDate;
 
             if (roomDate <= currentDate) {
               roomDetails.price += room.monthPrice;
               await hotel.save();
-              
             } else {
               return res.status(400).json({ error: "Date not matched." });
             }
@@ -955,7 +995,6 @@ const monthlyPrice = async function (req, res) {
       }
     }
 
-    
     res.status(200).json({ message: "Monthly prices updated successfully." });
   } catch (error) {
     console.error("Error in monthlyPrice:", error);
@@ -1003,5 +1042,5 @@ module.exports = {
   getByRoom,
   monthlyPrice,
   getCount,
-  getCountPendingHotels
+  getCountPendingHotels,
 };

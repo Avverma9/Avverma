@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
+  uid:{
+    type:String,
+  },
   name: { type: String, required: false },
   gender: { type: String, required: false },
   address: { type: String, required: false },

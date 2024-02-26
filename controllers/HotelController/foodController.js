@@ -3,25 +3,25 @@ const hotel = require("../../models/Hotel/hotelModel");
 
 const createFood = async function (req, res) {
   try {
-    const { hotelId } = req.params;
-    const data = req.body;
-    const images = req.files.map((file) => file.location);
+    // Extract other fields from the request body
+    const { hotelId, name, foodType, about, price } = req.body;
 
-    // Retrieve the hotel document
-    const hotelDoc = await hotel.findById(hotelId);
+    // Extract image data from the uploaded files
+    const images = req.files.map((file) =>file.location);
 
-    // Check if the hotel exists
-    if (!hotelDoc) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-
-    // Create a new food item associated with the hotel
-    const created = await foods.create({ hotel: hotelDoc._id, ...data, images });
-
-    return res.json(created);
+    // Create a new food item with the extracted data
+    const newFood = await foods.create({
+      hotelId,
+      name,
+      foodType,
+      images,
+      about,
+      price,
+    });
+   res.status(201).json(newFood);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

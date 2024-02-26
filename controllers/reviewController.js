@@ -26,9 +26,9 @@ const createReview = async (req, res) => {
 
     const responseData = {
       _id: savedReview._id,
-      hotel: savedReview.hotel,
+      hotel: savedReview.hotelId,
       user: {
-        _id: user._id,
+        userId: user.userId,
         name: user.name,
         images: user.images,
       },

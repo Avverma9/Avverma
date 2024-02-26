@@ -15,15 +15,24 @@ const adminController = require("../controllers/adminController");
 const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
-const HeaderLocation= require("../controllers/headerTravel")
+const HeaderLocation = require("../controllers/headerTravel");
 
-
-const policy = require("../controllers/HotelController/policyController")
-
+const policy = require("../controllers/HotelController/policyController");
+const foods = require("../controllers/HotelController/foodController")
+const amenities = require('../controllers/HotelController/amenitiesController')
+const rooms = require("../controllers/HotelController/roomController")
+//==================================rooms==============================
+router.post("/create-a-room-to-your-hotel",upload,rooms.createRooms)
+//=========================================amenities================================================================
+router.post("/create-a-amenities/to-your-hotel",amenities.createAmenity)
 //==========================================Policy========================
-router.post("/add-a-new/policy-to-your/hotel/:hotelId",policy.createPolicy)
+router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
+router.get("/get-a-new/policy-to-your/hotel/:hotelId", policy.getPolicy);
+
+//===============================foods==========================
+router.post("/add/food-to/your-hotel",upload,foods.createFood)
 //============================Header location==========================================
-router.post("/add-a/travel/location",upload,HeaderLocation.createLocation);
+router.post("/add-a/travel/location", upload, HeaderLocation.createLocation);
 router.get("/get-all/travel/location", HeaderLocation.getLocation);
 router.delete("/delete-by-id/travel/location/:id", HeaderLocation.deleteById);
 //================================== COMPLAINT ============================================================
@@ -49,7 +58,7 @@ router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
 router.put("/update/:id", upload, userController.update);
-router.get("/get-total/user-details",userController.totalUser)
+router.get("/get-total/user-details", userController.totalUser);
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);
@@ -68,7 +77,7 @@ router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:id", hotelController.deleteHotelById);
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
-router.get("/hotels/:id", hotelController.getHotelsById);
+router.get("/hotels/get-by-id/:hotelId", hotelController.getHotelsById);
 router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotels/filters", hotelController.getHotelsByFilters);
@@ -152,9 +161,9 @@ router.get(
   "/get/all/filtered/booking/by/:user",
   bookingController.getAllFilterBookings
 );
-router.get("/get-all/bookings-details",bookingController.getAll)
-router.get("/get-all/bookings-count",bookingController.getBookingCounts)
-router.get("/get-all/sell-count",bookingController.getTotalSell)
+router.get("/get-all/bookings-details", bookingController.getAll);
+router.get("/get-all/bookings-count", bookingController.getBookingCounts);
+router.get("/get-all/sell-count", bookingController.getTotalSell);
 //=================================Emails==============================================//
 router.post("/SendBookingEmail", emailController.BookingMail);
 router.post("/passwordChangeMail/:email", emailController.sendPasswordMail);

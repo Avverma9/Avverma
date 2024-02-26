@@ -1,6 +1,6 @@
 const mongoose = require ("mongoose")
 const rooms = new mongoose.Schema({
-
+hotelId:String,
           images: [String],
           type: {
             type: String,

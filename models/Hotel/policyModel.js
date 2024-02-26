@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 const policy = new mongoose.Schema({
   hotelId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Hotels",
-    required: true,
+    type: String,
+    unique: true,
   },
   hotelsPolicy:String,
   outsideFoodPolicy: String,
