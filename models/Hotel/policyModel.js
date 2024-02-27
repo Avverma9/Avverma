@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const policy = new mongoose.Schema({
+const policies = new mongoose.Schema({
   hotelId: {
     type: String,
     unique: true,
@@ -46,4 +46,4 @@ const policy = new mongoose.Schema({
   offTrippleSharingMAp: String,
   offMoreThanFourMAp: String,
 });
-module.exports = mongoose.model("policy", policy);
+module.exports = mongoose.model("policies", policies);

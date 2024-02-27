@@ -3,22 +3,15 @@ const hotel = require("../../models/Hotel/hotelModel");
 
 const createFood = async function (req, res) {
   try {
-    // Extract other fields from the request body
-    const { hotelId, name, foodType, about, price } = req.body;
-
-    // Extract image data from the uploaded files
-    const images = req.files.map((file) =>file.location);
-
-    // Create a new food item with the extracted data
-    const newFood = await foods.create({
-      hotelId,
-      name,
-      foodType,
-      images,
-      about,
-      price,
-    });
-   res.status(201).json(newFood);
+   const {hotelId}=req.body
+   const created = await foods.create({hotelId,...req.body})
+   await hotel.findOneAndUpdate(
+    {hotelId},
+    {$push:{foods:created}},
+    {new:true}
+    
+   )
+   res.status(201).json({message:"You have added amenities",created})
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });

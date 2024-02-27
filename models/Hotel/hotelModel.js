@@ -5,11 +5,11 @@ const generateHotelId = () => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 const hotelsSchema = new mongoose.Schema(
-  { 
+  {
     hotelId: {
       type: String,
       unique: true,
-      default:generateHotelId
+      default: generateHotelId,
     },
     images: {
       type: [String],
@@ -31,20 +31,15 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
+    state: String,
+    city: String,
+    landmark: String,
+    pinCode: Number,
     startDate: {
       type: Date,
     },
     endDate: {
       type: Date,
-    },
-    numRooms: {
-      type: Number,
-    },
-  
-    reviews: {
-      type: String,
-      default: "",
     },
     rating: {
       type: Number,
@@ -61,14 +56,35 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    localId: {
-      type: String,
-      default: "Not Accepted",
-    },
-    hotelEmail:String,
-    generalManagerContact:String,
+    rooms: [
+      {
+        type: [{}],
+        ref: "rooms",
+      },
+    ],
+    foods: [
+      {
+        type: [{}],
+        ref: "foods",
+      },
+    ],
+    amenities: [
+      {
+        type: [{}],
+        ref: "amenities",
+      },
+    ],
+    policies: [
+      {
+        type: [{}],
+        ref: "policies",
+      },
+    ],
+    localId:String,
+    hotelEmail: String,
+    generalManagerContact: String,
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Hotels", hotelsSchema);
+module.exports = mongoose.model("hotels", hotelsSchema);

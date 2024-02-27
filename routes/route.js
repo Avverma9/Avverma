@@ -24,6 +24,7 @@ const rooms = require("../controllers/HotelController/roomController")
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel",upload,rooms.createRooms)
 //=========================================amenities================================================================
+router.get("/get-hotel-by/amenities",amenities.getHotelByAmenities)
 router.post("/create-a-amenities/to-your-hotel",amenities.createAmenity)
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);

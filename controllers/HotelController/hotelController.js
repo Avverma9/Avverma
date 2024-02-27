@@ -1,7 +1,7 @@
 const hotelModel = require("../../models/Hotel/hotelModel");
 const foods = require("../../models/Hotel/foodsModel");
 const amenities = require("../../models/Hotel/amenitiesModel");
-const policy = require("../../models/Hotel/policyModel");
+const policies = require("../../models/Hotel/policyModel");
 const month = require("../../models/monthlyPriceModel");
 const roomModel = require("../../models/Hotel/roomModel");
 const reviewModel = require("../reviewController");
@@ -90,37 +90,6 @@ const getCountPendingHotels = async function (req, res) {
   }
 };
 //=================================GET HOTEL=================
-exports.getHotelDocs = async (req, res) => {
-  try {
-    const { hotelId } = req.params;
-
-    // Fetch hotel details
-    const hotelDetails = await hotelModel.findById(hotelId);
-
-    // Fetch food items associated with the hotelId
-    const foodItems = await foods.find({ hotelId: hotelId });
-
-    // Fetch amenities associated with the hotelId
-    const hotelAmenities = await amenities.find({ hotelId: hotelId });
-
-    // Fetch policies associated with the hotelId
-    const hotelPolicies = await policy.find({ hotelId: hotelId });
-    const reviews = await reviewModel.find({ hotelId: hotelId });
-    // Combine data from different models
-    const combinedData = {
-      hotelDetails,
-      foodItems,
-      hotelAmenities,
-      hotelPolicies,
-      reviews,
-    };
-
-    return res.json(combinedData);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
 
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
@@ -374,15 +343,15 @@ const searchHotels = async (req, res) => {
 //====================================================================================
 const getAllHotels = async (req, res) => {
   try {
-    const hotels = await hotelModel.find().sort({ createdAt: -1 });
-    const hotelsData = hotels.filter(
-      (accepted) => accepted.isAccepted === true
-    );
-    res.json(hotelsData);
+    const getData = await hotelModel.find().sort({ isAccepted: true });
+
+    res.json({ success: true, getData });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
 const getAllRejectedHotels = async (req, res) => {
   try {
     const hotels = await hotelModel.find().sort({ createdAt: -1 });
@@ -428,20 +397,8 @@ const getHotelsById = async (req, res) => {
 
     // Assuming you have the necessary models imported
     const hotel = await hotelModel.findOne({ hotelId });
-    const food = await foods.findOne({ hotelId });
-    const amenity = await amenities.findOne({ hotelId });
-    const rooms = await roomModel.findOne({ hotelId });
-    const policies = await policy.findOne({ hotelId });
-    // Combine data into a single response object
-    const combinedData = {
-      hotels: hotel,
-      foods: food,
-      amenity: amenity,
-      rooms: rooms,
-      policies: policies,
-    };
 
-    res.json(combinedData);
+    res.json(hotel);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -491,43 +448,60 @@ const getHotelsByLocalID = async (req, res) => {
   }
 };
 
-//=============================================================================================
+//============================================hotels by filter city,state,landmark=================================================
 const getHotelsByFilters = async (req, res) => {
   try {
-    const { collections, categories, accommodationTypes, checkInFeatures } =
-      req.query;
+    const {
+      city,
+      state,
+      landmark,
+      starRating,
+      propertyType,
+      startDate,
+      endDate,
+      localId,
+      countRooms,
+      type,
+      bedTypes,
+      amenities,
+      unmarriedCouplesAllowed,
+    } = req.query;
 
-    const filters = {};
+    let filters = {};
 
-    if (collections) {
-      filters.collections = { $in: collections.split(",") };
+    if (city) filters.city = { $regex: new RegExp(city, "i") };
+    if (state) filters.state = { $regex: new RegExp(state, "i") };
+    if (landmark) filters.landmark = { $regex: new RegExp(landmark, "i") };
+    if (starRating) filters.starRating = starRating;
+    if (propertyType)
+      filters.propertyType = { $regex: new RegExp(propertyType, "i") };
+
+    if (startDate && endDate) {
+      filters.$and = [
+        { startDate: { $lte: new Date(endDate) } },
+        { endDate: { $gte: new Date(startDate) } },
+      ];
     }
 
-    if (categories) {
-      filters.categories = { $in: categories.split(",") };
-    }
+    if (localId) filters.localId = localId;
+    if (countRooms) filters["rooms.countRooms"] = countRooms;
+    if (type) filters["rooms.type"] = { $regex: new RegExp(type, "i") };
+    if (bedTypes)
+      filters["rooms.bedTypes"] = { $regex: new RegExp(bedTypes, "i") };
+    if (amenities)
+      filters["amenities.amenities"] = { $in: amenities.split(",") };
+    if (unmarriedCouplesAllowed)
+      filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
 
-    if (accommodationTypes) {
-      filters.accommodationType = { $in: accommodationTypes.split(",") };
-    }
+    const hotels = await hotelModel.find(filters);
 
-    if (checkInFeatures) {
-      filters.checkInFeatures = { $in: checkInFeatures.split(",") };
-    }
-
-    const Hotels = await hotelModel.find(filters);
-
-    res.status(200).json({
-      status: true,
-      data: Hotels,
-    });
+    res.status(200).json({ success: true, data: hotels });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while retrieving the hotels." });
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
   const { hotelid, roomid } = req.params;

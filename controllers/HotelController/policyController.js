@@ -3,99 +3,22 @@ const Policy = require("../../models/Hotel/policyModel"); // Corrected the impor
 
 exports.createPolicy = async function (req, res) {
   try {
-    const hotelId = req.body.hotelId;
-    const {
-      hotelsPolicy,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingAp,
-      onQuadSharingAp,
-      onBulkBookingAp,
-      onTrippleSharingAp,
-      onMoreThanFourAp,
-      offDoubleSharingAp,
-      offQuadSharingAp,
-      offBulkBookingAp,
-      offTrippleSharingAp,
-      offMoreThanFourAp,
-      onDoubleSharingMAp,
-      onQuadSharingMAp,
-      onBulkBookingMAp,
-      onTrippleSharingMAp,
-      onMoreThanFourMAp,
-      offDoubleSharingMAp,
-      offQuadSharingMAp,
-      offBulkBookingMAp,
-      offTrippleSharingMAp,
-      offMoreThanFourMAp,
-    } = req.body;
-    const fetchData = await Hotel.findOne({ hotelId: hotelId });
-    if (!fetchData) {
-      return res.status(404).json({ message: "Not found" });
-    }
-    const created = await Policy.create({
+    const { hotelId } = req.body;
+
+    // Create policies
+    const createdPolicies = await Policy.create({
       hotelId,
-      hotelsPolicy,
-      outsideFoodPolicy,
-      cancellationPolicy,
-      paymentMode,
-      petsAllowed,
-      bachelorAllowed,
-      smokingAllowed,
-      alcoholAllowed,
-      unmarriedCouplesAllowed,
-      internationalGuestAllowed,
-      returnPolicy,
-      onDoubleSharing,
-      onQuadSharing,
-      onBulkBooking,
-      onTrippleSharing,
-      onMoreThanFour,
-      offDoubleSharing,
-      offQuadSharing,
-      offBulkBooking,
-      offTrippleSharing,
-      offMoreThanFour,
-      onDoubleSharingAp,
-      onQuadSharingAp,
-      onBulkBookingAp,
-      onTrippleSharingAp,
-      onMoreThanFourAp,
-      offDoubleSharingAp,
-      offQuadSharingAp,
-      offBulkBookingAp,
-      offTrippleSharingAp,
-      offMoreThanFourAp,
-      onDoubleSharingMAp,
-      onQuadSharingMAp,
-      onBulkBookingMAp,
-      onTrippleSharingMAp,
-      onMoreThanFourMAp,
-      offDoubleSharingMAp,
-      offQuadSharingMAp,
-      offBulkBookingMAp,
-      offTrippleSharingMAp,
-      offMoreThanFourMAp,
+      ...req.body, // Spread other properties from the request body
     });
-    res.status(201).json({message:"Created",created});
+
+    // Update the hotel to include the entire policy object in the policies array
+    await Hotel.findOneAndUpdate(
+      { hotelId },
+      { $push: { policies: createdPolicies } },
+      { new: true }
+    );
+
+    res.status(201).json({ message: "Policy created", createdPolicies });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
