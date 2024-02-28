@@ -465,6 +465,8 @@ const getHotelsByFilters = async (req, res) => {
       bedTypes,
       amenities,
       unmarriedCouplesAllowed,
+      minPrice,
+      maxPrice, // Add minPrice and maxPrice to the destructuring assignment
     } = req.query;
 
     let filters = {};
@@ -493,6 +495,13 @@ const getHotelsByFilters = async (req, res) => {
     if (unmarriedCouplesAllowed)
       filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
 
+    // Add the minPrice and maxPrice filtering
+    if (minPrice || maxPrice) {
+      filters["rooms.price"] = {};
+      if (minPrice) filters["rooms.price"].$gte = parseInt(minPrice);
+      if (maxPrice) filters["rooms.price"].$lte = parseInt(maxPrice);
+    }
+
     const hotels = await hotelModel.find(filters);
 
     res.status(200).json({ success: true, data: hotels });
@@ -501,6 +510,7 @@ const getHotelsByFilters = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
 
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
