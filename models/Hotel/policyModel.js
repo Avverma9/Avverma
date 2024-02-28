@@ -5,6 +5,8 @@ const policies = new mongoose.Schema({
     unique: true,
   },
   hotelsPolicy:String,
+  checkInPolicy:String,
+  checkOutPolicy:String,
   outsideFoodPolicy: String,
   cancellationPolicy: String,
   paymentMode: String,

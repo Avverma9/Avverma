@@ -511,7 +511,6 @@ const getHotelsByFilters = async (req, res) => {
   }
 };
 
-
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
   const { hotelid, roomid } = req.params;
