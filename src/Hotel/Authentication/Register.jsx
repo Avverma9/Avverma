@@ -1,134 +1,3 @@
-// import React, { useState } from 'react';
-// import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-// import { useNavigate } from 'react-router-dom';
-// const RegisterPage = () => {
-//   const [registerData, setRegisterData] = useState({
-//     gender: '',
-//     mobile: '',
-//     email: '',
-//     password: '',
-//     image: null,
-//   });
-// const navigate = useNavigate()
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setRegisterData({ ...registerData, [name]: value });
-//   };
-
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0];
-//     setRegisterData({ ...registerData, image: file });
-//   };
-
-//   const handleRegister = (e) => {
-//     e.preventDefault();
-//     console.log('Register data:', registerData);
-//     // Add your registration logic here
-//   };
-//   const handleCreateAccount = () => {
-//     navigate("/login")
-//   };
-//   const imageUrl = 'https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg'; // Replace with the actual URL of your image
-
-//   return (
-//     <div className="login-overlay">
-//       <Container className="border border-primary rounded p-4 mt-5 login-container">
-//         <Row>
-//           {/* Left side (image) */}
-//           <Col xs={12} md={6} className="d-flex align-items-center justify-content-center mb-3 mb-md-0">
-//             <img src={imageUrl} alt="Register Image" className="img-fluid rounded-circle" />
-//           </Col>
-
-//           {/* Right side (registration form) */}
-//           <Col xs={12} md={6}>
-//             <Form onSubmit={handleRegister}>
-//               <Form.Group controlId="formGender">
-//                 <Form.Label>Gender</Form.Label>
-//                 <Form.Control
-//                   as="select"
-//                   name="gender"
-//                   value={registerData.gender}
-//                   onChange={handleInputChange}
-//                   required
-//                 >
-//                   <option value="">Select Gender</option>
-//                   <option value="male">Male</option>
-//                   <option value="female">Female</option>
-//                   <option value="other">Other</option>
-//                 </Form.Control>
-//               </Form.Group>
-
-//               <Form.Group controlId="formMobile">
-//                 <Form.Label>Mobile</Form.Label>
-//                 <Form.Control
-//                   type="text"
-//                   placeholder="Enter mobile number"
-//                   name="mobile"
-//                   value={registerData.mobile}
-//                   onChange={handleInputChange}
-//                   required
-//                 />
-//               </Form.Group>
-
-//               <Form.Group controlId="formEmail">
-//                 <Form.Label>Email address</Form.Label>
-//                 <Form.Control
-//                   type="email"
-//                   placeholder="Enter email"
-//                   name="email"
-//                   value={registerData.email}
-//                   onChange={handleInputChange}
-//                   required
-//                 />
-//               </Form.Group>
-
-//               <Form.Group controlId="formPassword">
-//                 <Form.Label>Password</Form.Label>
-//                 <Form.Control
-//                   type="password"
-//                   placeholder="Password"
-//                   name="password"
-//                   value={registerData.password}
-//                   onChange={handleInputChange}
-//                   required
-//                 />
-//               </Form.Group>
-
-//               <Form.Group controlId="formImage">
-        
-//                 <Form.Control
-//                   type="file"
-//                   accept="image/*"
-//                   onChange={handleImageChange}
-//                 />
-//               </Form.Group>
-
-//               <Button variant="primary" type="submit" className="w-100 mb-2">
-//                 Register
-//               </Button>
-
-//               <Row className="mt-3">
-//                 <Col>
-//                   <p className="text-center">
-//                     Already have an account?{" "}
-//                     <span
-//                       className="create-account-link"
-//                       onClick={handleCreateAccount}
-//                     >
-//                       Login
-//                     </span>
-//                   </p>
-//                 </Col>
-//               </Row>
-//             </Form>
-//           </Col>
-//         </Row>
-//       </Container>
-//     </div>
-//   );
-// };
-
-// export default RegisterPage;
 import React, { useState, useEffect } from 'react';
 import {
   CssVarsProvider,
@@ -138,6 +7,7 @@ import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
+import Google from './GoogleSignIn';
 import Checkbox from '@mui/joy/Checkbox';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -302,7 +172,7 @@ export default function RegisterPage() {
                 fullWidth
               
               >
-              <GoogleIcon/> {""}Continue with Google
+              <Google/>
               </Button>
             </Stack>
             <Divider
