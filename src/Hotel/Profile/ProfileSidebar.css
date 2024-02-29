@@ -1,0 +1,76 @@
+/* Profile.css */
+
+.profile-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  #sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100%;
+    background-color: #f8f9fa;
+    padding-top: 20px;
+    position: sticky; /* Change to 'sticky' */
+    top: 0; /* Set the top position to 0 */
+    z-index: 1;
+  }
+  
+  #sidebar.active {
+    margin-right: -250px;
+  }
+  
+  .toggle-button {
+    cursor: pointer;
+    padding: 10px;
+    margin-right: 10px;
+    z-index: 2;
+    background-color: #f8f9fa;
+  }
+  
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-icon {
+    font-size: 2em;
+    margin-right: 10px;
+  }
+  
+  .profile-header-text {
+    font-size: 1.2em;
+  }
+  
+  .list-unstyled {
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .list-unstyled a {
+    display: block;
+    padding: 10px;
+    color: #000;
+    text-decoration: none;
+  }
+  
+  .list-unstyled a:hover {
+    background-color: #e9ecef;
+  }
+  
+  .sidebar-content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  /* Add this to your Profile.css file */
+  
+  .sticky {
+    position: fixed;
+    top: 0;
+    height: 100%;
+  }
+  
+  /* Add more styles as needed */
+  

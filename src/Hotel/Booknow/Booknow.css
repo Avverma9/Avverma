@@ -1,0 +1,98 @@
+
+.extras{
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+.price {
+  color: red;
+  font-size: 28px; /* Adjust the font size as needed */
+  font-weight: bold; /* Optionally make the text bold */
+  /* Additional styling properties can be added based on your design requirements */
+}
+
+.hotel-name {
+  font-size: 24px; /* Adjust the font size as per your design */
+  font-weight: bold;
+  color: #333; /* Text color */
+  margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+.booknow-container {
+  box-shadow: 0 4px 6px rgba(221, 132, 132, 0.1);
+  border: 1px solid rgb(206, 187, 180);
+  padding: 20px; /* Adjust the padding as per your design */
+  margin: 20px; /* Adjust the margin as per your design */
+  background-color: #fff; /* Background color if needed */
+  border-radius: 10px; /* Adjust the border-radius as per your design */
+  overflow: hidden; /* Prevents box-shadow clipping with rounded corners */
+  max-width: 800px;
+}
+
+
+
+@media screen and (max-width: 767px) {
+  #carouselExample {
+    max-width: 100%; /* Make the carousel take up the full width */
+    max-height: 400px;
+    margin-bottom: 10px; /* Add some bottom margin for spacing */
+  }
+
+ 
+  .carousel-inner img {
+    height: 300px;
+    max-width: 100%; 
+  }
+
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    display: none; /* Hide carousel navigation controls on mobile */
+  }
+}
+
+
+
+
+.amenities-container {
+  margin-top: 20px;
+}
+
+.amenities-container > div {
+  margin-bottom: 10px;
+}
+
+.amenities-container > div > div {
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.policy-container {
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.checkIn-policy {
+  margin-top: 15px;
+  padding-left: 20px;
+  border-left: 2px solid #4CAF50; /* Green border for Check In Policy */
+}
+
+.policy-container p {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Styling for individual policies */
+.policy-container p:not(.checkIn-policy) + * {
+  margin-bottom: 15px;
+}

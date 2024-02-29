@@ -1,0 +1,19 @@
+.custom-footer {
+  margin-top: 90px;
+   background-color: aliceblue;
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(5px); /* Add blur effect */
+    border: 1px solid green; /* Border color */
+  }
+  .custom-footer ul li {
+    color: rgb(0, 0, 0);
+    text-decoration: solid;
+    font-weight: bolder;
+  }
+  @media screen and (max-width: 600px) {
+    .custom-footer{
+         margin-top: 50px;
+    }
+ 
+  }

@@ -1,0 +1,28 @@
+/* Mobile Styles */
+@media only screen and (min-width: 600px) {
+  /* Adjust the container style */
+  .container {
+    max-width: 70%;
+    padding: 10px;
+  }
+
+  /* Adjust the form input styles */
+  .form-control {
+    font-size: 8px;
+  }
+
+  /* Adjust the button styles */
+  .btn {
+    width: 14%;
+  }
+
+  /* Optional: Add some spacing or margin for better readability */
+  .mb-3 {
+    margin-bottom: 1px;
+  }
+
+  /* Optional: Center the form within the screen */
+  .position-relative {
+    text-align: center;
+  }
+}
