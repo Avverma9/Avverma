@@ -17,6 +17,10 @@ const createHotel = async (req, res) => {
       isOffer,
       startDate,
       endDate,
+      state,
+      city,
+      landmark,
+      pinCode,
       numRooms,
       reviews,
       rating,
@@ -40,6 +44,10 @@ const createHotel = async (req, res) => {
       isOffer,
       startDate,
       endDate,
+      state,
+      city,
+      landmark,
+      pinCode,
       numRooms,
       reviews,
       rating,
@@ -503,8 +511,8 @@ const getHotelsByFilters = async (req, res) => {
     }
 
     const hotels = await hotelModel.find(filters);
-
-    res.status(200).json({ success: true, data: hotels });
+    const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
+    res.status(200).json({ success: true, data: acceptedHotels });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
