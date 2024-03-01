@@ -31,15 +31,26 @@ const Google = () => {
 
       localStorage.setItem("isSignedIn", "true");
       localStorage.setItem("loggedUser", JSON.stringify(user));
-
-      const response = await fetch(`${baseURL}/signin`, {
+      const storedLoggedUser = localStorage.getItem("loggedUser");
+      const loggedUserObj = JSON.parse(storedLoggedUser);
+      const originalData = loggedUserObj.providerData;
+      const uid = originalData[0].uid;
+      const userImage = originalData[0].photoURL;
+      const GoogleEmail = originalData[0].email;
+      const userName = originalData[0].displayName;
+      const response = await fetch(`${baseURL}/signIn/google`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({
+          uid: uid,
+          userImage: userImage,
+          email: GoogleEmail,
+          userName: userName,
+          
+        }),
       });
-
       if (response.ok) {
         window.location.href = "/profile";
       } else {
@@ -52,7 +63,7 @@ const Google = () => {
       localStorage.setItem("isSignedIn", "true");
       localStorage.setItem("userId", userId);
 
-      // Optionally, store user data in Firestore
+      
       const userDocRef = doc(db, "users", userId);
       await setDoc(userDocRef, { email, /* other user data */ });
     } catch (error) {
