@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const cron = require("node-cron"); // Correct import for node-cron
+const cron = require("node-cron");
 const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
@@ -31,7 +31,8 @@ const cronJob = () => {
 // Schedule the cron job to run every day at midnight (adjust as needed)
 cron.schedule("0 0 * * *", cronJob);
 
-app.use(cors());
+app.use(cors()); // Enable CORS for all routes
+
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

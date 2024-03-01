@@ -58,6 +58,7 @@ router.get("/get/second/carousel", carouselController.getSecondCarousel);
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
+router.post("/signIn/google", userController.GoogleSignIn);
 router.put("/update/:id", upload, userController.update);
 router.get("/get-total/user-details", userController.totalUser);
 //==================================== WELCOME ===========================================================

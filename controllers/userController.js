@@ -1,23 +1,14 @@
 const userModel = require("../models/userModel");
 
-
 //====================================================================================
 const createSignup = async function (req, res) {
   try {
-    const { name, gender, address, email, mobile, password,adhar,pan,dl } = req.body;
-    const images = req.files.map((file) => file.location);
+    
+    const userImage = req.files.map((file) => file.location);
 
     const userData = {
-      name,
-      gender,
-      address,
-      email,
-      mobile,
-      password,
-      images,
-      adhar,
-      pan,
-      dl
+      userImage,
+      ...req.body
     };
 
     const savedUser = await userModel.create(userData);
@@ -31,7 +22,7 @@ const createSignup = async function (req, res) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}; 
+};
 
 //======================================================
 const getUserById = async function (req, res) {
@@ -54,8 +45,24 @@ const getUserById = async function (req, res) {
     return res.status(500).send({ status: false, msg: err.message });
   }
 };
-//======================================================================
+//=====================================Google Sign in=================================
 
+const GoogleSignIn = async function (req, res) {
+  
+
+  try {
+    const { email,uid,userName } = req.body;
+    const userImage = req.files.map((file) => file.location);
+    const user = await userModel.create({ email,uid,userName,userImage });
+
+  
+      res.status(201).json({ message: "Sign-in successful", user });
+   
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+//==============================================SIGN IN==============================
 const signIn = async function (req, res) {
   const { email } = req.body;
 
@@ -77,21 +84,21 @@ const totalUser = async function (req, res) {
     const getall = await userModel.countDocuments({});
     res.status(200).json({ totalUsers: getall });
   } catch (error) {
-    console.error('Error fetching total users:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error fetching total users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 //=====================================================================
 const update = async (req, res) => {
   const { id } = req.params;
-  const { name, address, gender, email, mobile, password, adhar, pan, dl } = req.body;
+  const { name, address, gender, email, mobile, password, adhar, pan, dl } =
+    req.body;
   let images = [];
 
   if (req.files && req.files.length > 0) {
     images = req.files.map((file) => file.location);
   } else {
-  
     const user = await userModel.findById(id);
     if (user) {
       images = user.images;
@@ -101,7 +108,18 @@ const update = async (req, res) => {
   const user = await userModel
     .findByIdAndUpdate(
       id,
-      { name, address, gender, email, mobile, password, adhar, pan, dl, images },
+      {
+        name,
+        address,
+        gender,
+        email,
+        mobile,
+        password,
+        adhar,
+        pan,
+        dl,
+        images,
+      },
       { new: true }
     )
     .then((user) => {
@@ -115,7 +133,6 @@ const update = async (req, res) => {
       res.status(500).json({ message: "Internal server error", error });
     });
 };
-
 
 //===============================================================================
 const getAllUsers = async (req, res) => {
@@ -167,4 +184,12 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { createSignup, getUserById, signIn, update, getAllUsers,totalUser };
+module.exports = {
+  createSignup,
+  getUserById,
+  signIn,
+  GoogleSignIn,
+  update,
+  getAllUsers,
+  totalUser,
+};
