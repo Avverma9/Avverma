@@ -21,6 +21,7 @@ import GoogleIcon from "@mui/icons-material/Google";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import LinearProgress from "@mui/material/LinearProgress";
+import baseURL from "../../baseURL";
 
 function ColorSchemeToggle(props) {
   const { onClick, ...other } = props;
@@ -82,7 +83,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        "https://hotel-backend-tge7.onrender.com/signin",
+        `${baseURL}/signIn`,
         {
           method: "POST",
           headers: {
