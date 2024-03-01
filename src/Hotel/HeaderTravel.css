@@ -11,7 +11,7 @@
   }
   
   .header::-webkit-scrollbar-thumb {
-    background-color: #00b3ff72;
+    background-color: #00b3ff00;
     border-radius: 6px;
     height:1px; /* Adjust the scrollbar height as needed */
   }

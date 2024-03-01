@@ -21,7 +21,7 @@ export default function Bottom() {
     return (
       <Box sx={{ pb: 7 }}>
         <CssBaseline />
-        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }} elevation={3}>
           <BottomNavigation
             showLabels
             value={value}
@@ -29,7 +29,7 @@ export default function Bottom() {
               setValue(newValue);
             }}
           >
-            <BottomNavigationAction href='/login'  label="Login/register" icon={<LoginIcon />} />
+            <BottomNavigationAction href='/login' label="Login/register" icon={<LoginIcon />} />
             <BottomNavigationAction href='/partner' label="Be a partner" icon={<HandshakeIcon />} />
             <BottomNavigationAction href='/' label="Home" icon={<HomeWorkTwoToneIcon />} />
             <BottomNavigationAction href='/profile' label="Profile" icon={<AccountCircleIcon />} />
