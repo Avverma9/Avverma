@@ -29,7 +29,7 @@ const getUserById = async function (req, res) {
   try {
     let userId = req.params.userId;
 
-    let checkData = await userModel.findOne({ _id: userId });
+    let checkData = await userModel.findOne({ userId: userId });
     if (!checkData) {
       return res
         .status(404)
@@ -48,20 +48,30 @@ const getUserById = async function (req, res) {
 //=====================================Google Sign in=================================
 
 const GoogleSignIn = async function (req, res) {
-  
-
   try {
-    const { email,uid,userName } = req.body;
-    const userImage = req.files.map((file) => file.location);
-    const user = await userModel.create({ email,uid,userName,userImage });
+    const { email, uid, userName, userImage } = req.body;
 
-  
-      res.status(201).json({ message: "Sign-in successful", user });
-   
+    // Check if the user already exists based on email or UID
+    const existingUser = await userModel.findOne({ $or: [{ email }, { uid }] });
+
+    if (existingUser) {
+      // If user already exists, return a JSON response
+      return res.status(201).json({ message: "User already exists", userId:existingUser.userId });
+    }
+
+    // If user doesn't exist, create a new user
+    const user = await userModel.create({ email, uid, userName, userImage });
+
+    res.status(201).json({ message: "Sign-in successful", userId:user.userId });
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+    // Handle any errors that might occur during the process
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+
+
 //==============================================SIGN IN==============================
 const signIn = async function (req, res) {
   const { email } = req.body;
