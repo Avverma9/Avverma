@@ -316,7 +316,7 @@ export default function LoginPage() {
             "url(https://images2.alphacoders.com/462/462295.jpg)",
           [theme.getColorSchemeSelector("dark")]: {
             backgroundImage:
-              "url(https://cutewallpaper.org/28/cityscape-window-night-hd-wallpaper/11938485.jpg)",
+              "url(https://c4.wallpaperflare.com/wallpaper/132/777/256/vacation-costa-adeje-gran-hotel-best-hotels-of-2017-resort-wallpaper-preview.jpg)",
           },
         })}
       />
