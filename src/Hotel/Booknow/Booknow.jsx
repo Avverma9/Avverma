@@ -347,6 +347,72 @@ const handleBookNow = async () => {
               ))}
             </div>
       
+  <div className="hotel-policies-container">
+              {hotelData.amenities.map((amenityArray, index) => (
+                <Accordion
+                  key={amenityArray[0]._id}
+                  expanded={expanded}
+                  onChange={handleExpansion}
+                  slotProps={{ transition: { timeout: 400 } }}
+                  sx={{
+                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
+                    "& .MuiAccordionDetails-root": {
+                      display: expanded ? "block" : "none",
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${index + 1}-content`}
+                    id={`panel${index + 1}-header`}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      See +{" "}
+                      <Typography>
+                        {" "}
+                        {amenityArray[0].amenities.length - 5} more amenities
+                      </Typography>
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {amenityArray[0].amenities.map((amenity, innerIndex) => (
+                        <div
+                          key={innerIndex}
+                          style={{
+                            marginBottom: "8px",
+                            flexBasis: "33%",
+                            boxSizing: "border-box",
+                          }}
+                        >
+                          <IconContext.Provider value={{ size: "1.2em" }}>
+                            {amenityIcons[amenity] || defaultIcon} {amenity}
+                          </IconContext.Provider>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
           
           </div>
           
@@ -587,7 +653,104 @@ const handleBookNow = async () => {
               ))}
             </div>
           </div>
-        
+          <div className="extras">
+            <div className="hotel-policies-container">
+              {hotelData.policies.map((policyArray, index) => (
+                <Accordion
+                  key={index}
+                  expanded={expanded}
+                  onChange={handleExpansion}
+                  slotProps={{ transition: { timeout: 400 } }}
+                  sx={{
+                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
+                    "& .MuiAccordionDetails-root": {
+                      display: expanded ? "block" : "none",
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${index + 1}-content`}
+                    id={`panel${index + 1}-header`}
+                  >
+                    <Typography>Hotel Policies</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      <div className="policy-container">
+                        <p>Local ID:</p>
+
+                        {hotelData.localId}
+                        <hr />
+                        {policyArray.map((policy, index) => (
+                          <React.Fragment key={index}>
+                            <p>Hotel's Policy</p>
+                            {policy.hotelsPolicy}
+                            <hr />
+                            <div className="checkIn-policy">
+                              <p>Check In Policy:</p>
+
+                              {policy.checkInPolicy}
+
+                              <p>Check Out Policy:</p>
+
+                              {policy.checkOutPolicy}
+                            </div>
+                            <hr />
+                            <p>Outside Food Policy:</p>
+
+                            {policy.outsideFoodPolicy}
+                            <hr />
+                            <p>Cancellation Policy:</p>
+
+                            {policy.cancellationPolicy}
+                            <hr />
+                            <p>Payment Mode:</p>
+
+                            {policy.paymentMode}
+                            <hr />
+                            <p>Pets Allowed:</p>
+
+                            {policy.petsAllowed}
+                            <hr />
+                            <p>Bachelor Allowed:</p>
+
+                            {policy.bachelorAllowed}
+                            <hr />
+                            <p>Smoking Allowed:</p>
+
+                            {policy.smokingAllowed}
+                            <hr />
+                            <p>Alcohol Allowed:</p>
+
+                            {policy.alcoholAllowed}
+                            <hr />
+                            <p>Unmarried Couples Allowed:</p>
+
+                            {policy.unmarriedCouplesAllowed}
+                            <hr />
+                            <p>International Guest Allowed:</p>
+
+                            {policy.internationalGuestAllowed}
+                            <hr />
+                            <p>Return Policy:</p>
+
+                            {policy.returnPolicy}
+                            <hr />
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
+          </div>
+
+
+
+
+
         </>
       ) : (
         <Box sx={{ width: "100%" }}>
