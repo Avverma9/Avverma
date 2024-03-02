@@ -7,14 +7,12 @@ const bookingSchema = new mongoose.Schema(
       required: false,
       unique: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
+    userId: {
+      type: String,
       required: false,
     },
-    hotel: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Hotels",
+    hotelId: {
+      type: String,
       required: false,
     },
     hotelName: {
@@ -31,7 +29,6 @@ const bookingSchema = new mongoose.Schema(
     },
     checkInTime: {
       type: String,
-     
     },
     checkOutTime: {
       type: String,
@@ -40,7 +37,22 @@ const bookingSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-    rooms: {
+    foodDetails: [
+      {
+        name: String,
+        price: Number,
+        quantity: Number,
+      },
+    ],
+    roomDetails: [
+      {
+        type: { type: String },
+        bedTypes: { type: String },
+        price: { type: Number },
+      },
+    ],
+    
+    numRooms: {
       type: Number,
       required: false,
     },
@@ -60,7 +72,7 @@ const bookingSchema = new mongoose.Schema(
       ],
       default: "success",
     },
-    cancellationReason:String,
+    cancellationReason: String,
     cardDetails: {
       type: String,
       default: null,
@@ -83,12 +95,7 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    foodItems: [
-      {
-        name: String,
-        price: Number,
-      },
-    ],
+  
   },
   {
     timestamps: {

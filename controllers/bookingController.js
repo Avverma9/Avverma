@@ -5,82 +5,40 @@ const month = require("../models/monthlyPriceModel");
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
-    const { foodItems } = req.body;
-    let totalFoodPrice = 0;
-    const foodItemsDetails = [];
-
-    const selectedFoodPrices = [];
-
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ success: false, error: "Hotel not found" });
-    }
-
-    for (const foodItem of foodItems) {
-      const selectedFood = hotel.foodItems.find(
-        (item) => item._id == foodItem._id
-      );
-
-      if (!selectedFood) {
-        return res
-          .status(404)
-          .json({ success: false, error: "Food item not found" });
-      }
-
-      totalFoodPrice += selectedFood.price;
-
-      foodItemsDetails.push({
-        name: selectedFood.name,
-        price: selectedFood.price,
-      });
-
-      selectedFoodPrices.push(selectedFood.price);
-    }
-
     const {
-      checkIn,
-      checkOut,
+      checkInDate,
+      checkOutDate,
       guests,
-      rooms,
+      numRooms,
+      foodDetails,
+      roomDetails,
       price,
-      paymentStatus,
       hotelName,
       hotelOwnerName,
-      images,
       destination,
     } = req.body;
 
-    const bookingId = Math.floor(
-      1000000000 + Math.random() * 9000000000
-    ).toString();
-    const totalprice = price * rooms + totalFoodPrice;
+    // Check if bookingId already exists (not shown in the code)
 
-    if (rooms > hotel.numRooms) {
-      return res
-        .status(400)
-        .json({ success: false, error: "No rooms available" });
-    }
+    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
 
     const booking = new bookingModel({
       bookingId,
       user: userId,
       hotel: hotelId,
       hotelName,
+      foodDetails,
+      numRooms,
       hotelOwnerName,
-      checkInDate: checkIn,
-      checkOutDate: checkOut,
+      checkInDate,
+      checkOutDate,
       guests,
-      rooms,
-      price: totalprice,
+      price,
       destination,
-      foodItems: foodItemsDetails,
-      bookingStatus: paymentStatus === "success" ? "success" : "failed",
-      images,
+      roomDetails,
     });
 
-    hotel.numRooms -= rooms;
-    await hotel.save();
-
+    // Save the booking
     const savedBooking = await booking.save();
 
     res.status(201).json({ success: true, data: savedBooking });
@@ -88,6 +46,7 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 //=============================================================================
 const perMonthPrice = async function (req, res) {
   try {
@@ -382,9 +341,9 @@ const updateBooking = async (req, res) => {
 //==========================================================getallBookingByID=======================
 const getAllFilterBookings = async (req, res) => {
   try {
-    const { user } = req.params;
+    const { userId } = req.params;
     const { bookingStatus } = req.query;
-    const filter = { user, bookingStatus };
+    const filter = { userId, bookingStatus };
 
     const bookings = await bookingModel.find(filter);
     if (bookings.length === 0) {
