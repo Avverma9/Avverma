@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Avatar from "@mui/material/Avatar";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import Button from "@mui/material/Button";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
-import { FiPhone, FiMail, FiMap, FiUser } from "react-icons/fi";
-import EastTwoToneIcon from "@mui/icons-material/EastTwoTone";
-import BorderColorTwoToneIcon from "@mui/icons-material/BorderColorTwoTone";
 import { useNavigate } from "react-router-dom";
 import baseURL from "../../baseURL";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardText,
+  MDBCardBody,
+  MDBCardImage,
+  MDBTypography,
+  MDBIcon,
+} from "mdb-react-ui-kit";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import "./Profile.css"; // Import your custom CSS file for mobile styles
 
-const Profile = () => {
+export default function Profile() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
 
@@ -50,49 +58,141 @@ const Profile = () => {
     navigate("/profile-update/user-data/page");
   };
 
-  return (
-    <div className="container mt-4">
-      <hr />
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <div className="d-flex flex-column align-items-center mb-3">
-            <Avatar
-              alt={data.userName}
-              src={data.userImage[0]} // Fix: Access the first element of the userImage array
-              sx={{ width: 100, height: 100, marginBottom: 2 }}
-            />
-            <h5>{data.userName}</h5> {/* Fix: Access the correct property 'userName' */}
-          </div>
-        </div>
-        <div className="card">
-          <div className="card-body">
-            <p className="card-text">
-              <FiMail /> Email <EastTwoToneIcon /> {data.email}
-            </p>
-            <p className="card-text">
-              <FiPhone /> Mobile <EastTwoToneIcon /> {data.mobile} {/* Fix: Access the correct property 'userId' */}
-            </p>
-            <p className="card-text">
-              <FiMap /> Address <EastTwoToneIcon /> {data.address}
-            </p>
-            <p className="card-text">
-              <FiUser /> Gender <EastTwoToneIcon /> {data.gender}
-            </p>
-            <ButtonGroup
-              variant="contained"
-              size="large"
-              orientation="horizontal"
-              aria-label="outlined primary button group"
-            >
-              <Button size="large" variant="outlined" onClick={handleEdit}>
-                <BorderColorTwoToneIcon /> Edit Profile
-              </Button>
-            </ButtonGroup>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+  const handleLogOut = () => {
+    localStorage.removeItem("userId");
+  };
 
-export default Profile;
+  return (
+    <section className="vh-10" style={{ backgroundColor: "#f4f5f7" }}>
+      <MDBContainer className="py-5 h-100">
+        <MDBRow className="justify-content-center align-items-center h-100">
+          <MDBCol lg="6" className="mb-4 mb-lg-0">
+            <MDBCard className="mb-3" style={{ borderRadius: "1.5rem" }}>
+              <MDBRow className="g-0">
+                <MDBCol
+                  md="4"
+                  className="gradient-custom text-center text-white"
+                  style={{
+                    borderTopLeftRadius: ".5rem",
+                    borderBottomLeftRadius: ".5rem",
+                  }}
+                >
+                  <MDBCardImage
+                    src={data.userImage}
+                    alt="Avatar"
+                    className="my-5"
+                    style={{ width: "80px" }}
+                    fluid
+                  />
+                </MDBCol>
+                <MDBCol md="8">
+                  <MDBCardBody className="p-4">
+                    <MDBTypography tag="h6">Information</MDBTypography>
+                    <hr className="mt-0 mb-4" />
+                    <MDBRow className="pt-1">
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Email</MDBTypography>
+                        <MDBCardText className="text-muted">
+                          {data.email || (
+                            <input
+                              type="text"
+                              className="form-control action-required"
+                              value="Action Required"
+                              readOnly
+                              onClick={() =>
+                                navigate("/profile-update/user-data/page")
+                              }
+                            />
+                          )}
+                        </MDBCardText>
+                      </MDBCol>
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Phone</MDBTypography>
+                        <MDBCardText className="text-muted">
+                          {data.mobile || (
+                            <input
+                              type="text"
+                              className="form-control action-required"
+                              value="Action Required"
+                              readOnly
+                              onClick={() =>
+                                navigate("/profile-update/user-data/page")
+                              }
+                            />
+                          )}
+                        </MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr className="mt-0 mb-4" />
+                    <MDBRow className="pt-1">
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Address</MDBTypography>
+                        <MDBCardText className="text-muted">
+                          {data.address || (
+                            <input
+                              type="text"
+                              className="form-control action-required"
+                              value="Action Required"
+                              readOnly
+                              onClick={() =>
+                                navigate("/profile-update/user-data/page")
+                              }
+                            />
+                          )}
+                        </MDBCardText>
+                      </MDBCol>
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Password</MDBTypography>
+                        <MDBCardText className="text-muted">
+                          {data.password || (
+                            <input
+                              type="text"
+                              className="form-control action-required"
+                              value="Action Required"
+                              readOnly
+                              onClick={() =>
+                                navigate("/profile-update/user-data/page")
+                              }
+                            />
+                          )}
+                        </MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr className="mt-0 mb-4" />
+                    <MDBRow className="pt-1">
+                      <MDBCol size="12" className="mb-3">
+                        <MDBTypography tag="h6">Aadhar</MDBTypography>
+                        <MDBCardText className="text-muted">
+                          {data.adhar || (
+                            <input
+                              type="text"
+                              className="form-control action-required"
+                              value="Action Required"
+                              readOnly
+                              onClick={() =>
+                                navigate("/profile-update/user-data/page")
+                              }
+                            />
+                          )}
+                        </MDBCardText>
+                      </MDBCol>
+                    </MDBRow>
+                    <hr />
+                    <Stack spacing={2} direction="row">
+                      <Button onClick={handleEdit} variant="contained">
+                        Update
+                      </Button>
+                      <Button onClick={handleLogOut} variant="outlined">
+                        Log Out
+                      </Button>
+                    </Stack>
+                  </MDBCardBody>
+                </MDBCol>
+              </MDBRow>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </section>
+  );
+}
