@@ -9,6 +9,7 @@ import moment from "moment";
 import { useLocation } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
+import baseURL from "../../baseURL";
 
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
@@ -73,10 +74,10 @@ export const ConfirmBooking = ({ toast }) => {
   }, []);
 
   const fetchBookingDetails = useCallback(async () => {
-    const user = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     try {
       const response = await axios.get(
-        `https://hotel-backend-tge7.onrender.com/get/all/filtered/booking/by/${user}`,
+        `${baseURL}/get/all/filtered/booking/by/${userId}`,
         {
           params: {
             bookingStatus: selectedStatus,

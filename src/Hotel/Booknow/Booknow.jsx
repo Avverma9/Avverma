@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-undef */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import DatePicker from 'react-datepicker';
@@ -47,6 +47,7 @@ import baseURL from "../../baseURL";
 const BookNow = () => {
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
+  const navigate=useNavigate()
   const [selectedRooms,setSelectedRooms]=useState([])
   const location = useLocation();
   const [selectedFood, setSelectedFood] = useState([]);
@@ -214,7 +215,7 @@ const handleBookNow = async () => {
       // Handle success, e.g., redirect to a confirmation page
       alert('Booking successful');
      
-      
+      navigate("/bookings")
     } else {
       // Handle error
       console.error('Booking failed');
