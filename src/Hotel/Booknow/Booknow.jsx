@@ -165,6 +165,53 @@ const handleDecrementRooms = () => {
     setRoomsCount((prevCount) => prevCount - 1);
   }
 };
+
+
+const handleBookNow = async () => {
+  try {
+    // Prepare data for API request
+    const bookingData = {
+      checkInDate: format(checkInDate, 'yyyy-MM-dd'),
+      checkOutDate: format(checkOutDate, 'yyyy-MM-dd'),
+      guests: guestsCount,
+      numRooms: roomsCount, // Include the number of rooms
+      rooms: selectedRooms.map(room => ({
+        type: room.type,
+        bedTypes: room.bedTypes,
+        price: room.price,
+        count: room.count,
+      })),
+      foods: selectedFood.map(food => ({
+        name: food.name,
+        price: food.price,
+        quantity: food.quantity,
+      })),
+      totalPrice: calculateTotalPrice(),
+    };
+
+    // Make API request to book
+    const response = await fetch(`${baseURL}/bookings/book-now`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    });
+
+    if (response.ok) {
+      // Handle success, e.g., redirect to a confirmation page
+      console.log('Booking successful');
+    } else {
+      // Handle error
+      console.error('Booking failed');
+    }
+  } catch (error) {
+    console.error('Error booking:', error);
+  }
+};
+
+
+
 //==============================
   if (!path.includes("/book-hotels/")) {
     return null;
@@ -418,7 +465,9 @@ const handleDecrementRooms = () => {
                                 <Button size="small" color="danger" onClick={() => handleRemoveFood(selected)}>
                                   Remove
                                 </Button>
+                                
                               </CardActions>
+                              
                             </Card>
                           ))}
                         </div>
@@ -459,10 +508,18 @@ const handleDecrementRooms = () => {
         </Button>
       )}
     </CardActions>
+    
   </Card>
+  
 ))}
+
             </div>
           </div>
+          <div className="col-md-12 mt-3">
+  <Button variant="contained" color="primary" onClick={handleBookNow}>
+    Book Now
+  </Button>
+</div>
                     </div>
                   </div>
                 </div>
