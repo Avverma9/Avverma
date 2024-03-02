@@ -26,6 +26,7 @@ import AmenitiesPage from './Hotel/Hotels/PartnerAmenities.jsx';
 import PartnerFoods from './Hotel/Hotels/PartnerFoods.jsx';
 import PartnerRooms from './Hotel/Hotels/PartnerRooms.jsx';
 
+
 function App() {
   return (
     <div className="App">
@@ -53,6 +54,7 @@ function App() {
           <Route path='/partner/third-step' element={<AmenitiesPage/>} />
           <Route path='/partner/fourth-step' element={<PartnerFoods/>} />
           <Route path='/partner/last-step' element={<PartnerRooms/>} />
+       
         </Routes>
         <Bottom/>
         <Footer/>
