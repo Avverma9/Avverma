@@ -68,12 +68,21 @@ export default function LoginPage() {
 
   const storedLoggedUser = localStorage.getItem("loggedUser");
   const loggedUserObj = JSON.parse(storedLoggedUser);
-  const originalData = loggedUserObj.providerData;
+  if(loggedUserObj){
+      const originalData = loggedUserObj.providerData;
   const uid = originalData[0].uid;
   const userImage = originalData[0].photoURL;
   const email = originalData[0].email;
-  const userName = originalData[0].displayName;
+  const userName = originalData[0].displayName;  
+  localStorage.setItem("uid",uid)
+  localStorage.setItem("userImage",userImage)
+  localStorage.setItem("useremail",email)
+
+  localStorage.setItem("userName",userName)
   console.log("upcoming data", uid, userImage, email, userName);
+  }
+
+
 
   const navigate = useNavigate();
 

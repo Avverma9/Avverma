@@ -7,6 +7,8 @@ import Accordion from "@mui/material/Accordion";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { format, addDays } from 'date-fns';
+
+import BedOutlinedIcon from '@mui/icons-material/BedOutlined';
 import { RiArrowUpDownFill } from 'react-icons/ri';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -127,8 +129,11 @@ const BookNow = () => {
   const calculateTotalPrice = () => {
     const roomPrice = selectedRooms.reduce((total, room) => total + room.price, 0);
     const foodPrice = selectedFood.reduce((total, food) => total + food.price * food.quantity, 0);
+    
+    // Multiply the room price by the updated roomsCount
+    const updatedRoomPrice = roomPrice * roomsCount;
   
-    return roomPrice + foodPrice;
+    return updatedRoomPrice + foodPrice;
   };
   
   
@@ -158,6 +163,7 @@ const calculateGuests = (roomsCount) => {
 const guestsCount = calculateGuests(roomsCount);
 const handleIncrementRooms = () => {
   setRoomsCount((prevCount) => prevCount + 1);
+  
 };
 
 const handleDecrementRooms = () => {
@@ -174,23 +180,29 @@ const handleBookNow = async () => {
       checkInDate: format(checkInDate, 'yyyy-MM-dd'),
       checkOutDate: format(checkOutDate, 'yyyy-MM-dd'),
       guests: guestsCount,
-      numRooms: roomsCount, // Include the number of rooms
-      rooms: selectedRooms.map(room => ({
+      numRooms: roomsCount,
+      roomDetails: selectedRooms.map(room => ({
         type: room.type,
         bedTypes: room.bedTypes,
         price: room.price,
-        count: room.count,
       })),
-      foods: selectedFood.map(food => ({
+      foodDetails: selectedFood.map(food => ({
         name: food.name,
         price: food.price,
         quantity: food.quantity,
       })),
-      totalPrice: calculateTotalPrice(),
+      price: calculateTotalPrice(),
+      destination: hotelData.city,
+      hotelName: hotelData.hotelName,
+      hotelOwnerName: hotelData.hotelOwnerName,
     };
 
+    console.log('Booking Payload:', bookingData); // Log the payload to check its structure
+
+    const userId = localStorage.getItem("userId");
+
     // Make API request to book
-    const response = await fetch(`${baseURL}/bookings/book-now`, {
+    const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -198,9 +210,11 @@ const handleBookNow = async () => {
       body: JSON.stringify(bookingData),
     });
 
-    if (response.ok) {
+    if (response.status === 201) {
       // Handle success, e.g., redirect to a confirmation page
-      console.log('Booking successful');
+      alert('Booking successful');
+     
+      
     } else {
       // Handle error
       console.error('Booking failed');
@@ -209,7 +223,6 @@ const handleBookNow = async () => {
     console.error('Error booking:', error);
   }
 };
-
 
 
 //==============================
@@ -335,72 +348,7 @@ const handleBookNow = async () => {
       
           
           </div>
-          <div className="hotel-policies-container">
-              {hotelData.amenities.map((amenityArray, index) => (
-                <Accordion
-                  key={amenityArray[0]._id}
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  slotProps={{ transition: { timeout: 400 } }}
-                  sx={{
-                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-                    "& .MuiAccordionDetails-root": {
-                      display: expanded ? "block" : "none",
-                    },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`panel${index + 1}-content`}
-                    id={`panel${index + 1}-header`}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      width: "100%",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      See +{" "}
-                      <Typography>
-                        {" "}
-                        {amenityArray[0].amenities.length - 5} more amenities
-                      </Typography>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {amenityArray[0].amenities.map((amenity, innerIndex) => (
-                        <div
-                          key={innerIndex}
-                          style={{
-                            marginBottom: "8px",
-                            flexBasis: "33%",
-                            boxSizing: "border-box",
-                          }}
-                        >
-                          <IconContext.Provider value={{ size: "1.2em" }}>
-                            {amenityIcons[amenity] || defaultIcon} {amenity}
-                          </IconContext.Provider>
-                        </div>
-                      ))}
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            </div>
+          
           {/* Rooms */}
           <div className="extras">
       <div className="container-fluid">
@@ -435,10 +383,10 @@ const handleBookNow = async () => {
                       {room.type}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Bed: {room.bedTypes}
+                      Bed: {room.bedTypes}<BedOutlinedIcon/>
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Price: ${room.price}
+                      Price: <CurrencyRupeeIcon/>{room.price}
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -455,7 +403,7 @@ const handleBookNow = async () => {
       <div className="col-md-4">
                   <div className="booking-details-container container mt-3 border p-3" style={{ position: 'sticky', top: '0', width: '100%', zIndex: '1000' }}>
                   <div className="booking-details-container container mt-3 border p-3" style={{ position: 'sticky', top: '0', width: '100%', zIndex: '1000' }}>
-  <h3>{calculateTotalPrice()}</h3>
+  <h3><CurrencyRupeeIcon/>{calculateTotalPrice()}</h3>
   
 </div>
                     <div className="row g-3">
@@ -523,7 +471,7 @@ const handleBookNow = async () => {
                                     Quantity: {selected.quantity}
                                   </Typography>
                                   <Typography variant="body2" color="text.secondary">
-                                    Price: ${selected.price * selected.quantity}
+                                    Price: <CurrencyRupeeIcon/>{selected.price * selected.quantity}
                                   </Typography>
                                 </CardContent>
                               </CardActionArea>
@@ -560,10 +508,10 @@ const handleBookNow = async () => {
           {selected.type}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Bed: {selected.bedTypes}
+          Bed: {selected.bedTypes}<BedOutlinedIcon/>
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Price: ${selected.price}
+          Price: <CurrencyRupeeIcon/>{selected.price}
         </Typography>
       </CardContent>
     </CardActionArea>
@@ -582,10 +530,16 @@ const handleBookNow = async () => {
             </div>
           </div>
           <div className="col-md-12 mt-3">
-  <Button variant="contained" color="primary" onClick={handleBookNow}>
-    Book Now
+  <Button variant="outlined" color="primary" style={{ marginRight: '55%' }} >
+    Pay now
+  </Button>
+
+  <Button variant="outlined" color="primary" onClick={handleBookNow}>
+    Pay at hotel
   </Button>
 </div>
+
+
                     </div>
                   </div>
                 </div>
@@ -619,7 +573,7 @@ const handleBookNow = async () => {
                         About: {foodArray[0].about}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Price: ${foodArray[0].price}
+                        Price: <CurrencyRupeeIcon/>{foodArray[0].price}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
@@ -632,100 +586,7 @@ const handleBookNow = async () => {
               ))}
             </div>
           </div>
-          <div className="extras">
-            <div className="hotel-policies-container">
-              {hotelData.policies.map((policyArray, index) => (
-                <Accordion
-                  key={index}
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  slotProps={{ transition: { timeout: 400 } }}
-                  sx={{
-                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-                    "& .MuiAccordionDetails-root": {
-                      display: expanded ? "block" : "none",
-                    },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`panel${index + 1}-content`}
-                    id={`panel${index + 1}-header`}
-                  >
-                    <Typography>Hotel Policies</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      <div className="policy-container">
-                        <p>Local ID:</p>
-
-                        {hotelData.localId}
-                        <hr />
-                        {policyArray.map((policy, index) => (
-                          <React.Fragment key={index}>
-                            <p>Hotel's Policy</p>
-                            {policy.hotelsPolicy}
-                            <hr />
-                            <div className="checkIn-policy">
-                              <p>Check In Policy:</p>
-
-                              {policy.checkInPolicy}
-
-                              <p>Check Out Policy:</p>
-
-                              {policy.checkOutPolicy}
-                            </div>
-                            <hr />
-                            <p>Outside Food Policy:</p>
-
-                            {policy.outsideFoodPolicy}
-                            <hr />
-                            <p>Cancellation Policy:</p>
-
-                            {policy.cancellationPolicy}
-                            <hr />
-                            <p>Payment Mode:</p>
-
-                            {policy.paymentMode}
-                            <hr />
-                            <p>Pets Allowed:</p>
-
-                            {policy.petsAllowed}
-                            <hr />
-                            <p>Bachelor Allowed:</p>
-
-                            {policy.bachelorAllowed}
-                            <hr />
-                            <p>Smoking Allowed:</p>
-
-                            {policy.smokingAllowed}
-                            <hr />
-                            <p>Alcohol Allowed:</p>
-
-                            {policy.alcoholAllowed}
-                            <hr />
-                            <p>Unmarried Couples Allowed:</p>
-
-                            {policy.unmarriedCouplesAllowed}
-                            <hr />
-                            <p>International Guest Allowed:</p>
-
-                            {policy.internationalGuestAllowed}
-                            <hr />
-                            <p>Return Policy:</p>
-
-                            {policy.returnPolicy}
-                            <hr />
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            </div>
-          </div>
-
+        
         </>
       ) : (
         <Box sx={{ width: "100%" }}>
