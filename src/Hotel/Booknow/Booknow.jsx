@@ -271,13 +271,17 @@ const BookNow = () => {
   };
   const defaultIcon = <FaBed />;
 
-   // Ensure that checkInDate and checkOutDate are different
-   const handleCheckInDateChange = (date) => {
+    // Ensure that checkInDate and checkOutDate are different
+  const handleCheckInDateChange = (date) => {
     if (date.toDateString() !== checkOutDate.toDateString()) {
       setCheckInDate(date);
     } else {
       alert("Check-in and Check-out dates cannot be the same.");
     }
+
+    // Set checkOutDate to the next day of checkInDate
+    const nextDay = addDays(date, 1);
+    setCheckOutDate(nextDay);
   };
 
   // Ensure that checkInDate and checkOutDate are different
