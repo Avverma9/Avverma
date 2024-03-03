@@ -524,14 +524,29 @@ const BookNow = () => {
                               </Typography>
                             </CardContent>
                             <CardActions>
-                              <Button
-                                size="small"
-                                color="danger"
-                                onClick={() => handleAddRoom(roomArray[0])}
-                              >
-                                Select
-                              </Button>
-                            </CardActions>
+        {/* Check if the room is already selected */}
+        {selectedRooms.findIndex((selected) => selected._id === room._id) !==
+        -1 ? (
+          // If the room is selected, show a disabled "Selected" button
+          <Button
+            size="small"
+            color="success"
+            variant="outlined"
+            disabled
+          >
+            Selected
+          </Button>
+        ) : (
+          // If the room is not selected, show the "Select" button
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => handleAddRoom(roomArray[0])}
+          >
+            Select
+          </Button>
+        )}
+      </CardActions>
                           </Card>
                         ))
                       )}
@@ -539,7 +554,9 @@ const BookNow = () => {
                   </div>
                 </div>
                 <div className="col-md-4">
+                  
                   <div
+                  
                     className="booking-details-container container mt-3 border p-3"
                     style={{
                       position: "sticky",
@@ -548,6 +565,7 @@ const BookNow = () => {
                       zIndex: "1000",
                     }}
                   >
+                    <h5>Booking details</h5>
                     <div
                       className="booking-details-container container mt-3 border p-3"
                       style={{
@@ -557,6 +575,7 @@ const BookNow = () => {
                         zIndex: "1000",
                       }}
                     >
+                      
                       <h3>
                         <CurrencyRupeeIcon />
                         {calculateTotalPrice()}
@@ -654,7 +673,7 @@ const BookNow = () => {
                               <CardActionArea>
                                 <CardMedia
                                   component="img"
-                                  height="220"
+                                  height="192"
                                   src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
                                   alt="Default Image"
                                 />
