@@ -13,7 +13,7 @@ const users = new mongoose.Schema({
     default: generatedUserId,
   },
   userName: String,
-  userImage: [String],
+  images: [String],
   address:String,
   email: { type: String, required: false},
   mobile: { type: String, required: false },

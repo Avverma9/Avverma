@@ -49,7 +49,7 @@ const getUserById = async function (req, res) {
 
 const GoogleSignIn = async function (req, res) {
   try {
-    const { email, uid, userName, userImage } = req.body;
+    const { email, uid, userName, images } = req.body;
 
     // Check if the user already exists based on email or UID
     const existingUser = await userModel.findOne({ $or: [{ email }, { uid }] });
@@ -60,7 +60,7 @@ const GoogleSignIn = async function (req, res) {
     }
 
     // If user doesn't exist, create a new user
-    const user = await userModel.create({ email, uid, userName, userImage });
+    const user = await userModel.create({ email, uid, userName, images });
 
     res.status(201).json({ message: "Sign-in successful", userId:user.userId });
   } catch (error) {
@@ -101,48 +101,47 @@ const totalUser = async function (req, res) {
 
 //=====================================================================
 const update = async (req, res) => {
-  const { id } = req.params;
-  const { name, address, gender, email, mobile, password, adhar, pan, dl } =
-    req.body;
-  let images = [];
+  try {
+    const { userId, userName, address, email, mobile, password, adhar } = req.body;
+    let images = [];
 
-  if (req.files && req.files.length > 0) {
-    images = req.files.map((file) => file.location);
-  } else {
-    const user = await userModel.findById(id);
-    if (user) {
-      images = user.images;
+    console.log(userId);
+
+    if (req.files && req.files.length > 0) {
+      images = req.files.map((file) => file.location);
+    } else {
+      const user = await userModel.findOne({ userId }); // Find user by custom ID
+      if (user) {
+        images = user.images;
+      }
     }
-  }
 
-  const user = await userModel
-    .findByIdAndUpdate(
-      id,
+    const updatedUser = await userModel.findOneAndUpdate(
+      { userId }, // Find user by custom ID
       {
-        name,
+        userName,
         address,
-        gender,
         email,
         mobile,
         password,
         adhar,
-        pan,
-        dl,
         images,
       },
       { new: true }
-    )
-    .then((user) => {
-      if (user) {
-        res.json(user);
-      } else {
-        res.status(404).json({ message: "User not found" });
-      }
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Internal server error", error });
-    });
+    );
+
+    if (updatedUser) {
+      res.json(updatedUser);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error", error });
+  }
 };
+
+
 
 //===============================================================================
 const getAllUsers = async (req, res) => {
