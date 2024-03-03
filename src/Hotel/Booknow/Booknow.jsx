@@ -144,18 +144,25 @@ const BookNow = () => {
   };
 
   const calculateTotalPrice = () => {
-    const roomPrice = selectedRooms.reduce((total, room) => total + room.price, 0);
-    const foodPrice = selectedFood.reduce((total, food) => total + food.price * food.quantity, 0);
-  
+    const roomPrice = selectedRooms.reduce(
+      (total, room) => total + room.price,
+      0
+    );
+    const foodPrice = selectedFood.reduce(
+      (total, food) => total + food.price * food.quantity,
+      0
+    );
+
     // Calculate the number of days between checkInDate and checkOutDate
-    const daysDifference = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
-  
+    const daysDifference = Math.ceil(
+      (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
+    );
+
     // Multiply the room price by the updated roomsCount and daysDifference
     const updatedRoomPrice = roomPrice * roomsCount * daysDifference;
-  
+
     return updatedRoomPrice + foodPrice;
   };
-  
 
   useEffect(() => {
     const fetchHotelData = async () => {
@@ -229,8 +236,6 @@ const BookNow = () => {
         hotelOwnerName: hotelData.hotelOwnerName,
       };
 
-    
-
       // Make API request to book
       const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
         method: "POST",
@@ -271,7 +276,7 @@ const BookNow = () => {
   };
   const defaultIcon = <FaBed />;
 
-    // Ensure that checkInDate and checkOutDate are different
+  // Ensure that checkInDate and checkOutDate are different
   const handleCheckInDateChange = (date) => {
     if (date.toDateString() !== checkOutDate.toDateString()) {
       setCheckInDate(date);
@@ -569,9 +574,9 @@ const BookNow = () => {
                           className="form-control"
                           placeholderText={formatDate(checkInDate)}
                           selectsStart
-        startDate={checkInDate}
-        endDate={checkOutDate}
-        onChangeRaw={(e) => e.preventDefault()}
+                          startDate={checkInDate}
+                          endDate={checkOutDate}
+                          onChangeRaw={(e) => e.preventDefault()}
                         />
                       </div>
                       <div className="col-md-6">
@@ -592,66 +597,81 @@ const BookNow = () => {
                       </div>
                       {/* Selected Food */}
                       <div className="col-md-6">
-  <div>
-    <h6>Selected Meals</h6>
-    {selectedFood.length > 0 ? (
-      selectedFood.map((selected, index) => (
-        <Card key={index} sx={{ maxWidth: 345 }}>
-          <CardActionArea>
-            <CardMedia
-              component="img"
-              height="140"
-              src={
-                selected.images && selected.images.length > 0
-                  ? selected.images[0]
-                  : hotelData.images[0]
-              }
-              alt={`Selected Food ${index + 1} Image 1`}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {selected.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Quantity: {selected.quantity}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Price: <CurrencyRupeeIcon />
-                {selected.price * selected.quantity}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <CardActions>
-            <Button
-              size="small"
-              color="danger"
-              onClick={() => handleRemoveFood(selected)}
-            >
-              Remove
-            </Button>
-          </CardActions>
-        </Card>
-      ))
-    ) : (
-      // Render a default image and content when selectedFood is empty
-      <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            height="220"
-            src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
-            alt="Default Image"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="p" component="div">
-              Add crispy foods during your stay
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
-    )}
-  </div>
-</div>
+                        <div>
+                          <h6>Selected Meals</h6>
+                          {selectedFood.length > 0 ? (
+                            selectedFood.map((selected, index) => (
+                              <Card key={index} sx={{ maxWidth: 345 }}>
+                                <CardActionArea>
+                                  <CardMedia
+                                    component="img"
+                                    height="140"
+                                    src={
+                                      selected.images &&
+                                      selected.images.length > 0
+                                        ? selected.images[0]
+                                        : hotelData.images[0]
+                                    }
+                                    alt={`Selected Food ${index + 1} Image 1`}
+                                  />
+                                  <CardContent>
+                                    <Typography
+                                      gutterBottom
+                                      variant="h5"
+                                      component="div"
+                                    >
+                                      {selected.name}
+                                    </Typography>
+                                    <Typography
+                                      variant="body2"
+                                      color="text.secondary"
+                                    >
+                                      Quantity: {selected.quantity}
+                                    </Typography>
+                                    <Typography
+                                      variant="body2"
+                                      color="text.secondary"
+                                    >
+                                      Price: <CurrencyRupeeIcon />
+                                      {selected.price * selected.quantity}
+                                    </Typography>
+                                  </CardContent>
+                                </CardActionArea>
+                                <CardActions>
+                                  <Button
+                                    size="small"
+                                    color="danger"
+                                    onClick={() => handleRemoveFood(selected)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </CardActions>
+                              </Card>
+                            ))
+                          ) : (
+                            // Render a default image and content when selectedFood is empty
+                            <Card sx={{ maxWidth: 345 }}>
+                              <CardActionArea>
+                                <CardMedia
+                                  component="img"
+                                  height="220"
+                                  src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
+                                  alt="Default Image"
+                                />
+                                <CardContent>
+                                  <Typography
+                                    gutterBottom
+                                    variant="p"
+                                    component="div"
+                                  >
+                                    Add crispy foods during your stay
+                                  </Typography>
+                                </CardContent>
+                              </CardActionArea>
+                            </Card>
+                          )}
+                        </div>
+                      </div>
 
                       {/* Selected Food End */}
                       <div className="col-md-6">
@@ -696,15 +716,7 @@ const BookNow = () => {
                                 </CardContent>
                               </CardActionArea>
                               <CardActions>
-                                {!selected.isDefault && (
-                                  <Button
-                                    size="small"
-                                    color="danger"
-                                    onClick={() => handleRemoveRoom(selected)}
-                                  >
-                                    Remove
-                                  </Button>
-                                )}
+                              
                               </CardActions>
                             </Card>
                           ))}
