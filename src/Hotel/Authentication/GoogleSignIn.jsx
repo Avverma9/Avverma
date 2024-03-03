@@ -35,7 +35,7 @@ const Google = () => {
       const loggedUserObj = JSON.parse(storedLoggedUser);
       const originalData = loggedUserObj.providerData;
       const uid = originalData[0].uid;
-      const userImage = originalData[0].photoURL;
+      const images = originalData[0].photoURL;
       const GoogleEmail = originalData[0].email;
       const userName = originalData[0].displayName;
       const response = await fetch(`${baseURL}/signIn/google`, {
@@ -45,7 +45,7 @@ const Google = () => {
         },
         body: JSON.stringify({
           uid: uid,
-          userImage: userImage,
+          images: images,
           email: GoogleEmail,
           userName: userName,
           

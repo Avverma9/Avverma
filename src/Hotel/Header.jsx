@@ -12,9 +12,7 @@ import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const Header = () => {
-  const handleLogout = () => {
-    localStorage.removeItem("userId");
-  };
+
   const location = useLocation()
 if(location.pathname === "/login" || location.pathname ==="/register"){
   return null
@@ -70,12 +68,7 @@ if(location.pathname === "/login" || location.pathname ==="/register"){
                 Login
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/login" onClick={handleLogout}>
-                <FaSignOutAlt className="me-1" />
-                Log out
-              </a>
-            </li>
+           
             <li className="nav-item">
               <a className="nav-link" href="/partner">
                 <NightShelterTwoToneIcon className="me-1" />

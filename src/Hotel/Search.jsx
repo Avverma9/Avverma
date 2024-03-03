@@ -41,16 +41,15 @@ const SearchForm = () => {
 
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
-
+  
     // If the input is a checkbox, set the value to 'Accepted' or 'Not Accepted'
-    const inputValue = type === 'checkbox' ? (checked ? 'Accepted' : '') : value;
-
+    const inputValue = type === 'checkbox' ? (checked ? 'Accepted' : '') : value.trim();
+  
     setSearchData((prevSearchData) => ({
       ...prevSearchData,
       [name]: inputValue,
     }));
   };
-
   const [displayedGuests, setDisplayedGuests] = useState(searchData.guests);
   const [displayedRooms, setDisplayedRooms] = useState(searchData.countRooms);
 

@@ -33,6 +33,7 @@ export default function Profile() {
         if (response.data.data.userImage.length > 0) {
           const firstImageUrl = response.data.data.userImage[0];
           localStorage.setItem("userImage", firstImageUrl);
+          
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -60,6 +61,8 @@ export default function Profile() {
 
   const handleLogOut = () => {
     localStorage.removeItem("userId");
+    localStorage.removeItem("userMobile");
+    navigate("/login");
   };
 
   return (
@@ -78,13 +81,15 @@ export default function Profile() {
                   }}
                 >
                   <MDBCardImage
-                    src={data.userImage}
+                    src={data.images}
                     alt="Avatar"
                     className="my-5"
                     style={{ width: "80px" }}
                     fluid
                   />
+                
                 </MDBCol>
+                
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">
                     <MDBTypography tag="h6">Information</MDBTypography>

@@ -1,30 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LinearProgress from '@mui/material/LinearProgress';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Box from '@mui/material/Box';
 import './UpdatePage.css';
+import baseURL from '../../baseURL';
 
 const UpdatePage = () => {
+  const navigate=useNavigate()
   const userId = localStorage.getItem("userId");
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    address:'',
-    mobile: '',
-    gender: '',
-    password: '',
-    images: []
+    userId: userId,
+    userName: "",
+    images: [], // Keep this as an array for file input
+    email: "",
+    address: "",
+    mobile: "",
+    password: "",
+    adhar: "",
   });
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://hotel-backend-tge7.onrender.com/get/${userId}`);
+        const response = await fetch(`${baseURL}/get/${userId}`);
         if (response.ok) {
           const userData = await response.json();
           setData(userData.data);
+          // Set initial form data from the API response
+          setFormData({
+            userId: userId,
+            userName: userData.data.userName || "",
+            email: userData.data.email || "",
+            mobile: userData.data.mobile || "",
+            address: userData.data.address || "",
+            password: userData.data.password || "",
+            adhar: userData.data.adhar || "",
+            images: [], // Keep this as an array for file input
+          });
+          localStorage.setItem("userMobile", userData.data.mobile || "");
         } else {
           console.error('Failed to fetch user data');
         }
@@ -40,51 +56,73 @@ const UpdatePage = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
   const handleImageChange = (e) => {
     const { name, files } = e.target;
+    // Convert FileList to an array
+    const imageFiles = Array.from(files);
+    
     setFormData({
       ...formData,
-      [name]: files
+      [name]: imageFiles,
     });
   };
-  const [loading, setLoading] = useState(false); // New state for loading indicator
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      setLoading(true); // Set loading to true when the request starts
-
-      const formDataForApi = new FormData();
-
-      Object.entries(formData).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          for (let i = 0; i < value.length; i++) {
-            formDataForApi.append(`${key}[${i}]`, value[i]);
-          }
-        } else {
-          formDataForApi.append(key, value);
-        }
-      });
-
-      const response = await fetch(`https://hotel-backend-tge7.onrender.com/update/${userId}`, {
+      setLoading(true);
+  
+      const formDataObj = new FormData();
+      formDataObj.append("userId", userId);
+  
+      if (formData.userName) {
+        formDataObj.append("userName", formData.userName);
+      }
+  
+      if (formData.images.length > 0) {
+        formDataObj.append("images", formData.images[0]); // Assuming you want to update only the first image if multiple are allowed
+      }
+  
+      if (formData.email) {
+        formDataObj.append("email", formData.email);
+      }
+  
+      if (formData.adhar) {
+        formDataObj.append("adhar", formData.adhar);
+      }
+  
+      if (formData.mobile) {
+        formDataObj.append("mobile", formData.mobile);
+      }
+  
+      if (formData.address) {
+        formDataObj.append("address", formData.address);
+      }
+  
+      if (formData.password) {
+        formDataObj.append("password", formData.password);
+      }
+  
+      const response = await fetch(`${baseURL}/update`, {
         method: 'PUT',
-        body: formDataForApi,
+        body: formDataObj,
       });
-
+  
       if (!response.ok) {
-        console.error('Update failed');
+        alert('Update failed');
       } else {
-        console.log('Update successful');
+        alert('Update successful');
+        navigate("/")
       }
     } catch (error) {
       console.error('Error updating user:', error);
     } finally {
-      setLoading(false); // Set loading back to false when the request completes (whether successful or not)
+      setLoading(false);
     }
   };
 
@@ -92,61 +130,110 @@ const UpdatePage = () => {
   if (location.pathname !== "/profile-update/user-data/page") {
     return null;
   }
-  // if (!data) {
-  //   return (
-  //       <Box sx={{ width: '100%' }}>
-  //     <LinearProgress />
-  //   </Box>
-  //     );
-  // }
+
   return (
     <div className="update-container">
-      {/* {loading && (
-        <Box sx={{ width: '100%' }}>
-          <LinearProgress />
-        </Box>
-      )} */}
       <form onSubmit={handleSubmit}>
-        <h5><EditNoteIcon/>Update Your details..... </h5>
+        <h5><EditNoteIcon />Update Your details..... </h5>
         <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input type="text" id="name" name="name" className="form-control" placeholder={data?.name || ''} value={formData.name} onChange={handleInputChange} />
+          <label htmlFor="userName">Name</label>
+          <input
+            type="text"
+            id="userName"
+            name="userName"
+            className="form-control"
+            placeholder={data?.userName || ''}
+            value={formData.userName}
+            onChange={handleInputChange}
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" name="email" className="form-control" placeholder={data?.email || ''} value={formData.email} onChange={handleInputChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <input type="address" id="address" name="address" className="form-control" placeholder={data?.address || ''} value={formData.address} onChange={handleInputChange} />
-        </div>
-        <div className="form-group">
-          <label htmlFor="mobile">Mobile</label>
-          <input type="text" id="mobile" name="mobile" className="form-control" placeholder={data?.mobile || ''} value={formData.mobile} onChange={handleInputChange} />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="form-control"
+            placeholder={data?.email || ''}
+            value={formData.email}
+            onChange={handleInputChange}
+          />
         </div>
 
         <div className="form-group">
-        <label htmlFor="gender">Gender</label>
-          <select id="gender" name="gender" className="form-control" value={formData.gender} onChange={handleInputChange}>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+          <label htmlFor="mobile">Mobile</label>
+          <input
+            type="text"
+            id="mobile"
+            name="mobile"
+            className="form-control"
+            placeholder={data?.mobile || ''}
+            value={formData.mobile}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="address">Address</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            className="form-control"
+            placeholder={data?.address || ''}
+            value={formData.address}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="adhar">Adhar</label>
+          <input
+            type="text"
+            id="adhar"
+            name="adhar"
+            className="form-control"
+            placeholder={data?.adhar || ''}
+            value={formData.adhar}
+            onChange={handleInputChange}
+          />
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" name="password" className="form-control" placeholder="Enter your password" value={formData.password} onChange={handleInputChange} />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="form-control"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
         </div>
 
         <div className="form-group">
-          <label htmlFor="images">Images</label>
-          <input type="file" id="images" name="images" className="form-control" multiple onChange={handleImageChange} />
+          <label htmlFor="userImage">Images</label>
+          <input
+            type="file"
+            id="userImage"
+            name="images"
+            className="form-control"
+            onChange={handleImageChange}
+           
+          />
         </div>
 
-        <button type="submit" className="btn btn-primary">Update</button>
+        <button type="submit" className="btn btn-primary">
+          Update
+        </button>
       </form>
+      {loading && (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress />
+        </Box>
+      )}
     </div>
   );
 };

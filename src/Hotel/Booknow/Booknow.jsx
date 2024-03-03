@@ -176,6 +176,18 @@ const handleDecrementRooms = () => {
 
 const handleBookNow = async () => {
   try {
+    const userId = localStorage.getItem("userId");
+
+    // Check if userMobile is available in localStorage
+    const userMobile = localStorage.getItem("userMobile");
+
+    if (!userMobile) {
+      // If userMobile is not available, show an alert and navigate to the profile page
+      alert('Action required: Please update your mobile number in the profile.');
+      navigate("/profile");
+      return;
+    }
+
     // Prepare data for API request
     const bookingData = {
       checkInDate: format(checkInDate, 'yyyy-MM-dd'),
@@ -200,8 +212,6 @@ const handleBookNow = async () => {
 
     console.log('Booking Payload:', bookingData); // Log the payload to check its structure
 
-    const userId = localStorage.getItem("userId");
-
     // Make API request to book
     const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
       method: 'POST',
@@ -214,8 +224,7 @@ const handleBookNow = async () => {
     if (response.status === 201) {
       // Handle success, e.g., redirect to a confirmation page
       alert('Booking successful');
-     
-      navigate("/bookings")
+      navigate("/bookings");
     } else {
       // Handle error
       console.error('Booking failed');
