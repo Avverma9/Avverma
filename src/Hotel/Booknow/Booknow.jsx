@@ -4,13 +4,13 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { format, addDays } from 'date-fns';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, addDays } from "date-fns";
 
-import BedOutlinedIcon from '@mui/icons-material/BedOutlined';
-import { RiArrowUpDownFill } from 'react-icons/ri';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
+import { RiArrowUpDownFill } from "react-icons/ri";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccordionSummary from "@mui/material/AccordionSummary";
 
@@ -43,12 +43,11 @@ import Button from "@mui/joy/Button";
 import "./Booknow.css";
 import baseURL from "../../baseURL";
 
-
 const BookNow = () => {
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
-  const navigate=useNavigate()
-  const [selectedRooms,setSelectedRooms]=useState([])
+  const navigate = useNavigate();
+  const [selectedRooms, setSelectedRooms] = useState([]);
   const location = useLocation();
   const [selectedFood, setSelectedFood] = useState([]);
   const [roomsCount, setRoomsCount] = useState(1);
@@ -61,26 +60,33 @@ const BookNow = () => {
   const [checkOutDate, setCheckOutDate] = useState(tomorrow);
 
   const formatDate = (date) => {
-    const todayString = format(today, 'yyyy-MM-dd');
-    const dateString = format(date, 'yyyy-MM-dd');
-  
-    if (dateString === todayString) {
-      return format(date, "EEE do MMM");
-    }
-  
-    return dateString;
+    if (!date) return '';
+
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const year = date.getFullYear();
+
+    const suffixes = ['th', 'st', 'nd', 'rd'];
+    const suffix = day % 10 <= 3 ? suffixes[day % 10] : suffixes[0];
+
+    return `${day}${suffix} ${month} ${year}`;
   };
+
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
   const handleAddFood = (food) => {
     // Check if the food item is already in selectedFood
-    const existingFood = selectedFood.find((selected) => selected._id === food._id);
-  
+    const existingFood = selectedFood.find(
+      (selected) => selected._id === food._id
+    );
+
     if (existingFood) {
       // If already selected, update the quantity
       const updatedFood = selectedFood.map((selected) =>
-        selected._id === food._id ? { ...selected, quantity: selected.quantity + 1 } : selected
+        selected._id === food._id
+          ? { ...selected, quantity: selected.quantity + 1 }
+          : selected
       );
       setSelectedFood(updatedFood);
     } else {
@@ -92,15 +98,21 @@ const BookNow = () => {
   // Function to remove food from selectedFood state
   const handleRemoveFood = (food) => {
     const updatedFood = selectedFood
-      .map((selected) => (selected._id === food._id ? { ...selected, quantity: selected.quantity - 1 } : selected))
+      .map((selected) =>
+        selected._id === food._id
+          ? { ...selected, quantity: selected.quantity - 1 }
+          : selected
+      )
       .filter((selected) => selected.quantity > 0);
 
     setSelectedFood(updatedFood);
   };
   const handleAddRoom = (room) => {
     // Check if the room is already selected
-    const existingRoomIndex = selectedRooms.findIndex((selected) => selected._id === room._id);
-  
+    const existingRoomIndex = selectedRooms.findIndex(
+      (selected) => selected._id === room._id
+    );
+
     if (existingRoomIndex !== -1) {
       // If room already selected, replace it
       const updatedRooms = [...selectedRooms];
@@ -111,42 +123,51 @@ const BookNow = () => {
       setSelectedRooms([room]);
     }
   };
-  
+
   // Function to remove room from selectedRooms state
   const handleRemoveRoom = (room) => {
     // Check if the room is the default room
     const isDefaultRoom = room.isDefault;
-  
+
     // Check if the room is already selected
-    const existingRoomIndex = selectedRooms.findIndex((selected) => selected._id === room._id);
-  
+    const existingRoomIndex = selectedRooms.findIndex(
+      (selected) => selected._id === room._id
+    );
+
     if (existingRoomIndex !== -1 && !isDefaultRoom) {
       // If room already selected and it's not the default room, remove it
-      const updatedRooms = selectedRooms.filter((selected) => selected !== room);
+      const updatedRooms = selectedRooms.filter(
+        (selected) => selected !== room
+      );
       setSelectedRooms(updatedRooms);
     }
   };
-  
+
   const calculateTotalPrice = () => {
-    const roomPrice = selectedRooms.reduce((total, room) => total + room.price, 0);
-    const foodPrice = selectedFood.reduce((total, food) => total + food.price * food.quantity, 0);
-    
+    const roomPrice = selectedRooms.reduce(
+      (total, room) => total + room.price,
+      0
+    );
+    const foodPrice = selectedFood.reduce(
+      (total, food) => total + food.price * food.quantity,
+      0
+    );
+
     // Multiply the room price by the updated roomsCount
     const updatedRoomPrice = roomPrice * roomsCount;
-  
+
     return updatedRoomPrice + foodPrice;
   };
-  
-  
+
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
         const response = await fetch(`${baseURL}/hotels/get-by-id/${hotelId}`);
         const data = await response.json();
         setHotelData(data);
-         // Set the first room of the first hotel as the default selected room
-      const defaultRoom = data.rooms[0][0];
-      setSelectedRooms([defaultRoom]);
+        // Set the first room of the first hotel as the default selected room
+        const defaultRoom = data.rooms[0][0];
+        setSelectedRooms([defaultRoom]);
       } catch (error) {
         console.error("Error fetching hotel data:", error);
         // Handle error state
@@ -155,87 +176,86 @@ const BookNow = () => {
 
     fetchHotelData();
   }, [hotelId]);
-// booking details
+  // booking details
 
-const calculateGuests = (roomsCount) => {
-  // Assuming each room accommodates 2 guests
-  return roomsCount * 2;
-};
-const guestsCount = calculateGuests(roomsCount);
-const handleIncrementRooms = () => {
-  setRoomsCount((prevCount) => prevCount + 1);
-  
-};
+  const calculateGuests = (roomsCount) => {
+    // Assuming each room accommodates 2 guests
+    return roomsCount * 2;
+  };
+  const guestsCount = calculateGuests(roomsCount);
+  const handleIncrementRooms = () => {
+    setRoomsCount((prevCount) => prevCount + 1);
+  };
 
-const handleDecrementRooms = () => {
-  if (roomsCount > 1) {
-    setRoomsCount((prevCount) => prevCount - 1);
-  }
-};
-
-
-const handleBookNow = async () => {
-  try {
-    const userId = localStorage.getItem("userId");
-
-    // Check if userMobile is available in localStorage
-    const userMobile = localStorage.getItem("userMobile");
-
-    if (!userMobile) {
-      // If userMobile is not available, show an alert and navigate to the profile page
-      alert('Action required: Please update your mobile number in the profile.');
-      navigate("/profile");
-      return;
+  const handleDecrementRooms = () => {
+    if (roomsCount > 1) {
+      setRoomsCount((prevCount) => prevCount - 1);
     }
+  };
 
-    // Prepare data for API request
-    const bookingData = {
-      checkInDate: format(checkInDate, 'yyyy-MM-dd'),
-      checkOutDate: format(checkOutDate, 'yyyy-MM-dd'),
-      guests: guestsCount,
-      numRooms: roomsCount,
-      roomDetails: selectedRooms.map(room => ({
-        type: room.type,
-        bedTypes: room.bedTypes,
-        price: room.price,
-      })),
-      foodDetails: selectedFood.map(food => ({
-        name: food.name,
-        price: food.price,
-        quantity: food.quantity,
-      })),
-      price: calculateTotalPrice(),
-      destination: hotelData.city,
-      hotelName: hotelData.hotelName,
-      hotelOwnerName: hotelData.hotelOwnerName,
-    };
+  const handleBookNow = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
 
-    console.log('Booking Payload:', bookingData); // Log the payload to check its structure
+      // Check if userMobile is available in localStorage
+      const userMobile = localStorage.getItem("userMobile");
 
-    // Make API request to book
-    const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bookingData),
-    });
+      if (!userMobile) {
+        // If userMobile is not available, show an alert and navigate to the profile page
+        alert(
+          "Action required: Please update your mobile number in the profile."
+        );
+        navigate("/profile");
+        return;
+      }
 
-    if (response.status === 201) {
-      // Handle success, e.g., redirect to a confirmation page
-      alert('Booking successful');
-      navigate("/bookings");
-    } else {
-      // Handle error
-      console.error('Booking failed');
+      // Prepare data for API request
+      const bookingData = {
+        checkInDate: format(checkInDate, "yyyy-MM-dd"),
+        checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
+        guests: guestsCount,
+        numRooms: roomsCount,
+        roomDetails: selectedRooms.map((room) => ({
+          type: room.type,
+          bedTypes: room.bedTypes,
+          price: room.price,
+        })),
+        foodDetails: selectedFood.map((food) => ({
+          name: food.name,
+          price: food.price,
+          quantity: food.quantity,
+        })),
+        price: calculateTotalPrice(),
+        destination: hotelData.city,
+        hotelName: hotelData.hotelName,
+        hotelOwnerName: hotelData.hotelOwnerName,
+      };
+
+      console.log("Booking Payload:", bookingData); // Log the payload to check its structure
+
+      // Make API request to book
+      const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (response.status === 201) {
+        // Handle success, e.g., redirect to a confirmation page
+        alert("Booking successful");
+        navigate("/bookings");
+      } else {
+        // Handle error
+        console.error("Booking failed");
+      }
+    } catch (error) {
+      console.error("Error booking:", error);
     }
-  } catch (error) {
-    console.error('Error booking:', error);
-  }
-};
+  };
 
-
-//==============================
+  //==============================
   if (!path.includes("/book-hotels/")) {
     return null;
   }
@@ -243,18 +263,17 @@ const handleBookNow = async () => {
     "Continental Breakfast": <FaUtensils />,
     "Room Service": <FaPhone />,
     "Coffee Maker": <FaCoffee />,
-    "Balcony": <FaDoorOpen />,
-    "Jacuzzi": <FaHotTub />,
-    "TV": <FaTv />,
+    Balcony: <FaDoorOpen />,
+    Jacuzzi: <FaHotTub />,
+    TV: <FaTv />,
     "Free Wi-Fi": <FaWifi />,
-    "Gym": <FaDumbbell />,
+    Gym: <FaDumbbell />,
     "24-Hour Front Desk": <FaShuttleVan />,
     "Shuttle Service": <FaShuttleVan />,
   };
   const defaultIcon = <FaBed />;
   return (
     <div className="book-now-container">
-     
       {hotelData ? (
         <>
           <div
@@ -314,7 +333,7 @@ const handleBookNow = async () => {
                 >
                   {" "}
                   <CurrencyRupeeIcon />
-                  {hotelData.rooms[0][0].price}
+                  {hotelData.rooms?.[0]?.[0]?.price || 0}
                 </div>
               </div>
             </div>
@@ -329,11 +348,7 @@ const handleBookNow = async () => {
                 {hotelData.zip}
               </p>
             </div>
-
-
-
           </div>{" "}
-
           <div className="extras">
             <p>{hotelData.description}</p>
           </div>
@@ -355,8 +370,8 @@ const handleBookNow = async () => {
                 </div>
               ))}
             </div>
-      
-  <div className="hotel-policies-container">
+
+            <div className="hotel-policies-container">
               {hotelData.amenities.map((amenityArray, index) => (
                 <Accordion
                   key={amenityArray[0]._id}
@@ -422,106 +437,131 @@ const handleBookNow = async () => {
                 </Accordion>
               ))}
             </div>
-          
           </div>
-          
           {/* Rooms */}
           <div className="extras">
-      <div className="container-fluid">
-        <div className="row">
-          {/* Booking details */}
-         
+            <div className="container-fluid">
+              <div className="row">
+                {/* Booking details */}
 
-          {/* Special rooms */}
-          <div className="col-md-8">
-        <div className="container mt-3">
-          <h6>Our Special rooms</h6>
-          <div className="d-flex flex-wrap gap-3">
-            {hotelData.rooms.map((roomArray, index) =>
-              roomArray.map((room, roomIndex) => (
-                <Card key={roomIndex} sx={{ maxWidth: 345, width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-                  <CardActionArea style={{ flex: 1 }}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      width="200px"
-                      style={{ objectFit: 'cover' }}
-                      src={
-                        room.images && room.images.length > 0
-                          ? room.images[0]
-                          : hotelData.images[0]
-                      }
-                      alt={`Room ${index + 1} Image 1`}
-                    />
-                  </CardActionArea>
-                  <CardContent style={{ flex: 'none' }}>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {room.type}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Bed: {room.bedTypes}<BedOutlinedIcon/>
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Price: <CurrencyRupeeIcon/>{room.price}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="danger" onClick={() => handleAddRoom(roomArray[0])}>
-                    Select
-                    </Button>
-                  </CardActions>
-                </Card>
-              ))
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="col-md-4">
-                  <div className="booking-details-container container mt-3 border p-3" style={{ position: 'sticky', top: '0', width: '100%', zIndex: '1000' }}>
-                  <div className="booking-details-container container mt-3 border p-3" style={{ position: 'sticky', top: '0', width: '100%', zIndex: '1000' }}>
-  <h3><CurrencyRupeeIcon/>{calculateTotalPrice()}</h3>
-  
-</div>
+                {/* Special rooms */}
+                <div className="col-md-8">
+                  <div className="container mt-3">
+                    <h6>Our Special rooms</h6>
+                    <div className="d-flex flex-wrap gap-3">
+                      {hotelData.rooms.map((roomArray, index) =>
+                        roomArray.map((room, roomIndex) => (
+                          <Card
+                            key={roomIndex}
+                            sx={{
+                              maxWidth: 345,
+                              width: "100%",
+                              height: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                            }}
+                          >
+                            <CardActionArea style={{ flex: 1 }}>
+                              <CardMedia
+                                component="img"
+                                height="140"
+                                width="200px"
+                                style={{ objectFit: "cover" }}
+                                src={
+                                  room.images && room.images.length > 0
+                                    ? room.images[0]
+                                    : hotelData.images[0]
+                                }
+                                alt={`Room ${index + 1} Image 1`}
+                              />
+                            </CardActionArea>
+                            <CardContent style={{ flex: "none" }}>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                              >
+                                {room.type}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Bed: {room.bedTypes}
+                                <BedOutlinedIcon />
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Price: <CurrencyRupeeIcon />
+                                {room.price}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              <Button
+                                size="small"
+                                color="danger"
+                                onClick={() => handleAddRoom(roomArray[0])}
+                              >
+                                Select
+                              </Button>
+                            </CardActions>
+                          </Card>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div
+                    className="booking-details-container container mt-3 border p-3"
+                    style={{
+                      position: "sticky",
+                      top: "0",
+                      width: "100%",
+                      zIndex: "1000",
+                    }}
+                  >
+                    <div
+                      className="booking-details-container container mt-3 border p-3"
+                      style={{
+                        position: "sticky",
+                        top: "0",
+                        width: "100%",
+                        zIndex: "1000",
+                      }}
+                    >
+                      <h3>
+                        <CurrencyRupeeIcon />
+                        {calculateTotalPrice()}
+                      </h3>
+                    </div>
                     <div className="row g-3">
+                    <div className="col-md-6">
+      <label htmlFor="checkIn" className="form-label">
+        Check-in
+      </label>
+      <DatePicker
+        selected={checkInDate}
+        onChange={(date) => setCheckInDate(date)}
+        dateFormat="d MMMM yyyy"
+        className="form-control"
+        placeholderText={formatDate(checkInDate)}
+      />
+    </div>
                       <div className="col-md-6">
-                        <label htmlFor="checkIn" className="form-label">Check-in</label>
-                        <DatePicker
-                          selected={checkInDate}
-                          onChange={(date) => setCheckInDate(date)}
-                          dateFormat="yyyy-MM-dd"
-                          className="form-control"
-                          placeholderText={formatDate(checkInDate)}
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <label htmlFor="checkOut" className="form-label">Check-out</label>
+                        <label htmlFor="checkOut" className="form-label">
+                          Check-out
+                        </label>
                         <DatePicker
                           selected={checkOutDate}
                           onChange={(date) => setCheckOutDate(date)}
-                          dateFormat="yyyy-MM-dd"
+                          dateFormat="d MMMM yyyy"
                           className="form-control"
                           placeholderText={formatDate(checkOutDate)}
                         />
                       </div>
-                    </div>
-                    <div className="row g-3 align-items-center mt-3">
-                      <div className="col-md-6">
-                        <label className="form-label">Rooms</label>
-                        <div className="input-group">
-                          <button className="btn btn-outline-secondary" type="button" onClick={handleDecrementRooms}>
-                            <RiArrowUpDownFill />
-                          </button>
-                          <input type="number" className="form-control" style={{ width: '50px' }} placeholder="Rooms" value={roomsCount} readOnly />
-                          <button className="btn btn-outline-secondary" type="button" onClick={handleIncrementRooms}>
-                            <RiArrowUpDownFill />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <label htmlFor="guests" className="form-label">Guests</label>
-                        <input type="number" style={{ width: '100%' }} className="form-control" id="guests" value={guestsCount} readOnly />
-                      </div>
-                    
                       {/* Selected Food */}
                       <div className="col-md-6">
                         <div>
@@ -533,97 +573,173 @@ const handleBookNow = async () => {
                                   component="img"
                                   height="140"
                                   src={
-                                    selected.images && selected.images.length > 0
+                                    selected.images &&
+                                    selected.images.length > 0
                                       ? selected.images[0]
                                       : hotelData.images[0]
                                   }
                                   alt={`Selected Food ${index + 1} Image 1`}
                                 />
                                 <CardContent>
-                                  <Typography gutterBottom variant="h5" component="div">
+                                  <Typography
+                                    gutterBottom
+                                    variant="h5"
+                                    component="div"
+                                  >
                                     {selected.name}
                                   </Typography>
-                                  <Typography variant="body2" color="text.secondary">
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
                                     Quantity: {selected.quantity}
                                   </Typography>
-                                  <Typography variant="body2" color="text.secondary">
-                                    Price: <CurrencyRupeeIcon/>{selected.price * selected.quantity}
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Price: <CurrencyRupeeIcon />
+                                    {selected.price * selected.quantity}
                                   </Typography>
                                 </CardContent>
                               </CardActionArea>
                               <CardActions>
-                                <Button size="small" color="danger" onClick={() => handleRemoveFood(selected)}>
+                                <Button
+                                  size="small"
+                                  color="danger"
+                                  onClick={() => handleRemoveFood(selected)}
+                                >
                                   Remove
                                 </Button>
-                                
                               </CardActions>
-                              
                             </Card>
                           ))}
                         </div>
                       </div>
                       {/* Selected Food End */}
                       <div className="col-md-6">
-            <div>
-              <h6>Selected Rooms</h6>
-              {selectedRooms.map((selected, index) => (
-  <Card key={index} sx={{ maxWidth: 345 }}>
-    <CardActionArea>
-      <CardMedia
-        component="img"
-        height="140"
-        src={
-          selected.images && selected.images.length > 0
-            ? selected.images[0]
-            : hotelData.images[0]
-        }
-        alt={`Selected Room ${index + 1} Image 1`}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {selected.type}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Bed: {selected.bedTypes}<BedOutlinedIcon/>
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Price: <CurrencyRupeeIcon/>{selected.price}
-        </Typography>
-      </CardContent>
-    </CardActionArea>
-    <CardActions>
-      {!selected.isDefault && (
-        <Button size="small" color="danger" onClick={() => handleRemoveRoom(selected)}>
-          Remove
-        </Button>
-      )}
-    </CardActions>
-    
-  </Card>
-  
-))}
+                        <div>
+                          <h6>Selected Rooms</h6>
+                          {selectedRooms.map((selected, index) => (
+                            <Card key={index} sx={{ maxWidth: 345 }}>
+                              <CardActionArea>
+                                <CardMedia
+                                  component="img"
+                                  height="140"
+                                  src={
+                                    selected.images &&
+                                    selected.images.length > 0
+                                      ? selected.images[0]
+                                      : hotelData.images[0]
+                                  }
+                                  alt={`Selected Room ${index + 1} Image 1`}
+                                />
+                                <CardContent>
+                                  <Typography
+                                    gutterBottom
+                                    variant="h5"
+                                    component="div"
+                                  >
+                                    {selected.type}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Bed: {selected.bedTypes}
+                                    <BedOutlinedIcon />
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Price: <CurrencyRupeeIcon />
+                                    {selected.price}
+                                  </Typography>
+                                </CardContent>
+                              </CardActionArea>
+                              <CardActions>
+                                {!selected.isDefault && (
+                                  <Button
+                                    size="small"
+                                    color="danger"
+                                    onClick={() => handleRemoveRoom(selected)}
+                                  >
+                                    Remove
+                                  </Button>
+                                )}
+                              </CardActions>
+                            </Card>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row g-3 align-items-center mt-3">
+                      <div className="col-md-6">
+                        <label className="form-label">Rooms</label>
+                        <div className="input-group">
+                          <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            onClick={handleDecrementRooms}
+                          >
+                            <RiArrowUpDownFill />
+                          </button>
+                          <input
+                            type="number"
+                            className="form-control"
+                            style={{ width: "50px" }}
+                            placeholder="Rooms"
+                            value={roomsCount}
+                            readOnly
+                          />
+                          <button
+                            className="btn btn-outline-secondary"
+                            type="button"
+                            onClick={handleIncrementRooms}
+                          >
+                            <RiArrowUpDownFill />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="guests" className="form-label">
+                          Guests
+                        </label>
+                        <input
+                          type="number"
+                          style={{ width: "100%" }}
+                          className="form-control"
+                          id="guests"
+                          value={guestsCount}
+                          readOnly
+                        />
+                      </div>
 
-            </div>
-          </div>
-          <div className="col-md-12 mt-3">
-  <Button variant="outlined" color="primary" style={{ marginRight: '55%' }} >
-    Pay now
-  </Button>
+                      <div className="col-md-12 mt-3">
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          style={{ marginRight: "55%" }}
+                        >
+                          Pay now
+                        </Button>
 
-  <Button variant="outlined" color="primary" onClick={handleBookNow}>
-    Pay at hotel
-  </Button>
-</div>
-
-
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={handleBookNow}
+                        >
+                          Pay at hotel
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-          
-      </div>
-    </div>
-          {/* booking details end */}  
+            </div>
+          </div>
+          {/* booking details end */}
           {/* Policies */}
           <div className="extras">
             <div>
@@ -649,12 +765,17 @@ const handleBookNow = async () => {
                         About: {foodArray[0].about}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        Price: <CurrencyRupeeIcon/>{foodArray[0].price}
+                        Price: <CurrencyRupeeIcon />
+                        {foodArray[0].price}
                       </Typography>
                     </CardContent>
                   </CardActionArea>
                   <CardActions>
-                    <Button size="small" color="danger" onClick={() => handleAddFood(foodArray[0])}>
+                    <Button
+                      size="small"
+                      color="danger"
+                      onClick={() => handleAddFood(foodArray[0])}
+                    >
                       Add +1
                     </Button>
                   </CardActions>
@@ -755,11 +876,6 @@ const handleBookNow = async () => {
               ))}
             </div>
           </div>
-
-
-
-
-
         </>
       ) : (
         <Box sx={{ width: "100%" }}>
