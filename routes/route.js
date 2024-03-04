@@ -32,6 +32,7 @@ router.get("/get-a-new/policy-to-your/hotel/:hotelId", policy.getPolicy);
 
 //===============================foods==========================
 router.post("/add/food-to/your-hotel",upload,foods.createFood)
+router.get("/get/your-hotel-food/:hotelId",foods.getFood)
 //============================Header location==========================================
 router.post("/add-a/travel/location", upload, HeaderLocation.createLocation);
 router.get("/get-all/travel/location", HeaderLocation.getLocation);
