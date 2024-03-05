@@ -39,11 +39,14 @@ export default function PartnerForm() {
   const [hotelOwnerName, setHotelOwnerName] = useState("");
   const [description, setDescription] = useState("");
   const [priceError, setPriceError] = useState("");
+  const [customerWelcomeNote, setCustomerWelcomeNote] = useState("")
   const [destination, setDestination] = useState("");
   const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [contactError, setContactError] = useState(""); // State for contact validation error
-  const [generalManagerContactError, setGeneralManagerContactError] = useState(""); // State for generalManagerContact validation error
+  const [generalManagerContactError, setGeneralManagerContactError] = useState("");
+  const [salesManagerContactError, setSalesManagerContactError] = useState("");
+  const [salesManagerContact, setSalesManagerContact] = useState(""); // State for generalManagerContact validation error
   const [endDate, setEndDate] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -52,7 +55,7 @@ export default function PartnerForm() {
   const [starRating, setStarRating] = useState("2");
   const [propertyType, setPropertyType] = useState("");
   const [contact, setContact] = useState("");
-  const [localId, setLocalId] = useState(""); 
+  const [localId, setLocalId] = useState("");
 
   const [generalManagerContact, setGeneralManagerContact] = useState("");
   const [hotelEmail, setHotelEmail] = useState("");
@@ -76,18 +79,20 @@ export default function PartnerForm() {
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
       formData.append("state", state);
+      formData.append("customerWelcomeNote", customerWelcomeNote);
       formData.append("city", city);
       formData.append("landmark", landmark);
       formData.append("pinCode", pinCode);
       formData.append("starRating", starRating);
       formData.append("contact", contact);
-     
+
       formData.append("propertyType", propertyType);
 
       formData.append("generalManagerContact", generalManagerContact);
+      formData.append("salesManagerContact", salesManagerContact);
       formData.append("hotelEmail", hotelEmail); // Corrected line
       formData.append("localId", localId);
-      
+
       for (const image of images) {
         formData.append("images", image);
       }
@@ -105,16 +110,16 @@ export default function PartnerForm() {
       if (response.status === 201) {
         const alertMessage = `${response.data.message}. Now you will be redirected to our next step.`;
         alert(alertMessage);
-    
+
         localStorage.setItem("hotelId", response.data.data.hotelId);
         navigate("/partner/second-step");
-      } else if(response.status ===500){
+      } else if (response.status === 500) {
         // Handle other status codes
         alert("Not able to submit your request right now. Please try again later.");
       }
     } catch (error) {
       alert("An error occurred. Please try again later.");
-     
+
     }
   };
 
@@ -147,7 +152,7 @@ export default function PartnerForm() {
     "Resort",
     "Villa",
   ];
-  
+
   return (
     <Container>
       <Accordion>
@@ -208,48 +213,67 @@ export default function PartnerForm() {
           value={hotelOwnerName}
           onChange={(e) => setHotelOwnerName(e.target.value)}
         />
-       <TextField
-        className={classes.input}
-        label="Contact"
-        variant="outlined"
-        value={contact}
-        onChange={(e) => {
-          const inputValue = e.target.value;
-          setContact(inputValue);
+        <TextField
+          className={classes.input}
+          label="Contact"
+          variant="outlined"
+          value={contact}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            setContact(inputValue);
 
-          // Validation: Check if the input is a valid number
-          const regex = /^[0-9]+$/;
-          if (!regex.test(inputValue)) {
-            setContactError("Please enter a valid contact.");
-          } else {
-            setContactError(""); // Clear the error if input is valid
-          }
-        }}
-        error={Boolean(contactError)}
-        helperText={contactError}
-      />
+            // Validation: Check if the input is a valid number
+            const regex = /^[0-9]+$/;
+            if (!regex.test(inputValue)) {
+              setContactError("Please enter a valid contact.");
+            } else {
+              setContactError(""); // Clear the error if input is valid
+            }
+          }}
+          error={Boolean(contactError)}
+          helperText={contactError}
+        />
 
-      <TextField
-        className={classes.input}
-        label="General Manager Contact"
-        variant="outlined"
-        value={generalManagerContact}
-        onChange={(e) => {
-          const inputValue = e.target.value;
-          setGeneralManagerContact(inputValue);
+        <TextField
+          className={classes.input}
+          label="General Manager Contact"
+          variant="outlined"
+          value={generalManagerContact}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            setGeneralManagerContact(inputValue);
 
-          // Validation: Check if the input is a valid number
-          const regex = /^[0-9]+$/;
-          if (!regex.test(inputValue)) {
-            setGeneralManagerContactError("Please enter a valid  General Manager Contact.");
-          } else {
-            setGeneralManagerContactError(""); // Clear the error if input is valid
-          }
-        }}
-        error={Boolean(generalManagerContactError)}
-        helperText={generalManagerContactError}
-      />
+            // Validation: Check if the input is a valid number
+            const regex = /^[0-9]+$/;
+            if (!regex.test(inputValue)) {
+              setGeneralManagerContactError("Please enter a valid  General Manager Contact.");
+            } else {
+              setGeneralManagerContactError(""); // Clear the error if input is valid
+            }
+          }}
+          error={Boolean(generalManagerContactError)}
+          helperText={generalManagerContactError}
+        />
+        <TextField
+          className={classes.input}
+          label="Sales Manager Contact"
+          variant="outlined"
+          value={salesManagerContact}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            setSalesManagerContact(inputValue);
 
+            // Validation: Check if the input is a valid number
+            const regex = /^[0-9]+$/;
+            if (!regex.test(inputValue)) {
+              setSalesManagerContactError("Please enter a valid  Sales Manager Contact.");
+            } else {
+              setSalesManagerContactError(""); // Clear the error if input is valid
+            }
+          }}
+          error={Boolean(setSalesManagerContactError)}
+          helperText={setSalesManagerContactError}
+        />
         <TextField
           className={classes.input}
           label="Hotel Email id"
@@ -258,12 +282,21 @@ export default function PartnerForm() {
           onChange={(e) => setHotelEmail(e.target.value)}
         />
         <TextareaAutosize
-      className={classes.textarea}
-      aria-label="Description"
-      placeholder="Description"
-      value={description}
-      onChange={(e) => setDescription(e.target.value)}
-    />
+          className={classes.textarea}
+          aria-label="Description"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <hr />
+        <TextareaAutosize
+          className={classes.textarea}
+          aria-label="Welcome Note"
+          placeholder="Welcome Note"
+          value={customerWelcomeNote}
+          onChange={(e) => setCustomerWelcomeNote(e.target.value)}
+        />
+        <hr />
         <TextField
           className={classes.input}
           label="Destination"
@@ -273,25 +306,25 @@ export default function PartnerForm() {
         />
         <p>Please Enter your onwards room price</p>
         <TextField
-  className={classes.input}
-  label="Price"
-  variant="outlined"
-  value={price}
-  onChange={(e) => {
-    const inputValue = e.target.value;
-    setPrice(inputValue);
+          className={classes.input}
+          label="Price"
+          variant="outlined"
+          value={price}
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            setPrice(inputValue);
 
-    // Validation: Check if the input is a valid number
-    const regex = /^[0-9]+$/;
-    if (!regex.test(inputValue)) {
-      setPriceError("Please enter price.");
-    } else {
-      setPriceError(""); // Clear the error if input is valid
-    }
-  }}
-  error={Boolean(priceError)}
-  helperText={priceError}
-/>
+            // Validation: Check if the input is a valid number
+            const regex = /^[0-9]+$/;
+            if (!regex.test(inputValue)) {
+              setPriceError("Please enter price.");
+            } else {
+              setPriceError(""); // Clear the error if input is valid
+            }
+          }}
+          error={Boolean(priceError)}
+          helperText={priceError}
+        />
 
         <label htmlFor="">
           From which to which date your hotel is available
@@ -362,17 +395,17 @@ export default function PartnerForm() {
           value={pinCode}
           onChange={(e) => setPinCode(e.target.value)}
         />
-       <TextField
-  select
-  label="Are you providing Local Id"
-  variant="outlined"
-  className={classes.input}
-  value={localId}
-  onChange={(e) => setLocalId(e.target.value)}
->
-  <MenuItem value="Not Accepted">Not Accepted</MenuItem>
-  <MenuItem value="Accepted">Accepted</MenuItem>
-</TextField>
+        <TextField
+          select
+          label="Are you providing Local Id"
+          variant="outlined"
+          className={classes.input}
+          value={localId}
+          onChange={(e) => setLocalId(e.target.value)}
+        >
+          <MenuItem value="Not Accepted">Not Accepted</MenuItem>
+          <MenuItem value="Accepted">Accepted</MenuItem>
+        </TextField>
 
         <Button type="submit" variant="contained" color="primary">
           Next

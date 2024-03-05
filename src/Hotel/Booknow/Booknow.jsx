@@ -624,7 +624,7 @@ const BookNow = () => {
                                 <CardActionArea>
                                   <CardMedia
                                     component="img"
-                                    height="140"
+                                    height="80"
                                     src={
                                       selected.images &&
                                       selected.images.length > 0
@@ -673,7 +673,7 @@ const BookNow = () => {
                               <CardActionArea>
                                 <CardMedia
                                   component="img"
-                                  height="192"
+                                  height="142"
                                   src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
                                   alt="Default Image"
                                 />
@@ -701,7 +701,7 @@ const BookNow = () => {
                               <CardActionArea>
                                 <CardMedia
                                   component="img"
-                                  height="140"
+                                  height="90"
                                   src={
                                     selected.images &&
                                     selected.images.length > 0
@@ -780,7 +780,7 @@ const BookNow = () => {
                           className="form-control"
                           id="guests"
                           value={guestsCount}
-                          readOnly
+                         
                         />
                       </div>
 
