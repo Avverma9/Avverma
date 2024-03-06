@@ -128,7 +128,7 @@ const Hotel = () => {
                 {/* Amenities Section */}
                 {hotel.amenities.map((amenity, amenityIndex) => (
         <div key={amenityIndex} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          {amenity[0]?.amenities?.slice(0, 4).map((singleAmenity, singleAmenityIndex) => (
+          {amenity?.amenities?.slice(0, 4).map((singleAmenity, singleAmenityIndex) => (
             <Typography key={singleAmenityIndex} level="body-sm" style={{ margin: '5px', whiteSpace: 'nowrap' }}>
               <IconContext.Provider value={{ size: '1.2em' }}>
                 {amenityIcons[singleAmenity] || defaultIcon}
