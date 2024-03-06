@@ -182,7 +182,7 @@ const BookNow = () => {
   // booking details
 
   const calculateGuests = (roomsCount) => {
-    // Assuming each room accommodates 2 guests
+    // Assuming each room accommodates 3 guests
     return roomsCount * 3;
   };
   const guestsCount = calculateGuests(roomsCount);
@@ -758,7 +758,7 @@ const BookNow = () => {
                             style={{ width: "50px" }}
                             placeholder="Rooms"
                             value={roomsCount}
-                            readOnly
+                            
                           />
                           <button
                             className="btn btn-outline-secondary"
