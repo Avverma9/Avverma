@@ -4,7 +4,9 @@ const Policy = require("../../models/Hotel/policyModel"); // Corrected the impor
 exports.createPolicy = async function (req, res) {
   try {
     const { hotelId } = req.body;
-
+if(!hotelId){
+  return res.status(400).json({message:"HoteID not provided"})
+}
     // Create policies
     const createdPolicies = await Policy.create({
       hotelId,

@@ -2,19 +2,24 @@ const Dashboard= require("../models/dashBoardUserModel")
 
 // Register ===========================
 const registerUser=async (req,res)=>{
-    const {name,email,mobile,password}=req.body
-    const emailExist = await Dashboard.findOne({email:email})
-    const mobileExist = await Dashboard.findOne({mobile:mobile})
-    if(emailExist){
-        return res.status(400).json({message:"Email already existed"})
+    try {
+        const {name,email,mobile,password}=req.body
+        const emailExist = await Dashboard.findOne({email:email})
+        const mobileExist = await Dashboard.findOne({mobile:mobile})
+        if(emailExist){
+            return res.status(400).json({message:"Email already existed"})
+        }
+        if(mobileExist){
+            return res.status(400).json({message : "Mobile already existed"})
+        }
+        const images= req.files.map((file)=>file.location)
+        const created= await Dashboard.create({images,name,email,mobile,password})
+        res.status(201).json({message:"Registration Done",created})    
+    } catch (error) {
+        return res.status(500).json({message:"Internal server error"})
     }
-    if(mobileExist){
-        return res.status(400).json({message : "Mobile already existed"})
-    }
-    const images= req.files.map((file)=>file.location)
-    const created= await Dashboard.create({images,name,email,mobile,password})
-    res.status(201).json({message:"Registration Done",created})
 }
+ 
 //Login ========================
 
 const loginUser = async function (req, res) {

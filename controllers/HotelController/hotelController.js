@@ -28,8 +28,10 @@ const createHotel = async (req, res) => {
       propertyType,
       contact,
       isAccepted,
+      salesManagerContact,
       localId,
       hotelEmail,
+      customerWelcomeNote,
       generalManagerContact,
     } = req.body;
 
@@ -42,6 +44,7 @@ const createHotel = async (req, res) => {
       destination,
       price,
       isOffer,
+      customerWelcomeNote,
       startDate,
       endDate,
       state,
@@ -58,6 +61,7 @@ const createHotel = async (req, res) => {
       localId,
       hotelEmail,
       generalManagerContact,
+      salesManagerContact,
       images,
     };
 
@@ -101,34 +105,12 @@ const getCountPendingHotels = async function (req, res) {
 
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
-  const { id } = req.params;
-  const { isAccepted, isOffer, offerDetails, offerPriceLess, offerExp } =
+  const { hotelId } = req.params;
+  const { isAccepted, isOffer } =
     req.body;
-
-  let images = [];
-
-  if (req.files && req.files.length > 0) {
-    images = req.files.map((file) => file.location);
-  } else {
-    const user = await hotelModel.findById(id);
-    if (user) {
-      images = user.images;
-    }
-  }
-  const updatedHotel = await hotelModel.findByIdAndUpdate(
-    id,
-    { images, isOffer, isAccepted, offerDetails, offerPriceLess, offerExp },
-    { new: true }
-  );
-
-  if (!updatedHotel) {
-    return res.status(404).json({ error: "Hotel not found" });
-  }
-
-  return res.status(200).json({
-    status: true,
-    data: updatedHotel,
-  });
+const updateDetails = await hotelModel.findOneAndUpdate({hotelId:hotelId,isAccepted,isOffer})
+res.json(updateDetails)
+ 
 };
 //================================update hotel info =================================================
 const UpdateHotelInfo = async (req, res) => {

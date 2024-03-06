@@ -48,7 +48,7 @@ const hotelsSchema = new mongoose.Schema(
       type: String,
       default: "2",
     },
-    propertyType: String,
+    propertyType: [String],
     contact: {
       type: Number,
     },
@@ -56,34 +56,41 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    rooms: [
+    isOffer: {
+      type: Boolean,
+      default: false,
+    },
+    rooms: 
       {
         type: [{}],
         ref: "rooms",
       },
-    ],
-    foods: [
+    
+    foods: 
       {
         type: [{}],
         ref: "foods",
       },
-    ],
-    amenities: [
+    
+    amenities: 
       {
         type: [{}],
         ref: "amenities",
       },
-    ],
-    policies: [
+    
+    policies:
       {
         type: [{}],
         ref: "policies",
       },
-    ],
     localId:String,
     hotelEmail: String,
     generalManagerContact: String,
+    salesManagerContact:String,
+    customerWelcomeNote:String,
+
   },
+  
   { timestamps: true }
 );
 
