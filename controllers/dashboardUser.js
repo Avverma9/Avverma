@@ -20,7 +20,7 @@ const registerUser=async (req,res)=>{
     }
 }
  
-//Login ========================
+//Login ====
 
 const loginUser = async function (req, res) {
     const { email, password } = req.body;
