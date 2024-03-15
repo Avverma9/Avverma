@@ -7,6 +7,7 @@ import Accordion from "@mui/material/Accordion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays } from "date-fns";
+import TextField from '@mui/material/TextField';
 
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import { RiArrowUpDownFill } from "react-icons/ri";
@@ -109,8 +110,10 @@ const BookNow = () => {
   };
   const handleAddRoom = (room) => {
     // Check if the room is already selected
-    const existingRoomIndex = selectedRooms.findIndex((selected) => selected._id === room._id);
-  
+    const existingRoomIndex = selectedRooms.findIndex(
+      (selected) => selected._id === room._id
+    );
+
     if (existingRoomIndex !== -1) {
       // If room already selected, replace it
       const updatedRooms = [...selectedRooms];
@@ -376,92 +379,92 @@ const BookNow = () => {
             <p>{hotelData.description}</p>
           </div>
           <div className="extras">
-  <div className="amenities-container">
-    <h6>Our amenities</h6>
-    {hotelData.amenities.map((amenityArray, index) => (
-      <div key={index}>
-        {amenityArray.amenities
-          .slice(0, 5)
-          .map((amenity, innerIndex) => (
-            <div key={innerIndex}>
-              {" "}
-              <IconContext.Provider value={{ size: "1.2em" }}>
-                {amenityIcons[amenity] || defaultIcon} {amenity}
-              </IconContext.Provider>
+            <div className="amenities-container">
+              <h6>Our amenities</h6>
+              {hotelData.amenities.map((amenityArray, index) => (
+                <div key={index}>
+                  {amenityArray.amenities
+                    .slice(0, 5)
+                    .map((amenity, innerIndex) => (
+                      <div key={innerIndex}>
+                        {" "}
+                        <IconContext.Provider value={{ size: "1.2em" }}>
+                          {amenityIcons[amenity] || defaultIcon} {amenity}
+                        </IconContext.Provider>
+                      </div>
+                    ))}
+                </div>
+              ))}
             </div>
-          ))}
-      </div>
-    ))}
-  </div>
 
-  <div className="hotel-policies-container">
-  {hotelData.amenities.map((amenityArray, index) => (
-    <Accordion
-      key={index}
-      expanded={expanded}
-      onChange={handleExpansion}
-      slotProps={{ transition: { timeout: 400 } }}
-      sx={{
-        "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-        "& .MuiAccordionDetails-root": {
-          display: expanded ? "block" : "none",
-        },
-      }}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls={`panel${index + 1}-content`}
-        id={`panel${index + 1}-header`}
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          width: "100%",
-          justifyContent: "space-between",
-        }}
-      >
-        <Typography
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-          }}
-        >
-          See +
-          <Typography>
-            {amenityArray.amenities.length - 5} more amenities
-          </Typography>
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-          }}
-        >
-          {amenityArray.amenities.slice(5).map((amenity, innerIndex) => (
-            <div
-              key={innerIndex}
-              style={{
-                marginBottom: "8px",
-                flexBasis: "33%",
-                boxSizing: "border-box",
-              }}
-            >
-              <IconContext.Provider value={{ size: "1.2em" }}>
-                {amenityIcons[amenity] || defaultIcon} {amenity}
-              </IconContext.Provider>
+            <div className="hotel-policies-container">
+              {hotelData.amenities.map((amenityArray, index) => (
+                <Accordion
+                  key={index}
+                  expanded={expanded}
+                  onChange={handleExpansion}
+                  slotProps={{ transition: { timeout: 400 } }}
+                  sx={{
+                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
+                    "& .MuiAccordionDetails-root": {
+                      display: expanded ? "block" : "none",
+                    },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={`panel${index + 1}-content`}
+                    id={`panel${index + 1}-header`}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      See +
+                      <Typography>
+                        {amenityArray.amenities.length - 5} more amenities
+                      </Typography>
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {amenityArray.amenities
+                        .slice(5)
+                        .map((amenity, innerIndex) => (
+                          <div
+                            key={innerIndex}
+                            style={{
+                              marginBottom: "8px",
+                              flexBasis: "33%",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            <IconContext.Provider value={{ size: "1.2em" }}>
+                              {amenityIcons[amenity] || defaultIcon} {amenity}
+                            </IconContext.Provider>
+                          </div>
+                        ))}
+                    </div>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
             </div>
-          ))}
-        </div>
-      </AccordionDetails>
-    </Accordion>
-  ))}
-</div>
-
-</div>
-
+          </div>
           {/* Rooms */}
           <div className="extras">
             <div className="container-fluid">
@@ -473,89 +476,81 @@ const BookNow = () => {
                   <div className="container mt-3">
                     <h6>Our Special rooms</h6>
                     <div className="d-flex flex-wrap gap-3">
-                      {hotelData.rooms.map((room, index) =>
-                     
-                          <Card
-                            key={index}
-                            sx={{
-                              maxWidth: 345,
-                              width: "100%",
-                              height: "100%",
-                              display: "flex",
-                              flexDirection: "column",
-                            }}
-                          >
-                            <CardActionArea style={{ flex: 1 }}>
-                              <CardMedia
-                                component="img"
-                                height="140"
-                                width="200px"
-                                style={{ objectFit: "cover" }}
-                                src={
-                                  room.images && room.images.length > 0
-                                    ? room.images[0]
-                                    : hotelData.images[0]
-                                }
-                                alt={`Room ${index + 1} Image 1`}
-                              />
-                            </CardActionArea>
-                            <CardContent style={{ flex: "none" }}>
-                              <Typography
-                                gutterBottom
-                                variant="h5"
-                                component="div"
+                      {hotelData.rooms.map((room, index) => (
+                        <Card
+                          key={index}
+                          sx={{
+                            maxWidth: 345,
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                          }}
+                        >
+                          <CardActionArea style={{ flex: 1 }}>
+                            <CardMedia
+                              component="img"
+                              height="140"
+                              width="200px"
+                              style={{ objectFit: "cover" }}
+                              src={
+                                room.images && room.images.length > 0
+                                  ? room.images[0]
+                                  : hotelData.images[0]
+                              }
+                              alt={`Room ${index + 1} Image 1`}
+                            />
+                          </CardActionArea>
+                          <CardContent style={{ flex: "none" }}>
+                            <Typography
+                              gutterBottom
+                              variant="h5"
+                              component="div"
+                            >
+                              {room.type}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Bed: {room.bedTypes}
+                              <BedOutlinedIcon />
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Price: <CurrencyRupeeIcon />
+                              {room.price}
+                            </Typography>
+                          </CardContent>
+                          <CardActions>
+                            {/* Check if the room is already selected */}
+                            {selectedRooms.findIndex(
+                              (selected) => selected._id === room._id
+                            ) !== -1 ? (
+                              // If the room is selected, show a disabled "Selected" button
+                              <Button
+                                size="small"
+                                color="success"
+                                variant="outlined"
+                                disabled
                               >
-                                {room.type}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
+                                Selected
+                              </Button>
+                            ) : (
+                              // If the room is not selected, show the "Select" button
+                              <Button
+                                size="small"
+                                color="primary"
+                                onClick={() => handleAddRoom(room[0])}
                               >
-                                Bed: {room.bedTypes}
-                                <BedOutlinedIcon />
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Price: <CurrencyRupeeIcon />
-                                {room.price}
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-        {/* Check if the room is already selected */}
-        {selectedRooms.findIndex((selected) => selected._id === room._id) !==
-        -1 ? (
-          // If the room is selected, show a disabled "Selected" button
-          <Button
-            size="small"
-            color="success"
-            variant="outlined"
-            disabled
-          >
-            Selected
-          </Button>
-        ) : (
-          // If the room is not selected, show the "Select" button
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => handleAddRoom(room[0])}
-          >
-            Select
-          </Button>
-        )}
-      </CardActions>
-                          </Card>
-                       
-                      )}
+                                Select
+                              </Button>
+                            )}
+                          </CardActions>
+                        </Card>
+                      ))}
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4">
-                  
+                {/* For desktop view */}
+                <div className="col-md-4 d-none d-sm-block">
                   <div
-                  
                     className="booking-details-container container mt-3 border p-3"
                     style={{
                       position: "sticky",
@@ -574,7 +569,6 @@ const BookNow = () => {
                         zIndex: "1000",
                       }}
                     >
-                      
                       <h3>
                         <CurrencyRupeeIcon />
                         {calculateTotalPrice()}
@@ -733,9 +727,7 @@ const BookNow = () => {
                                   </Typography>
                                 </CardContent>
                               </CardActionArea>
-                              <CardActions>
-                              
-                              </CardActions>
+                              <CardActions></CardActions>
                             </Card>
                           ))}
                         </div>
@@ -758,7 +750,6 @@ const BookNow = () => {
                             style={{ width: "50px" }}
                             placeholder="Rooms"
                             value={roomsCount}
-                            
                           />
                           <button
                             className="btn btn-outline-secondary"
@@ -779,7 +770,6 @@ const BookNow = () => {
                           className="form-control"
                           id="guests"
                           value={guestsCount}
-                         
                         />
                       </div>
 
@@ -850,6 +840,217 @@ const BookNow = () => {
               ))}
             </div>
           </div>
+          {/* for mobile view */}
+          <div className="col-md-4 d-block d-md-none">
+            <h5>Booking details</h5>
+            <div
+              className="booking-details-container"
+              style={{
+                position: "sticky",
+                top: "0",
+                width: "100%",
+                zIndex: "1000",
+              }}
+            >
+              <h3>
+                <CurrencyRupeeIcon />
+                {calculateTotalPrice()}
+              </h3>
+            </div>
+
+            <div class="date-selection">
+    <div className="checkIn">
+        <label htmlFor="checkIn">Check-in</label>
+        <DatePicker
+            selected={checkInDate}
+            onChange={handleCheckInDateChange}
+            dateFormat="d MMMM yyyy"
+            placeholderText={formatDate(checkInDate)}
+            selectsStart
+            startDate={checkInDate}
+            endDate={checkOutDate}
+            onChangeRaw={(e) => e.preventDefault()}
+            InputLabelProps={{
+              shrink: true,
+          }}
+        />
+    </div>
+    <div className="checkOut">
+        <label htmlFor="checkOut" className="form-label">
+            Check-out
+        </label>
+        <DatePicker
+            selected={checkOutDate}
+            onChange={handleCheckOutDateChange}
+            dateFormat="d MMMM yyyy"
+            placeholderText={formatDate(checkOutDate)}
+            selectsEnd
+            startDate={checkInDate}
+            endDate={checkOutDate}
+            onChangeRaw={(e) => e.preventDefault()}
+        />
+    </div>
+</div>
+
+<div class="rooms-guests">
+    <div class="input-group">
+        <label>Rooms</label>
+        <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleDecrementRooms}
+        >
+            <RiArrowUpDownFill />
+        </button>
+        <TextField
+            type="number"
+            style={{ width: "50px" }}
+            placeholder="Rooms"
+            value={roomsCount}
+            InputLabelProps={{
+              shrink: true,
+          }}
+        />
+        <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleIncrementRooms}
+        >
+            <RiArrowUpDownFill />
+        </button>
+    </div>
+
+    <div class="input-group">
+        <label htmlFor="guests" className="form-label">
+            Guests
+        </label>
+        <TextField
+            type="number"
+            style={{ width: "100px" }}
+            id="guests"
+            value={guestsCount}
+            InputLabelProps={{
+              shrink: true,
+          }}
+        />
+    </div>
+</div>
+
+            {/* Selected Food */}
+            <div className="selected-cotainer">
+              <div>
+                <h6>Selected Meals</h6>
+                {selectedFood.length > 0 ? (
+                  selectedFood.map((selected, index) => (
+                    <Card key={index} sx={{ maxWidth: 205 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          height="80"
+                          src={
+                            selected.images && selected.images.length > 0
+                              ? selected.images[0]
+                              : hotelData.images[0]
+                          }
+                          alt={`Selected Food ${index + 1} Image 1`}
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="div">
+                            {selected.name}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Quantity: {selected.quantity}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Price: <CurrencyRupeeIcon />
+                            {selected.price * selected.quantity}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions>
+                        <Button
+                          size="small"
+                          color="danger"
+                          onClick={() => handleRemoveFood(selected)}
+                        >
+                          Remove
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  ))
+                ) : (
+                  // Render a default image and content when selectedFood is empty
+                  <Card sx={{ maxWidth: 205 }}>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        height="142"
+                        src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
+                        alt="Default Image"
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="p" component="div">
+                          Add crispy foods during your stay
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                )}
+              </div>
+              {/* Selected Food End */}
+              <div>
+                <h6>Selected Rooms</h6>
+                {selectedRooms.map((selected, index) => (
+                  <Card key={index} sx={{ maxWidth: 205 }}>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        height="90"
+                        src={
+                          selected.images && selected.images.length > 0
+                            ? selected.images[0]
+                            : hotelData.images[0]
+                        }
+                        alt={`Selected Room ${index + 1} Image 1`}
+                      />
+                      <CardContent>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {selected.type}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Bed: {selected.bedTypes}
+                          <BedOutlinedIcon />
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Price: <CurrencyRupeeIcon />
+                          {selected.price}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                    <CardActions></CardActions>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            <div className="col-md-12 mt-3">
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginRight: "35%" }}
+              >
+                Pay now
+              </Button>
+
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleBookNow}
+              >
+                Pay at hotel
+              </Button>
+            </div>
+          </div>
           <div className="extras">
             <div className="hotel-policies-container">
               {hotelData.policies.map((policy, index) => (
@@ -879,63 +1080,62 @@ const BookNow = () => {
 
                         {hotelData.localId}
                         <hr />
-                     
-                          <React.Fragment key={index}>
-                            <p>Hotel's Policy</p>
-                            {policy.hotelsPolicy}
-                            <hr />
-                            <div className="checkIn-policy">
-                              <p>Check In Policy:</p>
 
-                              {policy.checkInPolicy}
+                        <React.Fragment key={index}>
+                          <p>Hotel's Policy</p>
+                          {policy.hotelsPolicy}
+                          <hr />
+                          <div className="checkIn-policy">
+                            <p>Check In Policy:</p>
 
-                              <p>Check Out Policy:</p>
+                            {policy.checkInPolicy}
 
-                              {policy.checkOutPolicy}
-                            </div>
-                            <hr />
-                            <p>Outside Food Policy:</p>
+                            <p>Check Out Policy:</p>
 
-                            {policy.outsideFoodPolicy}
-                            <hr />
-                            <p>Cancellation Policy:</p>
+                            {policy.checkOutPolicy}
+                          </div>
+                          <hr />
+                          <p>Outside Food Policy:</p>
 
-                            {policy.cancellationPolicy}
-                            <hr />
-                            <p>Payment Mode:</p>
+                          {policy.outsideFoodPolicy}
+                          <hr />
+                          <p>Cancellation Policy:</p>
 
-                            {policy.paymentMode}
-                            <hr />
-                            <p>Pets Allowed:</p>
+                          {policy.cancellationPolicy}
+                          <hr />
+                          <p>Payment Mode:</p>
 
-                            {policy.petsAllowed}
-                            <hr />
-                            <p>Bachelor Allowed:</p>
+                          {policy.paymentMode}
+                          <hr />
+                          <p>Pets Allowed:</p>
 
-                            {policy.bachelorAllowed}
-                            <hr />
-                            <p>Smoking Allowed:</p>
+                          {policy.petsAllowed}
+                          <hr />
+                          <p>Bachelor Allowed:</p>
 
-                            {policy.smokingAllowed}
-                            <hr />
-                            <p>Alcohol Allowed:</p>
+                          {policy.bachelorAllowed}
+                          <hr />
+                          <p>Smoking Allowed:</p>
 
-                            {policy.alcoholAllowed}
-                            <hr />
-                            <p>Unmarried Couples Allowed:</p>
+                          {policy.smokingAllowed}
+                          <hr />
+                          <p>Alcohol Allowed:</p>
 
-                            {policy.unmarriedCouplesAllowed}
-                            <hr />
-                            <p>International Guest Allowed:</p>
+                          {policy.alcoholAllowed}
+                          <hr />
+                          <p>Unmarried Couples Allowed:</p>
 
-                            {policy.internationalGuestAllowed}
-                            <hr />
-                            <p>Return Policy:</p>
+                          {policy.unmarriedCouplesAllowed}
+                          <hr />
+                          <p>International Guest Allowed:</p>
 
-                            {policy.returnPolicy}
-                            <hr />
-                          </React.Fragment>
-                    
+                          {policy.internationalGuestAllowed}
+                          <hr />
+                          <p>Return Policy:</p>
+
+                          {policy.returnPolicy}
+                          <hr />
+                        </React.Fragment>
                       </div>
                     </Typography>
                   </AccordionDetails>

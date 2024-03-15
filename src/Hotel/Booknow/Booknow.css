@@ -96,3 +96,227 @@
 .policy-container p:not(.checkIn-policy) + * {
   margin-bottom: 15px;
 }
+
+.custom-col-md-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+}
+
+.custom-d-block {
+  display: block;
+}
+
+.custom-d-md-none {
+  display: none;
+}
+
+.custom-booking-details-container {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.custom-container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.custom-border {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.custom-p-1 {
+  padding: 0.25rem;
+}
+
+.custom-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+
+.custom-col-md-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+.custom-col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.custom-col-md-2 {
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+}
+
+.custom-form-label {
+  margin-bottom: 0.5rem;
+}
+
+.custom-form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-input-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+}
+
+.custom-btn {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.custom-btn-outline-secondary {
+  color: #6c757d;
+  background-color: transparent;
+  background-image: none;
+  border-color: #6c757d;
+}
+
+.custom-outlined {
+  color: #007bff;
+  background-color: transparent;
+  border-color: #007bff;
+}
+/* CSS */
+.booking-details-container {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.checkIn,
+.checkOut {
+  margin-bottom: 20px;
+}
+
+.selected-cotainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.selected-cotainer > div {
+  flex: 1;
+}
+
+.rooms-guests {
+  margin-top: 20px;
+}
+
+.rooms-guests label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.rooms-guests .input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: row; /* Display input fields in a row */
+}
+
+/* Adjust width of "Check-in" and "Check-out" input fields */
+.rooms-guests .input-group .checkIn input[type="text"],
+.rooms-guests .input-group .checkOut input[type="text"] {
+  width: 50px;
+}
+
+.rooms-guests .input-group input[type="number"] {
+  padding: 5px;
+  width: 100px; /* Adjust width as needed */
+}
+
+.rooms-guests .input-group button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.col-md-12 {
+  margin-top: 20px;
+}
+
+/* Simplified card styling */
+.card {
+  max-width: 205px;
+}
+
+.card img {
+  height: auto;
+  max-width: 100%;
+}
+
+.card-content {
+  padding: 10px;
+}
+
+.card-content h5 {
+  margin-bottom: 5px;
+}
+
+.card-content p {
+  margin-bottom: 5px;
+}
+.date-selection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.checkIn,
+.checkOut {
+  flex: 1;
+  margin-right: 10px; /* Adjust margin as needed */
+}
+
+.rooms-guests {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to the start */
+  margin-top: 20px;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.input-group label {
+  margin-right: 10px; /* Adjust margin as needed */
+}
