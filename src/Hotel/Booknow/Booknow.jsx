@@ -853,6 +853,7 @@ const BookNow = () => {
               ))}
             </div>
           </div>
+          <hr />
           {/* for mobile view */}
           <div className="col-md-4 d-block d-md-none">
             <div
