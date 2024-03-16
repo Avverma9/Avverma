@@ -7,21 +7,16 @@ import Accordion from "@mui/material/Accordion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays } from "date-fns";
-import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
-import { RiArrowUpDownFill } from "react-icons/ri";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccordionSummary from "@mui/material/AccordionSummary";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-
 import { CardActionArea, CardActions } from "@mui/material";
-
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IconContext } from "react-icons";
@@ -39,7 +34,6 @@ import {
   FaDoorOpen,
 } from "react-icons/fa";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Boxes from "@mui/material/Box";
 import Box from "@mui/material/Box";
 import Button from "@mui/joy/Button";
 import "./Booknow.css";
@@ -57,7 +51,7 @@ const BookNow = () => {
   const hotelId = path.substring(path.lastIndexOf("/") + 1);
   const today = new Date();
   const tomorrow = addDays(today, 1);
-
+  const [guestsCount, setGuestsCount] = useState(3);
   const [checkInDate, setCheckInDate] = useState(today);
   const [checkOutDate, setCheckOutDate] = useState(tomorrow);
 
@@ -189,15 +183,32 @@ const BookNow = () => {
     // Assuming each room accommodates 3 guests
     return roomsCount * 3;
   };
-  const guestsCount = calculateGuests(roomsCount);
+
+  // Update the handleIncrementRooms function to increase both rooms and guests count
   const handleIncrementRooms = () => {
     setRoomsCount((prevCount) => prevCount + 1);
+    // Increase guests count whenever rooms count increases
+    setGuestsCount(calculateGuests(roomsCount + 1));
   };
 
+  // Update the handleDecrementRooms function to decrease both rooms and guests count
   const handleDecrementRooms = () => {
     if (roomsCount > 1) {
       setRoomsCount((prevCount) => prevCount - 1);
+      // Decrease guests count whenever rooms count decreases
+      setGuestsCount(calculateGuests(roomsCount - 1));
     }
+  };
+
+  // Handle changes in the guests input field
+  const handleGuestsChange = (event) => {
+    const newGuestsCount = parseInt(event.target.value);
+    // Ensure that the new guests count is at least 1 or set to 1 if input is empty
+    const validGuestsCount = newGuestsCount > 0 ? newGuestsCount : 1;
+    setGuestsCount(validGuestsCount);
+    // Calculate rooms count based on the new guests count
+    const newRoomsCount = Math.ceil(validGuestsCount / 3);
+    setRoomsCount(newRoomsCount);
   };
 
   const handleBookNow = async () => {
@@ -771,6 +782,7 @@ const BookNow = () => {
                           className="form-control"
                           id="guests"
                           value={guestsCount}
+                          onChange={(e) => handleGuestsChange(e)}
                         />
                       </div>
 
@@ -851,7 +863,6 @@ const BookNow = () => {
                 width: "100%",
                 zIndex: "1000",
                 padding: "20px",
-          
               }}
             >
               <h5>Booking details</h5>
@@ -918,7 +929,7 @@ const BookNow = () => {
                       type="button"
                       onClick={handleDecrementRooms}
                     >
-                      <AddIcon />
+                    <RemoveIcon />  
                     </button>
                     <input
                       type="number"
@@ -932,7 +943,7 @@ const BookNow = () => {
                       type="button"
                       onClick={handleIncrementRooms}
                     >
-                      <RemoveIcon />
+                      <AddIcon />
                     </button>
                   </div>
                 </div>
@@ -946,6 +957,7 @@ const BookNow = () => {
                     className="form-control"
                     id="guests"
                     value={guestsCount}
+                    onChange={(e) => handleGuestsChange(e)}
                   />
                 </div>
 
@@ -957,7 +969,7 @@ const BookNow = () => {
                   <h6>Selected Meals</h6>
                   {selectedFood.length > 0 ? (
                     selectedFood.map((selected, index) => (
-                      <Card key={index} sx={{ maxWidth: 180 }}>
+                      <Card key={index} sx={{ maxWidth: 170 }}>
                         <CardActionArea>
                           <CardMedia
                             component="img"
@@ -998,7 +1010,7 @@ const BookNow = () => {
                       </Card>
                     ))
                   ) : (
-                    <Card sx={{ maxWidth: 180 }}>
+                    <Card sx={{ maxWidth: 170 }}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
@@ -1018,7 +1030,7 @@ const BookNow = () => {
                 <div>
                   <h6>Selected Rooms</h6>
                   {selectedRooms.map((selected, index) => (
-                    <Card key={index} sx={{ maxWidth: 180 }}>
+                    <Card key={index} sx={{ maxWidth: 170 }}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
