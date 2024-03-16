@@ -77,7 +77,7 @@ router.patch("/hotels/update/info/:id", hotelController.UpdateHotelInfo);
 router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
-router.delete("/delete/hotels/by/:id", hotelController.deleteHotelById);
+router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/get-by-id/:hotelId", hotelController.getHotelsById);

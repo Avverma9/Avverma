@@ -106,12 +106,22 @@ const getCountPendingHotels = async function (req, res) {
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { hotelId } = req.params;
-  const { isAccepted, isOffer } =
-    req.body;
-const updateDetails = await hotelModel.findOneAndUpdate({hotelId:hotelId,isAccepted,isOffer})
-res.json(updateDetails)
- 
+  const { isAccepted, isOffer } = req.body;
+  
+  try {
+      const updateDetails = await hotelModel.findOneAndUpdate(
+          { hotelId: hotelId }, // Use hotelId for querying
+          { $set: { isAccepted: isAccepted, isOffer: isOffer } }, // Update fields
+          { new: true } // To return the updated document
+      );
+
+      res.json(updateDetails);
+  } catch (error) {
+      console.error("Error updating hotel:", error);
+      res.status(500).json({ error: "Failed to update hotel details." });
+  }
 };
+
 //================================update hotel info =================================================
 const UpdateHotelInfo = async (req, res) => {
   const { id } = req.params;
@@ -421,9 +431,9 @@ const getHotelsByPrice = async function (req, res) {
 
 //==================================================================================
 const deleteHotelById = async function (req, res) {
-  const { id } = req.params;
-  const deletedData = await hotelModel.findByIdAndDelete(id);
-  res.json(deletedData);
+  const { hotelId } = req.params;
+  const deletedData = await hotelModel.findOneAndDelete({hotelId:hotelId});
+  res.status(200).json({message:"deleted"});
 };
 //===========================================================
 const getHotelsByLocalID = async (req, res) => {
