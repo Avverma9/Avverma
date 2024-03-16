@@ -214,9 +214,11 @@
   top: 0;
   width: 100%;
   z-index: 1000;
-  background-color: white;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color:rgb(255, 255, 255);
+  padding:10px;
+  border: #333;
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(255, 48, 48, 0.659);
 }
 
 .checkIn,
@@ -272,9 +274,9 @@
 }
 
 /* Simplified card styling */
-.card {
+/* .card {
   max-width: 205px;
-}
+} */
 
 .card img {
   height: auto;
@@ -319,4 +321,7 @@
 
 .input-group label {
   margin-right: 10px; /* Adjust margin as needed */
+}
+.datepicker-input{
+  width: 150px;
 }

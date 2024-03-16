@@ -7,8 +7,9 @@ import Accordion from "@mui/material/Accordion";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays } from "date-fns";
-import TextField from '@mui/material/TextField';
-
+import TextField from "@mui/material/TextField";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import { RiArrowUpDownFill } from "react-icons/ri";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
@@ -742,7 +743,7 @@ const BookNow = () => {
                             type="button"
                             onClick={handleDecrementRooms}
                           >
-                            <RiArrowUpDownFill />
+                            <RemoveIcon />
                           </button>
                           <input
                             type="number"
@@ -756,7 +757,7 @@ const BookNow = () => {
                             type="button"
                             onClick={handleIncrementRooms}
                           >
-                            <RiArrowUpDownFill />
+                            <AddIcon />
                           </button>
                         </div>
                       </div>
@@ -842,7 +843,6 @@ const BookNow = () => {
           </div>
           {/* for mobile view */}
           <div className="col-md-4 d-block d-md-none">
-            <h5>Booking details</h5>
             <div
               className="booking-details-container"
               style={{
@@ -850,205 +850,223 @@ const BookNow = () => {
                 top: "0",
                 width: "100%",
                 zIndex: "1000",
+                padding: "20px",
+          
               }}
             >
-              <h3>
-                <CurrencyRupeeIcon />
-                {calculateTotalPrice()}
-              </h3>
-            </div>
+              <h5>Booking details</h5>
+              <hr />
+              <div
+                className="booking-details-container"
+                style={{
+                  position: "sticky",
+                  top: "0",
+                  width: "100%",
+                  zIndex: "1000",
+                }}
+              >
+                <h3>
+                  <CurrencyRupeeIcon />
+                  {calculateTotalPrice()}
+                </h3>
+              </div>
+              <hr />
+              <div class="date-selection">
+                {/* Check-in */}
+                <div className="checkIn">
+                  <p>Check-in</p>
+                  <DatePicker
+                    selected={checkInDate}
+                    onChange={handleCheckInDateChange}
+                    dateFormat="d MMMM yyyy"
+                    placeholderText={formatDate(checkInDate)}
+                    selectsStart
+                    startDate={checkInDate}
+                    endDate={checkOutDate}
+                    onChangeRaw={(e) => e.preventDefault()}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    className="datepicker-input"
+                  />
+                </div>
+                {/* Check-out */}
+                <div className="checkOut">
+                  <p>Check-out</p>
+                  <DatePicker
+                    selected={checkOutDate}
+                    onChange={handleCheckOutDateChange}
+                    dateFormat="d MMMM yyyy"
+                    placeholderText={formatDate(checkOutDate)}
+                    selectsEnd
+                    startDate={checkInDate}
+                    endDate={checkOutDate}
+                    onChangeRaw={(e) => e.preventDefault()}
+                    className="datepicker-input"
+                  />
+                </div>
+              </div>
 
-            <div class="date-selection">
-    <div className="checkIn">
-        <label htmlFor="checkIn">Check-in</label>
-        <DatePicker
-            selected={checkInDate}
-            onChange={handleCheckInDateChange}
-            dateFormat="d MMMM yyyy"
-            placeholderText={formatDate(checkInDate)}
-            selectsStart
-            startDate={checkInDate}
-            endDate={checkOutDate}
-            onChangeRaw={(e) => e.preventDefault()}
-            InputLabelProps={{
-              shrink: true,
-          }}
-        />
-    </div>
-    <div className="checkOut">
-        <label htmlFor="checkOut" className="form-label">
-            Check-out
-        </label>
-        <DatePicker
-            selected={checkOutDate}
-            onChange={handleCheckOutDateChange}
-            dateFormat="d MMMM yyyy"
-            placeholderText={formatDate(checkOutDate)}
-            selectsEnd
-            startDate={checkInDate}
-            endDate={checkOutDate}
-            onChangeRaw={(e) => e.preventDefault()}
-        />
-    </div>
-</div>
+              {/* Rooms and Guests */}
+              <hr />
+              <div className="row g-3 align-items-center mt-3">
+                <div className="col-md-6">
+                  <label className="form-label">Rooms</label>
+                  <div className="input-group">
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={handleDecrementRooms}
+                    >
+                      <AddIcon />
+                    </button>
+                    <input
+                      type="number"
+                      className="form-control"
+                      style={{ width: "50px" }}
+                      placeholder="Rooms"
+                      value={roomsCount}
+                    />
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={handleIncrementRooms}
+                    >
+                      <RemoveIcon />
+                    </button>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="guests" className="form-label">
+                    Guests
+                  </label>
+                  <input
+                    type="number"
+                    style={{ width: "100%" }}
+                    className="form-control"
+                    id="guests"
+                    value={guestsCount}
+                  />
+                </div>
 
-<div class="rooms-guests">
-    <div class="input-group">
-        <label>Rooms</label>
-        <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={handleDecrementRooms}
-        >
-            <RiArrowUpDownFill />
-        </button>
-        <TextField
-            type="number"
-            style={{ width: "50px" }}
-            placeholder="Rooms"
-            value={roomsCount}
-            InputLabelProps={{
-              shrink: true,
-          }}
-        />
-        <button
-            className="btn btn-outline-secondary"
-            type="button"
-            onClick={handleIncrementRooms}
-        >
-            <RiArrowUpDownFill />
-        </button>
-    </div>
-
-    <div class="input-group">
-        <label htmlFor="guests" className="form-label">
-            Guests
-        </label>
-        <TextField
-            type="number"
-            style={{ width: "100px" }}
-            id="guests"
-            value={guestsCount}
-            InputLabelProps={{
-              shrink: true,
-          }}
-        />
-    </div>
-</div>
-
-            {/* Selected Food */}
-            <div className="selected-cotainer">
-              <div>
-                <h6>Selected Meals</h6>
-                {selectedFood.length > 0 ? (
-                  selectedFood.map((selected, index) => (
-                    <Card key={index} sx={{ maxWidth: 205 }}>
+                <hr />
+              </div>
+              {/* Selected Food */}
+              <div className="selected-cotainer">
+                <div>
+                  <h6>Selected Meals</h6>
+                  {selectedFood.length > 0 ? (
+                    selectedFood.map((selected, index) => (
+                      <Card key={index} sx={{ maxWidth: 180 }}>
+                        <CardActionArea>
+                          <CardMedia
+                            component="img"
+                            height="68"
+                            src={
+                              selected.images && selected.images.length > 0
+                                ? selected.images[0]
+                                : hotelData.images[0]
+                            }
+                            alt={`Selected Food ${index + 1} Image 1`}
+                          />
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="p"
+                              component="div"
+                            >
+                              {selected.name}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Quantity: {selected.quantity}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              Price: <CurrencyRupeeIcon />
+                              {selected.price * selected.quantity}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            color="danger"
+                            onClick={() => handleRemoveFood(selected)}
+                          >
+                            Remove
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card sx={{ maxWidth: 180 }}>
                       <CardActionArea>
                         <CardMedia
                           component="img"
-                          height="80"
+                          height="142"
+                          src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg"
+                          alt="Default Image"
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="p" component="div">
+                            Add crispy foods during your stay
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  )}
+                </div>
+                <div>
+                  <h6>Selected Rooms</h6>
+                  {selectedRooms.map((selected, index) => (
+                    <Card key={index} sx={{ maxWidth: 180 }}>
+                      <CardActionArea>
+                        <CardMedia
+                          component="img"
+                          height="90"
                           src={
                             selected.images && selected.images.length > 0
                               ? selected.images[0]
                               : hotelData.images[0]
                           }
-                          alt={`Selected Food ${index + 1} Image 1`}
+                          alt={`Selected Room ${index + 1} Image 1`}
                         />
                         <CardContent>
-                          <Typography gutterBottom variant="h5" component="div">
-                            {selected.name}
+                          <Typography gutterBottom variant="p" component="div">
+                            {selected.type}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            Quantity: {selected.quantity}
+                            Bed: {selected.bedTypes}
+                            <BedOutlinedIcon />
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
                             Price: <CurrencyRupeeIcon />
-                            {selected.price * selected.quantity}
+                            {selected.price}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
-                      <CardActions>
-                        <Button
-                          size="small"
-                          color="danger"
-                          onClick={() => handleRemoveFood(selected)}
-                        >
-                          Remove
-                        </Button>
-                      </CardActions>
+                      <CardActions></CardActions>
                     </Card>
-                  ))
-                ) : (
-                  // Render a default image and content when selectedFood is empty
-                  <Card sx={{ maxWidth: 205 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="142"
-                        src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg" // Replace with your default image path
-                        alt="Default Image"
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="p" component="div">
-                          Add crispy foods during your stay
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                )}
+                  ))}
+                </div>
               </div>
-              {/* Selected Food End */}
-              <div>
-                <h6>Selected Rooms</h6>
-                {selectedRooms.map((selected, index) => (
-                  <Card key={index} sx={{ maxWidth: 205 }}>
-                    <CardActionArea>
-                      <CardMedia
-                        component="img"
-                        height="90"
-                        src={
-                          selected.images && selected.images.length > 0
-                            ? selected.images[0]
-                            : hotelData.images[0]
-                        }
-                        alt={`Selected Room ${index + 1} Image 1`}
-                      />
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          {selected.type}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Bed: {selected.bedTypes}
-                          <BedOutlinedIcon />
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          Price: <CurrencyRupeeIcon />
-                          {selected.price}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                    <CardActions></CardActions>
-                  </Card>
-                ))}
+
+              {/* Payment Buttons */}
+              <div className="col-md-12 mt-3">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  style={{ marginRight: "35%" }}
+                >
+                  Pay now
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleBookNow}
+                >
+                  Pay at hotel
+                </Button>
               </div>
-            </div>
-
-            <div className="col-md-12 mt-3">
-              <Button
-                variant="outlined"
-                color="primary"
-                style={{ marginRight: "35%" }}
-              >
-                Pay now
-              </Button>
-
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleBookNow}
-              >
-                Pay at hotel
-              </Button>
             </div>
           </div>
           <div className="extras">
