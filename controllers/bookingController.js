@@ -90,18 +90,21 @@ const getConfirmedBookings = async (req, res) => {
   const booking = await bookingModel
     .find()
     .sort({ createdAt: -1 })
-    .populate("user");
+    .populate("users");
   const confirmedBookings = booking.filter(
     (booking) => booking.bookingStatus === "success"
   ); //dashboard
   res.json(confirmedBookings);
 };
+//===============================Get all=============================
 const getAll = async (req, res) => {
-  const booking = await bookingModel.find().sort({ createdAt: -1 });
-
+  const booking = await bookingModel
+    .find()
+    .sort({ createdAt: -1 })
+    .populate("users");
   res.json(booking);
 };
-
+//===================================================================
 const getBookingCounts = async function(req,res){
   const getCount = await bookingModel.countDocuments({})
   res.json(getCount)

@@ -15,6 +15,11 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    users: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
+      required: false,
+    },
     hotelName: {
       type: String,
     },
