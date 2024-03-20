@@ -868,21 +868,110 @@ const BookNow = () => {
             >
               <h5>Booking details</h5>
               <hr />
-              <div
-                className="booking-details-container"
-                style={{
-                  position: "sticky",
-                  top: "0",
-                  width: "100%",
-                  zIndex: "1000",
-                }}
-              >
-                <h3>
-                  <CurrencyRupeeIcon />
-                  {calculateTotalPrice()}
-                </h3>
+
+              {/* Selected Food */}
+              <div className="selected-cotainer">
+                <div>
+                  {selectedFood.length > 0 ? (
+                    selectedFood.map((selected, index) => (
+                      <Card key={index} sx={{ maxWidth: 170 }}>
+                        <CardActionArea>
+                          <CardContent>
+                            <Typography
+                              gutterBottom
+                              variant="p"
+                              component="div"
+                            >
+                              {selected.quantity} {selected.name}
+                            </Typography>
+                          </CardContent>
+                        </CardActionArea>
+                        <CardActions>
+                          <Button
+                            size="small"
+                            color="danger"
+                            onClick={() => handleRemoveFood(selected)}
+                          >
+                            Remove
+                          </Button>
+                        </CardActions>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card sx={{ maxWidth: 170 }}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="p" component="div">
+                            Add crispy foods during your stay
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  )}
+                </div>
+                <div>
+                  {selectedRooms.map((selected, index) => (
+                    <Card key={index} sx={{ maxWidth: 170 }}>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="p" component="div">
+                            {selected.type} &  {selected.bedTypes}<BedOutlinedIcon />
+                          </Typography>
+                         
+                        </CardContent>
+                      </CardActionArea>
+                      <CardActions></CardActions>
+                    </Card>
+                  ))}
+                </div>
               </div>
+
+              {/* Rooms and Guests */}
               <hr />
+              <div className="row g-3 align-items-center mt-3">
+                <div className="col-md-6">
+                  <label className="form-label">Rooms</label>
+                  <div className="input-group">
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={handleDecrementRooms}
+                    >
+                      <RemoveIcon />
+                    </button>
+                    <input
+                      type="number"
+                      className="form-control"
+                      style={{ width: "50px" }}
+                      placeholder="Rooms"
+                      value={roomsCount}
+                    />
+                    <button
+                      className="btn btn-outline-secondary"
+                      type="button"
+                      onClick={handleIncrementRooms}
+                    >
+                      <AddIcon />
+                    </button>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="guests" className="form-label">
+                    Guests
+                  </label>
+                  <input
+                    type="number"
+                    style={{ width: "100%" }}
+                    className="form-control"
+                    id="guests"
+                    value={guestsCount}
+                    onChange={(e) => handleGuestsChange(e)}
+                  />
+                </div>
+
+                <hr />
+              </div>
+
               <div class="date-selection">
                 {/* Check-in */}
                 <div className="checkIn">
@@ -918,151 +1007,20 @@ const BookNow = () => {
                   />
                 </div>
               </div>
-
-              {/* Rooms and Guests */}
-              <hr />
-              <div className="row g-3 align-items-center mt-3">
-                <div className="col-md-6">
-                  <label className="form-label">Rooms</label>
-                  <div className="input-group">
-                    <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={handleDecrementRooms}
-                    >
-                    <RemoveIcon />  
-                    </button>
-                    <input
-                      type="number"
-                      className="form-control"
-                      style={{ width: "50px" }}
-                      placeholder="Rooms"
-                      value={roomsCount}
-                    />
-                    <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={handleIncrementRooms}
-                    >
-                      <AddIcon />
-                    </button>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <label htmlFor="guests" className="form-label">
-                    Guests
-                  </label>
-                  <input
-                    type="number"
-                    style={{ width: "100%" }}
-                    className="form-control"
-                    id="guests"
-                    value={guestsCount}
-                    onChange={(e) => handleGuestsChange(e)}
-                  />
-                </div>
-
-                <hr />
+              <div
+                className="booking-details-container"
+                style={{
+                  position: "sticky",
+                  top: "0",
+                  width: "100%",
+                  zIndex: "1000",
+                }}
+              >
+                <h3>
+                  <CurrencyRupeeIcon />
+                  {calculateTotalPrice()}
+                </h3>
               </div>
-              {/* Selected Food */}
-              <div className="selected-cotainer">
-                <div>
-                  <h6>Selected Meals</h6>
-                  {selectedFood.length > 0 ? (
-                    selectedFood.map((selected, index) => (
-                      <Card key={index} sx={{ maxWidth: 170 }}>
-                        <CardActionArea>
-                          <CardMedia
-                            component="img"
-                            height="68"
-                            src={
-                              selected.images && selected.images.length > 0
-                                ? selected.images[0]
-                                : hotelData.images[0]
-                            }
-                            alt={`Selected Food ${index + 1} Image 1`}
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="p"
-                              component="div"
-                            >
-                              {selected.name}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Quantity: {selected.quantity}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                              Price: <CurrencyRupeeIcon />
-                              {selected.price * selected.quantity}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button
-                            size="small"
-                            color="danger"
-                            onClick={() => handleRemoveFood(selected)}
-                          >
-                            Remove
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    ))
-                  ) : (
-                    <Card sx={{ maxWidth: 170 }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="142"
-                          src="https://static.vecteezy.com/system/resources/previews/025/325/284/original/add-vegetables-in-pan-flat-semi-flat-colour-object-food-preparation-in-steel-pot-editable-cartoon-clip-art-icon-on-white-background-simple-spot-illustration-for-web-graphic-design-vector.jpg"
-                          alt="Default Image"
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="p" component="div">
-                            Add crispy foods during your stay
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  )}
-                </div>
-                <div>
-                  <h6>Selected Rooms</h6>
-                  {selectedRooms.map((selected, index) => (
-                    <Card key={index} sx={{ maxWidth: 170 }}>
-                      <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="90"
-                          src={
-                            selected.images && selected.images.length > 0
-                              ? selected.images[0]
-                              : hotelData.images[0]
-                          }
-                          alt={`Selected Room ${index + 1} Image 1`}
-                        />
-                        <CardContent>
-                          <Typography gutterBottom variant="p" component="div">
-                            {selected.type}
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Bed: {selected.bedTypes}
-                            <BedOutlinedIcon />
-                          </Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Price: <CurrencyRupeeIcon />
-                            {selected.price}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                      <CardActions></CardActions>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
               {/* Payment Buttons */}
               <div className="col-md-12 mt-3">
                 <Button
