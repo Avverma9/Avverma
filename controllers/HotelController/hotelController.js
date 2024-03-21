@@ -458,8 +458,6 @@ const getHotelsByFilters = async (req, res) => {
       landmark,
       starRating,
       propertyType,
-      startDate,
-      endDate,
       localId,
       countRooms,
       type,
@@ -479,12 +477,7 @@ const getHotelsByFilters = async (req, res) => {
     if (propertyType)
       filters.propertyType = { $regex: new RegExp(propertyType, "i") };
 
-    if (startDate && endDate) {
-      filters.$and = [
-        { startDate: { $lte: new Date(endDate) } },
-        { endDate: { $gte: new Date(startDate) } },
-      ];
-    }
+   
 
     if (localId) filters.localId = localId;
     if (countRooms) filters["rooms.countRooms"] = countRooms;
