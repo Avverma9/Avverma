@@ -295,7 +295,7 @@ const getByQuery = async (req, res) => {
 //================================================================================================
 const searchHotels = async (req, res) => {
   try {
-    const { city, startDate, endDate, guests, numRooms, localId } = req.query;
+    const { city, guests, numRooms, localId, startDate, endDate } = req.query;
 
     const searchQuery = {};
 
@@ -303,7 +303,7 @@ const searchHotels = async (req, res) => {
       searchQuery.city = { $regex: new RegExp(city, "i") };
     }
 
-    if (startDate && endDate) {
+    if (startDate !== null && endDate !== null) {
       if (startDate <= endDate) {
         searchQuery.startDate = { $lte: new Date(startDate) };
         searchQuery.endDate = { $gte: new Date(endDate) };
