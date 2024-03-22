@@ -4,7 +4,6 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
-import AspectRatio from "@mui/joy/AspectRatio";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -27,7 +26,10 @@ import Box from "@mui/material/Box";
 import CardContent from "@mui/joy/CardContent";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import BookmarkAdd from "@mui/icons-material/BookmarkAddOutlined";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
 
@@ -37,8 +39,10 @@ const Hotel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryString = location.search.substring(1); // Remove the leading '?'
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const apiUrl = `${baseURL}/hotels/filters?${queryString}`;
+  const apiUrl = `${baseURL}/hotels/filters?${queryString}&page=${page}`;
   console.log(apiUrl);
 
   useEffect(() => {
@@ -48,6 +52,7 @@ const Hotel = () => {
         const data = await response.json();
         console.log("coming hotel data", data);
         setHotelData(data.data);
+        setTotalPages(data.totalPages);
       } catch (error) {
         console.error("Error fetching hotel data:", error);
       } finally {
@@ -56,7 +61,7 @@ const Hotel = () => {
     };
 
     fetchData();
-  }, [apiUrl]);
+  }, [apiUrl, page]);
 
   const paths = ["/search/hotels", "/search"];
 
@@ -82,88 +87,105 @@ const Hotel = () => {
   };
 
   const defaultIcon = <DoneAllIcon />;
-  
-  return (
-    <div className="container-fluid mt-4">
-      <hr />
-      <div className="row">
-        {hotelData.map((hotel, index) => (
-          <div key={index} className="col-md-3 mb-3">
-            <Card sx={{ width: 350 }}>
-              <div>
-                <Typography level="title-lg">{hotel.hotelName}</Typography>
-                <Typography level="body-sm">
-                  {" "}
-                  <FmdGoodIcon />
-                  {hotel.city}, {hotel.state}
-                </Typography>
-                <IconButton
-                  aria-label="bookmark Bahamas Islands"
-                  variant="plain"
-                  color="neutral"
-                  size="sm"
-                  sx={{ position: "absolute", top: "0.875rem", right: ".5rem" }}
-                >
-                  {" "}
-                  {hotel.starRating.substring(0, 1)}
-                  <StarHalfIcon />
-                </IconButton>
-              </div>
-              
-              {/* Replace AspectRatio with Carousel */}
-              <Carousel>
-                {hotel.images.map((image, i) => (
-                  <Carousel.Item key={i}>
-                    <img
-                      src={image}
-                      className="d-block w-100"
-                      alt=""
-                      style={{ height: "200px", objectFit: "cover" }}
-                    />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
 
-              <CardContent>
-                {/* Amenities Section */}
-                {hotel.amenities.map((amenity, amenityIndex) => (
-        <div key={amenityIndex} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          {amenity?.amenities?.slice(0, 4).map((singleAmenity, singleAmenityIndex) => (
-            <Typography key={singleAmenityIndex} level="body-sm" style={{ margin: '5px', whiteSpace: 'nowrap' }}>
-              <IconContext.Provider value={{ size: '1.2em' }}>
-                {amenityIcons[singleAmenity] || defaultIcon}
-              </IconContext.Provider>{" "}{singleAmenity}
-            </Typography>
-          ))}
-          {/* Add more amenities details as needed */}
+  return (
+    <div className="container mt-4">
+    <hr />
+    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+      {hotelData.map((hotel, index) => (
+        <div key={index} className="col mb-3">
+          <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
+            <div>
+              <Typography level="title-sm">{hotel.hotelName}</Typography>
+              <Typography level="body-xs">
+                {" "}
+                <FmdGoodIcon />
+                {hotel.city}, {hotel.state}
+              </Typography>
+              <IconButton
+                aria-label="bookmark Bahamas Islands"
+                variant="plain"
+                color="neutral"
+                size="sm"
+                sx={{ position: "absolute", top: "0.5rem", right: ".5rem" }}
+              >
+                {" "}
+                {hotel.starRating.substring(0, 1)}
+                <StarHalfIcon />
+              </IconButton>
+            </div>
+            <Carousel>
+              {hotel.images.map((image, i) => (
+                <Carousel.Item key={i}>
+                  <img
+                    src={image}
+                    className="d-block w-100"
+                    alt=""
+                    style={{ height: "150px", objectFit: "cover" }}
+                  />
+                </Carousel.Item>
+              ))}
+            </Carousel>
+            <CardContent style={{ maxHeight: '30px', overflow: 'hidden' }}>
+              {/* Amenities Section */}
+              {hotel.amenities.map((amenity, amenityIndex) => (
+                <div key={amenityIndex} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', maxHeight: '30px', overflow: 'hidden' }}>
+                  {amenity?.amenities?.slice(0, 4).map((singleAmenity, singleAmenityIndex) => (
+                    <Typography key={singleAmenityIndex} level="body-xs" style={{ margin: '5px', whiteSpace: 'nowrap', maxHeight: '30px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <IconContext.Provider value={{ size: '1.2em' }}>
+                        {amenityIcons[singleAmenity] || defaultIcon}
+                      </IconContext.Provider>{" "}
+                      {singleAmenity}
+                    </Typography>
+                  ))}
+                </div>
+              ))}
+            </CardContent>
+            <CardContent orientation="horizontal">
+              <div>
+                <Typography level="body-xs">Price:</Typography>
+                <Typography fontSize="sm" fontWeight="lg">
+                  <CurrencyRupeeIcon /> {hotel.price}
+                </Typography>
+              </div>
+            </CardContent>
+            <Button
+              variant="solid"
+              size="sm"
+              color="primary"
+              aria-label="Explore Bahamas Islands"
+              sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+              onClick={() => handleBuy(hotel.hotelId)}
+            >
+              View details
+            </Button>
+          </Card>
         </div>
       ))}
-              </CardContent>
-              
-              <CardContent orientation="horizontal">
-                <div>
-                  <Typography level="body-xs">Price:</Typography>
-                  <Typography fontSize="lg" fontWeight="lg">
-                    <CurrencyRupeeIcon /> {hotel.price}
-                  </Typography>
-                </div>
-              </CardContent>
-              
-              <Button
-                variant="solid"
-                size="md"
-                color="primary"
-                aria-label="Explore Bahamas Islands"
-                sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-                onClick={() => handleBuy(hotel.hotelId)}
-              >
-                View details
-              </Button>
-            </Card>
-          </div>
-        ))}
-      </div>
     </div>
+    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+      <Pagination
+        count={totalPages}
+        page={page}
+        onChange={(event, value) => setPage(value)}
+        renderItem={(item) => (
+          <PaginationItem
+            component="a"
+            {...item}
+            onClick={(event) => {
+              if (item.type !== 'start-ellipsis' && item.type !== 'end-ellipsis') {
+                setPage(item.page);
+              }
+            }}
+          />
+        )}
+        shape="rounded"
+        size="large"
+      />
+    </Box>
+  </div>
+  
+
   );
 };
 

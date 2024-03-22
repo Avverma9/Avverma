@@ -1,4 +1,12 @@
+/* Global styles for small screens */
+@media (max-width: 600px) {
+  * {
+    margin-left: 1px;
+    margin-right:1px;
+  }
+}
 
+/* Specific styles for other elements if needed */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
