@@ -8,6 +8,16 @@ import Accordion from "@mui/material/Accordion";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { format, addDays } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -58,6 +68,10 @@ const BookNow = () => {
   const [checkOutDate, setCheckOutDate] = useState(tomorrow);
   const roomsRef = useRef(null);
   const foodsRef = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const formatDate = (date) => {
     if (!date) return "";
 
@@ -318,6 +332,23 @@ const BookNow = () => {
       alert("Check-in and Check-out dates cannot be the same.");
     }
   };
+
+  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+      padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+      padding: theme.spacing(1),
+    },
+  }));
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
   return (
     <div className="book-now-container">
       {hotelData ? (
@@ -745,7 +776,7 @@ const BookNow = () => {
                           <input
                             type="number"
                             className="form-control"
-                            style={{ width: "50px", marginRight: "4px" }}
+                            style={{ width: "50px" }}
                             placeholder="Rooms"
                             value={roomsCount}
                             readOnly
@@ -939,7 +970,7 @@ const BookNow = () => {
               >
                 <div style={{ flex: 1 }}>
                   {selectedFood.length > 0 ? (
-                    <Card style={{ marginBottom: "10px" }}>
+                    <Card style={{ marginBottom: "10px" , height:"50px", overflow:"auto"}}>
                       <CardContent>
                         {selectedFood.map((selected, index) => (
                           <div
@@ -955,9 +986,10 @@ const BookNow = () => {
                               variant="body1"
                               component="div"
                             >
-                              {selected.quantity} {selected.name}
+                            <p style={{fontSize:"12px"}}> {selected.quantity} {selected.name} </p> 
                             </Typography>
                             <Button
+                            style={{fontSize:"9px"}}
                               size="small"
                               color="secondary"
                               onClick={() => handleRemoveFood(selected)}
@@ -976,7 +1008,7 @@ const BookNow = () => {
                           variant="body1"
                           component="div"
                         >
-                          Add crispy food during your stay
+                        <p style={{fontSize:"12px"}}>Add crispy food during your stay </p>  
                         </Typography>
                       </CardContent>
                     </Card>
@@ -1014,8 +1046,8 @@ const BookNow = () => {
                           variant="body1"
                           component="div"
                         >
-                          {selected.type} & {selected.bedTypes}{" "}
-                          <BedOutlinedIcon />
+                         <p style={{fontSize:"12px"}}>{selected.type} & {selected.bedTypes}{" "}<BedOutlinedIcon /></p> 
+                          
                         </Typography>
                       </CardContent>
                     </Card>
@@ -1035,20 +1067,22 @@ const BookNow = () => {
 
               <hr />
               <div className="date-selection mt-3">
-                <div className="check-in">
+                <div className="check-in" style={{width:"100px"}}>
                   <p>Rooms</p>
                   <div className="input-group">
-                    <button
+                  <button
                       className="btn btn-outline-secondary"
                       type="button"
                       onClick={handleDecrementRooms}
+                      style={{width:"2px"}}
                     >
                       -
                     </button>
                     <input
+                    
                       type="number"
                       className="form-control"
-                      style={{ width: "50px", marginRight: "4px" }}
+                      style={{ width: "15px" }}
                       placeholder="Rooms"
                       value={roomsCount}
                       readOnly
@@ -1057,6 +1091,7 @@ const BookNow = () => {
                       className="btn btn-outline-secondary"
                       type="button"
                       onClick={handleIncrementRooms}
+                      style={{width:"2px"}}
                     >
                       +
                     </button>
@@ -1135,98 +1170,88 @@ const BookNow = () => {
               </div>
             </div>
           </div>
-          <div className="extras">
-            <div className="hotel-policies-container">
-              {hotelData.policies.map((policy, index) => (
-                <Accordion
-                  key={index}
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  slotProps={{ transition: { timeout: 400 } }}
-                  sx={{
-                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-                    "& .MuiAccordionDetails-root": {
-                      display: expanded ? "block" : "none",
-                    },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`panel${index + 1}-content`}
-                    id={`panel${index + 1}-header`}
-                  >
-                    <Typography>Hotel Policies</Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Typography>
-                      <div className="policy-container">
-                        <p>Local ID:</p>
+          <hr />
+          <React.Fragment>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <span style={{ marginRight: '8px' }}></span>
+  <Button variant="outlined" onClick={handleClickOpen}>
+    Read our policies, Terms & conditios ...
+  </Button>
+</div>
 
-                        {hotelData.localId}
-                        <hr />
+    
+      <BootstrapDialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        PaperProps={{
+          sx: {
+            width: '100%', // Set width to 100%
+            maxWidth: 'none', // Override BootstrapDialog's default maxWidth
+          },
+        }}
+      >
+        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+          Our Policies
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          {hotelData.policies.map((policy, index) => (
+            <React.Fragment key={index}>
+              <Typography gutterBottom sx={{ fontSize: isSmallScreen ? '0.8rem' : 'inherit' }}>
+                <p>Local ID- {hotelData.localId}</p>
+                <hr />
+                <p>Hotel's Policy - {policy.hotelsPolicy}</p>
+                <hr />
+                <div className="checkIn-policy">
+                  <p>Check In Policy - {policy.checkInPolicy}</p>
+                  <p>Check Out Policy - {policy.checkOutPolicy}</p>
+                </div>
+                <hr />
+                <p>Outside Food Policy: {policy.outsideFoodPolicy}</p>
+                <hr />
+                <p>Cancellation Policy: {policy.cancellationPolicy}</p>
+                <hr />
+                <p>Payment Mode - {policy.paymentMode}</p>
+                <hr />
+                <p>Pets Allowed - {policy.petsAllowed}</p>
+                <hr />
+                <p>Bachelor Allowed - {policy.bachelorAllowed}</p>
+                <hr />
+                <p>Smoking Allowed - {policy.smokingAllowed}</p>
+                <hr />
+                <p>Alcohol Allowed - {policy.alcoholAllowed}</p>
+                <hr />
+                <p>Unmarried Couples Allowed - {policy.unmarriedCouplesAllowed}</p>
+                <hr />
+                <p>International Guest Allowed - {policy.internationalGuestAllowed}</p>
+                <hr />
+                <p>Return Policy - {policy.returnPolicy}</p>
+                <hr />
+              </Typography>
+            </React.Fragment>
+          ))}
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={handleClose}>
+            I read
+          </Button>
+        </DialogActions>
+      </BootstrapDialog>
+    </React.Fragment>
 
-                        <React.Fragment key={index}>
-                          <p>Hotel's Policy</p>
-                          {policy.hotelsPolicy}
-                          <hr />
-                          <div className="checkIn-policy">
-                            <p>Check In Policy:</p>
 
-                            {policy.checkInPolicy}
-
-                            <p>Check Out Policy:</p>
-
-                            {policy.checkOutPolicy}
-                          </div>
-                          <hr />
-                          <p>Outside Food Policy:</p>
-
-                          {policy.outsideFoodPolicy}
-                          <hr />
-                          <p>Cancellation Policy:</p>
-
-                          {policy.cancellationPolicy}
-                          <hr />
-                          <p>Payment Mode:</p>
-
-                          {policy.paymentMode}
-                          <hr />
-                          <p>Pets Allowed:</p>
-
-                          {policy.petsAllowed}
-                          <hr />
-                          <p>Bachelor Allowed:</p>
-
-                          {policy.bachelorAllowed}
-                          <hr />
-                          <p>Smoking Allowed:</p>
-
-                          {policy.smokingAllowed}
-                          <hr />
-                          <p>Alcohol Allowed:</p>
-
-                          {policy.alcoholAllowed}
-                          <hr />
-                          <p>Unmarried Couples Allowed:</p>
-
-                          {policy.unmarriedCouplesAllowed}
-                          <hr />
-                          <p>International Guest Allowed:</p>
-
-                          {policy.internationalGuestAllowed}
-                          <hr />
-                          <p>Return Policy:</p>
-
-                          {policy.returnPolicy}
-                          <hr />
-                        </React.Fragment>
-                      </div>
-                    </Typography>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            </div>
-          </div>
         </>
       ) : (
         <Box sx={{ width: "100%" }}>

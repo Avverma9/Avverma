@@ -30,7 +30,7 @@ export default function Bottom() {
             }}
           >
             <BottomNavigationAction href='/login' label="Login/register" icon={<LoginIcon />} />
-            <BottomNavigationAction href='/partner' label="Be a partner" icon={<HandshakeIcon />} />
+            <BottomNavigationAction href='/partner' label="Partner" icon={<HandshakeIcon />} />
             <BottomNavigationAction href='/' label="Home" icon={<HomeWorkTwoToneIcon />} />
             <BottomNavigationAction href='/profile' label="Profile" icon={<AccountCircleIcon />} />
           </BottomNavigation>
