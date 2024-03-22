@@ -2,22 +2,27 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Face4TwoToneIcon from '@mui/icons-material/Face4TwoTone';
+import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
+import LunchDiningTwoToneIcon from '@mui/icons-material/LunchDiningTwoTone';
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled } from "@mui/material/styles";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import ConfirmationNumberTwoToneIcon from '@mui/icons-material/ConfirmationNumberTwoTone';
+import { FaPlus, FaMinus } from "react-icons/fa";
 import { format, addDays } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -71,7 +76,7 @@ const BookNow = () => {
   const [open, setOpen] = useState(false);
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const formatDate = (date) => {
     if (!date) return "";
 
@@ -227,7 +232,19 @@ const BookNow = () => {
     const newRoomsCount = Math.ceil(validGuestsCount / 3);
     setRoomsCount(newRoomsCount);
   };
+  const handleIncrementGuests = () => {
+    setGuestsCount(guestsCount + 1);
+    const newRoomsCount = Math.ceil((guestsCount + 1) / 3);
+    setRoomsCount(newRoomsCount);
+  };
 
+  const handleDecrementGuests = () => {
+    if (guestsCount > 1) {
+      setGuestsCount(guestsCount - 1);
+      const newRoomsCount = Math.ceil((guestsCount - 1) / 3);
+      setRoomsCount(newRoomsCount);
+    }
+  };
   const handleBookNow = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -334,10 +351,10 @@ const BookNow = () => {
   };
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
+    "& .MuiDialogContent-root": {
       padding: theme.spacing(2),
     },
-    '& .MuiDialogActions-root': {
+    "& .MuiDialogActions-root": {
       padding: theme.spacing(1),
     },
   }));
@@ -347,7 +364,6 @@ const BookNow = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
 
   return (
     <div className="book-now-container">
@@ -534,7 +550,7 @@ const BookNow = () => {
             Select our special rooms
           </h6>
           <div
-            className="extras" 
+            className="extras"
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
             <div className="container-fluid">
@@ -542,7 +558,7 @@ const BookNow = () => {
                 {/* Booking details */}
 
                 {/* Special rooms */}
-                <div  className="col-md-8">
+                <div className="col-md-8">
                   <div className="container mt-3">
                     <div className="d-flex flex-wrap gap-2">
                       {" "}
@@ -653,7 +669,7 @@ const BookNow = () => {
                       borderRadius: "20px",
                     }}
                   >
-                    <h5 style={{ marginBottom: "20px" }}>Booking Details</h5>
+                    <h5 > <ConfirmationNumberTwoToneIcon/> Booking Details </h5>
                     <hr />
 
                     {/* Selected Food */}
@@ -667,7 +683,7 @@ const BookNow = () => {
                     >
                       <div style={{ flex: 1 }}>
                         {selectedFood.length > 0 ? (
-                          <Card style={{ marginBottom: "10px" }}>
+                          <div >
                             <CardContent>
                               {selectedFood.map((selected, index) => (
                                 <div
@@ -675,7 +691,7 @@ const BookNow = () => {
                                   style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-                                    marginBottom: "5px",
+                                
                                   }}
                                 >
                                   <Typography
@@ -695,19 +711,20 @@ const BookNow = () => {
                                 </div>
                               ))}
                             </CardContent>
-                          </Card>
+                          </div>
                         ) : (
-                          <Card style={{ height: "50px" }}>
+                          <div style={{ height: "50px" }}>
                             <CardContent>
                               <Typography
                                 gutterBottom
                                 variant="body1"
                                 component="div"
                               >
-                                Add crispy food during your stay
+                               
+                                Add crispy food during your stay <LunchDiningTwoToneIcon/>
                               </Typography>
                             </CardContent>
-                          </Card>
+                          </div>
                         )}
                       </div>
 
@@ -732,7 +749,7 @@ const BookNow = () => {
                     >
                       <div style={{ flex: 1 }}>
                         {selectedRooms.map((selected, index) => (
-                          <Card
+                          <div
                             key={index}
                             style={{ height: "50px", marginRight: "10px" }}
                           >
@@ -746,7 +763,7 @@ const BookNow = () => {
                                 <BedOutlinedIcon />
                               </Typography>
                             </CardContent>
-                          </Card>
+                          </div>
                         ))}
                       </div>
                       <Button
@@ -762,52 +779,101 @@ const BookNow = () => {
                     {/* Rooms and Guests */}
 
                     <hr />
+                    <label
+                      style={{
+                        fontFamily: "Arial, sans-serif",
+                        fontSize: "14px",
+                        color: "#555",
+                        fontWeight: "bold",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                    
+                      Rooms <MeetingRoomTwoToneIcon/>& Guests <Face4TwoToneIcon/>
+                    </label>
+
                     <div className="date-selection mt-3">
-                      <div className="check-in">
-                        <p>Rooms</p>
-                        <div className="input-group">
-                          <button
-                            className="btn btn-outline-secondary"
-                            type="button"
-                            onClick={handleDecrementRooms}
-                          >
-                            -
-                          </button>
-                          <input
-                            type="number"
-                            className="form-control"
-                            style={{ width: "50px" }}
-                            placeholder="Rooms"
-                            value={roomsCount}
-                            readOnly
-                          />
-                          <button
-                            className="btn btn-outline-secondary"
-                            type="button"
-                            onClick={handleIncrementRooms}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-                      <div className="check-out">
-                        <p>Guests</p>
+                      <div
+                        className="check-in"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={handleDecrementRooms}
+                          style={{ minWidth: "25px" }} // Adjusted min width
+                        >
+                          <FaMinus />
+                        </button>
                         <input
                           type="number"
                           className="form-control"
-                          style={{ width: "calc(100% - 8px)" }}
+                          style={{ width: "90px", textAlign: "center" }} // Center align input
+                          placeholder="Rooms"
+                          value={roomsCount}
+                          readOnly
+                        />
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={handleIncrementRooms}
+                          style={{ minWidth: "25px" }} // Adjusted min width
+                        >
+                          <FaPlus />
+                        </button>
+                      </div>
+                      <div
+                        className="check-out"
+                        style={{ display: "flex", alignItems: "center" }}
+                      >
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={handleDecrementGuests}
+                          style={{ minWidth: "25px" }} // Adjusted min width
+                        >
+                          <FaMinus />
+                        </button>
+                        <input
+                          type="number"
+                          className="form-control"
+                          style={{ width: "90px", textAlign: "center" }} // Center align input
                           placeholder="Guests"
                           value={guestsCount}
-                          onChange={(e) => handleGuestsChange(e)}
+                          readOnly
                         />
+                        <button
+                          className="btn btn-outline-secondary"
+                          type="button"
+                          onClick={handleIncrementGuests}
+                          style={{ minWidth: "25px" }} // Adjusted min width
+                        >
+                          <FaPlus />
+                        </button>
                       </div>
                     </div>
 
                     {/* Date Selection */}
                     <hr />
-                    <div className="date-selection mt-3">
-                      <div className="check-in">
-                        <p>Check-in</p>
+                    <div
+                      className="date-selection mt-3"
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div className="check-in" style={{ marginRight: "20px" }}>
+                        <p
+                          style={{
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            fontSize: "14px",
+                            color: "#333",
+                          }}
+                        >
+                          Check-in <InventoryTwoToneIcon/>
+                        </p>
                         <DatePicker
                           selected={checkInDate}
                           onChange={handleCheckInDateChange}
@@ -821,7 +887,16 @@ const BookNow = () => {
                         />
                       </div>
                       <div className="check-out">
-                        <p>Check-out</p>
+                        <p
+                          style={{
+                            marginBottom: "5px",
+                            fontWeight: "bold",
+                            fontSize: "14px",
+                            color: "#333",
+                          }}
+                        >
+                          Check-out <InventoryTwoToneIcon/>
+                        </p>
                         <DatePicker
                           selected={checkOutDate}
                           onChange={handleCheckOutDateChange}
@@ -839,10 +914,17 @@ const BookNow = () => {
                     {/* Total Price */}
                     <div
                       className="total-price mt-3"
-                      style={{ textAlign: "center" }}
+                      style={{ marginTop: "3rem" }}
                     >
-                      <h3>
-                        <CurrencyRupeeIcon /> {calculateTotalPrice()}
+                      <h3
+                        style={{
+                          fontSize: "1.5rem",
+                          color: "red",
+                          fontFamily: "Arial, sans-serif",
+                        }}
+                      >
+                        <CurrencyRupeeIcon />
+                        {calculateTotalPrice()}
                       </h3>
                     </div>
 
@@ -956,7 +1038,7 @@ const BookNow = () => {
                 borderRadius: "20px",
               }}
             >
-              <h5 style={{ marginBottom: "20px" }}>Booking Details</h5>
+              <h5 style={{ marginBottom: "20px" }}><ConfirmationNumberTwoToneIcon/> Booking Details </h5>
               <hr />
 
               {/* Selected Food */}
@@ -970,7 +1052,13 @@ const BookNow = () => {
               >
                 <div style={{ flex: 1 }}>
                   {selectedFood.length > 0 ? (
-                    <Card style={{ marginBottom: "10px" , height:"50px", overflow:"auto"}}>
+                    <div
+                      style={{
+                        marginBottom: "10px",
+                        height: "50px",
+                        overflow: "auto",
+                      }}
+                    >
                       <CardContent>
                         {selectedFood.map((selected, index) => (
                           <div
@@ -986,10 +1074,13 @@ const BookNow = () => {
                               variant="body1"
                               component="div"
                             >
-                            <p style={{fontSize:"12px"}}> {selected.quantity} {selected.name} </p> 
+                              <p style={{ fontSize: "12px" }}>
+                                {" "}
+                                {selected.quantity} {selected.name}{" "}
+                              </p>
                             </Typography>
                             <Button
-                            style={{fontSize:"9px"}}
+                              style={{ fontSize: "9px" }}
                               size="small"
                               color="secondary"
                               onClick={() => handleRemoveFood(selected)}
@@ -999,19 +1090,21 @@ const BookNow = () => {
                           </div>
                         ))}
                       </CardContent>
-                    </Card>
+                    </div>
                   ) : (
-                    <Card style={{ height: "50px" }}>
+                    <div style={{ height: "50px" }}>
                       <CardContent>
                         <Typography
                           gutterBottom
                           variant="body1"
                           component="div"
                         >
-                        <p style={{fontSize:"12px"}}>Add crispy food during your stay </p>  
+                          <p style={{ fontSize: "12px" }}>
+                            Add crispy food during your stay{" "}<LunchDiningTwoToneIcon/>
+                          </p>
                         </Typography>
                       </CardContent>
-                    </Card>
+                    </div>
                   )}
                 </div>
 
@@ -1036,7 +1129,7 @@ const BookNow = () => {
               >
                 <div style={{ flex: 1 }}>
                   {selectedRooms.map((selected, index) => (
-                    <Card
+                    <div
                       key={index}
                       style={{ height: "50px", marginRight: "10px" }}
                     >
@@ -1046,11 +1139,13 @@ const BookNow = () => {
                           variant="body1"
                           component="div"
                         >
-                         <p style={{fontSize:"12px"}}>{selected.type} & {selected.bedTypes}{" "}<BedOutlinedIcon /></p> 
-                          
+                          <p style={{ fontSize: "12px" }}>
+                            {selected.type} & {selected.bedTypes}{" "}
+                            <BedOutlinedIcon />
+                          </p>
                         </Typography>
                       </CardContent>
-                    </Card>
+                    </div>
                   ))}
                 </div>
                 <Button
@@ -1066,55 +1161,73 @@ const BookNow = () => {
               {/* Rooms and Guests */}
 
               <hr />
+             
+              <label>Rooms <MeetingRoomTwoToneIcon/>  & Guests <Face4TwoToneIcon/></label>
               <div className="date-selection mt-3">
-                <div className="check-in" style={{width:"100px"}}>
-                  <p>Rooms</p>
-                  <div className="input-group">
+                <div
+                  className="check-in"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
                   <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={handleDecrementRooms}
-                      style={{width:"2px"}}
-                    >
-                      -
-                    </button>
-                    <input
-                    
-                      type="number"
-                      className="form-control"
-                      style={{ width: "15px" }}
-                      placeholder="Rooms"
-                      value={roomsCount}
-                      readOnly
-                    />
-                    <button
-                      className="btn btn-outline-secondary"
-                      type="button"
-                      onClick={handleIncrementRooms}
-                      style={{width:"2px"}}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="check-out">
-                  <p>Guests</p>
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={handleDecrementRooms}
+                    style={{ minWidth: "25px" }} // Adjusted min width
+                  >
+                    <FaMinus />
+                  </button>
                   <input
                     type="number"
                     className="form-control"
-                    style={{ width: "calc(100% - 8px)" }}
+                    style={{ width: "50px", textAlign: "center" }} // Center align input
+                    placeholder="Rooms"
+                    value={roomsCount}
+                    readOnly
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={handleIncrementRooms}
+                    style={{ minWidth: "25px" }} // Adjusted min width
+                  >
+                    <FaPlus />
+                  </button>
+                </div>
+                <div
+                  className="check-out"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={handleDecrementGuests}
+                    style={{ minWidth: "25px" }} // Adjusted min width
+                  >
+                    <FaMinus />
+                  </button>
+                  <input
+                    type="number"
+                    className="form-control"
+                    style={{ width: "50px", textAlign: "center" }} // Center align input
                     placeholder="Guests"
                     value={guestsCount}
-                    onChange={(e) => handleGuestsChange(e)}
+                    readOnly
                   />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={handleIncrementGuests}
+                    style={{ minWidth: "25px" }} // Adjusted min width
+                  >
+                    <FaPlus />
+                  </button>
                 </div>
               </div>
-
               {/* Date Selection */}
               <hr />
               <div className="date-selection mt-3">
                 <div className="check-in">
-                  <p>Check-in</p>
+                  <p>Check-in <InventoryTwoToneIcon/></p>
                   <DatePicker
                     selected={checkInDate}
                     onChange={handleCheckInDateChange}
@@ -1128,7 +1241,7 @@ const BookNow = () => {
                   />
                 </div>
                 <div className="check-out">
-                  <p>Check-out</p>
+                  <p>Check-out <InventoryTwoToneIcon/></p>
                   <DatePicker
                     selected={checkOutDate}
                     onChange={handleCheckOutDateChange}
@@ -1144,8 +1257,14 @@ const BookNow = () => {
               </div>
 
               {/* Total Price */}
-              <div className="total-price mt-3" style={{ textAlign: "center" }}>
-                <h3>
+              <div className="total-price mt-3" style={{ marginTop: "3rem" }}>
+                <h3
+                  style={{
+                    fontSize: "1.5rem",
+                    color: "red",
+                    fontFamily: "Arial, sans-serif",
+                  }}
+                >
                   <CurrencyRupeeIcon /> {calculateTotalPrice()}
                 </h3>
               </div>
@@ -1172,86 +1291,98 @@ const BookNow = () => {
           </div>
           <hr />
           <React.Fragment>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-  <span style={{ marginRight: '8px' }}></span>
-  <Button variant="outlined" onClick={handleClickOpen}>
-    Read our policies, Terms & conditios ...
-  </Button>
-</div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span style={{ marginRight: "8px" }}></span>
+              <Button variant="outlined" onClick={handleClickOpen}>
+                Read our policies, Terms & conditios ...
+              </Button>
+            </div>
 
-    
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-        PaperProps={{
-          sx: {
-            width: '100%', // Set width to 100%
-            maxWidth: 'none', // Override BootstrapDialog's default maxWidth
-          },
-        }}
-      >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Our Policies
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          {hotelData.policies.map((policy, index) => (
-            <React.Fragment key={index}>
-              <Typography gutterBottom sx={{ fontSize: isSmallScreen ? '0.8rem' : 'inherit' }}>
-                <p>Local ID- {hotelData.localId}</p>
-                <hr />
-                <p>Hotel's Policy - {policy.hotelsPolicy}</p>
-                <hr />
-                <div className="checkIn-policy">
-                  <p>Check In Policy - {policy.checkInPolicy}</p>
-                  <p>Check Out Policy - {policy.checkOutPolicy}</p>
-                </div>
-                <hr />
-                <p>Outside Food Policy: {policy.outsideFoodPolicy}</p>
-                <hr />
-                <p>Cancellation Policy: {policy.cancellationPolicy}</p>
-                <hr />
-                <p>Payment Mode - {policy.paymentMode}</p>
-                <hr />
-                <p>Pets Allowed - {policy.petsAllowed}</p>
-                <hr />
-                <p>Bachelor Allowed - {policy.bachelorAllowed}</p>
-                <hr />
-                <p>Smoking Allowed - {policy.smokingAllowed}</p>
-                <hr />
-                <p>Alcohol Allowed - {policy.alcoholAllowed}</p>
-                <hr />
-                <p>Unmarried Couples Allowed - {policy.unmarriedCouplesAllowed}</p>
-                <hr />
-                <p>International Guest Allowed - {policy.internationalGuestAllowed}</p>
-                <hr />
-                <p>Return Policy - {policy.returnPolicy}</p>
-                <hr />
-              </Typography>
-            </React.Fragment>
-          ))}
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            I read
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </React.Fragment>
-
-
+            <BootstrapDialog
+              onClose={handleClose}
+              aria-labelledby="customized-dialog-title"
+              open={open}
+              PaperProps={{
+                sx: {
+                  width: "100%", // Set width to 100%
+                  maxWidth: "none", // Override BootstrapDialog's default maxWidth
+                },
+              }}
+            >
+              <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                Our Policies
+              </DialogTitle>
+              <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <DialogContent dividers>
+                {hotelData.policies.map((policy, index) => (
+                  <React.Fragment key={index}>
+                    <Typography
+                      gutterBottom
+                      sx={{ fontSize: isSmallScreen ? "0.8rem" : "inherit" }}
+                    >
+                      <p>Local ID- {hotelData.localId}</p>
+                      <hr />
+                      <p>Hotel's Policy - {policy.hotelsPolicy}</p>
+                      <hr />
+                      <div className="checkIn-policy">
+                        <p>Check In Policy - {policy.checkInPolicy}</p>
+                        <p>Check Out Policy - {policy.checkOutPolicy}</p>
+                      </div>
+                      <hr />
+                      <p>Outside Food Policy: {policy.outsideFoodPolicy}</p>
+                      <hr />
+                      <p>Cancellation Policy: {policy.cancellationPolicy}</p>
+                      <hr />
+                      <p>Payment Mode - {policy.paymentMode}</p>
+                      <hr />
+                      <p>Pets Allowed - {policy.petsAllowed}</p>
+                      <hr />
+                      <p>Bachelor Allowed - {policy.bachelorAllowed}</p>
+                      <hr />
+                      <p>Smoking Allowed - {policy.smokingAllowed}</p>
+                      <hr />
+                      <p>Alcohol Allowed - {policy.alcoholAllowed}</p>
+                      <hr />
+                      <p>
+                        Unmarried Couples Allowed -{" "}
+                        {policy.unmarriedCouplesAllowed}
+                      </p>
+                      <hr />
+                      <p>
+                        International Guest Allowed -{" "}
+                        {policy.internationalGuestAllowed}
+                      </p>
+                      <hr />
+                      <p>Return Policy - {policy.returnPolicy}</p>
+                      <hr />
+                    </Typography>
+                  </React.Fragment>
+                ))}
+              </DialogContent>
+              <DialogActions>
+                <Button autoFocus onClick={handleClose}>
+                  I read
+                </Button>
+              </DialogActions>
+            </BootstrapDialog>
+          </React.Fragment>
         </>
       ) : (
         <Box sx={{ width: "100%" }}>

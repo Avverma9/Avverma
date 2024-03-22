@@ -324,3 +324,22 @@
 .datepicker-input{
   width: 150px;
 }
+.btn-circle {
+  border-radius: 50%;
+  padding: 12px; /* Increased padding */
+  margin: 0 5px; /* Added margin for spacing */
+}
+
+.btn-circle:hover {
+  background-color: #f0f0f0;
+}
+
+.form-control {
+  padding: 6px; /* Increased padding */
+ 
+}
+
+.form-control:focus {
+  border-color: #007bff; /* Added focus border color */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Added focus shadow */
+}
