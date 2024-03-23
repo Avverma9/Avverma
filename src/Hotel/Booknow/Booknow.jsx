@@ -369,27 +369,33 @@ const BookNow = () => {
     <div className="book-now-container">
       {hotelData ? (
         <>
-          <div
-            id="carouselExample"
-            className="carousel slide mb-4"
-            data-bs-ride="carousel"
-          >
-            <div className="carousel-inner">
-              {hotelData.images &&
-                hotelData.images.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`carousel-item ${index === 0 ? "active" : ""}`}
-                  >
-                    <img
-                      src={image}
-                      className="d-block w-100"
-                      alt={`Hotel Image ${index + 1}`}
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
+        <div
+  id="carouselExample"
+  className="carousel slide mb-4"
+  data-bs-ride="carousel"
+  data-bs-interval="2000" // Set auto-slide interval to 2 seconds (2000 milliseconds)
+  style={{ maxHeight: "500px" }} // Set maximum height for the carousel
+>
+  <div className="carousel-inner">
+    {hotelData.images &&
+      hotelData.images.map((image, index) => (
+        <div
+          key={index}
+          className={`carousel-item ${index === 0 ? "active" : ""}`}
+          style={{ maxHeight: "500px" }} // Set maximum height for each carousel item
+        >
+          <img
+            src={image}
+            className="d-block w-100"
+            alt={`Hotel Image ${index + 1}`}
+            style={{ maxHeight: "500px", objectFit: "cover" }} // Adjust image height and maintain aspect ratio
+          />
+        </div>
+      ))}
+  </div>
+</div>
+
+
           <button
             className="carousel-control-prev"
             type="button"
@@ -566,8 +572,8 @@ const BookNow = () => {
                           <Card sx={{ display: "flex", width: "250%" }}>
                             <CardMedia
                               component="img"
-                              height="180px"
-                              style={{ objectFit: "cover", width: "200px" }}
+                              height="130px"
+                              style={{ objectFit: "cover", width: "300px" }}
                               src={
                                 room.images && room.images.length > 0
                                   ? room.images[0]
@@ -1023,19 +1029,20 @@ const BookNow = () => {
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
             {hotelData.foods.map((foodArray, index) => (
-              <Card key={index} sx={{ maxWidth: 150 }}>
-                <CardActionArea>
+              <Card key={index} sx={{ width: 500 }}>
+                <CardActionArea style={{ display: "flex" }}>
                   <CardMedia
                     component="img"
-                    height="100"
+                    height="140"
+                    width="100px"
                     src={
                       foodArray.images && foodArray.images.length > 0
-                        ? foodArray.images
+                        ? foodArray.images[0]
                         : hotelData.images[0]
                     }
                     alt={`Food ${index + 1} Image 1`}
                   />
-                  <CardContent>
+                  <CardContent style={{ flex: "1 0 auto" }}>
                     <Typography
                       gutterBottom
                       variant="subtitle2"
@@ -1057,22 +1064,21 @@ const BookNow = () => {
                     >
                       Price: <CurrencyRupeeIcon style={{ fontSize: "small" }} />
                       {foodArray.price}
+                      <CardActions>
+                        <Button
+                          size="small"
+                          color="danger"
+                          onClick={() => handleAddFood(foodArray)}
+                        >
+                          Add +1
+                        </Button>
+                      </CardActions>
                     </Typography>
                   </CardContent>
                 </CardActionArea>
-                <CardActions>
-                  <Button
-                    size="small"
-                    color="danger"
-                    onClick={() => handleAddFood(foodArray)}
-                  >
-                    Add +1
-                  </Button>
-                </CardActions>
               </Card>
             ))}
           </div>
-          <hr />
           {/* for mobile view */}
           <div className="col-md-4 d-block d-md-none">
             <div
