@@ -2,13 +2,13 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Face4TwoToneIcon from '@mui/icons-material/Face4TwoTone';
-import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
-import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
+import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
+import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
+import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
-import LunchDiningTwoToneIcon from '@mui/icons-material/LunchDiningTwoTone';
+import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -21,7 +21,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import ConfirmationNumberTwoToneIcon from '@mui/icons-material/ConfirmationNumberTwoTone';
+import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { format, addDays } from "date-fns";
 import AddIcon from "@mui/icons-material/Add";
@@ -33,7 +33,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea, CardActions } from "@mui/material";
+import { CardActionArea, CardActions, Grid } from "@mui/material";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IconContext } from "react-icons";
@@ -557,29 +557,17 @@ const BookNow = () => {
               <div className="row">
                 {/* Booking details */}
 
-                {/* Special rooms */}
-                <div className="col-md-8">
+                {/* Special rooms  desktop view*/}
+                <div className="col-md-8 d-none d-sm-block">
                   <div className="container mt-3">
-                    <div className="d-flex flex-wrap gap-2">
-                      {" "}
-                      {/* Reduced gap */}
+                    <Grid container spacing={2}>
                       {hotelData.rooms.map((room, index) => (
-                        <Card
-                          key={index}
-                          sx={{
-                            maxWidth: 150, // Reduced maxWidth
-                            width: "100%",
-                            height: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                          }}
-                        >
-                          <CardActionArea style={{ flex: 1 }}>
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                          <Card sx={{ display: "flex", width: "250%" }}>
                             <CardMedia
                               component="img"
-                              height="100"
-                              width="150px" // Reduced width
-                              style={{ objectFit: "cover" }}
+                              height="180px"
+                              style={{ objectFit: "cover", width: "200px" }}
                               src={
                                 room.images && room.images.length > 0
                                   ? room.images[0]
@@ -587,72 +575,152 @@ const BookNow = () => {
                               }
                               alt={`Room ${index + 1} Image 1`}
                             />
-                          </CardActionArea>
-                          <CardContent style={{ flex: "none" }}>
-                            {" "}
-                            {/* Reduced padding */}
-                            <Typography
-                              gutterBottom
-                              variant="subtitle2" // Reduced font size
-                              component="div"
-                            >
-                              {room.type}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              style={{ fontSize: "0.7rem" }}
-                            >
-                              {" "}
-                              {/* Reduced font size */}
-                              Bed: {room.bedTypes}
-                              <BedOutlinedIcon style={{ fontSize: "small" }} />
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              style={{ fontSize: "0.7rem" }}
-                            >
-                              {" "}
-                              {/* Reduced font size */}
-                              Price:{" "}
-                              <CurrencyRupeeIcon
-                                style={{ fontSize: "small" }}
-                              />
-                              {room.price}
-                            </Typography>
-                          </CardContent>
-                          <CardActions>
-                            {/* Check if the room is already selected */}
-                            {selectedRooms.findIndex(
-                              (selected) => selected._id === room._id
-                            ) !== -1 ? (
-                              // If the room is selected, show a disabled "Selected" button
-                              <Button
-                                size="small"
-                                color="success"
-                                variant="outlined"
-                                disabled
+                            <CardContent sx={{ flex: "1 0 auto" }}>
+                              <Typography
+                                gutterBottom
+                                variant="subtitle2"
+                                component="div"
                               >
-                                Selected
-                              </Button>
-                            ) : (
-                              // If the room is not selected, show the "Select" button
-                              <Button
-                                size="small"
-                                color="primary"
-                                onClick={() => handleAddRoom(room[0])}
+                                {room.type}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
                               >
-                                Select
-                              </Button>
-                            )}
-                          </CardActions>
-                        </Card>
+                                Bed: {room.bedTypes}
+                                <BedOutlinedIcon
+                                  style={{
+                                    fontSize: "small",
+                                    verticalAlign: "middle",
+                                    marginLeft: "5px",
+                                  }}
+                                />
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Price:{" "}
+                                <CurrencyRupeeIcon
+                                  style={{
+                                    fontSize: "small",
+                                    verticalAlign: "middle",
+                                  }}
+                                />
+                                {room.price}
+                              </Typography>
+                            </CardContent>
+                            <CardActions>
+                              {selectedRooms.findIndex(
+                                (selected) => selected._id === room._id
+                              ) !== -1 ? (
+                                <Button
+                                  size="small"
+                                  color="success"
+                                  variant="outlined"
+                                  disabled
+                                >
+                                  Selected
+                                </Button>
+                              ) : (
+                                <Button
+                                  size="small"
+                                  color="primary"
+                                  onClick={() => handleAddRoom(room[0])}
+                                >
+                                  Select
+                                </Button>
+                              )}
+                            </CardActions>
+                          </Card>
+                        </Grid>
                       ))}
-                    </div>
+                    </Grid>
                   </div>
                 </div>
+                {/* mobile view section for special rooms  */}
+                <div className="col-md-4 d-block d-md-none">
+                  <div className="container mt-3">
+                    <Grid container spacing={2}>
+                      {hotelData.rooms.map((room, index) => (
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                          <Card sx={{ display: "flex" }}>
+                            <CardMedia
+                              component="img"
+                              height="150px"
+                              style={{ objectFit: "cover", width: "120px" }} // Set width explicitly
+                              src={
+                                room.images && room.images.length > 0
+                                  ? room.images[0]
+                                  : hotelData.images[0]
+                              }
+                              alt={`Room ${index + 1} Image 1`}
+                            />
 
+                            <CardContent sx={{ flex: "1 0 auto" }}>
+                              <Typography
+                                gutterBottom
+                                variant="subtitle2"
+                                component="div"
+                              >
+                                {room.type}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Bed: {room.bedTypes}
+                                <BedOutlinedIcon
+                                  style={{
+                                    fontSize: "small",
+                                    verticalAlign: "middle",
+                                    marginLeft: "5px",
+                                  }}
+                                />
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
+                                Price:{" "}
+                                <CurrencyRupeeIcon
+                                  style={{
+                                    fontSize: "small",
+                                    verticalAlign: "middle",
+                                  }}
+                                />
+                                {room.price}
+                              </Typography>
+                              <CardActions>
+                                {selectedRooms.findIndex(
+                                  (selected) => selected._id === room._id
+                                ) !== -1 ? (
+                                  <Button
+                                    size="small"
+                                    color="success"
+                                    variant="outlined"
+                                    disabled
+                                  >
+                                    Selected
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size="small"
+                                    color="primary"
+                                    onClick={() => handleAddRoom(room[0])}
+                                  >
+                                    Select
+                                  </Button>
+                                )}
+                              </CardActions>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </div>
+                </div>
+                {/* end of special rooms mobile view */}
                 {/* For desktop view */}
                 <div className="col-md-4 d-none d-sm-block">
                   <div
@@ -669,7 +737,10 @@ const BookNow = () => {
                       borderRadius: "20px",
                     }}
                   >
-                    <h5 > <ConfirmationNumberTwoToneIcon/> Booking Details </h5>
+                    <h5>
+                      {" "}
+                      <ConfirmationNumberTwoToneIcon /> Booking Details{" "}
+                    </h5>
                     <hr />
 
                     {/* Selected Food */}
@@ -683,7 +754,7 @@ const BookNow = () => {
                     >
                       <div style={{ flex: 1 }}>
                         {selectedFood.length > 0 ? (
-                          <div >
+                          <div>
                             <CardContent>
                               {selectedFood.map((selected, index) => (
                                 <div
@@ -691,7 +762,6 @@ const BookNow = () => {
                                   style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-                                
                                   }}
                                 >
                                   <Typography
@@ -720,8 +790,8 @@ const BookNow = () => {
                                 variant="body1"
                                 component="div"
                               >
-                               
-                                Add crispy food during your stay <LunchDiningTwoToneIcon/>
+                                Add crispy food during your stay{" "}
+                                <LunchDiningTwoToneIcon />
                               </Typography>
                             </CardContent>
                           </div>
@@ -788,8 +858,8 @@ const BookNow = () => {
                         textTransform: "uppercase",
                       }}
                     >
-                    
-                      Rooms <MeetingRoomTwoToneIcon/>& Guests <Face4TwoToneIcon/>
+                      Rooms <MeetingRoomTwoToneIcon />& Guests{" "}
+                      <Face4TwoToneIcon />
                     </label>
 
                     <div className="date-selection mt-3">
@@ -855,59 +925,40 @@ const BookNow = () => {
 
                     {/* Date Selection */}
                     <hr />
-                    <div
-                      className="date-selection mt-3"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div className="check-in" style={{ marginRight: "20px" }}>
-                        <p
-                          style={{
-                            marginBottom: "5px",
-                            fontWeight: "bold",
-                            fontSize: "14px",
-                            color: "#333",
-                          }}
-                        >
-                          Check-in <InventoryTwoToneIcon/>
-                        </p>
-                        <DatePicker
-                          selected={checkInDate}
-                          onChange={handleCheckInDateChange}
-                          dateFormat="d MMMM yyyy"
-                          placeholderText={formatDate(checkInDate)}
-                          selectsStart
-                          startDate={checkInDate}
-                          endDate={checkOutDate}
-                          onChangeRaw={(e) => e.preventDefault()}
-                          className="datepicker-input"
-                        />
-                      </div>
-                      <div className="check-out">
-                        <p
-                          style={{
-                            marginBottom: "5px",
-                            fontWeight: "bold",
-                            fontSize: "14px",
-                            color: "#333",
-                          }}
-                        >
-                          Check-out <InventoryTwoToneIcon/>
-                        </p>
-                        <DatePicker
-                          selected={checkOutDate}
-                          onChange={handleCheckOutDateChange}
-                          dateFormat="d MMMM yyyy"
-                          placeholderText={formatDate(checkOutDate)}
-                          selectsEnd
-                          startDate={checkInDate}
-                          endDate={checkOutDate}
-                          onChangeRaw={(e) => e.preventDefault()}
-                          className="datepicker-input"
-                        />
+                    <div className="container mt-3">
+                      <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
+                        <div className="check-in">
+                          <p>
+                            Check-in <InventoryTwoToneIcon />
+                          </p>
+                          <DatePicker
+                            selected={checkInDate}
+                            onChange={handleCheckInDateChange}
+                            dateFormat="d MMMM yyyy"
+                            placeholderText={formatDate(checkInDate)}
+                            selectsStart
+                            startDate={checkInDate}
+                            endDate={checkOutDate}
+                            onChangeRaw={(e) => e.preventDefault()}
+                            className="datepicker-input"
+                          />
+                        </div>
+                        <div className="check-out">
+                          <p>
+                            Check-out <InventoryTwoToneIcon />
+                          </p>
+                          <DatePicker
+                            selected={checkOutDate}
+                            onChange={handleCheckOutDateChange}
+                            dateFormat="d MMMM yyyy"
+                            placeholderText={formatDate(checkOutDate)}
+                            selectsEnd
+                            startDate={checkInDate}
+                            endDate={checkOutDate}
+                            onChangeRaw={(e) => e.preventDefault()}
+                            className="datepicker-input"
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -1038,7 +1089,9 @@ const BookNow = () => {
                 borderRadius: "20px",
               }}
             >
-              <h5 style={{ marginBottom: "20px" }}><ConfirmationNumberTwoToneIcon/> Booking Details </h5>
+              <h5 style={{ marginBottom: "20px" }}>
+                <ConfirmationNumberTwoToneIcon /> Booking Details{" "}
+              </h5>
               <hr />
 
               {/* Selected Food */}
@@ -1100,7 +1153,8 @@ const BookNow = () => {
                           component="div"
                         >
                           <p style={{ fontSize: "12px" }}>
-                            Add crispy food during your stay{" "}<LunchDiningTwoToneIcon/>
+                            Add crispy food during your stay{" "}
+                            <LunchDiningTwoToneIcon />
                           </p>
                         </Typography>
                       </CardContent>
@@ -1161,8 +1215,10 @@ const BookNow = () => {
               {/* Rooms and Guests */}
 
               <hr />
-             
-              <label>Rooms <MeetingRoomTwoToneIcon/>  & Guests <Face4TwoToneIcon/></label>
+
+              <label>
+                Rooms <MeetingRoomTwoToneIcon /> & Guests <Face4TwoToneIcon />
+              </label>
               <div className="date-selection mt-3">
                 <div
                   className="check-in"
@@ -1225,34 +1281,40 @@ const BookNow = () => {
               </div>
               {/* Date Selection */}
               <hr />
-              <div className="date-selection mt-3">
-                <div className="check-in">
-                  <p>Check-in <InventoryTwoToneIcon/></p>
-                  <DatePicker
-                    selected={checkInDate}
-                    onChange={handleCheckInDateChange}
-                    dateFormat="d MMMM yyyy"
-                    placeholderText={formatDate(checkInDate)}
-                    selectsStart
-                    startDate={checkInDate}
-                    endDate={checkOutDate}
-                    onChangeRaw={(e) => e.preventDefault()}
-                    className="datepicker-input"
-                  />
-                </div>
-                <div className="check-out">
-                  <p>Check-out <InventoryTwoToneIcon/></p>
-                  <DatePicker
-                    selected={checkOutDate}
-                    onChange={handleCheckOutDateChange}
-                    dateFormat="d MMMM yyyy"
-                    placeholderText={formatDate(checkOutDate)}
-                    selectsEnd
-                    startDate={checkInDate}
-                    endDate={checkOutDate}
-                    onChangeRaw={(e) => e.preventDefault()}
-                    className="datepicker-input"
-                  />
+              <div className="container mt-3">
+                <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
+                  <div className="check-in">
+                    <p>
+                      Check-in <InventoryTwoToneIcon />
+                    </p>
+                    <DatePicker
+                      selected={checkInDate}
+                      onChange={handleCheckInDateChange}
+                      dateFormat="d MMMM yyyy"
+                      placeholderText={formatDate(checkInDate)}
+                      selectsStart
+                      startDate={checkInDate}
+                      endDate={checkOutDate}
+                      onChangeRaw={(e) => e.preventDefault()}
+                      className="datepicker-input"
+                    />
+                  </div>
+                  <div className="check-out">
+                    <p>
+                      Check-out <InventoryTwoToneIcon />
+                    </p>
+                    <DatePicker
+                      selected={checkOutDate}
+                      onChange={handleCheckOutDateChange}
+                      dateFormat="d MMMM yyyy"
+                      placeholderText={formatDate(checkOutDate)}
+                      selectsEnd
+                      startDate={checkInDate}
+                      endDate={checkOutDate}
+                      onChangeRaw={(e) => e.preventDefault()}
+                      className="datepicker-input"
+                    />
+                  </div>
                 </div>
               </div>
 
