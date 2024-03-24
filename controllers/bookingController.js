@@ -1,5 +1,6 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/Hotel/hotelModel");
+const userModel = require("../models/userModel")
 const month = require("../models/monthlyPriceModel");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
@@ -18,13 +19,26 @@ const createBooking = async (req, res) => {
       destination,
     } = req.body;
 
-    // Check if bookingId already exists (not shown in the code)
+    // Fetch user details based on userId
+    const user = await userModel.findOne({ userId: userId });
 
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Generate a random bookingId
     const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
 
+    // Create the booking object
     const booking = new bookingModel({
       bookingId,
-      user: userId,
+      user: {
+        userId: user.userId,
+        profile:user.images,
+        name: user.userName,
+        email: user.email,
+        mobile: user.mobile,
+      },
       hotel: hotelId,
       hotelName,
       foodDetails,
@@ -46,6 +60,7 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 //=============================================================================
 const perMonthPrice = async function (req, res) {
@@ -317,7 +332,7 @@ const getCheckedOut = async (req, res) => {
 const getCheckingBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
-    const booking = await bookingModel.findOne({ bookingId }).populate("user");
+    const booking = await bookingModel.findOne({ bookingId })
 
     if (!booking) {
       return res
@@ -360,6 +375,27 @@ const getAllFilterBookings = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+const getAllFilterBookingsByQuery = async (req, res) => {
+  try {
+    const { bookingStatus, userId } = req.query;
+    const filter = { userId, bookingStatus };
+    const bookings = await bookingModel.find(filter);
+    if (bookings.length === 0) {
+      return res.status(400).json({ message: `No ${bookingStatus} bookings found` });
+    }
+
+    // Combine user details with bookings
+    const bookingsWithUserDetails = bookings.map(booking => ({
+      ...booking.toObject(), // Convert Mongoose object to plain JavaScript object
+      user: userFields // Add user details
+    }));
+
+    res.json(bookingsWithUserDetails);
+  } catch (error) {
+    console.error("Error in getAllFilterBookings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
 module.exports = {
   createBooking,
@@ -382,5 +418,6 @@ module.exports = {
   perMonthPrice,
   getAll,
   getBookingCounts,
-  getTotalSell
+  getTotalSell,
+  getAllFilterBookingsByQuery
 };

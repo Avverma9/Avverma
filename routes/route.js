@@ -164,6 +164,10 @@ router.get(
   "/get/all/filtered/booking/by/:user",
   bookingController.getAllFilterBookings
 );
+router.get(
+  "/get/all/filtered/booking/by/query",
+  bookingController.getAllFilterBookingsByQuery
+);
 router.get("/get-all/bookings-details", bookingController.getAll);
 router.get("/get-all/bookings-count", bookingController.getBookingCounts);
 router.get("/get-all/sell-count", bookingController.getTotalSell);

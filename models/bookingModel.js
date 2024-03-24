@@ -15,9 +15,8 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    users: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
+    user: {
+     type:Object,
       required: false,
     },
     hotelName: {
@@ -68,12 +67,12 @@ const bookingSchema = new mongoose.Schema(
     bookingStatus: {
       type: String,
       enum: [
-        "success",
-        "failed",
-        "cancelled",
-        "checkedIn",
-        "checkedOut",
-        "noshow",
+        "Confirmed",
+        "Failed",
+        "Cancelled",
+        "Checked-in",
+        "Checked-out",
+        "No-Show",
       ],
       default: "success",
     },
