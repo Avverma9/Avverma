@@ -248,21 +248,20 @@ const BookNow = () => {
   const handleBookNow = async () => {
     try {
       const userId = localStorage.getItem("userId");
-
+      
       // Check if userMobile is available in localStorage
       const userMobile = localStorage.getItem("userMobile");
-
+      
       if (!userMobile) {
         // If userMobile is not available, show an alert and navigate to the profile page
-        alert(
-          "Action required: Please update your mobile number in the profile."
-        );
+        alert("Action required: Please update your mobile number in the profile.");
         navigate("/profile");
         return;
       }
-
+  
       // Prepare data for API request
       const bookingData = {
+        user: userId, // Include userId in the payload
         checkInDate: format(checkInDate, "yyyy-MM-dd"),
         checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
         guests: guestsCount,
@@ -282,7 +281,7 @@ const BookNow = () => {
         hotelName: hotelData.hotelName,
         hotelOwnerName: hotelData.hotelOwnerName,
       };
-
+  
       // Make API request to book
       const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
         method: "POST",
@@ -291,7 +290,7 @@ const BookNow = () => {
         },
         body: JSON.stringify(bookingData),
       });
-
+  
       if (response.status === 201) {
         // Handle success, e.g., redirect to a confirmation page
         alert("Booking successful");
@@ -304,6 +303,7 @@ const BookNow = () => {
       console.error("Error booking:", error);
     }
   };
+  
   const scrollToRooms = () => {
     roomsRef.current.scrollIntoView({ behavior: "smooth" });
   };
