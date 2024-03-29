@@ -43,7 +43,7 @@ const Offered = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const apiUrl = "https://hotel-backend-tge7.onrender.com/hotels/filters?city=&startDate=2024-03-27&endDate=2024-03-28&localId=&unmarriedCouplesAllowed=";
+  const apiUrl = `${baseURL}/hotels/filters?city=&startDate=2024-03-27&endDate=2024-03-28&localId=&unmarriedCouplesAllowed=`;
   console.log(apiUrl);
 
   useEffect(() => {

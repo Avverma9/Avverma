@@ -40,6 +40,7 @@ export default function PartnerRooms() {
 
       if (response.status === 201) {
         alert("Thank you, you have filled all details ! One of our customer will connect you shortly");
+        localStorage.removeItem("hotelId")
         navigate("/")
       }
     } catch (error) {

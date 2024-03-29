@@ -9,22 +9,23 @@ import axios from "axios";
 import { TextField, Button, Container, makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import baseURL from "../../baseURL";
-import { TextareaAutosize } from '@material-ui/core';
+import { TextareaAutosize } from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   form: {
     display: "flex",
     flexDirection: "column",
-    maxWidth: "1200px",
+    maxWidth: "1400px",
     margin: "auto",
     border: "5px solid blue", // Add border style here
     padding: theme.spacing(3),
     marginTop: theme.spacing(4),
   },
   textarea: {
-    width: '100%', // Set the width as per your design
-    minHeight: '100px', // Set the height as per your design
+    width: "100%", // Set the width as per your design
+    minHeight: "100px", // Set the height as per your design
     padding: theme.spacing(1),
-    resize: 'vertical', // Allow vertical resizing
+    resize: "vertical", // Allow vertical resizing
   },
   input: {
     marginBottom: theme.spacing(2),
@@ -39,12 +40,14 @@ export default function PartnerForm() {
   const [hotelOwnerName, setHotelOwnerName] = useState("");
   const [description, setDescription] = useState("");
   const [priceError, setPriceError] = useState("");
-  const [customerWelcomeNote, setCustomerWelcomeNote] = useState("")
+  const [customerWelcomeNote, setCustomerWelcomeNote] = useState("");
   const [destination, setDestination] = useState("");
   const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [contactError, setContactError] = useState(""); // State for contact validation error
-  const [generalManagerContactError, setGeneralManagerContactError] = useState("");
+  const [generalManagerContactError, setGeneralManagerContactError] = useState(
+    ""
+  );
   const [salesManagerContactError, setSalesManagerContactError] = useState("");
   const [salesManagerContact, setSalesManagerContact] = useState(""); // State for generalManagerContact validation error
   const [endDate, setEndDate] = useState("");
@@ -115,11 +118,12 @@ export default function PartnerForm() {
         navigate("/partner/second-step");
       } else if (response.status === 500) {
         // Handle other status codes
-        alert("Not able to submit your request right now. Please try again later.");
+        alert(
+          "Not able to submit your request right now. Please try again later."
+        );
       }
     } catch (error) {
       alert("An error occurred. Please try again later.");
-
     }
   };
 
@@ -176,237 +180,335 @@ export default function PartnerForm() {
           </Typography>
         </AccordionDetails>
       </Accordion>
+      <hr />
+      <h4
+        style={{
+          color: "#4CAF50" /* Green color */,
+          textAlign: "center" /* Center align text */,
+          textTransform: "uppercase" /* Convert text to uppercase */,
+          fontWeight: "bold" /* Apply bold font weight */,
+          fontSize: "24px" /* Larger font size */,
+          textDecoration: "underline" /* Add underline */,
+          marginBottom: "20px" /* Add some bottom margin for spacing */,
+        }}
+      >
+        Fill Basic Details Carefully!
+      </h4>
 
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <p>Welcome, Glad to see you here</p>
-        <p>Please read terms & conditions carefully</p>
-        <hr />
-        <TextField
-          className={classes.input}
-          label="Hotel Name"
-          variant="outlined"
-          value={hotelName}
-          onChange={(e) => setHotelName(e.target.value)}
-        />
-        <div id="imageInputs">
-          <input
-            className={classes.imageInput}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleImageChange(e.target.files[0])}
-          />
+      <hr />
+      <form onSubmit={handleSubmit}>
+        {" "}
+        <div className="row">
+          <div className="col">
+            {/* Name input */}
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example1">
+                Hotel name
+              </label>
+              <input
+                type="text"
+                id="form8Example1"
+                className="form-control"
+                value={hotelName}
+                onChange={(e) => setHotelName(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            {/* Email input */}
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example2">
+                Hotel Owner name
+              </label>
+              <input
+                type="name"
+                id="form8Example2"
+                className="form-control"
+                value={hotelOwnerName}
+                onChange={(e) => setHotelOwnerName(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            {/* Email input */}
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example2">
+                Hotel Email
+              </label>
+              <input
+                type="name"
+                id="form8Example2"
+                className="form-control"
+                value={hotelEmail}
+                onChange={(e) => setHotelEmail(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example3">
+                Contact
+              </label>
+              <input
+                type="text"
+                id="form8Example3"
+                className="form-control"
+                value={contact}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  setContact(inputValue);
+
+                  // Validation: Check if the input is a valid number
+                  const regex = /^[0-9]+$/;
+                  if (!regex.test(inputValue)) {
+                    setContactError("Please enter a valid contact.");
+                  } else {
+                    setContactError(""); // Clear the error if input is valid
+                  }
+                }}
+                error={Boolean(contactError)}
+                helperText={contactError}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example4">
+                General Manager contact
+              </label>
+              <input
+                type="text"
+                id="form8Example4"
+                className="form-control"
+                value={generalManagerContact}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  setGeneralManagerContact(inputValue);
+
+                  // Validation: Check if the input is a valid number
+                  const regex = /^[0-9]+$/;
+                  if (!regex.test(inputValue)) {
+                    setGeneralManagerContactError(
+                      "Please enter a valid  General Manager Contact."
+                    );
+                  } else {
+                    setGeneralManagerContactError(""); // Clear the error if input is valid
+                  }
+                }}
+                error={Boolean(generalManagerContactError)}
+                helperText={generalManagerContactError}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example4">
+                Sales Manager contact
+              </label>
+              <input
+                type="text"
+                id="form8Example4"
+                className="form-control"
+                value={salesManagerContact}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  setSalesManagerContact(inputValue);
+
+                  // Validation: Check if the input is a valid number
+                  const regex = /^[0-9]+$/;
+                  if (!regex.test(inputValue)) {
+                    setSalesManagerContactError(
+                      "Please enter a valid  Sales Manager Contact."
+                    );
+                  } else {
+                    setSalesManagerContactError(""); // Clear the error if input is valid
+                  }
+                }}
+                error={Boolean(setSalesManagerContactError)}
+                helperText={setSalesManagerContactError}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            {/* Email input */}
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example5">
+                About Hotel
+              </label>
+              <textarea
+                type="email"
+                id="form8Example5"
+                className="form-control"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            {/* Email input */}
+            <div data-mdb-input-init className="form-outline">
+              <label className="form-label" htmlFor="form8Example5">
+                Welcome note
+              </label>
+              <textarea
+                type="email"
+                id="form8Example5"
+                className="form-control"
+                value={customerWelcomeNote}
+                onChange={(e) => setCustomerWelcomeNote(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="price">Price</label>
+              <input
+                type="number"
+                className="form-control"
+                value={price}
+                onChange={(e) => {
+                  const inputValue = e.target.value;
+                  setPrice(inputValue);
+
+                  // Validation: Check if the input is a valid number
+                  const regex = /^[0-9]+$/;
+                  if (!regex.test(inputValue)) {
+                    setPriceError("Please enter price.");
+                  } else {
+                    setPriceError(""); // Clear the error if input is valid
+                  }
+                }}
+                error={Boolean(priceError)}
+                helperText={priceError}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="price">Star rating of your hotel</label>
+              <input
+                type="number"
+                className="form-control"
+                v
+                value={starRating}
+                onChange={(e) => setStarRating(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="landmark1">Landmark</label>
+              <input
+                type="text"
+                id="landmark1"
+                className="form-control"
+                value={landmark}
+                onChange={(e) => setLandMark(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="city">City</label>
+              <input
+                type="text"
+                id="landmark2"
+                className="form-control"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="state">State</label>
+              <input
+                type="text"
+                id="landmark2"
+                className="form-control"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="pin">Pin-code</label>
+              <input
+                type="number"
+                id="landmark2"
+                className="form-control"
+                value={pinCode}
+                onChange={(e) => setPinCode(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="localId">Local ID</label>
+              <select
+                id="localId"
+                className="form-control"
+                value={localId}
+                onChange={(e) => setLocalId(e.target.value)}
+              >
+                <option value="Not Accepted">Not Accepted</option>
+                <option value="Accepted">Accepted</option>
+              </select>
+            </div>
+          </div>
+          <div className="col">
+            <div data-mdb-input-init className="form-outline">
+              <label htmlFor="propertyType">Choose Property Type</label>
+              <select
+                id="propertyType"
+                className="form-control"
+                value={propertyType}
+                onChange={(e) => setPropertyType(e.target.value)}
+              >
+                {propertyTypeOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
         <hr />
-        <Button
-          type="button"
-          variant="outlined"
-          color="primary"
-          onClick={handleAddImage}
-        >
-          Add More Images
-        </Button>
+        <div className="row">
+          <div className="col">
+            <div id="imageInputs">
+              <input
+                className={classes.imageInput}
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleImageChange(e.target.files[0])}
+              />
+            </div>
+          </div>
+          <div className="col">
+            <Button
+              type="button"
+              variant="outlined"
+              color="primary"
+              onClick={handleAddImage}
+            >
+              Add More Images
+            </Button>
+          </div>
+        </div>
         <hr />
-        <TextField
-          className={classes.input}
-          label="Hotel Owner Name"
-          variant="outlined"
-          value={hotelOwnerName}
-          onChange={(e) => setHotelOwnerName(e.target.value)}
-        />
-        <TextField
-          className={classes.input}
-          label="Contact"
-          variant="outlined"
-          value={contact}
-          onChange={(e) => {
-            const inputValue = e.target.value;
-            setContact(inputValue);
-
-            // Validation: Check if the input is a valid number
-            const regex = /^[0-9]+$/;
-            if (!regex.test(inputValue)) {
-              setContactError("Please enter a valid contact.");
-            } else {
-              setContactError(""); // Clear the error if input is valid
-            }
-          }}
-          error={Boolean(contactError)}
-          helperText={contactError}
-        />
-
-        <TextField
-          className={classes.input}
-          label="General Manager Contact"
-          variant="outlined"
-          value={generalManagerContact}
-          onChange={(e) => {
-            const inputValue = e.target.value;
-            setGeneralManagerContact(inputValue);
-
-            // Validation: Check if the input is a valid number
-            const regex = /^[0-9]+$/;
-            if (!regex.test(inputValue)) {
-              setGeneralManagerContactError("Please enter a valid  General Manager Contact.");
-            } else {
-              setGeneralManagerContactError(""); // Clear the error if input is valid
-            }
-          }}
-          error={Boolean(generalManagerContactError)}
-          helperText={generalManagerContactError}
-        />
-        <TextField
-          className={classes.input}
-          label="Sales Manager Contact"
-          variant="outlined"
-          value={salesManagerContact}
-          onChange={(e) => {
-            const inputValue = e.target.value;
-            setSalesManagerContact(inputValue);
-
-            // Validation: Check if the input is a valid number
-            const regex = /^[0-9]+$/;
-            if (!regex.test(inputValue)) {
-              setSalesManagerContactError("Please enter a valid  Sales Manager Contact.");
-            } else {
-              setSalesManagerContactError(""); // Clear the error if input is valid
-            }
-          }}
-          error={Boolean(setSalesManagerContactError)}
-          helperText={setSalesManagerContactError}
-        />
-        <TextField
-          className={classes.input}
-          label="Hotel Email id"
-          variant="outlined"
-          value={hotelEmail}
-          onChange={(e) => setHotelEmail(e.target.value)}
-        />
-        <TextareaAutosize
-          className={classes.textarea}
-          aria-label="Description"
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <hr />
-        <TextareaAutosize
-          className={classes.textarea}
-          aria-label="Welcome Note"
-          placeholder="Welcome Note"
-          value={customerWelcomeNote}
-          onChange={(e) => setCustomerWelcomeNote(e.target.value)}
-        />
-        <hr />
-        <TextField
-          className={classes.input}
-          label="Destination"
-          variant="outlined"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
-        />
-        <p>Please Enter your onwards room price</p>
-        <TextField
-          className={classes.input}
-          label="Price"
-          variant="outlined"
-          value={price}
-          onChange={(e) => {
-            const inputValue = e.target.value;
-            setPrice(inputValue);
-
-            // Validation: Check if the input is a valid number
-            const regex = /^[0-9]+$/;
-            if (!regex.test(inputValue)) {
-              setPriceError("Please enter price.");
-            } else {
-              setPriceError(""); // Clear the error if input is valid
-            }
-          }}
-          error={Boolean(priceError)}
-          helperText={priceError}
-        />
-
-        <label htmlFor="">
-          From which to which date your hotel is available
-        </label>
-        <p>You can skip it if no need</p>
-        <p>From</p>
-        <TextField
-          className={classes.input}
-          type="date"
-          variant="outlined"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-        <p>To</p>
-        <TextField
-          className={classes.input}
-          type="date"
-          variant="outlined"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
-        <TextField
-          className={classes.input}
-          label="What is your star rating of your hotel"
-          variant="outlined"
-          value={starRating}
-          onChange={(e) => setStarRating(e.target.value)}
-        />
-        <TextField
-          select
-          label="Property Type"
-          variant="outlined"
-          className={classes.input}
-          value={propertyType}
-          onChange={(e) => setPropertyType(e.target.value)}
-        >
-          {propertyTypeOptions.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          className={classes.input}
-          label="Landmark ( Proper address, street, area, etc.)"
-          variant="outlined"
-          value={landmark}
-          onChange={(e) => setLandMark(e.target.value)}
-        />{" "}
-        <TextField
-          className={classes.input}
-          label="City"
-          variant="outlined"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />{" "}
-        <TextField
-          className={classes.input}
-          label="State"
-          variant="outlined"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-        />{" "}
-        <TextField
-          className={classes.input}
-          label="Pin Code"
-          variant="outlined"
-          value={pinCode}
-          onChange={(e) => setPinCode(e.target.value)}
-        />
-        <TextField
-          select
-          label="Are you providing Local Id"
-          variant="outlined"
-          className={classes.input}
-          value={localId}
-          onChange={(e) => setLocalId(e.target.value)}
-        >
-          <MenuItem value="Not Accepted">Not Accepted</MenuItem>
-          <MenuItem value="Accepted">Accepted</MenuItem>
-        </TextField>
-
         <Button type="submit" variant="contained" color="primary">
           Next
         </Button>

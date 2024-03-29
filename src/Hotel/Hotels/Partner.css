@@ -1,0 +1,17 @@
+.form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Display two columns */
+    grid-gap: 10px; /* Add some gap between elements */
+  }
+  
+  /* Adjust width for input fields */
+  .input {
+    width: 100%; /* Ensure inputs take up full width of their container */
+  }
+  
+  /* Adjust styles for textareas */
+  .textarea {
+    width: 100%; /* Ensure textareas take up full width of their container */
+    resize: vertical; /* Allow vertical resizing */
+  }
+  
