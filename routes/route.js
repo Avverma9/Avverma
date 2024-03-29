@@ -23,6 +23,7 @@ const amenities = require('../controllers/HotelController/amenitiesController')
 const rooms = require("../controllers/HotelController/roomController")
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel",upload,rooms.createRooms)
+router.get("/get-list-of/rooms",rooms.getRoomsByHotelId)
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities",amenities.getHotelByAmenities)
 router.post("/create-a-amenities/to-your-hotel",amenities.createAmenity)
@@ -74,7 +75,6 @@ router.post(
 );
 router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel);
 router.patch("/hotels/update/info/:id", hotelController.UpdateHotelInfo);
-router.get("/search", hotelController.searchHotels);
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);

@@ -293,52 +293,6 @@ const getByQuery = async (req, res) => {
 };
 
 //================================================================================================
-const searchHotels = async (req, res) => {
-  try {
-    const { city, guests, numRooms, localId, startDate, endDate } = req.query;
-
-    const searchQuery = {};
-
-    if (city) {
-      searchQuery.city = { $regex: new RegExp(city, "i") };
-    }
-
-    if (startDate !== null && endDate !== null) {
-      if (startDate <= endDate) {
-        searchQuery.startDate = { $lte: new Date(startDate) };
-        searchQuery.endDate = { $gte: new Date(endDate) };
-      }
-    }
-
-    if (numRooms) {
-      searchQuery.numRooms = { $gte: Number(numRooms) };
-    }
-
-    if (localId !== undefined && localId !== "") {
-      searchQuery.localId = localId;
-    } else {
-      searchQuery.localId = false;
-    }
-
-    let searchResults = await hotelModel.find(searchQuery).lean();
-    searchResults = searchResults.map((hotel) => {
-      const extraGuests =
-        guests - hotel.guests * Number(numRooms) > 0
-          ? guests - hotel.guests * Number(numRooms)
-          : 0;
-
-      hotel.price =
-        Number(hotel.price) * Number(numRooms) +
-        extraGuests * (Number(hotel.price) * 0.1);
-
-      return hotel;
-    });
-    res.json(searchResults);
-  } catch (error) {
-    console.error("Error fetching search results:", error);
-    res.status(500).json({ error: "Failed to fetch search results" });
-  }
-};
 
 //====================================================================================
 const getAllHotels = async (req, res) => {
@@ -990,7 +944,6 @@ cron.schedule("0 0 1 * *", async () => {
 //================================================================================================
 module.exports = {
   createHotel,
-  searchHotels,
   getAllHotels,
   getAllRejectedHotels,
   getHotelsById,

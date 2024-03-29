@@ -33,3 +33,8 @@ exports.createRooms = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.getRoomsByHotelId = async (req,res)=>{
+  const {hotelId} = req.query
+  const getData = await roomModel.find({hotelId:hotelId})
+  res.json(getData)
+}
