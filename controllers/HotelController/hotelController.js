@@ -107,95 +107,74 @@ const getCountPendingHotels = async function (req, res) {
 const UpdateHotel = async function (req, res) {
   const { hotelId } = req.params;
   const { isAccepted, isOffer } = req.body;
-  
-  try {
-      const updateDetails = await hotelModel.findOneAndUpdate(
-          { hotelId: hotelId }, // Use hotelId for querying
-          { $set: { isAccepted: isAccepted, isOffer: isOffer } }, // Update fields
-          { new: true } // To return the updated document
-      );
 
-      res.json(updateDetails);
+  try {
+    const updateDetails = await hotelModel.findOneAndUpdate(
+      { hotelId: hotelId }, // Use hotelId for querying
+      { $set: { isAccepted: isAccepted, isOffer: isOffer } }, // Update fields
+      { new: true } // To return the updated document
+    );
+
+    res.json(updateDetails);
   } catch (error) {
-      console.error("Error updating hotel:", error);
-      res.status(500).json({ error: "Failed to update hotel details." });
+    console.error("Error updating hotel:", error);
+    res.status(500).json({ error: "Failed to update hotel details." });
   }
 };
 
 //================================update hotel info =================================================
-const UpdateHotelInfo = async (req, res) => {
-  const { id } = req.params;
+const UpdateHotelInfo = async function (req, res) {
+  const { hotelId } = req.params;
   const {
+    isAccepted,
+    isOffer,
     hotelName,
     hotelOwnerName,
-    description,
-    destination,
-    numRooms,
+    hotelEmail,
     localId,
-    accommodationType,
-    starRating,
-    propertyType,
-    contact,
-    ownerContactDetails,
+    description,
+    customerWelcomeNote,
     generalManagerContact,
     salesManagerContact,
-    receptionContactDetails,
-    hotelEmail,
-    street,
+    landmark,
+    pinCode,
+    propertyType,
+    starRating,
     city,
     state,
-    zip,
-    landmark,
   } = req.body;
 
-  let images = [];
+  try {
+    const updateDetails = await hotelModel.findOneAndUpdate(
+      { hotelId: hotelId }, // Use hotelId for querying
+      {
+        $set: {
+          isAccepted: isAccepted,
+          isOffer: isOffer,
+          hotelName: hotelName,
+          hotelOwnerName:hotelOwnerName,
+          hotelEmail: hotelEmail,
+          generalManagerContact: generalManagerContact,
+          salesManagerContact: salesManagerContact,
+          landmark: landmark,
+          pinCode: pinCode,
+          propertyType: propertyType,
+          starRating: starRating,
+          city: city,
+          state: state,
+          localId: localId,
+          description: description,
+          customerWelcomeNote: customerWelcomeNote,
+        },
+      }, // Update fields
+      { new: true } // To return the updated document
+    );
 
-  if (req.files && req.files.length > 0) {
-    images = req.files.map((file) => file.location);
-  } else {
-    const user = await hotelModel.findById(id);
-    if (user) {
-      images = user.images;
-    }
+    res.json(updateDetails);
+  } catch (error) {
+    console.error("Error updating hotel:", error);
+    res.status(500).json({ error: "Failed to update hotel details." });
   }
-  const updatedHotel = await hotelModel.findByIdAndUpdate(
-    id,
-    {
-      images,
-      hotelName,
-      hotelOwnerName,
-      description,
-      destination,
-      numRooms,
-      localId,
-      accommodationType,
-      starRating,
-      propertyType,
-      contact,
-      ownerContactDetails,
-      generalManagerContact,
-      salesManagerContact,
-      receptionContactDetails,
-      hotelEmail,
-      street,
-      city,
-      state,
-      zip,
-      landmark,
-    },
-    {
-      new: true,
-    }
-  );
-
-  if (!updatedHotel) {
-    return res.status(404).json({ error: "Hotel not found" });
-  }
-
-  return res.status(200).json({
-    status: true,
-    data: updatedHotel,
-  });
 };
 
 //=======================================add room=====================================
@@ -306,7 +285,6 @@ const getAllHotels = async (req, res) => {
   }
 };
 
-
 const getAllRejectedHotels = async (req, res) => {
   try {
     const hotels = await hotelModel.find().sort({ createdAt: -1 });
@@ -386,8 +364,8 @@ const getHotelsByPrice = async function (req, res) {
 //==================================================================================
 const deleteHotelById = async function (req, res) {
   const { hotelId } = req.params;
-  const deletedData = await hotelModel.findOneAndDelete({hotelId:hotelId});
-  res.status(200).json({message:"deleted"});
+  const deletedData = await hotelModel.findOneAndDelete({ hotelId: hotelId });
+  res.status(200).json({ message: "deleted" });
 };
 //===========================================================
 const getHotelsByLocalID = async (req, res) => {
@@ -430,8 +408,6 @@ const getHotelsByFilters = async (req, res) => {
     if (starRating) filters.starRating = starRating;
     if (propertyType)
       filters.propertyType = { $regex: new RegExp(propertyType, "i") };
-
-   
 
     if (localId) filters.localId = localId;
     if (countRooms) filters["rooms.countRooms"] = countRooms;

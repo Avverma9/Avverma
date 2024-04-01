@@ -24,12 +24,13 @@ const rooms = require("../controllers/HotelController/roomController")
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel",upload,rooms.createRooms)
 router.get("/get-list-of/rooms",rooms.getRoomsByHotelId)
+router.patch("/update-your/room",upload,rooms.updateRoomsByRoomId)
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities",amenities.getHotelByAmenities)
 router.post("/create-a-amenities/to-your-hotel",amenities.createAmenity)
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
-router.get("/get-a-new/policy-to-your/hotel/:hotelId", policy.getPolicy);
+router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
 
 //===============================foods==========================
 router.post("/add/food-to/your-hotel",upload,foods.createFood)
@@ -73,8 +74,8 @@ router.post(
   upload,
   hotelController.createHotel
 );
-router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel);
-router.patch("/hotels/update/info/:id", hotelController.UpdateHotelInfo);
+router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel);//isAccepted,isOffer
+router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo);//basic details
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);
@@ -115,6 +116,7 @@ router.get("/see-all/hotels-city/get/city", hotelController.getHotelsCity);
 router.get("/get-hotels/by-room/:roomType", hotelController.getByRoom);
 router.get("/get-hotels/count", hotelController.getCount);
 router.get("/get-pending-hotels/count", hotelController.getCountPendingHotels);
+
 //=======================================foods===============================================
 router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
 router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);

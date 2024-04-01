@@ -1,10 +1,11 @@
 const foods = require("../../models/Hotel/foodsModel");
 const hotel = require("../../models/Hotel/hotelModel");
-
+const { v4: uuidv4 } = require("uuid");
 const createFood = async function (req, res) {
   try {
-    const { hotelId } = req.body;
-    const created = await foods.create({ hotelId, ...req.body });
+    const { hotelId, ...foods } = req.body;
+    const foodId = uuidv4().substr(0, 8);
+    const created = { foodId, hotelId, ...foods };
     await hotel.findOneAndUpdate(
       { hotelId },
       { $push: { foods: created } },
@@ -20,8 +21,7 @@ const createFood = async function (req, res) {
 const getFood = async (req, res) => {
   try {
     const { hotelId } = req.params;
-    const getData = await foods.find({hotelId
-});
+    const getData = await foods.find({ hotelId });
     res.json(getData);
   } catch (error) {
     console.error(error);

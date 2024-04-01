@@ -3,15 +3,17 @@ const hotels = require("../../models/Hotel/hotelModel");
 const foods = require("../../models/Hotel/foodsModel");
 const amenities = require("../../models/Hotel/amenitiesModel");
 const policies = require("../../models/Hotel/policyModel");
-const rooms = require("../../models/Hotel/roomModel");
 
+const { v4: uuidv4 } = require('uuid');
 exports.createAmenity = async(req,res)=>{
   try {
-    const { hotelId } = req.body;
-    const createdAmenity = await amenities.create({
+    const { hotelId , ...amenities} = req.body;
+    const amenityId = uuidv4().substr(0, 8); 
+    const createdAmenity = {
+      amenityId,
       hotelId,
-     ...req.body
-    });
+     ...amenities
+    };
     await hotels.findOneAndUpdate(
       { hotelId },
       { $push: { amenities: createdAmenity } },
