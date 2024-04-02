@@ -3,7 +3,13 @@ import baseURL from "../../baseURL";
 import Alert from "@mui/material/Alert";
 import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
-import { TextField, Button, Container, makeStyles, TextareaAutosize } from "@material-ui/core";
+import {
+  TextField,
+  Button,
+  Container,
+  makeStyles,
+  TextareaAutosize,
+} from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
   },
   textarea: {
-    width: '100%', // Set the width as per your design
-    minHeight: '100px', // Set the height as per your design
+    width: "100%", // Set the width as per your design
+    minHeight: "100px", // Set the height as per your design
     padding: theme.spacing(1),
-    resize: 'vertical', // Allow vertical resizing
+    resize: "vertical", // Allow vertical resizing
   },
   input: {
     marginBottom: theme.spacing(2),
@@ -42,8 +48,9 @@ export default function PolicyForm() {
   const [smokingAllowed, setSmokingAllowed] = useState("");
   const [alcoholAllowed, setAlcoholAllowed] = useState("");
   const [unmarriedCouplesAllowed, setUnmarriedCouplesAllowed] = useState("");
-  const [internationalGuestAllowed, setInternationalGuestAllowed] =
-    useState("");
+  const [internationalGuestAllowed, setInternationalGuestAllowed] = useState(
+    ""
+  );
   const [returnPolicy, setReturnPolicy] = useState("");
   const [onDoubleSharing, setOnDoubleSharing] = useState("");
   const [onQuadSharing, setOnQuadSharing] = useState("");
@@ -142,7 +149,7 @@ export default function PolicyForm() {
 
       if (response.status === 201) {
         alert("Your response has been recorder, Moving for amenities section");
-        navigate("/partner/third-step");
+        window.location.href = "/partner/third-step";
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -190,7 +197,7 @@ export default function PolicyForm() {
           onChange={(e) => setPetsAllowed(e.target.value)}
         />
 
-<TextField
+        <TextField
           className={classes.input}
           label="Check In"
           variant="outlined"
@@ -486,7 +493,7 @@ export default function PolicyForm() {
         />
         {/* ... add more TextField components for other fields */}
         <Button type="submit" variant="contained" color="primary">
-         Next
+          Next
         </Button>
       </form>
     </Container>

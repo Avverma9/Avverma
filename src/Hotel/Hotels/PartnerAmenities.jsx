@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const AmenitiesPage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const hotelId = localStorage.getItem("hotelId");
   const handleCheckboxChange = (amenity) => {
     if (selectedAmenities.includes(amenity)) {
@@ -15,8 +15,6 @@ const AmenitiesPage = () => {
       setSelectedAmenities([...selectedAmenities, amenity]);
     }
   };
- 
-
 
   const sendAmenitiesToAPI = async () => {
     // Check if there are selected amenities
@@ -24,32 +22,32 @@ const AmenitiesPage = () => {
       window.alert("Please select at least one amenity before submitting.");
       return;
     }
-  
+
     // Display a confirmation dialog before submitting
     const isConfirmed = window.confirm(
       "Before submitting, have you checked all details? Do you want to submit?"
     );
-  
+
     if (!isConfirmed) {
       return;
     }
-  
+
     const apiEndpoint = `${baseURL}/create-a-amenities/to-your-hotel`;
-  
+
     try {
       const response = await axios.post(apiEndpoint, {
         hotelId,
         amenities: selectedAmenities,
       });
-  
+
       // Handle the API response if needed
       console.log("API Response:", response.data);
-  
+
       // Check if the submission was successful
       if (response.status === 201) {
         // Show an alert if the submission was successful
         window.alert("Amenities submitted successfully!");
-        navigate("/partner/fourth-step");
+        window.location.href = "/partner/fourth-step";
       } else {
         // Handle other cases if needed
         console.log("Submission failed:", response.data.error);
@@ -59,8 +57,6 @@ const AmenitiesPage = () => {
       console.error("Error sending amenities to API:", error);
     }
   };
-  
-
 
   const amenitiesList = [
     { name: "Pool", id: "poolCheckbox" },
@@ -125,27 +121,18 @@ const AmenitiesPage = () => {
     { name: "Vending Machine (Snacks)", id: "vendingMachineSnacksCheckbox" },
     { name: "Special Diet Menus (on request)", id: "specialDietMenusCheckbox" },
     { name: "Packed Lunches", id: "packedLunchesCheckbox" },
+
+    { name: "Bar", id: "barCheckbox" },
+    { name: "Wine/Champagne", id: "wineChampagneCheckbox" },
+    { name: "Bottle of Water", id: "bottleOfWaterCheckbox" },
+    { name: "Chocolate/Cookies", id: "chocolateCookiesCheckbox" },
     { name: "Kid-Friendly Buffet", id: "kidFriendlyBuffetCheckbox" },
     { name: "Kid Meals", id: "kidMealsCheckbox" },
     { name: "Breakfast in the Room", id: "breakfastInRoomCheckbox" },
     { name: "Restaurant Buffet", id: "restaurantBuffetCheckbox" },
     { name: "Snack Bar", id: "snackBarCheckbox" },
-    { name: "Bar", id: "barCheckbox" },
-    { name: "Wine/Champagne", id: "wineChampagneCheckbox" },
-    { name: "Bottle of Water", id: "bottleOfWaterCheckbox" },
-    { name: "Chocolate/Cookies", id: "chocolateCookiesCheckbox" },
+
     { name: "Fruit", id: "fruitCheckbox" },
-    { name: "Kid-Friendly Buffet", id: "kidFriendlyBuffetCheckbox" },
-    { name: "Kid Meals", id: "kidMealsCheckbox" },
-    { name: "Breakfast in the Room", id: "breakfastInRoomCheckbox" },
-    { name: "Restaurant Buffet", id: "restaurantBuffetCheckbox" },
-    { name: "Snack Bar", id: "snackBarCheckbox" },
-    { name: "Bar", id: "barCheckbox" },
-    { name: "Wine/Champagne", id: "wineChampagneCheckbox" },
-    { name: "Bottle of Water", id: "bottleOfWaterCheckbox" },
-    { name: "Chocolate/Cookies", id: "chocolateCookiesCheckbox" },
-    { name: "Fruit", id: "fruitCheckbox" },
-    { name: "24-Hour Room Service", id: "roomServiceCheckbox" },
     { name: "Buffet Breakfast", id: "buffetBreakfastCheckbox" },
     { name: "Continental Breakfast", id: "continentalBreakfastCheckbox" },
     { name: "Gluten-Free Options", id: "glutenFreeOptionsCheckbox" },
@@ -161,11 +148,11 @@ const AmenitiesPage = () => {
 
   return (
     <div className="container mt-5">
-        <h5>You came so far, fill amenities details carefully !</h5>
-        <hr />
+      <h5>You came so far, fill amenities details carefully !</h5>
+      <hr />
       <div className="row">
         {amenitiesList.map((amenity) => (
-          <div key={amenity.id} className="col-md-4 mb-4">
+          <div key={amenity.id} className="col-md-2 mb-4">
             <div className="card">
               <div className="card-body">
                 <div className="form-check">
@@ -188,17 +175,20 @@ const AmenitiesPage = () => {
       </div>
 
       <div className="row">
-        <div className="col-md-4 offset-md-4">
+        <div className="col-md-12">
+          {" "}
+          {/* Full-width column */}
           <div className="card">
             <div className="card-body">
-             
-              <ul className="list-group">
+              <div className="row">
                 {selectedAmenities.map((amenity) => (
-                  <li key={amenity} className="list-group-item">
-                    {amenity}
-                  </li>
+                  <div key={amenity} className="col-md-2 mb-2">
+                    {" "}
+                    {/* Adjust column width as needed */}
+                    <div className="list-group-item">{amenity}</div>
+                  </div>
                 ))}
-              </ul>
+              </div>
               <button
                 className="btn btn-primary mt-3"
                 onClick={sendAmenitiesToAPI}

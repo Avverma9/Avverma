@@ -4,7 +4,7 @@ import baseURL from "../../baseURL";
 import { useNavigate } from "react-router-dom";
 
 export default function PartnerRooms() {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   const [type, setType] = useState("");
   const [bedTypes, setBedTypes] = useState("");
   const [price, setPrice] = useState("");
@@ -39,9 +39,11 @@ export default function PartnerRooms() {
       );
 
       if (response.status === 201) {
-        alert("Thank you, you have filled all details ! One of our customer will connect you shortly");
-        localStorage.removeItem("hotelId")
-        navigate("/")
+        alert(
+          "Thank you, you have filled all details ! One of our customer will connect you shortly"
+        );
+        localStorage.removeItem("hotelId");
+        navigate("/");
       }
     } catch (error) {
       console.error("Error adding room:", error);

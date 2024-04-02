@@ -4,7 +4,7 @@ import baseURL from "../../baseURL";
 import { useNavigate } from "react-router-dom";
 
 export default function PartnerFoods() {
-    const navigate=useNavigate()
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -39,7 +39,7 @@ export default function PartnerFoods() {
       if (response.status === 201) {
         alert("Your foods are added to your hotel details");
       }
-      navigate("/partner/last-step")
+      window.location.href = "/partner/last-step";
     } catch (error) {
       console.error("Error adding food:", error);
       // Handle the error as needed

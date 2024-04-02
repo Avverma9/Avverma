@@ -115,7 +115,7 @@ export default function PartnerForm() {
         alert(alertMessage);
 
         localStorage.setItem("hotelId", response.data.data.hotelId);
-        navigate("/partner/second-step");
+        window.location.href = "/partner/second-step";
       } else if (response.status === 500) {
         // Handle other status codes
         alert(
