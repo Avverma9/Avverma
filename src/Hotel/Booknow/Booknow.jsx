@@ -377,8 +377,8 @@ const BookNow = () => {
   style={{ maxHeight: "500px" }} // Set maximum height for the carousel
 >
   <div className="carousel-inner">
-    {hotelData.images &&
-      hotelData.images.map((image, index) => (
+    {hotelData?.images &&
+      hotelData?.images?.map((image, index) => (
         <div
           key={index}
           className={`carousel-item ${index === 0 ? "active" : ""}`}
@@ -432,29 +432,29 @@ const BookNow = () => {
                 >
                   {" "}
                   <CurrencyRupeeIcon />
-                  {hotelData.rooms?.[0]?.price || 0}
+                  {hotelData?.rooms?.[0]?.price || 0}
                 </div>
               </div>
             </div>
             <h5 className="hotel-name">
-              {hotelData.starRating}
-              <StarHalfIcon /> {hotelData.hotelName}{" "}
+              {hotelData?.starRating}
+              <StarHalfIcon /> {hotelData?.hotelName}{" "}
             </h5>
             <div className="hote-address">
               {" "}
               <p>
-                {hotelData.city}, {hotelData.destination}, {hotelData.state},{" "}
-                {hotelData.zip}
+                {hotelData?.city}, {hotelData?.destination}, {hotelData?.state},{" "}
+                {hotelData?.zip}
               </p>
             </div>
           </div>{" "}
           <div className="extras">
-            <p>{hotelData.description}</p>
+            <p>{hotelData?.description}</p>
           </div>
           <div className="extras">
             <div className="amenities-container">
               <h6>Our amenities</h6>
-              {hotelData.amenities.map((amenityArray, index) => (
+              {hotelData?.amenities?.map((amenityArray, index) => (
                 <div key={index}>
                   {amenityArray.amenities
                     .slice(0, 5)
@@ -471,73 +471,74 @@ const BookNow = () => {
             </div>
 
             <div className="hotel-policies-container">
-              {hotelData.amenities.map((amenityArray, index) => (
-                <Accordion
-                  key={index}
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  slotProps={{ transition: { timeout: 400 } }}
-                  sx={{
-                    "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-                    "& .MuiAccordionDetails-root": {
-                      display: expanded ? "block" : "none",
-                    },
-                    width: "100%", // Make Accordion fill the container's width
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls={`panel${index + 1}-content`}
-                    id={`panel${index + 1}-header`}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      width: "100%", // Make AccordionSummary fill the container's width
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      See +
-                      <Typography>
-                        {amenityArray.amenities.length - 5} more amenities
-                      </Typography>
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      {amenityArray.amenities
-                        .slice(5)
-                        .map((amenity, innerIndex) => (
-                          <div
-                            key={innerIndex}
-                            style={{
-                              marginBottom: "8px",
-                              flexBasis: "33%",
-                              boxSizing: "border-box",
-                              flexGrow: 1, // Add this line
-                            }}
-                          >
-                            <IconContext.Provider value={{ size: "1.2em" }}>
-                              {amenityIcons[amenity] || defaultIcon} {amenity}
-                            </IconContext.Provider>
-                          </div>
-                        ))}
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
+         
+             <Accordion
+             expanded={expanded}
+             onChange={handleExpansion}
+             slotProps={{ transition: { timeout: 400 } }}
+             sx={{
+               "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
+               "& .MuiAccordionDetails-root": {
+                 display: expanded ? "block" : "none",
+               },
+               width: "100%", // Make Accordion fill the container's width
+             }}
+           >
+             <AccordionSummary
+               expandIcon={<ExpandMoreIcon />}
+               aria-controls={`panel-content`}
+               id={`panel-header`}
+               sx={{
+                 display: "flex",
+                 flexDirection: "row",
+                 width: "100%", // Make AccordionSummary fill the container's width
+                 justifyContent: "space-between",
+               }}
+             >
+               <Typography
+                 sx={{
+                   display: "flex",
+                   flexDirection: "row",
+                   flexWrap: "wrap",
+                 }}
+               >
+                 See +
+                 <Typography>
+                   {/* Calculate total number of amenities */}
+                   {hotelData?.amenities?.flatMap(amenityArray => amenityArray.amenities).length - 5} more amenities
+                 </Typography>
+               </Typography>
+             </AccordionSummary>
+             <AccordionDetails>
+               <div
+                 style={{
+                   display: "flex",
+                   flexDirection: "row",
+                   flexWrap: "wrap",
+                 }}
+               >
+                 {/* Flatten the array of amenities */}
+                 {hotelData?.amenities?.flatMap(amenityArray => amenityArray.amenities).slice(5).map((amenity, index) => (
+                   <div
+                     key={index}
+                     style={{
+                       marginBottom: "8px",
+                       flexBasis: "33%",
+                       boxSizing: "border-box",
+                       flexGrow: 1, // Add this line
+                     }}
+                   >
+                     <IconContext.Provider value={{ size: "1.2em" }}>
+                       {amenityIcons[amenity] || defaultIcon} {amenity}
+                     </IconContext.Provider>
+                   </div>
+                 ))}
+               </div>
+             </AccordionDetails>
+           </Accordion>
+           
+            
+          
             </div>
           </div>
           {/* Rooms */}
@@ -567,7 +568,7 @@ const BookNow = () => {
                 <div className="col-md-8 d-none d-sm-block">
                   <div className="container mt-3">
                     <Grid container spacing={2}>
-                      {hotelData.rooms.map((room, index) => (
+                      {hotelData?.rooms?.map((room, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                           <Card sx={{ display: "flex", width: "250%" }}>
                             <CardMedia
@@ -577,7 +578,7 @@ const BookNow = () => {
                               src={
                                 room.images && room.images.length > 0
                                   ? room.images[0]
-                                  : hotelData.images[0]
+                                  : hotelData?.images[0]
                               }
                               alt={`Room ${index + 1} Image 1`}
                             />
@@ -648,7 +649,7 @@ const BookNow = () => {
                 <div className="col-md-4 d-block d-md-none">
                   <div className="container mt-3">
                     <Grid container spacing={2}>
-                      {hotelData.rooms.map((room, index) => (
+                      {hotelData?.rooms?.map((room, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                           <Card sx={{ display: "flex" }}>
                             <CardMedia
@@ -658,7 +659,7 @@ const BookNow = () => {
                               src={
                                 room.images && room.images.length > 0
                                   ? room.images[0]
-                                  : hotelData.images[0]
+                                  : hotelData?.images[0]
                               }
                               alt={`Room ${index + 1} Image 1`}
                             />
@@ -824,7 +825,7 @@ const BookNow = () => {
                       }}
                     >
                       <div style={{ flex: 1 }}>
-                        {selectedRooms.map((selected, index) => (
+                        {selectedRooms?.map((selected, index) => (
                           <div
                             key={index}
                             style={{ height: "50px", marginRight: "10px" }}
@@ -1028,7 +1029,7 @@ const BookNow = () => {
             className="extras"
             style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
           >
-            {hotelData.foods.map((foodArray, index) => (
+            {hotelData?.foods.map((foodArray, index) => (
               <Card key={index} sx={{ width: 500 }}>
                 <CardActionArea style={{ display: "flex" }}>
                   <CardMedia
@@ -1038,7 +1039,7 @@ const BookNow = () => {
                     src={
                       foodArray.images && foodArray.images.length > 0
                         ? foodArray.images[0]
-                        : hotelData.images[0]
+                        : hotelData?.images[0]
                     }
                     alt={`Food ${index + 1} Image 1`}
                   />
@@ -1399,13 +1400,13 @@ const BookNow = () => {
                 <CloseIcon />
               </IconButton>
               <DialogContent dividers>
-                {hotelData.policies.map((policy, index) => (
+                {hotelData?.policies.map((policy, index) => (
                   <React.Fragment key={index}>
                     <Typography
                       gutterBottom
                       sx={{ fontSize: isSmallScreen ? "0.8rem" : "inherit" }}
                     >
-                      <p>Local ID- {hotelData.localId}</p>
+                      <p>Local ID- {hotelData?.localId}</p>
                       <hr />
                       <p>Hotel's Policy - {policy.hotelsPolicy}</p>
                       <hr />

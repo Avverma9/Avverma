@@ -17,7 +17,7 @@ export const ConfirmBooking = ({ toast }) => {
   const [userData, setUserData] = useState(null);
   const location = useLocation();
   const [show, setShow] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState("success");
+  const [selectedStatus, setSelectedStatus] = useState("Confirmed");
   const [alertMessage, setAlertMessage] = useState(null);
 
   const handleClose = () => {
@@ -58,7 +58,7 @@ export const ConfirmBooking = ({ toast }) => {
   useEffect(() => {
     const id = localStorage.getItem("userId");
     axios
-      .get(`https://hotel-backend-tge7.onrender.com/get/${id}`)
+      .get(`${baseURL}/get/${id}`)
       .then((res) => setUserData(res?.data?.data))
       .catch((error) => {
         console.error("Error fetching user details:", error);
@@ -129,12 +129,12 @@ export const ConfirmBooking = ({ toast }) => {
           onChange={(e) => setSelectedStatus(e.target.value)}
           className={styles.selectOption}
         >
-          <option value="success">Confirmed</option>
-          <option value="failed">Failed</option>
-          <option value="checkedIn">Checked In</option>
-          <option value="checkedOut">Checked Out</option>
-          <option value="cancelled">Cancelled</option>
-          <option value="noshow">No show</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Failed">Failed</option>
+          <option value="Checked-in">Checked In</option>
+          <option value="Checked-out">Checked Out</option>
+          <option value="Cancelled">Cancelled</option>
+          <option value="No-Show">No show</option>
         </select>
       </div>
 
