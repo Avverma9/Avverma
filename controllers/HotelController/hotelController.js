@@ -273,18 +273,18 @@ const getByQuery = async (req, res) => {
 
 //================================================================================================
 
-//====================================================================================
+
 const getAllHotels = async (req, res) => {
   try {
     const getData = await hotelModel.find().sort({ isAccepted: 1 });
 
-    res.json({ success: true, getData });
+    res.json({ success: true, data:getData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-
+//====================================================================================
 const getAllRejectedHotels = async (req, res) => {
   try {
     const hotels = await hotelModel.find().sort({ createdAt: -1 });
