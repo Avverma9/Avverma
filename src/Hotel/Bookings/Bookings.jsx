@@ -77,7 +77,7 @@ export const ConfirmBooking = ({ toast }) => {
     const userId = localStorage.getItem("userId");
     try {
       const response = await axios.get(
-        `${baseURL}/get/all/filtered/booking/by/${userId}`,
+        `${baseURL}/get/all/users-filtered/booking/by/${userId}`,
         {
           params: {
             bookingStatus: selectedStatus,
