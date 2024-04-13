@@ -377,25 +377,37 @@ const getAllFilterBookings = async (req, res) => {
 };
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId } = req.query;
-    const filter = { userId, bookingStatus };
-    const bookings = await bookingModel.find(filter);
-    if (bookings.length === 0) {
-      return res.status(400).json({ message: `No ${bookingStatus} bookings found` });
+    const { bookingStatus, userId, bookingId } = req.query;
+    const filter = {};
+
+    // Include userId and bookingStatus filters if provided
+    if (userId) {
+      filter.userId = userId;
+    }
+    if (bookingStatus) {
+      filter.bookingStatus = bookingStatus;
     }
 
-    // Combine user details with bookings
-    const bookingsWithUserDetails = bookings.map(booking => ({
-      ...booking.toObject(), // Convert Mongoose object to plain JavaScript object
-      user: userFields // Add user details
-    }));
+    // Include bookingId filter if provided
+    if (bookingId) {
+      filter.bookingId = bookingId;
+    }
 
-    res.json(bookingsWithUserDetails);
+    const bookings = await bookingModel.find(filter);
+
+    if (bookings.length === 0) {
+      return res.status(400).json({ message: `No bookings found` });
+    }
+
+    res.json(bookings);
   } catch (error) {
     console.error("Error in getAllFilterBookings:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+
+
+
 
 module.exports = {
   createBooking,

@@ -163,13 +163,13 @@ router.get(
 router.get("/bookingsCheckedIn/:id", bookingController.getCheckedInHotel);
 router.get("/bookingsCheckedOut/:id", bookingController.getCheckedOutHotel);
 router.get(
-  "/get/all/filtered/booking/by/:user",
+  "/get/all/users-filtered/booking/by/:user",
   bookingController.getAllFilterBookings
-);
+); // using on main site
 router.get(
   "/get/all/filtered/booking/by/query",
   bookingController.getAllFilterBookingsByQuery
-);
+); //using on dashboard
 router.get("/get-all/bookings-details", bookingController.getAll);
 router.get("/get-all/bookings-count", bookingController.getBookingCounts);
 router.get("/get-all/sell-count", bookingController.getTotalSell);
