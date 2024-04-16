@@ -21,7 +21,7 @@ mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
-
+app.use(cors())
 // Define your cron job logic
 const cronJob = () => {
   // Your cron job logic here
@@ -32,17 +32,6 @@ const cronJob = () => {
 cron.schedule("0 0 * * *", cronJob);
 
 // Allow requests only from specific origins
-const allowedOrigins = ["http://localhost:3000", "http://localhost:5000","https://roomsstay.vercel.app","https://hotelroomsstay.com","https://bms-hotelroomsstay.vercel.app"];
-app.use(cors({
-  origin: function(origin, callback) {
-    // Check if the origin is allowed or if it's a request from the same origin (null)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  }
-}));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
