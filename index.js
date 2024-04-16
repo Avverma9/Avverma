@@ -32,7 +32,7 @@ const cronJob = () => {
 cron.schedule("0 0 * * *", cronJob);
 
 // Allow requests only from specific origins
-const allowedOrigins = ["http://localhost:3000","http://localhost:3001"];
+const allowedOrigins = ["http://localhost:3000","https://hotel-backend-tge7.onrender.com"];
 app.use(cors({
   origin: function(origin, callback) {
     // Check if the origin is allowed or if it's a request from the same origin (null)
