@@ -31,7 +31,18 @@ const cronJob = () => {
 // Schedule the cron job to run every day at midnight (adjust as needed)
 cron.schedule("0 0 * * *", cronJob);
 
-app.use(cors()); // Enable CORS for all routes
+// Allow requests only from specific origins
+const allowedOrigins = ["https://roomsstay.vercel.app", "http://example2.com"];
+app.use(cors({
+  origin: function(origin, callback) {
+    // Check if the origin is allowed or if it's a request from the same origin (null)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+}));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
