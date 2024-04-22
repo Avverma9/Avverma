@@ -729,7 +729,7 @@ cron.schedule("0 0 * * *", async () => {
 const ApplyCoupon = async (req, res) => {
   const { hotelId, roomId } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
-  const offerStartDate = new Date().toISOString().split("T")[0];
+  const offerStartDate = new Date().toISOString().split("T")[0]
 
   try {
     const hotel = await hotelModel.findById(hotelId);
