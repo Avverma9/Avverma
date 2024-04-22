@@ -727,59 +727,47 @@ cron.schedule("0 0 * * *", async () => {
 //==================================================================================
 
 const ApplyCoupon = async (req, res) => {
-  const { hotelid, roomid } = req.params;
+  const { hotelId, roomId } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
   const offerStartDate = new Date().toISOString().split("T")[0];
 
   try {
-    const hotel = await hotelModel.findById(hotelid);
+    const hotel = await hotelModel.findById(hotelId);
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
 
-    const room = hotel.roomDetails.find(
-      (room) => room._id.toString() === roomid
-    );
+    // Find the room directly from the hotel data, no need to search in roomDetails array
+    const room = hotel.rooms.find((room) => room._id.toString() === roomId);
     if (!room) {
       return res.status(404).json({ error: "Room not found in the hotel" });
     }
 
     const originalPrice = room.price;
-    const updatedHotel = await hotelModel.findByIdAndUpdate(
-      hotelid,
-      {
-        $set: {
-          "roomDetails.$[room].offerDetails": offerDetails,
-          "roomDetails.$[room].offerExp": offerExp,
-          "roomDetails.$[room].offerPriceLess": offerPriceLess,
-          "roomDetails.$[room].offerStartDate": offerStartDate,
-        },
-        isOffer: true, // Assuming isOffer is a top-level field
-      },
-      {
-        new: true,
-        arrayFilters: [{ "room._id": room._id }],
-      }
-    );
 
+    // Update offer details for the specific room
+    room.offerDetails = offerDetails;
+    room.offerExp = offerExp;
+    room.offerPriceLess = offerPriceLess;
+    room.offerStartDate = offerStartDate;
+
+    // Check if the offer has expired
     const hasOfferExpired = new Date() >= new Date(offerExp);
-    const updatedRoom = updatedHotel.roomDetails.find(
-      (r) => r._id.toString() === roomid
-    );
 
-    if (updatedRoom) {
-      if (hasOfferExpired || new Date(offerExp) <= new Date()) {
-        updatedRoom.price = updatedRoom.originalPrice || originalPrice;
-        delete updatedRoom.originalPrice;
-      } else {
-        const discountPercentage = offerPriceLess / 100;
-        updatedRoom.price -= updatedRoom.price * discountPercentage;
-        updatedRoom.originalPrice = originalPrice;
-      }
+    // Apply the offer if it's not expired
+    if (!hasOfferExpired) {
+      const discountPercentage = offerPriceLess / 100;
+      room.price -= room.price * discountPercentage;
+      room.originalPrice = originalPrice;
+    } else {
+      // If offer has expired, revert to original price
+      delete room.originalPrice;
     }
 
-    await updatedHotel.save();
-    res.json(updatedHotel);
+    // Save the changes
+    await hotel.save();
+
+    res.json(hotel);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });

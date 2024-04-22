@@ -101,7 +101,7 @@ router.delete(
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
 router.patch(
-  "/hotels/update/coupon/by/:hotelid/:roomid",
+  "/hotels/update/coupon/by/:hotelId/:roomId",
   hotelController.ApplyCoupon
 );
 router.patch(
