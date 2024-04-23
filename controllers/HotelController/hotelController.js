@@ -786,10 +786,10 @@ const expireOffer = async function (req, res) {
       {
         isOffer: isOffer !== undefined ? isOffer : false,
         $set: {
-          "roomDetails.$[room].offerExp": offerExp || defaultOfferExp,
-          "roomDetails.$[room].offerPriceLess":
+          "rooms.$[room].offerExp": offerExp || defaultOfferExp,
+          "rooms.$[room].offerPriceLess":
             offerPriceLess !== undefined ? offerPriceLess : 0,
-          "roomDetails.$[room].offerDetails": offerDetails || "N/A",
+          "rooms.$[room].offerDetails": offerDetails || "N/A",
         },
       },
       { new: true, arrayFilters: [{ "room._id": roomid }] }
@@ -800,18 +800,18 @@ const expireOffer = async function (req, res) {
     }
 
     // Find the room in the updatedHotel's roomDetails array
-    const roomIndex = updatedHotel.roomDetails.findIndex(
+    const roomIndex = updatedHotel.rooms.findIndex(
       (room) => room._id.toString() === roomid
     );
 
     if (roomIndex !== -1) {
       // Set the new price to the originalPrice value
-      updatedHotel.roomDetails[roomIndex].price =
-        updatedHotel.roomDetails[roomIndex].originalPrice;
+      updatedHotel.rooms[roomIndex].price =
+        updatedHotel.rooms[roomIndex].originalPrice;
 
       // Check if offerDetails is not present in the room, then update it to "N/A"
-      if (updatedHotel.roomDetails[roomIndex].offerDetails) {
-        updatedHotel.roomDetails[roomIndex].offerDetails = "N/A";
+      if (updatedHotel.rooms[roomIndex].offerDetails) {
+        updatedHotel.rooms[roomIndex].offerDetails = "N/A";
       }
     } else {
       return res.status(404).json({ error: "Room not found" });
