@@ -152,7 +152,7 @@ const UpdateHotelInfo = async function (req, res) {
           isAccepted: isAccepted,
           isOffer: isOffer,
           hotelName: hotelName,
-          hotelOwnerName:hotelOwnerName,
+          hotelOwnerName: hotelOwnerName,
           hotelEmail: hotelEmail,
           generalManagerContact: generalManagerContact,
           salesManagerContact: salesManagerContact,
@@ -273,12 +273,11 @@ const getByQuery = async (req, res) => {
 
 //================================================================================================
 
-
 const getAllHotels = async (req, res) => {
   try {
     const getData = await hotelModel.find().sort({ isAccepted: 1 });
 
-    res.json({ success: true, data:getData });
+    res.json({ success: true, data: getData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -730,21 +729,19 @@ const ApplyCoupon = async (req, res) => {
   const { hotelId, roomId } = req.params;
   const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
   const offerStartDate = new Date().toISOString().split("T")[0];
-
   try {
     const hotel = await hotelModel.findByIdAndUpdate(hotelId);
     if (!hotel) {
       return res.status(404).json({ error: "Hotel not found" });
     }
-
     // Find the room directly from the hotel data
-    const roomIndex = hotel.rooms.findIndex((room) => room._id.toString() === roomId);
+    const roomIndex = hotel.rooms.findIndex(
+      (room) => room._id.toString() === roomId
+    );
     if (roomIndex === -1) {
       return res.status(404).json({ error: "Room not found in the hotel" });
     }
-
     const originalPrice = hotel.rooms[roomIndex].price;
-
     // Create a new room object with updated details
     const updatedRoom = {
       ...hotel.rooms[roomIndex], // Spread operator to copy existing properties
@@ -753,36 +750,26 @@ const ApplyCoupon = async (req, res) => {
       offerPriceLess,
       offerStartDate,
     };
-
     // Check if the offer has expired
     const hasOfferExpired = new Date() >= new Date(offerExp);
-
     // Apply the offer if it's not expired
     if (!hasOfferExpired) {
       const discountPercentage = offerPriceLess / 100;
-      updatedRoom.price = originalPrice - (originalPrice * discountPercentage);
+      updatedRoom.price = originalPrice - originalPrice * discountPercentage;
       updatedRoom.originalPrice = originalPrice;
     } else {
       // If offer has expired, revert to original price
       delete updatedRoom.originalPrice;
     }
-
     // Update the room in the hotel object
     hotel.rooms[roomIndex] = updatedRoom;
-
-    // Save the changes to the hotel
     await hotel.save();
-   
-
     res.json(hotel);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
-
 
 //================================remove offer=====================
 const expireOffer = async function (req, res) {
@@ -791,43 +778,42 @@ const expireOffer = async function (req, res) {
     const { offerExp, isOffer, offerPriceLess, offerDetails } = req.body;
     const defaultOfferExp = new Date().toISOString().split("T")[0];
 
-    const updatedHotel = await hotelModel.findOneAndUpdate(
-      { _id: id, "rooms._id": roomid },
+    const updatedHotel = await hotelModel.findByIdAndUpdate(
+      id, // Pass the actual ID value here
       {
+        offerExp: offerExp || defaultOfferExp,
         isOffer: isOffer !== undefined ? isOffer : false,
-        $set: {
-          "rooms.$.offerExp": offerExp || defaultOfferExp,
-          "rooms.$.offerPriceLess": offerPriceLess !== undefined ? offerPriceLess : 0,
-          "rooms.$.offerDetails": offerDetails || "N/A",
-        },
+        offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
+        offerDetails: offerDetails || "N/A",
       },
-      { new: true, upsert: false } // Get the updated document, no upsert
+      { new: true }
     );
 
     if (!updatedHotel) {
-      return res.status(404).json({ error: "Hotel or room not found" });
+      return res.status(404).json({ error: 'Hotel not found' });
     }
 
-    const roomIndex = updatedHotel.rooms.findIndex(
-      (room) => room._id.toString() === roomid
-    );
+    // Find the room in the updatedHotel's roomDetails array
+    const roomIndex = updatedHotel.rooms.findIndex((room) => room._id.toString() === roomid);
 
     if (roomIndex !== -1) {
-      // Update price and offerDetails as before
-      updatedHotel.rooms[roomIndex].price =
-        updatedHotel.rooms[roomIndex].originalPrice;
-      updatedHotel.rooms[roomIndex].offerDetails = "N/A";
+      // Set the new price to the originalPrice value
+      updatedHotel.rooms[roomIndex].price = updatedHotel.rooms[roomIndex].originalPrice;
     } else {
-      return res.status(404).json({ error: "Room not found" });
+      return res.status(404).json({ error: 'Room not found' });
     }
 
-    // No need to save again as `findOneAndUpdate` with `new: true` returns the updated doc
-    res.status(200).json(updatedHotel);
+    // Save the updatedHotel with the modified roomDetails array
+    const savedHotel = await updatedHotel.save();
+
+    res.status(200).json(savedHotel);
   } catch (error) {
-    console.error("Error updating hotel:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error updating hotel:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
 
 //=============================================================
 const getByRoom = async (req, res) => {
