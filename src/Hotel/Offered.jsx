@@ -85,6 +85,28 @@ const Offered = () => {
           <div key={index} className="col mb-3">
             <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
               <div>
+      
+
+              {hotel?.rooms?.[0]?.price < hotel?.rooms?.[0]?.originalPrice && (
+  <Typography
+    style={{
+      backgroundColor: "green",
+      color: "white",
+      border: "1px solid black", // Add border
+      borderRadius: "1px", // Add border radius
+      padding: "4px", // Add padding
+      width: 130, // Maintain width
+      position: "absolute",
+      top: "0.5rem",
+      right: ".5rem"
+    }}
+  >
+    Get {hotel?.rooms?.[0]?.offerPriceLess}% less
+  </Typography>
+)}
+
+
+<br />
                 <Typography level="title-sm">{hotel.hotelName}</Typography>
                 <Typography level="body-xs">
                   {" "}
@@ -96,7 +118,7 @@ const Offered = () => {
                   variant="plain"
                   color="neutral"
                   size="sm"
-                  sx={{ position: "absolute", top: "0.5rem", right: ".5rem" }}
+                  sx={{ position: "absolute", top: "0.5rem", left: ".5rem" }}
                 >
                   {" "}
                   {hotel.starRating.substring(0, 1)}
