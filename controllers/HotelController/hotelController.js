@@ -1,10 +1,5 @@
 const hotelModel = require("../../models/Hotel/hotelModel");
-const foods = require("../../models/Hotel/foodsModel");
-const amenities = require("../../models/Hotel/amenitiesModel");
-const policies = require("../../models/Hotel/policyModel");
 const month = require("../../models/monthlyPriceModel");
-const roomModel = require("../../models/Hotel/roomModel");
-const reviewModel = require("../reviewController");
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
