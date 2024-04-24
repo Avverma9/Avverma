@@ -696,14 +696,20 @@ const checkAndUpdateOffers = async () => {
       offerExp: { $lt: new Date() },
     });
 
-    // Update room prices to their original values and set offerDetails to ["N/A"]
+    // Update room prices and details using object-based updates
     for (const hotel of expiredOffers) {
-      for (const room of hotel.roomDetails) {
-        // Update room price to original value
-        room.price = room.originalPrice;
+      for (let i = 0; i < hotel.rooms.length; i++) {
+        const roomUpdates = {
+          price: hotel.rooms[i].originalPrice,
+          offerDetails: "N/A",
+        };
 
-        // Set offerDetails to "N/A"
-        room.offerDetails = "N/A";
+        // Update the specific room using $set operator (optional)
+        hotel.rooms.$set = hotel.rooms.$set || {}; // Initialize if not set
+        hotel.rooms.$set[i] = roomUpdates;
+
+        // **OR** Update the room directly at the index (simpler)
+        hotel.rooms[i] = { ...hotel.rooms[i], ...roomUpdates };
       }
 
       // Set isOffer to false for the hotel
@@ -717,6 +723,7 @@ const checkAndUpdateOffers = async () => {
     console.error("Error processing expired offers:", error);
   }
 };
+
 
 // Schedule the function to run every day at midnight (adjust as needed)
 cron.schedule("0 0 * * *", async () => {
@@ -778,38 +785,49 @@ const expireOffer = async function (req, res) {
     const { offerExp, isOffer, offerPriceLess, offerDetails } = req.body;
     const defaultOfferExp = new Date().toISOString().split("T")[0];
 
-    const updatedHotel = await hotelModel.findByIdAndUpdate(
-      id, // Pass the actual ID value here
-      {
-        offerExp: offerExp || defaultOfferExp,
-        isOffer: isOffer !== undefined ? isOffer : false,
-        offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
-        offerDetails: offerDetails || "N/A",
-      },
-      { new: true }
+    // Retrieve the hotel object
+    const hotel = await hotelModel.findById(id);
+
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    // Find the room's index in the rooms array
+    const roomIndex = hotel.rooms.findIndex(
+      (room) => room._id.toString() === roomid
     );
 
-    if (!updatedHotel) {
-      return res.status(404).json({ error: 'Hotel not found' });
+    if (roomIndex === -1) {
+      return res.status(404).json({ error: "Room not found" });
     }
 
-    // Find the room in the updatedHotel's roomDetails array
-    const roomIndex = updatedHotel.rooms.findIndex((room) => room._id.toString() === roomid);
+    // Create an update object
+    const roomUpdates = {
+      offerExp: offerExp || defaultOfferExp,
+      isOffer: isOffer !== undefined ? isOffer : false,
+      offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
+      offerDetails: offerDetails || "N/A",
+      price: hotel.rooms[roomIndex].originalPrice, // Ensure price is reset to originalPrice
+    };
 
-    if (roomIndex !== -1) {
-      // Set the new price to the originalPrice value
-      updatedHotel.rooms[roomIndex].price = updatedHotel.rooms[roomIndex].originalPrice;
-    } else {
-      return res.status(404).json({ error: 'Room not found' });
+    // Update the specific room using $set operator (optional)
+    hotel.rooms.$set = hotel.rooms.$set || {}; // Initialize if not set
+    hotel.rooms.$set[roomIndex] = roomUpdates;
+
+    // **OR** Update the room directly at the index (simpler)
+    hotel.rooms[roomIndex] = { ...hotel.rooms[roomIndex], ...roomUpdates };
+
+    // Save the updated hotel object with error handling
+    const savedHotel = await hotel.save();
+
+    if (!savedHotel) {
+      return res.status(500).json({ error: "Error saving hotel data" });
     }
-
-    // Save the updatedHotel with the modified roomDetails array
-    const savedHotel = await updatedHotel.save();
 
     res.status(200).json(savedHotel);
   } catch (error) {
-    console.error('Error updating hotel:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error("Error updating hotel:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -902,6 +920,7 @@ module.exports = {
   getHotelsByPrice,
   getHotelsByLocalID,
   getHotelsByFilters,
+  checkAndUpdateOffers,
   getCity,
   getByQuery,
   UpdateHotel,
