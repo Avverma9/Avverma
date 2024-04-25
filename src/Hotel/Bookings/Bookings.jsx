@@ -6,7 +6,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import moment from "moment";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
 import baseURL from "../../baseURL";
@@ -14,6 +14,7 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 export const ConfirmBooking = ({ toast }) => {
+  const navigate = useNavigate()
   const [bookingDetails, setBookingDetails] = useState(null);
   const [modalData, setModalData] = useState([]);
   const [userData, setUserData] = useState(null);
@@ -110,7 +111,11 @@ export const ConfirmBooking = ({ toast }) => {
   if (location.pathname !== "/bookings") {
     return null;
   }
-
+const handleReview = (hotelId)=>{
+  localStorage.setItem("for review",hotelId)
+ const userId = localStorage.getItem("userId")
+navigate(`/write-an-review/${userId}/${hotelId}`)
+}
   return (
     <>
         <Stack sx={{ width: '100%' }} spacing={2}>
@@ -212,6 +217,8 @@ export const ConfirmBooking = ({ toast }) => {
                   >
                     More
                   </button>
+                  <br />
+                  <button onClick={()=>handleReview ()}>Write an review</button>
                 </div>
               </div>
             );
