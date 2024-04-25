@@ -4,6 +4,9 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Carousel } from "react-bootstrap";
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -92,28 +95,25 @@ const Hotel = () => {
     <div className="container mt-4">
       <hr />
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        {hotelData.map((hotel, index) => (
+      {hotelData.map((hotel, index) => (
           <div key={index} className="col mb-3">
             <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
               <div>
-                {hotel?.rooms?.[0]?.price <
-                  hotel?.rooms?.[0]?.originalPrice && (
-                  <Typography
-                    style={{
-                      backgroundColor: "green",
-                      color: "white",
-                      border: "1px solid black", // Add border
-                      borderRadius: "1px", // Add border radius
-                      padding: "4px", // Add padding
-                      width: 130, // Maintain width
-                      position: "absolute",
-                      top: "0.5rem",
-                      right: ".5rem",
-                    }}
-                  >
-                    Get {hotel?.rooms?.[0]?.offerPriceLess}% less
-                  </Typography>
-                )}
+            
+                
+              {hotel?.rooms?.[0]?.price < hotel?.rooms?.[0]?.originalPrice && (
+  <div style={{ position: "absolute", top: "0.5rem", right: ".5rem" }}>
+    <Stack direction="row" spacing={1}>
+     
+      <Chip
+        label={`Get ${hotel?.rooms?.[0]?.offerPriceLess}% less`}
+        color="success"
+        variant="filled"
+        avatar={<Avatar alt="Offer" src="/static/images/avatar/1.jpg" />}
+      />
+    </Stack>
+  </div>
+)}
                 <br />
                 <Typography level="title-sm">{hotel.hotelName}</Typography>
                 <Typography level="body-xs">

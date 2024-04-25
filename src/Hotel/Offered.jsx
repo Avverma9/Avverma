@@ -6,6 +6,9 @@ import { Carousel } from "react-bootstrap";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import {
   FaCoffee,
   FaTv,
@@ -88,22 +91,19 @@ const Offered = () => {
       
 
               {hotel?.rooms?.[0]?.price < hotel?.rooms?.[0]?.originalPrice && (
-  <Typography
-    style={{
-      backgroundColor: "green",
-      color: "white",
-      border: "1px solid black", // Add border
-      borderRadius: "1px", // Add border radius
-      padding: "4px", // Add padding
-      width: 130, // Maintain width
-      position: "absolute",
-      top: "0.5rem",
-      right: ".5rem"
-    }}
-  >
-    Get {hotel?.rooms?.[0]?.offerPriceLess}% less
-  </Typography>
+  <div style={{ position: "absolute", top: "0.5rem", right: ".5rem" }}>
+    <Stack direction="row" spacing={1}>
+
+      <Chip
+        label={`Get ${hotel?.rooms?.[0]?.offerPriceLess}% less`}
+        color="success"
+        variant="filled"
+        avatar={<Avatar alt="Off" src="/static/images/avatar/1.jpg" />}
+      />
+    </Stack>
+  </div>
 )}
+
 
 
 <br />

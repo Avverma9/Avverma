@@ -5,7 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
@@ -439,6 +441,7 @@ const BookNow = () => {
             <h5 className="hotel-name">
               {hotelData?.starRating}
               <StarHalfIcon /> {hotelData?.hotelName}{" "}
+              
             </h5>
             <div className="hote-address">
               {" "}
