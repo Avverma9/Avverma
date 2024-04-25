@@ -66,7 +66,7 @@ export default function Profile() {
   };
 
   return (
-    <section className="vh-10" style={{ backgroundColor: "#f4f5f7" }}>
+    <section className="vh-10" style={{ backgroundColor: "#f8f9fa" }}>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">

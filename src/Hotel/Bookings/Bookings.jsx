@@ -10,7 +10,9 @@ import { useLocation } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
 import baseURL from "../../baseURL";
-
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 export const ConfirmBooking = ({ toast }) => {
   const [bookingDetails, setBookingDetails] = useState(null);
   const [modalData, setModalData] = useState([]);
@@ -120,7 +122,7 @@ export const ConfirmBooking = ({ toast }) => {
         )}
       </Stack>
       <div className={styles.bookingHeader}>
-        <h2>Booking History</h2>
+        <h2>Your bookings</h2>
       </div>
       <div className={styles.bookingsContainer}>
       <div className={styles.selectContainer}>
@@ -163,7 +165,7 @@ export const ConfirmBooking = ({ toast }) => {
                     bookingDetails?.checkOutDate && (
                       <h6>
                         <>
-                        From  {bookingDetails?.checkInDate &&
+                        <CalendarMonthIcon/>  From  {bookingDetails?.checkInDate &&
                             bookingDetails?.checkInDate.substring(0, 10)}
                           {"  "}
                         </>
@@ -180,7 +182,7 @@ export const ConfirmBooking = ({ toast }) => {
                  
                 </div>
                 <div className={styles.bookingRowOne}>
-                  <h6>{bookingDetails?.bookingId}</h6>
+                  <h6> ID<StickyNote2Icon/> {bookingDetails?.bookingId}</h6>
                   {bookingDetails?.guests && bookingDetails?.rooms && (
                     <h6>
                       <>
@@ -203,7 +205,7 @@ export const ConfirmBooking = ({ toast }) => {
                   )}
                 </div>
                 <div className={styles.bookingRowTwo}>
-                  <h6>{bookingDetails?.price}</h6>
+                  <h6><CurrencyRupeeIcon/>{bookingDetails?.price}</h6>
                   <button
                     className={styles.link}
                     onClick={() => handleShow(bookingDetails)}
