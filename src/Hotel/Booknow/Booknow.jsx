@@ -5,9 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
@@ -250,17 +250,19 @@ const BookNow = () => {
   const handleBookNow = async () => {
     try {
       const userId = localStorage.getItem("userId");
-      
+
       // Check if userMobile is available in localStorage
       const userMobile = localStorage.getItem("userMobile");
-      
+
       if (!userMobile) {
         // If userMobile is not available, show an alert and navigate to the profile page
-        alert("Action required: Please update your mobile number in the profile.");
+        alert(
+          "Action required: Please update your mobile number in the profile."
+        );
         navigate("/profile");
         return;
       }
-  
+
       // Prepare data for API request
       const bookingData = {
         user: userId, // Include userId in the payload
@@ -283,7 +285,7 @@ const BookNow = () => {
         hotelName: hotelData.hotelName,
         hotelOwnerName: hotelData.hotelOwnerName,
       };
-  
+
       // Make API request to book
       const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
         method: "POST",
@@ -292,7 +294,7 @@ const BookNow = () => {
         },
         body: JSON.stringify(bookingData),
       });
-  
+
       if (response.status === 201) {
         // Handle success, e.g., redirect to a confirmation page
         alert("Booking successful");
@@ -305,7 +307,7 @@ const BookNow = () => {
       console.error("Error booking:", error);
     }
   };
-  
+
   const scrollToRooms = () => {
     roomsRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -371,33 +373,31 @@ const BookNow = () => {
     <div className="book-now-container">
       {hotelData ? (
         <>
-        <div
-  id="carouselExample"
-  className="carousel slide mb-4"
-  data-bs-ride="carousel"
-  data-bs-interval="2000" // Set auto-slide interval to 2 seconds (2000 milliseconds)
-  style={{ maxHeight: "500px" }} // Set maximum height for the carousel
->
-  <div className="carousel-inner">
-    {hotelData?.images &&
-      hotelData?.images?.map((image, index) => (
-        <div
-          key={index}
-          className={`carousel-item ${index === 0 ? "active" : ""}`}
-          style={{ maxHeight: "500px" }} // Set maximum height for each carousel item
-        >
-          <img
-            src={image}
-            className="d-block w-100"
-            alt={`Hotel Image ${index + 1}`}
-            style={{ maxHeight: "500px", objectFit: "cover" }} // Adjust image height and maintain aspect ratio
-          />
-        </div>
-      ))}
-  </div>
-</div>
-
-
+          <div
+            id="carouselExample"
+            className="carousel slide mb-4"
+            data-bs-ride="carousel"
+            data-bs-interval="2000" // Set auto-slide interval to 2 seconds (2000 milliseconds)
+            style={{ maxHeight: "500px" }} // Set maximum height for the carousel
+          >
+            <div className="carousel-inner">
+              {hotelData?.images &&
+                hotelData?.images?.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`carousel-item ${index === 0 ? "active" : ""}`}
+                    style={{ maxHeight: "500px" }} // Set maximum height for each carousel item
+                  >
+                    <img
+                      src={image}
+                      className="d-block w-100"
+                      alt={`Hotel Image ${index + 1}`}
+                      style={{ maxHeight: "500px", objectFit: "cover" }} // Adjust image height and maintain aspect ratio
+                    />
+                  </div>
+                ))}
+            </div>
+          </div>
           <button
             className="carousel-control-prev"
             type="button"
@@ -441,7 +441,6 @@ const BookNow = () => {
             <h5 className="hotel-name">
               {hotelData?.starRating}
               <StarHalfIcon /> {hotelData?.hotelName}{" "}
-              
             </h5>
             <div className="hote-address">
               {" "}
@@ -474,74 +473,76 @@ const BookNow = () => {
             </div>
 
             <div className="hotel-policies-container">
-         
-             <Accordion
-             expanded={expanded}
-             onChange={handleExpansion}
-             slotProps={{ transition: { timeout: 400 } }}
-             sx={{
-               "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
-               "& .MuiAccordionDetails-root": {
-                 display: expanded ? "block" : "none",
-               },
-               width: "100%", // Make Accordion fill the container's width
-             }}
-           >
-             <AccordionSummary
-               expandIcon={<ExpandMoreIcon />}
-               aria-controls={`panel-content`}
-               id={`panel-header`}
-               sx={{
-                 display: "flex",
-                 flexDirection: "row",
-                 width: "100%", // Make AccordionSummary fill the container's width
-                 justifyContent: "space-between",
-               }}
-             >
-               <Typography
-                 sx={{
-                   display: "flex",
-                   flexDirection: "row",
-                   flexWrap: "wrap",
-                 }}
-               >
-                 See +
-                 <Typography>
-                   {/* Calculate total number of amenities */}
-                   {hotelData?.amenities?.flatMap(amenityArray => amenityArray.amenities).length - 5} more amenities
-                 </Typography>
-               </Typography>
-             </AccordionSummary>
-             <AccordionDetails>
-               <div
-                 style={{
-                   display: "flex",
-                   flexDirection: "row",
-                   flexWrap: "wrap",
-                 }}
-               >
-                 {/* Flatten the array of amenities */}
-                 {hotelData?.amenities?.flatMap(amenityArray => amenityArray.amenities).slice(5).map((amenity, index) => (
-                   <div
-                     key={index}
-                     style={{
-                       marginBottom: "8px",
-                       flexBasis: "33%",
-                       boxSizing: "border-box",
-                       flexGrow: 1, // Add this line
-                     }}
-                   >
-                     <IconContext.Provider value={{ size: "1.2em" }}>
-                       {amenityIcons[amenity] || defaultIcon} {amenity}
-                     </IconContext.Provider>
-                   </div>
-                 ))}
-               </div>
-             </AccordionDetails>
-           </Accordion>
-           
-            
-          
+              <Accordion
+                expanded={expanded}
+                onChange={handleExpansion}
+                slotProps={{ transition: { timeout: 400 } }}
+                sx={{
+                  "& .MuiAccordion-region": { height: expanded ? "auto" : 0 },
+                  "& .MuiAccordionDetails-root": {
+                    display: expanded ? "block" : "none",
+                  },
+                  width: "100%", // Make Accordion fill the container's width
+                }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls={`panel-content`}
+                  id={`panel-header`}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%", // Make AccordionSummary fill the container's width
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    See +
+                    <Typography>
+                      {/* Calculate total number of amenities */}
+                      {hotelData?.amenities?.flatMap(
+                        (amenityArray) => amenityArray.amenities
+                      ).length - 5}{" "}
+                      more amenities
+                    </Typography>
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* Flatten the array of amenities */}
+                    {hotelData?.amenities
+                      ?.flatMap((amenityArray) => amenityArray.amenities)
+                      .slice(5)
+                      .map((amenity, index) => (
+                        <div
+                          key={index}
+                          style={{
+                            marginBottom: "8px",
+                            flexBasis: "33%",
+                            boxSizing: "border-box",
+                            flexGrow: 1, // Add this line
+                          }}
+                        >
+                          <IconContext.Provider value={{ size: "1.2em" }}>
+                            {amenityIcons[amenity] || defaultIcon} {amenity}
+                          </IconContext.Provider>
+                        </div>
+                      ))}
+                  </div>
+                </AccordionDetails>
+              </Accordion>
             </div>
           </div>
           {/* Rooms */}
