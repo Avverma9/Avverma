@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import baseURL from "../../baseURL";
-import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
 import axios from "axios";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import {
   TextField,
   Button,
@@ -48,9 +48,8 @@ export default function PolicyForm() {
   const [smokingAllowed, setSmokingAllowed] = useState("");
   const [alcoholAllowed, setAlcoholAllowed] = useState("");
   const [unmarriedCouplesAllowed, setUnmarriedCouplesAllowed] = useState("");
-  const [internationalGuestAllowed, setInternationalGuestAllowed] = useState(
-    ""
-  );
+  const [internationalGuestAllowed, setInternationalGuestAllowed] =
+    useState("");
   const [returnPolicy, setReturnPolicy] = useState("");
   const [onDoubleSharing, setOnDoubleSharing] = useState("");
   const [onQuadSharing, setOnQuadSharing] = useState("");
@@ -168,35 +167,45 @@ export default function PolicyForm() {
           value={hotelsPolicy}
           onChange={(e) => setHotelsPolicy(e.target.value)}
         />
-        <TextField
-          className={classes.input}
-          label="Outside Food Policy"
+        <hr />
+        <TextareaAutosize
+          className={classes.textarea}
+          placeholder="Outside Food Policy"
           variant="outlined"
           value={outsideFoodPolicy}
           onChange={(e) => setOutsideFoodPolicy(e.target.value)}
         />
-        <TextField
-          className={classes.input}
-          label="Cancellation Policy"
+        <hr />
+        <TextareaAutosize
+          className={classes.textarea}
+          placeholder="Cancellation Policy"
           variant="outlined"
           value={cancellationPolicy}
           onChange={(e) => setCancellationPolicy(e.target.value)}
         />
-        <TextField
+        <label htmlFor="">Select Payment Mode</label>
+        <Select
           className={classes.input}
-          label="Payment Mode"
+          placeholder="Payment Mode" // Add placeholder here
           variant="outlined"
           value={paymentMode}
           onChange={(e) => setPaymentMode(e.target.value)}
-        />
-        <TextField
+        >
+          <MenuItem value="Online">Online</MenuItem>
+          <MenuItem value="Offline">Offline</MenuItem>
+          <MenuItem value="Both">Both</MenuItem>
+        </Select>
+        <label htmlFor="">Pets Allowed ?</label>
+        <Select
           className={classes.input}
           label="Pets Allowed"
           variant="outlined"
           value={petsAllowed}
           onChange={(e) => setPetsAllowed(e.target.value)}
-        />
-
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
         <TextField
           className={classes.input}
           label="Check In"
@@ -211,42 +220,61 @@ export default function PolicyForm() {
           value={checkOutPolicy}
           onChange={(e) => setCheckOutPolicy(e.target.value)}
         />
-
-        <TextField
+        <label htmlFor="">Bachelors Allowed ?</label>
+        <Select
           className={classes.input}
           label="Bachelor Allowed"
           variant="outlined"
           value={bachelorAllowed}
           onChange={(e) => setBachelorAllowed(e.target.value)}
-        />
-        <TextField
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
+        <label htmlFor="">Smoking Allowed ?</label>
+        <Select
           className={classes.input}
           label="Smoking Allowed"
           variant="outlined"
           value={smokingAllowed}
           onChange={(e) => setSmokingAllowed(e.target.value)}
-        />
-        <TextField
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
+        <label htmlFor="">Alcohal Allowed ?</label>
+        <Select
           className={classes.input}
           label="Alcohol Allowed"
           variant="outlined"
           value={alcoholAllowed}
           onChange={(e) => setAlcoholAllowed(e.target.value)}
-        />
-        <TextField
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
+        <label htmlFor="">Unmarried Couples Allowed ?</label>
+        <Select
           className={classes.input}
           label="Unmarried Couples Allowed"
           variant="outlined"
           value={unmarriedCouplesAllowed}
           onChange={(e) => setUnmarriedCouplesAllowed(e.target.value)}
-        />
-        <TextField
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
+        <label htmlFor="">International Guest Allowed ?</label>
+        <Select
           className={classes.input}
           label="International Guest Allowed"
           variant="outlined"
           value={internationalGuestAllowed}
           onChange={(e) => setInternationalGuestAllowed(e.target.value)}
-        />
+        >
+          <MenuItem value="Allowed">Allowed</MenuItem>
+          <MenuItem value="Not Allowed">Not Allowed</MenuItem>
+        </Select>
         <TextField
           className={classes.input}
           label="Return Policy"
@@ -261,6 +289,13 @@ export default function PolicyForm() {
           variant="outlined"
           value={onDoubleSharing}
           onChange={(e) => setOnDoubleSharing(e.target.value)}
+        />{" "}
+        <TextField
+          className={classes.input}
+          label="On Tripple Sharing"
+          variant="outlined"
+          value={onTrippleSharing}
+          onChange={(e) => setOnTrippleSharing(e.target.value)}
         />
         <TextField
           className={classes.input}
@@ -278,20 +313,26 @@ export default function PolicyForm() {
         />
         <TextField
           className={classes.input}
-          label="On Tripple Sharing"
-          variant="outlined"
-          value={onTrippleSharing}
-          onChange={(e) => setOnTrippleSharing(e.target.value)}
-        />
-        <TextField
-          className={classes.input}
           label="On More than Four"
           variant="outlined"
           value={onMoreThanFour}
           onChange={(e) => setOnMoreThanFour(e.target.value)}
         />
-
-        <p>On season Ap</p>
+        <p>On season Ap</p>{" "}
+        <TextField
+          className={classes.input}
+          label="On Double Sharing Ap"
+          variant="outlined"
+          value={onDoubleSharingAp}
+          onChange={(e) => setOnDoubleSharingAp(e.target.value)}
+        />{" "}
+        <TextField
+          className={classes.input}
+          label="On Tripple Sharing Ap"
+          variant="outlined"
+          value={onTrippleSharingAp}
+          onChange={(e) => setOnTrippleSharingAp(e.target.value)}
+        />
         <TextField
           className={classes.input}
           label="On Quad Sharing Ap"
@@ -308,35 +349,26 @@ export default function PolicyForm() {
         />
         <TextField
           className={classes.input}
-          label="On Tripple Sharing Ap"
-          variant="outlined"
-          value={onTrippleSharingAp}
-          onChange={(e) => setOnTrippleSharingAp(e.target.value)}
-        />
-        <TextField
-          className={classes.input}
           label="On More than Four Ap"
           variant="outlined"
           value={onMoreThanFourAp}
           onChange={(e) => setOnMoreThanFourAp(e.target.value)}
         />
-
+        <p>On season MAp</p>{" "}
         <TextField
           className={classes.input}
-          label="On More than Four Ap"
+          label="On Double Sharing MAp"
           variant="outlined"
-          value={onMoreThanFourAp}
-          onChange={(e) => setOnMoreThanFourAp(e.target.value)}
-        />
-
+          value={onDoubleSharingMAp}
+          onChange={(e) => setOnDoubleSharingMAp(e.target.value)}
+        />{" "}
         <TextField
           className={classes.input}
-          label="On Double Sharing Ap"
+          label="On Tripple Sharing MAp"
           variant="outlined"
-          value={onDoubleSharingAp}
-          onChange={(e) => setOnDoubleSharingAp(e.target.value)}
+          value={onTrippleSharingMAp}
+          onChange={(e) => setOnTrippleSharingMAp(e.target.value)}
         />
-        <p>On season MAp</p>
         <TextField
           className={classes.input}
           label="On Quad Sharing MAp"
@@ -353,49 +385,25 @@ export default function PolicyForm() {
         />
         <TextField
           className={classes.input}
-          label="On Tripple Sharing MAp"
-          variant="outlined"
-          value={onTrippleSharingMAp}
-          onChange={(e) => setOnTrippleSharingMAp(e.target.value)}
-        />
-        <TextField
-          className={classes.input}
           label="On More than Four MAp"
           variant="outlined"
           value={onMoreThanFourMAp}
           onChange={(e) => setOnMoreThanFourMAp(e.target.value)}
         />
-
-        <TextField
-          className={classes.input}
-          label="On More than Four MAp"
-          variant="outlined"
-          value={onMoreThanFourMAp}
-          onChange={(e) => setOnMoreThanFourMAp(e.target.value)}
-        />
-
-        <TextField
-          className={classes.input}
-          label="On Double Sharing MAp"
-          variant="outlined"
-          value={onDoubleSharingMAp}
-          onChange={(e) => setOnDoubleSharingMAp(e.target.value)}
-        />
-
-        <p>Off season</p>
-        <TextField
-          className={classes.input}
-          label="Off Tripple Sharing"
-          variant="outlined"
-          value={offTrippleSharing}
-          onChange={(e) => setOffTrippleSharing(e.target.value)}
-        />
+        <p>Off season</p>{" "}
         <TextField
           className={classes.input}
           label="Off Double Sharing"
           variant="outlined"
           value={offDoubleSharing}
           onChange={(e) => setOffDoubleSharing(e.target.value)}
+        />
+        <TextField
+          className={classes.input}
+          label="Off Tripple Sharing"
+          variant="outlined"
+          value={offTrippleSharing}
+          onChange={(e) => setOffTrippleSharing(e.target.value)}
         />
         <TextField
           className={classes.input}
@@ -418,26 +426,26 @@ export default function PolicyForm() {
           value={offMoreThanFour}
           onChange={(e) => setOffMoreThanFour(e.target.value)}
         />
-        <p>Off season AP</p>
-        <TextField
-          className={classes.input}
-          label="Off Tripple Sharing Ap"
-          variant="outlined"
-          value={offTrippleSharing}
-          onChange={(e) => setOffTrippleSharingAp(e.target.value)}
-        />
+        <p>Off season AP</p>{" "}
         <TextField
           className={classes.input}
           label="Off Double Sharing Ap"
           variant="outlined"
-          value={offDoubleSharing}
+          value={offDoubleSharingAp}
           onChange={(e) => setOffDoubleSharingAp(e.target.value)}
+        />
+        <TextField
+          className={classes.input}
+          label="Off Tripple Sharing Ap"
+          variant="outlined"
+          value={offTrippleSharingAp}
+          onChange={(e) => setOffTrippleSharingAp(e.target.value)}
         />
         <TextField
           className={classes.input}
           label="Off Quad Sharing Ap"
           variant="outlined"
-          value={offQuadSharing}
+          value={offQuadSharingAp}
           onChange={(e) => setOffQuadSharingAp(e.target.value)}
         />
         <TextField
@@ -454,21 +462,20 @@ export default function PolicyForm() {
           value={offMoreThanFourAp}
           onChange={(e) => setOffMoreThanFourAp(e.target.value)}
         />
-        <p>Off season M.A.p</p>
-        <TextField
-          className={classes.input}
-          label="Off Tripple Sharing MAp"
-          variant="outlined"
-          value={offTrippleSharingMAp}
-          onChange={(e) => setOffTrippleSharingMAp(e.target.value)}
-        />
-
+        <p>Off season M.A.p</p>{" "}
         <TextField
           className={classes.input}
           label="Off Double Sharing MAp"
           variant="outlined"
           value={offDoubleSharingMAp}
           onChange={(e) => setOffDoubleSharingMAp(e.target.value)}
+        />
+        <TextField
+          className={classes.input}
+          label="Off Tripple Sharing MAp"
+          variant="outlined"
+          value={offTrippleSharingMAp}
+          onChange={(e) => setOffTrippleSharingMAp(e.target.value)}
         />
         <TextField
           className={classes.input}

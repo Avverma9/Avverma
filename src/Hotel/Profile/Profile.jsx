@@ -13,7 +13,6 @@ import {
   MDBCardBody,
   MDBCardImage,
   MDBTypography,
-  MDBIcon,
 } from "mdb-react-ui-kit";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
@@ -62,6 +61,7 @@ export default function Profile() {
   const handleLogOut = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("userMobile");
+    localStorage.removeItem("isSignedIn");
     navigate("/login");
   };
 

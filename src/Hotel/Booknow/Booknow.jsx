@@ -5,9 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
@@ -26,8 +23,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { format, addDays } from "date-fns";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -40,18 +35,71 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IconContext } from "react-icons";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
+import { FaElevator } from "react-icons/fa6";
+import { GiDesk } from "react-icons/gi";
+import { BiSolidDryer } from "react-icons/bi";
+import { LuRefrigerator } from "react-icons/lu";
+import { FaWineGlass } from "react-icons/fa";
 import {
+  FaUtensils,
+  FaPhone,
   FaCoffee,
+  FaDoorOpen,
+  FaHotTub,
   FaTv,
   FaWifi,
   FaDumbbell,
   FaShuttleVan,
+  FaSwimmingPool,
+  FaSpa,
+  FaChalkboardTeacher,
+  FaParking,
+  FaDog,
+  FaTshirt,
+  FaBriefcase,
+  FaCouch,
+  FaSnowflake,
+  FaFireAlt,
+  FaShower,
+  FaPhoneAlt,
+  FaBroom,
+  FaSoap,
+  FaSuitcase,
+  FaLock,
+  FaClock,
+  FaThermometer,
+  FaSmokingBan,
+  FaVolumeMute,
   FaBed,
-  FaUtensils,
-  FaPhone,
-  FaHotTub,
-  FaDoorOpen,
+  FaWheelchair,
+  FaPlaneDeparture,
+  FaUserFriends,
+  FaCar,
+  FaMoneyBillAlt,
+  FaGift,
+  FaClipboardCheck,
+  FaMapMarkedAlt,
+  FaTicketAlt,
+  FaBookOpen,
+  FaSun,
+  FaLeaf,
+  FaTree,
+  FaChair,
+  FaCity,
+  FaCocktail,
+  FaCandyCane,
+  FaAppleAlt,
+  FaHamburger,
+  FaCookieBite,
+  FaChild,
+  FaBan,
+  FaCarrot,
+  FaMosque,
+  FaStarOfDavid,
+  FaAllergies,
+  FaSmoking,
 } from "react-icons/fa";
+import { MdMicrowave } from "react-icons/md";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import Button from "@mui/joy/Button";
@@ -329,7 +377,82 @@ const BookNow = () => {
     Gym: <FaDumbbell />,
     "24-Hour Front Desk": <FaShuttleVan />,
     "Shuttle Service": <FaShuttleVan />,
+    Pool: <FaSwimmingPool />,
+    "Fitness Center": <FaDumbbell />,
+    Spa: <FaSpa />,
+    Restaurant: <FaUtensils />,
+    "Conference Room": <FaChalkboardTeacher />,
+    "Wi-Fi(Paid)": <FaWifi />,
+    Parking: <FaParking />,
+    "Pet Friendly": <FaDog />,
+    "Laundry Service": <FaTshirt />,
+    "Business Center": <FaBriefcase />,
+    "Lounge Area": <FaCouch />,
+    "Air Conditioning": <FaSnowflake />,
+    "Barbecue Area": <FaFireAlt />,
+    "Ensuite Bathroom": <FaShower />,
+    Telephone: <FaPhoneAlt />,
+    "Daily Housekeeping": <FaBroom />,
+    "Complimentary Toiletries": <FaSoap />,
+    Closet: <FaSuitcase />,
+    "Iron and Ironing Board": <FaTshirt />,
+
+    "Hair Dryer": <BiSolidDryer />,
+    Safe: <FaLock />,
+    "Mini Fridge": <LuRefrigerator />,
+    Microwave: <MdMicrowave />,
+    Desk: <GiDesk />,
+    "Wake-up Service": <FaClock />,
+    Heating: <FaThermometer />,
+    "Cable Channels": <FaTv />,
+    "Non-Smoking Rooms": <FaSmokingBan />,
+    "Soundproof Rooms": <FaVolumeMute />,
+    "Family Rooms": <FaBed />,
+    Elevator: <FaElevator />,
+    "Wheelchair Accessible": <FaWheelchair />,
+    "Airport Shuttle": <FaPlaneDeparture />,
+    "Concierge Service": <FaUserFriends />,
+    "Valet Parking": <FaCar />,
+    "Currency Exchange": <FaMoneyBillAlt />,
+    "ATM on Site": <FaMoneyBillAlt />,
+    "Gift Shop": <FaGift />,
+    "Express Check-in/Check-out": <FaClipboardCheck />,
+    "Tour Desk": <FaMapMarkedAlt />,
+    "Ticket Service": <FaTicketAlt />,
+    "Luggage Storage": <FaSuitcase />,
+    Library: <FaBookOpen />,
+    "Sun Terrace": <FaSun />,
+    Garden: <FaLeaf />,
+    "Picnic Area": <FaTree />,
+    "Outdoor Furniture": <FaChair />,
+    Terrace: <FaCity />,
+    "BBQ Facilities": <FaFireAlt />,
+    "Vending Machine (Drinks)": <FaCocktail />,
+    "Vending Machine (Snacks)": <FaCandyCane />,
+    "Special Diet Menus (on request)": <FaAppleAlt />,
+    "Packed Lunches": <FaHamburger />,
+    Bar: <FaCocktail />,
+    "Wine/Champagne": <FaWineGlass />,
+    "Bottle of Water": <FaCocktail />,
+    "Chocolate/Cookies": <FaCookieBite />,
+    "Kid-Friendly Buffet": <FaChild />,
+    "Kid Meals": <FaChild />,
+    "Breakfast in the Room": <FaUtensils />,
+    "Restaurant Buffet": <FaUtensils />,
+    "Snack Bar": <FaUtensils />,
+    Fruit: <FaAppleAlt />,
+    "Buffet Breakfast": <FaUtensils />,
+    "Gluten-Free Options": <FaBan />,
+    "Vegetarian Options": <FaCarrot />,
+    "Vegan Options": <FaLeaf />,
+    "Halal Options": <FaMosque />,
+    "Kosher Options": <FaStarOfDavid />,
+    "Allergy-Free Room": <FaAllergies />,
+    "Designated Smoking Area": <FaSmoking />,
+    "Non-Smoking Throughout": <FaSmokingBan />,
+    Kitchen: <FaUtensils />,
   };
+
   const defaultIcon = <FaBed />;
 
   // Ensure that checkInDate and checkOutDate are different
