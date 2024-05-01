@@ -297,3 +297,32 @@
       }
       
     }
+
+    .reviewContainer {
+      margin-top: 10px;
+    }
+    
+    .reviewInput {
+      margin-top: 2vh;
+      width: 100vh;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    .star {
+      font-size: 24px;
+      cursor: pointer;
+    }
+    
+    .filledStar {
+      color: #ffd700; /* Golden color for filled stars */
+    }
+    
+    .star:hover,
+    .star:hover ~ .star {
+      color: #ffcc00; /* Change color on hover */
+    }
+    

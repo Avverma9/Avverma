@@ -2,9 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
-import Alert from '@mui/material/Alert';
+
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Rating from '@mui/material/Rating';
+
+import SendIcon from '@mui/icons-material/Send';
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./bookings.module.css";
@@ -12,10 +16,16 @@ import noImage from "../../assets/noImage.jpg";
 import baseURL from "../../baseURL";
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import StickyNote2Icon from '@mui/icons-material/StickyNote2'; 
+ import Alert from '@mui/material/Alert';
+  import CheckIcon from '@mui/icons-material/Check';
 export const ConfirmBooking = ({ toast }) => {
-  const navigate = useNavigate()
+
+  const [showReviewForm, setShowReviewForm] = useState(false);
+const [comment,setComment] = useState("")
+const [rating,setRating]= useState("")
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [value, setValue] = useState(null)
   const [modalData, setModalData] = useState([]);
   const [userData, setUserData] = useState(null);
   const location = useLocation();
@@ -111,11 +121,31 @@ export const ConfirmBooking = ({ toast }) => {
   if (location.pathname !== "/bookings") {
     return null;
   }
-const handleReview = (hotelId)=>{
-  localStorage.setItem("for review",hotelId)
- const userId = localStorage.getItem("userId")
-navigate(`/write-an-review/${userId}/${hotelId}`)
+
+
+
+const handleReview = ()=>{
+ setShowReviewForm(true);
 }
+
+const postReview = async (hotelId) => {
+  const userId = localStorage.getItem("userId");
+  try {
+    const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, {
+      comment: comment, // Assuming `comment` is defined somewhere in your code
+      rating: rating     // Assuming `rating` is defined somewhere in your code
+    });
+   if(response.status === 201){
+    
+ window.alert("Thank you for sharing your experience with us ")
+  
+   }
+  } catch (error) {
+    console.error("Error posting review:", error);
+    // Handle error if needed
+  }
+};
+
   return (
     <>
         <Stack sx={{ width: '100%' }} spacing={2}>
@@ -218,11 +248,49 @@ navigate(`/write-an-review/${userId}/${hotelId}`)
                     More
                   </button>
                   <br />
-                  <button onClick={()=>handleReview ()}>Write an review</button>
+                  <button onClick={()=>handleReview ()}>Write an review </button>
+                
                 </div>
+                
               </div>
             );
           })}
+            {showReviewForm && (
+                  <div className={styles.reviewContainer}>
+                  <input
+                    type="text"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Write your review..."
+                    className={styles.reviewInput}
+                  />
+                    <SendIcon
+            onClick={postReview}
+            style={{
+              marginLeft: '10px',
+              borderRadius: '50%',
+              backgroundColor: 'blue',
+              color: '#fff',
+              padding: '5px',
+              cursor: 'pointer',
+            }}
+          /> 
+                  <Box
+                    sx={{
+                      '& > legend': { mt: 2 },
+                    }}
+                  >
+                    <Rating
+                      name="simple-controlled"
+                      value={rating}
+                      onChange={(event, newValue) => {
+                        setRating(newValue);
+                      }}
+                    />
+                  </Box>
+                 
+                </div>
+                )}
         </>
       ) : (
         <p>No Data Found...</p>

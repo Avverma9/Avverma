@@ -99,7 +99,7 @@ import {
   FaAllergies,
   FaSmoking,
 } from "react-icons/fa";
-import { MdMicrowave } from "react-icons/md";
+import { MdMicrowave, MdOutlineNetworkCheck } from "react-icons/md";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import Button from "@mui/joy/Button";
@@ -107,6 +107,7 @@ import "./Booknow.css";
 import baseURL from "../../baseURL";
 
 const BookNow = () => {
+  
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
@@ -115,7 +116,7 @@ const BookNow = () => {
   const [selectedFood, setSelectedFood] = useState([]);
   const [roomsCount, setRoomsCount] = useState(1);
   const path = location.pathname;
-  const hotelId = path.substring(path.lastIndexOf("/") + 1);
+  const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const today = new Date();
   const tomorrow = addDays(today, 1);
   const [guestsCount, setGuestsCount] = useState(3);
@@ -235,7 +236,7 @@ const BookNow = () => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await fetch(`${baseURL}/hotels/get-by-id/${hotelId}`);
+        const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
         const data = await response.json();
         setHotelData(data);
         // Set the first room of the first hotel as the default selected room
@@ -248,7 +249,7 @@ const BookNow = () => {
     };
 
     fetchHotelData();
-  }, [hotelId]);
+  }, [newhotelId]);
   // booking details
 
   const calculateGuests = (roomsCount) => {
@@ -313,6 +314,7 @@ const BookNow = () => {
 
       // Prepare data for API request
       const bookingData = {
+        hotelId:newhotelId,
         user: userId, // Include userId in the payload
         checkInDate: format(checkInDate, "yyyy-MM-dd"),
         checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
@@ -335,7 +337,7 @@ const BookNow = () => {
       };
 
       // Make API request to book
-      const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+      const response = await fetch(`${baseURL}/booking/${userId}/${newhotelId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
