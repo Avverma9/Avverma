@@ -18,8 +18,6 @@ const users = new mongoose.Schema({
   email: { type: String, required: false},
   mobile: { type: String, required: false },
   password: { type: String, required: false },
-  adhar:String,
-
 });
 
 module.exports = mongoose.model("users", users);

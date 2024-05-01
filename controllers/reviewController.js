@@ -10,7 +10,7 @@ const createReview = async (req, res) => {
     const { comment,rating } = req.body;
 
 
-    const user = await userModel.findById(userId);
+    const user = await userModel.findOne({userId});
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
