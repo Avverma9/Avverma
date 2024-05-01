@@ -74,7 +74,7 @@ const bookingSchema = new mongoose.Schema(
         "Checked-out",
         "No-Show",
       ],
-      default: "success",
+      default: "Confirmed",
     },
     cancellationReason: String,
     cardDetails: {
