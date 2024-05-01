@@ -102,7 +102,7 @@ const totalUser = async function (req, res) {
 //=====================================================================
 const update = async (req, res) => {
   try {
-    const { userId, userName, address, email, mobile, password, adhar } = req.body;
+    const { userId, userName, address, email, mobile, password} = req.body;
     let images = [];
 
     console.log(userId);
@@ -124,7 +124,7 @@ const update = async (req, res) => {
         email,
         mobile,
         password,
-        adhar,
+  
         images,
       },
       { new: true }
