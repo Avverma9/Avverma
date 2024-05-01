@@ -7,6 +7,7 @@ const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const {
+
       checkInDate,
       checkOutDate,
       guests,
@@ -39,7 +40,7 @@ const createBooking = async (req, res) => {
         email: user.email,
         mobile: user.mobile,
       },
-      hotel: hotelId,
+      hotelId,
       hotelName,
       foodDetails,
       numRooms,

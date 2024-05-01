@@ -17,28 +17,17 @@ const createReview = async (req, res) => {
     }
 
     const review = new reviewModel({
-      hotel: hotelId,
-      user: userId,
-      comment: comment,
-      rating: rating
+      hotelId,
+      userId,
+      comment,
+      rating
     });
     const savedReview = await reviewModel.create(review);
 
-    const responseData = {
-      _id: savedReview._id,
-      hotel: savedReview.hotelId,
-      user: {
-        userId: user.userId,
-        name: user.name,
-        images: user.images,
-      },
-      comment: savedReview.comment,
-      rating : savedReview.rating,
-      createdAt: savedReview.createdAt,
-    };
+ 
     return res.status(201).send({
       status: true,
-      data: responseData,
+      data: savedReview,
     });
   } catch (error) {
     console.error(error);
@@ -97,16 +86,15 @@ const getReviewsByHotelId = async (req, res) => {
 //=======================================================================================================
 const getReviewsByUserId = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.body.userId;
 
-    const reviews = await reviewModel.find({ user: userId }).sort({ createdAt: -1 });
-    
+    const reviews = await reviewModel.find({ userId: userId });
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
 
-    const user = await userModel.findById(userId).select(["name", "images"]);
+    const user = await userModel.findOne({ userId: userId }).select(["userName", "images"]);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -115,7 +103,8 @@ const getReviewsByUserId = async (req, res) => {
     const reviewData = [];
 
     for (const review of reviews) {
-      const hotel = await hotelModel.findById(review.hotel).select(["hotelName", "images"]);
+      const hotel = await hotelModel.findOne({ hotelId: review.hotelId }).select(["hotelName", "images"]);
+
 
       if (!hotel) {
          continue; 
@@ -124,7 +113,7 @@ const getReviewsByUserId = async (req, res) => {
       reviewData.push({
         review,
         user: {
-          name: user.name,
+          name: user.userName,
           images: user.images,
         },
         hotel: {
@@ -134,11 +123,7 @@ const getReviewsByUserId = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-     
-      reviews: reviewData,
-     
-    });
+    res.status(200).json(reviewData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

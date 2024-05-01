@@ -8,10 +8,6 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-  offer:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref:"Offer",
-    required: false},
   comment: {
     type: String,
     required: true

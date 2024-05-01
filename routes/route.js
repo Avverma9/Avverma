@@ -131,7 +131,7 @@ router.post("/payments", paymentController.createPayment);
 router.post("/reviews/:userId/:hotelId", reviewController.createReview);
 router.get("/getReviews/:hotelId", reviewController.getReviewsByHotelId);
 
-router.get("/reviewDatas/:userId", reviewController.getReviewsByUserId);
+router.get("/reviewDatas/userId", reviewController.getReviewsByUserId);
 router.put("/update/:userId/:hotelId/:reviewId", reviewController.updateReview);
 router.delete("/delete/:reviewId", reviewController.deleteReview);
 //============================= BOOKING =======================================
