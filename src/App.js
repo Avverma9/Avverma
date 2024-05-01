@@ -25,6 +25,7 @@ import Bottom from './Hotel/Bottom.jsx';
 import AmenitiesPage from './Hotel/Hotels/PartnerAmenities.jsx';
 import PartnerFoods from './Hotel/Hotels/PartnerFoods.jsx';
 import PartnerRooms from './Hotel/Hotels/PartnerRooms.jsx';
+import Reviews from './Hotel/Profile/Review.jsx';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
       <Router>
         <Header/>
         <Navigation/>
+        <Reviews/>
         <UpdatePage/>
         <ConfirmBooking/>
         <BookNow/>

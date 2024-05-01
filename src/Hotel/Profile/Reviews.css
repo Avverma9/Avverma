@@ -1,0 +1,59 @@
+.review-card {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .user-details {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .user-name {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .star {
+    color: #ffc107;
+    font-size: 18px;
+    margin-right: 3px;
+  }
+  
+  .rating-comment {
+    display: flex;
+    align-items: center;
+  }
+  
+  .hotel-image {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .comment {
+    margin-left: 10px;
+  }
+  /* Reviews.css */
+
+.review-card {
+    width: calc(100% - 40px); /* Full width with margin */
+    max-width: 1400px; /* Maximum width for responsiveness */
+    margin: 20px auto; /* Center horizontally */
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

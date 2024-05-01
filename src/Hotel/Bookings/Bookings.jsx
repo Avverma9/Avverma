@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
-
+import { Button } from "@mui/material";
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -248,7 +248,7 @@ const postReview = async (hotelId) => {
                     More
                   </button>
                   <br />
-                  <button onClick={()=>handleReview ()}>Write an review </button>
+                  <Button onClick={()=>handleReview ()}>Write an review </Button>
                 
                 </div>
                 
