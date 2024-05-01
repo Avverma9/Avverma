@@ -104,8 +104,9 @@ export default function LoginPage() {
 
       if (response.ok) {
         const data = await response.json();
-        const { userId } = data;
 
+        const { userId } = data;
+console.log(userId)
         localStorage.setItem("isSignedIn", "true");
         localStorage.setItem("userId", userId);
         navigate("/");

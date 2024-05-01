@@ -163,25 +163,7 @@ export default function Profile() {
                         </MDBCardText>
                       </MDBCol>
                     </MDBRow>
-                    <hr className="mt-0 mb-4" />
-                    <MDBRow className="pt-1">
-                      <MDBCol size="12" className="mb-3">
-                        <MDBTypography tag="h6">Aadhar</MDBTypography>
-                        <MDBCardText className="text-muted">
-                          {data.adhar || (
-                            <input
-                              type="text"
-                              className="form-control action-required"
-                              value="Action Required"
-                              readOnly
-                              onClick={() =>
-                                navigate("/profile-update/user-data/page")
-                              }
-                            />
-                          )}
-                        </MDBCardText>
-                      </MDBCol>
-                    </MDBRow>
+                   
                     <hr />
                     <Stack spacing={2} direction="row">
                       <Button onClick={handleEdit} variant="contained">

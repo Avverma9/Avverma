@@ -17,7 +17,6 @@ const UpdatePage = () => {
     address: "",
     mobile: "",
     password: "",
-    adhar: "",
   });
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -37,7 +36,7 @@ const UpdatePage = () => {
             mobile: userData.data.mobile || "",
             address: userData.data.address || "",
             password: userData.data.password || "",
-            adhar: userData.data.adhar || "",
+        
             images: [], // Keep this as an array for file input
           });
           localStorage.setItem("userMobile", userData.data.mobile || "");
@@ -92,9 +91,7 @@ const UpdatePage = () => {
         formDataObj.append("email", formData.email);
       }
   
-      if (formData.adhar) {
-        formDataObj.append("adhar", formData.adhar);
-      }
+    
   
       if (formData.mobile) {
         formDataObj.append("mobile", formData.mobile);
@@ -187,18 +184,7 @@ const UpdatePage = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="adhar">Adhar</label>
-          <input
-            type="text"
-            id="adhar"
-            name="adhar"
-            className="form-control"
-            placeholder={data?.adhar || ''}
-            value={formData.adhar}
-            onChange={handleInputChange}
-          />
-        </div>
+       
 
         <div className="form-group">
           <label htmlFor="password">Password</label>

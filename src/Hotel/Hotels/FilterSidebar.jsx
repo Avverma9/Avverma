@@ -167,36 +167,35 @@ const FilterSidebar = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-        <div className="mb-3">
-  <label>Filter by Price:</label>
-  <div className="d-flex">
-    <RangeSlider
-      value={minPrice}
-      onChange={(e) =>
-        handlePriceChange({
-          target: { name: "minPrice", value: e.target.value },
-        })
-      }
-      step={1}
-      min={0}
-      max={5000}
-      style={{ marginRight: "50px" }} // Add margin-right here
-    />
+          <div className="mb-3">
+            <label>Filter by Price:</label>
+            <div className="d-flex">
+              <RangeSlider
+                value={minPrice}
+                onChange={(e) =>
+                  handlePriceChange({
+                    target: { name: "minPrice", value: e.target.value },
+                  })
+                }
+                step={1}
+                min={0}
+                max={5000}
+                style={{ marginRight: "50px" }} // Add margin-right here
+              />
 
-    <RangeSlider
-      value={maxPrice}
-      onChange={(e) =>
-        handlePriceChange({
-          target: { name: "maxPrice", value: e.target.value },
-        })
-      }
-      step={1}
-      min={0}
-      max={10000}
-    />
-  </div>
-</div>
-
+              <RangeSlider
+                value={maxPrice}
+                onChange={(e) =>
+                  handlePriceChange({
+                    target: { name: "maxPrice", value: e.target.value },
+                  })
+                }
+                step={1}
+                min={0}
+                max={10000}
+              />
+            </div>
+          </div>
           <hr />
           <div className="mb-3">
             <label>Filter by Amenities:</label>
