@@ -6,8 +6,8 @@ import { useLocation } from "react-router-dom";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "./FilterSidebar.css";
 const FilterSidebar = () => {
   const navigate = useNavigate();
   const [minPrice, setMinPrice] = useState(0);
@@ -111,10 +111,12 @@ const FilterSidebar = () => {
     navigate(currentPath);
   };
   const closeSidebar = () => {
-    const offcanvasElement = document.getElementById("offcanvasWithBothOptions");
+    const offcanvasElement = document.getElementById(
+      "offcanvasWithBothOptions"
+    );
     if (offcanvasElement) {
       offcanvasElement.classList.remove("show");
-  
+
       // Remove the offcanvas-backdrop manually
       const backdropElement = document.querySelector(".offcanvas-backdrop");
       if (backdropElement) {
@@ -122,11 +124,10 @@ const FilterSidebar = () => {
       }
     }
   };
-  
-  
+
   const handleSwitchChange = () => {
     filterByAll();
-    closeSidebar()
+    closeSidebar();
   };
 
   return (
@@ -166,39 +167,82 @@ const FilterSidebar = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <div className="mb-3">
-            <label>Filter by Price:</label>
-            <div className="d-flex">
-              <span className="mx-2">{minPrice}</span>
-              <RangeSlider
-                value={minPrice}
-                onChange={(e) =>
-                  handlePriceChange({
-                    target: { name: "minPrice", value: e.target.value },
-                  })
-                }
-                step={1}
-                min={0}
-                max={5000}
-              />
-              <span className="mx-2">{maxPrice}</span>
-              <RangeSlider
-                value={maxPrice}
-                onChange={(e) =>
-                  handlePriceChange({
-                    target: { name: "maxPrice", value: e.target.value },
-                  })
-                }
-                step={1}
-                min={0}
-                max={10000}
-              />
-            </div>
-          </div>
+        <div className="mb-3">
+  <label>Filter by Price:</label>
+  <div className="d-flex">
+    <RangeSlider
+      value={minPrice}
+      onChange={(e) =>
+        handlePriceChange({
+          target: { name: "minPrice", value: e.target.value },
+        })
+      }
+      step={1}
+      min={0}
+      max={5000}
+      style={{ marginRight: "50px" }} // Add margin-right here
+    />
+
+    <RangeSlider
+      value={maxPrice}
+      onChange={(e) =>
+        handlePriceChange({
+          target: { name: "maxPrice", value: e.target.value },
+        })
+      }
+      step={1}
+      min={0}
+      max={10000}
+    />
+  </div>
+</div>
+
           <hr />
           <div className="mb-3">
             <label>Filter by Amenities:</label>
-            {["Atm", "AirConditioning"].map((amenity) => (
+            {[
+              "Atm",
+              "Air Conditioning",
+              "Pool",
+              "Fitness Center",
+              "Parking",
+              "Spa",
+              "Pet Friendly",
+              "Laundry Service",
+              "Business Center",
+              "Shuttle Service",
+              "24-Hour Front Desk",
+              "Gym",
+              "Lounge Area",
+              "Free Wi-Fi",
+              "TV",
+              "Coffee Maker",
+              "Balcony",
+              "Room Service",
+              "Ensuite Bathroom",
+              "Telephone",
+              "Daily Housekeeping",
+              "Hair Dryer",
+              "Mini Fridge",
+              "Microwave",
+              "Desk",
+              "Wake-up Service",
+              "Non-Smoking Rooms",
+              "Family Rooms",
+              "Elevator",
+              "Valet Parking",
+              "Currency Exchange",
+              "ATM on Site",
+              "Ticket Service",
+              "Garden",
+              "Picnic Area",
+              "Bar",
+              "Wine/Champagne",
+              "Bottle of Water",
+              "Kid Meals",
+              "Breakfast in the Room",
+              "Kitchen",
+            ].map((amenity) => (
               <div key={amenity} className="form-check">
                 <input
                   className="form-check-input"
@@ -219,7 +263,7 @@ const FilterSidebar = () => {
           <hr />
           <div className="mb-3">
             <label>Filter by Property Type:</label>
-            {["House", "Apartment", "Resort", "Villa","Guest House"].map(
+            {["House", "Apartment", "Resort", "Villa", "Guest House"].map(
               (availablePropertyType) => (
                 <div key={availablePropertyType} className="form-check">
                   <input

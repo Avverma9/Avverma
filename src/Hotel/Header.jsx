@@ -8,7 +8,7 @@ import {
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import { FaPhoneAlt } from "react-icons/fa";
-import { FaUser, FaSignInAlt, FaSignOutAlt} from "react-icons/fa";
+import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const Header = () => {
@@ -65,13 +65,13 @@ const Header = () => {
                 <FontAwesomeIcon icon={faLinkedin} size="2x" />
               </a>
             </div>
-         
-<li>
-<a className="nav-link" href="/profile">
-              <FaUser className="me-1" />
-              Profile
-            </a>
-</li>
+
+            <li>
+              <a className="nav-link" href="/profile">
+                <FaUser className="me-1" />
+                Profile
+              </a>
+            </li>
             <li className="nav-item">
               <a className="nav-link" href="/partner">
                 <NightShelterTwoToneIcon className="me-1" />
@@ -84,29 +84,23 @@ const Header = () => {
                 Home
               </a>
             </li>
-          
-            <li className="nav-item mr-2">
-              {handleLoginLogOutButtonView ? (
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  href="/login"
-                  onClick={handleLogOut}
-                >
-                  <FaSignOutAlt className="me-1" /> {/* Assuming logout icon */}
-                  Logout
-                </a>
-              ) : (
-                <a
-                  className="nav-link active"
-                  aria-current="page"
-                  href="/login"
-                >
-                  <FaSignInAlt className="me-1" />
-                  Login
-                </a>
-              )}
-            </li>
+
+            {handleLoginLogOutButtonView ? (
+              <a
+                className="nav-link active"
+                aria-current="page"
+                href="/login"
+                onClick={handleLogOut}
+              >
+                <FaSignOutAlt className="me-1" /> {/* Assuming logout icon */}
+                Logout
+              </a>
+            ) : (
+              <a className="nav-link active" aria-current="page" href="/login">
+                <FaSignInAlt className="me-1" />
+                Login
+              </a>
+            )}
           </ul>
         </div>
         {/* Move the button to the end */}
