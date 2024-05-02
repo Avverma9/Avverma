@@ -16,11 +16,11 @@ const Header = () => {
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
-  const handleLoginLogOutButtonView = localStorage.getItem("userId");
+  const handleLoginLogOutButtonView = sessionStorage.getItem("userId");
   const handleLogOut = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userMobile");
-    localStorage.removeItem("isSignedIn");
+    sessionStorage.removeItem("userId");
+    sessionStorage.removeItem("userMobile");
+    sessionStorage.removeItem("isSignedIn");
   };
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">

@@ -15,7 +15,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const userId = localStorage.getItem("userId");
+        const userId = sessionStorage.getItem("userId");
         const response = await fetch(
           `${baseURL}/reviewDatas/userId?userId=${userId}`
         );

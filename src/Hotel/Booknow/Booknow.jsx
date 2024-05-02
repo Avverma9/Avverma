@@ -304,10 +304,10 @@ const BookNow = () => {
   };
   const handleBookNow = async () => {
     try {
-      const userId = localStorage.getItem("userId");
+      const userId = sessionStorage.getItem("userId");
 
-      // Check if userMobile is available in localStorage
-      const userMobile = localStorage.getItem("userMobile");
+      // Check if userMobile is available in sessionStorage
+      const userMobile = sessionStorage.getItem("userMobile");
 
       if (!userMobile) {
         // If userMobile is not available, show an alert and navigate to the profile page

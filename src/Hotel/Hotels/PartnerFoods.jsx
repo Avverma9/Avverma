@@ -9,7 +9,7 @@ export default function PartnerFoods() {
   const [about, setAbout] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [price, setPrice] = useState("");
-  const hotelId = localStorage.getItem("hotelId");
+  const hotelId = sessionStorage.getItem("hotelId");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

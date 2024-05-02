@@ -69,7 +69,7 @@ const [rating,setRating]= useState("")
   };
 
   useEffect(() => {
-    const id = localStorage.getItem("userId");
+    const id = sessionStorage.getItem("userId");
     axios
       .get(`${baseURL}/get/${id}`)
       .then((res) => setUserData(res?.data?.data))
@@ -87,7 +87,7 @@ const [rating,setRating]= useState("")
   }, []);
 
   const fetchBookingDetails = useCallback(async () => {
-    const userId = localStorage.getItem("userId");
+    const userId = sessionStorage.getItem("userId");
     try {
       const response = await axios.get(
         `${baseURL}/get/all/users-filtered/booking/by/${userId}`,
@@ -124,12 +124,15 @@ const [rating,setRating]= useState("")
 
 
 
-const handleReview = ()=>{
+const handleReview = (hotelId)=>{
+ 
+  sessionStorage.setItem("hotelId_review",hotelId)
  setShowReviewForm(true);
 }
 
-const postReview = async (hotelId) => {
-  const userId = localStorage.getItem("userId");
+const postReview = async () => {
+  const userId = sessionStorage.getItem("userId");
+  const hotelId = sessionStorage.getItem("hotelId_review")
   try {
     const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, {
       comment: comment, // Assuming `comment` is defined somewhere in your code
@@ -138,7 +141,7 @@ const postReview = async (hotelId) => {
    if(response.status === 201){
     
  window.alert("Thank you for sharing your experience with us ")
-  
+  sessionStorage.removeItem("hotelId_review")
    }
   } catch (error) {
     console.error("Error posting review:", error);
@@ -248,7 +251,7 @@ const postReview = async (hotelId) => {
                     More
                   </button>
                   <br />
-                  <Button onClick={()=>handleReview ()}>Write an review </Button>
+                  <Button onClick={()=>handleReview (bookingDetails.hotelId)}>Write an review </Button>
                 
                 </div>
                 

@@ -8,7 +8,7 @@ import baseURL from '../../baseURL';
 
 const UpdatePage = () => {
   const navigate=useNavigate()
-  const userId = localStorage.getItem("userId");
+  const userId = sessionStorage.getItem("userId");
   const [formData, setFormData] = useState({
     userId: userId,
     userName: "",
@@ -39,7 +39,7 @@ const UpdatePage = () => {
         
             images: [], // Keep this as an array for file input
           });
-          localStorage.setItem("userMobile", userData.data.mobile || "");
+          sessionStorage.setItem("userMobile", userData.data.mobile || "");
         } else {
           console.error('Failed to fetch user data');
         }

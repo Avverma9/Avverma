@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const hotelId = localStorage.getItem("hotelId");
+const hotelId = sessionStorage.getItem("hotelId");
 
 export default function PolicyForm() {
   const navigate = useNavigate();
