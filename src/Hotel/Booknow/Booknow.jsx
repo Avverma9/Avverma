@@ -177,41 +177,32 @@ const BookNow = () => {
     setSelectedFood(updatedFood);
   };
   const handleAddRoom = (room) => {
-    // Check if the room is already selected
-    const existingRoomIndex = selectedRooms.findIndex(
-      (selected) => selected._id === room._id
-    );
-
-    if (existingRoomIndex !== -1) {
-      // If room already selected, replace it
-      const updatedRooms = [...selectedRooms];
-      updatedRooms[existingRoomIndex] = room;
-      setSelectedRooms(updatedRooms);
-    } else {
-      // If room not selected, add it
-      setSelectedRooms([room]);
-    }
-  };
-
-  // Function to remove room from selectedRooms state
-  const handleRemoveRoom = (room) => {
-    // Check if the room is the default room
-    const isDefaultRoom = room.isDefault;
-
-    // Check if the room is already selected
-    const existingRoomIndex = selectedRooms.findIndex(
-      (selected) => selected._id === room._id
-    );
-
-    if (existingRoomIndex !== -1 && !isDefaultRoom) {
-      // If room already selected and it's not the default room, remove it
-      const updatedRooms = selectedRooms.filter(
-        (selected) => selected !== room
+    // Efficiently update selectedRooms using spread operator
+    setSelectedRooms((prevSelectedRooms) => {
+      const existingRoomIndex = prevSelectedRooms.findIndex(
+        (selected) => selected._id === room._id
       );
-      setSelectedRooms(updatedRooms);
-    }
+  
+      if (existingRoomIndex !== -1) {
+        // Deselect if already selected
+        return prevSelectedRooms.filter((selected) => selected._id !== room._id);
+      } else {
+        // Add if not selected
+        return [...prevSelectedRooms, room];
+      }
+    });
   };
-
+  
+  const handleRemoveRoom = (room) => {
+    // Check if room is the default room and handle appropriately
+    const isDefaultRoom = room.isDefault;
+  
+    // Concisely update selectedRooms using callback for deselecting
+    setSelectedRooms((prevSelectedRooms) =>
+      prevSelectedRooms.filter((selectedRoom) => selectedRoom !== room && !isDefaultRoom)
+    );
+  };
+  
   const calculateTotalPrice = () => {
     const roomPrice = selectedRooms.reduce(
       (total, room) => total + room.price,
@@ -221,15 +212,15 @@ const BookNow = () => {
       (total, food) => total + food.price * food.quantity,
       0
     );
-
-    // Calculate the number of days between checkInDate and checkOutDate
+  
+    // Calculate days using Date object for clarity
     const daysDifference = Math.ceil(
-      (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
-
-    // Multiply the room price by the updated roomsCount and daysDifference
+  
+    // Update room price considering roomsCount and daysDifference
     const updatedRoomPrice = roomPrice * roomsCount * daysDifference;
-
+  
     return updatedRoomPrice + foodPrice;
   };
 
@@ -695,85 +686,74 @@ const BookNow = () => {
 
                 {/* Special rooms  desktop view*/}
                 <div className="col-md-8 d-none d-sm-block">
-                  <div className="container mt-3">
-                    <Grid container spacing={2}>
-                      {hotelData?.rooms?.map((room, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
-                          <Card sx={{ display: "flex", width: "250%" }}>
-                            <CardMedia
-                              component="img"
-                              height="130px"
-                              style={{ objectFit: "cover", width: "300px" }}
-                              src={
-                                room.images && room.images.length > 0
-                                  ? room.images[0]
-                                  : hotelData?.images[0]
-                              }
-                              alt={`Room ${index + 1} Image 1`}
-                            />
-                            <CardContent sx={{ flex: "1 0 auto" }}>
-                              <Typography
-                                gutterBottom
-                                variant="subtitle2"
-                                component="div"
-                              >
-                                {room.type}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Bed: {room.bedTypes}
-                                <BedOutlinedIcon
-                                  style={{
-                                    fontSize: "small",
-                                    verticalAlign: "middle",
-                                    marginLeft: "5px",
-                                  }}
-                                />
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Price:{" "}
-                                <CurrencyRupeeIcon
-                                  style={{
-                                    fontSize: "small",
-                                    verticalAlign: "middle",
-                                  }}
-                                />
-                                {room.price}
-                              </Typography>
-                            </CardContent>
-                            <CardActions>
-                              {selectedRooms.findIndex(
-                                (selected) => selected._id === room._id
-                              ) !== -1 ? (
-                                <Button
-                                  size="small"
-                                  color="success"
-                                  variant="outlined"
-                                  disabled
-                                >
-                                  Selected
-                                </Button>
-                              ) : (
-                                <Button
-                                  size="small"
-                                  color="primary"
-                                  onClick={() => handleAddRoom(room[0])}
-                                >
-                                  Select
-                                </Button>
-                              )}
-                            </CardActions>
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
-                </div>
+  <div className="container mt-3">
+    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
+      <Grid container spacing={4}>
+        {hotelData?.rooms?.map((room, index) => (
+          <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+            <div style={{ marginBottom: "20px" }}>
+              <Card sx={{ width: "100%" }}>
+                <CardMedia
+                  component="img"
+                  height="130px"
+                  style={{ objectFit: "cover", width: "100%" }}
+                  src={
+                    room.images && room.images.length > 0
+                      ? room.images[0]
+                      : hotelData?.images[0]
+                  }
+                  alt={`Room ${index + 1} Image 1`}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="subtitle2" component="div">
+                    {room.type}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Bed: {room.bedTypes}
+                    <BedOutlinedIcon
+                      style={{
+                        fontSize: "small",
+                        verticalAlign: "middle",
+                        marginLeft: "5px",
+                      }}
+                    />
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Price:{" "}
+                    <CurrencyRupeeIcon
+                      style={{
+                        fontSize: "small",
+                        verticalAlign: "middle",
+                      }}
+                    />
+                    {room.price}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                {selectedRooms.find((selected) => selected._id === room._id) ? (
+  <Button size="small" color="success" variant="outlined" disabled>
+    Selected
+  </Button>
+) : (
+  <Button size="small" color="primary" onClick={() => handleAddRoom(room)}>
+    Select
+  </Button>
+)}
+</CardActions>
+
+              </Card>
+            </div>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  </div>
+</div>
+
+
+
+
+
                 {/* mobile view section for special rooms  */}
                 <div className="col-md-4 d-block d-md-none">
                   <div className="container mt-3">
