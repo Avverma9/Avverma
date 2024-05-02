@@ -86,9 +86,9 @@ const getReviewsByHotelId = async (req, res) => {
 //=======================================================================================================
 const getReviewsByUserId = async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.query.userId;
 
-    const reviews = await reviewModel.find({ userId: userId });
+    const reviews = await reviewModel.find({ userId });
 
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
@@ -105,21 +105,16 @@ const getReviewsByUserId = async (req, res) => {
     for (const review of reviews) {
       const hotel = await hotelModel.findOne({ hotelId: review.hotelId }).select(["hotelName", "images"]);
 
-
-      if (!hotel) {
-         continue; 
-      }
-
       reviewData.push({
         review,
         user: {
           name: user.userName,
           images: user.images,
         },
-        hotel: {
+        hotel: hotel ? {
           hotelName: hotel.hotelName,
           images: hotel.images,
-        },
+        } : null,
       });
     }
 
@@ -129,7 +124,6 @@ const getReviewsByUserId = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 //=================================================================================================
 const updateReview = async (req, res) => {
