@@ -199,13 +199,14 @@ const BookNow = () => {
       if (prevSelectedRooms.length === 1) {
         return [];
       }
-      
+
       // Otherwise, remove the selected room
-      return prevSelectedRooms.filter((selectedRoom) => selectedRoom._id !== room._id);
+      return prevSelectedRooms.filter(
+        (selectedRoom) => selectedRoom._id !== room._id
+      );
     });
   };
-  
-  
+
   const calculateTotalPrice = () => {
     let totalPrice = 0;
 
@@ -237,10 +238,12 @@ const BookNow = () => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
+        const response = await fetch(
+          `${baseURL}/hotels/get-by-id/${newhotelId}`
+        );
         const data = await response.json();
         setHotelData(data);
-        
+
         // Check if there are no rooms already selected
         if (selectedRooms.length === 0 && data.rooms.length > 0) {
           const defaultRoom = data.rooms[0]; // Select the first room as default
@@ -251,10 +254,10 @@ const BookNow = () => {
         // Handle error state
       }
     };
-  
+
     fetchHotelData();
   }, [newhotelId, selectedRooms]); // Add selectedRooms as a dependency
-  
+
   const calculateGuests = (roomsCount) => {
     // Assuming each room accommodates 3 guests
     return roomsCount * 3;
