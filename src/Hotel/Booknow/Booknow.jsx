@@ -837,27 +837,26 @@ const BookNow = () => {
                                 {room.price}
                               </Typography>
                               <CardActions>
-                                {selectedRooms.findIndex(
-                                  (selected) => selected._id === room._id
-                                ) !== -1 ? (
-                                  <Button
-                                    size="small"
-                                    color="success"
-                                    variant="outlined"
-                                    disabled
-                                  >
-                                    Selected
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => handleAddRoom(room[0])}
-                                  >
-                                    Select
-                                  </Button>
-                                )}
-                              </CardActions>
+                                  {selectedRooms.find(
+                                    (selected) => selected._id === room._id
+                                  ) ? (
+                                    <Button
+                                      size="small"
+                                      color="secondary"
+                                      onClick={() => handleRemoveRoom(room)}
+                                    >
+                                      Remove
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      size="small"
+                                      color="primary"
+                                      onClick={() => handleAddRoom(room)}
+                                    >
+                                      Select
+                                    </Button>
+                                  )}
+                                </CardActions>
                             </CardContent>
                           </Card>
                         </Grid>
