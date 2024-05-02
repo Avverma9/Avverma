@@ -193,20 +193,6 @@ const BookNow = () => {
     });
   };
 
-  // const handleRemoveRoom = (room) => {
-  //   setSelectedRooms((prevSelectedRooms) => {
-  //     // If only one room is selected, do not allow removal
-  //     if (prevSelectedRooms.length === 1) {
-  //       return prevSelectedRooms;
-  //     }
-
-  //     // Otherwise, remove the selected room
-  //     return prevSelectedRooms.filter(
-  //       (selectedRoom) => selectedRoom._id !== room._id
-  //     );
-  //   });
-  // };
-
   const handleRemoveRoom = (room) => {
     setSelectedRooms((prevSelectedRooms) => {
       // If only one room is selected, allow removal even if it's the default room
