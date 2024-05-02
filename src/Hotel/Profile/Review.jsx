@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../baseURL";
-
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 import AspectRatio from '@mui/joy/AspectRatio';
 import Link from '@mui/joy/Link';
 import Card from '@mui/joy/Card';
@@ -10,7 +11,7 @@ import Chip from '@mui/joy/Chip';
 import Typography from '@mui/joy/Typography';
 export default function Reviews() {
   const location = useLocation();
-  const [reviews, setReviews] = useState([]);
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -23,7 +24,7 @@ export default function Reviews() {
           throw new Error("Error fetching reviews");
         }
         const data = await response.json();
-        setReviews(data);
+        setData(data);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
@@ -48,10 +49,17 @@ export default function Reviews() {
   if (location.pathname !== "/reviews") {
     return null;
   }
-
+  if (!data) {
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
+  }
   return (
+    
     <div> 
-       {reviews?.map((reviewData, index) => ( 
+       {data?.map((reviewData, index) => ( 
         <Card key={index}
     variant="outlined"
     orientation="horizontal"
