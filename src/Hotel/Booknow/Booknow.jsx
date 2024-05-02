@@ -193,20 +193,33 @@ const BookNow = () => {
     });
   };
 
+  // const handleRemoveRoom = (room) => {
+  //   setSelectedRooms((prevSelectedRooms) => {
+  //     // If only one room is selected, do not allow removal
+  //     if (prevSelectedRooms.length === 1) {
+  //       return prevSelectedRooms;
+  //     }
+
+  //     // Otherwise, remove the selected room
+  //     return prevSelectedRooms.filter(
+  //       (selectedRoom) => selectedRoom._id !== room._id
+  //     );
+  //   });
+  // };
+
   const handleRemoveRoom = (room) => {
     setSelectedRooms((prevSelectedRooms) => {
-      // If only one room is selected, do not allow removal
+      // If only one room is selected, allow removal even if it's the default room
       if (prevSelectedRooms.length === 1) {
-        return prevSelectedRooms;
+        return [];
       }
-
+      
       // Otherwise, remove the selected room
-      return prevSelectedRooms.filter(
-        (selectedRoom) => selectedRoom._id !== room._id
-      );
+      return prevSelectedRooms.filter((selectedRoom) => selectedRoom._id !== room._id);
     });
   };
-
+  
+  
   const calculateTotalPrice = () => {
     let totalPrice = 0;
 
@@ -238,22 +251,24 @@ const BookNow = () => {
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await fetch(
-          `${baseURL}/hotels/get-by-id/${newhotelId}`
-        );
+        const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
         const data = await response.json();
         setHotelData(data);
-
+        
         // Check if there are no rooms already selected
+        if (selectedRooms.length === 0 && data.rooms.length > 0) {
+          const defaultRoom = data.rooms[0]; // Select the first room as default
+          setSelectedRooms([defaultRoom]);
+        }
       } catch (error) {
         console.error("Error fetching hotel data:", error);
         // Handle error state
       }
     };
-
+  
     fetchHotelData();
   }, [newhotelId, selectedRooms]); // Add selectedRooms as a dependency
-
+  
   const calculateGuests = (roomsCount) => {
     // Assuming each room accommodates 3 guests
     return roomsCount * 3;
@@ -837,26 +852,26 @@ const BookNow = () => {
                                 {room.price}
                               </Typography>
                               <CardActions>
-                                  {selectedRooms.find(
-                                    (selected) => selected._id === room._id
-                                  ) ? (
-                                    <Button
-                                      size="small"
-                                      color="secondary"
-                                      onClick={() => handleRemoveRoom(room)}
-                                    >
-                                      Remove
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      size="small"
-                                      color="primary"
-                                      onClick={() => handleAddRoom(room)}
-                                    >
-                                      Select
-                                    </Button>
-                                  )}
-                                </CardActions>
+                                {selectedRooms.find(
+                                  (selected) => selected._id === room._id
+                                ) ? (
+                                  <Button
+                                    size="small"
+                                    color="secondary"
+                                    onClick={() => handleRemoveRoom(room)}
+                                  >
+                                    Remove
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size="small"
+                                    color="primary"
+                                    onClick={() => handleAddRoom(room)}
+                                  >
+                                    Select
+                                  </Button>
+                                )}
+                              </CardActions>
                             </CardContent>
                           </Card>
                         </Grid>
