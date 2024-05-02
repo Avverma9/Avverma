@@ -107,7 +107,6 @@ import "./Booknow.css";
 import baseURL from "../../baseURL";
 
 const BookNow = () => {
-  
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
@@ -177,62 +176,75 @@ const BookNow = () => {
     setSelectedFood(updatedFood);
   };
   const handleAddRoom = (room) => {
-    // Efficiently update selectedRooms using spread operator
     setSelectedRooms((prevSelectedRooms) => {
       const existingRoomIndex = prevSelectedRooms.findIndex(
         (selected) => selected._id === room._id
       );
-  
+
       if (existingRoomIndex !== -1) {
         // Deselect if already selected
-        return prevSelectedRooms.filter((selected) => selected._id !== room._id);
+        return prevSelectedRooms.filter(
+          (selected) => selected._id !== room._id
+        );
       } else {
         // Add if not selected
         return [...prevSelectedRooms, room];
       }
     });
   };
-  
+
   const handleRemoveRoom = (room) => {
-    // Check if room is the default room and handle appropriately
-    const isDefaultRoom = room.isDefault;
-  
-    // Concisely update selectedRooms using callback for deselecting
-    setSelectedRooms((prevSelectedRooms) =>
-      prevSelectedRooms.filter((selectedRoom) => selectedRoom !== room && !isDefaultRoom)
-    );
+    setSelectedRooms((prevSelectedRooms) => {
+      // If only one room is selected, do not allow removal
+      if (prevSelectedRooms.length === 1) {
+        return prevSelectedRooms;
+      }
+
+      // Otherwise, remove the selected room
+      return prevSelectedRooms.filter(
+        (selectedRoom) => selectedRoom._id !== room._id
+      );
+    });
   };
-  
+
   const calculateTotalPrice = () => {
-    const roomPrice = selectedRooms.reduce(
-      (total, room) => total + room.price,
-      0
-    );
+    let totalPrice = 0;
+
+    // Calculate total room price
+    selectedRooms.forEach((room) => {
+      totalPrice += room.price * roomsCount;
+    });
+
+    // Calculate total food price
     const foodPrice = selectedFood.reduce(
       (total, food) => total + food.price * food.quantity,
       0
     );
-  
+
     // Calculate days using Date object for clarity
     const daysDifference = Math.ceil(
       (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
-  
-    // Update room price considering roomsCount and daysDifference
-    const updatedRoomPrice = roomPrice * roomsCount * daysDifference;
-  
-    return updatedRoomPrice + foodPrice;
+
+    // Update room price considering daysDifference
+    totalPrice *= daysDifference;
+
+    // Add food price to total price
+    totalPrice += foodPrice;
+
+    return totalPrice;
   };
 
   useEffect(() => {
     const fetchHotelData = async () => {
       try {
-        const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
+        const response = await fetch(
+          `${baseURL}/hotels/get-by-id/${newhotelId}`
+        );
         const data = await response.json();
         setHotelData(data);
-        // Set the first room of the first hotel as the default selected room
-        const defaultRoom = data.rooms;
-        setSelectedRooms(defaultRoom);
+
+        // Check if there are no rooms already selected
       } catch (error) {
         console.error("Error fetching hotel data:", error);
         // Handle error state
@@ -240,8 +252,7 @@ const BookNow = () => {
     };
 
     fetchHotelData();
-  }, [newhotelId]);
-  // booking details
+  }, [newhotelId, selectedRooms]); // Add selectedRooms as a dependency
 
   const calculateGuests = (roomsCount) => {
     // Assuming each room accommodates 3 guests
@@ -305,7 +316,7 @@ const BookNow = () => {
 
       // Prepare data for API request
       const bookingData = {
-        hotelId:newhotelId,
+        hotelId: newhotelId,
         user: userId, // Include userId in the payload
         checkInDate: format(checkInDate, "yyyy-MM-dd"),
         checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
@@ -328,13 +339,16 @@ const BookNow = () => {
       };
 
       // Make API request to book
-      const response = await fetch(`${baseURL}/booking/${userId}/${newhotelId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
-      });
+      const response = await fetch(
+        `${baseURL}/booking/${userId}/${newhotelId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingData),
+        }
+      );
 
       if (response.status === 201) {
         // Handle success, e.g., redirect to a confirmation page
@@ -686,73 +700,88 @@ const BookNow = () => {
 
                 {/* Special rooms  desktop view*/}
                 <div className="col-md-8 d-none d-sm-block">
-  <div className="container mt-3">
-    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
-      <Grid container spacing={4}>
-        {hotelData?.rooms?.map((room, index) => (
-          <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
-            <div style={{ marginBottom: "20px" }}>
-              <Card sx={{ width: "100%" }}>
-                <CardMedia
-                  component="img"
-                  height="130px"
-                  style={{ objectFit: "cover", width: "100%" }}
-                  src={
-                    room.images && room.images.length > 0
-                      ? room.images[0]
-                      : hotelData?.images[0]
-                  }
-                  alt={`Room ${index + 1} Image 1`}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="subtitle2" component="div">
-                    {room.type}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Bed: {room.bedTypes}
-                    <BedOutlinedIcon
-                      style={{
-                        fontSize: "small",
-                        verticalAlign: "middle",
-                        marginLeft: "5px",
-                      }}
-                    />
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Price:{" "}
-                    <CurrencyRupeeIcon
-                      style={{
-                        fontSize: "small",
-                        verticalAlign: "middle",
-                      }}
-                    />
-                    {room.price}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                {selectedRooms.find((selected) => selected._id === room._id) ? (
-  <Button size="small" color="success" variant="outlined" disabled>
-    Selected
-  </Button>
-) : (
-  <Button size="small" color="primary" onClick={() => handleAddRoom(room)}>
-    Select
-  </Button>
-)}
-</CardActions>
-
-              </Card>
-            </div>
-          </Grid>
-        ))}
-      </Grid>
-    </div>
-  </div>
-</div>
-
-
-
-
+                  <div className="container mt-3">
+                    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
+                      <Grid container spacing={4}>
+                        {hotelData?.rooms?.map((room, index) => (
+                          <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+                            <div style={{ marginBottom: "20px" }}>
+                              <Card sx={{ width: "100%" }}>
+                                <CardMedia
+                                  component="img"
+                                  height="130px"
+                                  style={{ objectFit: "cover", width: "100%" }}
+                                  src={
+                                    room.images && room.images.length > 0
+                                      ? room.images[0]
+                                      : hotelData?.images[0]
+                                  }
+                                  alt={`Room ${index + 1} Image 1`}
+                                />
+                                <CardContent>
+                                  <Typography
+                                    gutterBottom
+                                    variant="subtitle2"
+                                    component="div"
+                                  >
+                                    {room.type}
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Bed: {room.bedTypes}
+                                    <BedOutlinedIcon
+                                      style={{
+                                        fontSize: "small",
+                                        verticalAlign: "middle",
+                                        marginLeft: "5px",
+                                      }}
+                                    />
+                                  </Typography>
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                  >
+                                    Price:{" "}
+                                    <CurrencyRupeeIcon
+                                      style={{
+                                        fontSize: "small",
+                                        verticalAlign: "middle",
+                                      }}
+                                    />
+                                    {room.price}
+                                  </Typography>
+                                </CardContent>
+                                <CardActions>
+                                  {selectedRooms.find(
+                                    (selected) => selected._id === room._id
+                                  ) ? (
+                                    <Button
+                                      size="small"
+                                      color="secondary"
+                                      onClick={() => handleRemoveRoom(room)}
+                                    >
+                                      Remove
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      size="small"
+                                      color="primary"
+                                      onClick={() => handleAddRoom(room)}
+                                    >
+                                      Select
+                                    </Button>
+                                  )}
+                                </CardActions>
+                              </Card>
+                            </div>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </div>
+                  </div>
+                </div>
 
                 {/* mobile view section for special rooms  */}
                 <div className="col-md-4 d-block d-md-none">
