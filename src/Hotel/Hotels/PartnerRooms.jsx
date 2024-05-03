@@ -10,7 +10,7 @@ export default function PartnerRooms() {
   const [price, setPrice] = useState("");
   const [countRooms, setCountRooms] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -42,7 +42,7 @@ export default function PartnerRooms() {
         alert(
           "Thank you, you have filled all details ! One of our customer will connect you shortly"
         );
-        sessionStorage.removeItem("hotelId");
+        localStorage.removeItem("hotelId");
         navigate("/");
       }
     } catch (error) {

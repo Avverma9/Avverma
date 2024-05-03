@@ -13,18 +13,18 @@ export default function Navigation() {
   const location = useLocation();
 
   const review = () => {
-    navigate("/reviews");
+    window.location.href="/reviews";
   };
 
   const bookings = () => {
-    navigate("/bookings");
+    window.location.href="/bookings";
   };
 
   const complaints = () => {
-    navigate("/complaints");
+    window.location.href="/complaints";
   };
   const profile = () => {
-    navigate("/profile");
+    window.location.href="/profile";
   };
   const paths = ["/bookings", "/reviews", "/complaints", "/profile", "/profile-update/user-data/page"];
 

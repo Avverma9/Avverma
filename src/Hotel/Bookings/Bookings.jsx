@@ -1,32 +1,41 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { MDBInput } from 'mdb-react-ui-kit';
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
 import { Button } from "@mui/material";
-import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
+import Box from "@mui/material/Box";
+// import AspectRatio from '@mui/joy/AspectRatio';
+// import JoyBox from '@mui/joy/Box';
+// import JoyButton from '@mui/joy/Button';
+// import Card from '@mui/joy/Card';
+// import CardContent from '@mui/joy/CardContent';
+// import Typography from '@mui/joy/Typography';
+// import Sheet from '@mui/joy/Sheet';
 
-import SendIcon from '@mui/icons-material/Send';
+import Rating from "@mui/material/Rating";
+import Modals from "@mui/material/Modal";
+import CloseIcon from "@mui/icons-material/Close";
+import SendIcon from "@mui/icons-material/Send";
 import moment from "moment";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
 import baseURL from "../../baseURL";
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'; 
- import Alert from '@mui/material/Alert';
-  import CheckIcon from '@mui/icons-material/Check';
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import Alert from "@mui/material/Alert";
+import CheckIcon from "@mui/icons-material/Check";
 import { alignProperty } from "@mui/material/styles/cssUtils";
 export const ConfirmBooking = ({ toast }) => {
-
   const [showReviewForm, setShowReviewForm] = useState(false);
-const [comment,setComment] = useState("")
-const [rating,setRating]= useState("")
+  const [comment, setComment] = useState("");
+  const [rating, setRating] = useState("");
   const [bookingDetails, setBookingDetails] = useState(null);
-  const [value, setValue] = useState(null)
+  const [value, setValue] = useState(null);
   const [modalData, setModalData] = useState([]);
   const [userData, setUserData] = useState(null);
   const location = useLocation();
@@ -70,32 +79,30 @@ const [rating,setRating]= useState("")
   };
 
   useEffect(() => {
-    const id = sessionStorage.getItem("userId");
+    const id = localStorage.getItem("userId");
     axios
       .get(`${baseURL}/get/${id}`)
       .then((res) => setUserData(res?.data?.data))
       .catch((error) => {
         console.error("Error fetching user details:", error);
         const errorMessage =
-          error.response &&
-          error.response.data &&
-          error.response.data.message
+          error.response && error.response.data && error.response.data.message
             ? error.response.data.message
             : "Error fetching user details";
-        
+
         showAlert("error", errorMessage);
       });
   }, []);
 
   const fetchBookingDetails = useCallback(async () => {
-    const userId = sessionStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
     try {
       const response = await axios.get(
         `${baseURL}/get/all/users-filtered/booking/by`,
         {
           params: {
             bookingStatus: selectedStatus,
-            userId:userId
+            userId: userId,
           },
         }
       );
@@ -106,12 +113,10 @@ const [rating,setRating]= useState("")
     } catch (error) {
       console.error("Error fetching booking details:", error);
       const errorMessage =
-        error.response &&
-        error.response.data &&
-        error.response.data.message
+        error.response && error.response.data && error.response.data.message
           ? error.response.data.message
           : "Error fetching booking details";
-      
+
       showAlert("error", errorMessage);
     }
   }, [selectedStatus, setBookingDetails]);
@@ -124,48 +129,76 @@ const [rating,setRating]= useState("")
     return null;
   }
 
+  const handleReview = (hotelId) => {
+    localStorage.setItem("hotelId_review", hotelId);
+    setShowReviewForm(true);
+  };
+
+  const postReview = async () => {
+    const userId = localStorage.getItem("userId");
+    const hotelId = localStorage.getItem("hotelId_review");
+    try {
+      const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, {
+        comment: comment,
+        rating: rating
+      });
+      if (response.status === 201) {
+        // Optionally, you can reset the comment and rating fields after posting the review
+        setComment('');
+        setRating(0);
+        // Close the review form
+        setShowReviewForm(false);
+      }
+    } catch (error) {
+      console.error("Error posting review:", error);
+      // Handle error if needed
+    }
+  };
 
 
-const handleReview = (hotelId)=>{
- 
-  sessionStorage.setItem("hotelId_review",hotelId)
- setShowReviewForm(true);
-}
-
-const postReview = async () => {
-  const userId = sessionStorage.getItem("userId");
-  const hotelId = sessionStorage.getItem("hotelId_review")
-  try {
-    const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, {
-      comment: comment, // Assuming `comment` is defined somewhere in your code
-      rating: rating     // Assuming `rating` is defined somewhere in your code
-    });
-   if(response.status === 201){
-    
- window.alert("Thank you for sharing your experience with us ")
-  sessionStorage.removeItem("hotelId_review")
-   }
-  } catch (error) {
-    console.error("Error posting review:", error);
-    // Handle error if needed
+  const userId = localStorage.getItem("userId");
+  if (!userId) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+        }}
+      >
+        <img
+          src="https://arkca.com/assets/img/login.gif"
+          alt="Login required"
+          style={{ maxWidth: "200px", maxHeight: "150px" }}
+        />{" "}
+        {/* Mobile-friendly image size */}
+        <p style={{ marginTop: "10px" }}>
+          Unauthorized
+          <br />
+          Please log in
+        </p>{" "}
+        {/* Clearer message with spacing */}
+      </div>
+    );
   }
-};
-const userId = sessionStorage.getItem("userId")
-if (!userId) {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-      <img src="https://arkca.com/assets/img/login.gif" alt="Login required" style={{ maxWidth: '200px', maxHeight: '150px' }} /> {/* Mobile-friendly image size */}
-      <p style={{ marginTop: '10px' }}>Unauthorized<br />
-      Please log in</p> {/* Clearer message with spacing */}
-    </div>
-  );
-}
+  const handleCloseReview = () => {
+    // Reset comment and rating fields
+    setComment("");
+    setRating(0);
+    // Close the review form
+    setShowReviewForm(false);
+  };
+
   return (
     <>
-        <Stack sx={{ width: '100%' }} spacing={2}>
+      <Stack sx={{ width: "100%" }} spacing={2}>
         {alertMessage && (
           <Alert severity={alertMessage.severity} onClose={handleAlertClose}>
-            <AlertTitle>{alertMessage.severity.charAt(0).toUpperCase() + alertMessage.severity.slice(1)}</AlertTitle>
+            <AlertTitle>
+              {alertMessage.severity.charAt(0).toUpperCase() +
+                alertMessage.severity.slice(1)}
+            </AlertTitle>
             {alertMessage.message}
           </Alert>
         )}
@@ -174,142 +207,283 @@ if (!userId) {
         <h4>Your bookings</h4>
       </div>
       <div className={styles.bookingsContainer}>
-      <div className={styles.selectContainer}>
-        <select
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-          className={styles.selectOption}
-        >
-          <option value="Confirmed">Confirmed</option>
-          <option value="Failed">Failed</option>
-          <option value="Checked-in">Checked In</option>
-          <option value="Checked-out">Checked Out</option>
-          <option value="Cancelled">Cancelled</option>
-          <option value="No-Show">No show</option>
-        </select>
-      </div>
+        <div className={styles.selectContainer}>
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className={styles.selectOption}
+          >
+            <option value="Confirmed">Confirmed</option>
+            <option value="Failed">Failed</option>
+            <option value="Checked-in">Checked In</option>
+            <option value="Checked-out">Checked Out</option>
+            <option value="Cancelled">Cancelled</option>
+            <option value="No-Show">No show</option>
+          </select>
+        </div>
 
-      {bookingDetails && bookingDetails.length > 0 ? (
-        <>
-          {bookingDetails.map((bookingDetails) => {
-            return (
-              <div
-                key={bookingDetails.bookingId}
-                className={`${styles.bookingDetails} ${styles.pageBreak}`}
-              >
-                <img
-                  src={
-                    bookingDetails &&
-                    bookingDetails?.images &&
-                    bookingDetails?.images
-                      ? bookingDetails.images
-                      : noImage
-                  }
-                  alt=""
-                />
+        {bookingDetails && bookingDetails.length > 0 ? (
+          <>
+            {bookingDetails.map((bookingDetails) => {
+              return (
+                <div
+                  key={bookingDetails.bookingId}
+                  className={`${styles.bookingDetails} ${styles.pageBreak}`}
+                >
+                  <img
+                    src={
+                      bookingDetails &&
+                      bookingDetails?.images &&
+                      bookingDetails?.images
+                        ? bookingDetails.images
+                        : noImage
+                    }
+                    alt=""
+                  />
 
-                <div className={styles.bookingRowOne}>
-                  <h5>{bookingDetails?.hotelName}</h5>
-                  {bookingDetails?.checkInDate &&
-                    bookingDetails?.checkOutDate && (
+                  <div className={styles.bookingRowOne}>
+                    <h5>{bookingDetails?.hotelName}</h5>
+                    {bookingDetails?.checkInDate &&
+                      bookingDetails?.checkOutDate && (
+                        <h6>
+                          <>
+                            <CalendarMonthIcon /> From{" "}
+                            {bookingDetails?.checkInDate &&
+                              bookingDetails?.checkInDate.substring(0, 10)}
+                            {"  "}
+                          </>
+                          {"  "}
+                          to
+                          {"  "}
+                          <>
+                            {"  "}
+                            {bookingDetails?.checkOutDate &&
+                              bookingDetails?.checkOutDate.substring(0, 10)}
+                          </>
+                        </h6>
+                      )}
+                  </div>
+                  <div className={styles.bookingRowOne}>
+                    <h6>
+                      {" "}
+                      ID
+                      <StickyNote2Icon /> {bookingDetails?.bookingId}
+                    </h6>
+                    {bookingDetails?.guests && bookingDetails?.rooms && (
                       <h6>
                         <>
-                        <CalendarMonthIcon/>  From  {bookingDetails?.checkInDate &&
-                            bookingDetails?.checkInDate.substring(0, 10)}
-                          {"  "}
+                          {bookingDetails?.guests}{" "}
+                          <span>
+                            {bookingDetails?.guests > 1
+                              ? " - Guests"
+                              : " - Guest"}{" "}
+                            ,
+                          </span>
                         </>
-                        {"  "}
-                        to
-                        {"  "}
+
                         <>
-                          {"  "}
-                          {bookingDetails?.checkOutDate &&
-                            bookingDetails?.checkOutDate.substring(0, 10)}
+                          {bookingDetails?.rooms}
+                          <span>
+                            {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
+                          </span>
                         </>
                       </h6>
                     )}
-                 
-                </div>
-                <div className={styles.bookingRowOne}>
-                  <h6> ID<StickyNote2Icon/> {bookingDetails?.bookingId}</h6>
-                  {bookingDetails?.guests && bookingDetails?.rooms && (
+                  </div>
+                  <div className={styles.bookingRowTwo}>
                     <h6>
-                      <>
-                        {bookingDetails?.guests}{" "}
-                        <span>
-                          {bookingDetails?.guests > 1
-                            ? " - Guests"
-                            : " - Guest"}{" "}
-                          ,
-                        </span>
-                      </>
-
-                      <>
-                        {bookingDetails?.rooms}
-                        <span>
-                          {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
-                        </span>
-                      </>
+                      <CurrencyRupeeIcon />
+                      {bookingDetails?.price}
                     </h6>
-                  )}
+                    <button
+                      className={styles.link}
+                      onClick={() => handleShow(bookingDetails)}
+                    >
+                      More
+                    </button>
+                    <br />
+                    <Button
+                      onClick={() => handleReview(bookingDetails.hotelId)}
+
+                    >
+                      Review{" "}
+                    </Button>
+                  </div>
                 </div>
-                <div className={styles.bookingRowTwo}>
-                  <h6><CurrencyRupeeIcon/>{bookingDetails?.price}</h6>
-                  <button
-                    className={styles.link}
-                    onClick={() => handleShow(bookingDetails)}
-                  >
-                    More
-                  </button>
-                  <br />
-                  <Button onClick={()=>handleReview (bookingDetails.hotelId)}>Write an review </Button>
-                
-                </div>
-                
-              </div>
-            );
-          })}
-            {showReviewForm && (
-                  <div className={styles.reviewContainer}>
-                  <input
-                    type="text"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Write your review..."
-                    className={styles.reviewInput}
+              );
+            })}
+            <Modals
+              open={showReviewForm}
+              onClose={handleCloseReview}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  position: "absolute",
+                  width: "90%",
+                  maxWidth: 400,
+                  bgcolor: "background.paper",
+                  border: "2px solid #000",
+                  boxShadow: 24,
+                  p: 4,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <h6 id="modal-modal-title">Write about your experience</h6>
+                  <CloseIcon
+                    onClick={handleCloseReview}
+                    style={{ cursor: "pointer" }}
                   />
-                    <SendIcon
-            onClick={postReview}
-            style={{
-              marginLeft: '10px',
-              borderRadius: '50%',
-              backgroundColor: 'blue',
-              color: '#fff',
-              padding: '5px',
-              cursor: 'pointer',
+                </Box>
+                <MDBInput label="Give stars" id="formControlLg" type="text" size="lg" value={comment}
+                  onChange={(e) => setComment(e.target.value)} style={{ marginBottom: "10px" }} />
+      
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  onClick={postReview}
+                  style={{ marginTop: "10px", width: "100%" }}
+                >
+                  <SendIcon style={{ marginRight: "5px" }} />
+                  Send Review
+                </Button>
+              </Box>
+            </Modals>
+          </>
+        ) : (
+          <p>You haven't booked any hotel</p>
+        )}
+{/* <JoyBox
+  sx={{
+    width: '100%',
+    position: 'relative',
+    overflow: { xs: 'auto', sm: 'initial' },
+  }}
+>
+  <JoyBox
+    sx={{
+      position: 'absolute',
+      display: 'block',
+      width: '1px',
+      bgcolor: 'warning.300',
+      left: '500px',
+      top: '-24px',
+      bottom: '-24px',
+      '&::before': {
+        top: '4px',
+        content: '"vertical"',
+        display: 'block',
+        position: 'absolute',
+        right: '0.5rem',
+        color: 'text.tertiary',
+        fontSize: 'sm',
+        fontWeight: 'lg',
+      },
+      '&::after': {
+        top: '4px',
+        content: '"horizontal"',
+        display: 'block',
+        position: 'absolute',
+        left: '0.5rem',
+        color: 'text.tertiary',
+        fontSize: 'sm',
+        fontWeight: 'lg',
+      },
+    }}
+  />
+  <Card
+    orientation="horizontal"
+    sx={{
+      width: '100%',
+      flexWrap: 'wrap',
+      [`& > *`]: {
+        '--stack-point': '500px',
+        minWidth:
+          'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
+      },
+      // make the card resizable for demo
+      overflow: 'auto',
+      resize: 'horizontal',
+    }}
+  >
+    {bookingDetails && bookingDetails.map((bookingDetail) => (
+      <div key={bookingDetail.bookingId}>
+        <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
+          <img
+            src={bookingDetail.images ? bookingDetail.images : noImage}
+            loading="lazy"
+            alt=""
+          />
+        </AspectRatio>
+        <CardContent>
+          <Typography fontSize="xl" fontWeight="lg">
+            {bookingDetail.hotelName}
+          </Typography>
+          <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
+            <>
+              <CalendarMonthIcon /> From {bookingDetail.checkInDate && bookingDetail.checkInDate.substring(0, 10)} to {bookingDetail.checkOutDate && bookingDetail.checkOutDate.substring(0, 10)}
+            </>
+          </Typography>
+          <Sheet
+            sx={{
+              bgcolor: 'background.level1',
+              borderRadius: 'sm',
+              p: 1.5,
+              my: 1.5,
+              display: 'flex',
+              gap: 2,
+              '& > div': { flex: 1 },
             }}
-          /> 
-                  <Box
-                    sx={{
-                      '& > legend': { mt: 2 },
-                    }}
-                  >
-                    <Rating
-                      name="simple-controlled"
-                      value={rating}
-                      onChange={(event, newValue) => {
-                        setRating(newValue);
-                      }}
-                    />
-                  </Box>
-                 
-                </div>
-                )}
-        </>
-      ) : (
-        <p>You haven't booked any hotel</p>
-      )}
-</div>
+          >
+            <div>
+              <Typography level="body-xs" fontWeight="lg">
+                ID <StickyNote2Icon /> {bookingDetail.bookingId}
+              </Typography>
+            </div>
+            <div>
+              <Typography level="body-xs" fontWeight="lg">
+                {bookingDetail.guests} <span>{bookingDetail.guests > 1 ? ' - Guests' : ' - Guest'},</span> {bookingDetail.rooms} <span>{bookingDetail.rooms > 1 ? ' - Rooms' : ' - Room'}</span>
+              </Typography>
+            </div>
+            <div>
+              <Typography level="body-xs" fontWeight="lg">
+                <CurrencyRupeeIcon /> {bookingDetail.price}
+              </Typography>
+            </div>
+          </Sheet>
+          <JoyBox sx={{ display: 'flex', gap: 1.5, '& > button': { flex: 1 } }}>
+            <button className={styles.link} onClick={() => handleShow(bookingDetail)}>
+              More
+            </button>
+            <JoyButton onClick={() => handleReview(bookingDetail.hotelId)}>
+              Review
+            </JoyButton>
+          </JoyBox>
+        </CardContent>
+      </div>
+    ))}
+  </Card>
+</JoyBox> */}
+      
+      </div>
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>

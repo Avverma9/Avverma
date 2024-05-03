@@ -22,7 +22,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [data, setData] = useState(null);
 
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +31,7 @@ export default function Profile() {
         setData(response.data.data);
         if (response.data.data.userImage.length > 0) {
           const firstImageUrl = response.data.data.userImage[0];
-          sessionStorage.setItem("userImage", firstImageUrl);
+          localStorage.setItem("userImage", firstImageUrl);
           
         }
       } catch (error) {
@@ -65,9 +65,9 @@ export default function Profile() {
   };
 
   const handleLogOut = () => {
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("userMobile");
-    sessionStorage.removeItem("isSignedIn");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userMobile");
+    localStorage.removeItem("isSignedIn");
     navigate("/login");
   };
 

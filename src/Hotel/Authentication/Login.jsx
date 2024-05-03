@@ -66,7 +66,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const storedLoggedUser = sessionStorage.getItem("loggedUser");
+  const storedLoggedUser = localStorage.getItem("loggedUser");
   const loggedUserObj = JSON.parse(storedLoggedUser);
   if(loggedUserObj){
       const originalData = loggedUserObj.providerData;
@@ -74,11 +74,11 @@ export default function LoginPage() {
   const userImage = originalData[0].photoURL;
   const email = originalData[0].email;
   const userName = originalData[0].displayName;  
-  sessionStorage.setItem("uid",uid)
-  sessionStorage.setItem("userImage",userImage)
-  sessionStorage.setItem("useremail",email)
+  localStorage.setItem("uid",uid)
+  localStorage.setItem("userImage",userImage)
+  localStorage.setItem("useremail",email)
 
-  sessionStorage.setItem("userName",userName)
+  localStorage.setItem("userName",userName)
   console.log("upcoming data", uid, userImage, email, userName);
   }
 
@@ -107,8 +107,8 @@ export default function LoginPage() {
 
         const { userId } = data;
 console.log(userId)
-        sessionStorage.setItem("isSignedIn", "true");
-        sessionStorage.setItem("userId", userId);
+        localStorage.setItem("isSignedIn", "true");
+        localStorage.setItem("userId", userId);
         navigate("/");
       } else {
         // Handle login failure

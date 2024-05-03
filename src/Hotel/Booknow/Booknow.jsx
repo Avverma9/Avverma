@@ -304,10 +304,10 @@ const BookNow = () => {
   };
   const handleBookNow = async () => {
     try {
-      const userId = sessionStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
 
-      // Check if userMobile is available in sessionStorage
-      const userMobile = sessionStorage.getItem("userMobile");
+      // Check if userMobile is available in localStorage
+      const userMobile = localStorage.getItem("userMobile");
 
       if (!userMobile) {
         // If userMobile is not available, show an alert and navigate to the profile page
@@ -357,7 +357,7 @@ const BookNow = () => {
       if (response.status === 201) {
         // Handle success, e.g., redirect to a confirmation page
         alert("Booking successful");
-        navigate("/bookings");
+        window.location.href = "/bookings";
       } else {
         // Handle error
         console.error("Booking failed");

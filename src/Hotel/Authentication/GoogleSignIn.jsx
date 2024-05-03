@@ -29,9 +29,9 @@ const Google = () => {
       const user = result.user;
       const email = user.email;
 
-      sessionStorage.setItem("isSignedIn", "true");
-      sessionStorage.setItem("loggedUser", JSON.stringify(user));
-      const storedLoggedUser = sessionStorage.getItem("loggedUser");
+      localStorage.setItem("isSignedIn", "true");
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+      const storedLoggedUser = localStorage.getItem("loggedUser");
       const loggedUserObj = JSON.parse(storedLoggedUser);
       const originalData = loggedUserObj.providerData;
       const uid = originalData[0].uid;
@@ -60,8 +60,8 @@ const Google = () => {
       const data = await response.json();
       const { userId } = data;
 
-      sessionStorage.setItem("isSignedIn", "true");
-      sessionStorage.setItem("userId", userId);
+      localStorage.setItem("isSignedIn", "true");
+      localStorage.setItem("userId", userId);
 
       
       const userDocRef = doc(db, "users", userId);

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../baseURL";
-import LinearProgress from "@mui/material/LinearProgress";
-import Box from "@mui/material/Box";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Link from "@mui/joy/Link";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Chip from "@mui/joy/Chip";
 import Typography from "@mui/joy/Typography";
+import "./Reviews.css"
+
 export default function Reviews() {
   const location = useLocation();
   const [data, setData] = useState(null);
@@ -16,7 +16,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const userId = sessionStorage.getItem("userId");
+        const userId = localStorage.getItem("userId");
         const response = await fetch(
           `${baseURL}/reviewDatas/userId?userId=${userId}`
         );
@@ -49,7 +49,7 @@ export default function Reviews() {
   if (location.pathname !== "/reviews") {
     return null;
   }
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   if (!userId) {
     return (
       <div
@@ -90,7 +90,7 @@ export default function Reviews() {
   }
 
   return (
-    <div>
+    <div className="review-container">
       {data?.map((reviewData, index) => (
         <Card
           key={index}
@@ -124,7 +124,6 @@ export default function Reviews() {
               <Link
                 overlay
                 underline="none"
-                href="#interactive-card"
                 sx={{ color: "text.tertiary" }}
               >
                 Comment : {reviewData?.review?.comment}

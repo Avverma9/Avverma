@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AmenitiesPage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const navigate = useNavigate();
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
   const handleCheckboxChange = (amenity) => {
     if (selectedAmenities.includes(amenity)) {
       setSelectedAmenities(
