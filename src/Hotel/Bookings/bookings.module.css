@@ -1,14 +1,27 @@
-.bookingHeader h2 {
-    color: #000000;
-    margin-top: 5px;
-    font-size: 23px;
-    font-weight: 400;
-    width : "300px";
-    text-align: center;
-    border: 1px solid #d4dce1; /* Set border color to blue */
-            border-radius: 5px;
-            background-color: #c8d8e3;
-  }
+.bookingHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh; /* Adjust the height as needed */
+}
+
+.bookingHeader h4 {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(
+    45deg,
+    #ffbe0b,
+    #fb5607,
+    #ff006e,
+    #8338ec,
+    #3a86ff
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
   .bookingDetails {
     display: flex;
     align-items: flex-start;

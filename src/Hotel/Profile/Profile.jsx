@@ -42,10 +42,16 @@ export default function Profile() {
     fetchData();
   }, [userId]);
 
-  if (!userId) {
-    return <div>You are not logged in. Please login.</div>;
-  }
 
+  if (!userId) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+        <img src="https://arkca.com/assets/img/login.gif" alt="Login required" style={{ maxWidth: '200px', maxHeight: '150px' }} /> {/* Mobile-friendly image size */}
+        <p style={{ marginTop: '10px' }}>Unauthorized<br />
+        Please log in</p> {/* Clearer message with spacing */}
+      </div>
+    );
+  }
   if (!data) {
     return (
       <Box sx={{ width: "100%" }}>

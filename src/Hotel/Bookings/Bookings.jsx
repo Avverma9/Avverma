@@ -19,6 +19,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'; 
  import Alert from '@mui/material/Alert';
   import CheckIcon from '@mui/icons-material/Check';
+import { alignProperty } from "@mui/material/styles/cssUtils";
 export const ConfirmBooking = ({ toast }) => {
 
   const [showReviewForm, setShowReviewForm] = useState(false);
@@ -90,10 +91,11 @@ const [rating,setRating]= useState("")
     const userId = sessionStorage.getItem("userId");
     try {
       const response = await axios.get(
-        `${baseURL}/get/all/users-filtered/booking/by/${userId}`,
+        `${baseURL}/get/all/users-filtered/booking/by`,
         {
           params: {
             bookingStatus: selectedStatus,
+            userId:userId
           },
         }
       );
@@ -148,7 +150,16 @@ const postReview = async () => {
     // Handle error if needed
   }
 };
-
+const userId = sessionStorage.getItem("userId")
+if (!userId) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+      <img src="https://arkca.com/assets/img/login.gif" alt="Login required" style={{ maxWidth: '200px', maxHeight: '150px' }} /> {/* Mobile-friendly image size */}
+      <p style={{ marginTop: '10px' }}>Unauthorized<br />
+      Please log in</p> {/* Clearer message with spacing */}
+    </div>
+  );
+}
   return (
     <>
         <Stack sx={{ width: '100%' }} spacing={2}>
@@ -160,7 +171,7 @@ const postReview = async () => {
         )}
       </Stack>
       <div className={styles.bookingHeader}>
-        <h2>Your bookings</h2>
+        <h4>Your bookings</h4>
       </div>
       <div className={styles.bookingsContainer}>
       <div className={styles.selectContainer}>
@@ -296,7 +307,7 @@ const postReview = async () => {
                 )}
         </>
       ) : (
-        <p>No Data Found...</p>
+        <p>You haven't booked any hotel</p>
       )}
 </div>
       <Modal show={show} onHide={handleClose} centered size="xl">
