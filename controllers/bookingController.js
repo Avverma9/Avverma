@@ -360,8 +360,7 @@ const updateBooking = async (req, res) => {
 //==========================================================getallBookingByID=======================
 const getAllFilterBookings = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { bookingStatus } = req.query;
+    const { bookingStatus, userId} = req.query;
     const filter = { userId, bookingStatus };
 
     const bookings = await bookingModel.find(filter);

@@ -163,7 +163,7 @@ router.get(
 router.get("/bookingsCheckedIn/:id", bookingController.getCheckedInHotel);
 router.get("/bookingsCheckedOut/:id", bookingController.getCheckedOutHotel);
 router.get(
-  "/get/all/users-filtered/booking/by/:user",
+  "/get/all/users-filtered/booking/by",
   bookingController.getAllFilterBookings
 ); // using on main site
 router.get(
