@@ -7,13 +7,13 @@ import { Button } from "@mui/material";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-// import AspectRatio from '@mui/joy/AspectRatio';
-// import JoyBox from '@mui/joy/Box';
-// import JoyButton from '@mui/joy/Button';
-// import Card from '@mui/joy/Card';
-// import CardContent from '@mui/joy/CardContent';
-// import Typography from '@mui/joy/Typography';
-// import Sheet from '@mui/joy/Sheet';
+import AspectRatio from '@mui/joy/AspectRatio';
+import JoyBox from '@mui/joy/Box';
+import JoyButton from '@mui/joy/Button';
+import Card from '@mui/joy/Card';
+import CardContent from '@mui/joy/CardContent';
+import Typography from '@mui/joy/Typography';
+import Sheet from '@mui/joy/Sheet';
 
 import Rating from "@mui/material/Rating";
 import Modals from "@mui/material/Modal";
@@ -224,94 +224,6 @@ export const ConfirmBooking = ({ toast }) => {
 
         {bookingDetails && bookingDetails.length > 0 ? (
           <>
-            {bookingDetails.map((bookingDetails) => {
-              return (
-                <div
-                  key={bookingDetails.bookingId}
-                  className={`${styles.bookingDetails} ${styles.pageBreak}`}
-                >
-                  <img
-                    src={
-                      bookingDetails &&
-                      bookingDetails?.images &&
-                      bookingDetails?.images
-                        ? bookingDetails.images
-                        : noImage
-                    }
-                    alt=""
-                  />
-
-                  <div className={styles.bookingRowOne}>
-                    <h5>{bookingDetails?.hotelName}</h5>
-                    {bookingDetails?.checkInDate &&
-                      bookingDetails?.checkOutDate && (
-                        <h6>
-                          <>
-                            <CalendarMonthIcon /> From{" "}
-                            {bookingDetails?.checkInDate &&
-                              bookingDetails?.checkInDate.substring(0, 10)}
-                            {"  "}
-                          </>
-                          {"  "}
-                          to
-                          {"  "}
-                          <>
-                            {"  "}
-                            {bookingDetails?.checkOutDate &&
-                              bookingDetails?.checkOutDate.substring(0, 10)}
-                          </>
-                        </h6>
-                      )}
-                  </div>
-                  <div className={styles.bookingRowOne}>
-                    <h6>
-                      {" "}
-                      ID
-                      <StickyNote2Icon /> {bookingDetails?.bookingId}
-                    </h6>
-                    {bookingDetails?.guests && bookingDetails?.rooms && (
-                      <h6>
-                        <>
-                          {bookingDetails?.guests}{" "}
-                          <span>
-                            {bookingDetails?.guests > 1
-                              ? " - Guests"
-                              : " - Guest"}{" "}
-                            ,
-                          </span>
-                        </>
-
-                        <>
-                          {bookingDetails?.rooms}
-                          <span>
-                            {bookingDetails?.rooms > 1 ? " - Rooms" : " - Room"}
-                          </span>
-                        </>
-                      </h6>
-                    )}
-                  </div>
-                  <div className={styles.bookingRowTwo}>
-                    <h6>
-                      <CurrencyRupeeIcon />
-                      {bookingDetails?.price}
-                    </h6>
-                    <button
-                      className={styles.link}
-                      onClick={() => handleShow(bookingDetails)}
-                    >
-                      More
-                    </button>
-                    <br />
-                    <Button
-                      onClick={() => handleReview(bookingDetails.hotelId)}
-
-                    >
-                      Review{" "}
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
             <Modals
               open={showReviewForm}
               onClose={handleCloseReview}
@@ -371,7 +283,9 @@ export const ConfirmBooking = ({ toast }) => {
         ) : (
           <p>You haven't booked any hotel</p>
         )}
-{/* <JoyBox
+         {bookingDetails && bookingDetails.map((bookingDetail) => (
+      <div key={bookingDetail.bookingId}>
+<JoyBox
   sx={{
     width: '100%',
     position: 'relative',
@@ -379,35 +293,7 @@ export const ConfirmBooking = ({ toast }) => {
   }}
 >
   <JoyBox
-    sx={{
-      position: 'absolute',
-      display: 'block',
-      width: '1px',
-      bgcolor: 'warning.300',
-      left: '500px',
-      top: '-24px',
-      bottom: '-24px',
-      '&::before': {
-        top: '4px',
-        content: '"vertical"',
-        display: 'block',
-        position: 'absolute',
-        right: '0.5rem',
-        color: 'text.tertiary',
-        fontSize: 'sm',
-        fontWeight: 'lg',
-      },
-      '&::after': {
-        top: '4px',
-        content: '"horizontal"',
-        display: 'block',
-        position: 'absolute',
-        left: '0.5rem',
-        color: 'text.tertiary',
-        fontSize: 'sm',
-        fontWeight: 'lg',
-      },
-    }}
+  
   />
   <Card
     orientation="horizontal"
@@ -424,8 +310,7 @@ export const ConfirmBooking = ({ toast }) => {
       resize: 'horizontal',
     }}
   >
-    {bookingDetails && bookingDetails.map((bookingDetail) => (
-      <div key={bookingDetail.bookingId}>
+   
         <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
           <img
             src={bookingDetail.images ? bookingDetail.images : noImage}
@@ -478,11 +363,11 @@ export const ConfirmBooking = ({ toast }) => {
             </JoyButton>
           </JoyBox>
         </CardContent>
-      </div>
-    ))}
-  </Card>
-</JoyBox> */}
       
+  
+  </Card>
+</JoyBox></div>
+        ))}
       </div>
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>

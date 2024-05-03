@@ -32,17 +32,7 @@
     border-bottom: 1px solid #2a3943; /* Set border color to blue */
    
   }
-  .bookingsContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 96%;
-    border: 1px solid #3498db; /* Set border color to blue */
-    margin: 0 auto; /* Center horizontally */
-    padding: 20px; /* Add padding for spacing */
-  }
-  
+
 
   .bookingDetails img {
     width: 120px;
