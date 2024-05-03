@@ -360,14 +360,15 @@ const updateBooking = async (req, res) => {
 //==========================================================getallBookingByID=======================
 const getAllFilterBookings = async (req, res) => {
   try {
-    const { bookingStatus, userId} = req.query;
-    const filter = { userId, bookingStatus };
-
-    const bookings = await bookingModel.find(filter);
+    const { bookingStatus, userId } = req.query;
+    const bookings = await bookingModel.find({ 
+      'user.userId': userId, 
+      bookingStatus 
+    });
     if (bookings.length === 0) {
       return res
         .status(400)
-        .json({ message: `No any ${bookingStatus} bookings found` });
+        .json({ message: `Seems you have No ${bookingStatus} booking` });
     }
     res.json(bookings);
   } catch (error) {
@@ -375,6 +376,7 @@ const getAllFilterBookings = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
     const { bookingStatus, userId, bookingId } = req.query;
