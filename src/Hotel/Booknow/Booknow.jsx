@@ -5,12 +5,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
+import PlaceIcon from '@mui/icons-material/Place';
+import Carousel from "react-bootstrap/Carousel";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Rating from "@mui/material/Rating";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/material/styles";
@@ -502,62 +505,38 @@ const BookNow = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  function getResponsiveImageStyle() {
+    const styles = {
+      height: 550, // Default height for larger screens
+    };
+  
+    // Check for window size to apply conditional styles
+    if (window.innerWidth < 468) { // Adjust breakpoint as needed
+      styles.height = '200px'; // Adjust height for smaller screens
+    }
+  
+    return styles;
+  }
   return (
     <div className="book-now-container">
       {hotelData ? (
         <>
-          <div
-            id="carouselExample"
-            className="carousel slide mb-4"
-            data-bs-ride="carousel"
-            data-bs-interval="2000" // Set auto-slide interval to 2 seconds (2000 milliseconds)
-            style={{ maxHeight: "500px" }} // Set maximum height for the carousel
-          >
-            <div className="carousel-inner">
-              {hotelData?.images &&
-                hotelData?.images?.map((image, index) => (
-                  <div
-                    key={index}
-                    className={`carousel-item ${index === 0 ? "active" : ""}`}
-                    style={{ maxHeight: "500px" }} // Set maximum height for each carousel item
-                  >
-                    <img
-                      src={image}
-                      className="d-block w-100"
-                      alt={`Hotel Image ${index + 1}`}
-                      style={{ maxHeight: "500px", objectFit: "cover" }} // Adjust image height and maintain aspect ratio
-                    />
-                  </div>
-                ))}
-            </div>
-          </div>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="prev"
-            aria-label="Previous"
-          >
-            <span
-              className="carousel-control-prev-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#carouselExample"
-            data-bs-slide="next"
-            aria-label="Next"
-          >
-            <span
-              className="carousel-control-next-icon"
-              aria-hidden="true"
-            ></span>
-            <span className="visually-hidden">Next</span>
-          </button>
+          {hotelData?.images && (
+            <Carousel>
+              {hotelData.images.map((image, index) => (
+                <Carousel.Item key={index} interval={1000}>
+                  <img
+                    src={image}
+                    alt={`Hotel Image ${index + 1}`}
+                    className="d-block w-100 h-300 object-fit-cover"
+                    style={getResponsiveImageStyle()}
+                  />
+                </Carousel.Item>
+              ))}
+            </Carousel>
+            
+          )}
+          
           <div className="extras">
             {" "}
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -567,18 +546,32 @@ const BookNow = () => {
                   style={{ marginLeft: "5px", fontSize: "28px" }}
                 >
                   {" "}
+                  
                   <CurrencyRupeeIcon />
                   {hotelData?.rooms?.[0]?.price || 0}
                 </div>
               </div>
             </div>
             <h5 className="hotel-name">
-              {hotelData?.starRating}
-              <StarHalfIcon /> {hotelData?.hotelName}{" "}
+   
+              {hotelData?.hotelName}{" "}
             </h5>
+            <Box
+                key={hotelData._id}
+                sx={{
+                  "& > legend": { mt: 2 },
+                }}
+              >
+                <Rating
+                  name="hotel-rating"
+                  value={hotelData?.starRating}
+                  readOnly
+                />
+              </Box>
             <div className="hote-address">
               {" "}
               <p>
+                <PlaceIcon/>
                 {hotelData?.city}, {hotelData?.destination}, {hotelData?.state},{" "}
                 {hotelData?.zip}
               </p>
@@ -880,9 +873,8 @@ const BookNow = () => {
                       zIndex: "1000",
                       padding: "20px",
                       backgroundColor: "#fff",
-                      boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                      border: "2px solid green",
-                      borderRadius: "20px",
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                      borderRadius: "10px",
                     }}
                   >
                     <h5>
@@ -1109,7 +1101,7 @@ const BookNow = () => {
                         </div>
                       </div>
                     </div>
-
+<p>Total Price </p>
                     {/* Total Price */}
                     <div
                       className="total-price mt-3"
@@ -1123,10 +1115,10 @@ const BookNow = () => {
                         }}
                       >
                         <CurrencyRupeeIcon />
-                        {calculateTotalPrice()}
+                       {calculateTotalPrice()}
                       </h3>
                     </div>
-
+                    
                     {/* Payment Buttons */}
                     <div className="payment-buttons mt-3">
                       <Button
@@ -1232,8 +1224,7 @@ const BookNow = () => {
                 zIndex: "1000",
                 padding: "20px",
                 backgroundColor: "#fff",
-                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-                border: "2px solid green",
+                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
                 borderRadius: "20px",
               }}
             >

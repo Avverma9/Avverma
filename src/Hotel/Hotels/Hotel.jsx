@@ -7,6 +7,7 @@ import { Carousel } from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import Rating from "@mui/material/Rating";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -77,15 +78,14 @@ import {
 import { MdMicrowave } from "react-icons/md";
 import { IconContext } from "react-icons";
 import Card from "@mui/joy/Card";
-import LinearProgress from "@mui/material/LinearProgress";
+
 import Box from "@mui/material/Box";
 import CardContent from "@mui/joy/CardContent";
 import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
 
@@ -223,7 +223,7 @@ const Hotel = () => {
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
         {hotelData.map((hotel, index) => (
           <div key={index} className="col mb-3">
-            <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
+            <Card sx={{ width: "100%", height: "420px", overflow: "hidden" }}>
               <div>
                 {hotel?.rooms?.[0]?.price <
                   hotel?.rooms?.[0]?.originalPrice && (
@@ -264,8 +264,18 @@ const Hotel = () => {
                   sx={{ position: "absolute", top: "0.5rem", left: ".5rem" }}
                 >
                   {" "}
-                  {hotel.starRating.substring(0, 1)}
-                  <StarHalfIcon />
+                  <Box
+                key={hotel._id}
+                sx={{
+                  "& > legend": { mt: 2 },
+                }}
+              >
+                <Rating
+                  name="hotel-rating"
+                  value={hotel?.starRating}
+                  readOnly
+                />
+              </Box>
                 </IconButton>
               </div>
               <Carousel>
@@ -280,7 +290,7 @@ const Hotel = () => {
                   </Carousel.Item>
                 ))}
               </Carousel>
-              <CardContent style={{ maxHeight: "30px", overflow: "hidden" }}>
+              <CardContent style={{ maxHeight: "40px", overflow: "hidden" }}>
                 {/* Amenities Section */}
                 {hotel.amenities.map((amenity, amenityIndex) => (
                   <div
