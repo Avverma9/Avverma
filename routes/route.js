@@ -16,7 +16,6 @@ const carouselController = require("../controllers/carouselController");
 const DashboardUser = require("../controllers/dashboardUser");
 const couponController = require("../controllers/couponController");
 const HeaderLocation = require("../controllers/headerTravel");
-
 const policy = require("../controllers/HotelController/policyController");
 const foods = require("../controllers/HotelController/foodController");
 const amenities = require("../controllers/HotelController/amenitiesController");
@@ -51,11 +50,7 @@ router.delete(
   complaintController.deleteComplaint
 );
 //==============================carousel====================================//
-router.post(
-  "/create/second/carousel",
-  upload,
-  carouselController.createFirstCarousel
-);
+router.post("/create/second/carousel",upload,carouselController.createFirstCarousel);
 router.get("/get/second/carousel", carouselController.getSecondCarousel);
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
@@ -67,13 +62,8 @@ router.get("/get-total/user-details", userController.totalUser);
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);
-
 //===================================== HOTEL ===========================================================
-router.post(
-  "/data/hotels-new/post/upload/data",
-  upload,
-  hotelController.createHotel
-);
+router.post("/data/hotels-new/post/upload/data",upload,hotelController.createHotel);
 router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccepted,isOffer
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels);
@@ -138,11 +128,7 @@ router.put(
 );
 router.delete("/delete/:reviewId", reviewController.deleteReview);
 //============================= BOOKING =======================================
-router.post(
-  "/booking/:userId/:hotelId",
-  upload,
-  bookingController.createBooking
-);
+router.post("/booking/:userId/:hotelId",upload,bookingController.createBooking);
 router.get("/bookingsConfirm", bookingController.getConfirmedBookings);
 router.get("/bookingFailed", bookingController.getFailedBookings);
 router.get("/booking/getCheckedIn", bookingController.getCheckedIn);
@@ -150,13 +136,9 @@ router.get("/booking/getCheckedOut", bookingController.getCheckedOut);
 router.put("/booking/:bookingId", bookingController.cancelBooking);
 router.get("/booking/getCancelled", bookingController.getCancelledBookings);
 router.get("/booking/getNoShow", bookingController.getNoShowBookings);
-router.get(
-  "/booking/getCancelledBooking",
-  bookingController.getCancelledBooking
-);
+router.get("/booking/getCancelledBooking",bookingController.getCancelledBooking);
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking);
 router.put("/updatebooking/:bookingId", bookingController.updateBooking);
-
 router.get("/bookingFailed/:id", bookingController.getFailedBookingsHotel);
 router.get("/bookingsConfirm/:id", bookingController.getConfirmedBookingsHotel);
 router.get(
