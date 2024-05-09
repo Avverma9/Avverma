@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { MDBInput } from 'mdb-react-ui-kit';
+import { MDBInput } from "mdb-react-ui-kit";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
@@ -7,20 +7,19 @@ import { Button } from "@mui/material";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import AspectRatio from '@mui/joy/AspectRatio';
-import JoyBox from '@mui/joy/Box';
-import JoyButton from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import Typography from '@mui/joy/Typography';
-import Sheet from '@mui/joy/Sheet';
-
+import AspectRatio from "@mui/joy/AspectRatio";
+import JoyBox from "@mui/joy/Box";
+import JoyButton from "@mui/joy/Button";
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import Typography from "@mui/joy/Typography";
+import Sheet from "@mui/joy/Sheet";
 import Rating from "@mui/material/Rating";
 import Modals from "@mui/material/Modal";
 import CloseIcon from "@mui/icons-material/Close";
 import SendIcon from "@mui/icons-material/Send";
 import moment from "moment";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
 import baseURL from "../../baseURL";
@@ -28,14 +27,11 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import Alert from "@mui/material/Alert";
-import CheckIcon from "@mui/icons-material/Check";
-import { alignProperty } from "@mui/material/styles/cssUtils";
 export const ConfirmBooking = ({ toast }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
   const [bookingDetails, setBookingDetails] = useState(null);
-  const [value, setValue] = useState(null);
   const [modalData, setModalData] = useState([]);
   const [userData, setUserData] = useState(null);
   const location = useLocation();
@@ -69,15 +65,12 @@ export const ConfirmBooking = ({ toast }) => {
     // Remove the link element after printing
     document.head.removeChild(printStylesheet);
   };
-
   const showAlert = (severity, message) => {
     setAlertMessage({ severity, message });
   };
-
   const handleAlertClose = () => {
     setAlertMessage(null);
   };
-
   useEffect(() => {
     const id = localStorage.getItem("userId");
     axios
@@ -106,9 +99,7 @@ export const ConfirmBooking = ({ toast }) => {
           },
         }
       );
-
       const bookings = response.data;
-      console.log(bookings, "backend data");
       setBookingDetails(bookings);
     } catch (error) {
       console.error("Error fetching booking details:", error);
@@ -138,13 +129,16 @@ export const ConfirmBooking = ({ toast }) => {
     const userId = localStorage.getItem("userId");
     const hotelId = localStorage.getItem("hotelId_review");
     try {
-      const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, {
-        comment: comment,
-        rating: rating
-      });
+      const response = await axios.post(
+        `${baseURL}/reviews/${userId}/${hotelId}`,
+        {
+          comment: comment,
+          rating: rating,
+        }
+      );
       if (response.status === 201) {
         // Optionally, you can reset the comment and rating fields after posting the review
-        setComment('');
+        setComment("");
         setRating(0);
         // Close the review form
         setShowReviewForm(false);
@@ -154,7 +148,6 @@ export const ConfirmBooking = ({ toast }) => {
       // Handle error if needed
     }
   };
-
 
   const userId = localStorage.getItem("userId");
   if (!userId) {
@@ -259,9 +252,16 @@ export const ConfirmBooking = ({ toast }) => {
                     style={{ cursor: "pointer" }}
                   />
                 </Box>
-                <MDBInput label="Give stars" id="formControlLg" type="text" size="lg" value={comment}
-                  onChange={(e) => setComment(e.target.value)} style={{ marginBottom: "10px" }} />
-      
+                <MDBInput
+                  label="Give stars"
+                  id="formControlLg"
+                  type="text"
+                  size="lg"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  style={{ marginBottom: "10px" }}
+                />
+
                 <Rating
                   name="simple-controlled"
                   value={rating}
@@ -283,91 +283,128 @@ export const ConfirmBooking = ({ toast }) => {
         ) : (
           <p>You haven't booked any hotel</p>
         )}
-         {bookingDetails && bookingDetails.map((bookingDetail) => (
-      <div key={bookingDetail.bookingId}>
-<JoyBox
-  sx={{
-    width: '100%',
-    position: 'relative',
-    overflow: { xs: 'auto', sm: 'initial' },
-  }}
->
-  <JoyBox
-  
-  />
-  <Card
-    orientation="horizontal"
-    sx={{
-      width: '100%',
-      flexWrap: 'wrap',
-      [`& > *`]: {
-        '--stack-point': '500px',
-        minWidth:
-          'clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)',
-      },
-      // make the card resizable for demo
-      overflow: 'auto',
-      resize: 'horizontal',
-    }}
-  >
-   
-        <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
-          <img
-            src={bookingDetail.images ? bookingDetail.images : noImage}
-            loading="lazy"
-            alt=""
-          />
-        </AspectRatio>
-        <CardContent>
-          <Typography fontSize="xl" fontWeight="lg">
-            {bookingDetail.hotelName}
-          </Typography>
-          <Typography level="body-sm" fontWeight="lg" textColor="text.tertiary">
-            <>
-              <CalendarMonthIcon /> From {bookingDetail.checkInDate && bookingDetail.checkInDate.substring(0, 10)} to {bookingDetail.checkOutDate && bookingDetail.checkOutDate.substring(0, 10)}
-            </>
-          </Typography>
-          <Sheet
-            sx={{
-              bgcolor: 'background.level1',
-              borderRadius: 'sm',
-              p: 1.5,
-              my: 1.5,
-              display: 'flex',
-              gap: 2,
-              '& > div': { flex: 1 },
-            }}
-          >
-            <div>
-              <Typography level="body-xs" fontWeight="lg">
-                ID <StickyNote2Icon /> {bookingDetail.bookingId}
-              </Typography>
+        {bookingDetails &&
+          bookingDetails.map((bookingDetail) => (
+            <div key={bookingDetail.bookingId}>
+              <JoyBox
+                sx={{
+                  width: "100%",
+                  position: "relative",
+                  overflow: { xs: "auto", sm: "initial" },
+                }}
+              >
+                <JoyBox />
+                <Card
+                  orientation="horizontal"
+                  sx={{
+                    width: "100%",
+                    flexWrap: "wrap",
+                    [`& > *`]: {
+                      "--stack-point": "500px",
+                      minWidth:
+                        "clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)",
+                    },
+                    // make the card resizable for demo
+                    overflow: "auto",
+                    resize: "horizontal",
+                  }}
+                >
+                  {" "}
+                  <AspectRatio
+                    flex
+                    ratio="1"
+                    maxHeight={182}
+                    sx={{ minWidth: 182 }}
+                  >
+                    <img
+                      src={
+                        bookingDetails?.user?.profile[0]
+                          ? bookingDetails?.images
+                          : noImage
+                      }
+                      loading="lazy"
+                      alt=""
+                    />
+                  </AspectRatio>
+                  <CardContent>
+                    <Typography fontSize="xl" fontWeight="lg">
+                      {bookingDetail.hotelName}
+                    </Typography>
+                    <Typography
+                      level="body-sm"
+                      fontWeight="lg"
+                      textColor="text.tertiary"
+                    >
+                      <>
+                        <CalendarMonthIcon /> From{" "}
+                        {bookingDetail.checkInDate &&
+                          bookingDetail.checkInDate.substring(0, 10)}{" "}
+                        to{" "}
+                        {bookingDetail.checkOutDate &&
+                          bookingDetail.checkOutDate.substring(0, 10)}
+                      </>
+                    </Typography>
+                    <Sheet
+                      sx={{
+                        bgcolor: "background.level1",
+                        borderRadius: "sm",
+                        p: 1.5,
+                        my: 1.5,
+                        display: "flex",
+                        gap: 2,
+                        "& > div": { flex: 1 },
+                      }}
+                    >
+                      <div>
+                        <Typography level="body-xs" fontWeight="lg">
+                          ID <StickyNote2Icon /> {bookingDetail.bookingId}
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography level="body-xs" fontWeight="lg">
+                          {bookingDetail.guests}{" "}
+                          <span>
+                            {bookingDetail.guests > 1
+                              ? " - Guests"
+                              : " - Guest"}
+                            ,
+                          </span>{" "}
+                          {bookingDetail.rooms}{" "}
+                          <span>
+                            {bookingDetail.rooms > 1 ? " - Rooms" : " - Room"}
+                          </span>
+                        </Typography>
+                      </div>
+                      <div>
+                        <Typography level="body-xs" fontWeight="lg">
+                          <CurrencyRupeeIcon /> {bookingDetail.price}
+                        </Typography>
+                      </div>
+                    </Sheet>
+                    <JoyBox
+                      sx={{
+                        display: "flex",
+                        gap: 1.5,
+                        "& > button": { flex: 1 },
+                      }}
+                    >
+                      <button
+                        className={styles.link}
+                        onClick={() => handleShow(bookingDetail)}
+                      >
+                        More
+                      </button>
+                      <JoyButton
+                        onClick={() => handleReview(bookingDetail.hotelId)}
+                      >
+                        Review
+                      </JoyButton>
+                    </JoyBox>
+                  </CardContent>
+                </Card>
+              </JoyBox>
             </div>
-            <div>
-              <Typography level="body-xs" fontWeight="lg">
-                {bookingDetail.guests} <span>{bookingDetail.guests > 1 ? ' - Guests' : ' - Guest'},</span> {bookingDetail.rooms} <span>{bookingDetail.rooms > 1 ? ' - Rooms' : ' - Room'}</span>
-              </Typography>
-            </div>
-            <div>
-              <Typography level="body-xs" fontWeight="lg">
-                <CurrencyRupeeIcon /> {bookingDetail.price}
-              </Typography>
-            </div>
-          </Sheet>
-          <JoyBox sx={{ display: 'flex', gap: 1.5, '& > button': { flex: 1 } }}>
-            <button className={styles.link} onClick={() => handleShow(bookingDetail)}>
-              More
-            </button>
-            <JoyButton onClick={() => handleReview(bookingDetail.hotelId)}>
-              Review
-            </JoyButton>
-          </JoyBox>
-        </CardContent>
-      
-  
-  </Card>
-</JoyBox></div>
-        ))}
+          ))}
       </div>
       <Modal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>

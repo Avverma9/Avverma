@@ -7,9 +7,9 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Chip from "@mui/joy/Chip";
 import Typography from "@mui/joy/Typography";
-import "./Reviews.css";
+import "../Profile/Reviews.css"
 
-export default function Reviews() {
+export default function Customer_reviews() {
   const location = useLocation();
   const [data, setData] = useState(null);
 
@@ -77,22 +77,18 @@ export default function Reviews() {
   }
   if (!data) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
+      <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>  
+         
         <img
           src="https://assets-v2.lottiefiles.com/a/dad9a054-116e-11ee-aef8-9bf427a69ce4/rMSD8h3gzM.gif"
           alt=""
-          style={{ maxWidth: "400px", maxHeight: "350px" }}
+          style={{ maxWidth: '400px', maxHeight: '350px' }}
         />
+    
       </div>
     );
   }
+
   return (
     <div className="review-container">
       {data?.map((reviewData, index) => (
@@ -110,23 +106,27 @@ export default function Reviews() {
         >
           <AspectRatio ratio="1" sx={{ width: 100 }}>
             <img
-              src={reviewData?.hotelImage}
-              srcSet={reviewData?.hotelImage}
+              src={reviewData?.hotel?.images[0]}
+              srcSet="https://images.unsplash.com/photo-1507833423370-a126b89d394b?auto=format&fit=crop&w=90&dpr=2 2x"
               loading="lazy"
               alt=""
             />
           </AspectRatio>
           <CardContent>
             <Typography level="title-lg" id="card-description">
-              {reviewData?.hotelName}
+              {reviewData?.hotel?.hotelName}
             </Typography>
             <Typography
               level="body-sm"
               aria-describedby="card-description"
               mb={1}
             >
-              <Link overlay underline="none" sx={{ color: "text.tertiary" }}>
-                Comment : {reviewData?.comment}
+              <Link
+                overlay
+                underline="none"
+                sx={{ color: "text.tertiary" }}
+              >
+                Comment : {reviewData?.review?.comment}
               </Link>
             </Typography>
             <Chip
@@ -135,7 +135,7 @@ export default function Reviews() {
               size="sm"
               sx={{ pointerEvents: "none" }}
             >
-              {getStarRating(reviewData?.rating)}
+              {getStarRating(reviewData?.review?.rating)}
             </Chip>
           </CardContent>
         </Card>
