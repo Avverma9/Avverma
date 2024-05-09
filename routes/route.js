@@ -18,23 +18,23 @@ const couponController = require("../controllers/couponController");
 const HeaderLocation = require("../controllers/headerTravel");
 
 const policy = require("../controllers/HotelController/policyController");
-const foods = require("../controllers/HotelController/foodController")
-const amenities = require('../controllers/HotelController/amenitiesController')
-const rooms = require("../controllers/HotelController/roomController")
+const foods = require("../controllers/HotelController/foodController");
+const amenities = require("../controllers/HotelController/amenitiesController");
+const rooms = require("../controllers/HotelController/roomController");
 //==================================rooms==============================
-router.post("/create-a-room-to-your-hotel",upload,rooms.createRooms)
-router.get("/get-list-of/rooms",rooms.getRoomsByHotelId)
-router.patch("/update-your/room",upload,rooms.updateRoomsByRoomId)
+router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms);
+router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
+router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
 //=========================================amenities================================================================
-router.get("/get-hotel-by/amenities",amenities.getHotelByAmenities)
-router.post("/create-a-amenities/to-your-hotel",amenities.createAmenity)
+router.get("/get-hotel-by/amenities", amenities.getHotelByAmenities);
+router.post("/create-a-amenities/to-your-hotel", amenities.createAmenity);
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
 router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
 
 //===============================foods==========================
-router.post("/add/food-to/your-hotel",upload,foods.createFood)
-router.get("/get/your-hotel-food/:hotelId",foods.getFood)
+router.post("/add/food-to/your-hotel", upload, foods.createFood);
+router.get("/get/your-hotel-food/:hotelId", foods.getFood);
 //============================Header location==========================================
 router.post("/add-a/travel/location", upload, HeaderLocation.createLocation);
 router.get("/get-all/travel/location", HeaderLocation.getLocation);
@@ -74,8 +74,8 @@ router.post(
   upload,
   hotelController.createHotel
 );
-router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel);//isAccepted,isOffer
-router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo);//basic details
+router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccepted,isOffer
+router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels);
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);
@@ -132,7 +132,10 @@ router.post("/reviews/:userId/:hotelId", reviewController.createReview);
 router.get("/getReviews/hotelId", reviewController.getReviewsByHotelId);
 
 router.get("/reviewDatas/userId", reviewController.getReviewsByUserId);
-router.put("/update-your-review/:userId/:hotelId", reviewController.updateReview);
+router.put(
+  "/update-your-review/:userId/:hotelId",
+  reviewController.updateReview
+);
 router.delete("/delete/:reviewId", reviewController.deleteReview);
 //============================= BOOKING =======================================
 router.post(
