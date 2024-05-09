@@ -6,29 +6,33 @@ const userModel = require("../models/userModel");
 const createReview = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
+    const { comment, rating } = req.body;
 
-    const { comment,rating } = req.body;
-
-
-    const user = await userModel.findOne({userId});
+    const [user, hotel] = await Promise.all([
+      userModel.findOne({ userId }),
+      hotelModel.findOne({ hotelId }),
+    ]);
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    if (!hotel) {
+      return res.status(404).json({ error: 'Hotel not found' });
+    }    
     const review = new reviewModel({
       hotelId,
       userId,
       comment,
-      rating
+      rating,
+      userName: user.userName,
+      userImage: user.images[0], 
+      hotelName: hotel.hotelName,
+      hotelImage: hotel.images[0],
     });
     const savedReview = await reviewModel.create(review);
 
- 
-    return res.status(201).send({
-      status: true,
-      data: savedReview,
-    });
+    return res.status(201).json(savedReview);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -36,89 +40,29 @@ const createReview = async (req, res) => {
 };
 
 
+
 //===============================================================================================
 const getReviewsByHotelId = async (req, res) => {
   try {
-    const { hotelId } = req.params;
-
-    const reviews = await reviewModel.find({ hotel: hotelId }).sort({createdAt: -1})
- let countRating = reviews.length
+    const hotelId = req.query.hotelId
+    const reviews = await reviewModel.find({hotelId})
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
-    reviews.sort((a, b) => b.createdAt-1 - a.createdAt-1);
-
-    const hotel = await hotelModel.findById(hotelId).select("hotelName");
-
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
-    }
-
-    const userIds = reviews.map((review) => review.user);
-    const users = await userModel.find({ _id: { $in: userIds } }).select(["name", "images"]);
-
-    if (users.length === 0) {
-      return res.status(404).json({ message: "No users found" });
-    }
-
-    const reviewData = reviews.map((review) => {
-      const user = users.find((user) => user._id.toString() === review.user.toString());
-      return {
-        review,
-        user: {
-          name: user.name,
-          images: user.images
-        }
-      };
-    });
-
-    res.status(200).json({
-      hotel: hotel.hotelName,
-      reviews: reviewData,
-      countRating
-    });
+    res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-
-
 //=======================================================================================================
 const getReviewsByUserId = async (req, res) => {
   try {
     const userId = req.query.userId;
-
     const reviews = await reviewModel.find({ userId });
-
     if (reviews.length === 0) {
       return res.status(404).json({ message: "No reviews found" });
     }
-
-    const user = await userModel.findOne({ userId: userId }).select(["userName", "images"]);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const reviewData = [];
-
-    for (const review of reviews) {
-      const hotel = await hotelModel.findOne({ hotelId: review.hotelId }).select(["hotelName", "images"]);
-
-      reviewData.push({
-        review,
-        user: {
-          name: user.userName,
-          images: user.images,
-        },
-        hotel: hotel ? {
-          hotelName: hotel.hotelName,
-          images: hotel.images,
-        } : null,
-      });
-    }
-
-    res.status(200).json(reviewData);
+    res.status(200).json(reviews);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -128,40 +72,39 @@ const getReviewsByUserId = async (req, res) => {
 //=================================================================================================
 const updateReview = async (req, res) => {
   try {
-    const { userId, hotelId, reviewId } = req.params;
-    const { comment,rating } = req.body;
+    const { userId, hotelId } = req.params; // Use params for review identification
+    const { comment, rating } = req.body;
 
-    const review = await reviewModel.findOne({ user: userId, hotel: hotelId, _id: reviewId });
+    // Find the review to update using both userId and hotelId for better security (assuming userId is the reviewer)
+    const reviewToUpdate = await reviewModel.findOne({ userId, hotelId });
 
-    if (!review) {
-      return res.status(404).json({ message: "Review not found" });
+    if (!reviewToUpdate) {
+      return res.status(404).json({ error: 'Review not found' });
     }
 
-    review.comment = comment;
-    review.rating= rating;
+    // Update the review details (assuming comment and rating are the only modifiable fields)
+    reviewToUpdate.comment = comment;
+    reviewToUpdate.rating = rating;
 
-    await review.save();
+    // Save the updated review
+    const savedReview = await reviewToUpdate.save();
 
-    res.status(200).json({ message: "Review updated successfully", review });
+    return res.status(200).json(savedReview);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
 
 //==========================================================================================================
 
 const deleteReview = async (req, res) => {
   const {reviewId } = req.params;
-
   try {
     const result = await reviewModel.deleteOne({_id: reviewId });
-
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Review not found' });
     }
-
     return res.status(200).json({ message: 'Review deleted successfully' });
   } catch (error) {
     console.error(error);

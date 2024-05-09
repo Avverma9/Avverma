@@ -1,27 +1,21 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const reviewSchema = new mongoose.Schema({
-  hotelId: {
-    type:String,
-  },
-  userId: {
-    type: String,
-    required: false
-  },
+  userName: String,
+  userImage: String,
+  hotelName: String,
+  hotelImage: String,
+  userId :String,
+  hotelId :String,
   comment: {
     type: String,
-    required: true
+    required: true,
   },
   rating: Number,
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-
-
-
-module.exports = mongoose.model('Review', reviewSchema);
-
-
+module.exports = mongoose.model("Review", reviewSchema);
