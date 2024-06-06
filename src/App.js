@@ -26,40 +26,40 @@ import AmenitiesPage from './Hotel/Hotels/PartnerAmenities.jsx';
 import PartnerFoods from './Hotel/Hotels/PartnerFoods.jsx';
 import PartnerRooms from './Hotel/Hotels/PartnerRooms.jsx';
 import Reviews from './Hotel/Profile/Review.jsx';
+import HotelCard from './Hotel/Hotels/Card.jsx';
 
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Header/>
-        <Navigation/>
-        <Reviews/>
-        <UpdatePage/>
-        <ConfirmBooking/>
-        <BookNow/>
+        <Header />
+        <Navigation />
+        <Reviews />
+        <UpdatePage />
+        <ConfirmBooking />
+        <BookNow />
         {/* <ProfileSidebar/> */}
-        <HeaderImage/>
-        <Dropdown/>
-        <FilterSidebar/>
-        <Hotel/>
-        <SearchForm/>
-        <CarouselPage/>
-        <Offered/>
-        
+        <HeaderImage />
+        <Dropdown />
+        <FilterSidebar />
+        <Hotel />
+        <SearchForm />
+        <CarouselPage />
+        <Offered />
+
         <Routes>
-          <Route path='/login' element={<LoginPage/>} />
-          <Route path='/register' element={<RegisterPage/>} />
-          <Route path='/profile' element={<Profile/>} />
-          <Route path='/partner' element={<PartnerForm/>} />
-          <Route path='/partner/second-step' element={<PolicyForm/>} />
-          <Route path='/partner/third-step' element={<AmenitiesPage/>} />
-          <Route path='/partner/fourth-step' element={<PartnerFoods/>} />
-          <Route path='/partner/last-step' element={<PartnerRooms/>} />
-       
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/partner" element={<PartnerForm />} />
+          <Route path="/partner/second-step" element={<PolicyForm />} />
+          <Route path="/partner/third-step" element={<AmenitiesPage />} />
+          <Route path="/partner/fourth-step" element={<PartnerFoods />} />
+          <Route path="/partner/last-step" element={<PartnerRooms />} />
         </Routes>
-        <Bottom/>
-        <Footer/>
+        <Bottom />
+        <Footer />
       </Router>
     </div>
   );

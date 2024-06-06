@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from "react";
 import { MdOutlineCelebration } from "react-icons/md";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -7,6 +8,8 @@ import { Carousel } from "react-bootstrap";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import { FaShieldAlt, FaCheckCircle } from "react-icons/fa";
+import { GiPerson } from "react-icons/gi";
 import Rating from "@mui/material/Rating";
 import StarHalfIcon from "@mui/icons-material/StarHalf";
 import Button from "@mui/joy/Button";
@@ -219,158 +222,135 @@ const Hotel = () => {
 
   return (
     <div className="container mt-4">
-      <hr />
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        {hotelData.map((hotel, index) => (
-          <div key={index} className="col mb-3">
-            <Card sx={{ width: "100%", height: "420px", overflow: "hidden" }}>
-              <div>
-                {hotel?.rooms?.[0]?.price <
-                  hotel?.rooms?.[0]?.originalPrice && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "0.5rem",
-                      right: ".5rem",
-                    }}
-                  >
-                    <Stack direction="row" spacing={1}>
-                      <Chip
-                        label={`Get ${hotel?.rooms?.[0]?.offerPriceLess}% less`}
-                        color="success"
-                        variant="filled"
-                        avatar={
-                          <Avatar
-                            alt="Offer"
-                            src="/static/images/avatar/1.jpg"
-                          />
-                        }
-                      />
-                    </Stack>
-                  </div>
-                )}
-                <br />
-                <Typography level="title-sm">{hotel.hotelName}</Typography>
-                <Typography level="body-xs">
-                  {" "}
-                  <FmdGoodIcon />
-                  {hotel.city}, {hotel.state}
-                </Typography>
-                <IconButton
-                  aria-label="bookmark Bahamas Islands"
-                  variant="plain"
-                  color="neutral"
-                  size="sm"
-                  sx={{ position: "absolute", top: "0.5rem", left: ".5rem" }}
-                >
-                  {" "}
-                  <Box
-                key={hotel._id}
-                sx={{
-                  "& > legend": { mt: 2 },
-                }}
-              >
-                <Rating
-                  name="hotel-rating"
-                  value={hotel?.starRating}
-                  readOnly
-                />
-              </Box>
-                </IconButton>
-              </div>
-              <Carousel>
-                {hotel.images.map((image, i) => (
-                  <Carousel.Item key={i}>
+      {hotelData && hotelData.length > 0 ? (
+        <div className="row border p-3 bg-white">
+          {hotelData.map((hotel, index) => (
+            <React.Fragment key={index}>
+              <div className="col-md-12 mb-4">
+                <div className="row">
+                  <div className="col-md-4">
                     <img
-                      src={image}
-                      className="d-block w-100"
-                      alt=""
-                      style={{ height: "150px", objectFit: "cover" }}
+                      src={
+                        hotel?.images?.[0]
+                          ? hotel.images[0]
+                          : "https://via.placeholder.com/300x200"
+                      }
+                      alt="Hotel"
+                      className="img-fluid rounded"
+                      style={{
+                        width: "100%",
+                        height: "300px",
+                        objectFit: "cover",
+                      }}
                     />
-                  </Carousel.Item>
-                ))}
-              </Carousel>
-              <CardContent style={{ maxHeight: "40px", overflow: "hidden" }}>
-                {/* Amenities Section */}
-                {hotel.amenities.map((amenity, amenityIndex) => (
-                  <div
-                    key={amenityIndex}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      maxHeight: "30px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {amenity?.amenities
-                      ?.slice(0, 4)
-                      .map((singleAmenity, singleAmenityIndex) => (
-                        <Typography
-                          key={singleAmenityIndex}
-                          level="body-xs"
-                          style={{
-                            margin: "5px",
-                            whiteSpace: "nowrap",
-                            maxHeight: "30px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                        >
-                          <IconContext.Provider value={{ size: "1.2em" }}>
-                            {amenityIcons[singleAmenity] || defaultIcon}
-                          </IconContext.Provider>{" "}
-                          {singleAmenity}
-                        </Typography>
-                      ))}
                   </div>
-                ))}
-              </CardContent>
-              <CardContent orientation="horizontal">
-                <div>
-                  <Typography level="body-xs">Price:</Typography>
-                  <Typography fontSize="sm" fontWeight="lg">
-                    <CurrencyRupeeIcon /> {hotel.price}
-                  </Typography>
+                  <div className="col-md-5">
+                    <h4>{hotel.hotelName}</h4>
+                    <p className="text-muted">
+                      {hotel.city}, {hotel.state}
+                    </p>
+                    <span className="badge bg-warning text-dark">
+                      100% Safe Place to Stay™
+                    </span>
+                    <div className="mt-2">
+                      <span className="badge bg-primary">
+                        {hotel?.starRating || "N/A"}/5
+                      </span>
+                      <span className="text-muted ms-2">
+                        {hotel.reviews || "0"} Reviews
+                      </span>
+                    </div>
+                    <div style={{ maxHeight: "40px", overflow: "hidden" }}>
+                      {/* Amenities Section */}
+                      {hotel.amenities &&
+                        hotel.amenities
+                          .slice(0, 4)
+                          .map((amenity, amenityIndex) => (
+                            <div
+                              key={amenityIndex}
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                marginRight: "10px",
+                                marginBottom: "5px",
+                              }}
+                            >
+                              {amenityIcons[amenity.name] || defaultIcon}{" "}
+                              <span style={{ marginLeft: "5px" }}>
+                                {amenity.name}
+                              </span>
+                            </div>
+                          ))}
+                    </div>
+
+                    <a href="#" className="text-primary mt-2 d-block">
+                      + all other amenities
+                    </a>
+                    <p className="mt-2">
+                      {hotel.description || "No description available."}
+                    </p>
+                    <div className="mt-2">
+                      <GiPerson /> {hotel.peopleLooking || 0} people looking
+                      right now
+                    </div>
+                  </div>
+                  <div className="col-md-3 text-center">
+                    <ul className="list-unstyled">
+                      <li>
+                        <FaCheckCircle className="text-success" /> Free
+                        Cancellation
+                      </li>
+                      <li>
+                        <FaCheckCircle className="text-success" /> FREE
+                        Breakfast
+                      </li>
+                      <li>
+                        <FaCheckCircle className="text-success" /> Pay @ Hotel
+                      </li>
+                    </ul>
+                    <p className="text-muted text-decoration-line-through">
+                      ₹{hotel.originalPrice || "N/A"}
+                    </p>
+                    <p className="text-danger">
+                      {hotel.discount
+                        ? `${hotel.discount}% off`
+                        : "No discount"}
+                    </p>
+                    <h3>
+                      ₹{hotel.price || "N/A"}{" "}
+                      <small className="text-muted">/night</small>
+                    </h3>
+                    <p className="text-muted">for 1 guest (Ex. GST)</p>
+                    <button
+                      className="btn btn-warning btn-block text-white"
+                      onClick={() => handleBuy(hotel.hotelId)}
+                    >
+                      Select Rooms
+                    </button>
+                  </div>
                 </div>
-              </CardContent>
-              <Button
-                variant="solid"
-                size="sm"
-                color="primary"
-                aria-label="Explore Bahamas Islands"
-                sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
-                onClick={() => handleBuy(hotel.hotelId)}
-              >
-                View details
-              </Button>
-            </Card>
-          </div>
-        ))}
-      </div>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(event, value) => setPage(value)}
-          renderItem={(item) => (
-            <PaginationItem
-              component="a"
-              {...item}
-              onClick={(event) => {
-                if (
-                  item.type !== "start-ellipsis" &&
-                  item.type !== "end-ellipsis"
-                ) {
-                  setPage(item.page);
-                }
-              }}
-            />
-          )}
-          shape="rounded"
-          size="large"
-        />
-      </Box>
+              </div>
+              <hr />
+            </React.Fragment>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center">
+          <img
+            src="https://www.waadaa.insure/images/not_found.gif"
+            alt="No Hotels Found"
+            className="img-fluid"
+            style={{
+              maxWidth: "600px",
+              width: "100%",
+              height: "auto",
+              margin: "0 auto",
+            }}
+          />
+          <h3 className="mt-4">No Hotels Found</h3>
+          <p>Please try again later or adjust your search criteria.</p>
+        </div>
+      )}
     </div>
   );
 };

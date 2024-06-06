@@ -55,10 +55,14 @@ const HeaderTravel = () => {
       };
     }
   }, [locations, currentIndex]);
+  const location = useLocation()
+  const paths = ["/search/hotels", "/search","/"];
 
-  if(path.pathname !=="/"){
-    return null
-}
+  if (!paths.includes(location.pathname)) {
+  return null
+  }
+
+
   return (
     <div className="header">
       {locations.map((location, index) => (

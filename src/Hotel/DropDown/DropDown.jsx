@@ -15,7 +15,7 @@ const StateItem = ({ state, cities }) => {
   };
 
   const handleCityClick = (city) => {
-    navigate(`/cities/${city}`); 
+    navigate(`/search?city=${city}`); 
   };
 
   return (
@@ -77,10 +77,15 @@ const Dropdownbar = () => {
     }
   ];
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
-  if (!isHomePage){
-    return null;
-  }
+    const paths = ["/search/hotels", "/search", "/"];
+
+    if (!paths.includes(location.pathname)) {
+     return null
+    }
+  // const isHomePage = location.pathname === '/' && location.pathname;
+  // if (!isHomePage){
+  //   return null;
+  // }
 
   return (
     <div className="menu">
