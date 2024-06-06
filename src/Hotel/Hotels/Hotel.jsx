@@ -9,8 +9,11 @@ import { FaElevator } from "react-icons/fa6";
 import { GiDesk } from "react-icons/gi";
 import { BiSolidDryer } from "react-icons/bi";
 import { LuRefrigerator } from "react-icons/lu";
-import { FaWineGlass } from "react-icons/fa";
+import { IconContext } from "react-icons";
+import Typography from "@mui/joy/Typography";
+import CardContent from "@mui/joy/CardContent";
 import {
+  FaWineGlass,
   FaUtensils,
   FaPhone,
   FaCoffee,
@@ -72,24 +75,30 @@ import {
 } from "react-icons/fa";
 import { MdMicrowave } from "react-icons/md";
 import Box from "@mui/material/Box";
+import Pagination from "@mui/material/Pagination";
+import PaginationItem from "@mui/material/PaginationItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
 
 const Hotel = () => {
   const [hotelData, setHotelData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const location = useLocation();
   const queryString = location.search.substring(1); // Remove the leading '?'
   const apiUrl = `${baseURL}/hotels/filters?${queryString}&page=${page}`;
-  console.log(apiUrl);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
         const data = await response.json();
-        console.log("coming hotel data", data);
         setHotelData(data.data);
         setTotalPages(data.totalPages);
       } catch (error) {
@@ -100,12 +109,13 @@ const Hotel = () => {
     };
 
     fetchData();
-  }, [apiUrl, page]);
+  }, [apiUrl]);
 
   const paths = ["/search/hotels", "/search"];
-
   if (!paths.includes(location.pathname) || loading) {
-    return <Box sx={{ width: "100%" }}>{/* <LinearProgress /> */}</Box>;
+    return (
+      <Box sx={{ width: "100%" }}>{/* Loading Spinner or Indicator */}</Box>
+    );
   }
 
   const handleBuy = (hotelID) => {
@@ -142,7 +152,6 @@ const Hotel = () => {
     "Complimentary Toiletries": <FaSoap />,
     Closet: <FaSuitcase />,
     "Iron and Ironing Board": <FaTshirt />,
-
     "Hair Dryer": <BiSolidDryer />,
     Safe: <FaLock />,
     "Mini Fridge": <LuRefrigerator />,
@@ -242,25 +251,46 @@ const Hotel = () => {
                     </div>
                     <div style={{ maxHeight: "40px", overflow: "hidden" }}>
                       {/* Amenities Section */}
-                      {hotel.amenities &&
-                        hotel.amenities
-                          .slice(0, 4)
-                          .map((amenity, amenityIndex) => (
-                            <div
-                              key={amenityIndex}
-                              style={{
-                                display: "inline-flex",
-                                alignItems: "center",
-                                marginRight: "10px",
-                                marginBottom: "5px",
-                              }}
-                            >
-                              {amenityIcons[amenity.name] || defaultIcon}{" "}
-                              <span style={{ marginLeft: "5px" }}>
-                                {amenity.name}
-                              </span>
-                            </div>
-                          ))}
+                      <CardContent
+                        style={{ maxHeight: "40px", overflow: "hidden" }}
+                      >
+                        {/* Amenities Section */}
+                        {hotel.amenities.map((amenity, amenityIndex) => (
+                          <div
+                            key={amenityIndex}
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              flexWrap: "wrap",
+                              maxHeight: "30px",
+                              overflow: "hidden",
+                            }}
+                          >
+                            {amenity?.amenities
+                              ?.slice(0, 4)
+                              .map((singleAmenity, singleAmenityIndex) => (
+                                <Typography
+                                  key={singleAmenityIndex}
+                                  level="body-xs"
+                                  style={{
+                                    margin: "5px",
+                                    whiteSpace: "nowrap",
+                                    maxHeight: "30px",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                  }}
+                                >
+                                  <IconContext.Provider
+                                    value={{ size: "1.2em" }}
+                                  >
+                                    {amenityIcons[singleAmenity] || defaultIcon}
+                                  </IconContext.Provider>{" "}
+                                  {singleAmenity}
+                                </Typography>
+                              ))}
+                          </div>
+                        ))}
+                      </CardContent>
                     </div>
 
                     <a href="#" className="text-primary mt-2 d-block">
@@ -331,6 +361,29 @@ const Hotel = () => {
           <p>Please try again later or adjust your search criteria.</p>
         </div>
       )}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={(event, value) => setPage(value)}
+          renderItem={(item) => (
+            <PaginationItem
+              component="a"
+              {...item}
+              onClick={(event) => {
+                if (
+                  item.type !== "start-ellipsis" &&
+                  item.type !== "end-ellipsis"
+                ) {
+                  setPage(item.page);
+                }
+              }}
+            />
+          )}
+          shape="rounded"
+          size="large"
+        />
+      </Box>
     </div>
   );
 };

@@ -26,7 +26,7 @@ import AmenitiesPage from './Hotel/Hotels/PartnerAmenities.jsx';
 import PartnerFoods from './Hotel/Hotels/PartnerFoods.jsx';
 import PartnerRooms from './Hotel/Hotels/PartnerRooms.jsx';
 import Reviews from './Hotel/Profile/Review.jsx';
-import HotelCard from './Hotel/Hotels/Card.jsx';
+
 
 
 function App() {

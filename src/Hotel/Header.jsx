@@ -1,133 +1,158 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import NightShelterTwoToneIcon from "@mui/icons-material/NightShelterTwoTone";
-import {
-  faFacebook,
-  faInstagram,
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaUser, FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { FaSuitcase, FaBuilding, FaPhoneAlt, FaUser } from "react-icons/fa";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Header.css"; // Ensure to include the CSS file for styles
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem"
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import PersonAdd from "@mui/icons-material/PersonAdd";
+import Logout from "@mui/icons-material/Logout";
+import { useLocation, useNavigate } from "react-router-dom"; // Import the useNavigate hook
 
 const Header = () => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const location = useLocation();
+  const open = Boolean(anchorEl);
+  const navigate = useNavigate(); // Initialize the useNavigate hook
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Define the navigation functions
+  const handleProfile = () => {
+    navigate("/profile");
+    handleClose();
+  };
+
+  const handlePartner = () => {
+    navigate("/partner");
+    handleClose();
+  };
+  const logoClick = () => {
+    navigate("/");
+    handleClose();
+  };
+  const handleLoginLogout = () => {
+    localStorage.removeItem("userId");
+    navigate("/login");
+    handleClose();
+  };
+
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
-  const handleLoginLogOutButtonView = localStorage.getItem("userId");
-  const handleLogOut = () => {
-    localStorage.removeItem("userId");
-    localStorage.removeItem("userMobile");
-    localStorage.removeItem("isSignedIn");
-  };
+  
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary sticky-top">
-      <div className="container-fluid">
-        {/* The rest of the content */}
-        <a className="navbar-brand" href="/">
-          <img
-            src="https://www.reshot.com/preview-assets/icons/4DE7B2XR9S/hotel-sign-4DE7B2XR9S.svg"
-            alt="Logo"
-            width="70"
-            height="50"
-            className="d-inline-block align-text-top me-2"
-          />
-        </a>
-
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <div className="d-flex align-items-center ">
-              {/* Social Icons */}
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue me-3"
-              >
-                <FontAwesomeIcon icon={faFacebook} size="2x" />
-              </a>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue me-3"
-              >
-                <FontAwesomeIcon icon={faInstagram} size="2x" />
-              </a>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue me-3"
-              >
-                <FontAwesomeIcon icon={faLinkedin} size="2x" />
-              </a>
-            </div>
-
-            <li>
-              <a className="nav-link" href="/profile">
-                <FaUser className="me-1" />
-                Profile
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/partner">
-                <NightShelterTwoToneIcon className="me-1" />
-                Be a partner
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/">
-                <NightShelterTwoToneIcon className="me-1" />
-                Home
-              </a>
-            </li>
-
-            {handleLoginLogOutButtonView ? (
-              <a
-                className="nav-link active"
-                aria-current="page"
-                href="/login"
-                onClick={handleLogOut}
-              >
-                <FaSignOutAlt className="me-1" /> {/* Assuming logout icon */}
-                Logout
-              </a>
-            ) : (
-              <a className="nav-link active" aria-current="page" href="/login">
-                <FaSignInAlt className="me-1" />
-                Login
-              </a>
-            )}
-          </ul>
-        </div>
-        {/* Move the button to the end */}
-        {/* Phone and Email */}
-
-        <div
-          className="border border-danger p-2 rounded mx-3"
-          style={{ maxWidth: "50%" }}
-        >
-          <div className="text-center d-flex flex-column align-items-end">
-            <div className="mb-2">
-              <span style={{ fontSize: "11px" }}>
-                Book Now{" "}
-                <FaPhoneAlt className="me-2" style={{ fontSize: "18px" }} />{" "}
-                9917991758
-              </span>
-            </div>
-            {/* <div>
-                <FaEnvelope className="me-2" style={{ fontSize: "13px" }} />
-                <span style={{ fontSize: "10px" }}>
-                  info@hotelroomsstay.com
-                </span>
-              </div> */}
-          </div>
-        </div>
+    <header className="header d-flex align-items-center justify-content-between p-3 border-bottom">
+      <div className="logo">
+        <img
+          onClick={logoClick}
+          src="https://www.reshot.com/preview-assets/icons/4DE7B2XR9S/hotel-sign-4DE7B2XR9S.svg"
+          alt="Hotel Roomsstay"
+          className="img-fluid"
+        />
       </div>
-    </nav>
+      <nav className="d-flex align-items-center">
+        <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
+          <FaSuitcase size={24} />
+          <a href="#" className="nav-link text-dark">
+            Roomsstay for Business
+          </a>
+          <small className="text-muted">Trusted by Our Corporates</small>
+        </div>
+        <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
+          <FaBuilding size={24} />
+          <a href="#" className="nav-link text-dark">
+            List your property
+          </a>
+          <small className="text-muted">Start earning in 30 mins</small>
+        </div>
+        <div className="nav-item mx-3 d-flex flex-column align-items-center">
+          <FaPhoneAlt size={24} />
+          <span className="nav-link text-dark">9917991758</span>
+          <small className="text-muted">Call us to Book now</small>
+        </div>
+
+        <div className="nav-item mx-3 dropdown d-flex align-items-center">
+          <Tooltip title="Account settings">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? "account-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+            >
+              <Avatar sx={{ width: 32, height: 32 }}>
+                <FaUser />
+              </Avatar>
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={anchorEl}
+            id="account-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            PaperProps={{
+              elevation: 0,
+              sx: {
+                overflow: "visible",
+                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                mt: 1.5,
+                "& .MuiAvatar-root": {
+                  width: 32,
+                  height: 32,
+                  ml: -0.5,
+                  mr: 1,
+                },
+                "&::before": {
+                  content: '""',
+                  display: "block",
+                  position: "absolute",
+                  top: 0,
+                  right: 14,
+                  width: 10,
+                  height: 10,
+                  bgcolor: "background.paper",
+                  transform: "translateY(-50%) rotate(45deg)",
+                  zIndex: 0,
+                },
+              },
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            <MenuItem onClick={handleProfile}>
+              <Avatar /> Profile
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={handlePartner}>
+              <ListItemIcon>
+                <PersonAdd fontSize="small" />
+              </ListItemIcon>
+              Become a Partner
+            </MenuItem>
+            <MenuItem onClick={handleLoginLogout}>
+              <ListItemIcon>
+                <Logout fontSize="small" />
+              </ListItemIcon>
+              Logout
+            </MenuItem>
+          </Menu>
+        </div>
+      </nav>
+    </header>
   );
 };
 
