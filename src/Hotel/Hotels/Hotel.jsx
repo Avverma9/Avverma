@@ -1,18 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-undef */
 import React, { useState, useEffect } from "react";
-import { MdOutlineCelebration } from "react-icons/md";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Carousel } from "react-bootstrap";
-import Avatar from "@mui/material/Avatar";
-import Chip from "@mui/material/Chip";
-import Stack from "@mui/material/Stack";
-import { FaShieldAlt, FaCheckCircle } from "react-icons/fa";
 import { GiPerson } from "react-icons/gi";
-import Rating from "@mui/material/Rating";
-import StarHalfIcon from "@mui/icons-material/StarHalf";
-import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { FaElevator } from "react-icons/fa6";
 import { GiDesk } from "react-icons/gi";
@@ -26,6 +17,7 @@ import {
   FaDoorOpen,
   FaHotTub,
   FaTv,
+  FaCheckCircle,
   FaWifi,
   FaDumbbell,
   FaShuttleVan,
@@ -79,16 +71,7 @@ import {
   FaSmoking,
 } from "react-icons/fa";
 import { MdMicrowave } from "react-icons/md";
-import { IconContext } from "react-icons";
-import Card from "@mui/joy/Card";
-
 import Box from "@mui/material/Box";
-import CardContent from "@mui/joy/CardContent";
-import IconButton from "@mui/joy/IconButton";
-import Typography from "@mui/joy/Typography";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
 
@@ -98,9 +81,6 @@ const Hotel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryString = location.search.substring(1); // Remove the leading '?'
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-
   const apiUrl = `${baseURL}/hotels/filters?${queryString}&page=${page}`;
   console.log(apiUrl);
 
