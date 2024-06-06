@@ -151,10 +151,18 @@ const FilterSidebar = () => {
       >
         <div className="offcanvas-header">
           <Stack direction="row" spacing={2}>
-            <Button onClick={clearFilters} variant="outlined">
+            <Button
+              onClick={clearFilters}
+              variant="outlined"
+              data-bs-dismiss="offcanvas"
+            >
               Clear Filters
             </Button>
-            <Button onClick={handleSwitchChange} variant="outlined">
+            <Button
+              onClick={handleSwitchChange}
+              variant="outlined"
+              data-bs-dismiss="offcanvas"
+            >
               Apply Filters
             </Button>
           </Stack>
