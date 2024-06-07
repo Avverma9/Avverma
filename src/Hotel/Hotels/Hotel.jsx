@@ -7,6 +7,7 @@ import { GiPerson } from "react-icons/gi";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import { FaElevator } from "react-icons/fa6";
 import { GiDesk } from "react-icons/gi";
+import { useLoader } from "../../utils/loader";
 import { BiSolidDryer } from "react-icons/bi";
 import { LuRefrigerator } from "react-icons/lu";
 import { IconContext } from "react-icons";
@@ -82,45 +83,46 @@ import baseURL from "../../baseURL";
 
 const Hotel = () => {
   const [hotelData, setHotelData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const { showLoader, hideLoader } = useLoader();
   const navigate = useNavigate();
+    const [page, setPage] = useState(1);
   const location = useLocation();
   const queryString = location.search.substring(1); // Remove the leading '?'
   const apiUrl = `${baseURL}/hotels/filters?${queryString}&page=${page}`;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        setHotelData(data.data);
-        setTotalPages(data.totalPages);
-      } catch (error) {
-        console.error("Error fetching hotel data:", error);
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    showLoader();
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
       }
-    };
+      const data = await response.json();
+      setHotelData(data.data);
+      setTotalPages(data.totalPages);
+    } catch (error) {
+      console.error("Error fetching hotel data:", error);
+    } finally {
+      hideLoader();
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [apiUrl]);
-
   const paths = ["/search/hotels", "/search"];
-  if (!paths.includes(location.pathname) || loading) {
+  if (!paths.includes(location.pathname)) {
     return (
-      <Box sx={{ width: "100%" }}>{/* Loading Spinner or Indicator */}</Box>
+     null
     );
   }
 
   const handleBuy = (hotelID) => {
     navigate(`/book-hotels/${hotelID}`);
   };
+ 
+
 
   const amenityIcons = {
     "Continental Breakfast": <FaUtensils />,
@@ -208,7 +210,6 @@ const Hotel = () => {
     Kitchen: <FaUtensils />,
   };
   const defaultIcon = <DoneAllIcon />;
-
   return (
     <div className="container mt-4">
       {hotelData && hotelData.length > 0 ? (
@@ -325,8 +326,8 @@ const Hotel = () => {
                       ))} */}
                     <ul className="list-unstyled">
                       <li>
-                        <FaCheckCircle className="text-success" />{" "}
-                       Free Cancellation
+                        <FaCheckCircle className="text-success" /> Free
+                        Cancellation
                       </li>
                       <li>
                         <FaCheckCircle className="text-success" /> FREE

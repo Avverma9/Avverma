@@ -3,14 +3,13 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
+import { useLoader } from "../../utils/loader";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import axios from "axios";
-import { TextField, Button, Container, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import baseURL from "../../baseURL";
-import { TextareaAutosize } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -38,6 +37,7 @@ export default function PartnerForm() {
   const classes = useStyles();
   const [hotelName, setHotelName] = useState("");
   const [images, setImages] = useState([]);
+  const { showLoader, hideLoader } = useLoader();
   const [hotelOwnerName, setHotelOwnerName] = useState("");
   const [description, setDescription] = useState("");
   const [priceError, setPriceError] = useState("");
@@ -59,7 +59,6 @@ export default function PartnerForm() {
   const [propertyType, setPropertyType] = useState("");
   const [contact, setContact] = useState("");
   const [localId, setLocalId] = useState("");
-
   const [generalManagerContact, setGeneralManagerContact] = useState("");
   const [hotelEmail, setHotelEmail] = useState("");
 
@@ -72,6 +71,8 @@ export default function PartnerForm() {
     if (!isConfirmed) {
       return;
     }
+
+    showLoader();
     try {
       const formData = new FormData();
       formData.append("hotelName", hotelName);
@@ -88,12 +89,10 @@ export default function PartnerForm() {
       formData.append("pinCode", pinCode);
       formData.append("starRating", starRating);
       formData.append("contact", contact);
-
       formData.append("propertyType", propertyType);
-
       formData.append("generalManagerContact", generalManagerContact);
       formData.append("salesManagerContact", salesManagerContact);
-      formData.append("hotelEmail", hotelEmail); // Corrected line
+      formData.append("hotelEmail", hotelEmail);
       formData.append("localId", localId);
 
       for (const image of images) {
@@ -124,6 +123,8 @@ export default function PartnerForm() {
       }
     } catch (error) {
       alert("An error occurred. Please try again later.");
+    } finally {
+      hideLoader();
     }
   };
 
@@ -152,7 +153,7 @@ export default function PartnerForm() {
     "Homestay",
     "Hostel",
     "Hotel",
-    "Hotel Aprtment",
+    "Hotel Apartment",
     "Resort",
     "Villa",
   ];
@@ -171,14 +172,12 @@ export default function PartnerForm() {
           src="https://arkca.com/assets/img/login.gif"
           alt="Login required"
           style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />{" "}
-        {/* Mobile-friendly image size */}
+        />
         <p style={{ marginTop: "10px" }}>
           Unauthorized
           <br />
           Please log in
-        </p>{" "}
-        {/* Clearer message with spacing */}
+        </p>
       </div>
     );
   }

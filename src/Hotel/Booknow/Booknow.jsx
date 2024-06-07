@@ -18,6 +18,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
+import { useLoader } from "../../utils/loader";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
@@ -120,6 +121,7 @@ const BookNow = () => {
   const path = location.pathname;
   const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const today = new Date();
+  const { showLoader, hideLoader } = useLoader();
   const tomorrow = addDays(today, 1);
   const [guestsCount, setGuestsCount] = useState(3);
   const [checkInDate, setCheckInDate] = useState(today);
@@ -146,14 +148,13 @@ const BookNow = () => {
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
+
   const handleAddFood = (food) => {
-    // Check if the food item is already in selectedFood
     const existingFood = selectedFood.find(
       (selected) => selected._id === food._id
     );
 
     if (existingFood) {
-      // If already selected, update the quantity
       const updatedFood = selectedFood.map((selected) =>
         selected._id === food._id
           ? { ...selected, quantity: selected.quantity + 1 }
@@ -161,12 +162,10 @@ const BookNow = () => {
       );
       setSelectedFood(updatedFood);
     } else {
-      // If not selected, add with quantity 1
       setSelectedFood([...selectedFood, { ...food, quantity: 1 }]);
     }
   };
 
-  // Function to remove food from selectedFood state
   const handleRemoveFood = (food) => {
     const updatedFood = selectedFood
       .map((selected) =>
@@ -178,6 +177,7 @@ const BookNow = () => {
 
     setSelectedFood(updatedFood);
   };
+
   const handleAddRoom = (room) => {
     setSelectedRooms((prevSelectedRooms) => {
       const existingRoomIndex = prevSelectedRooms.findIndex(
@@ -185,12 +185,10 @@ const BookNow = () => {
       );
 
       if (existingRoomIndex !== -1) {
-        // Deselect if already selected
         return prevSelectedRooms.filter(
           (selected) => selected._id !== room._id
         );
       } else {
-        // Add if not selected
         return [...prevSelectedRooms, room];
       }
     });
@@ -198,12 +196,9 @@ const BookNow = () => {
 
   const handleRemoveRoom = (room) => {
     setSelectedRooms((prevSelectedRooms) => {
-      // If only one room is selected, allow removal even if it's the default room
       if (prevSelectedRooms.length === 1) {
         return [];
       }
-
-      // Otherwise, remove the selected room
       return prevSelectedRooms.filter(
         (selectedRoom) => selectedRoom._id !== room._id
       );
@@ -212,86 +207,71 @@ const BookNow = () => {
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
-
-    // Calculate total room price
     selectedRooms.forEach((room) => {
       totalPrice += room.price * roomsCount;
     });
 
-    // Calculate total food price
     const foodPrice = selectedFood.reduce(
       (total, food) => total + food.price * food.quantity,
       0
     );
 
-    // Calculate days using Date object for clarity
     const daysDifference = Math.ceil(
       (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
 
-    // Update room price considering daysDifference
     totalPrice *= daysDifference;
-
-    // Add food price to total price
     totalPrice += foodPrice;
 
     return totalPrice;
   };
 
-  useEffect(() => {
-    const fetchHotelData = async () => {
-      try {
-        const response = await fetch(
-          `${baseURL}/hotels/get-by-id/${newhotelId}`
-        );
-        const data = await response.json();
-        setHotelData(data);
+  const fetchHotelData = async () => {
+    showLoader();
+    try {
+      const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
+      const data = await response.json();
+      setHotelData(data);
 
-        // Check if there are no rooms already selected
-        if (selectedRooms.length === 0 && data.rooms.length > 0) {
-          const defaultRoom = data.rooms[0]; // Select the first room as default
-          setSelectedRooms([defaultRoom]);
-        }
-      } catch (error) {
-        console.error("Error fetching hotel data:", error);
-        // Handle error state
+      if (selectedRooms.length === 0 && data.rooms.length > 0) {
+        const defaultRoom = data.rooms[0];
+        setSelectedRooms([defaultRoom]);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching hotel data:", error);
+    } finally {
+      hideLoader();
+    }
+  };
 
+  useEffect(() => {
     fetchHotelData();
-  }, [newhotelId, selectedRooms]); // Add selectedRooms as a dependency
+  }, [newhotelId, selectedRooms]);
 
   const calculateGuests = (roomsCount) => {
-    // Assuming each room accommodates 3 guests
     return roomsCount * 3;
   };
 
-  // Update the handleIncrementRooms function to increase both rooms and guests count
   const handleIncrementRooms = () => {
     setRoomsCount((prevCount) => prevCount + 1);
-    // Increase guests count whenever rooms count increases
     setGuestsCount(calculateGuests(roomsCount + 1));
   };
 
-  // Update the handleDecrementRooms function to decrease both rooms and guests count
   const handleDecrementRooms = () => {
     if (roomsCount > 1) {
       setRoomsCount((prevCount) => prevCount - 1);
-      // Decrease guests count whenever rooms count decreases
       setGuestsCount(calculateGuests(roomsCount - 1));
     }
   };
 
-  // Handle changes in the guests input field
   const handleGuestsChange = (event) => {
     const newGuestsCount = parseInt(event.target.value);
-    // Ensure that the new guests count is at least 1 or set to 1 if input is empty
     const validGuestsCount = newGuestsCount > 0 ? newGuestsCount : 1;
     setGuestsCount(validGuestsCount);
-    // Calculate rooms count based on the new guests count
     const newRoomsCount = Math.ceil(validGuestsCount / 3);
     setRoomsCount(newRoomsCount);
   };
+
   const handleIncrementGuests = () => {
     setGuestsCount(guestsCount + 1);
     const newRoomsCount = Math.ceil((guestsCount + 1) / 3);
@@ -305,15 +285,13 @@ const BookNow = () => {
       setRoomsCount(newRoomsCount);
     }
   };
+
   const handleBookNow = async () => {
     try {
       const userId = localStorage.getItem("userId");
-
-      // Check if userMobile is available in localStorage
       const userMobile = localStorage.getItem("userMobile");
 
       if (!userMobile) {
-        // If userMobile is not available, show an alert and navigate to the profile page
         alert(
           "Action required: Please update your mobile number in the profile."
         );
@@ -321,10 +299,9 @@ const BookNow = () => {
         return;
       }
 
-      // Prepare data for API request
       const bookingData = {
         hotelId: newhotelId,
-        user: userId, // Include userId in the payload
+        user: userId,
         checkInDate: format(checkInDate, "yyyy-MM-dd"),
         checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
         guests: guestsCount,
@@ -345,7 +322,6 @@ const BookNow = () => {
         hotelOwnerName: hotelData.hotelOwnerName,
       };
 
-      // Make API request to book
       const response = await fetch(
         `${baseURL}/booking/${userId}/${newhotelId}`,
         {
@@ -358,11 +334,9 @@ const BookNow = () => {
       );
 
       if (response.status === 201) {
-        // Handle success, e.g., redirect to a confirmation page
         alert("Booking successful");
         window.location.href = "/bookings";
       } else {
-        // Handle error
         console.error("Booking failed");
       }
     } catch (error) {
@@ -373,13 +347,15 @@ const BookNow = () => {
   const scrollToRooms = () => {
     roomsRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
   const scrollToFood = () => {
     foodsRef.current.scrollIntoView({ behavior: "smooth" });
   };
-  //==============================
+
   if (!path.includes("/book-hotels/")) {
     return null;
   }
+
   const amenityIcons = {
     "Continental Breakfast": <FaUtensils />,
     "Room Service": <FaPhone />,
@@ -410,7 +386,6 @@ const BookNow = () => {
     "Complimentary Toiletries": <FaSoap />,
     Closet: <FaSuitcase />,
     "Iron and Ironing Board": <FaTshirt />,
-
     "Hair Dryer": <BiSolidDryer />,
     Safe: <FaLock />,
     "Mini Fridge": <LuRefrigerator />,
@@ -469,20 +444,16 @@ const BookNow = () => {
 
   const defaultIcon = <FaBed />;
 
-  // Ensure that checkInDate and checkOutDate are different
   const handleCheckInDateChange = (date) => {
     if (date.toDateString() !== checkOutDate.toDateString()) {
       setCheckInDate(date);
+      const nextDay = addDays(date, 1);
+      setCheckOutDate(nextDay);
     } else {
       alert("Check-in and Check-out dates cannot be the same.");
     }
-
-    // Set checkOutDate to the next day of checkInDate
-    const nextDay = addDays(date, 1);
-    setCheckOutDate(nextDay);
   };
 
-  // Ensure that checkInDate and checkOutDate are different
   const handleCheckOutDateChange = (date) => {
     if (date.toDateString() !== checkInDate.toDateString()) {
       setCheckOutDate(date);
@@ -499,25 +470,27 @@ const BookNow = () => {
       padding: theme.spacing(1),
     },
   }));
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
   function getResponsiveImageStyle() {
     const styles = {
-      height: 550, // Default height for larger screens
+      height: 550,
     };
 
-    // Check for window size to apply conditional styles
     if (window.innerWidth < 468) {
-      // Adjust breakpoint as needed
-      styles.height = "200px"; // Adjust height for smaller screens
+      styles.height = "200px";
     }
 
     return styles;
   }
+
   return (
     <div className="book-now-container">
       {hotelData ? (
@@ -549,11 +522,16 @@ const BookNow = () => {
               </div>
             </div>
             <h5 className="hotel-name">
-              
-              <span style={{ fontSize: "1.3rem", marginRight: "10px" , color:"green"}}>
-              {hotelData?.hotelName}
+              <span
+                style={{
+                  fontSize: "1.3rem",
+                  marginRight: "10px",
+                  color: "green",
+                }}
+              >
+                {hotelData?.hotelName}
               </span>
-               <CurrencyRupeeIcon /> {hotelData?.rooms?.[0]?.price || 0}
+              <CurrencyRupeeIcon /> {hotelData?.rooms?.[0]?.price || 0}
             </h5>
             <Box
               key={hotelData._id}
