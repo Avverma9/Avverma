@@ -234,7 +234,7 @@ export default function PartnerForm() {
                 Contact*
               </label>
               <input
-                type="text"
+                type="number"
                 id="form8Example3"
                 className="form-control"
                 required
@@ -260,7 +260,7 @@ export default function PartnerForm() {
                 General Manager Contact
               </label>
               <input
-                type="text"
+                type="number"
                 id="form8Example4"
                 required
                 className="form-control"
@@ -288,7 +288,7 @@ export default function PartnerForm() {
                 Sales Manager Contact*
               </label>
               <input
-                type="text"
+                type="number"
                 required
                 id="form8Example4"
                 className="form-control"
@@ -480,11 +480,10 @@ export default function PartnerForm() {
             <div className="row">
               <div className="col">
                 <div id="imageInputs">
-              
                   <input
                     className={classes.imageInput}
-                    type="file" 
-                       required
+                    type="file"
+                    required
                     accept="image/*"
                     onChange={(e) => handleImageChange(e.target.files[0])}
                   />
@@ -506,29 +505,29 @@ export default function PartnerForm() {
           <Button type="submit" variant="contained" color="primary">
             Next
           </Button>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ArrowDownwardIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography>Terms & conditions apply</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                {textArray.map((part, index) => (
+                  <span key={index}>
+                    {index > 0 && "• "}{" "}
+                    {/* Add the disc symbol for each line after the first one */}
+                    {part}
+                    <br />
+                  </span>
+                ))}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
         </form>
       </div>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography>Terms & conditions apply</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            {textArray.map((part, index) => (
-              <span key={index}>
-                {index > 0 && "• "}{" "}
-                {/* Add the disc symbol for each line after the first one */}
-                {part}
-                <br />
-              </span>
-            ))}
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
     </>
   );
 }

@@ -1,14 +1,15 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { FaSuitcase, FaBuilding, FaPhoneAlt, FaUser } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Header.css"; // Ensure to include the CSS file for styles
-import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem"
+import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
+import HomeIcon from "@mui/icons-material/Home";
 import Tooltip from "@mui/material/Tooltip";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Logout from "@mui/icons-material/Logout";
@@ -42,6 +43,10 @@ const Header = () => {
     navigate("/");
     handleClose();
   };
+  const homeclick = () => {
+    navigate("/");
+    handleClose();
+  };
   const handleLoginLogout = () => {
     localStorage.removeItem("userId");
     navigate("/login");
@@ -51,7 +56,9 @@ const Header = () => {
   if (location.pathname === "/login" || location.pathname === "/register") {
     return null;
   }
-  
+
+  const handleAuth = localStorage.getItem("isSignedIn", true);
+
   return (
     <header className="header d-flex align-items-center justify-content-between p-3 border-bottom">
       <div className="logo">
@@ -137,6 +144,13 @@ const Header = () => {
               <Avatar /> Profile
             </MenuItem>
             <Divider />
+            <MenuItem onClick={homeclick}>
+              <ListItemIcon>
+                <HomeIcon fontSize="small" />
+              </ListItemIcon>
+              Home
+            </MenuItem>
+            <Divider />
             <MenuItem onClick={handlePartner}>
               <ListItemIcon>
                 <PersonAdd fontSize="small" />
@@ -147,7 +161,7 @@ const Header = () => {
               <ListItemIcon>
                 <Logout fontSize="small" />
               </ListItemIcon>
-              Logout
+              {handleAuth && handleAuth ? "Logout" : "Login"}
             </MenuItem>
           </Menu>
         </div>

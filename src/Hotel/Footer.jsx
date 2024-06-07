@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 // import React from 'react';
 // import { Container, Row, Col } from 'react-bootstrap';
 // import { FaFacebook, FaTwitter, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa'; // Import social and location icons
