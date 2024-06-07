@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
-import PlaceIcon from '@mui/icons-material/Place';
+import PlaceIcon from "@mui/icons-material/Place";
 import Carousel from "react-bootstrap/Carousel";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
@@ -509,12 +509,13 @@ const BookNow = () => {
     const styles = {
       height: 550, // Default height for larger screens
     };
-  
+
     // Check for window size to apply conditional styles
-    if (window.innerWidth < 468) { // Adjust breakpoint as needed
-      styles.height = '200px'; // Adjust height for smaller screens
+    if (window.innerWidth < 468) {
+      // Adjust breakpoint as needed
+      styles.height = "200px"; // Adjust height for smaller screens
     }
-  
+
     return styles;
   }
   return (
@@ -534,9 +535,7 @@ const BookNow = () => {
                 </Carousel.Item>
               ))}
             </Carousel>
-            
           )}
-          
           <div className="extras">
             {" "}
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -546,32 +545,32 @@ const BookNow = () => {
                   style={{ marginLeft: "5px", fontSize: "28px" }}
                 >
                   {" "}
-                  
-                  <CurrencyRupeeIcon />
-                  {hotelData?.rooms?.[0]?.price || 0}
                 </div>
               </div>
             </div>
             <h5 className="hotel-name">
-   
-              {hotelData?.hotelName}{" "}
+              
+              <span style={{ fontSize: "1.3rem", marginRight: "10px" , color:"green"}}>
+              {hotelData?.hotelName}
+              </span>
+               <CurrencyRupeeIcon /> {hotelData?.rooms?.[0]?.price || 0}
             </h5>
             <Box
-                key={hotelData._id}
-                sx={{
-                  "& > legend": { mt: 2 },
-                }}
-              >
-                <Rating
-                  name="hotel-rating"
-                  value={hotelData?.starRating}
-                  readOnly
-                />
-              </Box>
+              key={hotelData._id}
+              sx={{
+                "& > legend": { mt: 2 },
+              }}
+            >
+              <Rating
+                name="hotel-rating"
+                value={hotelData?.starRating}
+                readOnly
+              />
+            </Box>
             <div className="hote-address">
               {" "}
               <p>
-                <PlaceIcon/>
+                <PlaceIcon />
                 {hotelData?.city}, {hotelData?.destination}, {hotelData?.state},{" "}
                 {hotelData?.zip}
               </p>
@@ -1101,7 +1100,7 @@ const BookNow = () => {
                         </div>
                       </div>
                     </div>
-<p>Total Price </p>
+                    <p>Total Price </p>
                     {/* Total Price */}
                     <div
                       className="total-price mt-3"
@@ -1115,10 +1114,10 @@ const BookNow = () => {
                         }}
                       >
                         <CurrencyRupeeIcon />
-                       {calculateTotalPrice()}
+                        {calculateTotalPrice()}
                       </h3>
                     </div>
-                    
+
                     {/* Payment Buttons */}
                     <div className="payment-buttons mt-3">
                       <Button

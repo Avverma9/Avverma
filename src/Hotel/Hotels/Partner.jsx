@@ -4,6 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
+import "bootstrap/dist/css/bootstrap.min.css";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import axios from "axios";
 import { TextField, Button, Container, makeStyles } from "@material-ui/core";
@@ -45,9 +46,8 @@ export default function PartnerForm() {
   const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [contactError, setContactError] = useState(""); // State for contact validation error
-  const [generalManagerContactError, setGeneralManagerContactError] = useState(
-    ""
-  );
+  const [generalManagerContactError, setGeneralManagerContactError] =
+    useState("");
   const [salesManagerContactError, setSalesManagerContactError] = useState("");
   const [salesManagerContact, setSalesManagerContact] = useState(""); // State for generalManagerContact validation error
   const [endDate, setEndDate] = useState("");
@@ -183,103 +183,61 @@ export default function PartnerForm() {
     );
   }
   return (
-    <Container>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ArrowDownwardIcon />}
-          aria-controls="panel1-content"
-          id="panel1-header"
-        >
-          <Typography>Terms & conditions apply</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            {textArray.map((part, index) => (
-              <span key={index}>
-                {index > 0 && "• "}{" "}
-                {/* Add the disc symbol for each line after the first one */}
-                {part}
-                <br />
-              </span>
-            ))}
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <hr />
-      <h4
-        style={{
-          color: "#4CAF50" /* Green color */,
-          textAlign: "center" /* Center align text */,
-          textTransform: "uppercase" /* Convert text to uppercase */,
-          fontWeight: "bold" /* Apply bold font weight */,
-          fontSize: "24px" /* Larger font size */,
-          textDecoration: "underline" /* Add underline */,
-          marginBottom: "20px" /* Add some bottom margin for spacing */,
-        }}
-      >
-        Fill Basic Details Carefully!
-      </h4>
-
-      <hr />
-      <form onSubmit={handleSubmit}>
-        {" "}
-        <div className="row">
-          <div className="col">
-            {/* Name input */}
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example1">
-                Hotel name
+    <>
+      <div className="container mt-4">
+        <h5 className="mb-3">Welcome to our team</h5>
+        <hr />
+        <form onSubmit={handleSubmit}>
+          <div className="row">
+            <div className="col-md-4 mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Hotel Name*
               </label>
               <input
                 type="text"
+                required
                 id="form8Example1"
                 className="form-control"
                 value={hotelName}
                 onChange={(e) => setHotelName(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            {/* Email input */}
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example2">
-                Hotel Owner name
+            <div className="col-md-4 mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Owner Name*
               </label>
               <input
                 type="name"
+                required
                 id="form8Example2"
                 className="form-control"
                 value={hotelOwnerName}
                 onChange={(e) => setHotelOwnerName(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            {/* Email input */}
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example2">
-                Hotel Email
+            <div className="col-md-4 mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Hotel Email*
               </label>
               <input
                 type="name"
+                required
                 id="form8Example2"
                 className="form-control"
                 value={hotelEmail}
                 onChange={(e) => setHotelEmail(e.target.value)}
               />
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example3">
-                Contact
+
+            <div className="col-md-4 mb-3">
+              <label htmlFor="lastName" className="form-label">
+                Contact*
               </label>
               <input
                 type="text"
                 id="form8Example3"
                 className="form-control"
+                required
                 value={contact}
                 onChange={(e) => {
                   const inputValue = e.target.value;
@@ -297,15 +255,14 @@ export default function PartnerForm() {
                 helperText={contactError}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example4">
-                General Manager contact
+            <div className="col-md-4 mb-3">
+              <label htmlFor="designation" className="form-label">
+                General Manager Contact
               </label>
               <input
                 type="text"
                 id="form8Example4"
+                required
                 className="form-control"
                 value={generalManagerContact}
                 onChange={(e) => {
@@ -326,14 +283,13 @@ export default function PartnerForm() {
                 helperText={generalManagerContactError}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example4">
-                Sales Manager contact
+            <div className="col-md-4 mb-3">
+              <label htmlFor="email" className="form-label">
+                Sales Manager Contact*
               </label>
               <input
                 type="text"
+                required
                 id="form8Example4"
                 className="form-control"
                 value={salesManagerContact}
@@ -355,29 +311,22 @@ export default function PartnerForm() {
                 helperText={setSalesManagerContactError}
               />
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            {/* Email input */}
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example5">
-                About Hotel
+            <div className="col-md-4 mb-3">
+              <label htmlFor="mobile" className="form-label">
+                Tell me about your hotel*
               </label>
               <textarea
                 type="email"
                 id="form8Example5"
                 className="form-control"
+                required
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            {/* Email input */}
-            <div data-mdb-input-init className="form-outline">
-              <label className="form-label" htmlFor="form8Example5">
-                Welcome note
+            <div className="col-md-4 mb-3">
+              <label htmlFor="phone" className="form-label">
+                Customer Welcome note
               </label>
               <textarea
                 type="email"
@@ -387,16 +336,15 @@ export default function PartnerForm() {
                 onChange={(e) => setCustomerWelcomeNote(e.target.value)}
               />
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="price">Price</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="leadSource" className="form-label">
+                Your hotel rooms starting price *
+              </label>
               <input
                 type="number"
                 className="form-control"
                 value={price}
+                required
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   setPrice(inputValue);
@@ -413,77 +361,94 @@ export default function PartnerForm() {
                 helperText={priceError}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="price">Star rating of your hotel</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="leadStatus" className="form-label">
+                How many star rating you have ?
+              </label>
               <input
                 type="number"
                 className="form-control"
-                v
                 value={starRating}
-                onChange={(e) => setStarRating(e.target.value)}
+                required
+                onChange={(e) => {
+                  const value = e.target.value; // Get the current input value as a string
+                  if (value === "") {
+                    setStarRating(""); // Allow empty value to clear the input
+                  } else {
+                    const newValue = parseInt(value, 10); // Convert to integer
+                    if (newValue <= 5 && newValue >= 0) {
+                      setStarRating(newValue); // Set the value if within range
+                    } else if (newValue > 5) {
+                      setStarRating(5); // Limit to maximum 5
+                    } else if (newValue < 0) {
+                      setStarRating(0); // Prevent negative values
+                    }
+                  }
+                }}
+                max="5" // HTML attribute to limit input via UI
+                min="0" // HTML attribute to prevent negative numbers
               />
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="landmark1">Landmark</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="industry" className="form-label">
+                Landmark
+              </label>
               <input
                 type="text"
                 id="landmark1"
+                required
                 className="form-control"
                 value={landmark}
                 onChange={(e) => setLandMark(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="city">City</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="department" className="form-label">
+                City of Your hotel
+              </label>
               <input
                 type="text"
                 id="landmark2"
+                required
                 className="form-control"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="state">State</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="annualRevenue" className="form-label">
+                State (In which state your hotel is)
+              </label>
               <input
                 type="text"
                 id="landmark2"
                 className="form-control"
                 value={state}
+                required
                 onChange={(e) => setState(e.target.value)}
               />
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="pin">Pin-code</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="buyingRole" className="form-label">
+                Pin code
+              </label>
               <input
                 type="number"
                 id="landmark2"
+                required
                 className="form-control"
                 value={pinCode}
                 onChange={(e) => setPinCode(e.target.value)}
               />
             </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="localId">Local ID</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="buyingRole" className="form-label">
+                LocalID (Whether You are accepting localid )
+              </label>
               <select
                 id="localId"
                 className="form-control"
+                required
                 value={localId}
                 onChange={(e) => setLocalId(e.target.value)}
               >
@@ -491,14 +456,15 @@ export default function PartnerForm() {
                 <option value="Accepted">Accepted</option>
               </select>
             </div>
-          </div>
-          <div className="col">
-            <div data-mdb-input-init className="form-outline">
-              <label htmlFor="propertyType">Choose Property Type</label>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="buyingRole" className="form-label">
+                Property type ( Whether which property type you have )
+              </label>
               <select
                 id="propertyType"
                 className="form-control"
                 value={propertyType}
+                required
                 onChange={(e) => setPropertyType(e.target.value)}
               >
                 {propertyTypeOptions.map((option) => (
@@ -508,36 +474,61 @@ export default function PartnerForm() {
                 ))}
               </select>
             </div>
-          </div>
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col">
-            <div id="imageInputs">
-              <input
-                className={classes.imageInput}
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageChange(e.target.files[0])}
-              />
+            <label htmlFor="buyingRole" className="form-label">
+              Pictures ( Select Your room images, You can add multiple images )
+            </label>
+            <div className="row">
+              <div className="col">
+                <div id="imageInputs">
+              
+                  <input
+                    className={classes.imageInput}
+                    type="file" 
+                       required
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e.target.files[0])}
+                  />
+                </div>
+              </div>
+              <div className="col">
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="primary"
+                  onClick={handleAddImage}
+                >
+                  Add More Images
+                </Button>
+              </div>
             </div>
+            <hr />
           </div>
-          <div className="col">
-            <Button
-              type="button"
-              variant="outlined"
-              color="primary"
-              onClick={handleAddImage}
-            >
-              Add More Images
-            </Button>
-          </div>
-        </div>
-        <hr />
-        <Button type="submit" variant="contained" color="primary">
-          Next
-        </Button>
-      </form>
-    </Container>
+          <Button type="submit" variant="contained" color="primary">
+            Next
+          </Button>
+        </form>
+      </div>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ArrowDownwardIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          <Typography>Terms & conditions apply</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+            {textArray.map((part, index) => (
+              <span key={index}>
+                {index > 0 && "• "}{" "}
+                {/* Add the disc symbol for each line after the first one */}
+                {part}
+                <br />
+              </span>
+            ))}
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
+    </>
   );
 }

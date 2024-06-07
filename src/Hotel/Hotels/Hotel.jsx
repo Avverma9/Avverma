@@ -246,7 +246,7 @@ const Hotel = () => {
                         {hotel?.starRating || "N/A"}/5
                       </span>
                       <span className="text-muted ms-2">
-                        {hotel.reviews || "0"} Reviews
+                        {hotel.reviewCount || "0"} Reviews
                       </span>
                     </div>
                     <div style={{ maxHeight: "40px", overflow: "hidden" }}>
@@ -304,18 +304,37 @@ const Hotel = () => {
                       right now
                     </div>
                   </div>
+
                   <div className="col-md-3 text-center">
+                    {/* {hotel.policies &&
+                      hotel.policies.map((policy, policyIndex) => (
+                        <ul key={policyIndex} className="list-unstyled">
+                          {policy.cancellationPolicy && (
+                            <li>
+                              <FaCheckCircle className="text-success" />{" "}
+                              {policy.cancellationPolicy}
+                            </li>
+                          )}
+                          {policy.paymentMode && (
+                            <li>
+                              <FaCheckCircle className="text-success" />{" "}
+                              {policy.paymentMode}
+                            </li>
+                          )}
+                        </ul>
+                      ))} */}
                     <ul className="list-unstyled">
                       <li>
-                        <FaCheckCircle className="text-success" /> Free
-                        Cancellation
+                        <FaCheckCircle className="text-success" />{" "}
+                       Free Cancellation
                       </li>
                       <li>
                         <FaCheckCircle className="text-success" /> FREE
                         Breakfast
                       </li>
                       <li>
-                        <FaCheckCircle className="text-success" /> Pay @ Hotel
+                        <FaCheckCircle className="text-success" />{" "}
+                        {hotel?.policies?.paymentMode}
                       </li>
                     </ul>
                     <p className="text-muted text-decoration-line-through">
@@ -330,7 +349,7 @@ const Hotel = () => {
                       ₹{hotel.price || "N/A"}{" "}
                       <small className="text-muted">/night</small>
                     </h3>
-                    <p className="text-muted">for 1 guest (Ex. GST)</p>
+                    <p className="text-muted">for 1 Room (Ex. GST)</p>
                     <button
                       className="btn btn-warning btn-block text-white"
                       onClick={() => handleBuy(hotel.hotelId)}

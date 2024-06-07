@@ -124,6 +124,7 @@ const FilterSidebar = () => {
       }
     }
   };
+  
 
   const handleSwitchChange = () => {
     filterByAll();
