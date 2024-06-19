@@ -13,6 +13,10 @@ const dashboardUser = new mongoose.Schema(
       unique: true,
     },
     password: String,
+    status: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
