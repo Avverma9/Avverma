@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import axios from 'axios';
-import { Carousel } from 'react-bootstrap';
+/* eslint-disable jsx-a11y/img-redundant-alt */
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import axios from "axios";
+import { Carousel } from "react-bootstrap";
+import baseURL from "../baseURL";
 
 const CarouselPage = () => {
   const [carouselData, setCarouselData] = useState([]);
@@ -10,22 +12,24 @@ const CarouselPage = () => {
   useEffect(() => {
     const fetchCarouselData = async () => {
       try {
-        const response = await axios.get("https://hotel-backend-tge7.onrender.com/get/second/carousel");
+        const response = await axios.get(
+          `${baseURL}/get/second/carousel`
+        );
         setCarouselData(response.data);
       } catch (error) {
-        console.error('Error fetching carousel data:', error);
+        console.error("Error fetching carousel data:", error);
       }
     };
 
     fetchCarouselData();
   }, []);
-  const location = useLocation()
-  if(location.pathname !=="/"){
-    return null
-}
+  const location = useLocation();
+  if (location.pathname !== "/") {
+    return null;
+  }
   return (
     <Carousel>
-      {carouselData.map((item, index) => (
+      {carouselData.map((item, index) =>
         item.images.map((image, imgIndex) => (
           <Carousel.Item key={imgIndex}>
             <img
@@ -39,7 +43,7 @@ const CarouselPage = () => {
             </Carousel.Caption>
           </Carousel.Item>
         ))
-      ))}
+      )}
     </Carousel>
   );
 };
