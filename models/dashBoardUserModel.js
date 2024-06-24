@@ -12,6 +12,12 @@ const dashboardUser = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    role: {
+      type: String,
+      required : true,
+      enum: ["admin", "superAdmin","developer"],
+    },
+    address: String,
     password: String,
     status: {
       type: Boolean,

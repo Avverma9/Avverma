@@ -3,9 +3,12 @@ const Dashboard = require("../models/dashBoardUserModel");
 // Register ===========================
 const registerUser = async (req, res) => {
   try {
-    const { name, email, mobile, password } = req.body;
+    const { name, email, mobile, password, role, address } = req.body;
     const emailExist = await Dashboard.findOne({ email: email });
     const mobileExist = await Dashboard.findOne({ mobile: mobile });
+    if (role !== "admin" && role !== "superAdmin") {
+      return res.status(400).json({ message: "Invalid role selection" });
+    }
     if (emailExist) {
       return res.status(400).json({ message: "Email already existed" });
     }
@@ -17,6 +20,8 @@ const registerUser = async (req, res) => {
       images,
       name,
       email,
+      role,
+      address,
       mobile,
       password,
     });
@@ -42,6 +47,8 @@ const loginUser = async function (req, res) {
   } else {
     res.status(200).json({
       message: "Logged in as",
+      loggedUserRole: loggedUser.role,
+      loggedUserStatus: loggedUser.status,
       loggedUserImage: loggedUser.images,
       loggedUserId: loggedUser._id,
       loggedUserName: loggedUser.name,
@@ -97,12 +104,22 @@ const deletePartner = async function (req, res) {
 
 const updatePartner = async function (req, res) {
   const { id } = req.params;
-  const { name, email, mobile, password, status } = req.body;
-
+  const { name, email, mobile, password, status, role, address } = req.body;
+  if (req.files && req.files.length > 0) {
+    images = req.files.map((file) => file.location);
+  } else {
+    const user = await Dashboard.findOne({ id });
+    if (user) {
+      images = user.images;
+    }
+  }
   const updateFields = {};
   if (name !== undefined && name !== "") updateFields.name = name;
   if (email !== undefined && email !== "") updateFields.email = email;
   if (mobile !== undefined && mobile !== "") updateFields.mobile = mobile;
+  if (role !== undefined && role !== "") updateFields.role = role;
+  if (address !== undefined && address !== "") updateFields.address = address;
+  if (images) updateFields.images = images;
   if (password !== undefined && password !== "")
     updateFields.password = password;
   if (status !== undefined && status !== "") updateFields.status = status;
@@ -144,7 +161,6 @@ const updatePartner = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = {
   registerUser,

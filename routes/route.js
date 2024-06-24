@@ -171,7 +171,7 @@ router.post("/verifyotp", emailController.verifyOtp);
 //===============================Dashboard===========================
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
 router.put("/update/dashboard/user-status/:id",  DashboardUser.updateStatus);
-router.post("/login/dashboard/user", DashboardUser.loginUser);
+router.post("/login/dashboard/user", upload,DashboardUser.loginUser);
 router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
 router.delete(
   "/delete/dashboard/delete/partner/:id",
