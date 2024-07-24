@@ -43,7 +43,7 @@ const loginUser = async function (req, res) {
   });
 
   if (!loggedUser) {
-    res.status(400).json({ message: "Login failed" });
+    res.status(400).json({ message: "Something went wrong!" });
   } else {
     res.status(200).json({
       message: "Logged in as",
@@ -105,46 +105,57 @@ const deletePartner = async function (req, res) {
 const updatePartner = async function (req, res) {
   const { id } = req.params;
   const { name, email, mobile, password, status, role, address } = req.body;
-  if (req.files && req.files.length > 0) {
-    images = req.files.map((file) => file.location);
-  } else {
-    const user = await Dashboard.findOne({ id });
-    if (user) {
-      images = user.images;
-    }
-  }
-  const updateFields = {};
-  if (name !== undefined && name !== "") updateFields.name = name;
-  if (email !== undefined && email !== "") updateFields.email = email;
-  if (mobile !== undefined && mobile !== "") updateFields.mobile = mobile;
-  if (role !== undefined && role !== "") updateFields.role = role;
-  if (address !== undefined && address !== "") updateFields.address = address;
-  if (images) updateFields.images = images;
-  if (password !== undefined && password !== "")
-    updateFields.password = password;
-  if (status !== undefined && status !== "") updateFields.status = status;
+
+  let images = [];
 
   try {
+    // Check if there are uploaded files
+    if (req.files && req.files.length > 0) {
+      images = req.files.map((file) => file.location);
+    } else {
+      // If no files uploaded, retain existing images from the database
+      const user = await Dashboard.findById(id);
+      if (user) {
+        images = user.images;
+      }
+    }
+
+    const updateFields = {
+      name,
+      email,
+      mobile,
+      password,
+      status,
+      role,
+      address,
+      images,
+    };
+
+    // Validate email uniqueness
     if (updateFields.email) {
       const alreadyRegistered = await Dashboard.findOne({
         email: updateFields.email,
+        _id: { $ne: id }, // Exclude current partner
       });
       if (alreadyRegistered) {
         return res.status(400).json({ message: "Email already registered" });
       }
     }
 
+    // Validate mobile uniqueness
     if (updateFields.mobile) {
       const mobileExist = await Dashboard.findOne({
         mobile: updateFields.mobile,
+        _id: { $ne: id }, // Exclude current partner
       });
       if (mobileExist) {
         return res
           .status(400)
-          .json({ message: "Mobile number is already existed" });
+          .json({ message: "Mobile number already exists" });
       }
     }
 
+    // Perform update operation
     const partnerUpdated = await Dashboard.findByIdAndUpdate(id, updateFields, {
       new: true,
     });
@@ -161,6 +172,7 @@ const updatePartner = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 module.exports = {
   registerUser,
