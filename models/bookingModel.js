@@ -16,13 +16,16 @@ const bookingSchema = new mongoose.Schema(
       required: false,
     },
     user: {
-     type:Object,
+      type: Object,
       required: false,
     },
     hotelName: {
       type: String,
     },
     hotelOwnerName: {
+      type: String,
+    },
+    hotelEmail: {
       type: String,
     },
     checkInDate: {
@@ -55,7 +58,7 @@ const bookingSchema = new mongoose.Schema(
         price: { type: Number },
       },
     ],
-    
+
     numRooms: {
       type: Number,
       required: false,
@@ -99,7 +102,6 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-  
   },
   {
     timestamps: {

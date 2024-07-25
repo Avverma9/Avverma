@@ -1,13 +1,12 @@
 const bookingModel = require("../models/bookingModel");
 const hotelModel = require("../models/Hotel/hotelModel");
-const userModel = require("../models/userModel")
+const userModel = require("../models/userModel");
 const month = require("../models/monthlyPriceModel");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const {
-
       checkInDate,
       checkOutDate,
       guests,
@@ -16,6 +15,7 @@ const createBooking = async (req, res) => {
       roomDetails,
       price,
       hotelName,
+      hotelEmail,
       hotelOwnerName,
       destination,
     } = req.body;
@@ -24,24 +24,29 @@ const createBooking = async (req, res) => {
     const user = await userModel.findOne({ userId: userId });
 
     if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
 
     // Generate a random bookingId
-    const bookingId = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    const bookingId = Math.floor(
+      1000000000 + Math.random() * 9000000000
+    ).toString();
 
     // Create the booking object
     const booking = new bookingModel({
       bookingId,
       user: {
         userId: user.userId,
-        profile:user.images,
+        profile: user.images,
         name: user.userName,
         email: user.email,
         mobile: user.mobile,
       },
       hotelId,
       hotelName,
+      hotelEmail,
       foodDetails,
       numRooms,
       hotelOwnerName,
@@ -61,7 +66,6 @@ const createBooking = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 //=============================================================================
 const perMonthPrice = async function (req, res) {
@@ -121,10 +125,10 @@ const getAll = async (req, res) => {
   res.json(booking);
 };
 //===================================================================
-const getBookingCounts = async function(req,res){
-  const getCount = await bookingModel.countDocuments({})
-  res.json(getCount)
-}
+const getBookingCounts = async function (req, res) {
+  const getCount = await bookingModel.countDocuments({});
+  res.json(getCount);
+};
 
 const getTotalSell = async function (req, res) {
   try {
@@ -132,9 +136,9 @@ const getTotalSell = async function (req, res) {
       {
         $group: {
           _id: null,
-          totalSell: { $sum: '$price' }
-        }
-      }
+          totalSell: { $sum: "$price" },
+        },
+      },
     ]);
 
     // Extract the totalSell value from the result
@@ -142,8 +146,8 @@ const getTotalSell = async function (req, res) {
 
     res.status(200).json({ totalSell });
   } catch (error) {
-    console.error('Error getting total sell:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error getting total sell:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -333,7 +337,7 @@ const getCheckedOut = async (req, res) => {
 const getCheckingBooking = async (req, res) => {
   try {
     const { bookingId } = req.params;
-    const booking = await bookingModel.findOne({ bookingId })
+    const booking = await bookingModel.findOne({ bookingId });
 
     if (!booking) {
       return res
@@ -361,9 +365,9 @@ const updateBooking = async (req, res) => {
 const getAllFilterBookings = async (req, res) => {
   try {
     const { bookingStatus, userId } = req.query;
-    const bookings = await bookingModel.find({ 
-      'user.userId': userId, 
-      bookingStatus 
+    const bookings = await bookingModel.find({
+      "user.userId": userId,
+      bookingStatus,
     });
     if (bookings.length === 0) {
       return res
@@ -379,7 +383,7 @@ const getAllFilterBookings = async (req, res) => {
 
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId, bookingId } = req.query;
+    const { bookingStatus, userId, bookingId, hotelEmail } = req.query;
     const filter = {};
 
     // Include userId and bookingStatus filters if provided
@@ -389,7 +393,9 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (bookingStatus) {
       filter.bookingStatus = bookingStatus;
     }
-
+    if (hotelEmail) {
+      filter.hotelEmail = { $regex: hotelEmail, $options: "i" };
+    }
     // Include bookingId filter if provided
     if (bookingId) {
       filter.bookingId = bookingId;
@@ -406,10 +412,7 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     console.error("Error in getAllFilterBookings:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-}
-
-
-
+};
 
 module.exports = {
   createBooking,
@@ -433,5 +436,5 @@ module.exports = {
   getAll,
   getBookingCounts,
   getTotalSell,
-  getAllFilterBookingsByQuery
+  getAllFilterBookingsByQuery,
 };

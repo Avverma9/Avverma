@@ -37,14 +37,22 @@ const loginUser = async function (req, res) {
   const { email, password } = req.body;
   const emailRegex = new RegExp("^" + email + "$", "i"); // "i" flag for case-insensitive search
 
-  const loggedUser = await Dashboard.findOne({
-    email: emailRegex,
-    password: password,
-  });
+  try {
+    let loggedUser = await Dashboard.findOne({
+      email: emailRegex,
+      password: password,
+    });
 
-  if (!loggedUser) {
-    res.status(400).json({ message: "Something went wrong!" });
-  } else {
+    if (!loggedUser) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+
+    // Check if user status is active
+    if (loggedUser.status !== true) {
+      return res.status(400).json({ message: "User account is not active" });
+    }
+
+    // User is authenticated and active
     res.status(200).json({
       message: "Logged in as",
       loggedUserRole: loggedUser.role,
@@ -54,8 +62,12 @@ const loginUser = async function (req, res) {
       loggedUserName: loggedUser.name,
       loggedUserEmail: loggedUser.email,
     });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 //update status
 const updateStatus = async (req, res) => {
