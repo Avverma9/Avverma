@@ -320,6 +320,7 @@ const BookNow = () => {
         destination: hotelData.city,
         hotelName: hotelData.hotelName,
         hotelOwnerName: hotelData.hotelOwnerName,
+        hotelEmail: hotelData.hotelEmail,
       };
 
       const response = await fetch(
