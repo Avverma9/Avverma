@@ -92,7 +92,7 @@ const signIn = async function (req, res) {
 const totalUser = async function (req, res) {
   try {
     const getall = await userModel.countDocuments({});
-    res.status(200).json({ totalUsers: getall });
+    res.status(200).json(getall);
   } catch (error) {
     console.error("Error fetching total users:", error);
     res.status(500).json({ error: "Internal Server Error" });
