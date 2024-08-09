@@ -76,6 +76,7 @@ const bookingSchema = new mongoose.Schema(
         "Checked-in",
         "Checked-out",
         "No-Show",
+        "Pending"
       ],
       default: "Confirmed",
     },

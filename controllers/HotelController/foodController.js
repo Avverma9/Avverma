@@ -28,4 +28,36 @@ const getFood = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = { createFood, getFood };
+
+const deleteFood = async (req, res) => {
+  try {
+    const { hotelId, foodId } = req.params;
+    console.log(`Deleting food item with ID: ${foodId} from hotel: ${hotelId}`);
+
+    if (!hotelId || !foodId) {
+      return res
+        .status(400)
+        .json({ message: "hotelId and foodId are required" });
+    }
+
+    const updatedHotel = await hotel.findOneAndUpdate(
+      { hotelId },
+      { $pull: { foods: { foodId } } },
+      { new: true }
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Food item deleted successfully", foods });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+
+module.exports = { createFood, getFood, deleteFood };

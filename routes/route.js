@@ -21,8 +21,8 @@ const foods = require("../controllers/HotelController/foodController");
 const amenities = require("../controllers/HotelController/amenitiesController");
 const rooms = require("../controllers/HotelController/roomController");
 //==================================rooms==============================
-router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms);
-router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
+router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
+router.get("/get-list-of/rooms", rooms.getRoomsByHotelId); 
 router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities", amenities.getHotelByAmenities);
@@ -32,12 +32,13 @@ router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
 router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
 
 //===============================foods==========================
-router.post("/add/food-to/your-hotel", upload, foods.createFood);
-router.get("/get/your-hotel-food/:hotelId", foods.getFood);
+router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
+router.get("/get/your-hotel-food/:hotelId", foods.getFood); // on panel
+router.delete("/delete-food/:hotelId/:foodId",foods.deleteFood); // on panel
 //============================Header location==========================================
-router.post("/add-a/travel/location", upload, HeaderLocation.createLocation);
-router.get("/get-all/travel/location", HeaderLocation.getLocation);
-router.delete("/delete-by-id/travel/location/:id", HeaderLocation.deleteById);
+router.post("/add-a/travel/location", upload, HeaderLocation.createLocation); // on panel
+router.get("/get-all/travel/location", HeaderLocation.getLocation); // on panel
+router.delete("/delete-by-id/travel/location/:id", HeaderLocation.deleteById); // on panel
 //================================== COMPLAINT ============================================================
 router.post("/complaint/:id", complaintController.createComplaint);
 router.patch(
@@ -66,7 +67,7 @@ router.get("/welcome/get", welcomeController.getWelcomeUsers);
 router.post("/data/hotels-new/post/upload/data",upload,hotelController.createHotel);
 router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccepted,isOffer
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
-router.get("/get/all/hotels", hotelController.getAllHotels);
+router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);
 router.get("/get/main/get/hotels", hotelController.getHotels);
