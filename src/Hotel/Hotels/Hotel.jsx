@@ -247,7 +247,7 @@ const Hotel = () => {
                         {hotel?.starRating || "N/A"}/5
                       </span>
                       <span className="text-muted ms-2">
-                        {hotel.reviewCount || "0"} Reviews
+                        {hotel?.reviewCount || "0"} Reviews
                       </span>
                     </div>
                     <div style={{ maxHeight: "40px", overflow: "hidden" }}>

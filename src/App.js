@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Hotel/Header";
 import CarouselPage from "./Hotel/CarouselBanner";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import SearchForm from "./Hotel/Search";
 import Offered from "./Hotel/Offered";
 import Footer from "./Hotel/Footer";
@@ -45,7 +47,6 @@ function App() {
           <SearchForm />
           <CarouselPage />
           <Offered />
-
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -58,6 +59,7 @@ function App() {
           </Routes>
           <Bottom />
           <Footer />
+          <ToastContainer /> {/* Add ToastContainer here */}
         </Router>
       </div>
     </LoaderProvider>

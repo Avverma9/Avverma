@@ -27,6 +27,7 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import Alert from "@mui/material/Alert";
+import { collapseToast } from "react-toastify";
 export const ConfirmBooking = ({ toast }) => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [comment, setComment] = useState("");
@@ -140,7 +141,7 @@ export const ConfirmBooking = ({ toast }) => {
         // Optionally, you can reset the comment and rating fields after posting the review
         setComment("");
         setRating(0);
-        // Close the review form
+        alert("Your review has been added")
         setShowReviewForm(false);
       }
     } catch (error) {

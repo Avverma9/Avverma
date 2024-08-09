@@ -109,6 +109,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/joy/Button";
 import "./Booknow.css";
 import baseURL from "../../baseURL";
+import { toast } from "react-toastify";
 
 const BookNow = () => {
   const [hotelData, setHotelData] = useState(null);
@@ -129,7 +130,7 @@ const BookNow = () => {
   const roomsRef = useRef(null);
   const foodsRef = useRef(null);
   const [open, setOpen] = useState(false);
-
+  const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const formatDate = (date) => {
@@ -248,6 +249,13 @@ const BookNow = () => {
     fetchHotelData();
   }, [newhotelId, selectedRooms]);
 
+  useEffect(() => {
+    if (shouldScrollToTop) {
+      window.scrollTo(0, 0); // Scroll to the top when the component mounts or when `shouldScrollToTop` is true
+      setShouldScrollToTop(false); // Reset the flag
+    }
+    fetchHotelData();
+  }, [newhotelId, selectedRooms, shouldScrollToTop]);
   const calculateGuests = (roomsCount) => {
     return roomsCount * 3;
   };
@@ -451,7 +459,7 @@ const BookNow = () => {
       const nextDay = addDays(date, 1);
       setCheckOutDate(nextDay);
     } else {
-      alert("Check-in and Check-out dates cannot be the same.");
+      toast.warning("Check-in and Check-out dates cannot be the same.");
     }
   };
 
@@ -459,7 +467,7 @@ const BookNow = () => {
     if (date.toDateString() !== checkInDate.toDateString()) {
       setCheckOutDate(date);
     } else {
-      alert("Check-in and Check-out dates cannot be the same.");
+      toast.warning("Check-in and Check-out dates cannot be the same.");
     }
   };
 
@@ -908,8 +916,7 @@ const BookNow = () => {
                                 variant="body1"
                                 component="div"
                               >
-                                Add crispy food during your stay{" "}
-                                <LunchDiningTwoToneIcon />
+                                Add Meals <LunchDiningTwoToneIcon />
                               </Typography>
                             </CardContent>
                           </div>
@@ -1270,8 +1277,7 @@ const BookNow = () => {
                           component="div"
                         >
                           <p style={{ fontSize: "12px" }}>
-                            Add crispy food during your stay{" "}
-                            <LunchDiningTwoToneIcon />
+                            Add Meals <LunchDiningTwoToneIcon />
                           </p>
                         </Typography>
                       </CardContent>

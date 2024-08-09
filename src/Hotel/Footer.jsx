@@ -372,7 +372,7 @@ const Footer = () => {
         </div>
         <div className="row">
           <div className="col-md-12 text-center">
-            <p className="footer-copy">© 2013-2022 Oravel Stays Limited</p>
+            <p className="footer-copy">© 2023-2024 Hotel-roomsstay Pvt Limited</p>
           </div>
         </div>
       </div>
