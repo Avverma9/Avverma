@@ -26,7 +26,8 @@ router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
 router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities", amenities.getHotelByAmenities);
-router.post("/create-a-amenities/to-your-hotel", amenities.createAmenity);
+router.post("/create-a-amenities/to-your-hotel", amenities.createAmenity); // on panel
+router.delete("/hotels/:hotelId/amenities/:amenityName", amenities.deleteAmenity); // on panel
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
 router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
@@ -108,9 +109,6 @@ router.get("/get-hotels/by-room/:roomType", hotelController.getByRoom);
 router.get("/get-hotels/count", hotelController.getCount);
 router.get("/get-pending-hotels/count", hotelController.getCountPendingHotels);
 
-//=======================================foods===============================================
-router.post("/:hotelId/foodItems", upload, hotelController.addFoodToHotel);
-router.delete("/:hotelId/foodItems/delete", hotelController.deleteFoods);
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
 router.get("/statesData", stateController.getStateData);

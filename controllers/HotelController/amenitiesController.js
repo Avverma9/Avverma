@@ -50,3 +50,25 @@ exports.getHotelByAmenities = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+//--------------delete specific amenities----------------------------
+exports.deleteAmenity = async (req, res) => {
+  try {
+    const { hotelId, amenityName } = req.params; 
+    const updatedHotel = await hotels.findOneAndUpdate(
+      { hotelId },
+      { $pull: { "amenities.$[].amenities": amenityName } }, // Remove amenityName from all amenities arrays
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Amenity deleted successfully", updatedHotel });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
