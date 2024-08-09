@@ -3,43 +3,91 @@ const reviewModel = require("../models/reviewModel");
 const userModel = require("../models/userModel");
 
 //======================================hotel review============================================
+// const createReview = async (req, res) => {
+//   try {
+//     const { userId, hotelId } = req.params;
+//     const { comment, rating } = req.body;
+
+//     const [user, hotel] = await Promise.all([
+//       userModel.findOne({ userId }),
+//       hotelModel.findOne({ hotelId }),
+//     ]);
+
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
+
+//     if (!hotel) {
+//       return res.status(404).json({ error: 'Hotel not found' });
+//     }    
+//     const review = new reviewModel({
+//       hotelId,
+//       userId,
+//       comment,
+//       rating,
+//       userName: user.userName,
+//       userImage: user.images[0], 
+//       hotelName: hotel.hotelName,
+//       hotelImage: hotel.images[0],
+//     });
+//     const savedReview = await reviewModel.create(review);
+
+//     return res.status(201).json(savedReview);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+
 const createReview = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
     const { comment, rating } = req.body;
 
+    // Fetch user and hotel concurrently
     const [user, hotel] = await Promise.all([
       userModel.findOne({ userId }),
-      hotelModel.findOne({ hotelId }),
+      hotelModel.findOne({ hotelId }), // Use hotelId for hotel lookup
     ]);
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: "User not found" });
     }
 
     if (!hotel) {
-      return res.status(404).json({ error: 'Hotel not found' });
-    }    
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    // Create a new review
     const review = new reviewModel({
       hotelId,
       userId,
       comment,
       rating,
       userName: user.userName,
-      userImage: user.images[0], 
+      userImage: user.images[0],
       hotelName: hotel.hotelName,
       hotelImage: hotel.images[0],
     });
-    const savedReview = await reviewModel.create(review);
 
+    // Save the review
+    const savedReview = await review.save();
+
+    // Increment the reviewCount for the hotel
+    await hotelModel.findOneAndUpdate(
+      { hotelId }, // Query by hotelId
+      { $inc: { reviewCount: 1 } }, // Increment reviewCount by 1
+      { new: true } // Return the updated document
+    );
+
+    // Respond with the saved review
     return res.status(201).json(savedReview);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-
-
 
 //===============================================================================================
 const getReviewsByHotelId = async (req, res) => {

@@ -44,6 +44,9 @@ const hotelsSchema = new mongoose.Schema(
     rating: {
       type: Number,
     },
+    reviewCount: {
+      type: Number,
+    },
     starRating: {
       type: String,
       default: "2",
@@ -56,37 +59,32 @@ const hotelsSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    rooms: 
-      {
-        type: [{}],
-        ref: "rooms",
-      },
-    
-    foods: 
-      {
-        type: [{}],
-        ref: "foods",
-      },
-    
-    amenities: 
-      {
-        type: [{}],
-        ref: "amenities",
-      },
-    
-    policies:
-      {
-        type: [{}],
-        ref: "policies",
-      },
-    localId:String,
+    rooms: {
+      type: [{}],
+      ref: "rooms",
+    },
+
+    foods: {
+      type: [{}],
+      ref: "foods",
+    },
+
+    amenities: {
+      type: [{}],
+      ref: "amenities",
+    },
+
+    policies: {
+      type: [{}],
+      ref: "policies",
+    },
+    localId: String,
     hotelEmail: String,
     generalManagerContact: String,
-    salesManagerContact:String,
-    customerWelcomeNote:String,
-
+    salesManagerContact: String,
+    customerWelcomeNote: String,
   },
-  
+
   { timestamps: true }
 );
 
