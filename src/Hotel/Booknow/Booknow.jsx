@@ -364,7 +364,9 @@ const BookNow = () => {
   if (!path.includes("/book-hotels/")) {
     return null;
   }
-
+const handlePay = ()=>{
+  toast.warning("Currently we are accepting only Pay at Hotel method")
+}
   const amenityIcons = {
     "Continental Breakfast": <FaUtensils />,
     "Room Service": <FaPhone />,
@@ -1107,8 +1109,9 @@ const BookNow = () => {
                     {/* Payment Buttons */}
                     <div className="payment-buttons mt-3">
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         color="primary"
+                     onClick={handlePay}
                         style={{ width: "100%", marginBottom: "10px" }}
                       >
                         Pay Now
@@ -1457,8 +1460,9 @@ const BookNow = () => {
               {/* Payment Buttons */}
               <div className="payment-buttons mt-3">
                 <Button
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
+              onClick={handlePay}
                   style={{ width: "100%", marginBottom: "10px" }}
                 >
                   Pay Now
