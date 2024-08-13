@@ -4,14 +4,24 @@ const { v4: uuidv4 } = require("uuid");
 const createFood = async function (req, res) {
   try {
     const { hotelId, ...foods } = req.body;
-    const foodId = uuidv4().substr(0, 8);
-    const created = { foodId, hotelId, ...foods };
-    await hotel.findOneAndUpdate(
+    const images = req.files.map((file) => file.location); // Assuming req.files is an array of file objects
+    const foodId = uuidv4().substr(0, 8); // Generate a unique foodId
+    const created = { foodId, hotelId, ...foods, images }; // Include images in the created object
+
+    // Update the hotel document
+    const updatedHotel = await hotel.findOneAndUpdate(
       { hotelId },
-      { $push: { foods: created } },
-      { new: true }
+      { $push: { foods: created } }, // Push the new food item into the foods array
+      { new: true } // Return the updated document
     );
-    res.status(201).json({ message: "You have added amenities", created });
+
+    if (updatedHotel) {
+      res
+        .status(201)
+        .json({ message: "Food item added successfully", created });
+    } else {
+      res.status(404).json({ message: "Hotel not found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -50,14 +60,11 @@ const deleteFood = async (req, res) => {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Food item deleted successfully", foods });
+    res.status(200).json({ message: "Food item deleted successfully", foods });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 
 module.exports = { createFood, getFood, deleteFood };
