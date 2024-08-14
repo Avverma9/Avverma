@@ -23,7 +23,8 @@ const rooms = require("../controllers/HotelController/roomController");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
 router.get("/get-list-of/rooms", rooms.getRoomsByHotelId); 
-router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
+router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId); 
+router.delete("/delete-rooms-by-id",rooms.deleteRoomByRoomId) //on panel
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities", amenities.getHotelByAmenities);
 router.post("/create-a-amenities/to-your-hotel", amenities.createAmenity); // on panel

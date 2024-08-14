@@ -97,3 +97,29 @@ exports.updateRoomsByRoomId = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+exports.deleteRoomByRoomId = async (req, res) => {
+  const { roomId } = req.body; // Get roomId from the request parameters
+
+  try {
+    // Find the hotel document that contains the room and remove the room
+    const updatedHotel = await hotelModel.findOneAndUpdate(
+      { "rooms.roomId": roomId }, // Match the hotel document containing the roomId
+      { $pull: { rooms: { roomId: roomId } } }, // Remove the room with the specified roomId
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedHotel) {
+      return res
+        .status(404)
+        .json({ message: "No data found for the provided roomId" });
+    }
+
+    res.json({
+      message: "Room deleted successfully",
+      data: updatedHotel.rooms,
+    });
+  } catch (error) {
+    console.error("Error while deleting room:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
