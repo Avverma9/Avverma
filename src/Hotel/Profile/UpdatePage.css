@@ -1,10 +1,9 @@
 .update-container {
-    
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-    border: 2px solid blue;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  border: 2px solid blue;
   padding: 20px; /* Optional: Add padding for better appearance */
   border-radius: 10px; /* Optional: Add border-radius for rounded corners */
   margin-top: 30px;
-  }
+}

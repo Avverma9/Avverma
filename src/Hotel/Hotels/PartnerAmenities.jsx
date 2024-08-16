@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const AmenitiesPage = () => {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
+  const [existingAmenities, setExistingAmenities] = useState([]);
   const navigate = useNavigate();
   const hotelId = localStorage.getItem("hotelId");
   const handleCheckboxChange = (amenity) => {
@@ -64,7 +65,7 @@ const AmenitiesPage = () => {
     { name: "Spa", id: "spaCheckbox" },
     { name: "Restaurant", id: "restaurantCheckbox" },
     { name: "Conference Room", id: "conferenceRoomCheckbox" },
-    { name: "Wi-Fi(Paid)", id: "wifiCheckbox" },
+    { name: "Wi-Fi Paid", id: "wifiCheckbox" },
     { name: "Parking", id: "parkingCheckbox" },
     { name: "Pet Friendly", id: "petFriendlyCheckbox" },
     { name: "Laundry Service", id: "laundryCheckbox" },
@@ -106,7 +107,7 @@ const AmenitiesPage = () => {
     { name: "Currency Exchange", id: "currencyExchangeCheckbox" },
     { name: "ATM on Site", id: "atmCheckbox" },
     { name: "Gift Shop", id: "giftShopCheckbox" },
-    { name: "Express Check-in/Check-out", id: "expressCheckInCheckbox" },
+    { name: "Express Check-in Check-out", id: "expressCheckInCheckbox" },
     { name: "Tour Desk", id: "tourDeskCheckbox" },
     { name: "Ticket Service", id: "ticketServiceCheckbox" },
     { name: "Luggage Storage", id: "luggageStorageCheckbox" },
@@ -117,15 +118,15 @@ const AmenitiesPage = () => {
     { name: "Outdoor Furniture", id: "outdoorFurnitureCheckbox" },
     { name: "Terrace", id: "terraceCheckbox" },
     { name: "BBQ Facilities", id: "bbqFacilitiesCheckbox" },
-    { name: "Vending Machine (Drinks)", id: "vendingMachineDrinksCheckbox" },
-    { name: "Vending Machine (Snacks)", id: "vendingMachineSnacksCheckbox" },
-    { name: "Special Diet Menus (on request)", id: "specialDietMenusCheckbox" },
+    { name: "Vending Machine Drinks", id: "vendingMachineDrinksCheckbox" },
+    { name: "Vending Machine Snacks", id: "vendingMachineSnacksCheckbox" },
+    { name: "Special Diet Menus on request", id: "specialDietMenusCheckbox" },
     { name: "Packed Lunches", id: "packedLunchesCheckbox" },
 
     { name: "Bar", id: "barCheckbox" },
-    { name: "Wine/Champagne", id: "wineChampagneCheckbox" },
+    { name: "Wine Champagne", id: "wineChampagneCheckbox" },
     { name: "Bottle of Water", id: "bottleOfWaterCheckbox" },
-    { name: "Chocolate/Cookies", id: "chocolateCookiesCheckbox" },
+    { name: "Chocolate Cookies", id: "chocolateCookiesCheckbox" },
     { name: "Kid-Friendly Buffet", id: "kidFriendlyBuffetCheckbox" },
     { name: "Kid Meals", id: "kidMealsCheckbox" },
     { name: "Breakfast in the Room", id: "breakfastInRoomCheckbox" },

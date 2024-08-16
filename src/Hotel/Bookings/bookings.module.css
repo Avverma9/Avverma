@@ -5,24 +5,7 @@
   height: 10vh; /* Adjust the height as needed */
 }
 
-.bookingHeader h4 {
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 1;
-  background: linear-gradient(
-    45deg,
-    #ffbe0b,
-    #fb5607,
-    #ff006e,
-    #8338ec,
-    #3a86ff
-  );
-  
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
+
   .bookingDetails {
     display: flex;
     align-items: flex-start;
@@ -149,56 +132,8 @@
     color: #ea6565 !important;
     font-weight: 700 !important;
   }
-  .selectContainer {
-    margin-top: 10px;
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-  }
+
   
-  .selectOption {
-    font-size: 16px;
-    color: #333;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    padding: 10px;
-    border: 1px solid #5bc7fa;
-    border-radius: 5px;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Hover state */
-  .selectOption:hover {
-    background-color: #f5f5f5;
-  }
-  
-  /* Focus state */
-  .selectOption:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
-  }
-  
-  
-  .selectOption:disabled {
-    opacity: 0.7;
-  }
-  
-  .selectOptionOption {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .selectArrowIcon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-  }
   
   @media print {
     body > * {

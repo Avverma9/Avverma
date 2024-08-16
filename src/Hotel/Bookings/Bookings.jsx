@@ -3,9 +3,8 @@ import { MDBInput } from "mdb-react-ui-kit";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
+import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { Button } from "@mui/material";
-import AlertTitle from "@mui/material/AlertTitle";
-import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import AspectRatio from "@mui/joy/AspectRatio";
 import JoyBox from "@mui/joy/Box";
@@ -22,13 +21,14 @@ import moment from "moment";
 import { useLocation } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
+import { toast } from "react-toastify";
 import baseURL from "../../baseURL";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import Alert from "@mui/material/Alert";
-import { collapseToast } from "react-toastify";
-export const ConfirmBooking = ({ toast }) => {
+import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+
+export const ConfirmBooking = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
@@ -38,7 +38,6 @@ export const ConfirmBooking = ({ toast }) => {
   const location = useLocation();
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
-  const [alertMessage, setAlertMessage] = useState(null);
 
   const handleClose = () => {
     setModalData([]);
@@ -66,25 +65,19 @@ export const ConfirmBooking = ({ toast }) => {
     // Remove the link element after printing
     document.head.removeChild(printStylesheet);
   };
-  const showAlert = (severity, message) => {
-    setAlertMessage({ severity, message });
-  };
-  const handleAlertClose = () => {
-    setAlertMessage(null);
-  };
+
   useEffect(() => {
     const id = localStorage.getItem("userId");
     axios
       .get(`${baseURL}/get/${id}`)
       .then((res) => setUserData(res?.data?.data))
       .catch((error) => {
-        console.error("Error fetching user details:", error);
         const errorMessage =
           error.response && error.response.data && error.response.data.message
             ? error.response.data.message
             : "Error fetching user details";
 
-        showAlert("error", errorMessage);
+        toast.error(errorMessage);
       });
   }, []);
 
@@ -103,15 +96,14 @@ export const ConfirmBooking = ({ toast }) => {
       const bookings = response.data;
       setBookingDetails(bookings);
     } catch (error) {
-      console.error("Error fetching booking details:", error);
       const errorMessage =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
           : "Error fetching booking details";
 
-      showAlert("error", errorMessage);
+      toast.error(errorMessage);
     }
-  }, [selectedStatus, setBookingDetails]);
+  }, [selectedStatus]);
 
   useEffect(() => {
     fetchBookingDetails();
@@ -138,15 +130,18 @@ export const ConfirmBooking = ({ toast }) => {
         }
       );
       if (response.status === 201) {
-        // Optionally, you can reset the comment and rating fields after posting the review
         setComment("");
         setRating(0);
-        alert("Your review has been added")
+        toast.success("Your review has been added");
         setShowReviewForm(false);
       }
     } catch (error) {
-      console.error("Error posting review:", error);
-      // Handle error if needed
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Error posting review";
+
+      toast.error(errorMessage);
     }
   };
 
@@ -165,55 +160,47 @@ export const ConfirmBooking = ({ toast }) => {
           src="https://arkca.com/assets/img/login.gif"
           alt="Login required"
           style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />{" "}
-        {/* Mobile-friendly image size */}
+        />
         <p style={{ marginTop: "10px" }}>
           Unauthorized
           <br />
           Please log in
-        </p>{" "}
-        {/* Clearer message with spacing */}
+        </p>
       </div>
     );
   }
+
   const handleCloseReview = () => {
-    // Reset comment and rating fields
     setComment("");
     setRating(0);
-    // Close the review form
     setShowReviewForm(false);
   };
 
   return (
     <>
-      <Stack sx={{ width: "100%" }} spacing={2}>
-        {alertMessage && (
-          <Alert severity={alertMessage.severity} onClose={handleAlertClose}>
-            <AlertTitle>
-              {alertMessage.severity.charAt(0).toUpperCase() +
-                alertMessage.severity.slice(1)}
-            </AlertTitle>
-            {alertMessage.message}
-          </Alert>
-        )}
-      </Stack>
       <div className={styles.bookingHeader}>
         <h4>Your bookings</h4>
       </div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className={styles.selectOption}
-          >
-            <option value="Confirmed">Confirmed</option>
-            <option value="Failed">Failed</option>
-            <option value="Checked-in">Checked In</option>
-            <option value="Checked-out">Checked Out</option>
-            <option value="Cancelled">Cancelled</option>
-            <option value="No-Show">No show</option>
-          </select>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="status-select-label">Status</InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              label="Status"
+              className={styles.selectOption}
+            >
+              <MenuItem value="Confirmed">Confirmed</MenuItem>
+              <MenuItem value="Failed">Failed</MenuItem>
+              <MenuItem value="Checked-in">Checked In</MenuItem>
+              <MenuItem value="Checked-out">Checked Out</MenuItem>
+              <MenuItem value="Cancelled">Cancelled</MenuItem>
+              <MenuItem value="No-Show">No show</MenuItem>
+            </Select>
+          </FormControl>
         </div>
 
         {bookingDetails && bookingDetails.length > 0 ? (
