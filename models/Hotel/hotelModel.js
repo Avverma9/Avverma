@@ -78,7 +78,11 @@ const hotelsSchema = new mongoose.Schema(
       type: [{}],
       ref: "policies",
     },
-    localId: String,
+    localId: {
+      type:String,
+      enum:["Accepted","Not Accepted"],
+      default: "Accepted"
+    },
     hotelEmail: String,
     generalManagerContact: String,
     salesManagerContact: String,

@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
-const monthPriceSchema = new mongoose.Schema({
+const monthlyPriceSchema = new mongoose.Schema({
   hotelId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "hotels",
+    type: String,
+    required: true,
   },
   monthDate: {
-    type: Date,
+    type: String, 
+    required: true,
   },
-  monthPrice: Number,
+  monthPrice: {
+    type: Number,
+    required: true,
+  },
 });
-module.exports = mongoose.model("monthlyPrice", monthPriceSchema);
+
+module.exports = mongoose.model("MonthlyPrice", monthlyPriceSchema);

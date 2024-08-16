@@ -39,10 +39,6 @@ const getPriceByHotelId = async function (req, res) {
   }
 };
 
-const deleteById = async function (req, res) {
-  const { id } = req.params;
-  const deleteData = await month.findByIdAndDelete(id);
-  res.json({ message: "Successfully deleted" });
-};
 
-module.exports = { newMonth, getPriceByHotelId, deleteById };
+
+module.exports = { newMonth, getPriceByHotelId };
