@@ -1,22 +1,27 @@
-
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const complaintSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "user", 
+    type: String,
+    required: true,
   },
+  regarding: {
+    type: String,
+    enum: ["Booking", "Hotel", "Website"],
+  },
+  hotelName: String,
+  bookingId: String,
+  attachment: [String],
   status: {
     type: String,
     required: true,
-    enum: ["pending", "approved", "rejected"],
+    enum: ["Pending", "Approved", "Rejected", "Resolved"],
+    default: "Pending",
   },
-  complaintDescription: {
+  issue: {
     type: String,
-    required: true
+    required: true,
   },
 });
 
-
-module.exports= mongoose.model("complaint", complaintSchema);
-
+module.exports = mongoose.model("complaint", complaintSchema);

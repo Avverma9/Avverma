@@ -39,6 +39,14 @@ const getPriceByHotelId = async function (req, res) {
   }
 };
 
+const deleteMonth = async (req, res) => {
+  try {
+    const { hotelId } = req.params;
+    const deleteData = await month.findOneAndDelete({ hotelId });
+    return res.status(200).json(`Successfully Deleted ${hotelId} data`);
+  } catch (error) {
+    console.error("Internal Server error ");
+  }
+};
 
-
-module.exports = { newMonth, getPriceByHotelId };
+module.exports = { newMonth, getPriceByHotelId, deleteMonth };

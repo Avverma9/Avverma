@@ -53,8 +53,9 @@ router.delete(
   complaintController.deleteComplaint
 );
 //==============================carousel====================================//
-router.post("/create/second/carousel",upload,carouselController.createFirstCarousel);
-router.get("/get/second/carousel", carouselController.getSecondCarousel);
+router.post("/create/second/carousel",upload,carouselController.createBanner); // on panel
+router.get("/get/second/carousel", carouselController.getBanner); //on panel
+router.delete("/delete/second-carousel-data/:id",upload,carouselController.deleteBanner); // on panel
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
@@ -192,7 +193,7 @@ router.get("/coupon/get/all", couponController.GetAllCoupons);
 //==========================monthly price==========================//
 router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.get("/monthly-set-room-price/get/by/:hotelId", month.getPriceByHotelId);
-// router.delete("/monthly-set-room-price/delete/price/by/:id", month.deleteById);
+router.delete("/monthly-set-room-price/delete/price/by/:hotelId", month.deleteMonth);
 router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
 router.post(
   "/get-hotel-monthly-price-increase/:hotelId",
