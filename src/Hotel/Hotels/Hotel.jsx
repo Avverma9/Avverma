@@ -5,88 +5,35 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GiPerson } from "react-icons/gi";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import { FaElevator } from "react-icons/fa6";
-import { GiDesk } from "react-icons/gi";
 import { useLoader } from "../../utils/loader";
-import { BiSolidDryer } from "react-icons/bi";
-import { LuRefrigerator } from "react-icons/lu";
+import Stack from "@mui/material/Stack";
 import { IconContext } from "react-icons";
 import Typography from "@mui/joy/Typography";
-import CardContent from "@mui/joy/CardContent";
-import {
-  FaWineGlass,
-  FaUtensils,
-  FaPhone,
-  FaCoffee,
-  FaDoorOpen,
-  FaHotTub,
-  FaTv,
-  FaCheckCircle,
-  FaWifi,
-  FaDumbbell,
-  FaShuttleVan,
-  FaSwimmingPool,
-  FaSpa,
-  FaChalkboardTeacher,
-  FaParking,
-  FaDog,
-  FaTshirt,
-  FaBriefcase,
-  FaCouch,
-  FaSnowflake,
-  FaFireAlt,
-  FaShower,
-  FaPhoneAlt,
-  FaBroom,
-  FaSoap,
-  FaSuitcase,
-  FaLock,
-  FaClock,
-  FaThermometer,
-  FaSmokingBan,
-  FaVolumeMute,
-  FaBed,
-  FaWheelchair,
-  FaPlaneDeparture,
-  FaUserFriends,
-  FaCar,
-  FaMoneyBillAlt,
-  FaGift,
-  FaClipboardCheck,
-  FaMapMarkedAlt,
-  FaTicketAlt,
-  FaBookOpen,
-  FaSun,
-  FaLeaf,
-  FaTree,
-  FaChair,
-  FaCity,
-  FaCocktail,
-  FaCandyCane,
-  FaAppleAlt,
-  FaHamburger,
-  FaCookieBite,
-  FaChild,
-  FaBan,
-  FaCarrot,
-  FaMosque,
-  FaStarOfDavid,
-  FaAllergies,
-  FaSmoking,
-} from "react-icons/fa";
-import { MdMicrowave } from "react-icons/md";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { Carousel } from "react-bootstrap";
+import Rating from "@mui/material/Rating";
+import Button from "@mui/joy/Button";
+import {FaCheckCircle} from 'react-icons/fa'
+import Avatar from "@mui/material/Avatar";
+import Chip from "@mui/material/Chip";
+import amenityIcons from "../../utils/amenities";
+import Card from "@mui/joy/Card";
 import Box from "@mui/material/Box";
+import CardContent from "@mui/joy/CardContent";
+import IconButton from "@mui/joy/IconButton";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
+
 
 const Hotel = () => {
   const [hotelData, setHotelData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const { showLoader, hideLoader } = useLoader();
   const navigate = useNavigate();
-    const [page, setPage] = useState(1);
+  const [page, setPage] = useState(1);
   const location = useLocation();
   const queryString = location.search.substring(1); // Remove the leading '?'
   const apiUrl = `${baseURL}/hotels/filters?${queryString}&page=${page}`;
@@ -113,201 +60,269 @@ const Hotel = () => {
   }, [apiUrl]);
   const paths = ["/search/hotels", "/search"];
   if (!paths.includes(location.pathname)) {
-    return (
-     null
-    );
+    return null;
   }
 
   const handleBuy = (hotelID) => {
     navigate(`/book-hotels/${hotelID}`);
   };
- 
 
 
-  const amenityIcons = {
-    "Continental Breakfast": <FaUtensils />,
-    "Room Service": <FaPhone />,
-    "Coffee Maker": <FaCoffee />,
-    Balcony: <FaDoorOpen />,
-    Jacuzzi: <FaHotTub />,
-    TV: <FaTv />,
-    "Free Wi-Fi": <FaWifi />,
-    Gym: <FaDumbbell />,
-    "24-Hour Front Desk": <FaShuttleVan />,
-    "Shuttle Service": <FaShuttleVan />,
-    Pool: <FaSwimmingPool />,
-    "Fitness Center": <FaDumbbell />,
-    Spa: <FaSpa />,
-    Restaurant: <FaUtensils />,
-    "Conference Room": <FaChalkboardTeacher />,
-    "Wi-Fi(Paid)": <FaWifi />,
-    Parking: <FaParking />,
-    "Pet Friendly": <FaDog />,
-    "Laundry Service": <FaTshirt />,
-    "Business Center": <FaBriefcase />,
-    "Lounge Area": <FaCouch />,
-    "Air Conditioning": <FaSnowflake />,
-    "Barbecue Area": <FaFireAlt />,
-    "Ensuite Bathroom": <FaShower />,
-    Telephone: <FaPhoneAlt />,
-    "Daily Housekeeping": <FaBroom />,
-    "Complimentary Toiletries": <FaSoap />,
-    Closet: <FaSuitcase />,
-    "Iron and Ironing Board": <FaTshirt />,
-    "Hair Dryer": <BiSolidDryer />,
-    Safe: <FaLock />,
-    "Mini Fridge": <LuRefrigerator />,
-    Microwave: <MdMicrowave />,
-    Desk: <GiDesk />,
-    "Wake-up Service": <FaClock />,
-    Heating: <FaThermometer />,
-    "Cable Channels": <FaTv />,
-    "Non-Smoking Rooms": <FaSmokingBan />,
-    "Soundproof Rooms": <FaVolumeMute />,
-    "Family Rooms": <FaBed />,
-    Elevator: <FaElevator />,
-    "Wheelchair Accessible": <FaWheelchair />,
-    "Airport Shuttle": <FaPlaneDeparture />,
-    "Concierge Service": <FaUserFriends />,
-    "Valet Parking": <FaCar />,
-    "Currency Exchange": <FaMoneyBillAlt />,
-    "ATM on Site": <FaMoneyBillAlt />,
-    "Gift Shop": <FaGift />,
-    "Express Check-in/Check-out": <FaClipboardCheck />,
-    "Tour Desk": <FaMapMarkedAlt />,
-    "Ticket Service": <FaTicketAlt />,
-    "Luggage Storage": <FaSuitcase />,
-    Library: <FaBookOpen />,
-    "Sun Terrace": <FaSun />,
-    Garden: <FaLeaf />,
-    "Picnic Area": <FaTree />,
-    "Outdoor Furniture": <FaChair />,
-    Terrace: <FaCity />,
-    "BBQ Facilities": <FaFireAlt />,
-    "Vending Machine (Drinks)": <FaCocktail />,
-    "Vending Machine (Snacks)": <FaCandyCane />,
-    "Special Diet Menus (on request)": <FaAppleAlt />,
-    "Packed Lunches": <FaHamburger />,
-    Bar: <FaCocktail />,
-    "Wine/Champagne": <FaWineGlass />,
-    "Bottle of Water": <FaCocktail />,
-    "Chocolate/Cookies": <FaCookieBite />,
-    "Kid-Friendly Buffet": <FaChild />,
-    "Kid Meals": <FaChild />,
-    "Breakfast in the Room": <FaUtensils />,
-    "Restaurant Buffet": <FaUtensils />,
-    "Snack Bar": <FaUtensils />,
-    Fruit: <FaAppleAlt />,
-    "Buffet Breakfast": <FaUtensils />,
-    "Gluten-Free Options": <FaBan />,
-    "Vegetarian Options": <FaCarrot />,
-    "Vegan Options": <FaLeaf />,
-    "Halal Options": <FaMosque />,
-    "Kosher Options": <FaStarOfDavid />,
-    "Allergy-Free Room": <FaAllergies />,
-    "Designated Smoking Area": <FaSmoking />,
-    "Non-Smoking Throughout": <FaSmokingBan />,
-    Kitchen: <FaUtensils />,
-  };
   const defaultIcon = <DoneAllIcon />;
   return (
-    <div className="container mt-4">
-      {hotelData && hotelData.length > 0 ? (
-        <div className="row border p-3 bg-white">
+    <>
+      <div className="container mt-4 d-block d-md-none">
+        <hr />
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
           {hotelData.map((hotel, index) => (
-            <React.Fragment key={index}>
-              <div className="col-md-12 mb-4">
-                <div className="row">
-                  <div className="col-md-4">
-                    <img
-                      src={
-                        hotel?.images?.[0]
-                          ? hotel.images[0]
-                          : "https://via.placeholder.com/300x200"
-                      }
-                      alt="Hotel"
-                      className="img-fluid rounded"
+            <div key={index} className="col mb-3">
+              <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
+                <div>
+                  {hotel?.rooms?.[0]?.price <
+                    hotel?.rooms?.[0]?.originalPrice && (
+                    <div
                       style={{
-                        width: "100%",
-                        height: "300px",
-                        objectFit: "cover",
+                        position: "absolute",
+                        top: "0.5rem",
+                        right: ".5rem",
                       }}
-                    />
-                  </div>
-                  <div className="col-md-5">
-                    <h4>{hotel.hotelName}</h4>
-                    <p className="text-muted">
-                      {hotel.city}, {hotel.state}
-                    </p>
-                    <span className="badge bg-warning text-dark">
-                      100% Safe Place to Stay™
-                    </span>
-                    <div className="mt-2">
-                      <span className="badge bg-primary">
-                        {hotel?.starRating || "N/A"}/5
-                      </span>
-                      <span className="text-muted ms-2">
-                        {hotel?.reviewCount || "0"} Reviews
-                      </span>
+                    >
+                      <Stack direction="row" spacing={1}>
+                        <Chip
+                          label={`Get ${hotel?.rooms?.[0]?.offerPriceLess}% less`}
+                          color="success"
+                          variant="filled"
+                          avatar={
+                            <Avatar
+                              alt="Off"
+                              src="/static/images/avatar/1.jpg"
+                            />
+                          }
+                        />
+                      </Stack>
                     </div>
-                    <div style={{ maxHeight: "40px", overflow: "hidden" }}>
-                      {/* Amenities Section */}
-                      <CardContent
-                        style={{ maxHeight: "40px", overflow: "hidden" }}
-                      >
-                        {/* Amenities Section */}
-                        {hotel.amenities.map((amenity, amenityIndex) => (
-                          <div
-                            key={amenityIndex}
+                  )}
+
+                  <br />
+                  <Typography level="title-sm">{hotel.hotelName}</Typography>
+                  <Typography level="body-xs">
+                    {" "}
+                    <FmdGoodIcon />
+                    {hotel.city}, {hotel.state}
+                  </Typography>
+                  <IconButton
+                    aria-label="bookmark Bahamas Islands"
+                    variant="plain"
+                    color="neutral"
+                    size="sm"
+                    sx={{ position: "absolute", top: "0.5rem", left: ".5rem" }}
+                  >
+                    <Box
+                      key={hotel._id}
+                      sx={{
+                        "& > legend": { mt: 2 },
+                      }}
+                    >
+                      <Rating
+                        name="hotel-rating"
+                        value={hotel?.starRating}
+                        readOnly
+                      />
+                    </Box>
+                  </IconButton>
+                </div>
+                <Carousel>
+                  {hotel.images.map((image, i) => (
+                    <Carousel.Item key={i}>
+                      <img
+                        src={image}
+                        className="d-block w-100"
+                        alt=""
+                        style={{ height: "150px", objectFit: "cover" }}
+                      />
+                    </Carousel.Item>
+                  ))}
+                </Carousel>
+                <CardContent style={{ maxHeight: "30px", overflow: "hidden" }}>
+                  {/* Amenities Section */}
+                  {hotel.amenities.map((amenity, amenityIndex) => (
+                    <div
+                      key={amenityIndex}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        maxHeight: "30px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {amenity?.amenities
+                        ?.slice(0, 5)
+                        .map((singleAmenity, singleAmenityIndex) => (
+                          <Typography
+                            key={singleAmenityIndex}
+                            level="body-xs"
                             style={{
-                              display: "flex",
-                              flexDirection: "row",
-                              flexWrap: "wrap",
+                              margin: "5px",
+                              whiteSpace: "nowrap",
                               maxHeight: "30px",
                               overflow: "hidden",
+                              textOverflow: "ellipsis",
                             }}
                           >
-                            {amenity?.amenities
-                              ?.slice(0, 4)
-                              .map((singleAmenity, singleAmenityIndex) => (
-                                <Typography
-                                  key={singleAmenityIndex}
-                                  level="body-xs"
-                                  style={{
-                                    margin: "5px",
-                                    whiteSpace: "nowrap",
-                                    maxHeight: "30px",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                >
-                                  <IconContext.Provider
-                                    value={{ size: "1.2em" }}
-                                  >
-                                    {amenityIcons[singleAmenity] || defaultIcon}
-                                  </IconContext.Provider>{" "}
-                                  {singleAmenity}
-                                </Typography>
-                              ))}
-                          </div>
+                            <IconContext.Provider value={{ size: "1.2em" }}>
+                              {amenityIcons[singleAmenity] || defaultIcon}
+                            </IconContext.Provider>{" "}
+                            {singleAmenity}
+                          </Typography>
                         ))}
-                      </CardContent>
                     </div>
-
-                    <a href="#" className="text-primary mt-2 d-block">
-                      + all other amenities
-                    </a>
-                    <p className="mt-2">
-                      {hotel.description || "No description available."}
-                    </p>
-                    <div className="mt-2">
-                      <GiPerson /> {hotel.peopleLooking || 0} people looking
-                      right now
-                    </div>
+                  ))}
+                </CardContent>
+                <CardContent orientation="horizontal">
+                  <div>
+                    <Typography level="body-xs">Price:</Typography>
+                    <Typography fontSize="sm" fontWeight="lg">
+                      <CurrencyRupeeIcon /> {hotel.price}
+                    </Typography>
                   </div>
+                </CardContent>
+                <Button
+                  variant="solid"
+                  size="sm"
+                  color="primary"
+                  aria-label="Explore Bahamas Islands"
+                  sx={{ ml: "auto", alignSelf: "center", fontWeight: 600 }}
+                  onClick={() => handleBuy(hotel.hotelId)}
+                >
+                  View details
+                </Button>
+              </Card>
+            </div>
+          ))}
+        </div>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(event, value) => setPage(value)}
+            renderItem={(item) => (
+              <PaginationItem
+                component="a"
+                {...item}
+                onClick={(event) => {
+                  if (
+                    item.type !== "start-ellipsis" &&
+                    item.type !== "end-ellipsis"
+                  ) {
+                    setPage(item.page);
+                  }
+                }}
+              />
+            )}
+            shape="rounded"
+            size="large"
+          />
+        </Box>
+      </div>
+      <div className="container mt-4 d-none d-sm-block">
+        {hotelData && hotelData.length > 0 ? (
+          <div className="row border p-3 bg-white">
+            {hotelData.map((hotel, index) => (
+              <React.Fragment key={index}>
+                <div className="col-md-12 mb-4">
+                  <div className="row">
+                    <div className="col-md-4">
+                      <img
+                        src={
+                          hotel?.images?.[0]
+                            ? hotel.images[0]
+                            : "https://via.placeholder.com/300x200"
+                        }
+                        alt="Hotel"
+                        className="img-fluid rounded"
+                        style={{
+                          width: "100%",
+                          height: "300px",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                    <div className="col-md-5">
+                      <h4>{hotel.hotelName}</h4>
+                      <p className="text-muted">
+                        {hotel.city}, {hotel.state}
+                      </p>
+                      <span className="badge bg-warning text-dark">
+                        100% Safe Place to Stay™
+                      </span>
+                      <div className="mt-2">
+                        <span className="badge bg-primary">
+                          {hotel?.starRating || "N/A"}/5
+                        </span>
+                        <span className="text-muted ms-2">
+                          {hotel?.reviewCount || "0"} Reviews
+                        </span>
+                      </div>
+                      <div style={{ maxHeight: "40px", overflow: "hidden" }}>
+                        {/* Amenities Section */}
+                        <CardContent
+                          style={{ maxHeight: "40px", overflow: "hidden" }}
+                        >
+                          {/* Amenities Section */}
+                          {hotel.amenities.map((amenity, amenityIndex) => (
+                            <div
+                              key={amenityIndex}
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                flexWrap: "wrap",
+                                maxHeight: "30px",
+                                overflow: "hidden",
+                              }}
+                            >
+                              {amenity?.amenities
+                                ?.slice(0, 4)
+                                .map((singleAmenity, singleAmenityIndex) => (
+                                  <Typography
+                                    key={singleAmenityIndex}
+                                    level="body-xs"
+                                    style={{
+                                      margin: "5px",
+                                      whiteSpace: "nowrap",
+                                      maxHeight: "30px",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                    }}
+                                  >
+                                    <IconContext.Provider
+                                      value={{ size: "1.2em" }}
+                                    >
+                                      {amenityIcons[singleAmenity] ||
+                                        defaultIcon}
+                                    </IconContext.Provider>{" "}
+                                    {singleAmenity}
+                                  </Typography>
+                                ))}
+                            </div>
+                          ))}
+                        </CardContent>
+                      </div>
 
-                  <div className="col-md-3 text-center">
-                    {/* {hotel.policies &&
+                      <a href="#" className="text-primary mt-2 d-block">
+                        + all other amenities
+                      </a>
+                      <p className="mt-2">
+                        {hotel.description || "No description available."}
+                      </p>
+                      <div className="mt-2">
+                        <GiPerson /> {hotel.peopleLooking || 0} people looking
+                        right now
+                      </div>
+                    </div>
+
+                    <div className="col-md-3 text-center">
+                      {/* {hotel.policies &&
                       hotel.policies.map((policy, policyIndex) => (
                         <ul key={policyIndex} className="list-unstyled">
                           {policy.cancellationPolicy && (
@@ -324,87 +339,88 @@ const Hotel = () => {
                           )}
                         </ul>
                       ))} */}
-                    <ul className="list-unstyled">
-                      <li>
-                        <FaCheckCircle className="text-success" /> Free
-                        Cancellation
-                      </li>
-                      <li>
-                        <FaCheckCircle className="text-success" /> FREE
-                        Breakfast
-                      </li>
-                      <li>
-                        <FaCheckCircle className="text-success" />{" "}
-                        {hotel?.policies?.paymentMode}
-                      </li>
-                    </ul>
-                    <p className="text-muted text-decoration-line-through">
-                      ₹{hotel.originalPrice || "N/A"}
-                    </p>
-                    <p className="text-danger">
-                      {hotel.discount
-                        ? `${hotel.discount}% off`
-                        : "No discount"}
-                    </p>
-                    <h3>
-                      ₹{hotel.price || "N/A"}{" "}
-                      <small className="text-muted">/night</small>
-                    </h3>
-                    <p className="text-muted">for 1 Room (Ex. GST)</p>
-                    <button
-                      className="btn btn-warning btn-block text-white"
-                      onClick={() => handleBuy(hotel.hotelId)}
-                    >
-                      Select Rooms
-                    </button>
+                      <ul className="list-unstyled">
+                        <li>
+                          <FaCheckCircle className="text-success" /> Free
+                          Cancellation
+                        </li>
+                        <li>
+                          <FaCheckCircle className="text-success" /> FREE
+                          Breakfast
+                        </li>
+                        <li>
+                          <FaCheckCircle className="text-success" />{" "}
+                          {hotel?.policies?.paymentMode}
+                        </li>
+                      </ul>
+                      <p className="text-muted text-decoration-line-through">
+                        ₹{hotel.originalPrice || "N/A"}
+                      </p>
+                      <p className="text-danger">
+                        {hotel.discount
+                          ? `${hotel.discount}% off`
+                          : "No discount"}
+                      </p>
+                      <h3>
+                        ₹{hotel.price || "N/A"}{" "}
+                        <small className="text-muted">/night</small>
+                      </h3>
+                      <p className="text-muted">for 1 Room (Ex. GST)</p>
+                      <button
+                        className="btn btn-warning btn-block text-white"
+                        onClick={() => handleBuy(hotel.hotelId)}
+                      >
+                        Select Rooms
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <hr />
-            </React.Fragment>
-          ))}
-        </div>
-      ) : (
-        <div className="text-center">
-          <img
-            src="https://www.waadaa.insure/images/not_found.gif"
-            alt="No Hotels Found"
-            className="img-fluid"
-            style={{
-              maxWidth: "600px",
-              width: "100%",
-              height: "auto",
-              margin: "0 auto",
-            }}
-          />
-          <h3 className="mt-4">No Hotels Found</h3>
-          <p>Please try again later or adjust your search criteria.</p>
-        </div>
-      )}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(event, value) => setPage(value)}
-          renderItem={(item) => (
-            <PaginationItem
-              component="a"
-              {...item}
-              onClick={(event) => {
-                if (
-                  item.type !== "start-ellipsis" &&
-                  item.type !== "end-ellipsis"
-                ) {
-                  setPage(item.page);
-                }
+                <hr />
+              </React.Fragment>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center">
+            <img
+              src="https://www.waadaa.insure/images/not_found.gif"
+              alt="No Hotels Found"
+              className="img-fluid"
+              style={{
+                maxWidth: "600px",
+                width: "100%",
+                height: "auto",
+                margin: "0 auto",
               }}
             />
-          )}
-          shape="rounded"
-          size="large"
-        />
-      </Box>
-    </div>
+            <h3 className="mt-4">No Hotels Found</h3>
+            <p>Please try again later or adjust your search criteria.</p>
+          </div>
+        )}
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={(event, value) => setPage(value)}
+            renderItem={(item) => (
+              <PaginationItem
+                component="a"
+                {...item}
+                onClick={(event) => {
+                  if (
+                    item.type !== "start-ellipsis" &&
+                    item.type !== "end-ellipsis"
+                  ) {
+                    setPage(item.page);
+                  }
+                }}
+              />
+            )}
+            shape="rounded"
+            size="large"
+          />
+        </Box>
+      </div>
+    </>
   );
 };
 

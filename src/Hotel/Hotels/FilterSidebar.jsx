@@ -229,7 +229,7 @@ const FilterSidebar = () => {
             </Typography>
           </Stack>
           <Typography variant="subtitle1" gutterBottom>
-            Filter by Amenities:
+            Amenities:
           </Typography>
           <FormGroup>
             {amenityItems
@@ -267,7 +267,7 @@ const FilterSidebar = () => {
           </FormGroup>
           <Divider />
           <Typography variant="subtitle1" gutterBottom>
-            Filter by Room Type:
+            Room Type:
           </Typography>
           <FormGroup>
             {roomTypes
@@ -299,7 +299,7 @@ const FilterSidebar = () => {
           </FormGroup>
           <Divider />
           <Typography variant="subtitle1" gutterBottom>
-            Filter by Property Type:
+            Property Type:
           </Typography>
           <FormGroup>
             {propertyTypes
@@ -335,7 +335,7 @@ const FilterSidebar = () => {
           </FormGroup>
           <Divider />
           <Typography variant="subtitle1" gutterBottom>
-            Filter by Bed Type:
+            Bed Type:
           </Typography>
           <FormGroup>
             {bedTypes.slice(0, showMoreBedTypes ? undefined : 7).map((type) => (
@@ -365,7 +365,7 @@ const FilterSidebar = () => {
           </FormGroup>
           <Divider />
           <Typography variant="subtitle1" gutterBottom>
-            Filter by Star Rating:
+           Star Rating:
           </Typography>
           <FormGroup>
             {starRatings

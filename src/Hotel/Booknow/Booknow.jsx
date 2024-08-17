@@ -2,20 +2,15 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Face4TwoToneIcon from "@mui/icons-material/Face4TwoTone";
-import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
-import MeetingRoomTwoToneIcon from "@mui/icons-material/MeetingRoomTwoTone";
 import PlaceIcon from "@mui/icons-material/Place";
 import Carousel from "react-bootstrap/Carousel";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
-import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
-import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Rating from "@mui/material/Rating";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import amenityIcons from "../../utils/amenities";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { useLoader } from "../../utils/loader";
@@ -24,92 +19,26 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import ConfirmationNumberTwoToneIcon from "@mui/icons-material/ConfirmationNumberTwoTone";
-import { FaPlus, FaMinus } from "react-icons/fa";
 import { format, addDays } from "date-fns";
-import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea, CardActions, Grid } from "@mui/material";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IconContext } from "react-icons";
-import StarHalfIcon from "@mui/icons-material/StarHalf";
-import { FaElevator } from "react-icons/fa6";
-import { GiDesk } from "react-icons/gi";
-import { BiSolidDryer } from "react-icons/bi";
-import { LuRefrigerator } from "react-icons/lu";
-import { FaWineGlass } from "react-icons/fa";
-import {
-  FaUtensils,
-  FaPhone,
-  FaCoffee,
-  FaDoorOpen,
-  FaHotTub,
-  FaTv,
-  FaWifi,
-  FaDumbbell,
-  FaShuttleVan,
-  FaSwimmingPool,
-  FaSpa,
-  FaChalkboardTeacher,
-  FaParking,
-  FaDog,
-  FaTshirt,
-  FaBriefcase,
-  FaCouch,
-  FaSnowflake,
-  FaFireAlt,
-  FaShower,
-  FaPhoneAlt,
-  FaBroom,
-  FaSoap,
-  FaSuitcase,
-  FaLock,
-  FaClock,
-  FaThermometer,
-  FaSmokingBan,
-  FaVolumeMute,
-  FaBed,
-  FaWheelchair,
-  FaPlaneDeparture,
-  FaUserFriends,
-  FaCar,
-  FaMoneyBillAlt,
-  FaGift,
-  FaClipboardCheck,
-  FaMapMarkedAlt,
-  FaTicketAlt,
-  FaBookOpen,
-  FaSun,
-  FaLeaf,
-  FaTree,
-  FaChair,
-  FaCity,
-  FaCocktail,
-  FaCandyCane,
-  FaAppleAlt,
-  FaHamburger,
-  FaCookieBite,
-  FaChild,
-  FaBan,
-  FaCarrot,
-  FaMosque,
-  FaStarOfDavid,
-  FaAllergies,
-  FaSmoking,
-} from "react-icons/fa";
-import { MdMicrowave, MdOutlineNetworkCheck } from "react-icons/md";
+
+import { FaBed } from "react-icons/fa";
+
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import Button from "@mui/joy/Button";
 import "./Booknow.css";
 import baseURL from "../../baseURL";
 import { toast } from "react-toastify";
+import Policies from "./policies";
+import BookingDetails from "./bookingDetails";
+import Rooms from "./rooms";
+import Foods from "./foods";
 
 const BookNow = () => {
   const [hotelData, setHotelData] = useState(null);
@@ -364,93 +293,8 @@ const BookNow = () => {
   if (!path.includes("/book-hotels/")) {
     return null;
   }
-const handlePay = ()=>{
-  toast.warning("Currently we are accepting only Pay at Hotel method")
-}
-  const amenityIcons = {
-    "Continental Breakfast": <FaUtensils />,
-    "Room Service": <FaPhone />,
-    "Coffee Maker": <FaCoffee />,
-    Balcony: <FaDoorOpen />,
-    Jacuzzi: <FaHotTub />,
-    TV: <FaTv />,
-    "Free Wi-Fi": <FaWifi />,
-    Gym: <FaDumbbell />,
-    "24-Hour Front Desk": <FaShuttleVan />,
-    "Shuttle Service": <FaShuttleVan />,
-    Pool: <FaSwimmingPool />,
-    "Fitness Center": <FaDumbbell />,
-    Spa: <FaSpa />,
-    Restaurant: <FaUtensils />,
-    "Conference Room": <FaChalkboardTeacher />,
-    "Wi-Fi(Paid)": <FaWifi />,
-    Parking: <FaParking />,
-    "Pet Friendly": <FaDog />,
-    "Laundry Service": <FaTshirt />,
-    "Business Center": <FaBriefcase />,
-    "Lounge Area": <FaCouch />,
-    "Air Conditioning": <FaSnowflake />,
-    "Barbecue Area": <FaFireAlt />,
-    "Ensuite Bathroom": <FaShower />,
-    Telephone: <FaPhoneAlt />,
-    "Daily Housekeeping": <FaBroom />,
-    "Complimentary Toiletries": <FaSoap />,
-    Closet: <FaSuitcase />,
-    "Iron and Ironing Board": <FaTshirt />,
-    "Hair Dryer": <BiSolidDryer />,
-    Safe: <FaLock />,
-    "Mini Fridge": <LuRefrigerator />,
-    Microwave: <MdMicrowave />,
-    Desk: <GiDesk />,
-    "Wake-up Service": <FaClock />,
-    Heating: <FaThermometer />,
-    "Cable Channels": <FaTv />,
-    "Non-Smoking Rooms": <FaSmokingBan />,
-    "Soundproof Rooms": <FaVolumeMute />,
-    "Family Rooms": <FaBed />,
-    Elevator: <FaElevator />,
-    "Wheelchair Accessible": <FaWheelchair />,
-    "Airport Shuttle": <FaPlaneDeparture />,
-    "Concierge Service": <FaUserFriends />,
-    "Valet Parking": <FaCar />,
-    "Currency Exchange": <FaMoneyBillAlt />,
-    "ATM on Site": <FaMoneyBillAlt />,
-    "Gift Shop": <FaGift />,
-    "Express Check-in/Check-out": <FaClipboardCheck />,
-    "Tour Desk": <FaMapMarkedAlt />,
-    "Ticket Service": <FaTicketAlt />,
-    "Luggage Storage": <FaSuitcase />,
-    Library: <FaBookOpen />,
-    "Sun Terrace": <FaSun />,
-    Garden: <FaLeaf />,
-    "Picnic Area": <FaTree />,
-    "Outdoor Furniture": <FaChair />,
-    Terrace: <FaCity />,
-    "BBQ Facilities": <FaFireAlt />,
-    "Vending Machine (Drinks)": <FaCocktail />,
-    "Vending Machine (Snacks)": <FaCandyCane />,
-    "Special Diet Menus (on request)": <FaAppleAlt />,
-    "Packed Lunches": <FaHamburger />,
-    Bar: <FaCocktail />,
-    "Wine/Champagne": <FaWineGlass />,
-    "Bottle of Water": <FaCocktail />,
-    "Chocolate/Cookies": <FaCookieBite />,
-    "Kid-Friendly Buffet": <FaChild />,
-    "Kid Meals": <FaChild />,
-    "Breakfast in the Room": <FaUtensils />,
-    "Restaurant Buffet": <FaUtensils />,
-    "Snack Bar": <FaUtensils />,
-    Fruit: <FaAppleAlt />,
-    "Buffet Breakfast": <FaUtensils />,
-    "Gluten-Free Options": <FaBan />,
-    "Vegetarian Options": <FaCarrot />,
-    "Vegan Options": <FaLeaf />,
-    "Halal Options": <FaMosque />,
-    "Kosher Options": <FaStarOfDavid />,
-    "Allergy-Free Room": <FaAllergies />,
-    "Designated Smoking Area": <FaSmoking />,
-    "Non-Smoking Throughout": <FaSmokingBan />,
-    Kitchen: <FaUtensils />,
+  const handlePay = () => {
+    toast.warning("Currently we are accepting only Pay at Hotel method");
   };
 
   const defaultIcon = <FaBed />;
@@ -567,6 +411,29 @@ const handlePay = ()=>{
           </div>{" "}
           <div className="extras">
             <p>{hotelData?.description}</p>
+            <BookingDetails
+              selectedFood={selectedFood}
+              selectedRooms={selectedRooms}
+              roomsCount={roomsCount}
+              guestsCount={guestsCount}
+              checkInDate={checkInDate}
+              checkOutDate={checkOutDate}
+              handleAddFood={handleAddFood}
+              handleRemoveFood={handleRemoveFood}
+              handleAddRoom={handleAddRoom}
+              handleRemoveRoom={handleRemoveRoom}
+              handleIncrementRooms={handleIncrementRooms}
+              handleDecrementRooms={handleDecrementRooms}
+              handleIncrementGuests={handleIncrementGuests}
+              handleDecrementGuests={handleDecrementGuests}
+              handleCheckInDateChange={handleCheckInDateChange}
+              handleCheckOutDateChange={handleCheckOutDateChange}
+              scrollToFood={scrollToFood}
+              scrollToRooms={scrollToRooms}
+              calculateTotalPrice={calculateTotalPrice}
+              handlePay={handlePay}
+              handleBookNow={handleBookNow}
+            />
           </div>
           <div className="extras">
             <div className="amenities-container">
@@ -681,804 +548,19 @@ const handlePay = ()=>{
           >
             <div className="container-fluid">
               <div className="row">
-                {/* Booking details */}
-
-                {/* Special rooms  desktop view*/}
-                <div className="col-md-8 d-none d-sm-block">
-                  <div className="container mt-3">
-                    <div style={{ maxWidth: "100%", overflowX: "auto" }}>
-                      <Grid container spacing={4}>
-                        {hotelData?.rooms?.map((room, index) => (
-                          <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
-                            <div style={{ marginBottom: "20px" }}>
-                              <Card sx={{ width: "100%" }}>
-                                <CardMedia
-                                  component="img"
-                                  height="130px"
-                                  style={{ objectFit: "cover", width: "100%" }}
-                                  src={
-                                    room.images && room.images.length > 0
-                                      ? room.images[0]
-                                      : hotelData?.images[0]
-                                  }
-                                  alt={`Room ${index + 1} Image 1`}
-                                />
-                                <CardContent>
-                                  <Typography
-                                    gutterBottom
-                                    variant="subtitle2"
-                                    component="div"
-                                  >
-                                    {room.type}
-                                  </Typography>
-                                  <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                  >
-                                    Bed: {room.bedTypes}
-                                    <BedOutlinedIcon
-                                      style={{
-                                        fontSize: "small",
-                                        verticalAlign: "middle",
-                                        marginLeft: "5px",
-                                      }}
-                                    />
-                                  </Typography>
-                                  <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                  >
-                                    Price:{" "}
-                                    <CurrencyRupeeIcon
-                                      style={{
-                                        fontSize: "small",
-                                        verticalAlign: "middle",
-                                      }}
-                                    />
-                                    {room.price}
-                                  </Typography>
-                                </CardContent>
-                                <CardActions>
-                                  {selectedRooms.find(
-                                    (selected) => selected._id === room._id
-                                  ) ? (
-                                    <Button
-                                      size="small"
-                                      color="secondary"
-                                      onClick={() => handleRemoveRoom(room)}
-                                    >
-                                      Remove
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      size="small"
-                                      color="primary"
-                                      onClick={() => handleAddRoom(room)}
-                                    >
-                                      Select
-                                    </Button>
-                                  )}
-                                </CardActions>
-                              </Card>
-                            </div>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </div>
-                  </div>
-                </div>
-
-                {/* mobile view section for special rooms  */}
-                <div className="col-md-4 d-block d-md-none">
-                  <div className="container mt-3">
-                    <Grid container spacing={2}>
-                      {hotelData?.rooms?.map((room, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
-                          <Card sx={{ display: "flex" }}>
-                            <CardMedia
-                              component="img"
-                              height="150px"
-                              style={{ objectFit: "cover", width: "120px" }} // Set width explicitly
-                              src={
-                                room.images && room.images.length > 0
-                                  ? room.images[0]
-                                  : hotelData?.images[0]
-                              }
-                              alt={`Room ${index + 1} Image 1`}
-                            />
-
-                            <CardContent sx={{ flex: "1 0 auto" }}>
-                              <Typography
-                                gutterBottom
-                                variant="subtitle2"
-                                component="div"
-                              >
-                                {room.type}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Bed: {room.bedTypes}
-                                <BedOutlinedIcon
-                                  style={{
-                                    fontSize: "small",
-                                    verticalAlign: "middle",
-                                    marginLeft: "5px",
-                                  }}
-                                />
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="text.secondary"
-                              >
-                                Price:{" "}
-                                <CurrencyRupeeIcon
-                                  style={{
-                                    fontSize: "small",
-                                    verticalAlign: "middle",
-                                  }}
-                                />
-                                {room.price}
-                              </Typography>
-                              <CardActions>
-                                {selectedRooms.find(
-                                  (selected) => selected._id === room._id
-                                ) ? (
-                                  <Button
-                                    size="small"
-                                    color="secondary"
-                                    onClick={() => handleRemoveRoom(room)}
-                                  >
-                                    Remove
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    size="small"
-                                    color="primary"
-                                    onClick={() => handleAddRoom(room)}
-                                  >
-                                    Select
-                                  </Button>
-                                )}
-                              </CardActions>
-                            </CardContent>
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
-                </div>
-                {/* end of special rooms mobile view */}
-                {/* For desktop view */}
-                <div className="col-md-4 d-none d-sm-block">
-                  <div
-                    className="booking-details-container"
-                    style={{
-                      position: "sticky",
-                      top: "0",
-                      width: "100%",
-                      zIndex: "1000",
-                      padding: "20px",
-                      backgroundColor: "#fff",
-                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <h5>
-                      {" "}
-                      <ConfirmationNumberTwoToneIcon /> Booking Details{" "}
-                    </h5>
-                    <hr />
-
-                    {/* Selected Food */}
-                    <div
-                      className="selected-container"
-                      style={{
-                        marginBottom: "20px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ flex: 1 }}>
-                        {selectedFood.length > 0 ? (
-                          <div>
-                            <CardContent>
-                              {selectedFood.map((selected, index) => (
-                                <div
-                                  key={index}
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                  }}
-                                >
-                                  <Typography
-                                    gutterBottom
-                                    variant="body1"
-                                    component="div"
-                                  >
-                                    {selected.quantity} {selected.name}
-                                  </Typography>
-                                  <Button
-                                    size="small"
-                                    color="secondary"
-                                    onClick={() => handleRemoveFood(selected)}
-                                  >
-                                    Remove
-                                  </Button>
-                                </div>
-                              ))}
-                            </CardContent>
-                          </div>
-                        ) : (
-                          <div style={{ height: "50px" }}>
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="body1"
-                                component="div"
-                              >
-                                Add Meals <LunchDiningTwoToneIcon />
-                              </Typography>
-                            </CardContent>
-                          </div>
-                        )}
-                      </div>
-
-                      <Button
-                        variant="outlined"
-                        color="danger"
-                        style={{ marginLeft: "10px", flexShrink: 0 }}
-                        onClick={scrollToFood}
-                      >
-                        <DriveFileRenameOutlineIcon />
-                      </Button>
-                    </div>
-
-                    {/* Selected Rooms */}
-                    <div
-                      className="selected-container"
-                      style={{
-                        marginBottom: "20px",
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
-                      <div style={{ flex: 1 }}>
-                        {selectedRooms?.map((selected, index) => (
-                          <div
-                            key={index}
-                            style={{ height: "50px", marginRight: "10px" }}
-                          >
-                            <CardContent>
-                              <Typography
-                                gutterBottom
-                                variant="body1"
-                                component="div"
-                              >
-                                {selected.type} & {selected.bedTypes}{" "}
-                                <BedOutlinedIcon />
-                              </Typography>
-                            </CardContent>
-                          </div>
-                        ))}
-                      </div>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        style={{ marginLeft: "10px" }}
-                        onClick={scrollToRooms}
-                      >
-                        <DriveFileRenameOutlineIcon />
-                      </Button>
-                    </div>
-
-                    {/* Rooms and Guests */}
-
-                    <hr />
-                    <label
-                      style={{
-                        fontFamily: "Arial, sans-serif",
-                        fontSize: "14px",
-                        color: "#555",
-                        fontWeight: "bold",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      Rooms <MeetingRoomTwoToneIcon />& Guests{" "}
-                      <Face4TwoToneIcon />
-                    </label>
-
-                    <div className="date-selection mt-3">
-                      <div
-                        className="check-in"
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={handleDecrementRooms}
-                          style={{ minWidth: "25px" }} // Adjusted min width
-                        >
-                          <FaMinus />
-                        </button>
-                        <input
-                          type="number"
-                          className="form-control"
-                          style={{ width: "90px", textAlign: "center" }} // Center align input
-                          placeholder="Rooms"
-                          value={roomsCount}
-                          readOnly
-                        />
-                        <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={handleIncrementRooms}
-                          style={{ minWidth: "25px" }} // Adjusted min width
-                        >
-                          <FaPlus />
-                        </button>
-                      </div>
-                      <div
-                        className="check-out"
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={handleDecrementGuests}
-                          style={{ minWidth: "25px" }} // Adjusted min width
-                        >
-                          <FaMinus />
-                        </button>
-                        <input
-                          type="number"
-                          className="form-control"
-                          style={{ width: "90px", textAlign: "center" }} // Center align input
-                          placeholder="Guests"
-                          value={guestsCount}
-                          readOnly
-                        />
-                        <button
-                          className="btn btn-outline-secondary"
-                          type="button"
-                          onClick={handleIncrementGuests}
-                          style={{ minWidth: "25px" }} // Adjusted min width
-                        >
-                          <FaPlus />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Date Selection */}
-                    <hr />
-                    <div className="container mt-3">
-                      <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
-                        <div className="check-in">
-                          <p>
-                            Check-in <InventoryTwoToneIcon />
-                          </p>
-                          <DatePicker
-                            selected={checkInDate}
-                            onChange={handleCheckInDateChange}
-                            dateFormat="d MMMM yyyy"
-                            placeholderText={formatDate(checkInDate)}
-                            selectsStart
-                            startDate={checkInDate}
-                            endDate={checkOutDate}
-                            onChangeRaw={(e) => e.preventDefault()}
-                            className="datepicker-input"
-                          />
-                        </div>
-                        <div className="check-out">
-                          <p>
-                            Check-out <InventoryTwoToneIcon />
-                          </p>
-                          <DatePicker
-                            selected={checkOutDate}
-                            onChange={handleCheckOutDateChange}
-                            dateFormat="d MMMM yyyy"
-                            placeholderText={formatDate(checkOutDate)}
-                            selectsEnd
-                            startDate={checkInDate}
-                            endDate={checkOutDate}
-                            onChangeRaw={(e) => e.preventDefault()}
-                            className="datepicker-input"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <p>Total Price </p>
-                    {/* Total Price */}
-                    <div
-                      className="total-price mt-3"
-                      style={{ marginTop: "3rem" }}
-                    >
-                      <h3
-                        style={{
-                          fontSize: "1.5rem",
-                          color: "red",
-                          fontFamily: "Arial, sans-serif",
-                        }}
-                      >
-                        <CurrencyRupeeIcon />
-                        {calculateTotalPrice()}
-                      </h3>
-                    </div>
-
-                    {/* Payment Buttons */}
-                    <div className="payment-buttons mt-3">
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                     onClick={handlePay}
-                        style={{ width: "100%", marginBottom: "10px" }}
-                      >
-                        Pay Now
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        style={{ width: "100%" }}
-                        onClick={handleBookNow}
-                      >
-                        Pay at Hotel
-                      </Button>
-                    </div>
-                  </div>
-                </div>
+                {/* Special rooms  view*/}
+                <Rooms
+                  hotelData={hotelData}
+                  selectedRooms={selectedRooms}
+                  handleAddRoom={handleAddRoom}
+                  handleRemoveRoom={handleRemoveRoom}
+                />
+                {/* end of special rooms  view */}
               </div>
             </div>
           </div>
-          {/* booking details end */}
           {/* foods section */}
-          <h6
-            style={{
-              color: "#333",
-              fontFamily: "Arial, sans-serif",
-              fontSize: "16px",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
-              padding: "10px",
-            }}
-            ref={foodsRef}
-          >
-            Add Meals During Your Stay
-          </h6>
-          <div
-            className="extras"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-          >
-            {hotelData?.foods.map((foodArray, index) => (
-              <Card key={index} sx={{ width: 500 }}>
-                <CardActionArea style={{ display: "flex" }}>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    width="100px"
-                    src={
-                      foodArray.images && foodArray.images.length > 0
-                        ? foodArray.images[0]
-                        : hotelData?.images[0]
-                    }
-                    alt={`Food ${index + 1} Image 1`}
-                  />
-                  <CardContent style={{ flex: "1 0 auto" }}>
-                    <Typography
-                      gutterBottom
-                      variant="subtitle2"
-                      component="div"
-                    >
-                      {foodArray.name}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      style={{ fontSize: "0.7rem" }}
-                    >
-                      About: {foodArray.about}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      style={{ fontSize: "0.7rem" }}
-                    >
-                      Price: <CurrencyRupeeIcon style={{ fontSize: "small" }} />
-                      {foodArray.price}
-                      <CardActions>
-                        <Button
-                          size="small"
-                          color="danger"
-                          onClick={() => handleAddFood(foodArray)}
-                        >
-                          Add +1
-                        </Button>
-                      </CardActions>
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            ))}
-          </div>
-          {/* for mobile view */}
-          <div className="col-md-4 d-block d-md-none">
-            <div
-              className="booking-details-container"
-              style={{
-                position: "sticky",
-                top: "0",
-                width: "100%",
-                zIndex: "1000",
-                padding: "20px",
-                backgroundColor: "#fff",
-                boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                borderRadius: "20px",
-              }}
-            >
-              <h5 style={{ marginBottom: "20px" }}>
-                <ConfirmationNumberTwoToneIcon /> Booking Details{" "}
-              </h5>
-              <hr />
-
-              {/* Selected Food */}
-              <div
-                className="selected-container"
-                style={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  {selectedFood.length > 0 ? (
-                    <div
-                      style={{
-                        marginBottom: "10px",
-                        height: "50px",
-                        overflow: "auto",
-                      }}
-                    >
-                      <CardContent>
-                        {selectedFood.map((selected, index) => (
-                          <div
-                            key={index}
-                            style={{
-                              display: "flex",
-                              justifyContent: "space-between",
-                              marginBottom: "5px",
-                            }}
-                          >
-                            <Typography
-                              gutterBottom
-                              variant="body1"
-                              component="div"
-                            >
-                              <p style={{ fontSize: "12px" }}>
-                                {" "}
-                                {selected.quantity} {selected.name}{" "}
-                              </p>
-                            </Typography>
-                            <Button
-                              style={{ fontSize: "9px" }}
-                              size="small"
-                              color="secondary"
-                              onClick={() => handleRemoveFood(selected)}
-                            >
-                              Remove
-                            </Button>
-                          </div>
-                        ))}
-                      </CardContent>
-                    </div>
-                  ) : (
-                    <div style={{ height: "50px" }}>
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="body1"
-                          component="div"
-                        >
-                          <p style={{ fontSize: "12px" }}>
-                            Add Meals <LunchDiningTwoToneIcon />
-                          </p>
-                        </Typography>
-                      </CardContent>
-                    </div>
-                  )}
-                </div>
-
-                <Button
-                  variant="outlined"
-                  color="danger"
-                  style={{ marginLeft: "10px", flexShrink: 0 }}
-                  onClick={scrollToFood}
-                >
-                  <DriveFileRenameOutlineIcon />
-                </Button>
-              </div>
-
-              {/* Selected Rooms */}
-              <div
-                className="selected-container"
-                style={{
-                  marginBottom: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  {selectedRooms.map((selected, index) => (
-                    <div
-                      key={index}
-                      style={{ height: "50px", marginRight: "10px" }}
-                    >
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="body1"
-                          component="div"
-                        >
-                          <p style={{ fontSize: "12px" }}>
-                            {selected.type} & {selected.bedTypes}{" "}
-                            <BedOutlinedIcon />
-                          </p>
-                        </Typography>
-                      </CardContent>
-                    </div>
-                  ))}
-                </div>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginLeft: "10px" }}
-                  onClick={scrollToRooms}
-                >
-                  <DriveFileRenameOutlineIcon />
-                </Button>
-              </div>
-
-              {/* Rooms and Guests */}
-
-              <hr />
-
-              <label>
-                Rooms <MeetingRoomTwoToneIcon /> & Guests <Face4TwoToneIcon />
-              </label>
-              <div className="date-selection mt-3">
-                <div
-                  className="check-in"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={handleDecrementRooms}
-                    style={{ minWidth: "25px" }} // Adjusted min width
-                  >
-                    <FaMinus />
-                  </button>
-                  <input
-                    type="number"
-                    className="form-control"
-                    style={{ width: "50px", textAlign: "center" }} // Center align input
-                    placeholder="Rooms"
-                    value={roomsCount}
-                    readOnly
-                  />
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={handleIncrementRooms}
-                    style={{ minWidth: "25px" }} // Adjusted min width
-                  >
-                    <FaPlus />
-                  </button>
-                </div>
-                <div
-                  className="check-out"
-                  style={{ display: "flex", alignItems: "center" }}
-                >
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={handleDecrementGuests}
-                    style={{ minWidth: "25px" }} // Adjusted min width
-                  >
-                    <FaMinus />
-                  </button>
-                  <input
-                    type="number"
-                    className="form-control"
-                    style={{ width: "50px", textAlign: "center" }} // Center align input
-                    placeholder="Guests"
-                    value={guestsCount}
-                    readOnly
-                  />
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    onClick={handleIncrementGuests}
-                    style={{ minWidth: "25px" }} // Adjusted min width
-                  >
-                    <FaPlus />
-                  </button>
-                </div>
-              </div>
-              {/* Date Selection */}
-              <hr />
-              <div className="container mt-3">
-                <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
-                  <div className="check-in">
-                    <p>
-                      Check-in <InventoryTwoToneIcon />
-                    </p>
-                    <DatePicker
-                      selected={checkInDate}
-                      onChange={handleCheckInDateChange}
-                      dateFormat="d MMMM yyyy"
-                      placeholderText={formatDate(checkInDate)}
-                      selectsStart
-                      startDate={checkInDate}
-                      endDate={checkOutDate}
-                      onChangeRaw={(e) => e.preventDefault()}
-                      className="datepicker-input"
-                    />
-                  </div>
-                  <div className="check-out">
-                    <p>
-                      Check-out <InventoryTwoToneIcon />
-                    </p>
-                    <DatePicker
-                      selected={checkOutDate}
-                      onChange={handleCheckOutDateChange}
-                      dateFormat="d MMMM yyyy"
-                      placeholderText={formatDate(checkOutDate)}
-                      selectsEnd
-                      startDate={checkInDate}
-                      endDate={checkOutDate}
-                      onChangeRaw={(e) => e.preventDefault()}
-                      className="datepicker-input"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Total Price */}
-              <div className="total-price mt-3" style={{ marginTop: "3rem" }}>
-                <h3
-                  style={{
-                    fontSize: "1.5rem",
-                    color: "red",
-                    fontFamily: "Arial, sans-serif",
-                  }}
-                >
-                  <CurrencyRupeeIcon /> {calculateTotalPrice()}
-                </h3>
-              </div>
-
-              {/* Payment Buttons */}
-              <div className="payment-buttons mt-3">
-                <Button
-                  variant="outlined"
-                  color="primary"
-              onClick={handlePay}
-                  style={{ width: "100%", marginBottom: "10px" }}
-                >
-                  Pay Now
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ width: "100%" }}
-                  onClick={handleBookNow}
-                >
-                  Pay at Hotel
-                </Button>
-              </div>
-            </div>
-          </div>
-          <hr />
+          <Foods hotelData={hotelData} handleAddFood={handleAddFood} />
           <React.Fragment>
             <div
               style={{
@@ -1520,50 +602,11 @@ const handlePay = ()=>{
                 <CloseIcon />
               </IconButton>
               <DialogContent dividers>
-                {hotelData?.policies.map((policy, index) => (
-                  <React.Fragment key={index}>
-                    <Typography
-                      gutterBottom
-                      sx={{ fontSize: isSmallScreen ? "0.8rem" : "inherit" }}
-                    >
-                      <p>Local ID- {hotelData?.localId}</p>
-                      <hr />
-                      <p>Hotel's Policy - {policy.hotelsPolicy}</p>
-                      <hr />
-                      <div className="checkIn-policy">
-                        <p>Check In Policy - {policy.checkInPolicy}</p>
-                        <p>Check Out Policy - {policy.checkOutPolicy}</p>
-                      </div>
-                      <hr />
-                      <p>Outside Food Policy: {policy.outsideFoodPolicy}</p>
-                      <hr />
-                      <p>Cancellation Policy: {policy.cancellationPolicy}</p>
-                      <hr />
-                      <p>Payment Mode - {policy.paymentMode}</p>
-                      <hr />
-                      <p>Pets Allowed - {policy.petsAllowed}</p>
-                      <hr />
-                      <p>Bachelor Allowed - {policy.bachelorAllowed}</p>
-                      <hr />
-                      <p>Smoking Allowed - {policy.smokingAllowed}</p>
-                      <hr />
-                      <p>Alcohol Allowed - {policy.alcoholAllowed}</p>
-                      <hr />
-                      <p>
-                        Unmarried Couples Allowed -{" "}
-                        {policy.unmarriedCouplesAllowed}
-                      </p>
-                      <hr />
-                      <p>
-                        International Guest Allowed -{" "}
-                        {policy.internationalGuestAllowed}
-                      </p>
-                      <hr />
-                      <p>Return Policy - {policy.returnPolicy}</p>
-                      <hr />
-                    </Typography>
-                  </React.Fragment>
-                ))}
+                <Policies
+                  hotelData={hotelData}
+                  policies={hotelData.policies}
+                  isSmallScreen={isSmallScreen}
+                />
               </DialogContent>
               <DialogActions>
                 <Button autoFocus onClick={handleClose}>
