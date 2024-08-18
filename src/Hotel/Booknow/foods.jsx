@@ -21,57 +21,56 @@ const Foods = ({ hotelData, handleAddFood }) => {
           textTransform: "uppercase",
           backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
           padding: "10px",
+          marginBottom: "20px",
         }}
       >
         Add Meals During Your Stay
       </h6>
       <div
         className="extras"
-        style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+        style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
       >
         {hotelData?.foods.map((foodArray, index) => (
-          <Card key={index} sx={{ width: 500 }}>
-            <CardActionArea style={{ display: "flex" }}>
+          <Card
+            key={index}
+            sx={{ width: 240, borderRadius: 0, overflow: "hidden" }}
+          >
+            <CardActionArea>
               <CardMedia
                 component="img"
-                height="140"
-                width="100px"
+                height="160"
+                width="100%"
                 src={
                   foodArray.images && foodArray.images.length > 0
                     ? foodArray.images[0]
                     : hotelData?.images[0]
                 }
                 alt={`Food ${index + 1} Image 1`}
+                style={{ objectFit: "cover" }}
               />
-              <CardContent style={{ flex: "1 0 auto" }}>
+              <CardContent>
                 <Typography gutterBottom variant="subtitle2" component="div">
                   {foodArray.name}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  style={{ fontSize: "0.7rem" }}
-                >
-                  About: {foodArray.about}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  style={{ fontSize: "0.7rem" }}
+                  style={{ fontSize: "0.875rem" }}
                 >
                   Price: <CurrencyRupeeIcon style={{ fontSize: "small" }} />
                   {foodArray.price}
                 </Typography>
-                <CardActions>
-                  <Button
-                    size="small"
-                    color="error"
-                    onClick={() => handleAddFood(foodArray)}
-                  >
-                    Add +1
-                  </Button>
-                </CardActions>
               </CardContent>
+              <CardActions style={{ justifyContent: "center", padding: "8px" }}>
+                <Button
+                  size="small"
+                  color="error"
+                  style={{ width: "100px", height: "30px" }}
+                  onClick={() => handleAddFood(foodArray)}
+                >
+                  Select
+                </Button>
+              </CardActions>
             </CardActionArea>
           </Card>
         ))}

@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+
 import "./Booknow.css";
 const Rooms = ({
   hotelData,
@@ -19,24 +20,28 @@ const Rooms = ({
   return (
     <div>
       {/* Special rooms desktop view */}
-      <div className="col-md-8 d-none d-sm-block">
-        <div className="container mt-3">
+      <div className="col-md-13 d-none d-sm-block">
+        <div className="container mt-6">
           <div style={{ maxWidth: "100%" }}>
             <Grid container spacing={4}>
               {hotelData?.rooms?.map((room, index) => (
-                <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
                   <div style={{ marginBottom: "20px" }}>
-                    <Card sx={{ width: "100%" }}>
+                    <Card sx={{ width: "100%", borderRadius: "0" }}>
                       <CardMedia
                         component="img"
-                        height="130px"
-                        style={{ objectFit: "cover", width: "100%" }}
+                        className="card-media-image" // Apply the CSS class
                         src={
                           room.images && room.images.length > 0
                             ? room.images[0]
                             : hotelData?.images[0]
                         }
                         alt={`Room ${index + 1} Image 1`}
+                        style={{
+                          width: "100%",
+                          height: "200px", // Set fixed height
+                          objectFit: "cover", // Ensure image covers the area without distortion
+                        }}
                       />
                       <CardContent>
                         <Typography

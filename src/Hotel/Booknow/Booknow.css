@@ -2,8 +2,6 @@
 .extras{
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #e9e2e2;
-  background-color: #ffffff;
 }
 .price {
   color: red;
@@ -248,16 +246,13 @@
 }
 
 /* Hide booking details container on screens smaller than 992px */
-@media (max-width: 991px) {
-  .booking-details-container {
-    display: none;
-  }
-}
+
 
 .checkIn,
 .checkOut {
   margin-bottom: 20px;
 }
+
 
 .selected-cotainer {
   display: flex;
@@ -376,4 +371,43 @@
 .form-control:focus {
   border-color: #007bff; /* Added focus border color */
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Added focus shadow */
+}
+.container-fluid {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Align children to the start and end of the container */
+  gap: 20px; /* Adjust spacing between the columns */
+}
+
+.row {
+  display: flex;
+  flex: 1; /* Allow row to take up full available space */
+}
+
+.rooms {
+  flex: 2; /* Adjust this to control the width of the Rooms component */
+  padding: 10px; /* Add padding for spacing inside the Rooms component */
+  border: 1px solid #ddd; /* Optional: Add a border for visual separation */
+}
+
+.booking-details {
+  flex: 1; /* Adjust this to control the width of the BookingDetails component */
+  padding: 10px; /* Add padding for spacing inside the BookingDetails component */
+
+}
+/* Add these styles to your CSS file */
+.datepicker-input {
+  width: 120px; /* Adjust width as needed */
+  font-size: 0.8rem; /* Adjust font size as needed */
+}
+
+
+.check-in p, .check-out p {
+  margin: 0;
+  font-size: 0.8rem; /* Adjust font size */
+}
+
+.datepicker-container {
+  display: flex;
+  flex-direction: column;
 }

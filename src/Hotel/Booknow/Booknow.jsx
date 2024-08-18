@@ -80,20 +80,22 @@ const BookNow = () => {
   };
 
   const handleAddFood = (food) => {
-    const existingFood = selectedFood.find(
+    // Check if the food item is already selected
+    const existingFoodIndex = selectedFood.findIndex(
       (selected) => selected._id === food._id
     );
 
-    if (existingFood) {
-      const updatedFood = selectedFood.map((selected) =>
-        selected._id === food._id
-          ? { ...selected, quantity: selected.quantity + 1 }
-          : selected
+    if (existingFoodIndex !== -1) {
+      // If the food item is already selected, replace it with the new one
+      const updatedFood = selectedFood.map((item, index) =>
+        index === existingFoodIndex ? { ...food, quantity: 1 } : item
       );
       setSelectedFood(updatedFood);
     } else {
+      // If the food item is not already selected, add it to the list
       setSelectedFood([...selectedFood, { ...food, quantity: 1 }]);
     }
+    toast.info(`One ${food.name} is added`);
   };
 
   const handleRemoveFood = (food) => {
@@ -107,21 +109,9 @@ const BookNow = () => {
 
     setSelectedFood(updatedFood);
   };
-
   const handleAddRoom = (room) => {
-    setSelectedRooms((prevSelectedRooms) => {
-      const existingRoomIndex = prevSelectedRooms.findIndex(
-        (selected) => selected._id === room._id
-      );
-
-      if (existingRoomIndex !== -1) {
-        return prevSelectedRooms.filter(
-          (selected) => selected._id !== room._id
-        );
-      } else {
-        return [...prevSelectedRooms, room];
-      }
-    });
+    setSelectedRooms([room]); // Replace the previously selected room with the new one
+    toast.info(`${room.type} is selected`); // Show toast notification
   };
 
   const handleRemoveRoom = (room) => {
@@ -410,30 +400,7 @@ const BookNow = () => {
             </div>
           </div>{" "}
           <div className="extras">
-            <p>{hotelData?.description}</p>
-            <BookingDetails
-              selectedFood={selectedFood}
-              selectedRooms={selectedRooms}
-              roomsCount={roomsCount}
-              guestsCount={guestsCount}
-              checkInDate={checkInDate}
-              checkOutDate={checkOutDate}
-              handleAddFood={handleAddFood}
-              handleRemoveFood={handleRemoveFood}
-              handleAddRoom={handleAddRoom}
-              handleRemoveRoom={handleRemoveRoom}
-              handleIncrementRooms={handleIncrementRooms}
-              handleDecrementRooms={handleDecrementRooms}
-              handleIncrementGuests={handleIncrementGuests}
-              handleDecrementGuests={handleDecrementGuests}
-              handleCheckInDateChange={handleCheckInDateChange}
-              handleCheckOutDateChange={handleCheckOutDateChange}
-              scrollToFood={scrollToFood}
-              scrollToRooms={scrollToRooms}
-              calculateTotalPrice={calculateTotalPrice}
-              handlePay={handlePay}
-              handleBookNow={handleBookNow}
-            />
+            <p>{hotelData?.customerWelcomeNote}</p>
           </div>
           <div className="extras">
             <div className="amenities-container">
@@ -528,6 +495,10 @@ const BookNow = () => {
             </div>
           </div>
           {/* Rooms */}
+          <div ref={foodsRef}>
+            {" "}
+            <Foods hotelData={hotelData} handleAddFood={handleAddFood} />
+          </div>
           <h6
             style={{
               color: "#333",
@@ -548,19 +519,45 @@ const BookNow = () => {
           >
             <div className="container-fluid">
               <div className="row">
-                {/* Special rooms  view*/}
-                <Rooms
-                  hotelData={hotelData}
-                  selectedRooms={selectedRooms}
-                  handleAddRoom={handleAddRoom}
-                  handleRemoveRoom={handleRemoveRoom}
-                />
-                {/* end of special rooms  view */}
+                {/* Special rooms view */}
+                <div className="rooms" ref={roomsRef}>
+                  <Rooms
+                    hotelData={hotelData}
+                    selectedRooms={selectedRooms}
+                    handleAddRoom={handleAddRoom}
+                    handleRemoveRoom={handleRemoveRoom}
+                  />
+                </div>
+
+                <div className="booking-details">
+                  <BookingDetails
+                    selectedFood={selectedFood}
+                    selectedRooms={selectedRooms}
+                    roomsCount={roomsCount}
+                    guestsCount={guestsCount}
+                    checkInDate={checkInDate}
+                    checkOutDate={checkOutDate}
+                    handleAddFood={handleAddFood}
+                    handleRemoveFood={handleRemoveFood}
+                    handleAddRoom={handleAddRoom}
+                    handleRemoveRoom={handleRemoveRoom}
+                    handleIncrementRooms={handleIncrementRooms}
+                    handleDecrementRooms={handleDecrementRooms}
+                    handleIncrementGuests={handleIncrementGuests}
+                    handleDecrementGuests={handleDecrementGuests}
+                    handleCheckInDateChange={handleCheckInDateChange}
+                    handleCheckOutDateChange={handleCheckOutDateChange}
+                    scrollToFood={scrollToFood}
+                    scrollToRooms={scrollToRooms}
+                    calculateTotalPrice={calculateTotalPrice}
+                    handlePay={handlePay}
+                    handleBookNow={handleBookNow}
+                  />
+                </div>
               </div>
             </div>
           </div>
           {/* foods section */}
-          <Foods hotelData={hotelData} handleAddFood={handleAddFood} />
           <React.Fragment>
             <div
               style={{
