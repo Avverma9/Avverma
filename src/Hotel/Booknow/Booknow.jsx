@@ -62,18 +62,6 @@ const BookNow = () => {
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const formatDate = (date) => {
-    if (!date) return "";
-
-    const day = date.getDate();
-    const month = date.toLocaleString("default", { month: "long" });
-    const year = date.getFullYear();
-
-    const suffixes = ["th", "st", "nd", "rd"];
-    const suffix = day % 10 <= 3 ? suffixes[day % 10] : suffixes[0];
-
-    return `${day}${suffix} ${month} ${year}`;
-  };
 
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
@@ -191,13 +179,6 @@ const BookNow = () => {
     }
   };
 
-  const handleGuestsChange = (event) => {
-    const newGuestsCount = parseInt(event.target.value);
-    const validGuestsCount = newGuestsCount > 0 ? newGuestsCount : 1;
-    setGuestsCount(validGuestsCount);
-    const newRoomsCount = Math.ceil(validGuestsCount / 3);
-    setRoomsCount(newRoomsCount);
-  };
 
   const handleIncrementGuests = () => {
     setGuestsCount(guestsCount + 1);

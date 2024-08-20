@@ -39,114 +39,47 @@ export const ConfirmBooking = () => {
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
 
-  const handleClose = () => {
-    setModalData([]);
-    setShow(false);
-  };
-
-  const handleShow = (value) => {
-    setModalData(value);
-    setShow(true);
-  };
-
-  const handlePrint = () => {
-    // Create a link element for the print stylesheet
-    const printStylesheet = document.createElement("link");
-    printStylesheet.rel = "stylesheet";
-    printStylesheet.type = "text/css";
-    printStylesheet.href = "path-to-your-print-stylesheet.css";
-
-    // Append the link element to the head of the document
-    document.head.appendChild(printStylesheet);
-
-    // Trigger the print window
-    window.print();
-
-    // Remove the link element after printing
-    document.head.removeChild(printStylesheet);
-  };
-
+  // Fetch user data and booking details
   useEffect(() => {
-    const id = localStorage.getItem("userId");
-    axios
-      .get(`${baseURL}/get/${id}`)
-      .then((res) => setUserData(res?.data?.data))
-      .catch((error) => {
-        const errorMessage =
-          error.response && error.response.data && error.response.data.message
-            ? error.response.data.message
-            : "Error fetching user details";
-
-        toast.error(errorMessage);
-      });
-  }, []);
-
-  const fetchBookingDetails = useCallback(async () => {
-    const userId = localStorage.getItem("userId");
-    try {
-      const response = await axios.get(
-        `${baseURL}/get/all/users-filtered/booking/by`,
-        {
-          params: {
-            bookingStatus: selectedStatus,
-            userId: userId,
-          },
+    const fetchData = async () => {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          throw new Error("You are not logged in!");
         }
-      );
-      const bookings = response.data;
-      setBookingDetails(bookings);
-    } catch (error) {
-      const errorMessage =
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Error fetching booking details";
 
-      toast.error(errorMessage);
-    }
+        // Fetch user data
+        const userResponse = await axios.get(`${baseURL}/get/${userId}`);
+        setUserData(userResponse.data.data);
+
+        // Fetch booking details
+        const bookingsResponse = await axios.get(
+          `${baseURL}/get/all/users-filtered/booking/by`,
+          {
+            params: {
+              bookingStatus: selectedStatus,
+              userId: userId,
+            },
+          }
+        );
+        setBookingDetails(bookingsResponse.data);
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "Error fetching data";
+        toast.error(errorMessage);
+      }
+    };
+
+    fetchData();
   }, [selectedStatus]);
-
-  useEffect(() => {
-    fetchBookingDetails();
-  }, [fetchBookingDetails, selectedStatus]);
 
   if (location.pathname !== "/bookings") {
     return null;
   }
 
-  const handleReview = (hotelId) => {
-    localStorage.setItem("hotelId_review", hotelId);
-    setShowReviewForm(true);
-  };
-
-  const postReview = async () => {
-    const userId = localStorage.getItem("userId");
-    const hotelId = localStorage.getItem("hotelId_review");
-    try {
-      const response = await axios.post(
-        `${baseURL}/reviews/${userId}/${hotelId}`,
-        {
-          comment: comment,
-          rating: rating,
-        }
-      );
-      if (response.status === 201) {
-        setComment("");
-        setRating(0);
-        toast.success("Your review has been added");
-        setShowReviewForm(false);
-      }
-    } catch (error) {
-      const errorMessage =
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "Error posting review";
-
-      toast.error(errorMessage);
-    }
-  };
-
-  const userId = localStorage.getItem("userId");
-  if (!userId) {
+  if (!userData) {
     return (
       <div
         style={{
@@ -169,6 +102,53 @@ export const ConfirmBooking = () => {
       </div>
     );
   }
+
+  const handleShow = (value) => {
+    setModalData(value);
+    setShow(true);
+  };
+
+  const handleClose = () => {
+    setModalData([]);
+    setShow(false);
+  };
+
+  const handlePrint = () => {
+    const printStylesheet = document.createElement("link");
+    printStylesheet.rel = "stylesheet";
+    printStylesheet.type = "text/css";
+    printStylesheet.href = "path-to-your-print-stylesheet.css";
+
+    document.head.appendChild(printStylesheet);
+    window.print();
+    document.head.removeChild(printStylesheet);
+  };
+
+  const handleReview = (hotelId) => {
+    localStorage.setItem("hotelId_review", hotelId);
+    setShowReviewForm(true);
+  };
+
+  const postReview = async () => {
+    const userId = localStorage.getItem("userId");
+    const hotelId = localStorage.getItem("hotelId_review");
+    try {
+      const response = await axios.post(
+        `${baseURL}/reviews/${userId}/${hotelId}`,
+        { comment, rating }
+      );
+      if (response.status === 201) {
+        setComment("");
+        setRating(0);
+        toast.success("Your review has been added");
+        setShowReviewForm(false);
+      }
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Error posting review";
+      toast.error(errorMessage);
+    }
+  };
 
   const handleCloseReview = () => {
     setComment("");
