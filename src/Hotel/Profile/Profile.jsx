@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import baseURL from "../../baseURL";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProfileData } from "../../redux/profileSlice"; // Adjust the import according to your file structure
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import {
@@ -16,48 +16,56 @@ import {
 } from "mdb-react-ui-kit";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import "./Profile.css"; // Import your custom CSS file for mobile styles
+import "./Profile.css"; // Import your custom CSS file for styling
 
 export default function Profile() {
   const navigate = useNavigate();
-  const [data, setData] = useState(null);
-
+  const dispatch = useDispatch();
   const userId = localStorage.getItem("userId");
 
+  // Retrieve profile data, loading, and error from Redux store
+  const { data, loading, error } = useSelector((state) => state.profile);
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`${baseURL}/get/${userId}`);
-        setData(response.data.data);
-        if (response.data.data.userImage.length > 0) {
-          const firstImageUrl = response.data.data.userImage[0];
-          localStorage.setItem("userImage", firstImageUrl);
-          
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      }
-    };
-
-    fetchData();
-  }, [userId]);
-
+    if (userId) {
+      dispatch(fetchProfileData(userId));
+    }
+  }, [dispatch, userId]);
 
   if (!userId) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
-        <img src="https://arkca.com/assets/img/login.gif" alt="Login required" style={{ maxWidth: '200px', maxHeight: '150px' }} /> {/* Mobile-friendly image size */}
-        <p style={{ marginTop: '10px' }}>Unauthorized<br />
-        Please log in</p> {/* Clearer message with spacing */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+        }}
+      >
+        <img
+          src="https://arkca.com/assets/img/login.gif"
+          alt="Login required"
+          style={{ maxWidth: "200px", maxHeight: "150px" }}
+        />
+        <p style={{ marginTop: "10px" }}>
+          Unauthorized
+          <br />
+          Please log in
+        </p>
       </div>
     );
   }
-  if (!data) {
+
+  if (loading) {
     return (
       <Box sx={{ width: "100%" }}>
         <LinearProgress />
       </Box>
     );
+  }
+
+  if (error) {
+    return <p>Error loading profile data: {error.message}</p>;
   }
 
   const handleEdit = () => {
@@ -72,7 +80,7 @@ export default function Profile() {
   };
 
   return (
-    <section className="vh-10" style={{ backgroundColor: "#f8f9fa" }}>
+    <section className="vh-100" style={{ backgroundColor: "#f8f9fa" }}>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">
@@ -87,15 +95,14 @@ export default function Profile() {
                   }}
                 >
                   <MDBCardImage
-                    src={data.images}
+                    src={data?.images?.[0] || "https://via.placeholder.com/80"}
                     alt="Avatar"
                     className="my-5"
-                    style={{ width: "80px" }}
+                    style={{ width: "80px", borderRadius: "50%" }}
                     fluid
                   />
-                
                 </MDBCol>
-                
+
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">
                     <MDBTypography tag="h6">Information</MDBTypography>
@@ -104,15 +111,13 @@ export default function Profile() {
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6">Email</MDBTypography>
                         <MDBCardText className="text-muted">
-                          {data.email || (
+                          {data?.email || (
                             <input
                               type="text"
                               className="form-control action-required"
                               value="Action Required"
                               readOnly
-                              onClick={() =>
-                                navigate("/profile-update/user-data/page")
-                              }
+                              onClick={handleEdit}
                             />
                           )}
                         </MDBCardText>
@@ -120,15 +125,13 @@ export default function Profile() {
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6">Phone</MDBTypography>
                         <MDBCardText className="text-muted">
-                          {data.mobile || (
+                          {data?.mobile || (
                             <input
                               type="text"
                               className="form-control action-required"
                               value="Action Required"
                               readOnly
-                              onClick={() =>
-                                navigate("/profile-update/user-data/page")
-                              }
+                              onClick={handleEdit}
                             />
                           )}
                         </MDBCardText>
@@ -139,15 +142,13 @@ export default function Profile() {
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6">Address</MDBTypography>
                         <MDBCardText className="text-muted">
-                          {data.address || (
+                          {data?.address || (
                             <input
                               type="text"
                               className="form-control action-required"
                               value="Action Required"
                               readOnly
-                              onClick={() =>
-                                navigate("/profile-update/user-data/page")
-                              }
+                              onClick={handleEdit}
                             />
                           )}
                         </MDBCardText>
@@ -155,21 +156,19 @@ export default function Profile() {
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6">Password</MDBTypography>
                         <MDBCardText className="text-muted">
-                          {data.password || (
+                          {data?.password || (
                             <input
                               type="text"
                               className="form-control action-required"
                               value="Action Required"
                               readOnly
-                              onClick={() =>
-                                navigate("/profile-update/user-data/page")
-                              }
+                              onClick={handleEdit}
                             />
                           )}
                         </MDBCardText>
                       </MDBCol>
                     </MDBRow>
-                   
+
                     <hr />
                     <Stack spacing={2} direction="row">
                       <Button onClick={handleEdit} variant="contained">
