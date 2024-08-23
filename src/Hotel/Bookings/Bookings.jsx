@@ -29,6 +29,7 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilteredBooking } from "../../redux/bookingSlice";
+import { formatDate, formatDateWithOrdinal } from "../../utils/_dateFunctions";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -164,7 +165,10 @@ export const ConfirmBooking = () => {
       </div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>
-          <FormControl variant="outlined" fullWidth>
+          <FormControl
+            variant="outlined"
+            style={{ marginLeft: "12px", marginBottom: "10px" }}
+          >
             <InputLabel id="status-select-label">Status</InputLabel>
             <Select
               labelId="status-select-label"
@@ -306,11 +310,8 @@ export const ConfirmBooking = () => {
                     >
                       <>
                         <CalendarMonthIcon /> From{" "}
-                        {bookingDetail.checkInDate &&
-                          bookingDetail.checkInDate.substring(0, 10)}{" "}
-                        to{" "}
-                        {bookingDetail.checkOutDate &&
-                          bookingDetail.checkOutDate.substring(0, 10)}
+                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to {" "}
+                        {formatDateWithOrdinal(bookingDetail.checkOutDate)}
                       </>
                     </Typography>
                     <Sheet

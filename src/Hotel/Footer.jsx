@@ -11,7 +11,7 @@ import "./Footer.css"; // Custom styles for the footer
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer" style={{ marginTop: "140px" }}>
       <div className="container">
         <div className="row mb-4">
           <div className="col-md-6 text-center text-md-start">
@@ -277,7 +277,9 @@ const Footer = () => {
         </div>
         <div className="row">
           <div className="col-md-12 text-center">
-            <p className="footer-copy">© 2023-2024 Hotel-roomsstay Pvt Limited</p>
+            <p className="footer-copy">
+              © 2023-2024 Hotel-roomsstay Pvt Limited
+            </p>
           </div>
         </div>
       </div>

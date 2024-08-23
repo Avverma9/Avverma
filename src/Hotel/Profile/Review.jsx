@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../baseURL";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Link from "@mui/joy/Link";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import Chip from "@mui/joy/Chip";
-import Typography from "@mui/joy/Typography";
+import { Star } from "@mui/icons-material";
 import "./Reviews.css";
 
 export default function Reviews() {
@@ -33,112 +28,63 @@ export default function Reviews() {
     fetchReviews();
   }, []);
 
-  // Utility function to generate star rating
   const getStarRating = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= rating; i++) {
-      stars.push(
-        <span key={i} className="star">
-          &#9733;
-        </span>
-      );
-    }
-    return stars;
+    return [...Array(5)].map((_, index) => (
+      <Star
+        key={index}
+        style={{
+          color: index < rating ? "#ffbb33" : "#e0e0e0",
+          fontSize: "1.5rem",
+        }}
+      />
+    ));
   };
 
   if (location.pathname !== "/reviews") {
     return null;
   }
+
   const userId = localStorage.getItem("userId");
   if (!userId) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
+      <div className="unauthorized">
         <img
           src="https://arkca.com/assets/img/login.gif"
           alt="Login required"
-          style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />{" "}
-        {/* Mobile-friendly image size */}
-        <p style={{ marginTop: "10px" }}>
+        />
+        <p>
           Unauthorized
           <br />
           Please log in
-        </p>{" "}
-        {/* Clearer message with spacing */}
+        </p>
       </div>
     );
   }
+
   if (!data) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
+      <div className="loading">
         <img
           src="https://assets-v2.lottiefiles.com/a/dad9a054-116e-11ee-aef8-9bf427a69ce4/rMSD8h3gzM.gif"
-          alt=""
-          style={{ maxWidth: "400px", maxHeight: "350px" }}
+          alt="Loading"
         />
       </div>
     );
   }
+
   return (
     <div className="review-container">
-      {data?.map((reviewData, index) => (
-        <Card
-          key={index}
-          variant="outlined"
-          orientation="horizontal"
-          sx={{
-            width: "100%", // Adjusted width to take full width
-            "&:hover": {
-              boxShadow: "md",
-              borderColor: "neutral.outlinedHoverBorder",
-            },
-          }}
-        >
-          <AspectRatio ratio="1" sx={{ width: 100 }}>
-            <img
-              src={reviewData?.hotelImage}
-              srcSet={reviewData?.hotelImage}
-              loading="lazy"
-              alt=""
-            />
-          </AspectRatio>
-          <CardContent>
-            <Typography level="title-lg" id="card-description">
-              {reviewData?.hotelName}
-            </Typography>
-            <Typography
-              level="body-sm"
-              aria-describedby="card-description"
-              mb={1}
-            >
-              <Link overlay underline="none" sx={{ color: "text.tertiary" }}>
-                Comment : {reviewData?.comment}
-              </Link>
-            </Typography>
-            <Chip
-              variant="outlined"
-              color="primary"
-              size="sm"
-              sx={{ pointerEvents: "none" }}
-            >
-              {getStarRating(reviewData?.rating)}
-            </Chip>
-          </CardContent>
-        </Card>
+      {data.map((reviewData, index) => (
+        <div key={index} className="review-card">
+          <div className="image-container">
+            <img src={reviewData?.hotelImage} alt="Hotel" loading="lazy" />
+          </div>
+          <div className="review-content">
+            <div className="hotel-name">{reviewData?.hotelName}</div>
+            <div className="comment">{reviewData?.comment}</div>
+            <div className="rating">{getStarRating(reviewData?.rating)}</div>
+          </div>
+        </div>
       ))}
     </div>
   );
