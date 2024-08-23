@@ -105,7 +105,7 @@ export default function Profile() {
 
                 <MDBCol md="8">
                   <MDBCardBody className="p-4">
-                    <MDBTypography tag="h6">Information</MDBTypography>
+                    <MDBTypography tag="h6">Profile Information</MDBTypography>
                     <hr className="mt-0 mb-4" />
                     <MDBRow className="pt-1">
                       <MDBCol size="12" className="mb-3">
@@ -137,7 +137,7 @@ export default function Profile() {
                         </MDBCardText>
                       </MDBCol>
                     </MDBRow>
-                    <hr className="mt-0 mb-4" />
+
                     <MDBRow className="pt-1">
                       <MDBCol size="12" className="mb-3">
                         <MDBTypography tag="h6">Address</MDBTypography>

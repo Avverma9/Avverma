@@ -71,12 +71,32 @@ export default function Reviews() {
       </div>
     );
   }
-
+  /* .image-container {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ddd;
+  margin-right: 20px;
+  background: #eee;
+} */
   return (
     <div className="review-container">
       {data.map((reviewData, index) => (
         <div key={index} className="review-card">
-          <div className="image-container">
+          <div
+            className="image-container"
+            style={{
+              width: "100px",
+              height: "100px",
+              borderRadius: "50%",
+              overflow: "hidden",
+              flexShrink: "0",
+              marginRight:"20px",
+              background:"#eee"
+            }}
+          >
             <img src={reviewData?.hotelImage} alt="Hotel" loading="lazy" />
           </div>
           <div className="review-content">

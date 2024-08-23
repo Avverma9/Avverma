@@ -142,14 +142,12 @@ const Header = () => {
             <MenuItem onClick={handleProfile}>
               <Avatar /> Profile
             </MenuItem>
-            <Divider />
             <MenuItem onClick={homeclick}>
               <ListItemIcon>
                 <HomeIcon fontSize="small" />
               </ListItemIcon>
               Home
             </MenuItem>
-            <Divider />
             <MenuItem onClick={handlePartner}>
               <ListItemIcon>
                 <PersonAdd fontSize="small" />

@@ -181,6 +181,24 @@ export default function PartnerForm() {
       </div>
     );
   }
+  const [imageInputs, setImageInputs] = useState([
+    { id: "frontdeskImage", label: "Front Desk Image" },
+    { id: "laneImage", label: "Lane Image" },
+    { id: "receptionImage", label: "Reception Image" },
+    { id: "laundryImage", label: "Laundry Image" },
+    { id: "backyardImage", label: "Backyard Image" },
+  ]);
+
+  const addImageInput = () => {
+    setImageInputs([
+      ...imageInputs,
+      {
+        id: `image${imageInputs.length + 1}`,
+        label: `Image ${imageInputs.length + 1}`,
+      },
+    ]);
+  };
+
   return (
     <>
       <div className="container mt-4">
@@ -473,32 +491,37 @@ export default function PartnerForm() {
                 ))}
               </select>
             </div>
-            <label htmlFor="buyingRole" className="form-label">
-              Pictures ( Select Your room images, You can add multiple images )
-            </label>
-            <div className="row">
-              <div className="col">
-                <div id="imageInputs">
-                  <input
-                    className={classes.imageInput}
-                    type="file"
-                    required
-                    accept="image/*"
-                    onChange={(e) => handleImageChange(e.target.files[0])}
-                  />
-                </div>
+            <div className="col-md-12 mb-3">
+              <label htmlFor="images" className="form-label">
+                Pictures (Select Your room images, You can add multiple images)
+              </label>
+              <div id="imageInputs">
+                {imageInputs.map((input, index) => (
+                  <div className="mb-2" key={input.id}>
+                    <label htmlFor={input.id} className="form-label">
+                      {input.label}
+                    </label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) =>
+                        handleImageChange(e.target.files[0], input.id)
+                      }
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="col">
-                <Button
-                  type="button"
-                  variant="outlined"
-                  color="primary"
-                  onClick={handleAddImage}
-                >
-                  Add More Images
-                </Button>
-              </div>
+              <Button
+                type="button"
+                variant="outlined"
+                color="primary"
+                onClick={addImageInput}
+              >
+                Add More Images
+              </Button>
             </div>
+
             <hr />
           </div>
           <Button type="submit" variant="contained" color="primary">
