@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { FaSuitcase, FaBuilding, FaPhoneAlt, FaUser } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";

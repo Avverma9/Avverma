@@ -34,7 +34,6 @@ const Offered = () => {
       try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-        console.log("coming hotel data", data);
         setHotelData(data.data);
         setTotalPages(data.totalPages);
       } catch (error) {

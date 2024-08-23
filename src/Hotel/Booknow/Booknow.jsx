@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -39,8 +37,11 @@ import Policies from "./policies";
 import BookingDetails from "./bookingDetails";
 import Rooms from "./rooms";
 import Foods from "./foods";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBookingData } from "../../redux/bookingSlice";
 
 const BookNow = () => {
+  const dispatch = useDispatch();
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const BookNow = () => {
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
+  const { data, loading, error } = useSelector((state) => state.booking);
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
@@ -134,35 +135,29 @@ const BookNow = () => {
     return totalPrice;
   };
 
-  const fetchHotelData = async () => {
-    showLoader();
-    try {
-      const response = await fetch(`${baseURL}/hotels/get-by-id/${newhotelId}`);
-      const data = await response.json();
-      setHotelData(data);
-
-      if (selectedRooms.length === 0 && data.rooms.length > 0) {
-        const defaultRoom = data.rooms[0];
-        setSelectedRooms([defaultRoom]);
-      }
-    } catch (error) {
-      console.error("Error fetching hotel data:", error);
-    } finally {
-      hideLoader();
+  useEffect(() => {
+    if (newhotelId) {
+      dispatch(fetchBookingData(newhotelId));
     }
-  };
+  }, [dispatch, newhotelId]);
 
   useEffect(() => {
-    fetchHotelData();
-  }, [newhotelId, selectedRooms]);
+    if (data) {
+      setHotelData(data);
+
+      if (selectedRooms?.length === 0 && data?.rooms?.length > 0) {
+        const defaultRoom = data?.rooms[0];
+        setSelectedRooms([defaultRoom]);
+      }
+    }
+  }, [data, selectedRooms]);
 
   useEffect(() => {
     if (shouldScrollToTop) {
-      window.scrollTo(0, 0); // Scroll to the top when the component mounts or when `shouldScrollToTop` is true
+      window.scrollTo(0, 0);
       setShouldScrollToTop(false); // Reset the flag
     }
-    fetchHotelData();
-  }, [newhotelId, selectedRooms, shouldScrollToTop]);
+  }, [shouldScrollToTop]);
   const calculateGuests = (roomsCount) => {
     return roomsCount * 3;
   };
@@ -178,7 +173,6 @@ const BookNow = () => {
       setGuestsCount(calculateGuests(roomsCount - 1));
     }
   };
-
 
   const handleIncrementGuests = () => {
     setGuestsCount(guestsCount + 1);

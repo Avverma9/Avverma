@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-// Import React, useEffect, useState, and any other necessary modules
 import React, { useEffect, useState } from "react";
 import baseURL from "../baseURL";
 import "./HeaderTravel.css"; // Import the provided CSS file

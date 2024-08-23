@@ -27,8 +27,11 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFilteredBooking } from "../../redux/bookingSlice";
 
 export const ConfirmBooking = () => {
+  const dispatch = useDispatch();
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
@@ -38,7 +41,7 @@ export const ConfirmBooking = () => {
   const location = useLocation();
   const [show, setShow] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
-
+  const { data, loading, error } = useSelector((state) => state.booking);
   // Fetch user data and booking details
   useEffect(() => {
     const fetchData = async () => {
@@ -52,17 +55,8 @@ export const ConfirmBooking = () => {
         const userResponse = await axios.get(`${baseURL}/get/${userId}`);
         setUserData(userResponse.data.data);
 
-        // Fetch booking details
-        const bookingsResponse = await axios.get(
-          `${baseURL}/get/all/users-filtered/booking/by`,
-          {
-            params: {
-              bookingStatus: selectedStatus,
-              userId: userId,
-            },
-          }
-        );
-        setBookingDetails(bookingsResponse.data);
+        // Fetch booking details using the fetchFilteredBooking thunk
+        dispatch(fetchFilteredBooking({ selectedStatus, userId }));
       } catch (error) {
         const errorMessage =
           error.response?.data?.message ||
@@ -72,12 +66,19 @@ export const ConfirmBooking = () => {
       }
     };
 
-    fetchData();
-  }, [selectedStatus]);
-
+    if (location.pathname === "/bookings") {
+      fetchData();
+    }
+  }, [dispatch, location.pathname, selectedStatus]);
+  useEffect(() => {
+    if (data) {
+      setBookingDetails(data);
+    }
+  }, [data]);
   if (location.pathname !== "/bookings") {
     return null;
   }
+  // console.log("redux data ", fetchFilteredBooking);
 
   if (!userData) {
     return (
