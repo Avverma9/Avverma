@@ -71,16 +71,7 @@ export default function Reviews() {
       </div>
     );
   }
-  /* .image-container {
-  flex-shrink: 0;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4px solid #ddd;
-  margin-right: 20px;
-  background: #eee;
-} */
+
   return (
     <div className="review-container">
       {data.map((reviewData, index) => (

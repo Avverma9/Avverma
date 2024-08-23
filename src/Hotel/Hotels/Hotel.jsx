@@ -11,7 +11,7 @@ import FmdGoodIcon from "@mui/icons-material/FmdGood";
 import { Carousel } from "react-bootstrap";
 import Rating from "@mui/material/Rating";
 import Button from "@mui/joy/Button";
-import {FaCheckCircle} from 'react-icons/fa'
+import { FaCheckCircle } from "react-icons/fa";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import amenityIcons from "../../utils/amenities";
@@ -23,7 +23,6 @@ import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import "bootstrap/dist/css/bootstrap.min.css";
 import baseURL from "../../baseURL";
-
 
 const Hotel = () => {
   const [hotelData, setHotelData] = useState([]);
@@ -64,7 +63,6 @@ const Hotel = () => {
     navigate(`/book-hotels/${hotelID}`);
   };
 
-
   const defaultIcon = <DoneAllIcon />;
   return (
     <>
@@ -99,7 +97,6 @@ const Hotel = () => {
                       </Stack>
                     </div>
                   )}
-
                   <br />
                   <Typography level="title-sm">{hotel.hotelName}</Typography>
                   <Typography level="body-xs">
@@ -305,7 +302,6 @@ const Hotel = () => {
                           ))}
                         </CardContent>
                       </div>
-
                       <a href="#" className="text-primary mt-2 d-block">
                         + all other amenities
                       </a>
@@ -317,37 +313,19 @@ const Hotel = () => {
                         right now
                       </div>
                     </div>
-
                     <div className="col-md-3 text-center">
-                      {/* {hotel.policies &&
-                      hotel.policies.map((policy, policyIndex) => (
-                        <ul key={policyIndex} className="list-unstyled">
-                          {policy.cancellationPolicy && (
-                            <li>
-                              <FaCheckCircle className="text-success" />{" "}
-                              {policy.cancellationPolicy}
-                            </li>
-                          )}
-                          {policy.paymentMode && (
-                            <li>
-                              <FaCheckCircle className="text-success" />{" "}
-                              {policy.paymentMode}
-                            </li>
-                          )}
-                        </ul>
-                      ))} */}
                       <ul className="list-unstyled">
                         <li>
                           <FaCheckCircle className="text-success" /> Free
-                          Cancellation
+                          Amenities
                         </li>
                         <li>
-                          <FaCheckCircle className="text-success" /> FREE
-                          Breakfast
+                          <FaCheckCircle className="text-success" /> 100%
+                          Cleaned Rooms
                         </li>
                         <li>
-                          <FaCheckCircle className="text-success" />{" "}
-                          {hotel?.policies?.paymentMode}
+                          <FaCheckCircle className="text-success" /> Room
+                          Service
                         </li>
                       </ul>
                       <p className="text-muted text-decoration-line-through">

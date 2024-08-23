@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import LunchDiningTwoToneIcon from "@mui/icons-material/LunchDiningTwoTone";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
@@ -63,10 +62,7 @@ const BookingDetails = ({
           <h5 style={{ fontSize: "1rem" }}>
             {" "}
             {/* Smaller header font size */}
-            <BiSolidOffer
-              style={{ fontSize: "1.2rem" }}
-            />{" "}
-            Booking Details
+            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details
           </h5>
           <hr style={{ margin: "10px 0" }} />{" "}
           {/* Adjusted margin for the horizontal line */}
@@ -103,14 +99,15 @@ const BookingDetails = ({
                         >
                           {selected.name} Selected
                         </Typography>
-                        <Button
+                        <button
                           size="small"
-                          color="secondary"
+                          className="custom-button"
+                 
                           onClick={() => handleRemoveFood(selected)}
                           style={{ fontSize: "0.7rem", padding: "4px 8px" }} // Reduced font size and padding
                         >
                           Remove
-                        </Button>
+                        </button>
                       </div>
                     ))}
                   </CardContent>
@@ -126,9 +123,10 @@ const BookingDetails = ({
                   </Typography>
                 )}
               </div>
-              <Button
+              <button
                 variant="outlined"
                 color="error"
+                className="custom-button"
                 style={{
                   marginLeft: "10px",
                   fontSize: "0.7rem",
@@ -137,7 +135,7 @@ const BookingDetails = ({
                 onClick={scrollToFood}
               >
                 Add
-              </Button>
+              </button>
             </div>
 
             {/* Selected Rooms */}
@@ -181,26 +179,24 @@ const BookingDetails = ({
                         component="div"
                         style={{ fontSize: "0.8rem" }}
                       >
-                        {selected.type} & {selected.bedTypes} Bed {" "}
+                        {selected.type} & {selected.bedTypes} Bed{" "}
                         <BedOutlinedIcon style={{ fontSize: "1rem" }} />
                       </Typography>
                     </CardContent>
                   </div>
                 ))}
               </div>
-              <Button
-                variant="outlined"
-                color="primary"
+              <button
+                className="custom-button"
                 style={{
                   marginTop: "10px",
                   fontSize: "0.7rem",
-                  backgroundColor: "#ffff",
                   padding: "4px 8px",
                 }} // Adjusted font size and padding
                 onClick={scrollToRooms}
               >
                 Change
-              </Button>
+              </button>
             </div>
           </div>
           {/* Rooms and Guests */}
@@ -217,7 +213,7 @@ const BookingDetails = ({
               alignItems: "center",
             }}
           >
-             Rooms & Guests
+            Rooms & Guests
           </label>
           <div className="date-selection mt-3">
             <div
@@ -372,9 +368,8 @@ const BookingDetails = ({
           </div>
           {/* Payment Buttons */}
           <div className="payment-buttons mt-3">
-            <Button
-              variant="outlined"
-              color="primary"
+            <button
+              className="custom-button"
               onClick={handlePay}
               style={{
                 width: "100%",
@@ -384,15 +379,14 @@ const BookingDetails = ({
               }} // Reduced font size and padding
             >
               Pay Now
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
+            </button>
+            <button
+              className="custom-button"
               style={{ width: "100%", fontSize: "0.8rem", padding: "6px 12px" }} // Reduced font size and padding
               onClick={handleBookNow}
             >
               Pay at Hotel
-            </Button>
+            </button>
           </div>
         </div>
       </div>
@@ -416,10 +410,7 @@ const BookingDetails = ({
           <h5 style={{ fontSize: "1rem" }}>
             {" "}
             {/* Smaller header font size */}
-            <BiSolidOffer
-              style={{ fontSize: "1.2rem" }}
-            />{" "}
-            Booking Details
+            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details
           </h5>
           <hr style={{ margin: "10px 0" }} />{" "}
           {/* Adjusted margin for the horizontal line */}
@@ -456,14 +447,15 @@ const BookingDetails = ({
                         >
                           {selected.name} Selected
                         </Typography>
-                        <Button
+                        <button
                           size="small"
-                          color="secondary"
+               
+                          className="custom-button"
                           onClick={() => handleRemoveFood(selected)}
                           style={{ fontSize: "0.7rem", padding: "4px 8px" }} // Reduced font size and padding
                         >
                           Remove
-                        </Button>
+                        </button>
                       </div>
                     ))}
                   </CardContent>
@@ -479,7 +471,8 @@ const BookingDetails = ({
                   </Typography>
                 )}
               </div>
-              <Button
+              <button
+                className="custom-button"
                 variant="outlined"
                 color="error"
                 style={{
@@ -490,7 +483,7 @@ const BookingDetails = ({
                 onClick={scrollToFood}
               >
                 Add
-              </Button>
+              </button>
             </div>
 
             {/* Selected Rooms */}
@@ -534,26 +527,23 @@ const BookingDetails = ({
                         component="div"
                         style={{ fontSize: "0.8rem" }}
                       >
-                        {selected.type} & {selected.bedTypes} Bed {" "}
+                        {selected.type} & {selected.bedTypes} Bed{" "}
                         {/* <BedOutlinedIcon style={{ fontSize: "1rem" }} /> */}
                       </Typography>
                     </CardContent>
                   </div>
                 ))}
               </div>
-              <Button
-                variant="outlined"
-                color="primary"
+              <button
+                className="custom-button"
                 style={{
                   marginTop: "10px",
                   fontSize: "0.7rem",
-                  backgroundColor: "#ffff",
-                  padding: "4px 8px",
                 }} // Adjusted font size and padding
                 onClick={scrollToRooms}
               >
                 Change
-              </Button>
+              </button>
             </div>
           </div>
           {/* Rooms and Guests */}
@@ -570,7 +560,7 @@ const BookingDetails = ({
               alignItems: "center",
             }}
           >
-         Rooms & Guests
+            Rooms & Guests
           </label>
           <div className="date-selection mt-3">
             <div
@@ -725,9 +715,8 @@ const BookingDetails = ({
           </div>
           {/* Payment Buttons */}
           <div className="payment-buttons mt-3">
-            <Button
-              variant="outlined"
-              color="primary"
+            <button
+              className="custom-button"
               onClick={handlePay}
               style={{
                 width: "100%",
@@ -737,15 +726,14 @@ const BookingDetails = ({
               }} // Reduced font size and padding
             >
               Pay Now
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
+            </button>
+            <button
+              className="custom-button"
               style={{ width: "100%", fontSize: "0.8rem", padding: "6px 12px" }} // Reduced font size and padding
               onClick={handleBookNow}
             >
               Pay at Hotel
-            </Button>
+            </button>
           </div>
         </div>
       </div>

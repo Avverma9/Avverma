@@ -79,9 +79,7 @@ const bookingSlice = createSlice({
       .addCase(fetchFilteredBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(
-         "There are no such bookings"
-        );
+        toast.error("There are no such bookings");
       });
   },
 });

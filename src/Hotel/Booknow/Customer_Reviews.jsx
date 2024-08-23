@@ -7,7 +7,7 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Chip from "@mui/joy/Chip";
 import Typography from "@mui/joy/Typography";
-import "../Profile/Reviews.css"
+import "../Profile/Reviews.css";
 
 export default function Customer_reviews() {
   const location = useLocation();
@@ -77,14 +77,19 @@ export default function Customer_reviews() {
   }
   if (!data) {
     return (
-      <div  style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>  
-         
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "50vh",
+        }}
+      >
         <img
           src="https://assets-v2.lottiefiles.com/a/dad9a054-116e-11ee-aef8-9bf427a69ce4/rMSD8h3gzM.gif"
           alt=""
-          style={{ maxWidth: '400px', maxHeight: '350px' }}
+          style={{ maxWidth: "400px", maxHeight: "350px" }}
         />
-    
       </div>
     );
   }
@@ -121,11 +126,7 @@ export default function Customer_reviews() {
               aria-describedby="card-description"
               mb={1}
             >
-              <Link
-                overlay
-                underline="none"
-                sx={{ color: "text.tertiary" }}
-              >
+              <Link overlay underline="none" sx={{ color: "text.tertiary" }}>
                 Comment : {reviewData?.review?.comment}
               </Link>
             </Typography>

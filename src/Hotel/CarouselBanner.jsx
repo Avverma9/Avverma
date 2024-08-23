@@ -11,9 +11,7 @@ const CarouselPage = () => {
   useEffect(() => {
     const fetchCarouselData = async () => {
       try {
-        const response = await axios.get(
-          `${baseURL}/get/second/carousel`
-        );
+        const response = await axios.get(`${baseURL}/get/second/carousel`);
         setCarouselData(response.data);
       } catch (error) {
         console.error("Error fetching carousel data:", error);
@@ -38,7 +36,6 @@ const CarouselPage = () => {
             />
             <Carousel.Caption>
               <h5>{item.description}</h5>
-              {/* If you want to display other information, you can do it here */}
             </Carousel.Caption>
           </Carousel.Item>
         ))

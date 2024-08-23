@@ -6,7 +6,6 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import "./Booknow.css"
 const Foods = ({ hotelData, handleAddFood }) => {
@@ -62,14 +61,14 @@ const Foods = ({ hotelData, handleAddFood }) => {
                 </Typography>
               </CardContent>
               <CardActions style={{ justifyContent: "center", padding: "8px" }}>
-                <Button
+                <button
                   size="small"
-                  color="error"
+                  className="custom-button"
                   style={{ width: "100px", height: "30px" }}
                   onClick={() => handleAddFood(foodArray)}
                 >
                   Select
-                </Button>
+                </button>
               </CardActions>
             </CardActionArea>
           </Card>

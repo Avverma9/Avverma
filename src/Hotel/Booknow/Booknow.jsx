@@ -542,9 +542,9 @@ const BookNow = () => {
               }}
             >
               <span style={{ marginRight: "8px" }}></span>
-              <Button variant="outlined" onClick={handleClickOpen}>
+              <button className="custom-button" onClick={handleClickOpen}>
                 Read our policies, Terms & conditios ...
-              </Button>
+              </button>
             </div>
 
             <BootstrapDialog

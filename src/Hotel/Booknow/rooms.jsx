@@ -5,7 +5,7 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
+
 import Grid from "@mui/material/Grid";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -39,7 +39,7 @@ const Rooms = ({
                         alt={`Room ${index + 1} Image 1`}
                         style={{
                           width: "100%",
-                          height: "200px", // Set fixed height
+                          height: "130px", // Set fixed height
                           objectFit: "cover", // Ensure image covers the area without distortion
                         }}
                       />
@@ -76,21 +76,21 @@ const Rooms = ({
                         {selectedRooms.find(
                           (selected) => selected._id === room._id
                         ) ? (
-                          <Button
+                          <button
                             size="small"
-                            color="secondary"
+                            className="custom-button"
                             onClick={() => handleRemoveRoom(room)}
                           >
                             Remove
-                          </Button>
+                          </button>
                         ) : (
-                          <Button
+                          <button
                             size="small"
-                            color="primary"
+                            className="custom-button"
                             onClick={() => handleAddRoom(room)}
                           >
                             Select
-                          </Button>
+                          </button>
                         )}
                       </CardActions>
                     </Card>
@@ -152,21 +152,21 @@ const Rooms = ({
                       {selectedRooms.find(
                         (selected) => selected._id === room._id
                       ) ? (
-                        <Button
+                        <button
                           size="small"
-                          color="secondary"
+                          className="custom-button"
                           onClick={() => handleRemoveRoom(room)}
                         >
                           Remove
-                        </Button>
+                        </button>
                       ) : (
-                        <Button
+                        <button
                           size="small"
-                          color="primary"
+                          className="custom-button"
                           onClick={() => handleAddRoom(room)}
                         >
                           Select
-                        </Button>
+                        </button>
                       )}
                     </CardActions>
                   </CardContent>
