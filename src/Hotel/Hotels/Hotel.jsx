@@ -302,16 +302,10 @@ const Hotel = () => {
                           ))}
                         </CardContent>
                       </div>
-                      <a href="#" className="text-primary mt-2 d-block">
-                        + all other amenities
-                      </a>
                       <p className="mt-2">
                         {hotel.description || "No description available."}
                       </p>
-                      <div className="mt-2">
-                        <GiPerson /> {hotel.peopleLooking || 0} people looking
-                        right now
-                      </div>
+            
                     </div>
                     <div className="col-md-3 text-center">
                       <ul className="list-unstyled">
@@ -345,7 +339,7 @@ const Hotel = () => {
                         className="btn btn-warning btn-block text-white"
                         onClick={() => handleBuy(hotel.hotelId)}
                       >
-                        Select Rooms
+                        View Details
                       </button>
                     </div>
                   </div>
