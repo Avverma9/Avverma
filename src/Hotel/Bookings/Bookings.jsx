@@ -28,7 +28,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFilteredBooking } from "../../redux/bookingSlice";
+import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
 import { formatDate, formatDateWithOrdinal } from "../../utils/_dateFunctions";
 
 export const ConfirmBooking = () => {

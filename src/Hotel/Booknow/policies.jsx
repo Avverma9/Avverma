@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 const Policies = ({ hotelData, policies, isSmallScreen }) => {
   return (
     <>
-      {policies.map((policy, index) => (
+      {policies?.map((policy, index) => (
         <React.Fragment key={index}>
           <Typography
             gutterBottom

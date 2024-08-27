@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { toast } from "react-toastify";
-import baseURL from "../baseURL";
+import baseURL from "../../baseURL";
 
 // Async thunk for fetching booking data
 export const fetchBookingData = createAsyncThunk(
@@ -34,9 +34,9 @@ export const fetchFilteredBooking = createAsyncThunk(
           },
         }
       );
-      return response.data; // Return the fetched data
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message); // Pass the error message
+      return rejectWithValue(error.message);
     }
   }
 );
@@ -44,7 +44,7 @@ export const fetchFilteredBooking = createAsyncThunk(
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
-    data: null,
+    data: [],
     loading: false,
     error: null,
   },
@@ -72,7 +72,6 @@ const bookingSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchFilteredBooking.fulfilled, (state, action) => {
-        // Handle successful fetch of filtered data if needed
         state.data = action.payload; // Update state with new data if required
         state.loading = false;
       })

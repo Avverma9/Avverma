@@ -32,7 +32,7 @@ const Foods = ({ hotelData, handleAddFood }) => {
         className="extras"
         style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
       >
-        {hotelData?.foods.map((foodArray, index) => (
+        {hotelData?.foods?.map((foodArray, index) => (
           <Card
             key={index}
             sx={{ width: 240, borderRadius: 0, overflow: "hidden" }}

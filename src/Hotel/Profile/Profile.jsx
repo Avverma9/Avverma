@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfileData } from "../../redux/profileSlice"; // Adjust the import according to your file structure
+import { fetchProfileData } from "../../redux/reducers/profileSlice"; // Adjust the import according to your file structure
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import {

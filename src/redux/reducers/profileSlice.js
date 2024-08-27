@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import baseURL from "../baseURL";
+import baseURL from "../../baseURL";
 import { toast } from "react-toastify"; // Import toast
 
 // Async thunk for fetching profile data

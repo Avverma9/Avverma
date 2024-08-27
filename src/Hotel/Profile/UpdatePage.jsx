@@ -5,7 +5,10 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import Box from "@mui/material/Box";
 import "./UpdatePage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateProfileData, fetchProfileData } from "../../redux/profileSlice";
+import {
+  updateProfileData,
+  fetchProfileData,
+} from "../../redux/reducers/profileSlice";
 
 const UpdatePage = () => {
   const dispatch = useDispatch();

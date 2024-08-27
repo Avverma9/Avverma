@@ -37,7 +37,7 @@ import BookingDetails from "./bookingDetails";
 import Rooms from "./rooms";
 import Foods from "./foods";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBookingData } from "../../redux/bookingSlice";
+import { fetchBookingData } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/filterOptions";
 import BookingReview from "./BookingReview";
 
