@@ -96,6 +96,7 @@ const FilterSidebar = () => {
       `&starRating=${starRating.join(",")}`;
 
     navigate(`/search/hotels${filterQuery}`);
+    toggleDrawer(); // Close the drawer after applying filters
   };
 
   const handleAmenityChange = (selectedAmenity) => {
@@ -139,7 +140,7 @@ const FilterSidebar = () => {
   };
 
   const clearFilters = () => {
-    setMinPrice(700);
+    setMinPrice(0);
     setMaxPrice(10000);
     setAmenities([]);
     setRoomType([]);
@@ -147,13 +148,14 @@ const FilterSidebar = () => {
     setBedType([]);
     setStarRating([]);
     navigate(window.location.pathname);
+    toggleDrawer();
   };
 
   const toggleDrawer = () => {
     setDrawerOpen((prev) => !prev);
   };
+
   useEffect(() => {
-    // Append the filter parameters to the browser history without reloading the page
     window.history.pushState({}, "", window.location.href);
   }, []);
 
@@ -162,6 +164,7 @@ const FilterSidebar = () => {
   if (!paths.includes(location.pathname)) {
     return null;
   }
+
   return (
     <div>
       <Button
@@ -204,8 +207,9 @@ const FilterSidebar = () => {
               onClick={toggleDrawer}
               color="inherit"
               variant="outlined"
+              style={{ marginLeft: 25 }}
             >
-              <CloseIcon style={{ marginLeft: 25 }} />
+              <CloseIcon />
             </IconButton>
           </Typography>
 
@@ -365,7 +369,7 @@ const FilterSidebar = () => {
           </FormGroup>
           <Divider />
           <Typography variant="subtitle1" gutterBottom>
-           Star Rating:
+            Star Rating:
           </Typography>
           <FormGroup>
             {starRatings
