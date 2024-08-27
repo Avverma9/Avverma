@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import baseURL from "../../baseURL";
 import { Star } from "@mui/icons-material";
+import Button from "@mui/material/Button"; // Import Button component from MUI
 import "./BookingReview.css"; // Import the CSS file
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 
 const BookingReview = ({ hotelId }) => {
   const [data, setData] = useState([]);
+  const [showAll, setShowAll] = useState(false); // New state for toggling reviews visibility
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -40,10 +42,20 @@ const BookingReview = ({ hotelId }) => {
     ));
   };
 
+  const handleShowMoreClick = () => {
+    setShowAll(true);
+  };
+
+  const handleShowLessClick = () => {
+    setShowAll(false);
+  };
+
+  const reviewsToShow = showAll ? data : data.slice(0, 2);
+
   return (
     <div className="review-container">
-      {data.length > 0 ? (
-        data.map((review, index) => (
+      {reviewsToShow.length > 0 ? (
+        reviewsToShow.map((review, index) => (
           <div key={index} className="review-card">
             <img src={review?.userImage} alt="User" className="user-avatar" />
             <div className="review-card-content">
@@ -60,6 +72,23 @@ const BookingReview = ({ hotelId }) => {
         ))
       ) : (
         <p className="no-reviews">No reviews available.</p>
+      )}
+      {data.length > 2 && (
+        <div className="show-more-less-container">
+          {!showAll ? (
+            <button
+              className="custom-button"
+              onClick={handleShowMoreClick}
+             
+            >
+              Show More Reviews
+            </button>
+          ) : (
+            <button className="custom-button" onClick={handleShowLessClick}>
+              Show Less Reviews
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
