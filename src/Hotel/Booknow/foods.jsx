@@ -7,24 +7,27 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActions from "@mui/material/CardActions";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import "./Booknow.css"
+import "./Booknow.css";
 const Foods = ({ hotelData, handleAddFood }) => {
   return (
     <div>
-      <h6
-        style={{
-          color: "#333",
-          fontFamily: "Arial, sans-serif",
-          fontSize: "16px",
-          fontWeight: "bold",
-          textTransform: "uppercase",
-          backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
-          padding: "10px",
-          marginBottom: "20px",
-        }}
-      >
-        Add Meals During Your Stay
-      </h6>
+      {hotelData && hotelData?.foods?.length > 0 && (
+        <h6
+          style={{
+            color: "rgb(1 1 1 1)",
+            fontFamily: "Arial, sans-serif",
+            fontSize: "16px",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            backgroundColor: "#b7b8ba",
+            padding: "10px",
+            marginBottom: "20px",
+          }}
+        >
+          Add Meals During Your Stay
+        </h6>
+      )}
+
       <div
         className="extras"
         style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}

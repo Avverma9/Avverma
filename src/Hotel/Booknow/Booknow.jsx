@@ -371,12 +371,10 @@ const BookNow = () => {
                 <PlaceIcon />
                 {hotelData?.city}, {hotelData?.destination}, {hotelData?.state},{" "}
                 {hotelData?.zip}
-              </p>
+              </p>{" "}
+              <p>{hotelData?.customerWelcomeNote}</p>
             </div>
           </div>{" "}
-          <div className="extras">
-            <p>{hotelData?.customerWelcomeNote}</p>
-          </div>
           <div className="extras">
             <div className="amenities-container">
               <h6>Our amenities</h6>
