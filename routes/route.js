@@ -62,7 +62,8 @@ router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
 router.post("/signIn/google", userController.GoogleSignIn);
 router.put("/update", upload, userController.update);
-router.get("/get-total/user-details", userController.totalUser);
+router.get("/get/all-users-data", userController.getAllUsers);
+router.get("/get-total/user-details", userController.totalUser); // user count
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);
@@ -119,15 +120,15 @@ router.get("/statesData", stateController.getStateData);
 router.post("/payments", paymentController.createPayment);
 
 //===================================== REVIEW =========================================================
-router.post("/reviews/:userId/:hotelId", reviewController.createReview);
-router.get("/getReviews/hotelId", reviewController.getReviewsByHotelId);
+router.post("/reviews/:userId/:hotelId", reviewController.createReview); // on site
+router.get("/getReviews/hotelId", reviewController.getReviewsByHotelId); // on site
 
-router.get("/reviewDatas/userId", reviewController.getReviewsByUserId);
+router.get("/reviewDatas/userId", reviewController.getReviewsByUserId); //on site
 router.put(
   "/update-your-review/:userId/:hotelId",
   reviewController.updateReview
 );
-router.delete("/delete/:reviewId", reviewController.deleteReview);
+router.delete("/delete/:reviewId", reviewController.deleteReview); // on site
 //============================= BOOKING =======================================
 router.post("/booking/:userId/:hotelId",upload,bookingController.createBooking);
 router.get("/bookingsConfirm", bookingController.getConfirmedBookings);

@@ -146,43 +146,8 @@ const update = async (req, res) => {
 //===============================================================================
 const getAllUsers = async (req, res) => {
   try {
-    const { id } = req.query;
-
-    if (id) {
-      const user = await userModel.findById(id);
-
-      if (user) {
-        return res.status(200).json({
-          status: 200,
-          success: true,
-          message: "User by id",
-          data: user,
-        });
-      } else {
-        return res.status(400).json({
-          status: 400,
-          success: false,
-          message: "Unable to find user by id",
-        });
-      }
-    } else {
-      const users = await userModel.find();
-
-      if (users.length > 0) {
-        return res.status(200).json({
-          status: 200,
-          success: true,
-          message: "All users",
-          data: users,
-        });
-      } else {
-        return res.status(400).json({
-          status: 400,
-          success: false,
-          message: "Unable to find users",
-        });
-      }
-    }
+   const userData = await userModel.find()
+   return res.status(200).json("User data",userData)
   } catch (error) {
     return res.status(500).json({
       status: 500,
