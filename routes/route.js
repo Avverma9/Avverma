@@ -62,7 +62,7 @@ router.get("/get/:userId", userController.getUserById);
 router.post("/signIn", userController.signIn);
 router.post("/signIn/google", userController.GoogleSignIn);
 router.put("/update", upload, userController.update);
-router.get("/get/all-users-data", userController.getAllUsers);
+router.get("/get/all-users-data/all-data", userController.getAllUsers);
 router.get("/get-total/user-details", userController.totalUser); // user count
 //==================================== WELCOME ===========================================================
 router.post("/welcome", upload, welcomeController.createWelcome);

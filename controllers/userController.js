@@ -3,12 +3,11 @@ const userModel = require("../models/userModel");
 //====================================================================================
 const createSignup = async function (req, res) {
   try {
-    
     const userImage = req.files.map((file) => file.location);
 
     const userData = {
       userImage,
-      ...req.body
+      ...req.body,
     };
 
     const savedUser = await userModel.create(userData);
@@ -56,21 +55,23 @@ const GoogleSignIn = async function (req, res) {
 
     if (existingUser) {
       // If user already exists, return a JSON response
-      return res.status(201).json({ message: "User already exists", userId:existingUser.userId });
+      return res
+        .status(201)
+        .json({ message: "User already exists", userId: existingUser.userId });
     }
 
     // If user doesn't exist, create a new user
     const user = await userModel.create({ email, uid, userName, images });
 
-    res.status(201).json({ message: "Sign-in successful", userId:user.userId });
+    res
+      .status(201)
+      .json({ message: "Sign-in successful", userId: user.userId });
   } catch (error) {
     // Handle any errors that might occur during the process
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
 
 //==============================================SIGN IN==============================
 const signIn = async function (req, res) {
@@ -79,7 +80,7 @@ const signIn = async function (req, res) {
   try {
     const user = await userModel.findOne({ email });
 
-    if (user.email  === email) {
+    if (user.email === email) {
       res.json({ message: "Sign-in successful", userId: user.userId });
     } else {
       res.status(401).json({ message: "Invalid email or password" });
@@ -102,7 +103,7 @@ const totalUser = async function (req, res) {
 //=====================================================================
 const update = async (req, res) => {
   try {
-    const { userId, userName, address, email, mobile, password} = req.body;
+    const { userId, userName, address, email, mobile, password } = req.body;
     let images = [];
 
     console.log(userId);
@@ -124,7 +125,7 @@ const update = async (req, res) => {
         email,
         mobile,
         password,
-  
+
         images,
       },
       { new: true }
@@ -141,22 +142,23 @@ const update = async (req, res) => {
   }
 };
 
-
-
 //===============================================================================
 const getAllUsers = async (req, res) => {
   try {
-   const userData = await userModel.find()
-   return res.status(200).json("User data",userData)
+    const userData = await userModel.find();
+    return res.status(200).json({
+      message: "User data fetched successfully",
+      data: userData,
+    });
   } catch (error) {
+    console.error("Error fetching user data:", error); // Log error for debugging
     return res.status(500).json({
-      status: 500,
-      success: false,
       message: "Something went wrong",
-      error: error.message,
+      error: error.message, // Optionally include the error message
     });
   }
 };
+
 
 module.exports = {
   createSignup,
