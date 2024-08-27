@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import baseURL from "../../baseURL";
 
+
 // Async thunk for fetching booking data
 export const fetchBookingData = createAsyncThunk(
   "booking/fetchBookingData",
@@ -34,9 +35,9 @@ export const fetchFilteredBooking = createAsyncThunk(
           },
         }
       );
-      return response.data;
+      return response.data; // Return the fetched data
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.message); // Pass the error message
     }
   }
 );
@@ -44,7 +45,7 @@ export const fetchFilteredBooking = createAsyncThunk(
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
-    data: [],
+    data: null,
     loading: false,
     error: null,
   },
@@ -72,6 +73,7 @@ const bookingSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchFilteredBooking.fulfilled, (state, action) => {
+        // Handle successful fetch of filtered data if needed
         state.data = action.payload; // Update state with new data if required
         state.loading = false;
       })
