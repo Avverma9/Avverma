@@ -36,10 +36,9 @@ export const bedTypes = [
 ];
 
 export const starRatings = [
-  "1 Star",
-  "2 Stars",
-  "3 Stars",
-  "4 Stars",
-  "5 Stars",
-  "5+ Stars",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
 ];

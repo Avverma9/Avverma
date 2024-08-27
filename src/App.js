@@ -17,7 +17,6 @@ import Navigation from "./Hotel/Profile/Navigation.jsx";
 import UpdatePage from "./Hotel/Profile/UpdatePage.jsx";
 import { ConfirmBooking } from "./Hotel/Bookings/Bookings.jsx";
 import BookNow from "./Hotel/Booknow/Booknow.jsx";
-import FilterSidebar from "./Hotel/Hotels/FilterSidebar.jsx";
 import Hotel from "./Hotel/Hotels/Hotel.jsx";
 import PartnerForm from "./Hotel/Hotels/Partner.jsx";
 import PolicyForm from "./Hotel/Hotels/PartnerPolicy.jsx";
@@ -42,7 +41,6 @@ function App() {
           {/* <ProfileSidebar/> */}
           <HeaderImage />
           <Dropdown />
-          <FilterSidebar />
           <Hotel />
           <SearchForm />
           <CarouselPage />

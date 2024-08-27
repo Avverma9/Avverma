@@ -1,0 +1,23 @@
+/* styles.css */
+.filterbar-container {
+  width: 250px;
+  flex-shrink: 0;
+  display: none; /* Hide by default */
+}
+
+@media (min-width: 768px) { /* Adjust the min-width value as needed */
+  .filterbar-container {
+    display: block; /* Show on screens larger than 768px */
+  }
+}
+/* styles.css */
+.filtesidebar-container {
+  flex-shrink: 0;
+  display: none; /* Hide by default */
+}
+
+@media (max-width: 768px) { /* Adjust the min-width value as needed */
+  .filtesidebar-container {
+    display: block; /* Show on screens larger than 768px */
+  }
+}
