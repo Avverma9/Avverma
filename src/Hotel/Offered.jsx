@@ -8,7 +8,7 @@ import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
-import amenityIcons from "../utils/amenities";
+import amenityIcons from "../utils/filterOptions";
 import Stack from "@mui/material/Stack";
 import { IconContext } from "react-icons";
 import Card from "@mui/joy/Card";
@@ -27,8 +27,6 @@ const Offered = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const apiUrl = `${baseURL}/get/all/hotels`;
-  console.log(apiUrl);
-
   useEffect(() => {
     const fetchData = async () => {
       try {

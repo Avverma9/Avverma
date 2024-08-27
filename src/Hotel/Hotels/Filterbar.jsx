@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import amenityIcons from "../../utils/amenities";
+import amenityIcons from "../../utils/filterOptions";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import {
   roomTypes,
@@ -21,6 +21,7 @@ import {
   bedTypes,
   starRatings,
 } from "../../utils/filterOptions";
+import { useNavigate } from "react-router-dom";
 
 const Filterbar = ({ onFilterChange }) => {
   const [minPrice, setMinPrice] = useState(0);
@@ -35,7 +36,7 @@ const Filterbar = ({ onFilterChange }) => {
   const [showMoreBedTypes, setShowMoreBedTypes] = useState(false);
   const [showMorePropertyTypes, setShowMorePropertyTypes] = useState(false);
   const [showMoreRatings, setShowMoreRatings] = useState(false);
-
+const navigate = useNavigate()
   const amenityItems = Object.entries(amenityIcons).map(([name, icon]) => ({
     name,
     icon,
@@ -161,15 +162,18 @@ const Filterbar = ({ onFilterChange }) => {
     setShowMoreBedTypes(false);
     setShowMorePropertyTypes(false);
     setShowMoreRatings(false);
+
     onFilterChange({
       minPrice: 0,
       maxPrice: 10000,
       starRating: "",
       amenities: [],
       roomType: "",
+      page: "",
       bedType: "",
       propertyType: "",
     });
+    navigate(window.location.pathname);
   };
 
   return (
@@ -210,39 +214,44 @@ const Filterbar = ({ onFilterChange }) => {
         </Card>
         <Card sx={{ mb: 2 }}>
           <Typography style={{ marginLeft: "15px", marginTop: "15px" }}>
-            Rating
+            Amenities
           </Typography>
           <CardContent sx={{ padding: 2 }}>
             <Stack spacing={1}>
-              {starRatings
-                .slice(0, showMoreRatings ? starRatings.length : 5)
-                .map((r) => (
+              {amenityItems
+                .slice(0, showMoreAmenities ? amenityItems.length : 5)
+                .map(({ name, icon }) => (
                   <FormControlLabel
-                    key={r}
+                    key={name}
                     control={
                       <Checkbox
-                        value={r}
-                        onChange={handleRatingChange}
-                        checked={starRating === r}
+                        value={name}
+                        onChange={handleAmenitiesChange}
+                        checked={selectedAmenities.includes(name)}
                         sx={{
                           color: "primary.main",
                           "&:hover": { color: "primary.dark" },
                         }}
                       />
                     }
-                    label={`${r}`}
+                    label={
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        {icon && <Box sx={{ mr: 1 }}>{icon}</Box>}
+                        {name}
+                      </Box>
+                    }
                   />
                 ))}
             </Stack>
             <Button
-              onClick={() => handleShowMoreClick("ratings")}
+              onClick={() => handleShowMoreClick("amenities")}
               variant="text"
               endIcon={
-                showMoreRatings ? <ExpandLessIcon /> : <ExpandMoreIcon />
+                showMoreAmenities ? <ExpandLessIcon /> : <ExpandMoreIcon />
               }
               sx={{ mt: 1 }}
             >
-              {showMoreRatings ? "Show Less" : "Show More"}
+              {showMoreAmenities ? "Show Less" : "Show More"}
             </Button>
           </CardContent>
         </Card>
@@ -362,44 +371,39 @@ const Filterbar = ({ onFilterChange }) => {
         </Card>
         <Card sx={{ mb: 2 }}>
           <Typography style={{ marginLeft: "15px", marginTop: "15px" }}>
-            Amenities
+            Rating
           </Typography>
           <CardContent sx={{ padding: 2 }}>
             <Stack spacing={1}>
-              {amenityItems
-                .slice(0, showMoreAmenities ? amenityItems.length : 5)
-                .map(({ name, icon }) => (
+              {starRatings
+                .slice(0, showMoreRatings ? starRatings.length : 5)
+                .map((r) => (
                   <FormControlLabel
-                    key={name}
+                    key={r}
                     control={
                       <Checkbox
-                        value={name}
-                        onChange={handleAmenitiesChange}
-                        checked={selectedAmenities.includes(name)}
+                        value={r}
+                        onChange={handleRatingChange}
+                        checked={starRating === r}
                         sx={{
                           color: "primary.main",
                           "&:hover": { color: "primary.dark" },
                         }}
                       />
                     }
-                    label={
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        {icon && <Box sx={{ mr: 1 }}>{icon}</Box>}
-                        {name}
-                      </Box>
-                    }
+                    label={`${r}`}
                   />
                 ))}
             </Stack>
             <Button
-              onClick={() => handleShowMoreClick("amenities")}
+              onClick={() => handleShowMoreClick("ratings")}
               variant="text"
               endIcon={
-                showMoreAmenities ? <ExpandLessIcon /> : <ExpandMoreIcon />
+                showMoreRatings ? <ExpandLessIcon /> : <ExpandMoreIcon />
               }
               sx={{ mt: 1 }}
             >
-              {showMoreAmenities ? "Show Less" : "Show More"}
+              {showMoreRatings ? "Show Less" : "Show More"}
             </Button>
           </CardContent>
         </Card>

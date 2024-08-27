@@ -14,7 +14,7 @@ import Button from "@mui/joy/Button";
 import { FaCheckCircle } from "react-icons/fa";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
-import amenityIcons from "../../utils/amenities";
+import amenityIcons from "../../utils/filterOptions";
 import Card from "@mui/joy/Card";
 import Box from "@mui/material/Box";
 import CardContent from "@mui/joy/CardContent";

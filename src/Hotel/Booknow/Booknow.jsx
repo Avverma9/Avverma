@@ -8,7 +8,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Rating from "@mui/material/Rating";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import amenityIcons from "../../utils/amenities";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import { useLoader } from "../../utils/loader";
@@ -39,6 +38,8 @@ import Rooms from "./rooms";
 import Foods from "./foods";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBookingData } from "../../redux/bookingSlice";
+import amenityIcons from "../../utils/filterOptions";
+import BookingReview from "./BookingReview";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const BookNow = () => {
 
   const handleRemoveFood = (food) => {
     const updatedFood = selectedFood
-      .map((selected) =>
+      ?.map((selected) =>
         selected._id === food._id
           ? { ...selected, quantity: selected.quantity - 1 }
           : selected
@@ -208,12 +209,12 @@ const BookNow = () => {
         checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
         guests: guestsCount,
         numRooms: roomsCount,
-        roomDetails: selectedRooms.map((room) => ({
+        roomDetails: selectedRooms?.map((room) => ({
           type: room.type,
           bedTypes: room.bedTypes,
           price: room.price,
         })),
-        foodDetails: selectedFood.map((food) => ({
+        foodDetails: selectedFood?.map((food) => ({
           name: food.name,
           price: food.price,
           quantity: food.quantity,
@@ -317,7 +318,7 @@ const BookNow = () => {
         <>
           {hotelData?.images && (
             <Carousel>
-              {hotelData.images.map((image, index) => (
+              {hotelData?.images?.map((image, index) => (
                 <Carousel.Item key={index} interval={1000}>
                   <img
                     src={image}
@@ -531,6 +532,7 @@ const BookNow = () => {
             </div>
           </div>
           {/* foods section */}
+          <BookingReview hotelId={hotelData?.hotelId} />
           <React.Fragment>
             <div
               style={{

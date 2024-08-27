@@ -181,8 +181,7 @@
             color: #4d4f52;
           }
           .bookingsContainer{
-            border: 1px solid #3498db; /* Set border color to blue */
-            border-radius: 25px; 
+          
             width: 100%;
             justify-content: center;
             align-content: center;

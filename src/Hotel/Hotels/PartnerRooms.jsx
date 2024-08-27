@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import baseURL from "../../baseURL";
 import { useNavigate } from "react-router-dom";
+import {
+  roomTypes,
+  bedTypes as availableBedTypes,
+} from "../../utils/filterOptions";
 
 export default function PartnerRooms() {
   const navigate = useNavigate();
   const [type, setType] = useState("");
-  const [bedTypes, setBedTypes] = useState("");
+  const [bedType, setBedType] = useState("");
   const [price, setPrice] = useState("");
   const [countRooms, setCountRooms] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -23,7 +27,7 @@ export default function PartnerRooms() {
       const formData = new FormData();
       formData.append("hotelId", hotelId);
       formData.append("type", type);
-      formData.append("bedTypes", bedTypes);
+      formData.append("bedTypes", bedType); // Adjusted to single bedType
       formData.append("price", price);
       formData.append("countRooms", countRooms);
       formData.append("images", imageFile);
@@ -40,7 +44,7 @@ export default function PartnerRooms() {
 
       if (response.status === 201) {
         alert(
-          "Thank you, you have filled all details ! One of our customer will connect you shortly"
+          "Thank you, you have filled all details! One of our customers will connect with you shortly."
         );
         localStorage.removeItem("hotelId");
         navigate("/");
@@ -53,33 +57,49 @@ export default function PartnerRooms() {
 
   return (
     <div className="container mt-5">
-      <h2>Partner Rooms</h2>
+      <h5>Partner Rooms</h5>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="type" className="form-label">
             Room Type
           </label>
-          <input
-            type="text"
-            className="form-control"
+          <select
+            className="form-select"
             id="type"
             value={type}
             onChange={(e) => setType(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>
+              Select Room Type
+            </option>
+            {roomTypes.map((roomType) => (
+              <option key={roomType} value={roomType}>
+                {roomType}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="bedTypes" className="form-label">
-            Bed Types
+            Bed Type
           </label>
-          <input
-            type="text"
-            className="form-control"
+          <select
+            className="form-select"
             id="bedTypes"
-            value={bedTypes}
-            onChange={(e) => setBedTypes(e.target.value)}
+            value={bedType}
+            onChange={(e) => setBedType(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>
+              Select Bed Type
+            </option>
+            {availableBedTypes.map((bedType) => (
+              <option key={bedType} value={bedType}>
+                {bedType}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="mb-3">
           <label htmlFor="price" className="form-label">

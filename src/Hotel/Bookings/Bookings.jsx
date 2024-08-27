@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { MDBInput } from "mdb-react-ui-kit";
+import { MDBInput, MDBTextArea } from "mdb-react-ui-kit";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
@@ -80,31 +80,6 @@ export const ConfirmBooking = () => {
     return null;
   }
   // console.log("redux data ", fetchFilteredBooking);
-
-  if (!userData) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
-        <img
-          src="https://arkca.com/assets/img/login.gif"
-          alt="Login required"
-          style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />
-        <p style={{ marginTop: "10px" }}>
-          Unauthorized
-          <br />
-          Please log in
-        </p>
-      </div>
-    );
-  }
-
   const handleShow = (value) => {
     setModalData(value);
     setShow(true);
@@ -204,8 +179,8 @@ export const ConfirmBooking = () => {
               <Box
                 sx={{
                   position: "absolute",
-                  width: "90%",
-                  maxWidth: 400,
+                  width: "100%",
+                  maxWidth: 600,
                   bgcolor: "background.paper",
                   border: "2px solid #000",
                   boxShadow: 24,
@@ -225,7 +200,7 @@ export const ConfirmBooking = () => {
                     style={{ cursor: "pointer" }}
                   />
                 </Box>
-                <MDBInput
+                <MDBTextArea
                   label="Give stars"
                   id="formControlLg"
                   type="text"
@@ -310,7 +285,7 @@ export const ConfirmBooking = () => {
                     >
                       <>
                         <CalendarMonthIcon /> From{" "}
-                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to {" "}
+                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to{" "}
                         {formatDateWithOrdinal(bookingDetail.checkOutDate)}
                       </>
                     </Typography>
