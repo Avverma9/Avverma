@@ -129,7 +129,7 @@ router.put(
   reviewController.updateReview
 );
 router.delete("/delete/:reviewId", reviewController.deleteReview); // on site
-router.get("/find-all-users-hotel-review",reviewController.findAllReviews)
+router.get("/find-all-users-hotel-review",reviewController.findAllReviews) // panel
 //============================= BOOKING =======================================
 router.post("/booking/:userId/:hotelId",upload,bookingController.createBooking);
 router.get("/bookingsConfirm", bookingController.getConfirmedBookings);
