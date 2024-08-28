@@ -10,7 +10,7 @@ export const fetchBookingReview = createAsyncThunk(
       const response = await axios.get(
         `${baseURL}/getReviews/hotelId?hotelId=${hotelId}`
       );
-      return response.data;
+      return response?.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -39,7 +39,7 @@ const reviewSlice = createSlice({
       .addCase(fetchBookingReview.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(
+        console.error(
           `Failed to fetch booking Review: ${action.payload || "Unknown error"}`
         );
       });

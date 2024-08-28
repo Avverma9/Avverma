@@ -46,7 +46,6 @@ const BookingReview = ({ hotelId }) => {
   return (
     <div className="review-container">
       {loading && <p>Loading reviews...</p>}
-      {error && <p>Error loading reviews: {error.message}</p>}
       {!loading &&
         !error &&
         (reviewsToShow.length > 0 ? (
