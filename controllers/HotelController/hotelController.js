@@ -1,10 +1,5 @@
 const hotelModel = require("../../models/Hotel/hotelModel");
-const foods = require("../../models/Hotel/foodsModel");
-const amenities = require("../../models/Hotel/amenitiesModel");
-const policies = require("../../models/Hotel/policyModel");
 const month = require("../../models/monthlyPriceModel");
-const roomModel = require("../../models/Hotel/roomModel");
-const reviewModel = require("../reviewController");
 const cron = require("node-cron");
 const createHotel = async (req, res) => {
   try {
@@ -700,8 +695,10 @@ const checkAndUpdateOffers = async () => {
     for (const hotel of expiredOffers) {
       for (let i = 0; i < hotel.rooms.length; i++) {
         const roomUpdates = {
-          price: hotel.rooms[i].originalPrice,
-          offerDetails: "N/A",
+          isOffer: false,
+          offerPriceLess: 0,
+          offerExp:"",
+          offerName: "",
         };
 
         // Update the specific room using $set operator (optional)
@@ -712,9 +709,6 @@ const checkAndUpdateOffers = async () => {
         hotel.rooms[i] = { ...hotel.rooms[i], ...roomUpdates };
       }
 
-      // Set isOffer to false for the hotel
-      hotel.isOffer = false;
-
       await hotel.save();
     }
 
@@ -723,7 +717,6 @@ const checkAndUpdateOffers = async () => {
     console.error("Error processing expired offers:", error);
   }
 };
-
 
 // Schedule the function to run every day at midnight (adjust as needed)
 cron.schedule("0 0 * * *", async () => {
@@ -743,7 +736,7 @@ const ApplyCoupon = async (req, res) => {
     }
     // Find the room directly from the hotel data
     const roomIndex = hotel.rooms.findIndex(
-      (room) => room._id.toString() === roomId
+      (room) => room.roomId.toString() === roomId
     );
     if (roomIndex === -1) {
       return res.status(404).json({ error: "Room not found in the hotel" });
@@ -830,8 +823,6 @@ const expireOffer = async function (req, res) {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 //=============================================================
 const getByRoom = async (req, res) => {

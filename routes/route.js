@@ -188,10 +188,10 @@ router.patch(
 router.post("/auth/register/new-admin/page", upload, adminController.register);
 router.post("/auth/login/new-admin/page", adminController.signIn);
 // /=================================Coupon======================================//
-router.post("/coupon", couponController.MakeCoupon);
-router.get("/coupon/:code", couponController.ApplyCoupon);
+router.post("/coupon/create-a-new/coupon", couponController.newCoupon);
+router.patch("/apply/a/coupon-to-room/:couponCode", couponController.ApplyCoupon);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
-
+router.patch("/remove-an-ongoing/offer/from/hotel", couponController.checkAndUpdateOffers);
 //==========================monthly price==========================//
 router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.get("/monthly-set-room-price/get/by/:hotelId", month.getPriceByHotelId);
