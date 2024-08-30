@@ -29,8 +29,7 @@ const cronJob = () => {
 };
 
 // Schedule the cron job to run every day at midnight (adjust as needed)
-cron.schedule("1 0 * * *", cronJob);
-
+cron.schedule("30 18 * * *", cronJob);
 // Allow requests only from specific origins
 
 app.use(express.json());

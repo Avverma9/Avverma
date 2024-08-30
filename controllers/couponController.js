@@ -116,9 +116,11 @@ const checkAndUpdateOffers = async () => {
   }
 };
 
-// Schedule the function to run every day at midnight
-cron.schedule("1 0 * * *", async () => {
-  await checkAndUpdateOffers();
+cron.schedule("30 18 * * *", async () => {
+  const now = moment().tz("Asia/Kolkata");
+  if (now.hour() === 0 && now.minute() === 0) {
+    await checkAndUpdateOffers();
+  }
 });
 //GET ALL
 
