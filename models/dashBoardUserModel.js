@@ -15,7 +15,7 @@ const dashboardUser = new mongoose.Schema(
     role: {
       type: String,
       required : true,
-      enum: ["admin", "superAdmin","developer"],
+      enum: ["Admin", "PMS","Developer"],
     },
     address: String,
     password: String,
