@@ -126,7 +126,10 @@ cron.schedule("30 18 * * *", async () => {
 
 const GetAllCoupons = async (req, res) => {
   try {
-    const coupons = await couponModel.find().sort({ validity: -1 });
+    // Fetch coupons where `roomId` does not exist
+    const coupons = await couponModel
+      .find({ roomId: { $exists: false } })
+      .sort({ validity: -1 });
     res.status(200).json(coupons);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

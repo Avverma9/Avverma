@@ -68,7 +68,6 @@ const loginUser = async function (req, res) {
   }
 };
 
-
 //update status
 const updateStatus = async (req, res) => {
   const { id } = req.params; // Extracting id from parameters
@@ -184,7 +183,6 @@ const updatePartner = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 module.exports = {
   registerUser,
