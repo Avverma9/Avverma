@@ -429,7 +429,7 @@ const Hotel = () => {
                               .filter((room) => room?.isOffer) // Filter rooms with isOffer true
                               .map((room, roomIndex) => (
                                 <div key={roomIndex}>
-                                <p>{room?.offerName}</p>
+                                  <p>{room?.offerName}</p>
                                   <p className="text-danger">
                                     {room?.offerPriceLess
                                       ? `${room?.offerPriceLess}Rs Less`

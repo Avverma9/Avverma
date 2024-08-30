@@ -110,7 +110,7 @@ const BookNow = () => {
         return [];
       }
       return prevSelectedRooms.filter(
-        (selectedRoom) => selectedRoom._id !== room._id
+        (selectedRoom) => selectedRoom.roomId !== room.roomId
       );
     });
   };

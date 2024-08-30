@@ -26,6 +26,8 @@ import PartnerFoods from "./Hotel/Hotels/PartnerFoods.jsx";
 import PartnerRooms from "./Hotel/Hotels/PartnerRooms.jsx";
 import Reviews from "./Hotel/Profile/Review.jsx";
 import { LoaderProvider } from "./utils/loader"; // Import the LoaderProvider
+import ScrollToTop from "./utils/scrollToTop";
+
 
 function App() {
   return (
@@ -38,13 +40,13 @@ function App() {
           <UpdatePage />
           <ConfirmBooking />
           <BookNow />
-          {/* <ProfileSidebar/> */}
           <HeaderImage />
           <Dropdown />
           <Hotel />
-          <SearchForm />
           <CarouselPage />
+          <SearchForm />
           <Offered />
+          <ScrollToTop/> {/* Add ScrollToTop component */}
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

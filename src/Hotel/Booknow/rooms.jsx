@@ -74,7 +74,7 @@ const Rooms = ({
                       </CardContent>
                       <CardActions>
                         {selectedRooms.find(
-                          (selected) => selected._id === room._id
+                          (selected) => selected.roomId === room.roomId
                         ) ? (
                           <button
                             size="small"
@@ -150,7 +150,7 @@ const Rooms = ({
                     </Typography>
                     <CardActions>
                       {selectedRooms.find(
-                        (selected) => selected._id === room._id
+                        (selected) => selected.roomId === room.roomId
                       ) ? (
                         <button
                           size="small"
@@ -184,7 +184,7 @@ Rooms.propTypes = {
   hotelData: PropTypes.shape({
     rooms: PropTypes.arrayOf(
       PropTypes.shape({
-        _id: PropTypes.string.isRequired,
+        roomId: PropTypes.string.isRequired,
         images: PropTypes.arrayOf(PropTypes.string),
         type: PropTypes.string.isRequired,
         bedTypes: PropTypes.string.isRequired,
@@ -195,7 +195,7 @@ Rooms.propTypes = {
   }).isRequired,
   selectedRooms: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.string.isRequired,
+      roomId: PropTypes.string.isRequired,
     })
   ).isRequired,
   handleAddRoom: PropTypes.func.isRequired,
