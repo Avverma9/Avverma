@@ -2,14 +2,21 @@
 const couponModel = require("../models/couponModel");
 const hotelModel = require("../models/Hotel/hotelModel");
 const cron = require("node-cron");
+const moment = require("moment-timezone");
 const newCoupon = async (req, res) => {
   try {
     const { couponName, discountPrice, validity } = req.body;
+
+    // Convert the provided validity time from IST to UTC
+    const validityInUTC = moment.tz(validity, "Asia/Kolkata").utc().toDate();
+
+    // Create the coupon with the UTC validity
     const createdCoupon = await couponModel.create({
       couponName,
       discountPrice,
-      validity,
+      validity: validityInUTC,
     });
+
     res
       .status(201)
       .json({ message: "Coupon code created", coupon: createdCoupon });
@@ -126,16 +133,22 @@ cron.schedule("30 18 * * *", async () => {
 
 const GetAllCoupons = async (req, res) => {
   try {
-    // Fetch coupons where `roomId` does not exist
+    // Get the current date in IST timezone
+    const currentDateIST = moment().tz("Asia/Kolkata").startOf("day").toDate();
+
+    // Fetch coupons where `roomId` does not exist and validity is greater than or equal to the current date
     const coupons = await couponModel
-      .find({ roomId: { $exists: false } })
+      .find({
+        roomId: { $exists: false },
+        validity: { $gte: currentDateIST },
+      })
       .sort({ validity: -1 });
+
     res.status(200).json(coupons);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 module.exports = {
   newCoupon,
   ApplyCoupon,
