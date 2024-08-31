@@ -37,7 +37,7 @@ router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
 router.post("/send-a-message/messenger", messenger.sendMessage);
 router.get("/get-messages/of-chat/:userId1/:userId2", messenger.getMessages);
 router.put("/mark-as-seen/messages", messenger.markAsSeen);
-router.post("/update", messenger.updateStatus);
+router.post("/update-status-of-a-user/messenger", messenger.updateStatus);
 router.get("/get-chat/contacts",messenger.getContacts)
 //===============================foods==========================
 
