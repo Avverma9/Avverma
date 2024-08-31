@@ -5,11 +5,6 @@ const cron = require("node-cron");
 const cors = require("cors");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const multerS3 = require("multer-s3");
-const multer = require("multer");
-const Razorpay = require("razorpay");
-
 const route = require("./routes/route");
 
 const app = express();
@@ -21,23 +16,38 @@ mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
-app.use(cors())
-// Define your cron job logic
-const cronJob = () => {
-  // Your cron job logic here
-  console.log("Cron job executed");
-};
 
-// Schedule the cron job to run every day at midnight (adjust as needed)
-cron.schedule("30 18 * * *", cronJob);
-// Allow requests only from specific origins
-
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const server = createServer(app);
 const io = new Server(server);
 
+// Socket.io event handling
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  socket.on("updateStatus", (data) => {
+    io.emit("statusUpdate", data);
+  });
+
+  socket.on("sendMessage", async (data) => {
+    try {
+      const message = new Message(data);
+      await message.save();
+      io.emit("newMessage", message);
+    } catch (err) {
+      console.error("Error saving message:", err);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
+// Route handling
 app.use("/", route);
 
 app.use((req, res) => {

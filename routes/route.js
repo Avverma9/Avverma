@@ -20,6 +20,7 @@ const policy = require("../controllers/HotelController/policyController");
 const foods = require("../controllers/HotelController/foodController");
 const amenities = require("../controllers/HotelController/amenitiesController");
 const rooms = require("../controllers/HotelController/roomController");
+const messenger = require("../controllers/messenger/messenger")
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
 router.get("/get-list-of/rooms", rooms.getRoomsByHotelId); 
@@ -32,8 +33,14 @@ router.delete("/hotels/:hotelId/amenities/:amenityName", amenities.deleteAmenity
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
 router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
-
+//=========================================Messenger-===============================
+router.post("/send-a-message/messenger", messenger.sendMessage);
+router.get("/get-messages/of-chat/:userId1/:userId2", messenger.getMessages);
+router.put("/mark-as-seen/messages", messenger.markAsSeen);
+router.post("/update", messenger.updateStatus);
+router.get("/get-chat/contacts",messenger.getContacts)
 //===============================foods==========================
+
 router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
 router.get("/get/your-hotel-food/:hotelId", foods.getFood); // on panel
 router.delete("/delete-food/:hotelId/:foodId",foods.deleteFood); // on panel
