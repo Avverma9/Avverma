@@ -6,7 +6,7 @@ const registerUser = async (req, res) => {
     const { name, email, mobile, password, role, address } = req.body;
     const emailExist = await Dashboard.findOne({ email: email });
     const mobileExist = await Dashboard.findOne({ mobile: mobile });
-    if (role !== "admin" && role !== "superAdmin") {
+    if (role !== "admin" && role !== "superAdmin" && role !== "PMS") {
       return res.status(400).json({ message: "Invalid role selection" });
     }
     if (emailExist) {

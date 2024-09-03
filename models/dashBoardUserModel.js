@@ -6,7 +6,7 @@ const dashboardUser = new mongoose.Schema(
     name: String,
     mobile: {
       type: Number,
-      unique: true,
+     
     },
     email: {
       type: String,

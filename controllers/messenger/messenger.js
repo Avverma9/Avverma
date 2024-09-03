@@ -91,18 +91,3 @@ exports.markAsSeen = async (req, res) => {
     res.status(500).json({ message: "Server error", error: err });
   }
 };
-exports.updateStatus = async (req, res) => {
-  const { userId, online } = req.body;
-
-  try {
-    const status = await UserStatus.findOneAndUpdate(
-      { user: userId },
-      { online, lastSeen: online ? undefined : Date.now() },
-      { upsert: true, new: true }
-    );
-
-    res.json(status);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err });
-  }
-};
