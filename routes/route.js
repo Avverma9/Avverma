@@ -55,7 +55,7 @@ router.get("/get-chat/contacts", messenger.getContacts); // panel
 router.post("/add/to/chat-messenger", upload, addToChat);
 router.get("/get/added/chats/from/messenger", getChats);
 router.delete(
-  "/delete/added/chats/from/messenger-app/:id/:senderId?/:receiverId?",
+  "/delete/added/chats/from/messenger-app/:senderId/:receiverId?",
   deleteChatAndMessages
 );
 router.post(

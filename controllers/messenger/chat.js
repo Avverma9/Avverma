@@ -87,16 +87,14 @@ exports.getChats = async function (req, res) {
 
 exports.deleteChatAndMessages = async function (req, res) {
   try {
-    const { id, senderId, receiverId } = req.params;
+    const { senderId, receiverId } = req.params;
 
-    // Initialize flags for deletion status
-    let chatDeleted = false;
     let messagesDeleted = false;
 
     // Validate that at least one of id, senderId, or receiverId is provided
-    if (!id && (!senderId || !receiverId)) {
+    if (!senderId || !receiverId) {
       return res.status(400).json({
-        message: "Chat ID or both senderId and receiverId are required.",
+        message: "senderId and receiverId are required.",
       });
     }
 
@@ -117,23 +115,13 @@ exports.deleteChatAndMessages = async function (req, res) {
       }
     }
 
-    // If only id is provided, delete the chat
-    if (id) {
-      const deletedChat = await Chat.findByIdAndDelete(id);
-      if (deletedChat) {
-        chatDeleted = true;
-      } else {
-        return res.status(404).json({ message: "Chat not found." });
-      }
-    }
+    //
 
     // Determine the response based on what was deleted
-    if (chatDeleted && messagesDeleted) {
+    if (messagesDeleted) {
       return res
         .status(200)
         .json({ message: "Chat and messages deleted successfully." });
-    } else if (chatDeleted) {
-      return res.status(200).json({ message: "Chat deleted successfully." });
     } else if (messagesDeleted) {
       return res
         .status(200)
