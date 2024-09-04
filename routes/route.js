@@ -26,6 +26,12 @@ const {
   addToChat,
   deleteChatAndMessages,
 } = require("../controllers/messenger/chat");
+const {
+  pushNotification,
+  getNotification,
+  getAll,
+  pushGlobalNotification,
+} = require("../controllers/messenger/notification");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
 router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
@@ -51,6 +57,18 @@ router.get("/get/added/chats/from/messenger", getChats);
 router.delete(
   "/delete/added/chats/from/messenger-app/:id/:senderId?/:receiverId?",
   deleteChatAndMessages
+);
+router.post(
+  "/push-a-new-notification-to-the-panel/dashboard",
+  pushGlobalNotification
+);
+router.get(
+  "/push-a-new-notification-to-the-panel/dashboard/get/:userId",
+  getNotification
+);
+router.get(
+  "/fetch-all-new-notification-to-the-panel/dashboard/get/all",
+  getAll
 );
 //===============================foods==========================
 
