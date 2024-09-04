@@ -20,30 +20,40 @@ const policy = require("../controllers/HotelController/policyController");
 const foods = require("../controllers/HotelController/foodController");
 const amenities = require("../controllers/HotelController/amenitiesController");
 const rooms = require("../controllers/HotelController/roomController");
-const messenger = require("../controllers/messenger/messenger")
+const messenger = require("../controllers/messenger/messenger");
+const {
+  getChats,
+  addToChat,
+  deleteChatsById,
+} = require("../controllers/messenger/chat");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
-router.get("/get-list-of/rooms", rooms.getRoomsByHotelId); 
-router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId); 
-router.delete("/delete-rooms-by-id",rooms.deleteRoomByRoomId) //on panel
+router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
+router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
+router.delete("/delete-rooms-by-id", rooms.deleteRoomByRoomId); //on panel
 //=========================================amenities================================================================
 router.get("/get-hotel-by/amenities", amenities.getHotelByAmenities);
 router.post("/create-a-amenities/to-your-hotel", amenities.createAmenity); // on panel
-router.delete("/hotels/:hotelId/amenities/:amenityName", amenities.deleteAmenity); // on panel
+router.delete(
+  "/hotels/:hotelId/amenities/:amenityName",
+  amenities.deleteAmenity
+); // on panel
 //==========================================Policy========================
 router.post("/add-a-new/policy-to-your/hotel", policy.createPolicy);
 router.patch("/patch-a-new/policy-to-your/hotel", policy.updatePolicies);
 //=========================================Messenger-===============================
-router.post("/send-a-message/messenger", messenger.sendMessage);
-router.get("/get-messages/of-chat/:userId1/:userId2", messenger.getMessages);
-router.put("/mark-as-seen/messages", messenger.markAsSeen);
-
-router.get("/get-chat/contacts",messenger.getContacts)
+router.post("/send-a-message/messenger", messenger.sendMessage); //panel
+router.get("/get-messages/of-chat/:userId1/:userId2", messenger.getMessages); //panel
+router.put("/mark-as-seen/messages", messenger.markAsSeen); // panel
+router.get("/get-chat/contacts", messenger.getContacts); // panel
+router.post("/add/to/chat-messenger", upload, addToChat);
+router.get("/get/added/chats/from/messenger", getChats);
+router.delete("/delete/added/chats/from/messenger-app/:id", deleteChatsById);
 //===============================foods==========================
 
 router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
 router.get("/get/your-hotel-food/:hotelId", foods.getFood); // on panel
-router.delete("/delete-food/:hotelId/:foodId",foods.deleteFood); // on panel
+router.delete("/delete-food/:hotelId/:foodId", foods.deleteFood); // on panel
 //============================Header location==========================================
 router.post("/add-a/travel/location", upload, HeaderLocation.createLocation); // on panel
 router.get("/get-all/travel/location", HeaderLocation.getLocation); // on panel
@@ -60,9 +70,13 @@ router.delete(
   complaintController.deleteComplaint
 );
 //==============================carousel====================================//
-router.post("/create/second/carousel",upload,carouselController.createBanner); // on panel
+router.post("/create/second/carousel", upload, carouselController.createBanner); // on panel
 router.get("/get/second/carousel", carouselController.getBanner); //on panel
-router.delete("/delete/second-carousel-data/:id",upload,carouselController.deleteBanner); // on panel
+router.delete(
+  "/delete/second-carousel-data/:id",
+  upload,
+  carouselController.deleteBanner
+); // on panel
 //====================================== USER ========================================================
 router.post("/Signup", upload, userController.createSignup);
 router.get("/get/:userId", userController.getUserById);
@@ -75,7 +89,11 @@ router.get("/get-total/user-details", userController.totalUser); // user count
 router.post("/welcome", upload, welcomeController.createWelcome);
 router.get("/welcome/get", welcomeController.getWelcomeUsers);
 //===================================== HOTEL ===========================================================
-router.post("/data/hotels-new/post/upload/data",upload,hotelController.createHotel);
+router.post(
+  "/data/hotels-new/post/upload/data",
+  upload,
+  hotelController.createHotel
+);
 router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccepted,isOffer
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
@@ -136,9 +154,13 @@ router.put(
   reviewController.updateReview
 );
 router.delete("/delete/:reviewId", reviewController.deleteReview); // on site
-router.get("/find-all-users-hotel-review",reviewController.findAllReviews) // panel
+router.get("/find-all-users-hotel-review", reviewController.findAllReviews); // panel
 //============================= BOOKING =======================================
-router.post("/booking/:userId/:hotelId",upload,bookingController.createBooking);
+router.post(
+  "/booking/:userId/:hotelId",
+  upload,
+  bookingController.createBooking
+);
 router.get("/bookingsConfirm", bookingController.getConfirmedBookings);
 router.get("/bookingFailed", bookingController.getFailedBookings);
 router.get("/booking/getCheckedIn", bookingController.getCheckedIn);
@@ -146,7 +168,10 @@ router.get("/booking/getCheckedOut", bookingController.getCheckedOut);
 router.put("/booking/:bookingId", bookingController.cancelBooking);
 router.get("/booking/getCancelled", bookingController.getCancelledBookings);
 router.get("/booking/getNoShow", bookingController.getNoShowBookings);
-router.get("/booking/getCancelledBooking",bookingController.getCancelledBooking);
+router.get(
+  "/booking/getCancelledBooking",
+  bookingController.getCancelledBooking
+);
 router.get("/getbooking/:bookingId", bookingController.getCheckingBooking);
 router.put("/updatebooking/:bookingId", bookingController.updateBooking);
 router.get("/bookingFailed/:id", bookingController.getFailedBookingsHotel);
@@ -180,15 +205,16 @@ router.post("/verifyotp", emailController.verifyOtp);
 
 //===============================Dashboard===========================
 router.post("/create/dashboard/user", upload, DashboardUser.registerUser);
-router.put("/update/dashboard/user-status/:id",  DashboardUser.updateStatus);
-router.post("/login/dashboard/user", upload,DashboardUser.loginUser);
+router.put("/update/dashboard/user-status/:id", DashboardUser.updateStatus);
+router.post("/login/dashboard/user", upload, DashboardUser.loginUser);
 router.get("/login/dashboard/get/all/user", DashboardUser.getPartners);
 router.delete(
   "/delete/dashboard/delete/partner/:id",
   DashboardUser.deletePartner
 );
 router.patch(
-  "/update/dashboard/updated/partner/:id",upload,
+  "/update/dashboard/updated/partner/:id",
+  upload,
   DashboardUser.updatePartner
 );
 //============================ADMIN===========================================
@@ -196,13 +222,22 @@ router.post("/auth/register/new-admin/page", upload, adminController.register);
 router.post("/auth/login/new-admin/page", adminController.signIn);
 // /=================================Coupon======================================//
 router.post("/coupon/create-a-new/coupon", couponController.newCoupon);
-router.patch("/apply/a/coupon-to-room/:couponCode", couponController.ApplyCoupon);
+router.patch(
+  "/apply/a/coupon-to-room/:couponCode",
+  couponController.ApplyCoupon
+);
 router.get("/coupon/get/all", couponController.GetAllCoupons);
-router.patch("/remove-an-ongoing/offer/from/hotel", couponController.checkAndUpdateOffers);
+router.patch(
+  "/remove-an-ongoing/offer/from/hotel",
+  couponController.checkAndUpdateOffers
+);
 //==========================monthly price==========================//
 router.post("/monthly-set-room-price/:hotelId", month.newMonth);
 router.get("/monthly-set-room-price/get/by/:hotelId", month.getPriceByHotelId);
-router.delete("/monthly-set-room-price/delete/price/by/:hotelId", month.deleteMonth);
+router.delete(
+  "/monthly-set-room-price/delete/price/by/:hotelId",
+  month.deleteMonth
+);
 router.put("/change-monthly-price/hotel-room", hotelController.monthlyPrice);
 router.post(
   "/get-hotel-monthly-price-increase/:hotelId",
