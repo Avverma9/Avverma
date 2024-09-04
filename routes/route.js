@@ -24,7 +24,7 @@ const messenger = require("../controllers/messenger/messenger");
 const {
   getChats,
   addToChat,
-  deleteChatsById,
+  deleteChatAndMessages,
 } = require("../controllers/messenger/chat");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
@@ -48,7 +48,10 @@ router.put("/mark-as-seen/messages", messenger.markAsSeen); // panel
 router.get("/get-chat/contacts", messenger.getContacts); // panel
 router.post("/add/to/chat-messenger", upload, addToChat);
 router.get("/get/added/chats/from/messenger", getChats);
-router.delete("/delete/added/chats/from/messenger-app/:id", deleteChatsById);
+router.delete(
+  "/delete/added/chats/from/messenger-app/:id/:receiverId?",
+  deleteChatAndMessages
+);
 //===============================foods==========================
 
 router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
