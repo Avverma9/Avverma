@@ -11,7 +11,7 @@ exports.addToChat = async function (req, res) {
     // Process each chat
     const results = await Promise.all(
       chats.map(async (chat) => {
-        const { name, lastMessage, mobile, images } = chat;
+        const { name, lastMessage, mobile, images, receiverId } = chat;
 
         if (!name || !mobile) {
           return {
@@ -28,7 +28,7 @@ exports.addToChat = async function (req, res) {
           existingChat.name = name;
           existingChat.lastMessage = lastMessage;
           existingChat.images = images || existingChat.images;
-
+          existingChat.receiverId = receiverId;
           const updatedChat = await existingChat.save();
 
           return {
@@ -43,6 +43,7 @@ exports.addToChat = async function (req, res) {
             lastMessage,
             images,
             mobile,
+            receiverId,
           });
 
           return {
@@ -94,11 +95,9 @@ exports.deleteChatAndMessages = async function (req, res) {
 
     // Validate that at least one of id, senderId, or receiverId is provided
     if (!id && (!senderId || !receiverId)) {
-      return res
-        .status(400)
-        .json({
-          message: "Chat ID or both senderId and receiverId are required.",
-        });
+      return res.status(400).json({
+        message: "Chat ID or both senderId and receiverId are required.",
+      });
     }
 
     // If senderId and receiverId are provided, delete the messages between them
@@ -112,11 +111,9 @@ exports.deleteChatAndMessages = async function (req, res) {
         messagesDeleted = true;
       } else {
         // No messages found for the given senderId and receiverId
-        return res
-          .status(404)
-          .json({
-            message: "No messages found for the given sender and receiver IDs.",
-          });
+        return res.status(404).json({
+          message: "No messages found for the given sender and receiver IDs.",
+        });
       }
     }
 
@@ -151,7 +148,3 @@ exports.deleteChatAndMessages = async function (req, res) {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
-

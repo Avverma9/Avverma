@@ -6,11 +6,13 @@ const chatSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      
+    },
+    receiverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DashboardUser",
     },
     mobile: {
       type: Number,
-  
     },
     lastMessage: {
       type: String,
@@ -21,7 +23,6 @@ const chatSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 
 const Chat = mongoose.model("Chat", chatSchema);
 
