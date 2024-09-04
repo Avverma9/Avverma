@@ -86,35 +86,47 @@ exports.getChats = async function (req, res) {
 
 exports.deleteChatAndMessages = async function (req, res) {
   try {
-    const { id, receiverId } = req.params;
+    const { id, senderId, receiverId } = req.params;
 
     // Initialize flags for deletion status
     let chatDeleted = false;
     let messagesDeleted = false;
 
-    // If id is provided, delete the chat by id
+    // Validate that at least one of id, senderId, or receiverId is provided
+    if (!id && (!senderId || !receiverId)) {
+      return res
+        .status(400)
+        .json({
+          message: "Chat ID or both senderId and receiverId are required.",
+        });
+    }
+
+    // If senderId and receiverId are provided, delete the messages between them
+    if (senderId && receiverId) {
+      const result = await Message.deleteMany({
+        sender: senderId,
+        receiver: receiverId,
+      });
+
+      if (result.deletedCount > 0) {
+        messagesDeleted = true;
+      } else {
+        // No messages found for the given senderId and receiverId
+        return res
+          .status(404)
+          .json({
+            message: "No messages found for the given sender and receiver IDs.",
+          });
+      }
+    }
+
+    // If only id is provided, delete the chat
     if (id) {
       const deletedChat = await Chat.findByIdAndDelete(id);
       if (deletedChat) {
         chatDeleted = true;
       } else {
-        // If chat with the given id is not found
         return res.status(404).json({ message: "Chat not found." });
-      }
-    }
-
-    // If receiverId is provided, delete all messages associated with it
-    if (receiverId) {
-      const result = await Message.deleteMany({ receiver: receiverId });
-      if (result.deletedCount > 0) {
-        messagesDeleted = true;
-      } else {
-        // If no messages were found to delete for the given receiverId
-        return res
-          .status(404)
-          .json({
-            message: "No messages found to delete for the given receiver.",
-          });
       }
     }
 
@@ -132,12 +144,14 @@ exports.deleteChatAndMessages = async function (req, res) {
     } else {
       return res
         .status(400)
-        .json({ message: "No valid id or receiverId provided to delete." });
+        .json({ message: "No valid parameters provided to delete." });
     }
   } catch (error) {
     console.error("Error deleting chat and messages:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+
 
 
