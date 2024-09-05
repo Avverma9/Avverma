@@ -22,10 +22,15 @@ const amenities = require("../controllers/HotelController/amenitiesController");
 const rooms = require("../controllers/HotelController/roomController");
 const messenger = require("../controllers/messenger/messenger");
 const {
-  getNotification,
-  getAll,
+  getNotificationByUser,
+  updateUserNotificationSeen,
+  pushUserNotification,
+} = require("../controllers/messenger/UserNotification");
+const {
   pushGlobalNotification,
-} = require("../controllers/messenger/notification");
+  getNotificationsForUser,
+  updateNotificationSeen,
+} = require("../controllers/messenger/GlobalNotification");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
 router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
@@ -50,19 +55,32 @@ router.delete(
   "/delete/added/chats/from/messenger-app/:senderId/:receiverId?",
   messenger.deleteChatAndMessages
 ); //panel
-
-//======================================notifications
+//======================================USER Notification==========================//
+router.post(
+  "/push-a-new-notification-to-the-panel/dashboard/user",
+  pushUserNotification
+);
+router.get(
+  "/fetch-all-new-notification-to-the-panel/dashboard/get/:userId",
+  getNotificationByUser
+);
+router.patch(
+  "/fetch-all-new-notification-to-the-panel/and-mark-seen/dashboard-user/notification/:notificationId/seen",
+  updateUserNotificationSeen
+);
+//======================================Global Notification==========================//
 router.post(
   "/push-a-new-notification-to-the-panel/dashboard",
   pushGlobalNotification
 );
 router.get(
   "/push-a-new-notification-to-the-panel/dashboard/get/:userId",
-  getNotification
+  getNotificationsForUser
 );
-router.get(
-  "/fetch-all-new-notification-to-the-panel/dashboard/get/all",
-  getAll
+
+router.patch(
+  "/fetch-all-new-notification-to-the-panel/and-mark-seen/dashboard/:userId/:notificationId/seen",
+  updateNotificationSeen
 );
 //===============================foods==========================
 
