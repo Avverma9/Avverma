@@ -97,50 +97,18 @@ exports.deleteChatAndMessages = async function (req, res) {
   try {
     const { senderId, receiverId } = req.params;
 
-    let messagesDeleted = false;
+    // Use $or to handle both scenarios where sender and receiver roles can be swapped
+    const result = await Message.deleteMany({
+      $or: [
+        { sender: senderId, receiver: receiverId },
+        { sender: receiverId, receiver: senderId },
+      ],
+    });
 
-    // Validate that at least one of id, senderId, or receiverId is provided
-    if (!senderId || !receiverId) {
-      return res.status(400).json({
-        message: "senderId and receiverId are required.",
-      });
-    }
-
-    // If senderId and receiverId are provided, delete the messages between them
-    if (senderId && receiverId) {
-      const result = await Message.deleteMany({
-        sender: senderId,
-        receiver: receiverId,
-      });
-
-      if (result.deletedCount > 0) {
-        messagesDeleted = true;
-      } else {
-        // No messages found for the given senderId and receiverId
-        return res.status(404).json({
-          message: "No messages found for the given sender and receiver IDs.",
-        });
-      }
-    }
-
-    //
-
-    // Determine the response based on what was deleted
-    if (messagesDeleted) {
-      return res
-        .status(200)
-        .json({ message: "Chat and messages deleted successfully." });
-    } else if (messagesDeleted) {
-      return res
-        .status(200)
-        .json({ message: "Messages deleted successfully." });
-    } else {
-      return res
-        .status(400)
-        .json({ message: "No valid parameters provided to delete." });
-    }
+    return res.status(200).json({ message: "Successfully deleted", result });
   } catch (error) {
     console.error("Error deleting chat and messages:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
