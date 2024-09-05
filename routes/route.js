@@ -22,12 +22,6 @@ const amenities = require("../controllers/HotelController/amenitiesController");
 const rooms = require("../controllers/HotelController/roomController");
 const messenger = require("../controllers/messenger/messenger");
 const {
-  getChats,
-  addToChat,
-  deleteChatAndMessages,
-} = require("../controllers/messenger/chat");
-const {
-  pushNotification,
   getNotification,
   getAll,
   pushGlobalNotification,
@@ -52,12 +46,12 @@ router.post("/send-a-message/messenger", messenger.sendMessage); //panel
 router.get("/get-messages/of-chat/:userId1/:userId2", messenger.getMessages); //panel
 router.put("/mark-as-seen/messages", messenger.markAsSeen); // panel
 router.get("/get-chat/contacts", messenger.getContacts); // panel
-router.post("/add/to/chat-messenger", upload, addToChat);
-router.get("/get/added/chats/from/messenger", getChats);
 router.delete(
   "/delete/added/chats/from/messenger-app/:senderId/:receiverId?",
-  deleteChatAndMessages
-);
+  messenger.deleteChatAndMessages
+); //panel
+
+//======================================notifications
 router.post(
   "/push-a-new-notification-to-the-panel/dashboard",
   pushGlobalNotification
