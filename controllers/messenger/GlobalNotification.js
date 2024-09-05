@@ -1,5 +1,6 @@
 const Notification = require("../../models/messenger/globalNotification");
-
+const UserNotifi = require("../../models/messenger/UserNotification");
+const User = require("../../models/dashBoardUserModel")
 exports.pushGlobalNotification = async function (req, res) {
   try {
     const { name, message, path } = req.body;
@@ -29,7 +30,7 @@ exports.getNotificationsForUser = async function (req, res) {
   try {
     // Fetch all notifications
     const notifications = await Notification.find();
-
+ 
     // Format notifications to include seen status for the user
     const formattedNotifications = notifications.map((notification) => ({
       ...notification.toObject(),
@@ -60,3 +61,34 @@ exports.updateNotificationSeen = async function (req, res) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+//====================================Seen by ==============================
+
+exports.seenByList = async function (req, res) {
+  const { userIds } = req.body; // Assuming userIds are sent in the request body
+  if (!Array.isArray(userIds) || userIds.some((id) => typeof id !== "string")) {
+    return res.status(400).json({ message: "Invalid userIds format" });
+  }
+
+  try {
+    const users = await User.find({ _id: { $in: userIds } });
+    const userData = users.map((user) => ({
+      id: user._id,
+      name: user.name,
+      mobile: user.mobile,
+    }));
+    res.status(200).json(userData);
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+//=======================================get all notification=============================
+exports.findAllNotification = async (req,res)=>{
+  const user = await UserNotifi.find()
+  const global = await Notification.find()
+  return res.json({ User: user, Global: global });
+}

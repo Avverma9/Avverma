@@ -11,6 +11,12 @@ const globalNotificationSchema = new mongoose.Schema(
       of: Boolean,
       default: {},
     },
+    userIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DashboardUser",
+      },
+    ],
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
@@ -18,7 +24,10 @@ const globalNotificationSchema = new mongoose.Schema(
 );
 
 // Create the model from the schema
-const Notification = mongoose.model("GlobalNotification", globalNotificationSchema);
+const Notification = mongoose.model(
+  "GlobalNotification",
+  globalNotificationSchema
+);
 
 // Export the model
 module.exports = Notification;

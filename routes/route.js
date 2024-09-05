@@ -30,6 +30,8 @@ const {
   pushGlobalNotification,
   getNotificationsForUser,
   updateNotificationSeen,
+  seenByList,
+  findAllNotification,
 } = require("../controllers/messenger/GlobalNotification");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
@@ -82,6 +84,8 @@ router.patch(
   "/fetch-all-new-notification-to-the-panel/and-mark-seen/dashboard/:userId/:notificationId/seen",
   updateNotificationSeen
 );
+router.post("/seen/by/list/of/user/for/notification/userId",seenByList)
+router.get("/find/all/by/list/of/user/for/notification", findAllNotification);
 //===============================foods==========================
 
 router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
