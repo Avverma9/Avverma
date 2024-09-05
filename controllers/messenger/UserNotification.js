@@ -29,23 +29,35 @@ exports.pushUserNotification = async(req,res)=>{
 }
 
 exports.getNotificationByUser = async function (req, res) {
- const { userId } = req.params;
+  const { userId } = req.params;
 
- try {
-   const notifications = await Notification.find({
-     userIds: userId,
-   }).lean(); // Use lean() to get plain JavaScript objects
+  // Check for userId validity
+  if (!userId || typeof userId !== "string") {
+    return res.status(400).json({ message: "Invalid userId" });
+  }
 
-   // Process notifications to determine if they are unread
-   notifications.forEach((notification) => {
-     notification.isUnRead = !notification.seenBy[userId];
-   });
+  try {
+    // Find notifications where userId is included in userIds array
+    const notifications = await Notification.find({
+      userIds: userId, // Directly match userId in userIds array
+    }).lean(); // Use lean() to get plain JavaScript objects
 
-   res.json(notifications);
- } catch (error) {
-   res.status(500).json({ message: error.message });
- }
+    // Add the 'seen' field based on whether the userId is in the seenBy field
+    notifications.forEach((notification) => {
+      // Determine if the notification is seen by checking the 'seenBy' object
+      notification.seen = notification.seenBy.hasOwnProperty(userId)
+        ? notification.seenBy[userId]
+        : false;
+    });
+
+    res.json(notifications);
+  } catch (error) {
+    console.error("Error fetching notifications:", error); // Log the error
+    res.status(500).json({ message: error.message });
+  }
 };
+
+
 
 exports.updateUserNotificationSeen = async function (req, res) {
   const { notificationId } = req.params;
