@@ -1,0 +1,19 @@
+/* CarouselPage.css */
+
+.carousel-item img {
+  height: auto;
+  max-height: 500px; /* Adjust as needed */
+  object-fit: cover; /* Ensure the image covers the area without distortion */
+}
+
+@media (max-width: 768px) {
+  .carousel-item img {
+    max-height: 300px; /* Smaller max height for tablets */
+  }
+}
+
+@media (max-width: 576px) {
+  .carousel-item img {
+    max-height: 200px; /* Smaller max height for mobile devices */
+  }
+}

@@ -630,7 +630,7 @@ export default function PolicyForm() {
               label="Off Quad Sharing MAP"
               variant="outlined"
               value={offQuadSharingMAp}
-              onChange={(e) => setOffQuadSharingMAP(e.target.value)}
+              onChange={(e) => setOffQuadSharingMAp(e.target.value)}
             />
           </div>
           <div className="col-md-4 mb-3">

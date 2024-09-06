@@ -111,13 +111,13 @@ const SearchForm = () => {
     <div
       style={{
         position: "relative",
-        marginTop: "2px",
-        marginBottom: "2px",
+        marginTop: "12px",
+
         backgroundImage:
-          "url(https://png.pngtree.com/thumb_back/fh260/background/20220427/pngtree-searching-hostel-banner-hotel-journey-image_1091602.jpg)",
+          "url(https://www.hotelsugar.in/images/rooms-banner.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "500px", // Adjust the height as needed
+        minHeight: "380px", // Adjust the height as needed
       }}
     >
       <Container
@@ -127,6 +127,7 @@ const SearchForm = () => {
           position: "absolute",
           top: "52%",
           left: "50%",
+          marginBottom:"10%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "white",
           padding: "20px",

@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
 import axios from "axios";
 import { Carousel } from "react-bootstrap";
 import baseURL from "../baseURL";
-
+import "./carouselPage.css"
 const CarouselPage = () => {
   const [carouselData, setCarouselData] = useState([]);
 

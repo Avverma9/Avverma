@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
-import baseURL from "../../baseURL";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { postRooms, sendNotification } from "../../redux/reducers/partnerSlice"; // Adjust the import path as needed
 import {
   roomTypes,
   bedTypes as availableBedTypes,
 } from "../../utils/filterOptions";
+import { toast } from "react-toastify";
 
 export default function PartnerRooms() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [type, setType] = useState("");
   const [bedType, setBedType] = useState("");
@@ -16,6 +18,9 @@ export default function PartnerRooms() {
   const [imageFile, setImageFile] = useState(null);
   const hotelId = localStorage.getItem("hotelId");
 
+  // Selector to get loading and error states from the store
+  const { loading, error } = useSelector((state) => state.partner); // Adjusted to the correct slice
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setImageFile(file);
@@ -23,35 +28,32 @@ export default function PartnerRooms() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Create FormData instance
+    const formData = new FormData();
+    formData.append("hotelId", hotelId);
+    formData.append("type", type);
+    formData.append("bedTypes", bedType); // Adjusted to single bedType
+    formData.append("price", price);
+    formData.append("countRooms", countRooms);
+    formData.append("images", imageFile);
+
     try {
-      const formData = new FormData();
-      formData.append("hotelId", hotelId);
-      formData.append("type", type);
-      formData.append("bedTypes", bedType); // Adjusted to single bedType
-      formData.append("price", price);
-      formData.append("countRooms", countRooms);
-      formData.append("images", imageFile);
+      // Dispatch the postRooms action
+      await dispatch(postRooms(formData)).unwrap();
 
-      const response = await axios.post(
-        `${baseURL}/create-a-room-to-your-hotel`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      // Dispatch the sendNotification action
+      await dispatch(sendNotification()).unwrap();
+
+      // On success
+      toast.success(
+        "Thank you, you have filled all details! One of our customers will connect with you shortly."
       );
-
-      if (response.status === 201) {
-        alert(
-          "Thank you, you have filled all details! One of our customers will connect with you shortly."
-        );
-        localStorage.removeItem("hotelId");
-        navigate("/");
-      }
+      localStorage.removeItem("hotelId");
+      navigate("/");
     } catch (error) {
-      console.error("Error adding room:", error);
-      // Handle the error as needed
+      // On error
+      toast.error(`Failed to post room: ${error.message || "Unknown error"}`);
     }
   };
 
@@ -139,9 +141,10 @@ export default function PartnerRooms() {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Final Submit
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Submitting..." : "Final Submit"}
         </button>
+        {error && <p className="text-danger">{error}</p>}
       </form>
     </div>
   );
