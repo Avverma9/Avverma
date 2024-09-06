@@ -49,11 +49,18 @@ exports.updateNotificationSeen = async function (req, res) {
 
   try {
     // Update the notification to mark it as seen by the given userId
-    await Notification.findByIdAndUpdate(
+    const updatedNotification = await Notification.findByIdAndUpdate(
       notificationId,
-      { $set: { [`seenBy.${userId}`]: true } },
+      {
+        $set: { [`seenBy.${userId}`]: true }, // Set seen status for the userId
+        $addToSet: { userIds: userId }, // Add userId to userIds array if it's not already present
+      },
       { new: true, runValidators: true }
     );
+
+    if (!updatedNotification) {
+      return res.status(404).json({ message: "Notification not found." });
+    }
 
     res.status(200).json({ message: "Notification updated successfully." });
   } catch (error) {
