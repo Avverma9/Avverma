@@ -4,15 +4,18 @@ import baseURL from "../../baseURL";
 import { Star } from "@mui/icons-material";
 import { toast } from "react-toastify";
 import Button from "@mui/material/Button";
+import Pagination from "@mui/material/Pagination";
 import axios from "axios";
 import "../Booknow/BookingReview.css";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-
+import "./reviews.css"
 export default function Reviews() {
   const location = useLocation();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 3; // Number of reviews per page
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -69,6 +72,17 @@ export default function Reviews() {
     }
   };
 
+  // Pagination logic
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = data.slice(indexOfFirstReview, indexOfLastReview);
+
+  const totalPages = Math.ceil(data.length / reviewsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
   if (location.pathname !== "/reviews") {
     return null;
   }
@@ -97,9 +111,9 @@ export default function Reviews() {
   }
 
   return (
-    <div className="review-container" style={{background:"#f5f5f5"}}>
-      {data.length > 0 ? (
-        data.map((reviewData, index) => (
+    <div className="review-container" style={{ background: "#f5f5f5" }}>
+      {currentReviews.length > 0 ? (
+        currentReviews.map((reviewData, index) => (
           <div key={index} className="review-card">
             <div className="userImage-container">
               <img src={reviewData?.userImage} alt="User" loading="lazy" />
@@ -121,7 +135,7 @@ export default function Reviews() {
                 onClick={() => handleDelete(reviewData._id)}
                 style={{
                   alignSelf: "flex-end",
-                  marginTop:"10px" // Aligns the button to the right
+                  marginTop: "10px", // Aligns the button to the right
                 }}
               >
                 Delete
@@ -132,6 +146,16 @@ export default function Reviews() {
       ) : (
         <p className="no-reviews">No reviews available.</p>
       )}
+      <div className="pagination">
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          siblingCount={1}
+          boundaryCount={1}
+        />
+      </div>
     </div>
   );
 }

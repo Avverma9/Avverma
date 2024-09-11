@@ -1,48 +1,54 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { MDBInput, MDBTextArea } from "mdb-react-ui-kit";
+import React, { useState, useEffect } from "react";
+import { MDBTextArea } from "mdb-react-ui-kit";
 import axios from "axios";
-import { Modal } from "react-bootstrap";
+import CloseIcon from "@mui/icons-material/Close";
+import { Modal as BootstrapModal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
-import { Select, MenuItem, FormControl, InputLabel } from "@mui/material";
-import { Button } from "@mui/material";
-import Box from "@mui/material/Box";
-import AspectRatio from "@mui/joy/AspectRatio";
-import JoyBox from "@mui/joy/Box";
-import JoyButton from "@mui/joy/Button";
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Rating,
+  Box,
+  Typography,
+} from "@mui/material";
+import Pagination from "@mui/material/Pagination";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
-import Typography from "@mui/joy/Typography";
+import AspectRatio from "@mui/joy/AspectRatio";
 import Sheet from "@mui/joy/Sheet";
-import Rating from "@mui/material/Rating";
-import Modals from "@mui/material/Modal";
-import CloseIcon from "@mui/icons-material/Close";
+import JoyBox from "@mui/joy/Box";
 import SendIcon from "@mui/icons-material/Send";
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 import styles from "./bookings.module.css";
 import noImage from "../../assets/noImage.jpg";
 import { toast } from "react-toastify";
 import baseURL from "../../baseURL";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
-import { formatDate, formatDateWithOrdinal } from "../../utils/_dateFunctions";
+import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [comment, setComment] = useState("");
-  const [rating, setRating] = useState("");
-  const [bookingDetails, setBookingDetails] = useState(null);
-  const [modalData, setModalData] = useState([]);
+  const [rating, setRating] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [bookingDetails, setBookingDetails] = useState([]);
+  const [modalData, setModalData] = useState(null);
   const [userData, setUserData] = useState(null);
   const location = useLocation();
   const [show, setShow] = useState(false);
+  const bookingsPerPage = 3; // Number of bookings per page
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
   const { data, loading, error } = useSelector((state) => state.booking);
+
   // Fetch user data and booking details
   useEffect(() => {
     const fetchData = async () => {
@@ -71,22 +77,25 @@ export const ConfirmBooking = () => {
       fetchData();
     }
   }, [dispatch, location.pathname, selectedStatus]);
+
   useEffect(() => {
     if (data) {
       setBookingDetails(data);
     }
   }, [data]);
+
   if (location.pathname !== "/bookings") {
     return null;
   }
-  // console.log("redux data ", fetchFilteredBooking);
+
+  // Handle modal
   const handleShow = (value) => {
     setModalData(value);
     setShow(true);
   };
 
   const handleClose = () => {
-    setModalData([]);
+    setModalData(null);
     setShow(false);
   };
 
@@ -127,6 +136,19 @@ export const ConfirmBooking = () => {
     }
   };
 
+  const indexOfLastBooking = currentPage * bookingsPerPage;
+  const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
+  const currentBooking = bookingDetails.slice(
+    indexOfFirstBooking,
+    indexOfLastBooking
+  );
+  const totalPages = Math.ceil(bookingDetails.length / bookingsPerPage);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll to the top of the page
+  };
+
   const handleCloseReview = () => {
     setComment("");
     setRating(0);
@@ -134,14 +156,14 @@ export const ConfirmBooking = () => {
   };
 
   return (
-    <>
-      <div className={styles.bookingHeader}>
-      </div>
+    <div style={{ height: "900px", overflowY: "auto" }}>
+      <div className={styles.bookingHeader}></div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>
           <FormControl
             variant="outlined"
-            style={{ marginLeft: "28px", marginBottom: "10px" }}
+            fullWidth
+            style={{ marginBottom: "10px" }}
           >
             <InputLabel id="status-select-label">Filter bookings</InputLabel>
             <Select
@@ -162,28 +184,21 @@ export const ConfirmBooking = () => {
           </FormControl>
         </div>
 
-        {bookingDetails && bookingDetails.length > 0 ? (
+        {currentBooking.length > 0 ? (
           <>
-            <Modals
-              open={showReviewForm}
-              onClose={handleCloseReview}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+            <BootstrapModal
+              show={showReviewForm}
+              onHide={handleCloseReview}
+              centered
+              size="lg"
             >
               <Box
                 sx={{
-                  position: "absolute",
+                  position: "relative",
+                  p: 2,
                   width: "100%",
                   maxWidth: 600,
                   bgcolor: "background.paper",
-                  border: "2px solid #000",
-                  boxShadow: 24,
-                  p: 4,
                 }}
               >
                 <Box
@@ -191,24 +206,25 @@ export const ConfirmBooking = () => {
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    mb: 2,
                   }}
                 >
-                  <h6 id="modal-modal-title">Write about your experience</h6>
+                  <Typography variant="h6">
+                    Write about your experience
+                  </Typography>
                   <CloseIcon
                     onClick={handleCloseReview}
                     style={{ cursor: "pointer" }}
                   />
                 </Box>
                 <MDBTextArea
-                  label="Give stars"
+                  label="Comment"
                   id="formControlLg"
-                  type="text"
                   size="lg"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   style={{ marginBottom: "10px" }}
                 />
-
                 <Rating
                   name="simple-controlled"
                   value={rating}
@@ -225,136 +241,135 @@ export const ConfirmBooking = () => {
                   Send Review
                 </Button>
               </Box>
-            </Modals>
+            </BootstrapModal>
+
+            {currentBooking.map((bookingDetail) => (
+              <div key={bookingDetail.bookingId}>
+                <JoyBox
+                  sx={{
+                    width: "100%",
+                    position: "relative",
+                    overflow: "auto",
+                    mb: 2,
+                  }}
+                >
+                  <Card
+                    orientation="horizontal"
+                    sx={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      overflow: "auto",
+                      mb: 2,
+                      flexWrap: "wrap", // Allows wrapping of content for smaller screens
+                    }}
+                  >
+                    <AspectRatio
+                      flex
+                      ratio="1"
+                      maxHeight={142}
+                      sx={{ minWidth: 142 }}
+                    >
+                      <img
+                        src={
+                          bookingDetail.images ? bookingDetail.images : noImage
+                        }
+                        loading="lazy"
+                        alt="Hotel"
+                        style={{ width: "100%", height: "auto" }} // Ensure image scales properly
+                      />
+                    </AspectRatio>
+                    <CardContent>
+                      <Typography fontSize="xl" fontWeight="lg">
+                        {bookingDetail.hotelName}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        sx={{ display: "flex", alignItems: "center" }}
+                      >
+                        <CalendarMonthIcon /> From{" "}
+                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to{" "}
+                        {formatDateWithOrdinal(bookingDetail.checkOutDate)}
+                      </Typography>
+                      <Sheet
+                        sx={{
+                          bgcolor: "background.level1",
+                          borderRadius: "sm",
+                          p: 1.5,
+                          my: 1.5,
+                          display: "flex",
+                          gap: 2,
+                          flexDirection: "column",
+                          "& > div": { flex: 1 },
+                        }}
+                      >
+                        <div>
+                          <Typography variant="body2" fontWeight="bold">
+                            ID <StickyNote2Icon /> {bookingDetail.bookingId}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant="body2">
+                            {bookingDetail.guests}{" "}
+                            {bookingDetail.guests > 1 ? "Guests" : "Guest"},
+                            {bookingDetail.rooms}{" "}
+                            {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
+                          </Typography>
+                        </div>
+                        <div>
+                          <Typography variant="body2">
+                            <CurrencyRupeeIcon /> {bookingDetail.price}
+                          </Typography>
+                        </div>
+                      </Sheet>
+                      <JoyBox
+                        sx={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: 1.5,
+                          "& > button": { width: "100%", marginBottom: "5px" },
+                        }}
+                      >
+                        <Button
+                          className={styles.link}
+                          onClick={() => handleShow(bookingDetail)}
+                        >
+                          View Booking
+                        </Button>
+                        <Button
+                          variant="contained"
+                          onClick={() => handleReview(bookingDetail.hotelId)}
+                        >
+                          Review
+                        </Button>
+                      </JoyBox>
+                    </CardContent>
+                  </Card>
+                </JoyBox>
+              </div>
+            ))}
           </>
         ) : (
           <p>You haven't booked any hotel</p>
         )}
-        {bookingDetails &&
-          bookingDetails.map((bookingDetail) => (
-            <div key={bookingDetail.bookingId}>
-              <JoyBox
-                sx={{
-                  width: "100%",
-                  position: "relative",
-                  overflow: { xs: "auto", sm: "initial" },
-                }}
-              >
-                <JoyBox />
-                <Card
-                  orientation="horizontal"
-                  sx={{
-                    width: "100%",
-                    flexWrap: "wrap",
-                    [`& > *`]: {
-                      "--stack-point": "500px",
-                      minWidth:
-                        "clamp(0px, (calc(var(--stack-point) - 2 * var(--Card-padding) - 2 * var(--variant-borderWidth, 0px)) + 1px - 100%) * 999, 100%)",
-                    },
-                    // make the card resizable for demo
-                    overflow: "auto",
-                    resize: "horizontal",
-                  }}
-                >
-                  {" "}
-                  <AspectRatio
-                    flex
-                    ratio="1"
-                    maxHeight={182}
-                    sx={{ minWidth: 182 }}
-                  >
-                    <img
-                      src={
-                        bookingDetails?.user?.profile[0]
-                          ? bookingDetails?.images
-                          : noImage
-                      }
-                      loading="lazy"
-                      alt=""
-                    />
-                  </AspectRatio>
-                  <CardContent>
-                    <Typography fontSize="xl" fontWeight="lg">
-                      {bookingDetail.hotelName}
-                    </Typography>
-                    <Typography
-                      level="body-sm"
-                      fontWeight="lg"
-                      textColor="text.tertiary"
-                    >
-                      <>
-                        <CalendarMonthIcon /> From{" "}
-                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to{" "}
-                        {formatDateWithOrdinal(bookingDetail.checkOutDate)}
-                      </>
-                    </Typography>
-                    <Sheet
-                      sx={{
-                        bgcolor: "background.level1",
-                        borderRadius: "sm",
-                        p: 1.5,
-                        my: 1.5,
-                        display: "flex",
-                        gap: 2,
-                        "& > div": { flex: 1 },
-                      }}
-                    >
-                      <div>
-                        <Typography level="body-xs" fontWeight="lg">
-                          ID <StickyNote2Icon /> {bookingDetail.bookingId}
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography level="body-xs" fontWeight="lg">
-                          {bookingDetail.guests}{" "}
-                          <span>
-                            {bookingDetail.guests > 1
-                              ? " - Guests"
-                              : " - Guest"}
-                            ,
-                          </span>{" "}
-                          {bookingDetail.rooms}{" "}
-                          <span>
-                            {bookingDetail.rooms > 1 ? " - Rooms" : " - Room"}
-                          </span>
-                        </Typography>
-                      </div>
-                      <div>
-                        <Typography level="body-xs" fontWeight="lg">
-                          <CurrencyRupeeIcon /> {bookingDetail.price}
-                        </Typography>
-                      </div>
-                    </Sheet>
-                    <JoyBox
-                      sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        "& > button": { flex: 1 },
-                      }}
-                    >
-                      <button
-                        className={styles.link}
-                        onClick={() => handleShow(bookingDetail)}
-                      >
-                        View Booking
-                      </button>
-                      <JoyButton
-                        onClick={() => handleReview(bookingDetail.hotelId)}
-                      >
-                        Review
-                      </JoyButton>
-                    </JoyBox>
-                  </CardContent>
-                </Card>
-              </JoyBox>
-            </div>
-          ))}
+
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          siblingCount={1}
+          boundaryCount={1}
+          sx={{ marginTop: 2 }}
+        />
       </div>
-      <Modal show={show} onHide={handleClose} centered size="xl">
+
+      <BootstrapModal show={show} onHide={handleClose} centered size="xl">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
             <button onClick={handlePrint} className={styles.print}>
-              <span>Print</span>
+              Print
             </button>
             <button onClick={handleClose}>
               <AiOutlineClose />
@@ -370,29 +385,8 @@ export const ConfirmBooking = () => {
                 <p>
                   Booked by {userData?.name} on{" "}
                   <span>
-                    {modalData &&
-                    modalData?.createdAt &&
-                    moment(modalData?.createdAt).isoWeekday() === 1
-                      ? "Mon"
-                      : moment(modalData?.createdAt).isoWeekday() === 2
-                      ? "Tue"
-                      : moment(modalData?.createdAt).isoWeekday() === 3
-                      ? "Wed"
-                      : moment(modalData?.createdAt).isoWeekday() === 4
-                      ? "Thu"
-                      : moment(modalData?.createdAt).isoWeekday() === 5
-                      ? "Fri"
-                      : moment(modalData?.createdAt).isoWeekday() === 6
-                      ? "Sat"
-                      : "Sun"}
-                  </span>
-                  {", "}
-                  <span>
-                    {modalData &&
-                      modalData?.createdAt &&
-                      moment(
-                        modalData?.createdAt.substring(0, 10).replace(/-/g, "")
-                      ).format("Do MMMM YYYY")}
+                    {modalData?.createdAt &&
+                      moment(modalData?.createdAt).format("dddd, Do MMMM YYYY")}
                   </span>
                 </p>
               )}
@@ -411,12 +405,9 @@ export const ConfirmBooking = () => {
                 </h6>
               </div>
               <img
-                src={
-                  modalData && modalData?.images && modalData?.images
-                    ? modalData.images
-                    : noImage
-                }
-                alt=""
+                src={modalData?.images ? modalData.images : noImage}
+                alt="Hotel"
+                style={{ width: "100%", height: "auto" }} // Ensure image scales properly
               />
             </div>
             <div className={styles.borderBottom} />
@@ -429,25 +420,15 @@ export const ConfirmBooking = () => {
                 <span>Email</span>
                 <h6>{userData?.email}</h6>
               </div>
-              {modalData &&
-                modalData?.checkInDate &&
-                modalData?.checkOutDate && (
-                  <div>
-                    <span>Check In</span>
-                    <h6>
-                      {modalData &&
-                        modalData?.checkInDate &&
-                        modalData?.checkInDate.substring(0, 10)}
-                    </h6>
-                    <span>Check Out</span>
-                    <h6>
-                      {modalData &&
-                        modalData?.checkOutDate &&
-                        modalData?.checkOutDate.substring(0, 10)}
-                    </h6>
-                  </div>
-                )}
-              {modalData && modalData?.rooms && modalData?.guests && (
+              {modalData?.checkInDate && modalData?.checkOutDate && (
+                <div>
+                  <span>Check In</span>
+                  <h6>{modalData?.checkInDate.substring(0, 10)}</h6>
+                  <span>Check Out</span>
+                  <h6>{modalData?.checkOutDate.substring(0, 10)}</h6>
+                </div>
+              )}
+              {modalData?.rooms && modalData?.guests && (
                 <div>
                   <span>Rooms</span>
                   <h6>{modalData?.rooms}</h6>
@@ -458,7 +439,7 @@ export const ConfirmBooking = () => {
             </div>
           </div>
         </div>
-      </Modal>
-    </>
+      </BootstrapModal>
+    </div>
   );
 };

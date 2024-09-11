@@ -84,15 +84,12 @@ export default function Profile() {
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">
-            <MDBCard className="mb-3" style={{ borderRadius: "1.5rem" }}>
+            <MDBCard className="mb-3">
               <MDBRow className="g-0">
                 <MDBCol
                   md="4"
                   className="gradient-custom text-center text-white"
-                  style={{
-                    borderTopLeftRadius: ".5rem",
-                    borderBottomLeftRadius: ".5rem",
-                  }}
+                  style={{ background: "#f5f5f5" }}
                 >
                   <MDBCardImage
                     src={data?.images?.[0] || "https://via.placeholder.com/80"}
