@@ -136,21 +136,20 @@ export const ConfirmBooking = () => {
   return (
     <>
       <div className={styles.bookingHeader}>
-        <h4>Your bookings</h4>
       </div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>
           <FormControl
             variant="outlined"
-            style={{ marginLeft: "12px", marginBottom: "10px" }}
+            style={{ marginLeft: "28px", marginBottom: "10px" }}
           >
-            <InputLabel id="status-select-label">Status</InputLabel>
+            <InputLabel id="status-select-label">Filter bookings</InputLabel>
             <Select
               labelId="status-select-label"
               id="status-select"
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              label="Status"
+              label="Filter bookings"
               className={styles.selectOption}
             >
               <MenuItem value="Confirmed">Confirmed</MenuItem>
@@ -337,7 +336,7 @@ export const ConfirmBooking = () => {
                         className={styles.link}
                         onClick={() => handleShow(bookingDetail)}
                       >
-                        More
+                        View Booking
                       </button>
                       <JoyButton
                         onClick={() => handleReview(bookingDetail.hotelId)}

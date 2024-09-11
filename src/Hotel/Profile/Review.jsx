@@ -97,7 +97,7 @@ export default function Reviews() {
   }
 
   return (
-    <div className="review-container">
+    <div className="review-container" style={{background:"#f5f5f5"}}>
       {data.length > 0 ? (
         data.map((reviewData, index) => (
           <div key={index} className="review-card">

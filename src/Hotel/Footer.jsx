@@ -11,7 +11,7 @@ import "./Footer.css"; // Custom styles for the footer
 
 const Footer = () => {
   return (
-    <footer className="footer" style={{ marginTop: "140px" }}>
+    <footer className="footer" style={{ marginTop: "100px" }}>
       <div className="container">
         <div className="row mb-4">
           <div className="col-md-6 text-center text-md-start">

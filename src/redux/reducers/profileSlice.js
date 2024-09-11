@@ -69,7 +69,7 @@ const profileSlice = createSlice({
         state.error = action.payload;
         toast.error(
           `Failed to fetch profile: ${
-            action.payload.message || "Unknown error"
+            action?.payload?.message || "Unknown error"
           }`
         );
       })
@@ -90,7 +90,7 @@ const profileSlice = createSlice({
         state.updateSuccess = false;
         toast.error(
           `Failed to update profile: ${
-            action.payload.message || "Unknown error"
+            action?.payload?.message || "Unknown error"
           }`
         );
       });
