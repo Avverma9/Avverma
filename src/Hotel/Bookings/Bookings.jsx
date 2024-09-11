@@ -156,7 +156,7 @@ export const ConfirmBooking = () => {
   };
 
   return (
-    <div style={{ height: "900px", overflowY: "auto" }}>
+    <div style={{  overflowY: "auto" , maxWidth:"100%",marginLeft:"10px"}}>
       <div className={styles.bookingHeader}></div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>

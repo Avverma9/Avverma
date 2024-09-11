@@ -9,7 +9,7 @@
 /* Sidebar styles */
 .sidebar {
   width: 200px;
-  height: 900px;
+  height: 100%;
   background-color: #f5f5f5; 
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -151,7 +151,7 @@
 /* Adjust content margin when sidebar is hidden */
 .container .sidebar.hidden ~ .content {
   flex: 1;
-  margin-left: 200px; /* Adjust based on the width of your sidebar */
+  margin-left: 800px; /* Adjust based on the width of your sidebar */
   transition: margin-left 0.3s; /* Smooth transition for margin */
   margin-left: 0; /* Remove margin when sidebar is closed */
 }

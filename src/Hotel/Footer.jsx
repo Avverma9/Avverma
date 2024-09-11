@@ -8,8 +8,20 @@ import {
 } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./Footer.css"; // Custom styles for the footer
+import { hotelList } from "../utils/FooterList";
+
+// Utility function to split array into chunks
+const chunkArray = (array, size) => {
+  const result = [];
+  for (let i = 0; i < array.length; i += size) {
+    result.push(array.slice(i, i + size));
+  }
+  return result;
+};
 
 const Footer = () => {
+  const chunks = chunkArray(hotelList, 10); // Split hotelList into chunks of 10
+
   return (
     <footer className="footer" style={{ marginTop: "100px" }}>
       <div className="container">
@@ -35,226 +47,20 @@ const Footer = () => {
           </div>
         </div>
         <div className="row mb-4">
-          <div className="col-md-3">
-            <h5>Roomsstay Hotels</h5>
-            <ul className="list-unstyled">
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels near me
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Manali
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Nainital
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Mount Abu
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Agra
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Haridwar
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Gurgaon
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Coimbatore
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Roomsstay Hotel UK
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Roomsstay Vacation Homes in Europe
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="col-md-3">
-            <h5>&nbsp;</h5>
-            <ul className="list-unstyled">
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Goa
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Udaipur
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Lonavala
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Kodaikanal
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Gangtok
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Kolkata
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Mandarmoni
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Kasauli
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Roomsstay Hotel USA
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Homes in Scandinavia
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="col-md-3">
-            <h5>&nbsp;</h5>
-            <ul className="list-unstyled">
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Puri
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Mussoorie
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Munnar
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Hyderabad
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Coorg
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Ahmedabad
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Daman
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Dehradun
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Roomsstay Hotel Mexico
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Homes in Southern Europe
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="col-md-3">
-            <h5>&nbsp;</h5>
-            <ul className="list-unstyled">
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Shimla
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Mumbai
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Darjeeling
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Shirdi
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Dalhousie
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Varanasi
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Hotels in Madurai
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Coupons
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Roomsstay Hotel Indonesia
-                </a>
-              </li>
-              <li>
-                <a href="#" className="footer-link">
-                  Traum Holiday Homes
-                </a>
-              </li>
-            </ul>
-          </div>
+          {chunks.map((chunk, index) => (
+            <div key={index} className="col-md-3">
+              <h5>&nbsp;</h5>
+              <ul className="list-unstyled">
+                {chunk.map((hotel, subIndex) => (
+                  <li key={subIndex}>
+                    <a href="#" className="footer-link">
+                      {hotel}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         <div className="row mb-4">
           <div className="col-md-12 d-flex justify-content-center">
