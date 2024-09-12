@@ -51,7 +51,7 @@ const approveComplaint = async (req, res) => {
 
   try {
     // Update the complaint status
-    const updatedComplaint = await Complaint.findByIdAndUpdate(
+    const updatedComplaint = await Complaint.findOneAndUpdate(
       id,
       { status },
       { new: true }
@@ -87,7 +87,6 @@ const deleteComplaint = async function (req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 //=======================get all complaint=============================================
 
