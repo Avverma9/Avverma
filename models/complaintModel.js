@@ -12,6 +12,7 @@ const complaintSchema = new mongoose.Schema(
     },
     hotelName: String,
     bookingId: String,
+    feedBack:String,
     images: [String],
     status: {
       type: String,

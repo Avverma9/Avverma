@@ -102,7 +102,7 @@ router.post(
   complaintController.createComplaint
 ); //on site
 router.patch(
-  "/approveComplaint-on-panel/by-id/:complaintId",
+  "/approveComplaint-on-panel/by-id/:id",
   complaintController.approveComplaint
 ); //on panel);
 router.get("/complaints/:userId", complaintController.getComplaintsByUserId); //on site

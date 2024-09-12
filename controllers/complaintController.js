@@ -46,18 +46,30 @@ const createComplaint = async (req, res) => {
 //=============================================================================================
 //not===========
 const approveComplaint = async (req, res) => {
-  const { id } = req.query;
-  const { status } = req.body;
+  const { id } = req.params; // id should be the complaint's identifier
+  const { status, feedback } = req.body; // status is the new status for the complaint
 
   try {
-    // Update the complaint status
-    const updatedComplaint = await Complaint.findOneAndUpdate(
+    if (!id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Complaint ID is required" });
+    }
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
       id,
-      { status },
-      { new: true }
+      { status, feedback },
+      { new: true, runValidators: true }
     );
-    return res.status(200).json({ success: true });
+
+    if (!updatedComplaint) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Complaint not found" });
+    }
+
+    return res.status(200).json({ success: true, updatedComplaint });
   } catch (error) {
+    console.error(error); // Log the error for debugging
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
