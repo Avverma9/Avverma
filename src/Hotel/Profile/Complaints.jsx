@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { userId } from "../../utils/Unauthorized";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import '../Booknow/Booknow.css'
+import "../Booknow/Booknow.css";
 import {
   Container,
   TextField,
@@ -64,8 +64,6 @@ const DeleteButton = styled(IconButton)(({ theme }) => ({
   bottom: theme.spacing(1),
 }));
 
-
-
 const Complaint = () => {
   const dispatch = useDispatch();
   const [regarding, setRegarding] = useState("");
@@ -75,6 +73,8 @@ const Complaint = () => {
   const [images, setImages] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogImages, setDialogImages] = useState([]);
+  const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
+  const [feedbackContent, setFeedbackContent] = useState("");
   const { data, loading, error } = useSelector((state) => state.complaint);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const Complaint = () => {
       setImages([]);
     } catch (error) {
       console.error("Error posting complaint:", error);
-      // Optionally handle error feedback here
+      // Optionally handle error feedBack here
     }
   };
 
@@ -126,6 +126,15 @@ const Complaint = () => {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+
+  const handleOpenFeedbackDialog = (feedBack) => {
+    setFeedbackContent(feedBack);
+    setOpenFeedbackDialog(true);
+  };
+
+  const handleCloseFeedbackDialog = () => {
+    setOpenFeedbackDialog(false);
   };
 
   return (
@@ -334,19 +343,30 @@ const Complaint = () => {
                     <strong>Regarding:</strong> {complaint.regarding}
                   </Typography>
                   <Typography variant="caption" color="textSecondary">
-                    {formatDateWithOrdinal(
-                      complaint.createdAt
-                    )}
+                    {formatDateWithOrdinal(complaint.createdAt)}
                   </Typography>
                   <Box mt={1}>
                     {complaint.images?.length > 0 && (
                       <button
                         variant="outlined"
-                        color="primary"
                         className="custom-button"
+                        color="primary"
                         onClick={() => handleOpenDialog(complaint.images)}
+                        sx={{ mr: 1 }}
                       >
                         See Attachment
+                      </button>
+                    )}
+                    {complaint.feedBack && (
+                      <button
+                        variant="outlined"
+                        color="secondary"
+                        className="custom-button"
+                        onClick={() =>
+                          handleOpenFeedbackDialog(complaint.feedBack)
+                        }
+                      >
+                        View Feedback
                       </button>
                     )}
                   </Box>
@@ -391,6 +411,24 @@ const Complaint = () => {
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
             Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Feedback Dialog */}
+      <Dialog
+        open={openFeedbackDialog}
+        onClose={handleCloseFeedbackDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Feedback</DialogTitle>
+        <DialogContent>
+          <Typography variant="body2">{feedbackContent}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseFeedbackDialog} color="primary">
+            Ok
           </Button>
         </DialogActions>
       </Dialog>
