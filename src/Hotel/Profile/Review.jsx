@@ -3,20 +3,22 @@ import { useLocation } from "react-router-dom";
 import baseURL from "../../baseURL";
 import { Star } from "@mui/icons-material";
 import { toast } from "react-toastify";
-import Button from "@mui/material/Button";
+import { styled, IconButton } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import axios from "axios";
 import "../Booknow/BookingReview.css";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import "./reviews.css"
+import "./reviews.css";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 export default function Reviews() {
   const location = useLocation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const reviewsPerPage = 3; // Number of reviews per page
+  const reviewsPerPage = 6; // Number of reviews per page
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -54,7 +56,7 @@ export default function Reviews() {
         key={index}
         style={{
           color: index < rating ? "#ffbb33" : "#e0e0e0",
-          fontSize: "1rem",
+          fontSize: "0.75rem", // Smaller star size
         }}
       />
     ));
@@ -106,8 +108,18 @@ export default function Reviews() {
       </div>
     );
   }
+
+  const DeleteButton = styled(IconButton)(({ theme }) => ({
+    position: "absolute",
+    right: theme.spacing(1),
+    bottom: theme.spacing(1),
+  }));
+
   return (
-    <div className="review-container" style={{ background: "#f5f5f5" }}>
+    <div
+      className="review-container"
+      style={{ background: "#f5f5f5", padding: "20px" }}
+    >
       {currentReviews.length > 0 ? (
         currentReviews.map((reviewData, index) => (
           <div key={index} className="review-card">
@@ -125,18 +137,15 @@ export default function Reviews() {
               <div className="star-rating">
                 {getStarRating(reviewData.rating)}
               </div>
-              <Button
-                variant="outlined"
-                color="error"
-                onClick={() => handleDelete(reviewData._id)}
-                style={{
-                  alignSelf: "flex-end",
-                  marginTop: "10px", // Aligns the button to the right
-                }}
-              >
-                Delete
-              </Button>
             </div>
+            <DeleteButton
+              variant="outlined"
+              color="error"
+              onClick={() => handleDelete(reviewData._id)}
+              className="delete-button"
+            >
+              <DeleteIcon />
+            </DeleteButton>
           </div>
         ))
       ) : (

@@ -11,6 +11,7 @@ import { MdOutlineRateReview } from "react-icons/md";
 import { ConfirmBooking } from "../Bookings/Bookings";
 import Reviews from "./Review";
 import UpdatePage from "./UpdatePage";
+import Complaint from "./Complaints";
 const Settings = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -107,8 +108,12 @@ const Settings = () => {
         <Routes>
           <Route path="/profile" element={<Profile />} />
           <Route path="/bookings" element={<ConfirmBooking />} />
+          <Route path="/complaints" element={<Complaint />} />
           <Route path="/reviews" element={<Reviews />} />
-          <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
+          <Route
+            path="/profile-update/user-data/page"
+            element={<UpdatePage />}
+          />
         </Routes>
       </main>
     </div>
