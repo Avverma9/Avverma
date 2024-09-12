@@ -34,7 +34,7 @@ export const fetchComplaints = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${baseURL}/complaints/${userId}`);
-      return response.data; // Assuming response data structure
+      return response?.data; // Assuming response data structure
     } catch (error) {
       return rejectWithValue(error.message);
     }

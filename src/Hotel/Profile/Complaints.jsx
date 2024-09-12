@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { userId } from "../../utils/Unauthorized";
+import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
+import '../Booknow/Booknow.css'
 import {
   Container,
   TextField,
@@ -16,6 +18,10 @@ import {
   styled,
   IconButton,
   Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,6 +30,7 @@ import {
   deleteComplaint,
 } from "../../redux/reducers/complaintSlice";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { PhotoCamera } from "@mui/icons-material";
 
 // Styled components for compact UI
 const StatusChip = styled(Chip)(({ theme, status }) => ({
@@ -57,6 +64,8 @@ const DeleteButton = styled(IconButton)(({ theme }) => ({
   bottom: theme.spacing(1),
 }));
 
+
+
 const Complaint = () => {
   const dispatch = useDispatch();
   const [regarding, setRegarding] = useState("");
@@ -64,6 +73,8 @@ const Complaint = () => {
   const [bookingId, setBookingId] = useState("");
   const [issue, setIssue] = useState("");
   const [images, setImages] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogImages, setDialogImages] = useState([]);
   const { data, loading, error } = useSelector((state) => state.complaint);
 
   useEffect(() => {
@@ -87,13 +98,34 @@ const Complaint = () => {
       formData.append("images", file);
     });
 
-    await dispatch(postComplaint(formData)).unwrap();
-    dispatch(fetchComplaints(userId));
+    try {
+      await dispatch(postComplaint(formData)).unwrap();
+      dispatch(fetchComplaints(userId));
+
+      // Reset the form
+      setRegarding("");
+      setHotelName("");
+      setBookingId("");
+      setIssue("");
+      setImages([]);
+    } catch (error) {
+      console.error("Error posting complaint:", error);
+      // Optionally handle error feedback here
+    }
   };
 
   const handleDelete = async (id) => {
     await dispatch(deleteComplaint(id)).unwrap();
     dispatch(fetchComplaints(userId));
+  };
+
+  const handleOpenDialog = (complaintImages) => {
+    setDialogImages(complaintImages);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -166,6 +198,7 @@ const Complaint = () => {
                 value={bookingId}
                 onChange={(e) => setBookingId(e.target.value)}
                 size="small"
+                type="number"
               />
             </Grid>
 
@@ -284,9 +317,9 @@ const Complaint = () => {
           <Typography variant="body2" align="center" color="error">
             {`Failed to load complaints: ${error}`}
           </Typography>
-        ) : data.length > 0 ? (
+        ) : data?.length > 0 ? (
           <Box>
-            {data.map((complaint) => (
+            {data?.map((complaint) => (
               <CompactCard key={complaint._id}>
                 <StatusChip
                   label={complaint.status}
@@ -301,8 +334,22 @@ const Complaint = () => {
                     <strong>Regarding:</strong> {complaint.regarding}
                   </Typography>
                   <Typography variant="caption" color="textSecondary">
-                    {new Date(complaint.createdAt).toLocaleDateString()}
+                    {formatDateWithOrdinal(
+                      complaint.createdAt
+                    )}
                   </Typography>
+                  <Box mt={1}>
+                    {complaint.images?.length > 0 && (
+                      <button
+                        variant="outlined"
+                        color="primary"
+                        className="custom-button"
+                        onClick={() => handleOpenDialog(complaint.images)}
+                      >
+                        See Attachment
+                      </button>
+                    )}
+                  </Box>
                 </CompactCardContent>
                 <DeleteButton
                   aria-label="delete"
@@ -319,6 +366,34 @@ const Complaint = () => {
           </Typography>
         )}
       </Box>
+
+      {/* Image Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Attachments</DialogTitle>
+        <DialogContent>
+          <Box display="flex" flexDirection="column" alignItems="center">
+            {dialogImages.map((image, index) => (
+              <Box key={index} mb={2}>
+                <img
+                  src={image}
+                  alt={`attachment-${index}`}
+                  style={{ maxWidth: "100%", maxHeight: "400px" }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };
