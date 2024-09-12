@@ -14,22 +14,21 @@ const s3 = new S3Client({
 });
 
 const upload = multer({
-    storage: multerS3({
-      s3: s3,
-      bucket: AWS_BUCKET_NAME,
-      acl: "public-read",
-      key: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    }),
-    fileFilter: (req, file, cb) => {
-      if (file.mimetype.startsWith("image/")) {
-        cb(null, true);
-      } else {
-        cb(new Error("Invalid file type. Only images are allowed."));
-      }
+  storage: multerS3({
+    s3: s3,
+    bucket: AWS_BUCKET_NAME,
+    acl: "public-read",
+    key: function (req, file, cb) {
+      cb(null, Date.now() + "-" + file.originalname);
     },
-  }).array("images", 10);
-  
-  module.exports.upload=upload;
-  
+  }),
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Invalid file type. Only images are allowed."));
+    }
+  },
+}).array("images", 10);
+
+module.exports.upload = upload;

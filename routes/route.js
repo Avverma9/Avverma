@@ -84,7 +84,7 @@ router.patch(
   "/fetch-all-new-notification-to-the-panel/and-mark-seen/dashboard/:userId/:notificationId/seen",
   updateNotificationSeen
 );
-router.post("/seen/by/list/of/user/for/notification/userId",seenByList)
+router.post("/seen/by/list/of/user/for/notification/userId", seenByList);
 router.get("/find/all/by/list/of/user/for/notification", findAllNotification);
 //===============================foods==========================
 
@@ -96,16 +96,11 @@ router.post("/add-a/travel/location", upload, HeaderLocation.createLocation); //
 router.get("/get-all/travel/location", HeaderLocation.getLocation); // on panel
 router.delete("/delete-by-id/travel/location/:id", HeaderLocation.deleteById); // on panel
 //================================== COMPLAINT ============================================================
-router.post("/complaint/:id", complaintController.createComplaint);
-router.patch(
-  "/approveComplaint/:complaintId",
-  complaintController.approveComplaint
-);
-router.get("/complaints/:userId", complaintController.getComplaintsByUserId);
-router.delete(
-  "/compaints/delete/by/id/:id",
-  complaintController.deleteComplaint
-);
+router.post("/create-a-complaint/on/hotel",upload,complaintController.createComplaint ); //on site
+router.patch("/approveComplaint/:complaintId",complaintController.approveComplaint )  //on panel);
+router.get("/complaints/:userId", complaintController.getComplaintsByUserId); //on site
+router.delete("/delete-a-particular/compaints/delete/by/id/:id", complaintController.deleteComplaint); //on site
+router.get("/get/all-complaint-on-admin/panel",complaintController.getComplaint)
 //==============================carousel====================================//
 router.post("/create/second/carousel", upload, carouselController.createBanner); // on panel
 router.get("/get/second/carousel", carouselController.getBanner); //on panel

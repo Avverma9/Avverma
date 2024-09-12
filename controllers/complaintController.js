@@ -2,12 +2,8 @@ const Complaint = require("../models/complaintModel");
 
 const createComplaint = async (req, res) => {
   const { userId, regarding, hotelName, bookingId, status, issue } = req.body;
-
-  // Handle file uploads if present
-  const attachments = req.files ? req.files.map((file) => file.location) : [];
-
+  const images = req.files ? req.files.map((file) => file.location) : [];
   try {
-    // Validate input fields
     if (!userId || !regarding || !issue) {
       return res.status(400).json({ message: "Missing required fields." });
     }
@@ -31,7 +27,7 @@ const createComplaint = async (req, res) => {
       regarding,
       hotelName,
       bookingId,
-      attachment: attachments,
+      images,
       status: status || "Pending", // Default to 'Pending' if not provided
       issue,
     });
@@ -50,48 +46,19 @@ const createComplaint = async (req, res) => {
 //=============================================================================================
 //not===========
 const approveComplaint = async (req, res) => {
+  const { id } = req.query;
+  const { status } = req.body;
+
   try {
-    const { id } = req.query;
-    const { status } = req.body;
-    if (id !== undefined) {
-      const existingComplaint = await complaint.findByIdAndUpdate(id, {
-        status: status,
-      });
-      if (existingComplaint) {
-        let message;
-        if (status === "approved") {
-          message = "Complaint is approved";
-        } else if (status === "rejected") {
-          message = "Complaint is rejected";
-        } else {
-          message = "Complaint is pending";
-        }
-        return res.status(200).json({
-          status: 200,
-          success: true,
-          message: message,
-        });
-      } else {
-        return res.status(400).json({
-          status: 400,
-          success: false,
-          message: "Unable to find complaint",
-        });
-      }
-    } else {
-      return res.status(400).json({
-        status: 400,
-        success: false,
-        message: "Please provide a valid ID",
-      });
-    }
+    // Update the complaint status
+    const updatedComplaint = await Complaint.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    return res.status(200).json({ success: true });
   } catch (error) {
-    return res.status(500).json({
-      status: 500,
-      success: false,
-      message: "Something went wrong",
-      error: error.message,
-    });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -99,26 +66,10 @@ const approveComplaint = async (req, res) => {
 const getComplaintsByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
-    const complaints = await complaintModel.find({ userId });
-
-    if (complaints.length > 0) {
-      return res.status(200).json({
-        status: 200,
-        success: true,
-        message: "Complaints by userId",
-        data: complaints,
-      });
-    } else {
-      return res.status(404).json({
-        status: 404,
-        success: false,
-        message: "No complaints found for the provided userId",
-      });
-    }
+    const complaints = await Complaint.find({ userId });
+    return res.status(200).json(complaints);
   } catch (error) {
     return res.status(500).json({
-      status: 500,
-      success: false,
       message: "Something went wrong",
       error: error.message,
     });
@@ -127,13 +78,28 @@ const getComplaintsByUserId = async (req, res) => {
 
 //=======================delete a complaint=============================================
 const deleteComplaint = async function (req, res) {
-  const { id } = req.params;
-  const deletedData = await complaintModel.findByIdAndDelete(id);
-  res.json(deletedData);
+  try {
+    const { id } = req.params;
+    const deletedData = await Complaint.findByIdAndDelete(id);
+    res.status(200).json(deletedData);
+  } catch (error) {
+    console.error("Error deleting complaint:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
+
+
+//=======================get all complaint=============================================
+
+const getComplaint = async (req, res) => {
+  const fetchAll = await Complaint.find();
+  return res.status(200).json(fetchAll);
+};
+
 module.exports = {
   createComplaint,
   approveComplaint,
   getComplaintsByUserId,
   deleteComplaint,
+  getComplaint,
 };
