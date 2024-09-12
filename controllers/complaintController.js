@@ -47,7 +47,7 @@ const createComplaint = async (req, res) => {
 //not===========
 const approveComplaint = async (req, res) => {
   const { id } = req.params; // id should be the complaint's identifier
-  const { status, feedback } = req.body; // status is the new status for the complaint
+  const { status, feedBack } = req.body; // status is the new status for the complaint
 
   try {
     if (!id) {
