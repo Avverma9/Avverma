@@ -57,7 +57,7 @@ const approveComplaint = async (req, res) => {
     }
     const updatedComplaint = await Complaint.findByIdAndUpdate(
       id,
-      { status, feedback },
+      { status, feedBack },
       { new: true, runValidators: true }
     );
 
