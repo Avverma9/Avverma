@@ -17,6 +17,7 @@ import {
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import "./Profile.css"; // Import your custom CSS file for styling
+import { Unauthorized } from "../../utils/Unauthorized";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -34,24 +35,8 @@ export default function Profile() {
 
   if (!userId) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
-        <img
-          src="https://arkca.com/assets/img/login.gif"
-          alt="Login required"
-          style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />
-        <p style={{ marginTop: "10px" }}>
-          Unauthorized
-          <br />
-          Please log in
-        </p>
+      <div>
+        <Unauthorized/>
       </div>
     );
   }
@@ -80,7 +65,7 @@ export default function Profile() {
   };
 
   return (
-    <section className="vh-100" style={{ backgroundColor: "#f8f9fa" }}>
+    <section className="vh-100" style={{ backgroundColor: "#ffffff" }}>
       <MDBContainer className="py-5 h-100">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">

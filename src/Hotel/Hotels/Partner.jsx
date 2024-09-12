@@ -10,6 +10,7 @@ import axios from "axios";
 import { Button, makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import baseURL from "../../baseURL";
+import { Unauthorized, userId } from "../../utils/Unauthorized";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -157,30 +158,7 @@ export default function PartnerForm() {
     "Resort",
     "Villa",
   ];
-  const userId = localStorage.getItem("userId");
-  if (!userId) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
-        <img
-          src="https://arkca.com/assets/img/login.gif"
-          alt="Login required"
-          style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />
-        <p style={{ marginTop: "10px" }}>
-          Unauthorized
-          <br />
-          Please log in
-        </p>
-      </div>
-    );
-  }
+
   const [imageInputs, setImageInputs] = useState([
     { id: "frontdeskImage", label: "Front Desk Image" },
     { id: "laneImage", label: "Lane Image" },
@@ -198,7 +176,13 @@ export default function PartnerForm() {
       },
     ]);
   };
-
+  if (!userId) {
+    return (
+      <div>
+        <Unauthorized />
+      </div>
+    );
+  }
   return (
     <>
       <div className="container mt-4">

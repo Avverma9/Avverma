@@ -1,22 +1,25 @@
 /* Container to handle the layout of sidebar and content */
 .container {
   display: flex;
-  min-height: 100%;
-  background-color: #f5f7fa; /* Light background for the page */
+  margin-top: 20px;
+  border-radius: 30%;
+  height: 60%;
+  background-color: #ffffff; /* Light background for the page */
   transition: margin-left 0.3s ease-in-out; /* Smooth transition for content margin */
 }
 
 /* Sidebar styles */
 .sidebar {
+  margin-top: 20px;
   width: 200px;
-  height: 100%;
-  background-color: #f5f5f5; 
+  height: 60%;
+  background-color: #ededed;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 30%;
   color: #333333;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease-in-out; 
+  transition: transform 0.3s ease-in-out;
   transform: translateX(0); /* Default visible position */
   position: absolute; /* Position for toggle button */
   z-index: 1; /* Ensure sidebar is above other content */
@@ -92,6 +95,7 @@
 
   .sidebar {
     width: 200px; /* Adjust sidebar width for mobile */
+    height: 400px;
   }
 
   .content {
@@ -146,12 +150,10 @@
   color: #ffffff; /* White text color for active link */
 }
 
-
-
 /* Adjust content margin when sidebar is hidden */
 .container .sidebar.hidden ~ .content {
   flex: 1;
-  margin-left: 800px; /* Adjust based on the width of your sidebar */
+  margin-left: 200px; /* Adjust based on the width of your sidebar */
   transition: margin-left 0.3s; /* Smooth transition for margin */
   margin-left: 0; /* Remove margin when sidebar is closed */
 }

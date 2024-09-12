@@ -10,6 +10,7 @@ import { FaInfo } from "react-icons/fa6";
 import { MdOutlineRateReview } from "react-icons/md";
 import { ConfirmBooking } from "../Bookings/Bookings";
 import Reviews from "./Review";
+import UpdatePage from "./UpdatePage";
 const Settings = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
@@ -107,6 +108,7 @@ const Settings = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/bookings" element={<ConfirmBooking />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
         </Routes>
       </main>
     </div>

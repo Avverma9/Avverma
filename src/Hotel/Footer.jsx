@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import {
   FaFacebook,
   FaInstagram,
@@ -20,10 +21,30 @@ const chunkArray = (array, size) => {
 };
 
 const Footer = () => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  // Determine marginTop based on the path
+  let marginTop;
+  switch (path) {
+    case "/bookings":
+      marginTop = "400px"; // Example value for '/login'
+      break;
+    case "/profile":
+      marginTop = "300px"; // Example value for '/register'
+      break;
+    case "/partner":
+      marginTop = "200px"; // Example value for '/partner'
+      break;
+    // Add more cases as needed
+    default:
+      marginTop = "250px"; // Default margin for other paths
+  }
+
   const chunks = chunkArray(hotelList, 10); // Split hotelList into chunks of 10
 
   return (
-    <footer className="footer" style={{ marginTop: "100px" }}>
+    <footer className="footer" style={{ marginTop }}>
       <div className="container">
         <div className="row mb-4">
           <div className="col-md-6 text-center text-md-start">

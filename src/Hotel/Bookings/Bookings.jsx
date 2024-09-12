@@ -33,6 +33,7 @@ import baseURL from "../../baseURL";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
+import { Unauthorized, userId } from "../../utils/Unauthorized";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -154,9 +155,15 @@ export const ConfirmBooking = () => {
     setRating(0);
     setShowReviewForm(false);
   };
-
+  if (!userId) {
+    return (
+      <div>
+        <Unauthorized />
+      </div>
+    );
+  }
   return (
-    <div style={{  overflowY: "auto" , maxWidth:"100%",marginLeft:"10px"}}>
+    <div style={{  overflowY: "auto" , maxWidth:"100%",marginLeft:"20px" , background:"#ffffff"}}>
       <div className={styles.bookingHeader}></div>
       <div className={styles.bookingsContainer}>
         <div className={styles.selectContainer}>

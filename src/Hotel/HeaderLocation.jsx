@@ -75,7 +75,7 @@ const HeaderTravel = () => {
   }
 
   return (
-    <div className="header">
+    <div className="header-travel">
       {locations.map((loc, index) => (
         <div
           key={index}

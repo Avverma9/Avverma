@@ -9,6 +9,7 @@ import axios from "axios";
 import "../Booknow/BookingReview.css";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import "./reviews.css"
+import { Unauthorized, userId } from "../../utils/Unauthorized";
 export default function Reviews() {
   const location = useLocation();
   const [data, setData] = useState([]);
@@ -98,18 +99,13 @@ export default function Reviews() {
     );
   }
 
-  if (error) {
+  if (!userId) {
     return (
-      <div className="unauthorized">
-        <img
-          src="https://arkca.com/assets/img/login.gif"
-          alt="Login required"
-        />
-        <p>{error}</p>
+      <div>
+        <Unauthorized />
       </div>
     );
   }
-
   return (
     <div className="review-container" style={{ background: "#f5f5f5" }}>
       {currentReviews.length > 0 ? (

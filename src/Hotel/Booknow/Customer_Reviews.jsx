@@ -8,6 +8,7 @@ import CardContent from "@mui/joy/CardContent";
 import Chip from "@mui/joy/Chip";
 import Typography from "@mui/joy/Typography";
 import "../Profile/Reviews.css";
+import { Unauthorized, userId } from "../../utils/Unauthorized";
 
 export default function Customer_reviews() {
   const location = useLocation();
@@ -49,32 +50,7 @@ export default function Customer_reviews() {
   if (location.pathname !== "/reviews") {
     return null;
   }
-  const userId = localStorage.getItem("userId");
-  if (!userId) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "50vh",
-        }}
-      >
-        <img
-          src="https://arkca.com/assets/img/login.gif"
-          alt="Login required"
-          style={{ maxWidth: "200px", maxHeight: "150px" }}
-        />{" "}
-        {/* Mobile-friendly image size */}
-        <p style={{ marginTop: "10px" }}>
-          Unauthorized
-          <br />
-          Please log in
-        </p>{" "}
-        {/* Clearer message with spacing */}
-      </div>
-    );
-  }
+
   if (!data) {
     return (
       <div
@@ -93,7 +69,13 @@ export default function Customer_reviews() {
       </div>
     );
   }
-
+  if (!userId) {
+    return (
+      <div>
+        <Unauthorized />
+      </div>
+    );
+  }
   return (
     <div className="review-container">
       {data?.map((reviewData, index) => (
