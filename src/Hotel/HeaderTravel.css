@@ -23,7 +23,7 @@
 
 /* Scrollbar Styles */
 .header-travel::-webkit-scrollbar {
-  height: 3px; /* Adjust the scrollbar height */
+  height: 4px; /* Adjust the scrollbar height */
 }
 
 .header-travel::-webkit-scrollbar-thumb {
@@ -43,13 +43,16 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  transition: margin 0.3s, transform 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin: 8px; /* Default margin for spacing */
 }
 
 /* Circular Image Styles */
 .city .circle {
-  border-radius: 50%;
+  border-radius: 50%; /* Ensure circular shape */
   object-fit: cover;
+  width: 80px; /* Fixed width */
+  height: 80px; /* Fixed height */
 }
 
 /* City Name Styles */
@@ -57,13 +60,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: center; /* Center align text */
+  margin-top: 4px; /* Space between image and text */
 }
 
 /* Hover Effects */
 .city:hover {
   transform: scale(1.1);
-    border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+   border-radius: 50%; /* Ensure circular shape */
 }
 
 /* Dropdown Menu Display */
@@ -74,42 +79,42 @@
 /* Mobile View Adjustments */
 @media screen and (max-width: 600px) {
   .city .circle {
-    width: 40px;
-    height: 40px;
+    width: 60px; /* Smaller images for mobile */
+    height: 60px;
   }
   .city {
-    margin: 5px;
+    margin: 6px; /* Adjusted for smaller screens */
   }
 }
 
 @media screen and (max-width: 480px) {
   .city .circle {
-    width: 35px;
-    height: 35px;
+    width: 50px; /* Smaller images for very small mobile screens */
+    height: 50px;
   }
   .city {
-    margin: 4px;
+    margin: 4px; /* Adjusted for very small screens */
   }
 }
 
 @media screen and (max-width: 320px) {
   .city .circle {
-    width: 30px;
-    height: 30px;
+    width: 40px; /* Even smaller images for very small screens */
+    height: 40px;
   }
   .city {
-    margin: 3px;
+    margin: 3px; /* Adjusted for extremely small screens */
   }
 }
 
 /* Responsive Adjustments for Larger Mobile Screens */
 @media screen and (min-width: 601px) and (max-width: 900px) {
   .city .circle {
-    width: 60px;
-    height: 60px;
+    width: 70px; /* Larger images for larger mobile screens */
+    height: 70px;
   }
   .city {
-    margin: 8px;
+    margin: 8px; /* Adjusted for larger mobile screens */
   }
 }
 
@@ -120,7 +125,7 @@
     overflow-x: auto; /* Enable horizontal scrolling if needed */
     background-color: #fff; /* Background color for better contrast */
   }
-  
+
   .city .circle {
     width: 80px; /* Larger images for desktop */
     height: 80px;

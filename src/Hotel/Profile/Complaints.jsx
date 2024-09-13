@@ -39,6 +39,8 @@ const StatusChip = styled(Chip)(({ theme, status }) => ({
       ? theme.palette.warning.main
       : status === "Resolved"
       ? theme.palette.success.main
+      : status === "Working"
+      ? theme.palette.info.main
       : theme.palette.error.main,
   color: theme.palette.common.white,
   fontSize: "0.75rem",
@@ -150,7 +152,7 @@ const Complaint = () => {
         }}
       >
         <Typography
-          variant="h6"
+          variant="p"
           gutterBottom
           align="center"
           sx={{
@@ -171,6 +173,7 @@ const Complaint = () => {
         >
           Complaint Box
         </Typography>
+        <hr />
         <Box component="form" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
@@ -226,13 +229,7 @@ const Complaint = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                size="small"
-                color="primary"
-              >
+              <button component="label" fullWidth className="custom-button">
                 Upload Attachments
                 <input
                   type="file"
@@ -240,7 +237,7 @@ const Complaint = () => {
                   hidden
                   onChange={handleFileChange}
                 />
-              </Button>
+              </button>
               <Box mt={1}>
                 {images.length > 0 && (
                   <Box>
