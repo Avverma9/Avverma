@@ -383,7 +383,7 @@ const getAllFilterBookings = async (req, res) => {
 
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId, bookingId, hotelEmail } = req.query;
+    const { bookingStatus, userId, bookingId, hotelEmail,checkInDate } = req.query;
     const filter = {};
 
     // Include userId and bookingStatus filters if provided
@@ -400,7 +400,9 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (bookingId) {
       filter.bookingId = bookingId;
     }
-
+   if (checkInDate) {
+     filter.checkInDate = checkInDate;
+   }
     const bookings = await bookingModel.find(filter);
 
     if (bookings.length === 0) {

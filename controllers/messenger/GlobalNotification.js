@@ -99,3 +99,10 @@ exports.findAllNotification = async (req,res)=>{
   const global = await Notification.find()
   return res.json({ User: user, Global: global });
 }
+
+
+exports.deleteGlobalNotification = async (req, res) => {
+  const { notificationId } = req.params;
+  const findNoti = await Notification.findByIdAndDelete(notificationId);
+  return res.status(200).json({ message: "deleted" });
+};

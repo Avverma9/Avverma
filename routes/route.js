@@ -25,6 +25,7 @@ const {
   getNotificationByUser,
   updateUserNotificationSeen,
   pushUserNotification,
+  deleteUserNotification,
 } = require("../controllers/messenger/UserNotification");
 const {
   pushGlobalNotification,
@@ -32,6 +33,7 @@ const {
   updateNotificationSeen,
   seenByList,
   findAllNotification,
+  deleteGlobalNotification,
 } = require("../controllers/messenger/GlobalNotification");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
@@ -70,6 +72,10 @@ router.patch(
   "/fetch-all-new-notification-to-the-panel/and-mark-seen/dashboard-user/notification/:notificationId/seen",
   updateUserNotificationSeen
 );
+router.delete(
+  "/find/all/by/list/of/user/for/notification/and-delete/user/:notificationId",
+  deleteUserNotification
+);
 //======================================Global Notification==========================//
 router.post(
   "/push-a-new-notification-to-the-panel/dashboard",
@@ -86,6 +92,10 @@ router.patch(
 );
 router.post("/seen/by/list/of/user/for/notification/userId", seenByList);
 router.get("/find/all/by/list/of/user/for/notification", findAllNotification);
+router.delete(
+  "/find/all/by/list/of/user/for/notification/and-delete-global/:notificationId",
+  deleteGlobalNotification
+);
 //===============================foods==========================
 
 router.post("/add/food-to/your-hotel", upload, foods.createFood); // on panel
@@ -143,7 +153,7 @@ router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccept
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
-router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById);
+router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById); // on panel
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/get-by-id/:hotelId", hotelController.getHotelsById);
@@ -181,7 +191,16 @@ router.get("/see-all/hotels-city/get/city", hotelController.getHotelsCity);
 router.get("/get-hotels/by-room/:roomType", hotelController.getByRoom);
 router.get("/get-hotels/count", hotelController.getCount);
 router.get("/get-pending-hotels/count", hotelController.getCountPendingHotels);
+router.patch(
+  "/update-hotels-image-by-hotel-id/:hotelId",
+  upload,
+  hotelController.updateHotelImage
+);
+router.delete(
+  "/hotels/:hotelId/images/imageUrl",
 
+  hotelController.deleteHotelImages
+);
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);
 router.get("/statesData", stateController.getStateData);

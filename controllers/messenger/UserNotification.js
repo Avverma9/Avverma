@@ -1,6 +1,6 @@
 const Notification = require("../../models/messenger/UserNotification");
 
-exports.pushUserNotification = async(req,res)=>{
+exports.pushUserNotification = async (req, res) => {
   const { name, message, userIds, path } = req.body;
 
   if (!Array.isArray(userIds) || userIds.length === 0) {
@@ -26,7 +26,7 @@ exports.pushUserNotification = async(req,res)=>{
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 exports.getNotificationByUser = async function (req, res) {
   const { userId } = req.params;
@@ -57,8 +57,6 @@ exports.getNotificationByUser = async function (req, res) {
   }
 };
 
-
-
 exports.updateUserNotificationSeen = async function (req, res) {
   const { notificationId } = req.params;
   const { userId } = req.body;
@@ -84,4 +82,8 @@ exports.updateUserNotificationSeen = async function (req, res) {
   }
 };
 
-
+exports.deleteUserNotification = async (req, res) => {
+  const { notificationId } = req.params;
+  const findNoti = await Notification.findByIdAndDelete(notificationId);
+  return res.status(200).json({ message: "deleted" });
+};

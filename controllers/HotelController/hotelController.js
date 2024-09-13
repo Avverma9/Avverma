@@ -96,8 +96,78 @@ const getCountPendingHotels = async function (req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-//=================================GET HOTEL=================
+//=================================update hotel images=================
+const updateHotelImage = async (req, res) => {
+  try {
+    const { hotelId } = req.params;
 
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files were uploaded" });
+    }
+
+    // Extract image locations
+    const images = req.files.map((file) => file.location);
+
+    // Check if the hotel exists
+    const updatedHotel = await hotelModel.findById(hotelId);
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel not found" });
+    }
+
+    // Update images
+    updatedHotel.images = [...updatedHotel.images, ...images]; // Append new images
+    await updatedHotel.save();
+
+    res.status(200).json({
+      message: "Hotel images updated successfully",
+      data: updatedHotel,
+    });
+  } catch (error) {
+    console.error("Error updating hotel images:", error);
+    res
+      .status(500)
+      .json({ message: "An error occurred while updating hotel images" });
+  }
+};
+
+//======================================Delete hotel images=======================
+const deleteHotelImages = async function (req,res){
+     const { hotelId } = req.params;
+     const { imageUrl } = req.query;
+
+     if (!imageUrl) {
+       return res.status(400).json({ message: "Image URL is required" });
+     }
+
+     try {
+       // Find the hotel by ID
+       const hotel = await hotelModel.findOne({ hotelId });
+
+       if (!hotel) {
+         return res.status(404).json({ message: "Hotel not found" });
+       }
+
+       // Check if the image URL exists in the array
+       if (!hotel.images.includes(imageUrl)) {
+         return res
+           .status(404)
+           .json({ message: "Image URL not found in the images array" });
+       }
+
+       // Remove the image URL from the array
+       hotel.images = hotel.images.filter((image) => image !== imageUrl);
+
+       // Save the updated hotel document
+       await hotel.save();
+
+       res
+         .status(200)
+         .json({ message: "Image URL deleted successfully", hotel });
+     } catch (error) {
+       console.error(error);
+       res.status(500).json({ message: "Internal Server Error" });
+     }
+}
 //==================================UpdateHotel================================
 const UpdateHotel = async function (req, res) {
   const { hotelId } = req.params;
@@ -697,7 +767,7 @@ const checkAndUpdateOffers = async () => {
         const roomUpdates = {
           isOffer: false,
           offerPriceLess: 0,
-          offerExp:"",
+          offerExp: "",
           offerName: "",
         };
 
@@ -935,4 +1005,6 @@ module.exports = {
   monthlyPrice,
   getCount,
   getCountPendingHotels,
+  updateHotelImage,
+  deleteHotelImages
 };
