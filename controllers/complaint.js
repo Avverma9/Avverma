@@ -7,7 +7,6 @@ const createComplaint = async (req, res) => {
     if (!userId || !regarding || !issue) {
       return res.status(400).json({ message: "Missing required fields." });
     }
-
     // Check for existing pending complaints
     const pendingComplaints = await Complaint.countDocuments({
       userId,

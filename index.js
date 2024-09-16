@@ -3,13 +3,8 @@ const { createServer } = require("http");
 const WebSocket = require("ws");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-//Router===================================
-// const bookingRouter = require("./routes/booking/booking");
-// const dashboardRouter = require("./routes/dashboardUser/dashboardUser");
-// const UserStatus = require("./models/messenger/userStatus");
-// const hotelRouter = require("./routes/hotel/hotel");
-// const reviewRouter = require("./routes/review");
-// const userRouter = require("./routes/user");
+const UserStatus = require("./models/messenger/userStatus"); // Adjust path as needed
+
 const routes = require("./routes/index")
 const connectDB = require("./config/db"); // Import the DB
 //=================================================================

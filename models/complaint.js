@@ -12,12 +12,12 @@ const complaintSchema = new mongoose.Schema(
     },
     hotelName: String,
     bookingId: String,
-    feedBack:String,
+    feedBack: String,
     images: [String],
     status: {
       type: String,
       required: true,
-      enum: ["Pending", "Approved", "Rejected", "Resolved","Working"],
+      enum: ["Pending", "Approved", "Rejected", "Resolved", "Working"],
       default: "Pending",
     },
     issue: {
