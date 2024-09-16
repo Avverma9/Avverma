@@ -92,7 +92,7 @@ export default function PartnerFoods() {
             Price
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             id="price"
             value={price}

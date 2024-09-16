@@ -59,6 +59,9 @@ export const ConfirmBooking = () => {
           throw new Error("You are not logged in!");
         }
 
+        // Clear previous booking details when status changes
+        setBookingDetails([]);
+
         // Fetch user data
         const userResponse = await axios.get(`${baseURL}/get/${userId}`);
         setUserData(userResponse.data.data);
@@ -155,6 +158,7 @@ export const ConfirmBooking = () => {
     setRating(0);
     setShowReviewForm(false);
   };
+
   if (!userId) {
     return (
       <div>
@@ -162,15 +166,22 @@ export const ConfirmBooking = () => {
       </div>
     );
   }
+
   return (
-    <div style={{  overflowY: "auto" , maxWidth:"100%",marginLeft:"20px" , background:"#ffffff"}}>
+    <div
+      style={{
+        overflowY: "auto",
+        maxWidth: "100%",
+        marginLeft: "20px",
+        background: "#ffffff",
+      }}
+    >
       <div className={styles.bookingHeader}></div>
-      <div className={styles.bookingsContainer}>
+      <div>
         <div className={styles.selectContainer}>
           <FormControl
             variant="outlined"
-            fullWidth
-            style={{ marginBottom: "10px" }}
+            style={{ marginBottom: "10px" ,maxWidth:"200px"}}
           >
             <InputLabel id="status-select-label">Filter bookings</InputLabel>
             <Select
@@ -186,7 +197,7 @@ export const ConfirmBooking = () => {
               <MenuItem value="Checked-in">Checked In</MenuItem>
               <MenuItem value="Checked-out">Checked Out</MenuItem>
               <MenuItem value="Cancelled">Cancelled</MenuItem>
-              <MenuItem value="No-Show">No show</MenuItem>
+              <MenuItem value="No-show">No show</MenuItem>
             </Select>
           </FormControl>
         </div>
@@ -249,116 +260,105 @@ export const ConfirmBooking = () => {
                 </Button>
               </Box>
             </BootstrapModal>
-
-            {currentBooking.map((bookingDetail) => (
-              <div key={bookingDetail.bookingId}>
-                <JoyBox
-                  sx={{
-                    width: "100%",
-                    position: "relative",
-                    overflow: "auto",
-                    mb: 2,
-                  }}
-                >
-                  <Card
-                    orientation="horizontal"
+            <div className={styles.bookingsContainer}>
+              {currentBooking.map((bookingDetail) => (
+                <div key={bookingDetail.bookingId}>
+                  <JoyBox
                     sx={{
                       width: "100%",
-                      display: "flex",
-                      flexDirection: "row",
+                      position: "relative",
                       overflow: "auto",
                       mb: 2,
-                      flexWrap: "wrap", // Allows wrapping of content for smaller screens
                     }}
                   >
-                    <AspectRatio
-                      flex
-                      ratio="1"
-                      maxHeight={142}
-                      sx={{ minWidth: 142 }}
+                    <Card
+                      orientation="horizontal"
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        overflow: "auto",
+                        mb: 2,
+                        flexWrap: "wrap", // Allows wrapping of content for smaller screens
+                      }}
                     >
-                      <img
-                        src={
-                          bookingDetail.images ? bookingDetail.images : noImage
-                        }
-                        loading="lazy"
-                        alt="Hotel"
-                        style={{ width: "100%", height: "auto" }} // Ensure image scales properly
-                      />
-                    </AspectRatio>
-                    <CardContent>
-                      <Typography fontSize="xl" fontWeight="lg">
-                        {bookingDetail.hotelName}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="textSecondary"
-                        sx={{ display: "flex", alignItems: "center" }}
-                      >
-                        <CalendarMonthIcon /> From{" "}
-                        {formatDateWithOrdinal(bookingDetail.checkInDate)} to{" "}
-                        {formatDateWithOrdinal(bookingDetail.checkOutDate)}
-                      </Typography>
-                      <Sheet
-                        sx={{
-                          bgcolor: "background.level1",
-                          borderRadius: "sm",
-                          p: 1.5,
-                          my: 1.5,
-                          display: "flex",
-                          gap: 2,
-                          flexDirection: "column",
-                          "& > div": { flex: 1 },
-                        }}
-                      >
-                        <div>
-                          <Typography variant="body2" fontWeight="bold">
-                            ID <StickyNote2Icon /> {bookingDetail.bookingId}
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography variant="body2">
-                            {bookingDetail.guests}{" "}
-                            {bookingDetail.guests > 1 ? "Guests" : "Guest"},
-                            {bookingDetail.rooms}{" "}
-                            {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
-                          </Typography>
-                        </div>
-                        <div>
-                          <Typography variant="body2">
-                            <CurrencyRupeeIcon /> {bookingDetail.price}
-                          </Typography>
-                        </div>
-                      </Sheet>
-                      <JoyBox
-                        sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: 1.5,
-                          "& > button": { width: "100%", marginBottom: "5px" },
-                        }}
-                      >
-                        <Button
-                          className={styles.link}
-                          onClick={() => handleShow(bookingDetail)}
+                      <CardContent>
+                        <Typography fontSize="xl" fontWeight="lg">
+                          {bookingDetail.hotelName}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          sx={{ display: "flex", alignItems: "center" }}
                         >
-                          View Booking
-                        </Button>
-                        <Button
-                          variant="contained"
-                          onClick={() => handleReview(bookingDetail.hotelId)}
+                          <CalendarMonthIcon /> From{" "}
+                          {formatDateWithOrdinal(bookingDetail.checkInDate)} to{" "}
+                          {formatDateWithOrdinal(bookingDetail.checkOutDate)}
+                        </Typography>
+                        <Sheet
+                          sx={{
+                            bgcolor: "background.level1",
+                            borderRadius: "sm",
+                            p: 1.5,
+                            my: 1.5,
+                            display: "flex",
+                            gap: 2,
+                            flexDirection: "column",
+                            "& > div": { flex: 1 },
+                          }}
                         >
-                          Review
-                        </Button>
-                      </JoyBox>
-                    </CardContent>
-                  </Card>
-                </JoyBox>
-              </div>
-            ))}
+                          <div>
+                            <Typography variant="body2" fontWeight="bold">
+                              ID <StickyNote2Icon /> {bookingDetail.bookingId}
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography variant="body2">
+                              {bookingDetail.guests}{" "}
+                              {bookingDetail.guests > 1 ? "Guests" : "Guest"},
+                              {bookingDetail.rooms}{" "}
+                              {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
+                            </Typography>
+                          </div>
+                          <div>
+                            <Typography variant="body2">
+                              <CurrencyRupeeIcon /> {bookingDetail.price}
+                            </Typography>
+                          </div>
+                        </Sheet>
+                        <JoyBox
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 1.5,
+                            "& > button": {
+                              width: "100%",
+                              marginBottom: "5px",
+                            },
+                          }}
+                        >
+                          <Button
+                            className={styles.link}
+                            onClick={() => handleShow(bookingDetail)}
+                          >
+                            View Booking
+                          </Button>
+                          <Button
+                            variant="contained"
+                            onClick={() => handleReview(bookingDetail.hotelId)}
+                          >
+                            Review
+                          </Button>
+                        </JoyBox>
+                      </CardContent>
+                    </Card>
+                  </JoyBox>
+                </div>
+              ))}
+            </div>
           </>
         ) : (
-          <p>You haven't booked any hotel</p>
+          <p>No bookings available for the selected status.</p>
         )}
 
         <Pagination
@@ -411,11 +411,6 @@ export const ConfirmBooking = () => {
                   Price: <span>{modalData?.price}</span>
                 </h6>
               </div>
-              <img
-                src={modalData?.images ? modalData.images : noImage}
-                alt="Hotel"
-                style={{ width: "100%", height: "auto" }} // Ensure image scales properly
-              />
             </div>
             <div className={styles.borderBottom} />
             <div className={styles.body}>
