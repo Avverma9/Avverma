@@ -8,7 +8,7 @@ const createHotel = async (req, res) => {
       description,
       hotelOwnerName,
       destination,
-      isOffer,
+      onFront,
       startDate,
       endDate,
       state,
@@ -36,7 +36,7 @@ const createHotel = async (req, res) => {
       description,
       hotelOwnerName,
       destination,
-      isOffer,
+      onFront,
       customerWelcomeNote,
       startDate,
       endDate,
@@ -167,14 +167,14 @@ const deleteHotelImages = async function (req,res){
      }
 }
 //==================================UpdateHotel================================
-const UpdateHotel = async function (req, res) {
+const UpdateHotelStatus = async function (req, res) {
   const { hotelId } = req.params;
-  const { isAccepted, isOffer } = req.body;
+  const { isAccepted, onFront } = req.body;
 
   try {
     const updateDetails = await hotelModel.findOneAndUpdate(
       { hotelId: hotelId }, // Use hotelId for querying
-      { $set: { isAccepted: isAccepted, isOffer: isOffer } }, // Update fields
+      { $set: { isAccepted: isAccepted, onFront: onFront } }, // Update fields
       { new: true } // To return the updated document
     );
 
@@ -190,7 +190,7 @@ const UpdateHotelInfo = async function (req, res) {
   const { hotelId } = req.params;
   const {
     isAccepted,
-    isOffer,
+    onFront,
     hotelName,
     hotelOwnerName,
     hotelEmail,
@@ -213,7 +213,7 @@ const UpdateHotelInfo = async function (req, res) {
       {
         $set: {
           isAccepted: isAccepted,
-          isOffer: isOffer,
+          onFront: onFront,
           hotelName: hotelName,
           hotelOwnerName: hotelOwnerName,
           hotelEmail: hotelEmail,
@@ -361,7 +361,7 @@ const getAllRejectedHotels = async (req, res) => {
 //===========================get hotels====================================================//
 const getHotels = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
-  const filterData = hotels.filter((hotel) => hotel.isOffer === false);
+  const filterData = hotels.filter((hotel) => hotel.onFront === false);
   res.json(filterData);
 };
 //======================================get offers==========================================//
@@ -738,7 +738,7 @@ const checkAndUpdateOffers = async () => {
     for (const hotel of expiredOffers) {
       for (let i = 0; i < hotel.rooms.length; i++) {
         const roomUpdates = {
-          isOffer: false,
+          onFront: false,
           offerPriceLess: 0,
           offerExp: "",
           offerName: "",
@@ -770,7 +770,7 @@ cron.schedule("0 0 * * *", async () => {
 
 const ApplyCoupon = async (req, res) => {
   const { hotelId, roomId } = req.params;
-  const { offerDetails, offerExp, offerPriceLess, isOffer } = req.body;
+  const { offerDetails, offerExp, offerPriceLess, onFront } = req.body;
   const offerStartDate = new Date().toISOString().split("T")[0];
   try {
     const hotel = await hotelModel.findByIdAndUpdate(hotelId);
@@ -818,7 +818,7 @@ const ApplyCoupon = async (req, res) => {
 const expireOffer = async function (req, res) {
   try {
     const { id, roomid } = req.params;
-    const { offerExp, isOffer, offerPriceLess, offerDetails } = req.body;
+    const { offerExp, onFront, offerPriceLess, offerDetails } = req.body;
     const defaultOfferExp = new Date().toISOString().split("T")[0];
 
     // Retrieve the hotel object
@@ -840,7 +840,7 @@ const expireOffer = async function (req, res) {
     // Create an update object
     const roomUpdates = {
       offerExp: offerExp || defaultOfferExp,
-      isOffer: isOffer !== undefined ? isOffer : false,
+      onFront: onFront !== undefined ? onFront : false,
       offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
       offerDetails: offerDetails || "N/A",
       price: hotel.rooms[roomIndex].originalPrice, // Ensure price is reset to originalPrice
@@ -956,7 +956,7 @@ module.exports = {
   checkAndUpdateOffers,
   getCity,
   getByQuery,
-  UpdateHotel,
+  UpdateHotelStatus,
   getHotels,
   getOffers,
   updateRoom,

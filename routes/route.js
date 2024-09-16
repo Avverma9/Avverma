@@ -149,7 +149,7 @@ router.post(
   upload,
   hotelController.createHotel
 );
-router.patch("/hotels/update/:hotelId", hotelController.UpdateHotel); //isAccepted,isOffer
+router.patch("/hotels/update/:hotelId", hotelController.UpdateHotelStatus); //isAccepted,isOffer
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
 router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
