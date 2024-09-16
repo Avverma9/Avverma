@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { userId } from "../../utils/Unauthorized";
-import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import "../Booknow/Booknow.css";
+import { userId } from "../../../utils/Unauthorized";
+import "../../Booknow/Booknow.css";
 import {
   Container,
   TextField,
@@ -12,59 +11,23 @@ import {
   InputLabel,
   FormControl,
   Select,
-  Chip,
   Box,
   CircularProgress,
-  styled,
-  IconButton,
   Divider,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
+  Chip,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchComplaints,
   postComplaint,
   deleteComplaint,
-} from "../../redux/reducers/complaintSlice";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { PhotoCamera } from "@mui/icons-material";
-
-// Styled components for compact UI
-const StatusChip = styled(Chip)(({ theme, status }) => ({
-  backgroundColor:
-    status === "Pending"
-      ? theme.palette.warning.main
-      : status === "Resolved"
-      ? theme.palette.success.main
-      : status === "Working"
-      ? theme.palette.info.main
-      : theme.palette.error.main,
-  color: theme.palette.common.white,
-  fontSize: "0.75rem",
-}));
-
-const CompactCard = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  padding: theme.spacing(1),
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  position: "relative",
-}));
-
-const CompactCardContent = styled(Box)(({ theme }) => ({
-  flex: 1,
-  marginLeft: theme.spacing(2),
-}));
-
-const DeleteButton = styled(IconButton)(({ theme }) => ({
-  position: "absolute",
-  right: theme.spacing(1),
-  bottom: theme.spacing(1),
-}));
+} from "../../../redux/reducers/complaintSlice";
+import ComplaintsList from "./complaints"; // Import the new ComplaintsList component
+import FeedbackDialog from "./FeedBackDialog"; // Import the new FeedbackDialog component
 
 const Complaint = () => {
   const dispatch = useDispatch();
@@ -84,7 +47,7 @@ const Complaint = () => {
   }, [dispatch]);
 
   const handleFileChange = (e) => {
-    setImages([...e.target.files]);
+    setImages(e.target.files);
   };
 
   const handleSubmit = async (event) => {
@@ -96,7 +59,7 @@ const Complaint = () => {
     formData.append("hotelName", hotelName);
     formData.append("bookingId", bookingId);
     formData.append("issue", issue);
-    images.forEach((file) => {
+    Array.from(images).forEach((file) => {
       formData.append("images", file);
     });
 
@@ -112,7 +75,7 @@ const Complaint = () => {
       setImages([]);
     } catch (error) {
       console.error("Error posting complaint:", error);
-      // Optionally handle error feedBack here
+      // Optionally handle error feedback here
     }
   };
 
@@ -193,19 +156,9 @@ const Complaint = () => {
 
             <Grid item xs={12} sm={4}>
               <TextField
-                label="Hotel Name"
-                variant="outlined"
-                fullWidth
-                value={hotelName}
-                onChange={(e) => setHotelName(e.target.value)}
-                size="small"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={4}>
-              <TextField
                 label="Booking ID"
                 variant="outlined"
+                required
                 fullWidth
                 value={bookingId}
                 onChange={(e) => setBookingId(e.target.value)}
@@ -214,6 +167,16 @@ const Complaint = () => {
               />
             </Grid>
 
+            <Grid item xs={12} sm={4}>
+              <TextField
+                label="Hotel Name"
+                variant="outlined"
+                fullWidth
+                value={hotelName}
+                onChange={(e) => setHotelName(e.target.value)}
+                size="small"
+              />
+            </Grid>
             <Grid item xs={12}>
               <TextField
                 label="Issue"
@@ -229,30 +192,36 @@ const Complaint = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <button component="label" fullWidth className="custom-button">
-                Upload Attachments
-                <input
-                  type="file"
-                  multiple
-                  hidden
-                  onChange={handleFileChange}
-                />
-              </button>
-              <Box mt={1}>
-                {images.length > 0 && (
-                  <Box>
-                    {Array.from(images).map((file, index) => (
-                      <Chip
-                        key={index}
-                        label={file.name}
-                        variant="outlined"
-                        color="primary"
-                        sx={{ mr: 1, mb: 1, fontSize: "0.75rem" }}
-                      />
-                    ))}
-                  </Box>
-                )}
-              </Box>
+              <FormControl fullWidth>
+                <Button
+                  variant="contained"
+                  component="label"
+                  sx={{ width: "100%" }}
+                >
+                  Upload Attachments
+                  <input
+                    type="file"
+                    multiple
+                    hidden
+                    onChange={handleFileChange}
+                  />
+                </Button>
+                <Box mt={1}>
+                  {images.length > 0 && (
+                    <Box>
+                      {Array.from(images).map((file, index) => (
+                        <Chip
+                          key={index}
+                          label={file.name}
+                          variant="outlined"
+                          color="primary"
+                          sx={{ mr: 1, mb: 1, fontSize: "0.75rem" }}
+                        />
+                      ))}
+                    </Box>
+                  )}
+                </Box>
+              </FormControl>
             </Grid>
 
             <Grid item xs={12} container justifyContent="center">
@@ -280,109 +249,14 @@ const Complaint = () => {
       <Divider sx={{ my: 4 }} />
 
       {/* Complaints List */}
-      <Box
-        sx={{
-          p: 3,
-          borderRadius: 2,
-          boxShadow: 2,
-          backgroundColor: "#f9f9f9",
-        }}
-      >
-        <Typography
-          variant="h6"
-          gutterBottom
-          align="center"
-          sx={{
-            mb: 4,
-            fontWeight: "bold",
-            color: "#3f51b5",
-            textTransform: "uppercase",
-            letterSpacing: 1.5,
-            background: "black",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            padding: "10px 20px",
-            borderRadius: "5px",
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-            border: "1px solid rgba(0, 0, 0, 0.2)",
-            fontFamily: "Roboto, Arial, sans-serif",
-          }}
-        >
-          Your Complaints
-        </Typography>
-        {loading ? (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            sx={{ height: "200px" }}
-          >
-            <CircularProgress />
-          </Box>
-        ) : error ? (
-          <Typography variant="body2" align="center" color="error">
-            {`Failed to load complaints: ${error}`}
-          </Typography>
-        ) : data?.length > 0 ? (
-          <Box>
-            {data?.map((complaint) => (
-              <CompactCard key={complaint._id}>
-                <StatusChip
-                  label={complaint.status}
-                  status={complaint.status}
-                />
-                <CompactCardContent>
-                  <Typography variant="body2">
-                    <strong>Issue:</strong> {complaint.issue}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    <strong>Hotel:</strong> {complaint.hotelName} |{" "}
-                    <strong>Regarding:</strong> {complaint.regarding}
-                  </Typography>
-                  <Typography variant="caption" color="textSecondary">
-                    {formatDateWithOrdinal(complaint.createdAt)}
-                  </Typography>
-                  <Box mt={1}>
-                    {complaint.images?.length > 0 && (
-                      <button
-                        variant="outlined"
-                        className="custom-button"
-                        color="primary"
-                        onClick={() => handleOpenDialog(complaint.images)}
-                        sx={{ mr: 1 }}
-                      >
-                        See Attachment
-                      </button>
-                    )}
-                    {complaint.feedBack && (
-                      <button
-                        variant="outlined"
-                        color="secondary"
-                        className="custom-button"
-                        onClick={() =>
-                          handleOpenFeedbackDialog(complaint.feedBack)
-                        }
-                      >
-                        View Feedback
-                      </button>
-                    )}
-                  </Box>
-                </CompactCardContent>
-                <DeleteButton
-                  aria-label="delete"
-                  onClick={() => handleDelete(complaint._id)}
-                >
-                  <DeleteIcon />
-                </DeleteButton>
-              </CompactCard>
-            ))}
-          </Box>
-        ) : (
-          <Typography variant="body2" align="center" color="textSecondary">
-            No complaints found.
-          </Typography>
-        )}
-      </Box>
+      <ComplaintsList
+        complaints={data}
+        loading={loading}
+        error={error}
+        onDelete={handleDelete}
+        onViewAttachments={handleOpenDialog}
+        onViewFeedback={handleOpenFeedbackDialog}
+      />
 
       {/* Image Dialog */}
       <Dialog
@@ -413,22 +287,11 @@ const Complaint = () => {
       </Dialog>
 
       {/* Feedback Dialog */}
-      <Dialog
+      <FeedbackDialog
         open={openFeedbackDialog}
         onClose={handleCloseFeedbackDialog}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>Feedback</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2">{feedbackContent}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseFeedbackDialog} color="primary">
-            Ok
-          </Button>
-        </DialogActions>
-      </Dialog>
+        feedbackContent={feedbackContent}
+      />
     </Container>
   );
 };

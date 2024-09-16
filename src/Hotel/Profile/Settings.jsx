@@ -11,7 +11,7 @@ import { MdOutlineRateReview } from "react-icons/md";
 import { ConfirmBooking } from "../Bookings/Bookings";
 import Reviews from "./Review";
 import UpdatePage from "./UpdatePage";
-import Complaint from "./Complaints";
+import Complaint from "./complaint/form";
 const Settings = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
