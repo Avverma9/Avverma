@@ -24,16 +24,15 @@ const Offered = () => {
   const [hotelData, setHotelData] = useState([]);
   const location = useLocation();
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const apiUrl = `${baseURL}/get/all/hotels`;
+
+  const apiUrl = `${baseURL}/get/offers/main/hotels`;
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(apiUrl);
         const data = await response.json();
-        setHotelData(data.data);
-        setTotalPages(data.totalPages);
+        setHotelData(data);
       } catch (error) {
         console.error("Error fetching hotel data:", error);
       }
@@ -51,12 +50,12 @@ const Offered = () => {
   };
 
   const defaultIcon = <DoneAllIcon />;
-  const filtered = hotelData.filter((item) => item.isOffer === true);
+const limitedData = hotelData?.slice(0,10)
   return (
     <div className="container mt-4">
       <hr />
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        {filtered.map((hotel, index) => (
+        {limitedData?.map((hotel, index) => (
           <div key={index} className="col mb-3">
             <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
               <div>
@@ -111,7 +110,7 @@ const Offered = () => {
                 </IconButton>
               </div>
               <Carousel>
-                {hotel.images.map((image, i) => (
+                {hotel?.images?.map((image, i) => (
                   <Carousel.Item key={i}>
                     <img
                       src={image}
@@ -124,7 +123,7 @@ const Offered = () => {
               </Carousel>
               <CardContent style={{ maxHeight: "30px", overflow: "hidden" }}>
                 {/* Amenities Section */}
-                {hotel.amenities.map((amenity, amenityIndex) => (
+                {hotel?.amenities?.map((amenity, amenityIndex) => (
                   <div
                     key={amenityIndex}
                     style={{
@@ -180,29 +179,6 @@ const Offered = () => {
           </div>
         ))}
       </div>
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(event, value) => setPage(value)}
-          renderItem={(item) => (
-            <PaginationItem
-              component="a"
-              {...item}
-              onClick={(event) => {
-                if (
-                  item.type !== "start-ellipsis" &&
-                  item.type !== "end-ellipsis"
-                ) {
-                  setPage(item.page);
-                }
-              }}
-            />
-          )}
-          shape="rounded"
-          size="large"
-        />
-      </Box>
     </div>
   );
 };
