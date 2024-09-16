@@ -367,7 +367,7 @@ const getHotels = async (req, res) => {
 //======================================get offers==========================================//
 const getOffers = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
-  const filterData = hotels.filter((hotel) => hotel.isOffer === true);
+  const filterData = hotels.filter((hotel) => hotel.onFront === true);
   res.json(filterData);
 };
 //============================get by city============================================//

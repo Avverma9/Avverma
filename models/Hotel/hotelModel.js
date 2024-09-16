@@ -24,7 +24,7 @@ const hotelsSchema = new mongoose.Schema(
     destination: {
       type: String,
     },
-    isOffer: {
+    onFront: {
       type: Boolean,
       default: false,
     },
