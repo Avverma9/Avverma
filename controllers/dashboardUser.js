@@ -1,4 +1,4 @@
-const Dashboard = require("../models/dashBoardUserModel");
+const Dashboard = require("../models/dashboardUser");
 
 // Register ===========================
 const registerUser = async (req, res) => {

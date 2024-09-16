@@ -1,6 +1,6 @@
-const Message = require("../../models/messenger/messageModal");
+const Message = require("../../models/messenger/message");
 const UserStatus = require("../../models/messenger/userStatus");
-const user = require("../../models/dashBoardUserModel")
+const user = require("../../models/dashboardUser")
 exports.getContacts = async function (req, res) {
   try {
     // Fetch the data from the database

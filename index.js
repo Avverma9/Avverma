@@ -1,12 +1,18 @@
 const express = require("express");
 const { createServer } = require("http");
 const WebSocket = require("ws");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const route = require("./routes/route");
-const UserStatus = require("./models/messenger/userStatus"); // Adjust path as needed
-
+//Router===================================
+// const bookingRouter = require("./routes/booking/booking");
+// const dashboardRouter = require("./routes/dashboardUser/dashboardUser");
+// const UserStatus = require("./models/messenger/userStatus");
+// const hotelRouter = require("./routes/hotel/hotel");
+// const reviewRouter = require("./routes/review");
+// const userRouter = require("./routes/user");
+const routes = require("./routes/index")
+const connectDB = require("./config/db"); // Import the DB
+//=================================================================
 const app = express();
 const server = createServer(app);
 const wss = new WebSocket.Server({ server });
@@ -15,7 +21,8 @@ const wss = new WebSocket.Server({ server });
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/", route);
+
+app.use("/", routes);
 
 // Track WebSocket connections
 const userConnections = new Map();
@@ -93,12 +100,7 @@ app.get("/update-status-of-a-user/messenger/:userId", async (req, res) => {
 });
 
 // Connect to MongoDB
-const MONGO_URI =
-  "mongodb+srv://Avverma:Avverma95766@avverma.2g4orpk.mongodb.net/Hotel"; // Update with your MongoDB URI
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+connectDB(); // Use the new function
 
 // Start the server
 const PORT = process.env.PORT || 5000;

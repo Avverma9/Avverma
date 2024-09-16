@@ -1,4 +1,4 @@
-const HeaderLocation = require('../models/headerTravelModel');
+const HeaderLocation = require('../models/headerTravel');
 
 exports.createLocation = async (req, res) => {
     try {
