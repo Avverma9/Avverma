@@ -43,12 +43,14 @@ exports.createRooms = async (req, res) => {
 //get all rooms on dashboard by hotel id
 exports.getRoomsByEmailId = async (req, res) => {
   try {
-    const { hotelId } = req.query;
-    const hotel = await hotelModel.findOne({ hotelId });
-    if (!hotel) {
+    const { hotelEmail } = req.query;
+    const hotels = await hotelModel.find({ hotelEmail: hotelEmail });
+    if (hotels.length === 0) {
+      console.log("No hotels found for email:", hotelEmail);
       return res.status(404).json({ message: "Hotel not found" });
     }
-    res.json(hotel.rooms);
+    const rooms = hotels.flatMap((hotel) => hotel.rooms);
+    res.json(rooms);
   } catch (error) {
     console.error("Error getting rooms:", error);
     return res.status(500).json({ error: "Internal Server Error" });
