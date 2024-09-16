@@ -44,7 +44,6 @@ export default function PartnerForm() {
   const [priceError, setPriceError] = useState("");
   const [customerWelcomeNote, setCustomerWelcomeNote] = useState("");
   const [destination, setDestination] = useState("");
-  const [price, setPrice] = useState("");
   const [startDate, setStartDate] = useState("");
   const [contactError, setContactError] = useState(""); // State for contact validation error
   const [generalManagerContactError, setGeneralManagerContactError] =
@@ -80,7 +79,6 @@ export default function PartnerForm() {
       formData.append("hotelOwnerName", hotelOwnerName);
       formData.append("description", description);
       formData.append("destination", destination);
-      formData.append("price", price);
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
       formData.append("state", state);
@@ -335,31 +333,6 @@ export default function PartnerForm() {
                 className="form-control"
                 value={customerWelcomeNote}
                 onChange={(e) => setCustomerWelcomeNote(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <label htmlFor="leadSource" className="form-label">
-                Your hotel rooms starting price *
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                value={price}
-                required
-                onChange={(e) => {
-                  const inputValue = e.target.value;
-                  setPrice(inputValue);
-
-                  // Validation: Check if the input is a valid number
-                  const regex = /^[0-9]+$/;
-                  if (!regex.test(inputValue)) {
-                    setPriceError("Please enter price.");
-                  } else {
-                    setPriceError(""); // Clear the error if input is valid
-                  }
-                }}
-                error={Boolean(priceError)}
-                helperText={priceError}
               />
             </div>
             <div className="col-md-4 mb-3">

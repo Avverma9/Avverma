@@ -50,8 +50,8 @@ const navigate = useNavigate()
       maxPrice: newValue[1],
       starRating,
       amenities: selectedAmenities,
-      roomType: selectedRoomType,
-      bedType: selectedBedType,
+      type: selectedRoomType,
+      bedTypes: selectedBedType,
       propertyType: selectedPropertyType,
     });
   };
@@ -64,8 +64,8 @@ const navigate = useNavigate()
       maxPrice,
       starRating: value,
       amenities: selectedAmenities,
-      roomType: selectedRoomType,
-      bedType: selectedBedType,
+      type: selectedRoomType,
+      bedTypes: selectedBedType,
       propertyType: selectedPropertyType,
     });
   };
@@ -82,8 +82,8 @@ const navigate = useNavigate()
       maxPrice,
       starRating,
       amenities: [...selectedAmenities, value],
-      roomType: selectedRoomType,
-      bedType: selectedBedType,
+      type: selectedRoomType,
+      bedTypes: selectedBedType,
       propertyType: selectedPropertyType,
     });
   };
@@ -95,8 +95,8 @@ const navigate = useNavigate()
       maxPrice,
       starRating,
       amenities: selectedAmenities,
-      roomType: event.target.value,
-      bedType: selectedBedType,
+      type: event.target.value,
+      bedTypes: selectedBedType,
       propertyType: selectedPropertyType,
     });
   };
@@ -108,8 +108,8 @@ const navigate = useNavigate()
       maxPrice,
       starRating,
       amenities: selectedAmenities,
-      roomType: selectedRoomType,
-      bedType: event.target.value,
+      type: selectedRoomType,
+      bedTypes: event.target.value,
       propertyType: selectedPropertyType,
     });
   };
@@ -121,8 +121,8 @@ const navigate = useNavigate()
       maxPrice,
       starRating,
       amenities: selectedAmenities,
-      roomType: selectedRoomType,
-      bedType: selectedBedType,
+      type: selectedRoomType,
+      bedTypes: selectedBedType,
       propertyType: event.target.value,
     });
   };
@@ -168,9 +168,9 @@ const navigate = useNavigate()
       maxPrice: 10000,
       starRating: "",
       amenities: [],
-      roomType: "",
+      type: "",
       page: "",
-      bedType: "",
+      bedTypes: "",
       propertyType: "",
     });
     navigate(window.location.pathname);

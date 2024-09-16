@@ -108,7 +108,7 @@ export default function PartnerRooms() {
             Price
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             id="price"
             value={price}
