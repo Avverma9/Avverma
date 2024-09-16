@@ -41,7 +41,7 @@ exports.createRooms = async (req, res) => {
 };
 
 //get all rooms on dashboard by hotel id
-exports.getRoomsByHotelId = async (req, res) => {
+exports.getRoomsByEmailId = async (req, res) => {
   try {
     const { hotelId } = req.query;
     const hotel = await hotelModel.findOne({ hotelId });

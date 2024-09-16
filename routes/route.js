@@ -37,7 +37,7 @@ const {
 } = require("../controllers/messenger/GlobalNotification");
 //==================================rooms==============================
 router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on panel
-router.get("/get-list-of/rooms", rooms.getRoomsByHotelId);
+router.get("/get-list-of/rooms", rooms.getRoomsByEmailId);
 router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
 router.delete("/delete-rooms-by-id", rooms.deleteRoomByRoomId); //on panel
 //=========================================amenities================================================================
