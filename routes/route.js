@@ -157,7 +157,6 @@ router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById); //
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
 router.get("/hotels/get-by-id/:hotelId", hotelController.getHotelsById);
-router.get("/hotels/price/get/by", hotelController.getHotelsByPrice);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotels/filters", hotelController.getHotelsByFilters);
 router.get("/hotels/destination/get/all", hotelController.getCity);
@@ -194,12 +193,12 @@ router.get("/get-pending-hotels/count", hotelController.getCountPendingHotels);
 router.patch(
   "/update-hotels-image-by-hotel-id/:hotelId",
   upload,
-  hotelController.updateHotelImage
+  hotelController.updateHotelImage //on panel
 );
 router.delete(
   "/hotels/:hotelId/images/imageUrl",
 
-  hotelController.deleteHotelImages
+  hotelController.deleteHotelImages //on panel
 );
 //==================================== STATE ==========================================================
 router.post("/states", upload, stateController.createState);

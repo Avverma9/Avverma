@@ -8,7 +8,6 @@ const createHotel = async (req, res) => {
       description,
       hotelOwnerName,
       destination,
-      price,
       isOffer,
       startDate,
       endDate,
@@ -37,7 +36,6 @@ const createHotel = async (req, res) => {
       description,
       hotelOwnerName,
       destination,
-      price,
       isOffer,
       customerWelcomeNote,
       startDate,
@@ -401,30 +399,6 @@ const getHotelsById = async (req, res) => {
   }
 };
 
-//=============================================
-const getHotelsByPrice = async function (req, res) {
-  const minPrice = req.query.minPrice ? parseInt(req.query.minPrice) : 0;
-  const maxPrice = req.query.maxPrice
-    ? parseInt(req.query.maxPrice)
-    : Number.MAX_SAFE_INTEGER;
-
-  try {
-    const hotels = await hotelModel
-      .find({
-        roomDetails: {
-          $elemMatch: {
-            price: { $gte: minPrice, $lte: maxPrice },
-          },
-        },
-      })
-      .exec();
-
-    res.json(hotels);
-  } catch (error) {
-    res.status(500).json({ error: "An error occurred" });
-  }
-};
-
 //==================================================================================
 const deleteHotelById = async function (req, res) {
   const { hotelId } = req.params;
@@ -484,12 +458,11 @@ const getHotelsByFilters = async (req, res) => {
       filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
 
     // Add the minPrice and maxPrice filtering
-    if (minPrice || maxPrice) {
-      filters["rooms.price"] = {};
-      if (minPrice) filters["rooms.price"].$gte = parseInt(minPrice);
-      if (maxPrice) filters["rooms.price"].$lte = parseInt(maxPrice);
-    }
-
+  if (minPrice || maxPrice) {
+    filters["rooms.price"] = {};
+    if (minPrice) filters["rooms.price"].$gte = parseFloat(minPrice); // Use parseFloat for numeric comparison
+    if (maxPrice) filters["rooms.price"].$lte = parseFloat(maxPrice); // Use parseFloat for numeric comparison
+  }
     const hotels = await hotelModel.find(filters);
     const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
     res.status(200).json({ success: true, data: acceptedHotels });
@@ -978,7 +951,6 @@ module.exports = {
   getAllHotels,
   getAllRejectedHotels,
   getHotelsById,
-  getHotelsByPrice,
   getHotelsByLocalID,
   getHotelsByFilters,
   checkAndUpdateOffers,

@@ -24,9 +24,6 @@ const hotelsSchema = new mongoose.Schema(
     destination: {
       type: String,
     },
-    price: {
-      type: Number,
-    },
     isOffer: {
       type: Boolean,
       default: false,
