@@ -125,3 +125,30 @@ exports.deleteRoomByRoomId = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+exports.decreaseRoomCountByOne = async (req, res) => {
+  const { roomId } = req.body;
+
+  try {
+    const updatedHotel = await hotelModel.findOneAndUpdate(
+      { "rooms.roomId": roomId }, // Query to find the hotel with the specified roomId
+      {
+        $inc: { "rooms.$.countRooms": -1 }, // Decrement countRooms by 1
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedHotel) {
+      return res.status(404).json({ message: "Hotel or roomId not found" });
+    }
+
+    // Respond with success
+    res.json({
+      message: "Room count decreased successfully",
+      hotel: updatedHotel,
+    });
+  } catch (error) {
+    console.error("Error while updating rooms:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

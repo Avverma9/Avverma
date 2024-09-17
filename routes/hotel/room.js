@@ -7,5 +7,5 @@ router.post("/create-a-room-to-your-hotel", upload, rooms.createRooms); // on pa
 router.get("/get-list-of/rooms", rooms.getRoomsByEmailId); //on panel
 router.patch("/update-your/room", upload, rooms.updateRoomsByRoomId);
 router.delete("/delete-rooms-by-id", rooms.deleteRoomByRoomId); //on panel
-
+router.patch('/decrease/room/count/by/one',rooms.decreaseRoomCountByOne)
 module.exports=router

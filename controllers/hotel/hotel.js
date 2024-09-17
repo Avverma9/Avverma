@@ -240,24 +240,6 @@ const UpdateHotelInfo = async function (req, res) {
   }
 };
 
-//=======================================add room=====================================
-const increaseRoomToHotel = async function (req, res) {
-  const { id } = req.params;
-  const addRoom = await hotelModel.findById(id);
-  addRoom.numRooms += 1;
-  addRoom.roomDetails.countRooms += 1;
-  const updatedRoom = await addRoom.save();
-  res.json(updatedRoom);
-};
-//====================================================================================
-const decreaseRoomToHotel = async function (req, res) {
-  const { id } = req.params;
-  const addRoom = await hotelModel.findById(id);
-  addRoom.numRooms -= 1;
-  addRoom.roomDetails.countRooms -= 1;
-  const updatedRoom = await addRoom.save();
-  res.json(updatedRoom);
-};
 //=============================get hotel by amenities===========================//
 const getByQuery = async (req, res) => {
   const {
@@ -346,18 +328,7 @@ const getAllHotels = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-//====================================================================================
-const getAllRejectedHotels = async (req, res) => {
-  try {
-    const hotels = await hotelModel.find().sort({ createdAt: -1 });
-    const hotelsData = hotels.filter(
-      (accepted) => accepted.isAccepted === false
-    );
-    res.json(hotelsData);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+
 //===========================get hotels====================================================//
 const getHotels = async (req, res) => {
   const hotels = await hotelModel.find().sort({ createdAt: -1 });
@@ -725,147 +696,6 @@ const getHotelsCity = async function (req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-//==============================Apply Coupon=========================================
-
-const checkAndUpdateOffers = async () => {
-  try {
-    // Find documents where offer has expired
-    const expiredOffers = await hotelModel.find({
-      offerExp: { $lt: new Date() },
-    });
-
-    // Update room prices and details using object-based updates
-    for (const hotel of expiredOffers) {
-      for (let i = 0; i < hotel.rooms.length; i++) {
-        const roomUpdates = {
-          onFront: false,
-          offerPriceLess: 0,
-          offerExp: "",
-          offerName: "",
-        };
-
-        // Update the specific room using $set operator (optional)
-        hotel.rooms.$set = hotel.rooms.$set || {}; // Initialize if not set
-        hotel.rooms.$set[i] = roomUpdates;
-
-        // **OR** Update the room directly at the index (simpler)
-        hotel.rooms[i] = { ...hotel.rooms[i], ...roomUpdates };
-      }
-
-      await hotel.save();
-    }
-
-    console.log("Expired offers processed successfully.");
-  } catch (error) {
-    console.error("Error processing expired offers:", error);
-  }
-};
-
-// Schedule the function to run every day at midnight (adjust as needed)
-cron.schedule("0 0 * * *", async () => {
-  await checkAndUpdateOffers();
-});
-
-//==================================================================================
-
-const ApplyCoupon = async (req, res) => {
-  const { hotelId, roomId } = req.params;
-  const { offerDetails, offerExp, offerPriceLess, onFront } = req.body;
-  const offerStartDate = new Date().toISOString().split("T")[0];
-  try {
-    const hotel = await hotelModel.findByIdAndUpdate(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-    // Find the room directly from the hotel data
-    const roomIndex = hotel.rooms.findIndex(
-      (room) => room.roomId.toString() === roomId
-    );
-    if (roomIndex === -1) {
-      return res.status(404).json({ error: "Room not found in the hotel" });
-    }
-    const originalPrice = hotel.rooms[roomIndex].price;
-    // Create a new room object with updated details
-    const updatedRoom = {
-      ...hotel.rooms[roomIndex], // Spread operator to copy existing properties
-      offerDetails,
-      offerExp,
-      offerPriceLess,
-      offerStartDate,
-    };
-    // Check if the offer has expired
-    const hasOfferExpired = new Date() >= new Date(offerExp);
-    // Apply the offer if it's not expired
-    if (!hasOfferExpired) {
-      const discountPercentage = offerPriceLess / 100;
-      updatedRoom.price = originalPrice - originalPrice * discountPercentage;
-      updatedRoom.originalPrice = originalPrice;
-    } else {
-      // If offer has expired, revert to original price
-      delete updatedRoom.originalPrice;
-    }
-    // Update the room in the hotel object
-    hotel.rooms[roomIndex] = updatedRoom;
-    await hotel.save();
-    res.json(hotel);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-//================================remove offer=====================
-const expireOffer = async function (req, res) {
-  try {
-    const { id, roomid } = req.params;
-    const { offerExp, onFront, offerPriceLess, offerDetails } = req.body;
-    const defaultOfferExp = new Date().toISOString().split("T")[0];
-
-    // Retrieve the hotel object
-    const hotel = await hotelModel.findById(id);
-
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-
-    // Find the room's index in the rooms array
-    const roomIndex = hotel.rooms.findIndex(
-      (room) => room._id.toString() === roomid
-    );
-
-    if (roomIndex === -1) {
-      return res.status(404).json({ error: "Room not found" });
-    }
-
-    // Create an update object
-    const roomUpdates = {
-      offerExp: offerExp || defaultOfferExp,
-      onFront: onFront !== undefined ? onFront : false,
-      offerPriceLess: offerPriceLess !== undefined ? offerPriceLess : 0,
-      offerDetails: offerDetails || "N/A",
-      price: hotel.rooms[roomIndex].originalPrice, // Ensure price is reset to originalPrice
-    };
-
-    // Update the specific room using $set operator (optional)
-    hotel.rooms.$set = hotel.rooms.$set || {}; // Initialize if not set
-    hotel.rooms.$set[roomIndex] = roomUpdates;
-
-    // **OR** Update the room directly at the index (simpler)
-    hotel.rooms[roomIndex] = { ...hotel.rooms[roomIndex], ...roomUpdates };
-
-    // Save the updated hotel object with error handling
-    const savedHotel = await hotel.save();
-
-    if (!savedHotel) {
-      return res.status(500).json({ error: "Error saving hotel data" });
-    }
-
-    res.status(200).json(savedHotel);
-  } catch (error) {
-    console.error("Error updating hotel:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-};
 
 //=============================================================
 const getByRoom = async (req, res) => {
@@ -949,19 +779,15 @@ cron.schedule("0 0 1 * *", async () => {
 module.exports = {
   createHotel,
   getAllHotels,
-  getAllRejectedHotels,
   getHotelsById,
   getHotelsByLocalID,
   getHotelsByFilters,
-  checkAndUpdateOffers,
   getCity,
   getByQuery,
   UpdateHotelStatus,
   getHotels,
   getOffers,
   updateRoom,
-  increaseRoomToHotel,
-  decreaseRoomToHotel,
   addRoomToHotel,
   deleteRoom,
   addFoodToHotel,
@@ -971,8 +797,6 @@ module.exports = {
   UpdateHotelInfo,
   getHotelsState,
   getHotelsCity,
-  ApplyCoupon,
-  expireOffer,
   getByRoom,
   monthlyPrice,
   getCount,

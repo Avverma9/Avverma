@@ -11,7 +11,6 @@ router.post(
 router.patch("/hotels/update/:hotelId", hotelController.UpdateHotelStatus); //isAccepted,onFront
 router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); //basic details
 router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
-router.get("/get/all/rejected/hotels", hotelController.getAllRejectedHotels);
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById); // on panel
 router.get("/get/main/get/hotels", hotelController.getHotels);
 router.get("/get/offers/main/hotels", hotelController.getOffers);
@@ -25,22 +24,12 @@ router.patch(
   upload,
   hotelController.updateRoom
 );
-router.post("/increase/room/:id", hotelController.increaseRoomToHotel);
-router.post("/decrease/room/minus/:id", hotelController.decreaseRoomToHotel);
 router.post("/:hotelId/roomDetails", upload, hotelController.addRoomToHotel);
 router.delete(
   "/:hotelId/delete/a/create/room/from/db",
   hotelController.deleteRoom
 );
 router.patch("/hotels/update/amenity/:id", hotelController.updateAmenity);
-router.patch(
-  "/hotels/update/coupon/by/:hotelId/:roomId",
-  hotelController.ApplyCoupon
-);
-router.patch(
-  "/remove/hotels-offer/update/coupon/by/:id/:roomid",
-  hotelController.expireOffer
-);
 router.get(
   "/see-all/hotels-state/get/all/hotels",
   hotelController.getHotelsState

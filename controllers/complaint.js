@@ -1,7 +1,16 @@
 const Complaint = require("../models/complaint");
 
 const createComplaint = async (req, res) => {
-  const { userId, regarding, hotelName, bookingId, status, issue } = req.body;
+  const {
+    userId,
+    regarding,
+    hotelName,
+    hotelEmail,
+    bookingId,
+    status,
+    issue,
+    hotelId,
+  } = req.body;
   const images = req.files ? req.files.map((file) => file.location) : [];
   try {
     if (!userId || !regarding || !issue) {
@@ -23,7 +32,9 @@ const createComplaint = async (req, res) => {
     // Create new complaint
     const newComplaint = new Complaint({
       userId,
+      hotelId,
       regarding,
+      hotelEmail,
       hotelName,
       bookingId,
       images,
@@ -46,7 +57,7 @@ const createComplaint = async (req, res) => {
 //not===========
 const approveComplaint = async (req, res) => {
   const { id } = req.params; // id should be the complaint's identifier
-  const { status, feedBack } = req.body; // status is the new status for the complaint
+  const { status, feedBack, updatedBy } = req.body; // Extract updatedBy from request body
 
   try {
     if (!id) {
@@ -54,9 +65,11 @@ const approveComplaint = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Complaint ID is required" });
     }
+
+    // Update the complaint, including status, feedback, and updatedBy
     const updatedComplaint = await Complaint.findByIdAndUpdate(
       id,
-      { status, feedBack },
+      { status, feedBack, updatedBy },
       { new: true, runValidators: true }
     );
 
@@ -88,16 +101,28 @@ const getComplaintsByUserId = async (req, res) => {
 };
 
 //=======================delete a complaint=============================================
-const deleteComplaint = async function (req, res) {
+const deleteComplaint = async (req, res) => {
   try {
     const { id } = req.params;
+
+    // Check if the complaint exists
     const deletedData = await Complaint.findByIdAndDelete(id);
-    res.status(200).json(deletedData);
+
+    if (!deletedData) {
+      return res.status(404).json({ message: "Complaint not found" });
+    }
+
+    // Respond with the deleted complaint data
+    res
+      .status(200)
+      .json({ message: "Complaint deleted successfully", data: deletedData });
   } catch (error) {
     console.error("Error deleting complaint:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+module.exports = { deleteComplaint };
 
 //=======================get all complaint=============================================
 
@@ -105,11 +130,43 @@ const getComplaint = async (req, res) => {
   const fetchAll = await Complaint.find();
   return res.status(200).json(fetchAll);
 };
+//================================filter complaints ============================================
+const filteredComplaints = async (req, res) => {
+  try {
+    // Extract query parameters
+    const { status, hotelName, hotelEmail, complaintId } = req.query;
 
+    // Build filter object
+    let filter = {};
+    if (status) {
+      filter.status = status;
+    }
+    if (complaintId) {
+      filter.complaintId = complaintId;
+    }
+    if (hotelName) {
+      filter.hotelName = { $regex: hotelName, $options: "i" }; // Case-insensitive search
+    }
+    if (hotelEmail) {
+      filter.hotelEmail = { $regex: hotelEmail, $options: "i" }; // Case-insensitive search
+    }
+
+    // Fetch filtered complaints
+    const complaints = await Complaint.find(filter);
+
+    // Send response
+    res.status(200).json(complaints);
+  } catch (error) {
+    console.error("Error fetching filtered complaints:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+//============================================================================
 module.exports = {
   createComplaint,
   approveComplaint,
   getComplaintsByUserId,
   deleteComplaint,
+  filteredComplaints,
   getComplaint,
 };
