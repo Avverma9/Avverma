@@ -19,10 +19,13 @@ export const postComplaint = createAsyncThunk(
       );
       if (response.status === 201) {
         toast.success("Complaint submitted successfully!");
+        return response.data; // Return data if needed for further processing
       } else {
         toast.error("Failed to create complaint");
+        return rejectWithValue("Failed to create complaint");
       }
     } catch (error) {
+      toast.error("Failed to create complaint");
       return rejectWithValue(error.message);
     }
   }
@@ -34,8 +37,9 @@ export const fetchComplaints = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${baseURL}/complaints/${userId}`);
-      return response?.data; // Assuming response data structure
+      return response.data; // Assuming response data structure
     } catch (error) {
+      toast.error("Failed to fetch complaints");
       return rejectWithValue(error.message);
     }
   }
@@ -46,15 +50,35 @@ export const deleteComplaint = createAsyncThunk(
   "complaint/deleteComplaint",
   async (id, { rejectWithValue }) => {
     try {
-     const response = await axios.delete(
-       `${baseURL}/delete-a-particular/compaints/delete/by/id/${id}`
-     );
-     if(response.status === 200){
-      toast.success("Complaint deleted !")
-     }
-      return id; // Return the id of the deleted complaint
+      const response = await axios.delete(
+        `${baseURL}/delete-a-particular/complaints/delete/by/id/${id}`
+      );
+      if (response.status === 200) {
+        toast.success("Complaint deleted successfully!");
+        return id; // Return the id of the deleted complaint
+      } else {
+        toast.error("Failed to delete complaint");
+        return rejectWithValue("Failed to delete complaint");
+      }
     } catch (error) {
+      toast.error("Failed to delete complaint");
       return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Async thunk for fetching hotel names by booking ID
+export const fetchHotelNamesByBookingId = createAsyncThunk(
+  "complaint/fetchHotelNamesByBookingId",
+  async (bookingId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${baseURL}/get/all/filtered/booking/by/query?bookingId=${bookingId}`
+      );
+      return response.data; // Return the fetched data
+    } catch (error) {
+      toast.error("Booking ID is not valid");
+      return rejectWithValue(error.message); // Pass the error message
     }
   }
 );
@@ -65,6 +89,7 @@ const complaintSlice = createSlice({
     data: [],
     loading: false,
     error: null,
+    hotelNames: [], // Added state for hotel names
   },
   extraReducers: (builder) => {
     builder
@@ -118,6 +143,19 @@ const complaintSlice = createSlice({
         toast.error(
           `Failed to delete complaint: ${action.payload || "Unknown error"}`
         );
+      })
+      // Fetch hotel names by booking ID
+      .addCase(fetchHotelNamesByBookingId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchHotelNamesByBookingId.fulfilled, (state, action) => {
+        state.hotelNames = action.payload; // Save fetched hotel names to state
+        state.loading = false;
+      })
+      .addCase(fetchHotelNamesByBookingId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

@@ -21,3 +21,8 @@
     display: block; /* Show on screens larger than 768px */
   }
 }
+.offer-details {
+  background-color: rgb(133, 227, 26); /* Optional: Background color for better visibility */
+  border: 1px solid #ddd; /* Optional: Border for styling */
+  border-radius: 5px; /* Optional: Rounded corners */
+}

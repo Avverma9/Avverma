@@ -121,7 +121,7 @@ export default function PartnerRooms() {
             Count of Rooms
           </label>
           <input
-            type="text"
+            type="number"
             className="form-control"
             id="countRooms"
             value={countRooms}

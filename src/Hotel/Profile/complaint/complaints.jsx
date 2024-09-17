@@ -1,14 +1,5 @@
-import React from "react";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Divider,
-  Button,
-  Chip,
-  styled,
-  IconButton,
-} from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, CircularProgress, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   CompactCard,
@@ -17,6 +8,7 @@ import {
   DeleteButton,
 } from "./StyledComponents"; // Assuming styled components are in a file named StyledComponents.js
 import { formatDateWithOrdinal } from "../../../utils/_dateFunctions";
+import AlertDialog from "../../../utils/alertDialog";
 
 const ComplaintsList = ({
   complaints,
@@ -26,6 +18,26 @@ const ComplaintsList = ({
   onViewAttachments,
   onViewFeedback,
 }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedComplaintId, setSelectedComplaintId] = useState(null);
+
+  const handleOpenDialog = (id) => {
+    setSelectedComplaintId(id);
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+    setSelectedComplaintId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedComplaintId) {
+      onDelete(selectedComplaintId);
+      handleCloseDialog();
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -84,22 +96,21 @@ const ComplaintsList = ({
                   <strong>Regarding:</strong> {complaint.regarding}
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
-                  {formatDateWithOrdinal(complaint.createdAt)}
+                Complaint id {complaint?.complaintId} issued on {formatDateWithOrdinal(complaint.createdAt)}
                 </Typography>
                 <Box mt={1}>
                   {complaint.images?.length > 0 && (
-                    <Button
-                      variant="outlined"
-                      color="primary"
+                    <button
+                      className="custom-button"
                       onClick={() => onViewAttachments(complaint.images)}
                       sx={{ mr: 1 }}
                     >
                       See Attachment
-                    </Button>
+                    </button>
                   )}
                   {complaint.feedBack && (
                     <button
-                   className="custom-button"
+                      className="custom-button"
                       onClick={() => onViewFeedback(complaint.feedBack)}
                     >
                       View Feedback
@@ -109,7 +120,7 @@ const ComplaintsList = ({
               </CompactCardContent>
               <DeleteButton
                 aria-label="delete"
-                onClick={() => onDelete(complaint._id)}
+                onClick={() => handleOpenDialog(complaint._id)}
               >
                 <DeleteIcon />
               </DeleteButton>
@@ -121,6 +132,14 @@ const ComplaintsList = ({
           No complaints found.
         </Typography>
       )}
+
+      <AlertDialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmDelete}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this complaint? This action cannot be undone."
+      />
     </Box>
   );
 };

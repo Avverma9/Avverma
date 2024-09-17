@@ -40,6 +40,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBookingData } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/filterOptions";
 import BookingReview from "./BookingReview";
+import axios from "axios";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ const BookNow = () => {
   const [open, setOpen] = useState(false);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
+  const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { data, loading, error } = useSelector((state) => state.booking);
   const handleExpansion = () => {
@@ -101,6 +103,7 @@ const BookNow = () => {
   };
   const handleAddRoom = (room) => {
     setSelectedRooms([room]); // Replace the previously selected room with the new one
+    localStorage.setItem("toBeUpdatedRoomId", room.roomId);
     toast.info(`${room.type} is selected`); // Show toast notification
   };
 
@@ -148,6 +151,7 @@ const BookNow = () => {
 
       if (selectedRooms?.length === 0 && data?.rooms?.length > 0) {
         const defaultRoom = data?.rooms[0];
+        localStorage.setItem("toBeUpdatedRoomId", defaultRoom.roomId);
         setSelectedRooms([defaultRoom]);
       }
     }
@@ -236,10 +240,14 @@ const BookNow = () => {
           body: JSON.stringify(bookingData),
         }
       );
-
+//===================room update==========================
       if (response.status === 201) {
-        alert("Booking successful");
+        const response = axios.patch(`${baseURL}/decrease/room/count/by/one`, {
+          roomId: toBeUpdatedRoomId,
+        });
+        alert("Booking successful", selectedRooms);
         window.location.href = "/bookings";
+        localStorage.removeItem("toBeUpdatedRoomId");
       } else {
         console.error("Booking failed");
       }

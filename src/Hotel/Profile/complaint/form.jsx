@@ -25,14 +25,17 @@ import {
   fetchComplaints,
   postComplaint,
   deleteComplaint,
+  fetchHotelNamesByBookingId, // Action to fetch hotel info
 } from "../../../redux/reducers/complaintSlice";
-import ComplaintsList from "./complaints"; // Import the new ComplaintsList component
-import FeedbackDialog from "./FeedBackDialog"; // Import the new FeedbackDialog component
+import ComplaintsList from "./complaints"; // Import the ComplaintsList component
+import FeedbackDialog from "./FeedBackDialog"; // Import the FeedbackDialog component
 
 const Complaint = () => {
   const dispatch = useDispatch();
   const [regarding, setRegarding] = useState("");
   const [hotelName, setHotelName] = useState("");
+  const [hotelId, setHotelId] = useState("");
+  const [hotelEmail, setHotelEmail] = useState("");
   const [bookingId, setBookingId] = useState("");
   const [issue, setIssue] = useState("");
   const [images, setImages] = useState([]);
@@ -40,11 +43,51 @@ const Complaint = () => {
   const [dialogImages, setDialogImages] = useState([]);
   const [openFeedbackDialog, setOpenFeedbackDialog] = useState(false);
   const [feedbackContent, setFeedbackContent] = useState("");
+  const [fetchTimer, setFetchTimer] = useState(null); // Timer state
+  const [hotels, setHotels] = useState([]); // State to store fetched hotels
+  const [loadingHotels, setLoadingHotels] = useState(false); // State for loading hotels
   const { data, loading, error } = useSelector((state) => state.complaint);
 
   useEffect(() => {
     dispatch(fetchComplaints(userId));
   }, [dispatch]);
+
+  useEffect(() => {
+    // Clear any existing timer if bookingId changes
+    if (fetchTimer) {
+      clearTimeout(fetchTimer);
+    }
+
+    if (bookingId) {
+      // Set a new timer to fetch hotel data after 3 seconds
+      const timer = setTimeout(async () => {
+        setLoadingHotels(true); // Start loading spinner
+        try {
+          const response = await dispatch(
+            fetchHotelNamesByBookingId(bookingId)
+          ).unwrap();
+          setHotels(response); // Assuming response contains an array of hotels
+        } catch (error) {
+          console.error("Error fetching hotel data:", error);
+          setHotels([]);
+        } finally {
+          setLoadingHotels(false); // Stop loading spinner
+        }
+      }, 3000); // Delay of 3 seconds
+
+      setFetchTimer(timer);
+    } else {
+      setHotels([]);
+      setLoadingHotels(false); // Stop loading spinner if bookingId is empty
+    }
+
+    return () => {
+      // Cleanup timer on component unmount or bookingId change
+      if (fetchTimer) {
+        clearTimeout(fetchTimer);
+      }
+    };
+  }, [bookingId, dispatch]);
 
   const handleFileChange = (e) => {
     setImages(e.target.files);
@@ -57,6 +100,8 @@ const Complaint = () => {
     formData.append("userId", userId);
     formData.append("regarding", regarding);
     formData.append("hotelName", hotelName);
+    formData.append("hotelId", hotelId); // Add hotelId to the form data
+    formData.append("hotelEmail", hotelEmail);
     formData.append("bookingId", bookingId);
     formData.append("issue", issue);
     Array.from(images).forEach((file) => {
@@ -70,12 +115,13 @@ const Complaint = () => {
       // Reset the form
       setRegarding("");
       setHotelName("");
+      setHotelId("");
+      setHotelEmail("");
       setBookingId("");
       setIssue("");
       setImages([]);
     } catch (error) {
       console.error("Error posting complaint:", error);
-      // Optionally handle error feedback here
     }
   };
 
@@ -100,6 +146,15 @@ const Complaint = () => {
 
   const handleCloseFeedbackDialog = () => {
     setOpenFeedbackDialog(false);
+  };
+
+  const handleHotelChange = (event) => {
+    const selectedHotel = hotels.find(
+      (hotel) => hotel.hotelId === event.target.value
+    );
+    setHotelId(event.target.value);
+    setHotelName(selectedHotel ? selectedHotel.hotelName : "");
+    setHotelEmail(selectedHotel ? selectedHotel.hotelEmail : ""); // Set the hotel email
   };
 
   return (
@@ -168,15 +223,26 @@ const Complaint = () => {
             </Grid>
 
             <Grid item xs={12} sm={4}>
-              <TextField
-                label="Hotel Name"
-                variant="outlined"
-                fullWidth
-                value={hotelName}
-                onChange={(e) => setHotelName(e.target.value)}
-                size="small"
-              />
+              <FormControl fullWidth size="small">
+                <InputLabel>Hotel Name</InputLabel>
+                {loadingHotels ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  <Select
+                    value={hotelId}
+                    onChange={handleHotelChange}
+                    label="Hotel Name"
+                  >
+                    {hotels?.map((hotel) => (
+                      <MenuItem key={hotel.hotelId} value={hotel.hotelId}>
+                        {hotel.hotelName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </FormControl>
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 label="Issue"
