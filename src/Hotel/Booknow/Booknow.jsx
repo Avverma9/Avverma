@@ -247,7 +247,6 @@ const BookNow = () => {
         });
         alert("Booking successful", selectedRooms);
         window.location.href = "/bookings";
-        localStorage.removeItem("toBeUpdatedRoomId");
       } else {
         console.error("Booking failed");
       }
