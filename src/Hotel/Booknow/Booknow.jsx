@@ -18,7 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { format, addDays } from "date-fns";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import { BsClockHistory } from "react-icons/bs";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
@@ -54,6 +54,7 @@ const BookNow = () => {
   const location = useLocation();
   const [selectedFood, setSelectedFood] = useState([]);
   const [roomsCount, setRoomsCount] = useState(1);
+  const [timeLeft, setTimeLeft] = useState(null);
   const path = location.pathname;
   const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const today = new Date();
@@ -124,64 +125,62 @@ const BookNow = () => {
     });
   };
 
-const calculateTotalPrice = () => {
-  let totalPrice = 0;
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
 
-  // Calculate room price
-  selectedRooms?.forEach((room) => {
-    totalPrice += room.price * roomsCount;
-  });
+    // Calculate room price
+    selectedRooms?.forEach((room) => {
+      totalPrice += room.price * roomsCount;
+    });
 
-  // Calculate food price
-  const foodPrice = selectedFood.reduce(
-    (total, food) => total + food.price * food.quantity,
-    0
-  );
+    // Calculate food price
+    const foodPrice = selectedFood.reduce(
+      (total, food) => total + food.price * food.quantity,
+      0
+    );
 
-  // Calculate the number of days for the stay
-  const daysDifference = Math.ceil(
-    (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
-  );
+    // Calculate the number of days for the stay
+    const daysDifference = Math.ceil(
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
+    );
 
-  if (daysDifference < 1) {
-    return 0; // If the dates are invalid, return 0
-  }
-
-  totalPrice *= daysDifference; // Multiply by the number of days
-  totalPrice += foodPrice; // Add food price
-
-  // Check against monthly data
-  monthlyData?.forEach((data) => {
-    const startDate = new Date(data.startDate);
-    const endDate = new Date(data.endDate);
-
-    // Check if the booking dates overlap with the monthly pricing range
-    if (checkInDate < endDate && checkOutDate > startDate) {
-      if (data.isAddition) {
-        totalPrice += data.monthPrice * daysDifference; // Add monthly price
-      } else {
-        totalPrice -= data.monthPrice * daysDifference; // Subtract monthly price
-      }
+    if (daysDifference < 1) {
+      return 0; // If the dates are invalid, return 0
     }
-  });
 
-  return totalPrice;
-};
+    totalPrice *= daysDifference; // Multiply by the number of days
+    totalPrice += foodPrice; // Add food price
 
-useEffect(() => {
-  const totalPrice = calculateTotalPrice();
-  setCurrentPrice(totalPrice);
-}, [
-  selectedRooms,
-  selectedFood,
-  checkInDate,
-  checkOutDate,
-  roomsCount,
-  guestsCount,
-  monthlyData,
-]);
+    // Check against monthly data
+    monthlyData?.forEach((data) => {
+      const startDate = new Date(data.startDate);
+      const endDate = new Date(data.endDate);
 
+      // Check if the booking dates overlap with the monthly pricing range
+      if (checkInDate < endDate && checkOutDate > startDate) {
+        if (data.isAddition) {
+          totalPrice += data.monthPrice * daysDifference; // Add monthly price
+        } else {
+          totalPrice -= data.monthPrice * daysDifference; // Subtract monthly price
+        }
+      }
+    });
 
+    return totalPrice;
+  };
+
+  useEffect(() => {
+    const totalPrice = calculateTotalPrice();
+    setCurrentPrice(totalPrice);
+  }, [
+    selectedRooms,
+    selectedFood,
+    checkInDate,
+    checkOutDate,
+    roomsCount,
+    guestsCount,
+    monthlyData,
+  ]);
 
   useEffect(() => {
     if (newhotelId) {
@@ -321,27 +320,26 @@ useEffect(() => {
 
   const defaultIcon = <FaBed />;
 
-const handleCheckInDateChange = (date) => {
-  if (checkOutDate && date >= checkOutDate) {
-    // If the new check-in date is on or after the current checkout date, reset checkout date
-    setCheckOutDate(null);
-  }
-  setCheckInDate(date);
+  const handleCheckInDateChange = (date) => {
+    if (checkOutDate && date >= checkOutDate) {
+      // If the new check-in date is on or after the current checkout date, reset checkout date
+      setCheckOutDate(null);
+    }
+    setCheckInDate(date);
 
-  // Automatically set checkout date to the next day after check-in date
-  const nextDay = addDays(date, 1);
-  setCheckOutDate(nextDay);
-};
+    // Automatically set checkout date to the next day after check-in date
+    const nextDay = addDays(date, 1);
+    setCheckOutDate(nextDay);
+  };
 
-const handleCheckOutDateChange = (date) => {
-  // Check if the selected date is after the check-in date
-  if (date <= checkInDate) {
-    toast.warning("Checkout date must be after the check-in date.");
-    return; // Prevent setting an invalid checkout date
-  }
-  setCheckOutDate(date);
-};
-
+  const handleCheckOutDateChange = (date) => {
+    // Check if the selected date is after the check-in date
+    if (date <= checkInDate) {
+      toast.warning("Checkout date must be after the check-in date.");
+      return; // Prevent setting an invalid checkout date
+    }
+    setCheckOutDate(date);
+  };
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -371,7 +369,48 @@ const handleCheckOutDateChange = (date) => {
 
     return styles;
   }
+  const eligibleRooms =
+    hotelData?.rooms?.filter((item) => item.offerPriceLess > 0) || [];
 
+  // Step 2: Determine the room to display based on the conditions
+  let roomToShow;
+
+  if (eligibleRooms.length > 0) {
+    // If there are eligible rooms, take the first one
+    roomToShow = eligibleRooms[0];
+  } else {
+    // If no eligible rooms, find the room with the lowest price
+    roomToShow =
+      hotelData?.rooms?.reduce((lowest, current) => {
+        return lowest.price < current.price ? lowest : current;
+      }, hotelData.rooms[0]) || null; // Fallback to null if no rooms exist
+  }
+useEffect(() => {
+  if (roomToShow?.offerExp) {
+    const countdownDate = new Date(roomToShow.offerExp).getTime();
+
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      // Calculate hours, minutes, and seconds left
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (distance < 0) {
+        clearInterval(interval);
+        setTimeLeft("Offer expired");
+      } else {
+        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+      }
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }
+}, [roomToShow]);
   return (
     <div className="book-now-container">
       {hotelData ? (
@@ -412,7 +451,42 @@ const handleCheckOutDateChange = (date) => {
               >
                 {hotelData?.hotelName}
               </span>
-              <CurrencyRupeeIcon /> {hotelData?.rooms?.[0]?.price || 0}
+
+              {roomToShow.offerPriceLess > 0 ? (
+                <>
+                  <del>
+                    <strong style={{ color: "red" }}>
+                      ₹{roomToShow.price}
+                    </strong>{" "}
+                  </del>
+                  <strong style={{ fontSize: "18px" }}>
+                    ₹{roomToShow.offerPriceLess} Discount
+                  </strong>
+                  <p>
+                    ₹{roomToShow.price - roomToShow.offerPriceLess}{" "}
+                    <strong style={{ fontSize: "14px", color: "red" }}>
+                      Offer price on {roomToShow.type}{" "}
+                      <p
+                        style={{
+                          color: "black",
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          backgroundColor: "#f8f8f8",
+                          padding: "10px",
+                          marginTop: "10px",
+                          width:"140px"
+                        }}
+                      >
+                        <BsClockHistory /> {timeLeft}
+                      </p>
+                    </strong>
+                  </p>
+                </>
+              ) : (
+                <p>
+                  Price: <strong>₹{roomToShow.price}</strong>
+                </p>
+              )}
             </h5>
             <Box
               key={hotelData._id}
