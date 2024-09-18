@@ -3,13 +3,14 @@ const month = require("../../models/booking/monthly");
 const newMonth = async (req, res) => {
   try {
     const { hotelId } = req.params;
-    const { startDate, endDate,monthPrice } = req.body;
+    const { startDate, endDate,monthPrice,isAddition } = req.body;
 
     // Use the correct property names when creating the document
     const createdPrice = await month.create({
       hotelId,
       startDate,
       endDate,
+      isAddition,
       monthPrice,
     });
 
