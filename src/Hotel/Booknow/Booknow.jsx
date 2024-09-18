@@ -385,32 +385,32 @@ const BookNow = () => {
         return lowest.price < current.price ? lowest : current;
       }, hotelData.rooms[0]) || null; // Fallback to null if no rooms exist
   }
-useEffect(() => {
-  if (roomToShow?.offerExp) {
-    const countdownDate = new Date(roomToShow.offerExp).getTime();
+// useEffect(() => {
+//   if (roomToShow?.offerExp) {
+//     const countdownDate = new Date(roomToShow.offerExp).getTime();
 
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
+//     const interval = setInterval(() => {
+//       const now = new Date().getTime();
+//       const distance = countdownDate - now;
 
-      // Calculate hours, minutes, and seconds left
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-     
+//       // Calculate hours, minutes, and seconds left
+//       const hours = Math.floor(
+//         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+//       );
+//       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+//       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      if (distance < 0) {
-        clearInterval(interval);
-        setTimeLeft("Offer expired");
-      } else {
-        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-      }
-    }, 6000); // Update every second
+//       if (distance < 0) {
+//         clearInterval(interval);
+//         setTimeLeft("Offer expired");
+//       } else {
+//         setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+//       }
+//     }, 1000); // Update every second
 
-    return () => clearInterval(interval); // Clear interval on component unmount
-  }
-}, [roomToShow]);
+//     return () => clearInterval(interval); // Clear interval on component unmount
+//   }
+// }, [roomToShow]);
   return (
     <div className="book-now-container">
       {hotelData ? (
@@ -466,7 +466,7 @@ useEffect(() => {
                     ₹{roomToShow.price - roomToShow.offerPriceLess}{" "}
                     <strong style={{ fontSize: "14px", color: "red" }}>
                       Offer price on {roomToShow.type}{" "}
-                      <p
+                      {/* <p
                         style={{
                           color: "black",
                           border: "1px solid #ccc",
@@ -478,7 +478,7 @@ useEffect(() => {
                         }}
                       >
                         <BsClockHistory /> {timeLeft}
-                      </p>
+                      </p> */}
                     </strong>
                   </p>
                 </>
