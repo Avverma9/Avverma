@@ -5,8 +5,12 @@ const monthlyPriceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  monthDate: {
-    type: String, 
+  startDate: {
+    type: String,
+    required: true,
+  },
+  endDate: {
+    type: String,
     required: true,
   },
   monthPrice: {

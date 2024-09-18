@@ -5,7 +5,18 @@ const { v4: uuidv4 } = require("uuid");
 
 exports.createRooms = async (req, res) => {
   try {
-    const { hotelId, ...rooms } = req.body;
+    const { hotelId, countRooms, price, ...rooms } = req.body;
+
+    // Convert countRooms and price to numbers
+    const parsedCountRooms = Number(countRooms);
+    const parsedPrice = Number(price);
+
+    // Check if the parsed values are valid numbers
+    if (isNaN(parsedCountRooms) || isNaN(parsedPrice)) {
+      return res.status(400).json({
+        message: "Invalid input: countRooms and price must be numbers.",
+      });
+    }
 
     const images = req.files.map((file) => file.location);
 
@@ -23,6 +34,8 @@ exports.createRooms = async (req, res) => {
       roomId,
       hotelId,
       images,
+      countRooms: parsedCountRooms, // Store as number
+      price: parsedPrice, // Store as number
       ...rooms,
     };
 
@@ -60,15 +73,15 @@ exports.getRoomsByEmailId = async (req, res) => {
 exports.updateRoomsByRoomId = async (req, res) => {
   const { roomId, type, bedTypes, price, countRooms } = req.body;
   const images = req.files.map((file) => file.location);
-  console.log("id from body", roomId);
-
+  const parsedCountRooms = Number(countRooms);
+  const parsedPrice = Number(price);
   try {
     let updateQuery = {
       $set: {
         "rooms.$.type": type,
         "rooms.$.bedTypes": bedTypes,
-        "rooms.$.price": price,
-        "rooms.$.countRooms": countRooms,
+        "rooms.$.price": parsedPrice,
+        "rooms.$.countRooms": parsedCountRooms,
       },
     };
 

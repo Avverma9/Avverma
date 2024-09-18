@@ -74,7 +74,8 @@ const perMonthPrice = async function (req, res) {
     const { checkOutDate } = req.body;
     const allMonthlyData = await month.find({
       hotelId: hotelId,
-      monthDate: { $lte: new Date(checkOutDate) },
+      startDate: { $lte: new Date(checkOutDate) },
+      endDate: { $lte: new Date(checkOutDate) },
     });
     if (!allMonthlyData || allMonthlyData.length === 0) {
       return res.status(404).json({

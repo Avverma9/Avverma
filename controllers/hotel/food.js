@@ -3,10 +3,11 @@ const hotel = require("../../models/hotel/basicDetails");
 const { v4: uuidv4 } = require("uuid");
 const createFood = async function (req, res) {
   try {
-    const { hotelId, ...foods } = req.body;
+    const { hotelId, price, ...foods } = req.body;
+    const parcedPrice = Number(price);
     const images = req.files.map((file) => file.location); // Assuming req.files is an array of file objects
     const foodId = uuidv4().substr(0, 8); // Generate a unique foodId
-    const created = { foodId, hotelId, ...foods, images }; // Include images in the created object
+    const created = { foodId, hotelId, ...foods, images, price:parcedPrice }; // Include images in the created object
 
     // Update the hotel document
     const updatedHotel = await hotel.findOneAndUpdate(
@@ -25,17 +26,6 @@ const createFood = async function (req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
-  }
-};
-
-const getFood = async (req, res) => {
-  try {
-    const { hotelId } = req.params;
-    const getData = await foods.find({ hotelId });
-    res.json(getData);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -67,4 +57,4 @@ const deleteFood = async (req, res) => {
   }
 };
 
-module.exports = { createFood, getFood, deleteFood };
+module.exports = { createFood, deleteFood };
