@@ -3,7 +3,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import baseURL from "../../baseURL";
 
-
 // Async thunk for fetching booking data
 export const fetchBookingData = createAsyncThunk(
   "booking/fetchBookingData",
@@ -14,6 +13,25 @@ export const fetchBookingData = createAsyncThunk(
         throw new Error("Failed to fetch booking data");
       }
       const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchMonthlyData = createAsyncThunk(
+  "booking/fetchMonthlyData",
+  async (hotelId, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${baseURL}/monthly-set-room-price/get/by/${hotelId}`
+      );
+      if (response.status !== 200) {
+        throw new Error("Failed to fetch month data");
+      }
+      const data = await response.json();
+           
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -42,12 +60,11 @@ export const fetchFilteredBooking = createAsyncThunk(
   }
 );
 
-
-
 const bookingSlice = createSlice({
   name: "booking",
   initialState: {
     data: null,
+    monthlyData: [],
     loading: false,
     error: null,
   },
@@ -75,7 +92,6 @@ const bookingSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchFilteredBooking.fulfilled, (state, action) => {
-        // Handle successful fetch of filtered data if needed
         state.data = action.payload; // Update state with new data if required
         state.loading = false;
       })
@@ -83,6 +99,20 @@ const bookingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         toast.error("There are no such bookings");
+      })
+      // Fetch monthly data
+      .addCase(fetchMonthlyData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMonthlyData.fulfilled, (state, action) => {
+        state.monthlyData = action.payload; // Update state with new data if required
+        state.loading = false;
+      })
+      .addCase(fetchMonthlyData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        toast.error("Failed to fetch monthly data");
       });
   },
 });

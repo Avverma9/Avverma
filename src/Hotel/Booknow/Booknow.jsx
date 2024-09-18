@@ -37,7 +37,10 @@ import BookingDetails from "./bookingDetails";
 import Rooms from "./rooms";
 import Foods from "./foods";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBookingData } from "../../redux/reducers/bookingSlice";
+import {
+  fetchBookingData,
+  fetchMonthlyData,
+} from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/filterOptions";
 import BookingReview from "./BookingReview";
 import axios from "axios";
@@ -54,9 +57,9 @@ const BookNow = () => {
   const path = location.pathname;
   const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const today = new Date();
-  const { showLoader, hideLoader } = useLoader();
   const tomorrow = addDays(today, 1);
   const [guestsCount, setGuestsCount] = useState(3);
+  const [currentPrice, setCurrentPrice] = useState(0);
   const [checkInDate, setCheckInDate] = useState(today);
   const [checkOutDate, setCheckOutDate] = useState(tomorrow);
   const roomsRef = useRef(null);
@@ -64,10 +67,10 @@ const BookNow = () => {
   const [open, setOpen] = useState(false);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
-  const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
   const toBeCheckRoomNumber = localStorage.getItem("toBeCheckRoomNumber");
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const { data, loading, error } = useSelector((state) => state.booking);
+  const { data } = useSelector((state) => state.booking);
+  const { monthlyData, loading, error } = useSelector((state) => state.booking);
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
@@ -102,6 +105,7 @@ const BookNow = () => {
 
     setSelectedFood(updatedFood);
   };
+
   const handleAddRoom = (room) => {
     setSelectedRooms([room]); // Replace the previously selected room with the new one
     localStorage.setItem("toBeUpdatedRoomId", room.roomId);
@@ -120,30 +124,73 @@ const BookNow = () => {
     });
   };
 
-  const calculateTotalPrice = () => {
-    let totalPrice = 0;
-    selectedRooms.forEach((room) => {
-      totalPrice += room.price * roomsCount;
-    });
+const calculateTotalPrice = () => {
+  let totalPrice = 0;
 
-    const foodPrice = selectedFood.reduce(
-      (total, food) => total + food.price * food.quantity,
-      0
-    );
+  // Calculate room price
+  selectedRooms?.forEach((room) => {
+    totalPrice += room.price * roomsCount;
+  });
 
-    const daysDifference = Math.ceil(
-      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
-    );
+  // Calculate food price
+  const foodPrice = selectedFood.reduce(
+    (total, food) => total + food.price * food.quantity,
+    0
+  );
 
-    totalPrice *= daysDifference;
-    totalPrice += foodPrice;
+  // Calculate the number of days for the stay
+  const daysDifference = Math.ceil(
+    (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
+  );
 
-    return totalPrice;
-  };
+  if (daysDifference < 1) {
+    return 0; // If the dates are invalid, return 0
+  }
+
+  totalPrice *= daysDifference; // Multiply by the number of days
+  totalPrice += foodPrice; // Add food price
+
+  // Check against monthly data
+  monthlyData?.forEach((data) => {
+    const startDate = new Date(data.startDate);
+    const endDate = new Date(data.endDate);
+
+    // Check if the booking dates fall within the monthly pricing range
+    if (checkInDate >= startDate && checkOutDate <= endDate) {
+      if (data.isAddition) {
+        totalPrice += data.monthPrice * daysDifference; // Add monthly price
+      } else {
+        totalPrice -= data.monthPrice * daysDifference; // Subtract monthly price
+      }
+    }
+  });
+
+  return totalPrice;
+};
+
+useEffect(() => {
+  const totalPrice = calculateTotalPrice();
+  setCurrentPrice(totalPrice);
+}, [
+  selectedRooms,
+  selectedFood,
+  checkInDate,
+  checkOutDate,
+  roomsCount,
+  guestsCount,
+  monthlyData,
+]);
+
 
   useEffect(() => {
     if (newhotelId) {
       dispatch(fetchBookingData(newhotelId));
+    }
+  }, [dispatch, newhotelId]);
+
+  useEffect(() => {
+    if (newhotelId) {
+      dispatch(fetchMonthlyData(newhotelId));
     }
   }, [dispatch, newhotelId]);
 
@@ -245,12 +292,6 @@ const BookNow = () => {
         );
         if (response.status === 201) {
           const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
-          const response = axios.patch(
-            `${baseURL}/decrease/room/count/by/one`,
-            {
-              roomId: toBeUpdatedRoomId,
-            }
-          );
           toast.success("Booking successful");
           navigate("/bookings");
         }
