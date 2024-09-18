@@ -65,6 +65,7 @@ const BookNow = () => {
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
   const theme = useTheme();
   const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
+  const toBeCheckRoomNumber = localStorage.getItem("toBeCheckRoomNumber");
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { data, loading, error } = useSelector((state) => state.booking);
   const handleExpansion = () => {
@@ -104,6 +105,7 @@ const BookNow = () => {
   const handleAddRoom = (room) => {
     setSelectedRooms([room]); // Replace the previously selected room with the new one
     localStorage.setItem("toBeUpdatedRoomId", room.roomId);
+    localStorage.setItem("toBeCheckRoomNumber", room.countRooms);
     toast.info(`${room.type} is selected`); // Show toast notification
   };
 
@@ -152,6 +154,7 @@ const BookNow = () => {
       if (selectedRooms?.length === 0 && data?.rooms?.length > 0) {
         const defaultRoom = data?.rooms[0];
         localStorage.setItem("toBeUpdatedRoomId", defaultRoom.roomId);
+        localStorage.setItem("toBeCheckRoomNumber", defaultRoom.countRooms);
         setSelectedRooms([defaultRoom]);
       }
     }
@@ -229,26 +232,30 @@ const BookNow = () => {
         hotelOwnerName: hotelData.hotelOwnerName,
         hotelEmail: hotelData.hotelEmail,
       };
-
-      const response = await fetch(
-        `${baseURL}/booking/${userId}/${newhotelId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookingData),
+      if (toBeCheckRoomNumber > 0) {
+        const response = await fetch(
+          `${baseURL}/booking/${userId}/${newhotelId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookingData),
+          }
+        );
+        if (response.status === 201) {
+          const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
+          const response = axios.patch(
+            `${baseURL}/decrease/room/count/by/one`,
+            {
+              roomId: toBeUpdatedRoomId,
+            }
+          );
+          toast.success("Booking successful");
+          navigate("/bookings");
         }
-      );
-//===================room update==========================
-      if (response.status === 201) {
-        const response = axios.patch(`${baseURL}/decrease/room/count/by/one`, {
-          roomId: toBeUpdatedRoomId,
-        });
-        alert("Booking successful", selectedRooms);
-        window.location.href = "/bookings";
       } else {
-        console.error("Booking failed");
+        toast.error("This room is already fully booked");
       }
     } catch (error) {
       console.error("Error booking:", error);

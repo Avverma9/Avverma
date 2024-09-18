@@ -58,18 +58,21 @@ const Offered = () => {
           <div key={index} className="col mb-3">
             <Card sx={{ width: "100%", height: "400px", overflow: "hidden" }}>
               <div>
-                {hotel?.rooms?.[0]?.price <
-                  hotel?.rooms?.[0]?.originalPrice && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "0.5rem",
-                      right: ".5rem",
-                    }}
-                  >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "0.5rem",
+                    right: ".5rem",
+                  }}
+                >
+                  {hotel?.rooms?.[0]?.offerPriceLess > 0 && (
                     <Stack direction="row" spacing={1}>
                       <Chip
-                        label={`Get ${hotel?.rooms?.[0]?.offerPriceLess}% less`}
+                        label={`Get ${
+                          hotel?.rooms?.[0]?.offerPriceLess > 0
+                            ? hotel?.rooms?.[0]?.offerPriceLess
+                            : hotel?.rooms?.[0]?.price
+                        }% less`}
                         color="success"
                         variant="filled"
                         avatar={
@@ -77,8 +80,8 @@ const Offered = () => {
                         }
                       />
                     </Stack>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 <br />
                 <Typography level="title-sm">{hotel.hotelName}</Typography>
@@ -158,10 +161,29 @@ const Offered = () => {
               </CardContent>
               <CardContent orientation="horizontal">
                 <div>
-                  <Typography level="body-xs">Price:</Typography>
-                  <Typography fontSize="sm" fontWeight="lg">
-                    <CurrencyRupeeIcon /> {hotel.price}
-                  </Typography>
+                  {hotel?.rooms && (
+                    <>
+                      {hotel.rooms.reduce((minRoom, currentRoom) => {
+                        return currentRoom.price < minRoom.price
+                          ? currentRoom
+                          : minRoom;
+                      }).price !== undefined && (
+                        <>
+                          <Typography level="body-xs">Lowest Price:</Typography>
+                          <Typography fontSize="sm" fontWeight="lg">
+                            <CurrencyRupeeIcon />{" "}
+                            {
+                              hotel.rooms.reduce((minRoom, currentRoom) => {
+                                return currentRoom.price < minRoom.price
+                                  ? currentRoom
+                                  : minRoom;
+                              }).price
+                            }
+                          </Typography>
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
               </CardContent>
               <Button
