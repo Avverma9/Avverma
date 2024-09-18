@@ -484,7 +484,7 @@ useEffect(() => {
                 </>
               ) : (
                 <p>
-                  Price: <strong>₹{roomToShow.price}</strong>
+                  <strong>₹{roomToShow.price}</strong>
                 </p>
               )}
             </h5>
