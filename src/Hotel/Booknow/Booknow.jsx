@@ -240,7 +240,8 @@ useEffect(() => {
       const now = new Date().getTime();
       const distance = countdownDate - now;
 
-      // Calculate hours, minutes, and seconds left
+      // Calculate days, hours, minutes, and seconds left
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
@@ -251,13 +252,21 @@ useEffect(() => {
         clearInterval(interval);
         setTimeLeft("Offer expired");
       } else {
-        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+        // Construct time left string based on days
+        let timeLeft;
+        if (days > 0) {
+          timeLeft = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } else {
+          timeLeft = `${hours}h ${minutes}m ${seconds}s`;
+        }
+        setTimeLeft(timeLeft);
       }
     }, 1000); // Update every second
 
     return () => clearInterval(interval); // Clear interval on component unmount
   }
 }, [roomToShow]);
+
 
   const handleIncrementRooms = () => {
     setRoomsCount((prevCount) => prevCount + 1);
@@ -465,7 +474,7 @@ useEffect(() => {
                     ₹{roomToShow.offerPriceLess} Discount
                   </strong>
                   <p>
-                    ₹{roomToShow.price - roomToShow.offerPriceLess}{" "}
+                    ₹{roomToShow.price}{" "}
                     <strong style={{ fontSize: "14px", color: "red" }}>
                       Offer price on {roomToShow.type}{" "}
                       <p
@@ -476,7 +485,7 @@ useEffect(() => {
                           backgroundColor: "#f8f8f8",
                           padding: "10px",
                           marginTop: "10px",
-                          width:"140px"
+                          width:"200px"
                         }}
                       >
                         <BsClockHistory /> {timeLeft}
@@ -486,7 +495,7 @@ useEffect(() => {
                 </>
               ) : (
                 <p>
-                  <strong>₹{roomToShow.price}</strong>
+                  <strong>₹{roomToShow?.price}</strong>
                 </p>
               )}
             </h5>
