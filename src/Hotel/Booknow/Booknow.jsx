@@ -155,8 +155,8 @@ const calculateTotalPrice = () => {
     const startDate = new Date(data.startDate);
     const endDate = new Date(data.endDate);
 
-    // Check if the booking dates fall within the monthly pricing range
-    if (checkInDate >= startDate && checkOutDate <= endDate) {
+    // Check if the booking dates overlap with the monthly pricing range
+    if (checkInDate < endDate && checkOutDate > startDate) {
       if (data.isAddition) {
         totalPrice += data.monthPrice * daysDifference; // Add monthly price
       } else {
@@ -180,6 +180,7 @@ useEffect(() => {
   guestsCount,
   monthlyData,
 ]);
+
 
 
   useEffect(() => {
@@ -320,23 +321,27 @@ useEffect(() => {
 
   const defaultIcon = <FaBed />;
 
-  const handleCheckInDateChange = (date) => {
-    if (date.toDateString() !== checkOutDate.toDateString()) {
-      setCheckInDate(date);
-      const nextDay = addDays(date, 1);
-      setCheckOutDate(nextDay);
-    } else {
-      toast.warning("Check-in and Check-out dates cannot be the same.");
-    }
-  };
+const handleCheckInDateChange = (date) => {
+  if (checkOutDate && date >= checkOutDate) {
+    // If the new check-in date is on or after the current checkout date, reset checkout date
+    setCheckOutDate(null);
+  }
+  setCheckInDate(date);
 
-  const handleCheckOutDateChange = (date) => {
-    if (date.toDateString() !== checkInDate.toDateString()) {
-      setCheckOutDate(date);
-    } else {
-      toast.warning("Check-in and Check-out dates cannot be the same.");
-    }
-  };
+  // Automatically set checkout date to the next day after check-in date
+  const nextDay = addDays(date, 1);
+  setCheckOutDate(nextDay);
+};
+
+const handleCheckOutDateChange = (date) => {
+  // Check if the selected date is after the check-in date
+  if (date <= checkInDate) {
+    toast.warning("Checkout date must be after the check-in date.");
+    return; // Prevent setting an invalid checkout date
+  }
+  setCheckOutDate(date);
+};
+
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
