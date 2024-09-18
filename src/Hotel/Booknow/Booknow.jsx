@@ -398,7 +398,7 @@ useEffect(() => {
         (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
       );
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+     
 
       if (distance < 0) {
         clearInterval(interval);
@@ -406,7 +406,7 @@ useEffect(() => {
       } else {
         setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
       }
-    }, 1000); // Update every second
+    }, 6000); // Update every second
 
     return () => clearInterval(interval); // Clear interval on component unmount
   }
