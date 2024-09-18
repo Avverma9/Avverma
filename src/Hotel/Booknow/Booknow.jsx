@@ -216,32 +216,49 @@ const BookNow = () => {
   const calculateGuests = (roomsCount) => {
     return roomsCount * 3;
   };
-  useEffect(() => {
-    if (roomToShow?.offerExp) {
-      const countdownDate = new Date(roomToShow.offerExp).getTime();
+ const eligibleRooms =
+   hotelData?.rooms?.filter((item) => item.offerPriceLess > 0) || [];
 
-      const interval = setInterval(() => {
-        const now = new Date().getTime();
-        const distance = countdownDate - now;
+ // Step 2: Determine the room to display based on the conditions
+ let roomToShow;
 
-        // Calculate hours, minutes, and seconds left
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+ if (eligibleRooms.length > 0) {
+   // If there are eligible rooms, take the first one
+   roomToShow = eligibleRooms[0];
+ } else {
+   // If no eligible rooms, find the room with the lowest price
+   roomToShow =
+     hotelData?.rooms?.reduce((lowest, current) => {
+       return lowest.price < current.price ? lowest : current;
+     }, hotelData.rooms[0]) || null; // Fallback to null if no rooms exist
+ }
+useEffect(() => {
+  if (roomToShow?.offerExp) {
+    const countdownDate = new Date(roomToShow.offerExp).getTime();
 
-        if (distance < 0) {
-          clearInterval(interval);
-          setTimeLeft("Offer expired");
-        } else {
-          setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-        }
-      }, 1000); // Update every second
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
 
-      return () => clearInterval(interval); // Clear interval on component unmount
-    }
-  }, [roomToShow]);
+      // Calculate hours, minutes, and seconds left
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (distance < 0) {
+        clearInterval(interval);
+        setTimeLeft("Offer expired");
+      } else {
+        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+      }
+    }, 1000); // Update every second
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }
+}, [roomToShow]);
+
   const handleIncrementRooms = () => {
     setRoomsCount((prevCount) => prevCount + 1);
     setGuestsCount(calculateGuests(roomsCount + 1));
@@ -394,22 +411,7 @@ const BookNow = () => {
 
     return styles;
   }
-  const eligibleRooms =
-    hotelData?.rooms?.filter((item) => item.offerPriceLess > 0) || [];
-
-  // Step 2: Determine the room to display based on the conditions
-  let roomToShow;
-
-  if (eligibleRooms.length > 0) {
-    // If there are eligible rooms, take the first one
-    roomToShow = eligibleRooms[0];
-  } else {
-    // If no eligible rooms, find the room with the lowest price
-    roomToShow =
-      hotelData?.rooms?.reduce((lowest, current) => {
-        return lowest.price < current.price ? lowest : current;
-      }, hotelData.rooms[0]) || null; // Fallback to null if no rooms exist
-  }
+ 
 
   return (
     <div className="book-now-container">
@@ -474,7 +476,7 @@ const BookNow = () => {
                           backgroundColor: "#f8f8f8",
                           padding: "10px",
                           marginTop: "10px",
-                          width: "140px",
+                          width:"140px"
                         }}
                       >
                         <BsClockHistory /> {timeLeft}
