@@ -18,7 +18,7 @@ const userNotificationRouter = require("./notification/user");
 const messengerRouter = require("./messenger/messenger");
 const policyRouter = require("./hotel/policy");
 const amenitiesRouter = require("./hotel/amenities");
-
+const bulkRouter = require("./bulkOperation")
 // Initialize the router
 const router = express.Router();
 
@@ -40,5 +40,7 @@ router.use("/", userNotificationRouter);
 router.use("/", messengerRouter);
 router.use("/", policyRouter);
 router.use("/", amenitiesRouter);
+router.use("/", bulkRouter);
+
 
 module.exports = router;

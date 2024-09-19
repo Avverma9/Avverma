@@ -9,12 +9,6 @@ router.post(
   bookingController.createBooking
 );
 
-
-router.post(
-  "/get-hotel-monthly-price-increase/:hotelId",
-  bookingController.perMonthPrice
-);
-
 router.put("/updatebooking/:bookingId", bookingController.updateBooking);
 
 router.get(

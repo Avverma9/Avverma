@@ -98,6 +98,7 @@ const ApplyCoupon = async (req, res) => {
 
     // Mark the coupon as used by updating the roomId field
     coupon.roomId = roomId; // Use the roomId to mark the coupon as used
+    coupon.hotelId = hotelId;
     await coupon.save();
 
     res.status(200).json({
@@ -124,7 +125,7 @@ const checkAndUpdateOffers = async () => {
           return {
             ...room,
             isOffer: false,
-            expired:false,
+            expired: false,
             offerPriceLess: 0,
             offerExp: "",
             offerName: "",
@@ -229,23 +230,18 @@ const removeCoupon = async (req, res) => {
   }
 };
 
-
 const GetValidCoupons = async (req, res) => {
   try {
-  
-    const coupons = await couponModel
-      .find({
-        roomId: { $exists: true },
-        expired: false, // Ensure expired is false
-      })
+    const coupons = await couponModel.find({
+      roomId: { $exists: true },
+      expired: false, // Ensure expired is false
+    });
 
     res.status(200).json(coupons);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-
 
 module.exports = {
   newCoupon,
@@ -255,4 +251,3 @@ module.exports = {
   checkAndUpdateOffers,
   removeCoupon, // Ensure to export the removeCoupon function
 };
-

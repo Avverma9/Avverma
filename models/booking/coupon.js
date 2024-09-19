@@ -17,9 +17,9 @@ const couponSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  expired:{
-    type:Boolean,
-    default:false
+  expired: {
+    type: Boolean,
+    default: false,
   },
   couponName: {
     type: String,
@@ -30,6 +30,9 @@ const couponSchema = new mongoose.Schema({
     required: true,
   },
   roomId: {
+    type: String,
+  },
+  hotelId: {
     type: String,
   },
 });

@@ -67,44 +67,6 @@ const createBooking = async (req, res) => {
   }
 };
 
-//=============================================================================
-const perMonthPrice = async function (req, res) {
-  try {
-    const { hotelId } = req.params;
-    const { checkOutDate } = req.body;
-    const allMonthlyData = await month.find({
-      hotelId: hotelId,
-      startDate: { $lte: new Date(checkOutDate) },
-      endDate: { $lte: new Date(checkOutDate) },
-    });
-    if (!allMonthlyData || allMonthlyData.length === 0) {
-      return res.status(404).json({
-        error: "Hotel not found or no suitable monthly data available",
-      });
-    }
-
-    const checkOutDateObject = new Date(checkOutDate);
-
-    let closestMonth = null;
-    let closestDateDifference = Infinity;
-
-    for (const monthly of allMonthlyData) {
-      const dateOfmonth = new Date(monthly.monthDate);
-      const dateDifference = Math.abs(checkOutDateObject - dateOfmonth);
-      if (dateDifference < closestDateDifference) {
-        closestMonth = monthly;
-        closestDateDifference = dateDifference;
-      }
-    }
-
-    // Display the data of the closest month
-    res.json({ monthlyPrice: closestMonth.monthPrice });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
 //================================================================================================================================================
 
 const getConfirmedBookings = async (req, res) => {
@@ -224,7 +186,6 @@ module.exports = {
   getConfirmedBookings,
   updateBooking,
   getAllFilterBookings,
-  perMonthPrice,
   getAll,
   getBookingCounts,
   getTotalSell,

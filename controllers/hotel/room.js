@@ -1,11 +1,10 @@
-const roomModel = require("../../models/hotel/rooms");
 const hotelModel = require("../../models/hotel/basicDetails");
 
 const { v4: uuidv4 } = require("uuid");
 
 exports.createRooms = async (req, res) => {
   try {
-    const { hotelId, countRooms, price, ...rooms } = req.body;
+    const { hotelId, countRooms, price, soldOut, ...rooms } = req.body;
 
     // Convert countRooms and price to numbers
     const parsedCountRooms = Number(countRooms);
@@ -34,6 +33,7 @@ exports.createRooms = async (req, res) => {
       roomId,
       hotelId,
       images,
+      soldOut:false,
       countRooms: parsedCountRooms, // Store as number
       price: parsedPrice, // Store as number
       ...rooms,
@@ -71,7 +71,7 @@ exports.getRoomsByEmailId = async (req, res) => {
 };
 
 exports.updateRoomsByRoomId = async (req, res) => {
-  const { roomId, type, bedTypes, price, countRooms } = req.body;
+  const { roomId, type, bedTypes, price, countRooms,soldOut } = req.body;
   const images = req.files.map((file) => file.location);
   const parsedCountRooms = Number(countRooms);
   const parsedPrice = Number(price);
@@ -79,6 +79,7 @@ exports.updateRoomsByRoomId = async (req, res) => {
     let updateQuery = {
       $set: {
         "rooms.$.type": type,
+        "rooms.$.soldOut": soldOut,
         "rooms.$.bedTypes": bedTypes,
         "rooms.$.price": parsedPrice,
         "rooms.$.countRooms": parsedCountRooms,
