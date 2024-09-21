@@ -153,6 +153,7 @@ const BookingDetails = ({
                 component="div"
                 style={{
                   fontSize: "0.8rem",
+                  color:"red",
                   marginBottom: "5px", // Reduced margin
                   display: "flex",
                   alignItems: "center",
@@ -410,7 +411,7 @@ const BookingDetails = ({
           <h5 style={{ fontSize: "1rem" }}>
             {" "}
             {/* Smaller header font size */}
-            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details
+            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details  
           </h5>
           <hr style={{ margin: "10px 0" }} />{" "}
           {/* Adjusted margin for the horizontal line */}
@@ -500,6 +501,7 @@ const BookingDetails = ({
                 variant="body2"
                 component="div"
                 style={{
+                  color:"red",
                   fontSize: "0.8rem",
                   marginBottom: "5px", // Reduced margin
                   display: "flex",

@@ -9,7 +9,7 @@ export const fetchBookingData = createAsyncThunk(
   async (hotelId, { rejectWithValue }) => {
     try {
       const response = await fetch(`${baseURL}/hotels/get-by-id/${hotelId}`);
-      if (response.status !== 200) {
+      if (!response.ok) {
         throw new Error("Failed to fetch booking data");
       }
       const data = await response.json();
@@ -65,6 +65,7 @@ const bookingSlice = createSlice({
   initialState: {
     data: null,
     monthlyData: [],
+    bookingData:null,
     loading: false,
     error: null,
   },
@@ -76,7 +77,7 @@ const bookingSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchBookingData.fulfilled, (state, action) => {
-        state.data = action.payload;
+        state.bookingData = action.payload;
         state.loading = false;
       })
       .addCase(fetchBookingData.rejected, (state, action) => {

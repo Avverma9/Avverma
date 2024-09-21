@@ -443,7 +443,7 @@ const Hotel = () => {
                                 ₹{minPrice}{" "}
                                 <small className="text-muted">/night</small>
                               </h4>
-                              <p className="text-muted">for 1 Room (Ex. GST)</p>
+                              <p className="text-muted">Lowest room price(Ex. GST)</p>
                               <button
                                 className="btn btn-warning btn-block text-white"
                                 onClick={() => handleBuy(hotel.hotelId)}

@@ -70,8 +70,10 @@ const BookNow = () => {
   const theme = useTheme();
   const toBeCheckRoomNumber = localStorage.getItem("toBeCheckRoomNumber");
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const { data } = useSelector((state) => state.booking);
+  const { bookingData } = useSelector((state) => state.booking);
   const { monthlyData, loading, error } = useSelector((state) => state.booking);
+  const showLowestPrice = localStorage.getItem("lowestPrice")
+  const compareRoomId = localStorage.getItem("toBeUpdatedRoomId")
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
@@ -151,20 +153,22 @@ const BookNow = () => {
     totalPrice *= daysDifference; // Multiply by the number of days
     totalPrice += foodPrice; // Add food price
 
-    // Check against monthly data
-    monthlyData?.forEach((data) => {
-      const startDate = new Date(data.startDate);
-      const endDate = new Date(data.endDate);
+    // Check against monthly bookingData
+    monthlyData?.forEach((bookingData) => {
+      const startDate = new Date(bookingData.startDate);
+      const endDate = new Date(bookingData.endDate);
+        
+    // code me monthly bookingData ko each se map karke month bookingData ki validity and roomid ko localStorage me selected
+    // roomId se match karake room ka month price nikala ja raha hai
 
-      // Check if the booking dates overlap with the monthly pricing range
-      if (checkInDate < endDate && checkOutDate > startDate) {
-        if (data.isAddition) {
-          totalPrice += data.monthPrice * daysDifference; // Add monthly price
-        } else {
-          totalPrice -= data.monthPrice * daysDifference; // Subtract monthly price
+
+      if (selectedRooms && checkInDate < endDate && checkOutDate > startDate && compareRoomId === bookingData.roomId) {
+        if (bookingData) {
+          totalPrice = bookingData.monthPrice * daysDifference; // Add monthly price
         }
       }
     });
+    
 
     return totalPrice;
   };
@@ -181,6 +185,20 @@ const BookNow = () => {
     guestsCount,
     monthlyData,
   ]);
+// Function to format date to YYYY-MM-DD
+const formatDate = (date) => {
+  const localDate = new Date(date.getTime() + 5.5 * 60 * 60 * 1000); // Adjust for UTC+5:30
+  return localDate.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+};
+
+// Example check-in and check-out dates
+const setcheckInDate = checkInDate// Replace with your actual check-in date
+const setcheckOutDate = checkOutDate; // Replace with your actual check-out date
+
+// Set the formatted dates in localStorage
+localStorage.setItem("selectedCheckInDate", formatDate(setcheckInDate));
+localStorage.setItem("selectedCheckOutDate", formatDate(setcheckOutDate));
+
 
   useEffect(() => {
     if (newhotelId) {
@@ -195,17 +213,17 @@ const BookNow = () => {
   }, [dispatch, newhotelId]);
 
   useEffect(() => {
-    if (data) {
-      setHotelData(data);
+    if (bookingData) {
+      setHotelData(bookingData);
 
-      if (selectedRooms?.length === 0 && data?.rooms?.length > 0) {
-        const defaultRoom = data?.rooms[0];
+      if (selectedRooms?.length === 0 && bookingData?.rooms?.length > 0) {
+        const defaultRoom = bookingData?.rooms[0];
         localStorage.setItem("toBeUpdatedRoomId", defaultRoom.roomId);
         localStorage.setItem("toBeCheckRoomNumber", defaultRoom.countRooms);
         setSelectedRooms([defaultRoom]);
       }
     }
-  }, [data, selectedRooms]);
+  }, [bookingData, selectedRooms]);
 
   useEffect(() => {
     if (shouldScrollToTop) {
@@ -267,6 +285,24 @@ useEffect(() => {
   }
 }, [roomToShow]);
 
+useEffect(() => {
+  if (bookingData) {
+    setHotelData(bookingData);
+
+    // If roomToShow is available, set it as the default selected room
+    if (roomToShow) {
+      setSelectedRooms([roomToShow]);
+      localStorage.setItem("toBeUpdatedRoomId", roomToShow.roomId);
+      localStorage.setItem("toBeCheckRoomNumber", roomToShow.countRooms);
+    } else if (bookingData.rooms?.length > 0) {
+      // Fallback in case roomToShow is not set
+      const defaultRoom = bookingData.rooms[0]; // Or any other logic to pick a room
+      setSelectedRooms([defaultRoom]);
+      localStorage.setItem("toBeUpdatedRoomId", defaultRoom.roomId);
+      localStorage.setItem("toBeCheckRoomNumber", defaultRoom.countRooms);
+    }
+  }
+}, [bookingData, roomToShow]);
 
   const handleIncrementRooms = () => {
     setRoomsCount((prevCount) => prevCount + 1);
@@ -303,7 +339,7 @@ useEffect(() => {
         alert(
           "Action required: Please update your mobile number in the profile."
         );
-        navigate("/profile");
+        window.location.href = "/profile";
         return;
       }
 
@@ -343,6 +379,12 @@ useEffect(() => {
         );
         if (response.status === 201) {
           const toBeUpdatedRoomId = localStorage.getItem("toBeUpdatedRoomId");
+          const response = axios.patch(
+            `${baseURL}/decrease/room/count/by/one`,
+            {
+              roomId: toBeUpdatedRoomId,
+            }
+          );
           toast.success("Booking successful");
           navigate("/bookings");
         }
@@ -463,15 +505,15 @@ useEffect(() => {
                 {hotelData?.hotelName}
               </span>
 
-              {roomToShow.offerPriceLess > 0 ? (
+              {roomToShow?.offerPriceLess > 0 ? (
                 <>
                   <del>
                     <strong style={{ color: "red" }}>
-                      ₹{roomToShow.price}
+                      ₹{roomToShow.price + roomToShow.offerPriceLess}
                     </strong>{" "}
                   </del>
                   <strong style={{ fontSize: "18px" }}>
-                    ₹{roomToShow.offerPriceLess} Discount
+                    ₹{roomToShow?.offerPriceLess} Discount
                   </strong>
                   <p>
                     ₹{roomToShow.price}{" "}
@@ -495,8 +537,10 @@ useEffect(() => {
                 </>
               ) : (
                 <p>
-                  <strong>₹{roomToShow?.price}</strong>
-                </p>
+                <span style={{ color: "red", fontSize: "12px", marginRight: "5px" }}>Starting rooms Price </span>
+                <strong>₹{showLowestPrice}</strong>
+              </p>
+              
               )}
             </h5>
             <Box
