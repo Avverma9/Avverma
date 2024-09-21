@@ -1,6 +1,7 @@
 const hotelModel = require("../../models/hotel/basicDetails");
 const month = require("../../models/booking/monthly");
 const cron = require("node-cron");
+const monthly = require("../../models/booking/monthly");
 const createHotel = async (req, res) => {
   try {
     const {
@@ -336,11 +337,47 @@ const getHotels = async (req, res) => {
   res.json(filterData);
 };
 //======================================get offers==========================================//
-const getOffers = async (req, res) => {
-  const hotels = await hotelModel.find().sort({ createdAt: -1 });
-  const filterData = hotels.filter((hotel) => hotel.onFront === true);
-  res.json(filterData);
+const setOnFront = async (req, res) => {
+  try {
+    const hotels = await hotelModel.find().sort({ createdAt: -1 });
+    const filterData = hotels.filter((hotel) => hotel.onFront === true);
+    const monthlyData = await monthly.find();
+
+    // Get the current date in YYYY-MM-DD format (IST)
+    const currentDate = new Date();
+    const IST_OFFSET = 5.5 * 60 * 60 * 1000; // UTC+5:30
+    const currentDateIST = new Date(currentDate.getTime() + IST_OFFSET);
+    const formattedCurrentDate = currentDateIST.toISOString().split('T')[0];
+
+    // Update room prices based on monthly data
+    filterData.forEach((hotel) => {
+      hotel.rooms.forEach((room) => {
+        const matchingMonthlyEntry = monthlyData.find((data) => {
+          const startDate = new Date(data.startDate);
+          const endDate = new Date(data.endDate);
+
+          return (
+            data.hotelId === hotel.hotelId.toString() && // Ensure matching hotel ID
+            data.roomId === room.roomId && // Ensure matching room ID
+            formattedCurrentDate >= startDate.toISOString().split('T')[0] && // Current date is after or equal to startDate
+            formattedCurrentDate <= endDate.toISOString().split('T')[0] // Current date is before or equal to endDate
+          );
+        });
+
+        // If there's a matching monthly entry, update the room price
+        if (matchingMonthlyEntry) {
+          room.price = matchingMonthlyEntry.monthPrice;
+        }
+      });
+    });
+
+    res.json(filterData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
 };
+
 //============================get by city============================================//
 const getCity = async function (req, res) {
   const { city } = req.query;
@@ -363,12 +400,41 @@ const getHotelsById = async (req, res) => {
 
     // Assuming you have the necessary models imported
     const hotel = await hotelModel.findOne({ hotelId });
+ // Fetch monthly data
+//  const monthlyData = await monthly.find();
+
+//  // Get the current date in YYYY-MM-DD format (IST)
+//  const currentDate = new Date();
+//  const IST_OFFSET = 5.5 * 60 * 60 * 1000; // UTC+5:30
+//  const currentDateIST = new Date(currentDate.getTime() + IST_OFFSET);
+//  const formattedCurrentDate = currentDateIST.toISOString().split('T')[0];
+
+//  // Update room prices based on monthly data
+//  hotel.rooms.forEach((room) => {
+//    const matchingMonthlyEntry = monthlyData.find((data) => {
+//      const startDate = new Date(data.startDate);
+//      const endDate = new Date(data.endDate);
+
+//      return (
+//        data.hotelId === hotelId && // Ensure matching hotel ID
+//        data.roomId === room.roomId && // Ensure matching room ID
+//        formattedCurrentDate >= data.startDate && // Current date is after or equal to startDate
+//        formattedCurrentDate <= data.endDate // Current date is before or equal to endDate
+//      );
+//    });
+
+//    // If there's a matching monthly entry, update the room price
+//    if (matchingMonthlyEntry) {
+//      room.price = matchingMonthlyEntry.monthPrice;
+//    }
+//  });
 
     res.json(hotel);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 //==================================================================================
 const deleteHotelById = async function (req, res) {
@@ -406,7 +472,7 @@ const getHotelsByFilters = async (req, res) => {
       amenities,
       unmarriedCouplesAllowed,
       minPrice,
-      maxPrice, // Add minPrice and maxPrice to the destructuring assignment
+      maxPrice,
     } = req.query;
 
     let filters = {};
@@ -415,33 +481,62 @@ const getHotelsByFilters = async (req, res) => {
     if (state) filters.state = { $regex: new RegExp(state, "i") };
     if (landmark) filters.landmark = { $regex: new RegExp(landmark, "i") };
     if (starRating) filters.starRating = starRating;
-    if (propertyType)
-      filters.propertyType = { $regex: new RegExp(propertyType, "i") };
-
+    if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, "i") };
     if (localId) filters.localId = localId;
     if (countRooms) filters["rooms.countRooms"] = countRooms;
     if (type) filters["rooms.type"] = { $regex: new RegExp(type, "i") };
-    if (bedTypes)
-      filters["rooms.bedTypes"] = { $regex: new RegExp(bedTypes, "i") };
-    if (amenities)
-      filters["amenities.amenities"] = { $in: amenities.split(",") };
-    if (unmarriedCouplesAllowed)
-      filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
+    if (bedTypes) filters["rooms.bedTypes"] = { $regex: new RegExp(bedTypes, "i") };
+    if (amenities) filters["amenities.amenities"] = { $in: amenities.split(",") };
+    if (unmarriedCouplesAllowed) filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
 
     // Add the minPrice and maxPrice filtering
-  if (minPrice || maxPrice) {
-    filters["rooms.price"] = {};
-    if (minPrice) filters["rooms.price"].$gte = parseFloat(minPrice); // Use parseFloat for numeric comparison
-    if (maxPrice) filters["rooms.price"].$lte = parseFloat(maxPrice); // Use parseFloat for numeric comparison
-  }
+    if (minPrice || maxPrice) {
+      filters["rooms.price"] = {};
+      if (minPrice) filters["rooms.price"].$gte = parseFloat(minPrice);
+      if (maxPrice) filters["rooms.price"].$lte = parseFloat(maxPrice);
+    }
+
+    // Fetch hotels
     const hotels = await hotelModel.find(filters);
     const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
+    const monthlyData = await monthly.find();
+
+    // Get the current date in YYYY-MM-DD format (IST)
+    const currentDate = new Date();
+    const IST_OFFSET = 5.5 * 60 * 60 * 1000; // UTC+5:30
+    const currentDateIST = new Date(currentDate.getTime() + IST_OFFSET);
+    const formattedCurrentDate = currentDateIST.toISOString().split('T')[0];
+
+    // Update room prices based on monthly data
+    acceptedHotels.forEach((hotel) => {
+      hotel.rooms.forEach((room) => {
+        const matchingMonthlyEntry = monthlyData.find((data) => {
+          const startDate = new Date(data.startDate);
+          const endDate = new Date(data.endDate);
+
+          return (
+            data.hotelId === hotel.hotelId.toString() && // Ensure matching hotel ID
+            data.roomId === room.roomId && // Ensure matching room ID
+            formattedCurrentDate >= data.startDate && // Current date is after or equal to startDate
+            formattedCurrentDate <= data.endDate // Current date is before or equal to endDate
+          );
+        });
+
+        // If there's a matching monthly entry, update the room price
+        if (matchingMonthlyEntry) {
+          room.price = matchingMonthlyEntry.monthPrice;
+        }
+      });
+    });
+
     res.status(200).json({ success: true, data: acceptedHotels });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+
 
 //===================================update room =============================================
 const updateRoom = async (req, res) => {
@@ -786,7 +881,7 @@ module.exports = {
   getByQuery,
   UpdateHotelStatus,
   getHotels,
-  getOffers,
+  setOnFront,
   updateRoom,
   addRoomToHotel,
   deleteRoom,

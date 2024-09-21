@@ -17,9 +17,6 @@ const monthlyPriceSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAddition: {
-    type: Boolean,
-  },
   monthPrice: {
     type: Number,
     required: true,

@@ -13,7 +13,7 @@ router.patch("/hotels/update/info/:hotelId", hotelController.UpdateHotelInfo); /
 router.get("/get/all/hotels", hotelController.getAllHotels); // on panel
 router.delete("/delete/hotels/by/:hotelId", hotelController.deleteHotelById); // on panel
 router.get("/get/main/get/hotels", hotelController.getHotels);
-router.get("/get/offers/main/hotels", hotelController.getOffers);
+router.get("/get/offers/main/hotels", hotelController.setOnFront); // on site
 router.get("/hotels/get-by-id/:hotelId", hotelController.getHotelsById);
 router.get("/hotelsLocalId", hotelController.getHotelsByLocalID);
 router.get("/hotels/filters", hotelController.getHotelsByFilters);
