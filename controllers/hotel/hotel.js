@@ -17,6 +17,8 @@ const createHotel = async (req, res) => {
       landmark,
       pinCode,
       numRooms,
+      latitude,
+      longitude,
       reviews,
       rating,
       starRating,
@@ -42,6 +44,8 @@ const createHotel = async (req, res) => {
       startDate,
       endDate,
       state,
+      latitude,
+      longitude,
       city,
       landmark,
       pinCode,
@@ -400,36 +404,7 @@ const getHotelsById = async (req, res) => {
 
     // Assuming you have the necessary models imported
     const hotel = await hotelModel.findOne({ hotelId });
- // Fetch monthly data
-//  const monthlyData = await monthly.find();
-
-//  // Get the current date in YYYY-MM-DD format (IST)
-//  const currentDate = new Date();
-//  const IST_OFFSET = 5.5 * 60 * 60 * 1000; // UTC+5:30
-//  const currentDateIST = new Date(currentDate.getTime() + IST_OFFSET);
-//  const formattedCurrentDate = currentDateIST.toISOString().split('T')[0];
-
-//  // Update room prices based on monthly data
-//  hotel.rooms.forEach((room) => {
-//    const matchingMonthlyEntry = monthlyData.find((data) => {
-//      const startDate = new Date(data.startDate);
-//      const endDate = new Date(data.endDate);
-
-//      return (
-//        data.hotelId === hotelId && // Ensure matching hotel ID
-//        data.roomId === room.roomId && // Ensure matching room ID
-//        formattedCurrentDate >= data.startDate && // Current date is after or equal to startDate
-//        formattedCurrentDate <= data.endDate // Current date is before or equal to endDate
-//      );
-//    });
-
-//    // If there's a matching monthly entry, update the room price
-//    if (matchingMonthlyEntry) {
-//      room.price = matchingMonthlyEntry.monthPrice;
-//    }
-//  });
-
-    res.json(hotel);
+     res.json(hotel);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -466,6 +441,8 @@ const getHotelsByFilters = async (req, res) => {
       starRating,
       propertyType,
       localId,
+      latitude,
+      longitude,
       countRooms,
       type,
       bedTypes,
@@ -483,6 +460,8 @@ const getHotelsByFilters = async (req, res) => {
     if (starRating) filters.starRating = starRating;
     if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, "i") };
     if (localId) filters.localId = localId;
+    if (latitude) filters.latitude = latitude;
+    if (longitude) filters.longitude = longitude;
     if (countRooms) filters["rooms.countRooms"] = countRooms;
     if (type) filters["rooms.type"] = { $regex: new RegExp(type, "i") };
     if (bedTypes) filters["rooms.bedTypes"] = { $regex: new RegExp(bedTypes, "i") };

@@ -30,6 +30,8 @@ const hotelsSchema = new mongoose.Schema(
     },
     state: String,
     city: String,
+    latitude: String,
+    longitude: String,
     landmark: String,
     pinCode: Number,
     startDate: {
