@@ -7,11 +7,13 @@ import { useLoader } from "../../utils/loader";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import axios from "axios";
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, Input, makeStyles } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+import CloseIcon from '@mui/icons-material/Close'; 
 import baseURL from "../../baseURL";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
-
+import { fetchLocation } from "../../utils/fetchLocation";
+import NearMeIcon from '@mui/icons-material/NearMe';
 const useStyles = makeStyles((theme) => ({
   form: {
     display: "flex",
@@ -37,6 +39,8 @@ export default function PartnerForm() {
   const navigate = useNavigate();
   const classes = useStyles();
   const [hotelName, setHotelName] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [images, setImages] = useState([]);
   const { showLoader, hideLoader } = useLoader();
   const [hotelOwnerName, setHotelOwnerName] = useState("");
@@ -81,6 +85,8 @@ export default function PartnerForm() {
       formData.append("destination", destination);
       formData.append("startDate", startDate);
       formData.append("endDate", endDate);
+      formData.append("latitude", latitude);
+      formData.append("longitude", longitude);
       formData.append("state", state);
       formData.append("customerWelcomeNote", customerWelcomeNote);
       formData.append("city", city);
@@ -127,14 +133,7 @@ export default function PartnerForm() {
     }
   };
 
-  const handleAddImage = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.className = classes.imageInput;
-    input.onchange = (e) => handleImageChange(e.target.files[0]);
-    document.getElementById("imageInputs").appendChild(input);
-  };
+
 
   const handleImageChange = (file) => {
     setImages((prevImages) => [...prevImages, file]);
@@ -174,6 +173,11 @@ export default function PartnerForm() {
       },
     ]);
   };
+
+  const removeImageInput = (id) => {
+    setImageInputs((prevInputs) => prevInputs.filter(input => input.id !== id));
+  };
+  
   if (!userId) {
     return (
       <div>
@@ -448,36 +452,95 @@ export default function PartnerForm() {
                 ))}
               </select>
             </div>
-            <div className="col-md-12 mb-3">
-              <label htmlFor="images" className="form-label">
-                Pictures (Select Your room images, You can add multiple images)
+            <div className="col-md-4 mb-3">
+              <label htmlFor="buyingRole" className="form-label">
+                Latitude
               </label>
-              <div id="imageInputs">
-                {imageInputs.map((input, index) => (
-                  <div className="mb-2" key={input.id}>
-                    <label htmlFor={input.id} className="form-label">
-                      {input.label}
-                    </label>
-                    <input
-                      className="form-control"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        handleImageChange(e.target.files[0], input.id)
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-              <Button
-                type="button"
-                variant="outlined"
-                color="primary"
-                onClick={addImageInput}
-              >
-                Add More Images
-              </Button>
+              <input
+                type="text"
+                id="landmark2"
+                required
+                className="form-control"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+              />
             </div>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="buyingRole" className="form-label">
+                Longitude
+              </label>
+              <input
+                type="text"
+                id="landmark2"
+                required
+                className="form-control"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+              />
+            </div>
+
+            <div className="col-md-4 mb-3">
+          
+            <Button
+        color="primary"
+        onClick={() => fetchLocation(setLatitude, setLongitude)}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <NearMeIcon style={{ fontSize: '40px' }} />
+        <p style={{ margin: 0 }}>Fetch Automatically</p>
+      </Button>
+            </div>
+
+            <div className="col-md-12 mb-3">
+      <label htmlFor="images" className="form-label">
+        Pictures (Select your room images, you can add multiple images)
+      </label>
+      <div id="imageInputs">
+        {imageInputs.map((input) => (
+          <div className="input-group mb-3" key={input.id}>
+            <label htmlFor="">{input.label}</label>
+            <Input
+              className="form-control"
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageChange(e.target.files[0], input.id)}
+              
+              style={{
+                border: '2px dashed #007bff',
+                padding: '10px',
+                borderRadius: '0.5rem', // Rounded corners
+              }}
+            />
+            <Button
+              color="error"
+              onClick={() => removeImageInput(input.id)}
+              style={{
+                borderRadius: '0.5rem', // Match rounded corners
+                marginLeft: '5px',
+                padding: '0.5rem',
+                height: '100%', // Ensure it matches the height of input
+              }}
+            >
+              <CloseIcon />
+            </Button>
+          </div>
+        ))}
+      </div>
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={addImageInput}
+        style={{
+          marginTop: "10px",
+          borderRadius: "25px",
+          padding: "10px 20px",
+          transition: "background-color 0.3s",
+        }}
+      >
+        <strong>Add More Images</strong>
+      </Button>
+    </div>
 
             <hr />
           </div>

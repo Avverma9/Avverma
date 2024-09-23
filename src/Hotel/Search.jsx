@@ -7,100 +7,66 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  IconButton,
+  Typography,
 } from "@mui/material";
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 
 const SearchForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Function to get the next day's date
-  const getTomorrowDate = (date) => {
-    const currentDate = new Date(date);
-    currentDate.setDate(currentDate.getDate() + 1);
-    return currentDate.toISOString().split("T")[0];
-  };
-
   const currentDate = new Date().toISOString().split("T")[0];
   const [searchData, setSearchData] = useState({
     city: "",
     startDate: currentDate,
-    endDate: getTomorrowDate(currentDate),
+    endDate: currentDate, // Adjust to set the default end date
     countRooms: 1,
     guests: 2,
     localId: "",
     unmarriedCouplesAllowed: "",
+    latitude: null,
+    longitude: null,
   });
-
-  useEffect(() => {
-    setSearchData((prevSearchData) => {
-      const newEndDate = new Date(prevSearchData.startDate);
-      newEndDate.setDate(newEndDate.getDate() + 1);
-      const formattedEndDate = newEndDate.toISOString().split("T")[0];
-      return {
-        ...prevSearchData,
-        endDate: formattedEndDate,
-      };
-    });
-  }, [searchData.startDate]);
 
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
     const inputValue =
       type === "checkbox" ? (checked ? "Accepted" : "") : value.trim();
 
-    setSearchData((prevSearchData) => {
-      const updatedData = { ...prevSearchData, [name]: inputValue };
-
-      if (
-        name === "startDate" &&
-        new Date(updatedData.endDate) < new Date(updatedData.startDate)
-      ) {
-        updatedData.endDate = getTomorrowDate(updatedData.startDate);
-      }
-
-      if (
-        name === "endDate" &&
-        new Date(updatedData.endDate) < new Date(updatedData.startDate)
-      ) {
-        updatedData.endDate = getTomorrowDate(updatedData.startDate);
-      }
-
-      return updatedData;
-    });
-  };
-
-  const handleRoomsChange = (value) => {
-    const newRooms = parseInt(value, 10);
-
-    setSearchData((prevSearchData) => {
-      const minGuestsRequired = newRooms * 3;
-      return {
-        ...prevSearchData,
-        countRooms: Math.max(1, newRooms), // Ensure at least 1 room
-        guests: Math.max(minGuestsRequired, prevSearchData.guests),
-      };
-    });
-  };
-
-  const handleGuestsChange = (value) => {
-    const newGuests = parseInt(value, 10);
-
-    setSearchData((prevSearchData) => {
-      const minRoomsRequired = Math.ceil(newGuests / 3);
-      return {
-        ...prevSearchData,
-        guests: Math.max(1, newGuests), // Ensure at least 1 guest
-        countRooms: Math.max(minRoomsRequired, prevSearchData.countRooms),
-      };
-    });
+    setSearchData((prevSearchData) => ({
+      ...prevSearchData,
+      [name]: inputValue,
+    }));
   };
 
   const handleSearch = () => {
     const queryString = Object.entries(searchData)
-      .filter(([key]) => key !== "countRooms" && key !== "guests") // Exclude countRooms and guests
+      .filter(([key]) => key !== "countRooms" && key !== "guests")
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join("&");
     navigate(`/search?${queryString}`);
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setSearchData((prevData) => ({
+            ...prevData,
+            latitude,
+            longitude,
+          }));
+          navigate(`/search?latitude=${latitude}&longitude=${longitude}`);
+        },
+        (error) => {
+          console.error("Error getting location: ", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   };
 
   if (location.pathname !== "/") {
@@ -112,12 +78,10 @@ const SearchForm = () => {
       style={{
         position: "relative",
         marginTop: "12px",
-
-        backgroundImage:
-          "url(https://www.hotelsugar.in/images/rooms-banner.jpg)",
+        backgroundImage: "url(https://www.hotelsugar.in/images/rooms-banner.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "380px", // Adjust the height as needed
+        minHeight: "380px",
       }}
     >
       <Container
@@ -127,7 +91,7 @@ const SearchForm = () => {
           position: "absolute",
           top: "52%",
           left: "50%",
-          marginBottom:"10%",
+          marginBottom: "10%",
           transform: "translate(-50%, -50%)",
           backgroundColor: "white",
           padding: "20px",
@@ -136,15 +100,23 @@ const SearchForm = () => {
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Search by city, hotel, or neighbourhood"
-              variant="outlined"
-              name="city"
-              value={searchData.city}
-              onChange={handleInputChange}
-              style={{ fontSize: "14px" }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <TextField
+                fullWidth
+                label="Search by city, hotel, or neighbourhood"
+                variant="outlined"
+                name="city"
+                value={searchData.city}
+                onChange={handleInputChange}
+                style={{ fontSize: "14px" }}
+              />
+              <IconButton onClick={getLocation} style={{ marginLeft: '8px', color: "blue" }}>
+                <NotListedLocationIcon style={{ fontSize: "45px" }} />
+                <Typography variant="caption" style={{ display: 'block', fontSize: "12px", textAlign: 'center' }}>
+                  Nearby
+                </Typography>
+              </IconButton>
+            </div>
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -178,7 +150,7 @@ const SearchForm = () => {
               type="number"
               name="adults"
               value={searchData.guests}
-              onChange={(e) => handleGuestsChange(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
               style={{ fontSize: "14px" }}
             />
           </Grid>
@@ -190,7 +162,7 @@ const SearchForm = () => {
               type="number"
               name="rooms"
               value={searchData.countRooms}
-              onChange={(e) => handleRoomsChange(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
               style={{ fontSize: "14px" }}
             />
           </Grid>
