@@ -452,31 +452,35 @@ const getHotelsByFilters = async (req, res) => {
       maxPrice,
     } = req.query;
 
-    let filters = {};
+    let filters = [];
 
-    if (city) filters.city = { $regex: new RegExp(city, "i") };
-    if (state) filters.state = { $regex: new RegExp(state, "i") };
-    if (landmark) filters.landmark = { $regex: new RegExp(landmark, "i") };
-    if (starRating) filters.starRating = starRating;
-    if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, "i") };
-    if (localId) filters.localId = localId;
-    if (latitude) filters.latitude = latitude;
-    if (longitude) filters.longitude = longitude;
-    if (countRooms) filters["rooms.countRooms"] = countRooms;
-    if (type) filters["rooms.type"] = { $regex: new RegExp(type, "i") };
-    if (bedTypes) filters["rooms.bedTypes"] = { $regex: new RegExp(bedTypes, "i") };
-    if (amenities) filters["amenities.amenities"] = { $in: amenities.split(",") };
-    if (unmarriedCouplesAllowed) filters["policies.unmarriedCouplesAllowed"] = unmarriedCouplesAllowed;
+    if (city) filters.push({ city: { $regex: new RegExp(city, "i") } });
+    if (state) filters.push({ state: { $regex: new RegExp(state, "i") } });
+    if (landmark) filters.push({ landmark: { $regex: new RegExp(landmark, "i") } });
+    if (starRating) filters.push({ starRating });
+    if (propertyType) filters.push({ propertyType: { $regex: new RegExp(propertyType, "i") } });
+    if (localId) filters.push({ localId });
+    if (latitude) filters.push({ latitude });
+    if (longitude) filters.push({ longitude });
+    if (countRooms) filters.push({ "rooms.countRooms": countRooms });
+    if (type) filters.push({ "rooms.type": { $regex: new RegExp(type, "i") } });
+    if (bedTypes) filters.push({ "rooms.bedTypes": { $regex: new RegExp(bedTypes, "i") } });
+    if (amenities) filters.push({ "amenities.amenities": { $in: amenities.split(",") } });
+    if (unmarriedCouplesAllowed) filters.push({ "policies.unmarriedCouplesAllowed": unmarriedCouplesAllowed });
 
     // Add the minPrice and maxPrice filtering
     if (minPrice || maxPrice) {
-      filters["rooms.price"] = {};
-      if (minPrice) filters["rooms.price"].$gte = parseFloat(minPrice);
-      if (maxPrice) filters["rooms.price"].$lte = parseFloat(maxPrice);
+      let priceFilter = {};
+      if (minPrice) priceFilter.$gte = parseFloat(minPrice);
+      if (maxPrice) priceFilter.$lte = parseFloat(maxPrice);
+      filters.push({ "rooms.price": priceFilter });
     }
 
+    // Use $or to combine all filters
+    const combinedFilters = filters.length > 0 ? { $or: filters } : {};
+
     // Fetch hotels
-    const hotels = await hotelModel.find(filters);
+    const hotels = await hotelModel.find(combinedFilters);
     const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
     const monthlyData = await monthly.find();
 
@@ -514,6 +518,7 @@ const getHotelsByFilters = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
 
 
 
