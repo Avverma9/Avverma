@@ -3,11 +3,11 @@ const bookingsModel = require('../../models/booking/booking');
 const { DateTime } = require('luxon'); // For date handling
 
 exports.checkAvailability = async (req, res) => {
-    const { hotelId, date } = req.query;
+    const { hotelId, fromDate, toDate } = req.query;
 
-    // Check if hotelId and date are provided
-    if (!hotelId || !date) {
-        return res.status(400).json({ error: 'Hotel ID and date are required.' });
+    // Check if hotelId, fromDate, and toDate are provided
+    if (!hotelId || !fromDate || !toDate) {
+        return res.status(400).json({ error: 'Hotel ID, from date, and to date are required.' });
     }
 
     try {
@@ -20,8 +20,9 @@ exports.checkAvailability = async (req, res) => {
         // Calculate total rooms available
         const totalRooms = hotel.rooms.reduce((total, room) => total + room.totalRooms, 0);
 
-        // Parse the provided date
-        const selectedDate = DateTime.fromISO(date);
+        // Parse the provided dates
+        const startDate = DateTime.fromISO(fromDate);
+        const endDate = DateTime.fromISO(toDate);
 
         // Fetch bookings for the specified hotel
         const bookings = await bookingsModel.find({ hotelId });
@@ -40,14 +41,14 @@ exports.checkAvailability = async (req, res) => {
             const checkOutDate = DateTime.fromISO(booking.checkOutDate);
             const bookingStatus = booking.bookingStatus;
 
-            // Skip bookings that have already checked out before the selected date
-            if (checkOutDate < selectedDate) {
+            // Skip bookings that have already checked out before the fromDate
+            if (checkOutDate < startDate) {
                 continue; // Booking has already checked out
             }
 
-            // Skip bookings that check in after the selected date
-            if (checkInDate > selectedDate) {
-                continue; // Booking starts after the selected date
+            // Skip bookings that check in after the toDate
+            if (checkInDate > endDate) {
+                continue; // Booking starts after the toDate
             }
 
             // Count rooms based on the booking status
