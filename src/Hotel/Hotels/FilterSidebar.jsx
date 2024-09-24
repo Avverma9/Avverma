@@ -21,13 +21,13 @@ import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import amenityIcons from "../../utils/filterOptions";
+import amenityIcons from "../../utils/extrasList";
 import {
   roomTypes,
   propertyTypes,
   bedTypes,
   starRatings,
-} from "../../utils/filterOptions";
+} from "../../utils/extrasList";
 
 // Convert amenityIcons object to an array
 const amenityItems = Object.entries(amenityIcons).map(([name, icon]) => ({

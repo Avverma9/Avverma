@@ -41,7 +41,7 @@ import {
   fetchBookingData,
   fetchMonthlyData,
 } from "../../redux/reducers/bookingSlice";
-import amenityIcons from "../../utils/filterOptions";
+import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
 import axios from "axios";
 

@@ -8,7 +8,7 @@ import Button from "@mui/joy/Button";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
-import amenityIcons from "../utils/filterOptions";
+import amenityIcons from "../utils/extrasList";
 import Stack from "@mui/material/Stack";
 import { IconContext } from "react-icons";
 import Card from "@mui/joy/Card";

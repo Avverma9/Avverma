@@ -13,14 +13,14 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import amenityIcons from "../../utils/filterOptions";
+import amenityIcons from "../../utils/extrasList";
 import { LiaRupeeSignSolid } from "react-icons/lia";
 import {
   roomTypes,
   propertyTypes,
   bedTypes,
   starRatings,
-} from "../../utils/filterOptions";
+} from "../../utils/extrasList";
 import { useNavigate } from "react-router-dom";
 
 const Filterbar = ({ onFilterChange }) => {

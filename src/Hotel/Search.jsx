@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -20,13 +20,13 @@ const SearchForm = () => {
   const [searchData, setSearchData] = useState({
     city: "",
     startDate: currentDate,
-    endDate: currentDate, // Adjust to set the default end date
+    endDate: currentDate,
     countRooms: 1,
     guests: 2,
     localId: "",
     unmarriedCouplesAllowed: "",
-    latitude: null,
-    longitude: null,
+    latitude: "",
+    longitude: "",
   });
 
   const handleInputChange = (e) => {
@@ -41,10 +41,22 @@ const SearchForm = () => {
   };
 
   const handleSearch = () => {
-    const queryString = Object.entries(searchData)
-      .filter(([key]) => key !== "countRooms" && key !== "guests")
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-      .join("&");
+    // Ensure guests is capped at 3
+    const finalGuests = Math.min(parseInt(searchData.guests) || 0, 3);
+    
+    const queryString = Object.entries({
+      ...searchData,
+      guests: finalGuests,
+      latitude:"",
+      longitude:""
+    })
+    .filter(([key, value]) => {
+      // Include only if the value is non-empty or the key is specifically included
+      return value || key === "countRooms" || key === "guests";
+    })
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join("&");
+
     navigate(`/search?${queryString}`);
   };
 
@@ -145,13 +157,14 @@ const SearchForm = () => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              label="Enter number of adults"
+              label="Enter number of adults (max 3)"
               variant="outlined"
               type="number"
-              name="adults"
+              name="guests"
               value={searchData.guests}
-              onChange={(e) => handleInputChange(e)}
+              onChange={handleInputChange}
               style={{ fontSize: "14px" }}
+              inputProps={{ max: 3 }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -160,9 +173,9 @@ const SearchForm = () => {
               label="Enter number of rooms"
               variant="outlined"
               type="number"
-              name="rooms"
+              name="countRooms"
               value={searchData.countRooms}
-              onChange={(e) => handleInputChange(e)}
+              onChange={handleInputChange}
               style={{ fontSize: "14px" }}
             />
           </Grid>

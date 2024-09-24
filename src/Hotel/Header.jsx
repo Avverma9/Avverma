@@ -39,7 +39,7 @@ const Header = () => {
     handleClose();
   };
   const logoClick = () => {
-    navigate("/");
+   window.location.href="/"
     handleClose();
   };
   const homeclick = () => {
