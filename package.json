@@ -17,6 +17,7 @@
     "express": "^4.18.3",
     "http": "^0.0.1-security",
     "install": "^0.13.0",
+    "luxon": "^3.5.0",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.45",
     "mongoose": "^8.2.0",

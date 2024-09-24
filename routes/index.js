@@ -19,6 +19,7 @@ const messengerRouter = require("./messenger/messenger");
 const policyRouter = require("./hotel/policy");
 const amenitiesRouter = require("./hotel/amenities");
 const bulkRouter = require("./bulkOperation")
+const availability = require("./hotel/availability")
 // Initialize the router
 const router = express.Router();
 
@@ -41,6 +42,8 @@ router.use("/", messengerRouter);
 router.use("/", policyRouter);
 router.use("/", amenitiesRouter);
 router.use("/", bulkRouter);
+router.use("/", availability);
+
 
 
 module.exports = router;
