@@ -1,6 +1,9 @@
 const hotelModel = require("../../models/hotel/basicDetails");
 const month = require("../../models/booking/monthly");
 const cron = require("node-cron");
+const { DateTime } = require('luxon'); // Add this line at the top
+
+const bookingsModel = require("../../models/booking/booking")
 const monthly = require("../../models/booking/monthly");
 const createHotel = async (req, res) => {
   try {
@@ -444,31 +447,36 @@ const getHotelsByFilters = async (req, res) => {
       latitude,
       longitude,
       countRooms,
+      guests,
       type,
       bedTypes,
       amenities,
       unmarriedCouplesAllowed,
       minPrice,
       maxPrice,
+      checkInDate,
+      checkOutDate,
     } = req.query;
 
     let filters = [];
 
+    // Build filter conditions
     if (city) filters.push({ city: { $regex: new RegExp(city, "i") } });
     if (state) filters.push({ state: { $regex: new RegExp(state, "i") } });
     if (landmark) filters.push({ landmark: { $regex: new RegExp(landmark, "i") } });
     if (starRating) filters.push({ starRating });
+    if (guests) filters.push({ guests });
     if (propertyType) filters.push({ propertyType: { $regex: new RegExp(propertyType, "i") } });
     if (localId) filters.push({ localId });
     if (latitude) filters.push({ latitude });
     if (longitude) filters.push({ longitude });
-    if (countRooms) filters.push({ "rooms.countRooms": countRooms });
+    if (countRooms) filters.push({ "rooms.countRooms": { $gte: parseInt(countRooms) } }); // Changed from $lte to $gte
     if (type) filters.push({ "rooms.type": { $regex: new RegExp(type, "i") } });
     if (bedTypes) filters.push({ "rooms.bedTypes": { $regex: new RegExp(bedTypes, "i") } });
     if (amenities) filters.push({ "amenities.amenities": { $in: amenities.split(",") } });
     if (unmarriedCouplesAllowed) filters.push({ "policies.unmarriedCouplesAllowed": unmarriedCouplesAllowed });
 
-    // Add the minPrice and maxPrice filtering
+    // Add minPrice and maxPrice filtering
     if (minPrice || maxPrice) {
       let priceFilter = {};
       if (minPrice) priceFilter.$gte = parseFloat(minPrice);
@@ -476,15 +484,34 @@ const getHotelsByFilters = async (req, res) => {
       filters.push({ "rooms.price": priceFilter });
     }
 
-    // Use $or to combine all filters
+    // Combine filters using $or
     const combinedFilters = filters.length > 0 ? { $or: filters } : {};
 
     // Fetch hotels
     const hotels = await hotelModel.find(combinedFilters);
     const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
+
+    // If checkInDate and checkOutDate are provided, check availability
+    if (checkInDate && checkOutDate) {
+      const availableHotels = [];
+
+      for (const hotel of acceptedHotels) {
+        // Check availability for this hotel
+        const { availableRooms } = await checkAvailability({ hotelId: hotel.hotelId, checkInDate, checkOutDate });
+
+        // If available rooms are present, add to the list
+        if (availableRooms > 0) {
+          availableHotels.push(hotel);
+        }
+      }
+
+      return res.status(200).json({ success: true, data: availableHotels });
+    }
+
+    // Get monthly data
     const monthlyData = await monthly.find();
 
-    // Get the current date in YYYY-MM-DD format (IST)
+    // Get current date in YYYY-MM-DD format (IST)
     const currentDate = new Date();
     const IST_OFFSET = 5.5 * 60 * 60 * 1000; // UTC+5:30
     const currentDateIST = new Date(currentDate.getTime() + IST_OFFSET);
@@ -498,10 +525,10 @@ const getHotelsByFilters = async (req, res) => {
           const endDate = new Date(data.endDate);
 
           return (
-            data.hotelId === hotel.hotelId.toString() && // Ensure matching hotel ID
-            data.roomId === room.roomId && // Ensure matching room ID
-            formattedCurrentDate >= data.startDate && // Current date is after or equal to startDate
-            formattedCurrentDate <= data.endDate // Current date is before or equal to endDate
+            data.hotelId === hotel.hotelId.toString() &&
+            data.roomId === room.roomId &&
+            formattedCurrentDate >= data.startDate &&
+            formattedCurrentDate <= data.endDate
           );
         });
 
@@ -519,197 +546,31 @@ const getHotelsByFilters = async (req, res) => {
   }
 };
 
+// Sample checkAvailability function
+async function checkAvailability({ hotelId, checkInDate, checkOutDate }) {
+  const bookings = await bookingsModel.find({ hotelId });
 
+  let bookedRooms = 0;
 
+  for (const booking of bookings) {
+    const checkIn = new Date(booking.checkInDate);
+    const checkOut = new Date(booking.checkOutDate);
 
-//===================================update room =============================================
-const updateRoom = async (req, res) => {
-  const { hotelid, roomid } = req.params;
-  const { type, bedTypes, price } = req.body;
-
-  // Assuming images are optional in the request body
-  const images = req.files ? req.files.map((file) => file.location) : [];
-
-  try {
-    // Use lean() to get a plain JavaScript object instead of a mongoose document
-    const hotel = await hotelModel.findById(hotelid).lean();
-
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
+    // Skip bookings that don't overlap with the requested dates
+    if (checkOut < new Date(checkInDate) || checkIn > new Date(checkOutDate)) {
+      continue;
     }
 
-    const roomIndex = hotel.roomDetails.findIndex(
-      (room) => room._id.toString() === roomid
-    );
-    if (roomIndex === -1) {
-      return res.status(404).json({ error: "Room not found" });
-    }
-
-    // Update only if the field is provided in the request body
-    if (type !== undefined) {
-      hotel.roomDetails[roomIndex].type = type;
-    }
-    if (bedTypes !== undefined) {
-      hotel.roomDetails[roomIndex].bedTypes = bedTypes;
-    }
-    if (price !== undefined) {
-      hotel.roomDetails[roomIndex].price = price;
-    }
-    // Update images only if images are provided in the request
-    if (images.length > 0) {
-      hotel.roomDetails[roomIndex].images = images;
-    }
-
-    // Use updateOne instead of save to update specific fields
-    await hotelModel.updateOne(
-      { _id: hotelid, "roomDetails._id": roomid },
-      { $set: { "roomDetails.$": hotel.roomDetails[roomIndex] } }
-    );
-
-    // Return the updated room details
-    res.json(hotel.roomDetails[roomIndex]);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-//==================================add new room===============================================
-const addRoomToHotel = async function (req, res) {
-  const { hotelId } = req.params;
-  const { type, bedTypes, price, countRooms } = req.body;
-
-  try {
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-
-    const images = req.files.map((file) => file.location);
-    const newDetails = {
-      images,
-      type,
-      bedTypes,
-      price,
-      countRooms, // Corrected property name
-    };
-
-    hotel.roomDetails.push(newDetails);
-    hotel.numRooms += countRooms;
-    await hotel.save();
-
-    return res.status(200).json(hotel);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-//====================================add foods to hotel============================================
-const addFoodToHotel = async (request, response) => {
-  const { hotelId } = request.params;
-  const { name, foodType, about, price } = request.body;
-  const hotel = await hotelModel.findById(hotelId);
-
-  const images = request.files.map((file) => file.location);
-  const foods = {
-    name,
-    foodType,
-    images,
-    about,
-    price,
-  };
-
-  hotel.foodItems.push(foods);
-  await hotel.save();
-  response.json(hotel);
-};
-
-//=====================================delete foods==========================================
-const deleteFoods = async function (req, res) {
-  const { hotelId } = req.params;
-  const { foodId } = req.body;
-
-  try {
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-
-    const foodIndex = hotel.foodItems.findIndex(
-      (food) => food._id.toString() === foodId
-    );
-
-    if (foodIndex === -1) {
-      return res
-        .status(404)
-        .json({ error: "Room detail not found in the hotel" });
-    }
-
-    hotel.foodItems.splice(foodIndex, 1);
-
-    await hotel.save();
-
-    return res.status(200).json(hotel);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-//=============================delete room======================================================
-const deleteRoom = async function (req, res) {
-  const { hotelId } = req.params;
-  const { roomId } = req.body;
-
-  try {
-    const hotel = await hotelModel.findById(hotelId);
-    if (!hotel) {
-      return res.status(404).json({ error: "Hotel not found" });
-    }
-
-    const room = hotel.roomDetails.find(
-      (room) => room._id.toString() === roomId
-    );
-
-    if (!room) {
-      return res
-        .status(404)
-        .json({ error: "Room detail not found in the hotel" });
-    }
-
-    // Decrease the numRooms count by the value of room.countRooms
-    hotel.numRooms -= room.countRooms;
-
-    // Remove the room from the roomDetails array
-    hotel.roomDetails = hotel.roomDetails.filter(
-      (room) => room._id.toString() !== roomId
-    );
-
-    // Save the updated hotel document
-    await hotel.save();
-
-    return res.status(200).json(hotel);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-};
-
-//update hotel amenity
-const updateAmenity = async (req, res) => {
-  const { id } = req.params;
-  const { amenities } = req.body;
-  const hotel = await hotelModel.findById(id);
-
-  if (!hotel) {
-    return res.status(404).json({ message: "Hotel not found" });
+    bookedRooms += booking.numRooms; // Count booked rooms
   }
 
-  hotel.amenities = amenities;
-  await hotel.save();
+  const hotel = await hotelModel.findOne({ hotelId });
+  const availableRooms = hotel.rooms.reduce((total, room) => total + room.countRooms, 0) - bookedRooms;
 
-  return res.json({ message: "Amenities updated successfully", hotel });
-};
+  return { availableRooms };
+}
+
+
 
 const getHotelsState = async function (req, res) {
   try {
@@ -776,45 +637,7 @@ const getHotelsCity = async function (req, res) {
   }
 };
 
-//=============================================================
-const getByRoom = async (req, res) => {
-  const roomType = req.params.roomType;
 
-  try {
-    const hotel = await hotelModel
-      .findOne({ "roomDetails.type": roomType })
-      .select("_id roomDetails hotelName"); // Include hotelName in the select projection
-
-    if (!hotel) {
-      return res
-        .status(404)
-        .json({ message: "No hotel found for the specified room type." });
-    }
-
-    // Extract only the roomDetails for the specified type
-    const standardRoom = hotel.roomDetails.find(
-      (room) => room.type === roomType
-    );
-
-    if (!standardRoom) {
-      return res
-        .status(404)
-        .json({ message: "No data found for the specified room type." });
-    }
-
-    // Include hotelName in the response
-    res.json({
-      hotels: {
-        _id: hotel._id,
-        hotelName: hotel.hotelName,
-        roomDetails: [standardRoom],
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-};
 //=================================Update price monthly============================================
 const monthlyPrice = async function (req, res) {
   try {
@@ -866,17 +689,10 @@ module.exports = {
   UpdateHotelStatus,
   getHotels,
   setOnFront,
-  updateRoom,
-  addRoomToHotel,
-  deleteRoom,
-  addFoodToHotel,
-  deleteFoods,
-  updateAmenity,
   deleteHotelById,
   UpdateHotelInfo,
   getHotelsState,
   getHotelsCity,
-  getByRoom,
   monthlyPrice,
   getCount,
   getCountPendingHotels,

@@ -19,6 +19,7 @@ exports.checkAvailability = async (req, res) => {
 
         // Calculate total rooms available
         const totalRooms = hotel.rooms.reduce((total, room) => total + room.totalRooms, 0);
+        const availableRooms = hotel.rooms.reduce((total, room) => total + room.countRooms, 0);
 
         // Parse the provided dates
         const startDate = DateTime.fromISO(fromDate);
@@ -80,7 +81,6 @@ exports.checkAvailability = async (req, res) => {
         }
 
         // Calculate available rooms
-        const availableRooms = totalRooms - bookedRooms;
 
         // Send response
         return res.json({
