@@ -71,9 +71,11 @@ exports.getRoomsByEmailId = async (req, res) => {
     }
 };
 exports.updateRoomsByRoomId = async (req, res) => {
-    const { roomId, type, bedTypes, price, countRooms, soldOut } = req.body;
+    const { roomId, type, bedTypes, price, countRooms, soldOut,totalRooms} = req.body;
     const images = req.files ? req.files.map((file) => file.location) : [];
     const parsedCountRooms = Number(countRooms);
+    const parsedTotalRooms = Number(totalRooms);
+
     const parsedPrice = Number(price);
 
     try {
@@ -85,7 +87,7 @@ exports.updateRoomsByRoomId = async (req, res) => {
                 'rooms.$.bedTypes': bedTypes,
                 'rooms.$.price': parsedPrice,
                 'rooms.$.countRooms': parsedCountRooms,
-                'rooms.$.totalRooms': parsedCountRooms, // Update totalRooms based on countRooms
+                'rooms.$.totalRooms': parsedTotalRooms, // Update totalRooms based on countRooms
             },
         };
 
