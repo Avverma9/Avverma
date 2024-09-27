@@ -186,7 +186,7 @@ exports.findAllAvailableHotels = async (req, res) => {
                 hotelName: hotel.hotelName,
                 totalRooms,
                 bookedRooms,
-                availableRooms: totalRooms - bookedRooms,
+                availableRooms,
                 cancelledRooms,
                 checkedInRooms,
                 checkedOutRooms,
