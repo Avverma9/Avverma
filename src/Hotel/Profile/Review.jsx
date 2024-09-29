@@ -124,7 +124,7 @@ export default function Reviews() {
         currentReviews.map((reviewData, index) => (
           <div key={index} className="review-card">
             <div className="userImage-container">
-              <img src={reviewData?.userImage} alt="User" loading="lazy" />
+              <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" loading="lazy" />
             </div>
             <div className="review-content">
               <div className="user-info">

@@ -537,7 +537,7 @@ useEffect(() => {
                 </>
               ) : (
                 <p>
-                <span style={{ color: "red", fontSize: "12px", marginRight: "5px" }}>Starting rooms Price </span>
+                <span style={{ color: "red", fontSize: "12px", marginRight: "5px" }}>Room starting with </span>
                 <strong>₹{showLowestPrice}</strong>
               </p>
               

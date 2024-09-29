@@ -206,7 +206,6 @@ const Rooms = ({ hotelData, selectedRooms, handleAddRoom, handleRemoveRoom }) =>
       {/* Save overall lowest price to localStorage */}
       {overallLowestPrice !== Infinity && localStorage.setItem('lowestPrice', overallLowestPrice)}
 
-      <p>Overall Lowest Price: {overallLowestPrice}</p>
     </div>
   );
 };
