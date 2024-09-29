@@ -19,8 +19,8 @@ const SearchForm = () => {
   const currentDate = new Date().toISOString().split("T")[0];
   const [searchData, setSearchData] = useState({
     city: "",
-    startDate: currentDate,
-    endDate: currentDate,
+    checkInDate: currentDate,
+    checkOutDate: currentDate,
     countRooms: 1,
     guests: 2,
     localId: "",
@@ -136,8 +136,8 @@ const SearchForm = () => {
               label="Check-in"
               variant="outlined"
               type="date"
-              name="startDate"
-              value={searchData.startDate}
+              name="checkInDate"
+              value={searchData.checkInDate}
               onChange={handleInputChange}
               style={{ fontSize: "14px" }}
             />
@@ -148,8 +148,8 @@ const SearchForm = () => {
               label="Check-out"
               variant="outlined"
               type="date"
-              name="endDate"
-              value={searchData.endDate}
+              name="checkOutDate"
+              value={searchData.checkOutDate}
               onChange={handleInputChange}
               style={{ fontSize: "14px" }}
             />
