@@ -560,7 +560,7 @@ useEffect(() => {
               <p>
                 <PlaceIcon />
                 {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
-                {hotelData?.zip}
+                {hotelData?.pinCode}
               </p>{" "}
               <p>{hotelData?.customerWelcomeNote}</p>
             </div>

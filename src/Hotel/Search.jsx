@@ -31,8 +31,7 @@ const SearchForm = () => {
 
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
-    const inputValue =
-      type === "checkbox" ? (checked ? "Accepted" : "") : value.trim();
+    const inputValue = type === "checkbox" ? (checked ? "Accepted" : "") : value; // Allow spaces
 
     setSearchData((prevSearchData) => ({
       ...prevSearchData,
@@ -47,17 +46,23 @@ const SearchForm = () => {
     const queryString = Object.entries({
       ...searchData,
       guests: finalGuests,
-      latitude:"",
-      longitude:""
+      latitude: "",
+      longitude: ""
     })
     .filter(([key, value]) => {
-      // Include only if the value is non-empty or the key is specifically included
       return value || key === "countRooms" || key === "guests";
     })
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`) // Properly encode
     .join("&");
 
     navigate(`/search?${queryString}`);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // Prevent default form submission
+      handleSearch();
+    }
   };
 
   const getLocation = () => {
@@ -109,6 +114,7 @@ const SearchForm = () => {
           padding: "20px",
           borderRadius: "10px",
         }}
+        onKeyDown={handleKeyPress} // Add the keyDown event listener here
       >
         <Grid container spacing={2}>
           <Grid item xs={12}>
