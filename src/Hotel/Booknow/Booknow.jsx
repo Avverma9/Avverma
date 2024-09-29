@@ -559,7 +559,7 @@ useEffect(() => {
               {" "}
               <p>
                 <PlaceIcon />
-                {hotelData?.city}, {hotelData?.destination}, {hotelData?.state},{" "}
+                {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
                 {hotelData?.zip}
               </p>{" "}
               <p>{hotelData?.customerWelcomeNote}</p>

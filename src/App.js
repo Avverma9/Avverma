@@ -48,7 +48,7 @@ function App() {
             <Route path="/partner/second-step" element={<PolicyForm />} />
             <Route path="/partner/third-step" element={<AmenitiesPage />} />
             <Route path="/partner/fourth-step" element={<PartnerFoods />} />
-            <Route path="/partner/last-step" element={<PartnerRooms />} />
+            <Route path="/partner/last-sbookingIdtep" element={<PartnerRooms />} />
           </Routes>
           <Bottom />
           <Footer />
