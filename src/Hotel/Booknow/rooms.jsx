@@ -8,7 +8,7 @@ import CardActions from "@mui/material/CardActions";
 import Grid from "@mui/material/Grid";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import "./Booknow.css";
+// import "./Booknow.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMonthlyData } from "../../redux/reducers/bookingSlice";
 import { useLocation } from "react-router-dom";
@@ -132,7 +132,7 @@ const Rooms = ({ hotelData, selectedRooms, handleAddRoom, handleRemoveRoom }) =>
       {/* Mobile view section for special rooms */}
       <div className="col-md-4 d-block d-md-none">
         <div className="container mt-3">
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             {hotelData?.rooms?.map((room, index) => {
               const monthlyEntry = monthlyData.find((data) => {
                 return (
