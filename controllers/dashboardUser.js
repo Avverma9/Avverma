@@ -103,11 +103,11 @@ const getPartners = async function (req, res) {
     res.json(fetchUser);
 };
 //delete
-const getPartnersById = async(req,res)=>{
-    const {id}= req.params
-    const fetchUser = await Dashboard.findById(id)
-    res.json(fetchUser)
-}
+const getPartnersById = async (req, res) => {
+    const { id } = req.params;
+    const fetchUser = await Dashboard.findById(id);
+    res.json(fetchUser);
+};
 const deletePartner = async function (req, res) {
     const { id } = req.params;
     const deleted = await Dashboard.findByIdAndDelete(id);
@@ -184,10 +184,18 @@ const updatePartner = async function (req, res) {
 
 const addMenu = async (req, res) => {
     const { id } = req.params;
-    const { menuItem } = req.body;
+    const { menuItems } = req.body; // Expecting an array of menu items
 
     try {
-        const user = await Dashboard.findByIdAndUpdate(id, { $push: { menuItems: menuItem } }, { new: true });
+        // Ensure menuItems is an array and flatten it to handle duplicates
+        const itemsToAdd = Array.isArray(menuItems) ? menuItems : [menuItems];
+
+        // Use $addToSet to avoid duplicates
+        const user = await Dashboard.findByIdAndUpdate(
+            id,
+            { $addToSet: { menuItems: { $each: itemsToAdd } } }, // Add multiple items
+            { new: true }
+        );
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -199,26 +207,36 @@ const addMenu = async (req, res) => {
     }
 };
 
-const deleteMenu = async (req,res)=>{
-  const { id } = req.params;
-  const { menuItem } = req.body;
 
-  try {
-      const user = await dashboardUser.findByIdAndUpdate(
-          id,
-          { $pull: { menuItems: menuItem } },
-          { new: true }
-      );
+const deleteMenu = async (req, res) => {
+    const { id } = req.params;
+    const { menuItem } = req.body;
 
-      if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-      }
+    try {
+        // Find the user by ID
+        const user = await Dashboard.findById(id);
 
-      res.json(user);
-  } catch (error) {
-      res.status(500).json({ message: error.message });
-  }
-}
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Check if the menuItem exists in the menuItems array
+        const itemIndex = user.menuItems.indexOf(menuItem);
+        if (itemIndex === -1) {
+            return res.status(400).json({ message: 'Menu item not found' });
+        }
+
+        // Remove the menu item from the array
+        user.menuItems.splice(itemIndex, 1);
+
+        // Save the updated user document
+        await user.save();
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 module.exports = {
     registerUser,
@@ -229,5 +247,5 @@ module.exports = {
     updateStatus,
     addMenu,
     deleteMenu,
-    getPartnersById
+    getPartnersById,
 };

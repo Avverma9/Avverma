@@ -12,6 +12,6 @@ router.get('/login/dashboard/get/all/user/:id', DashboardUser.getPartnersById);
 router.delete('/delete/dashboard/delete/partner/:id', DashboardUser.deletePartner);
 router.patch('/update/dashboard/updated/partner/:id', upload, DashboardUser.updatePartner);
 router.post('/api/users/:id/menu-items', DashboardUser.addMenu);
-router.delete('/api/users/:id/menu-items', DashboardUser.addMenu);
+router.patch('/api/users/:id/menu-items', DashboardUser.deleteMenu);
 
 module.exports = router;
