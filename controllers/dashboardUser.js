@@ -103,7 +103,11 @@ const getPartners = async function (req, res) {
     res.json(fetchUser);
 };
 //delete
-
+const getPartnersById = async(req,res)=>{
+    const {id}= req.params
+    const fetchUser = await Dashboard.findById(id)
+    res.json(fetchUser)
+}
 const deletePartner = async function (req, res) {
     const { id } = req.params;
     const deleted = await Dashboard.findByIdAndDelete(id);
@@ -224,5 +228,6 @@ module.exports = {
     updatePartner,
     updateStatus,
     addMenu,
-    deleteMenu
+    deleteMenu,
+    getPartnersById
 };
