@@ -191,7 +191,6 @@ export const ConfirmBooking = () => {
                                     position: 'relative',
                                     p: 2,
                                     width: '100%',
-                                    maxWidth: 600,
                                     bgcolor: 'background.paper',
                                 }}
                             >
@@ -314,7 +313,7 @@ export const ConfirmBooking = () => {
                         </div>
                     </>
                 ) : (
-                    <p>No bookings available for the selected status.</p>
+                    <p>No bookings available.</p>
                 )}
 
                 <Pagination

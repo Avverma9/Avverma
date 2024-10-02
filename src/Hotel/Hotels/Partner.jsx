@@ -14,6 +14,7 @@ import baseURL from '../../baseURL';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
 import { fetchLocation } from '../../utils/fetchLocation';
 import NearMeIcon from '@mui/icons-material/NearMe';
+import { termsArray } from '../../utils/extrasList';
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
@@ -181,6 +182,49 @@ export default function PartnerForm() {
                 style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '20px', backgroundColor: '#ececec' }}
             >
                 <h5 className="mb-3">Welcome to our team</h5>
+                <hr />
+                <Accordion
+                    sx={{
+                        border: '1px solid #e0e0e0',
+                        borderRadius: '8px',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        marginBottom: '16px',
+                    }}
+                >
+                    <AccordionSummary
+                        expandIcon={<ArrowDownwardIcon />}
+                        aria-controls="panel1-content"
+                        id="panel1-header"
+                        sx={{
+                            backgroundColor: '#f5f5f5',
+                            borderBottom: '1px solid #e0e0e0',
+                           
+                        }}
+                    >
+                        <Typography variant="p1" sx={{ fontWeight: 'bold', color: '#333' }}>
+                            Terms & Conditions Apply
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Typography
+                            sx={{
+                                color: '#555',
+                                lineHeight: '1.6',
+                                '& span': {
+                                    display: 'block', // Ensures each bullet point is on a new line
+                                    margin: '8px 0', // Adds space between points
+                                },
+                            }}
+                        >
+                            {termsArray.map((term, index) => (
+                                <span key={index}>
+                                    {'• '}
+                                    {term}
+                                </span>
+                            ))}
+                        </Typography>
+                    </AccordionDetails>
+                </Accordion>
                 <hr />
                 <form onSubmit={handleSubmit}>
                     <div className="row">
@@ -538,22 +582,6 @@ export default function PartnerForm() {
                         Next
                     </Button>
                     <hr />
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ArrowDownwardIcon />} aria-controls="panel1-content" id="panel1-header">
-                            <Typography>Terms & conditions apply</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Typography>
-                                {textArray.map((part, index) => (
-                                    <span key={index}>
-                                        {index > 0 && '• '} {/* Add the disc symbol for each line after the first one */}
-                                        {part}
-                                        <br />
-                                    </span>
-                                ))}
-                            </Typography>
-                        </AccordionDetails>
-                    </Accordion>
                 </form>
             </div>
         </>
