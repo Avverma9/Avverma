@@ -9,7 +9,7 @@ const SearchForm = () => {
 
     const currentDate = new Date().toISOString().split('T')[0];
     const [searchData, setSearchData] = useState({
-        city: '',
+        search: '',
         checkInDate: currentDate,
         checkOutDate: currentDate,
         countRooms: 1,
@@ -36,7 +36,6 @@ const SearchForm = () => {
 
         const queryString = Object.entries({
             ...searchData,
-            guests: finalGuests,
             latitude: '',
             longitude: '',
         })
@@ -114,8 +113,8 @@ const SearchForm = () => {
                                 fullWidth
                                 label="Search by city, hotel, or neighbourhood"
                                 variant="outlined"
-                                name="city"
-                                value={searchData.city}
+                                name="search" // Ensure the name is 'search'
+                                value={searchData.search} // Correctly bind value to searchData.search
                                 onChange={handleInputChange}
                                 style={{ fontSize: '14px' }}
                             />
