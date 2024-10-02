@@ -433,6 +433,45 @@ const BookNow = () => {
         setCurrentImageIndex(index);
         setIsOpen(true);
     };
+
+    const containerStyle = {
+        padding: '16px',
+        backgroundColor: '#f9f9f9',
+        borderRadius: '8px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+        marginBottom: '20px',
+    };
+
+    const titleStyle = {
+        fontSize: '1.2rem',
+        fontWeight: '600',
+        color: '#333',
+        marginBottom: '16px',
+    };
+
+    const gridStyle = {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Adjust columns to fill available space
+        gridGap: '12px', // Space between each amenity
+        alignItems: 'center',
+    };
+
+    const amenityStyle = {
+        backgroundColor: '#fff',
+        padding: '5px',
+        borderRadius: '2px',
+        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        fontSize: '0.95rem',
+        color: '#555',
+    };
+
+    const iconStyle = {
+        marginRight: '8px',
+        color: '#007bff', // Icon color
+    };
     return (
         <div className="book-now-container">
             {hotelData ? (
@@ -512,8 +551,8 @@ const BookNow = () => {
                                 </>
                             ) : (
                                 <p>
-                                    <span style={{ color: 'red', fontSize: '12px', marginRight: '5px' }}>Room starting with </span>
-                                    <strong>₹{showLowestPrice}</strong>
+                                    <strong>₹{showLowestPrice}</strong>{' '}
+                                    <span style={{ color: 'red', fontSize: '12px', marginRight: '5px' }}>Starting price </span>
                                 </p>
                             )}
                         </h5>
@@ -539,7 +578,7 @@ const BookNow = () => {
                             key={index}
                             sx={{
                                 width: '100%', // Set fixed width
-                                maxWidth: '400px',
+                                maxWidth: '420px',
                                 marginBottom: 1,
                                 paddingX: 2,
                                 paddingY: 2,
@@ -557,12 +596,12 @@ const BookNow = () => {
                             <Grid container spacing={1} sx={{ marginBottom: 1 }}>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-in:</strong> 12:00 PM
+                                        <strong>Check-in:</strong> {policy?.checkInPolicy}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-out:</strong> 11:00 AM
+                                        <strong>Check-out:</strong> {policy?.checkOutPolicy}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -572,10 +611,16 @@ const BookNow = () => {
                             <Typography variant="body2" sx={{ marginBottom: 0.5, fontSize: '0.85rem' }}>
                                 <strong>Hotel's Policy:</strong>
                             </Typography>
-                            <ul style={{ marginLeft: '1rem', marginBottom: 0.5 }}>
-                                <li style={{ fontSize: '0.85rem' }}>Free cancellation till 24 Sep'24 11:59 AM</li>
-                                <li style={{ fontSize: '0.85rem' }}>100% booking amount charged after 24 Sep'24 12:00 PM</li>
-                                <li style={{ fontSize: '0.85rem' }}>No-show: full amount will be charged</li>
+                            <ul style={{ marginLeft: '1rem', marginBottom: '0.5rem' }}>
+                                {policy?.hotelsPolicy &&
+                                    policy.hotelsPolicy.split('•').map((sentence, index) => {
+                                        const trimmedSentence = sentence.trim();
+                                        return trimmedSentence ? (
+                                            <li key={index} style={{ fontSize: '0.85rem' }}>
+                                                {trimmedSentence}
+                                            </li>
+                                        ) : null; // Avoid rendering empty list items
+                                    })}
                             </ul>
 
                             <Divider sx={{ marginY: 1 }} />
@@ -584,13 +629,19 @@ const BookNow = () => {
                                 <strong>Couples Friendly:</strong>
                             </Typography>
                             <ul style={{ marginLeft: '1rem', marginBottom: 0.5 }}>
-                                <li style={{ fontSize: '0.85rem' }}> {policy.unmarriedCouplesAllowed}</li>
+                                <li style={{ fontSize: '0.85rem' }}>
+                                    {' '}
+                                    {policy.unmarriedCouplesAllowed ? 'Yes we allow couples' : 'Current not accepting couples'}
+                                </li>
                             </ul>
 
                             <Divider sx={{ marginY: 1 }} />
 
                             <Typography variant="body2" sx={{ fontSize: '0.85rem' }}>
-                                <strong>Local ID:</strong>  {hotelData?.localId === true ? "Local and outstation IDs are accepted." : "Local and outstation IDs are not accepted."}
+                                <strong>Local ID:</strong>{' '}
+                                {hotelData?.localId === true
+                                    ? 'Local and outstation IDs are accepted.'
+                                    : 'Local and outstation IDs are not accepted.'}
                             </Typography>
 
                             <Divider sx={{ marginY: 1 }} />
@@ -605,7 +656,8 @@ const BookNow = () => {
                                             justifyContent: 'center',
                                         }}
                                     >
-                                        <span style={{ marginRight: '250px' }}></span>
+                                        <span style={{ marginRight: '200px' }}></span>
+                                        <hr />
                                         <button className="custom-button" onClick={handleClickOpen}>
                                             ... View more
                                         </button>
@@ -651,33 +703,32 @@ const BookNow = () => {
                         </Box>
                     ))}
                     <div className="extras">
-                        <div className="amenities-container">
-                            <h6>Our amenities</h6>
-                            {hotelData?.amenities?.map((amenityArray, index) => (
-                                <div key={index}>
-                                    {amenityArray.amenities.slice(0, 5).map((amenity, innerIndex) => (
-                                        <div key={innerIndex}>
-                                            {' '}
-                                            <IconContext.Provider value={{ size: '1.2em' }}>
-                                                {amenityIcons[amenity] || defaultIcon} {amenity}
+                        <div style={containerStyle}>
+                            <h6 style={titleStyle}>Our Amenities</h6>
+                            <div style={gridStyle}>
+                                {hotelData?.amenities?.flatMap((amenityArray, index) =>
+                                    amenityArray.amenities.slice(0, 5).map((amenity, innerIndex) => (
+                                        <div key={`${index}-${innerIndex}`} style={amenityStyle}>
+                                            <IconContext.Provider value={{ size: '1.2em', style: iconStyle }}>
+                                                {amenityIcons[amenity] || defaultIcon}
                                             </IconContext.Provider>
+                                            <span>{amenity}</span>
                                         </div>
-                                    ))}
-                                </div>
-                            ))}
+                                    ))
+                                )}
+                            </div>
                         </div>
 
-                        <div className="hotel-policies-container">
+                        <div className="hotel-policies-container" style={{ width: '100%', marginBottom: '20px' }}>
                             <Accordion
                                 expanded={expanded}
                                 onChange={handleExpansion}
                                 slotProps={{ transition: { timeout: 400 } }}
                                 sx={{
-                                    '& .MuiAccordion-region': { height: expanded ? 'auto' : 0 },
-                                    '& .MuiAccordionDetails-root': {
-                                        display: expanded ? 'block' : 'none',
-                                    },
-                                    width: '100%', // Make Accordion fill the container's width
+                                    width: '100%',
+                                    border: '1px solid #e0e0e0',
+                                    borderRadius: '8px',
+                                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
                                 }}
                             >
                                 <AccordionSummary
@@ -686,32 +737,29 @@ const BookNow = () => {
                                     id={`panel-header`}
                                     sx={{
                                         display: 'flex',
-                                        flexDirection: 'row',
-                                        width: '100%', // Make AccordionSummary fill the container's width
                                         justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        backgroundColor: '#f5f5f5',
+                                        padding: '12px 16px',
+                                        borderRadius: '8px 8px 0 0',
                                     }}
                                 >
                                     <Typography
                                         sx={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            flexWrap: 'wrap',
+                                            fontWeight: '600',
+                                            color: '#333',
                                         }}
                                     >
-                                        See +
-                                        <Typography>
-                                            {/* Calculate total number of amenities */}
-                                            {hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities).length - 5} more
-                                            amenities
-                                        </Typography>
+                                        See + {hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities).length - 5} more
+                                        amenities
                                     </Typography>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div
                                         style={{
                                             display: 'flex',
-                                            flexDirection: 'row',
-                                            flexWrap: 'wrap',
+                                            flexDirection: 'column',
+                                            padding: '16px',
                                         }}
                                     >
                                         {/* Flatten the array of amenities */}
@@ -722,15 +770,25 @@ const BookNow = () => {
                                                 <div
                                                     key={index}
                                                     style={{
-                                                        marginBottom: '8px',
-                                                        flexBasis: '33%',
+                                                        marginBottom: '12px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        width: '100%', // Full width for each amenity
+                                                        padding: '8px',
+                                                        border: '1px solid #e0e0e0',
+                                                        borderRadius: '8px',
                                                         boxSizing: 'border-box',
-                                                        flexGrow: 1, // Add this line
+                                                        backgroundColor: '#f9f9f9', // Optional: background color for each amenity
                                                     }}
                                                 >
-                                                    <IconContext.Provider value={{ size: '1.2em' }}>
-                                                        {amenityIcons[amenity] || defaultIcon} {amenity}
+                                                    <IconContext.Provider
+                                                        value={{ size: '1.2em', style: { marginRight: '8px', color: '#007bff' } }}
+                                                    >
+                                                        {amenityIcons[amenity] || defaultIcon}
                                                     </IconContext.Provider>
+                                                    <Typography variant="body2" sx={{ color: '#555', flexGrow: 1 }}>
+                                                        {amenity}
+                                                    </Typography>
                                                 </div>
                                             ))}
                                     </div>

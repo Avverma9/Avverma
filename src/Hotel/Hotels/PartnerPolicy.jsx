@@ -32,7 +32,7 @@ const hotelId = localStorage.getItem('hotelId');
 export default function PolicyForm() {
     const navigate = useNavigate();
     const classes = useStyles();
-    const [hotelsPolicy, setHotelsPolicy] = useState('');
+    const [hotelsPolicy, setHotelsPolicy] = useState('• ');
     const [outsideFoodPolicy, setOutsideFoodPolicy] = useState('');
     const [cancellationPolicy, setCancellationPolicy] = useState('');
     const [paymentMode, setPaymentMode] = useState('');
@@ -142,7 +142,26 @@ export default function PolicyForm() {
             // Handle error appropriately, show user-friendly message
         }
     };
+    const handleChange = (e) => {
+        const value = e.target.value;
 
+        // Ensure the last character is not a newline and add a bullet point if necessary
+        if (value.endsWith('\n')) {
+            setHotelsPolicy((prev) => `${prev.trim()}\n• `);
+        } else {
+            setHotelsPolicy(value);
+        }
+    };
+
+    const handleBlur = () => {
+        // Append a dot to the last line when the textarea loses focus
+        const lines = hotelsPolicy.split('\n');
+        if (lines.length > 0) {
+            const lastLineIndex = lines.length - 1;
+            lines[lastLineIndex] = lines[lastLineIndex].trim() + '.';
+            setHotelsPolicy(lines.join('\n'));
+        }
+    };
     return (
         <div
             className="container mt-4"
@@ -153,15 +172,16 @@ export default function PolicyForm() {
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="lastName" className="form-label">
+                        <label htmlFor="hotelsPolicy" className="form-label">
                             Hotel Policy* (Write few words about your policy)
                         </label>
                         <textarea
                             id="hotelsPolicy"
                             className="form-control"
-                            variant="outlined"
+                            rows="4" // You can adjust the number of visible rows
                             value={hotelsPolicy}
-                            onChange={(e) => setHotelsPolicy(e.target.value)}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                         />
                     </div>
                     <div className="col-md-4 mb-3">
@@ -227,7 +247,7 @@ export default function PolicyForm() {
                     </div>
                     <div className="col-md-4 mb-3">
                         <label htmlFor="email" className="form-label">
-                            Check in policy*
+                            Check in Time (Only enter timing of your hotel check in)*
                         </label>
                         <textarea
                             className="form-control"
@@ -239,7 +259,7 @@ export default function PolicyForm() {
                     </div>
                     <div className="col-md-4 mb-3">
                         <label htmlFor="email" className="form-label">
-                            Check Out policy*
+                            Check Out Time (Only enter timing of your hotel check out)*
                         </label>
                         <textarea
                             className="form-control"

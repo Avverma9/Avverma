@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { postRooms, sendNotification } from '../../redux/reducers/partnerSlice'; // Adjust the import path as needed
-import { roomTypes, bedTypes as availableBedTypes } from '../../utils/filterOptions';
+import { roomTypes, bedTypes as availableBedTypes } from '../../utils/extrasList';
 import { toast } from 'react-toastify';
 
 export default function PartnerRooms() {
@@ -67,7 +67,7 @@ export default function PartnerRooms() {
                         <option value="" disabled>
                             Select Room Type
                         </option>
-                        {roomTypes.map((roomType) => (
+                        {roomTypes?.map((roomType) => (
                             <option key={roomType} value={roomType}>
                                 {roomType}
                             </option>
@@ -82,7 +82,7 @@ export default function PartnerRooms() {
                         <option value="" disabled>
                             Select Bed Type
                         </option>
-                        {availableBedTypes.map((bedType) => (
+                        {availableBedTypes?.map((bedType) => (
                             <option key={bedType} value={bedType}>
                                 {bedType}
                             </option>
