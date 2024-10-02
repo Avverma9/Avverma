@@ -420,7 +420,6 @@ const getHotelsByFilters = async (req, res) => {
             latitude,
             longitude,
             countRooms,
-            guests,
             type,
             bedTypes,
             amenities,
@@ -431,45 +430,40 @@ const getHotelsByFilters = async (req, res) => {
             checkOutDate,
         } = req.query;
 
-        let filters = [];
+        let filters = {};
+
         // Combined search input
         if (search) {
-          const searchPattern = new RegExp(search, "i");
-          filters.push({
-            $or: [
-              { city: { $regex: searchPattern } },
-              { state: { $regex: searchPattern } },
-              { landmark: { $regex: searchPattern } },
-              { hotelName: { $regex: searchPattern } },
-            ]
-          });
+            const searchPattern = new RegExp(search, 'i');
+            filters.$or = [
+                { city: { $regex: searchPattern } },
+                { state: { $regex: searchPattern } },
+                { landmark: { $regex: searchPattern } },
+                { hotelName: { $regex: searchPattern } },
+            ];
         }
 
-        if (starRating) filters.push({ starRating });
-        if (guests) filters.push({ guests });
-        if (propertyType) filters.push({ propertyType: { $regex: new RegExp(propertyType, 'i') } });
-        if (localId) filters.push({ localId });
-        if (latitude) filters.push({ latitude });
-        if (longitude) filters.push({ longitude });
-        if (countRooms) filters.push({ 'rooms.countRooms': { $gte: parseInt(countRooms) } }); // Changed from $lte to $gte
-        if (type) filters.push({ 'rooms.type': { $regex: new RegExp(type, 'i') } });
-        if (bedTypes) filters.push({ 'rooms.bedTypes': { $regex: new RegExp(bedTypes, 'i') } });
-        if (amenities) filters.push({ 'amenities.amenities': { $in: amenities.split(',') } });
-        if (unmarriedCouplesAllowed) filters.push({ 'policies.unmarriedCouplesAllowed': unmarriedCouplesAllowed });
+        if (starRating) filters.starRating = starRating;
+        if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, 'i') };
+        if (localId) filters.localId = localId;
+        if (latitude) filters.latitude = latitude;
+        if (longitude) filters.longitude = longitude;
+        if (countRooms) filters['rooms.countRooms'] = { $gte: parseInt(countRooms) };
+        if (type) filters['rooms.type'] = { $regex: new RegExp(type, 'i') };
+        if (bedTypes) filters['rooms.bedTypes'] = { $regex: new RegExp(bedTypes, 'i') };
+        if (amenities) filters['amenities.amenities'] = { $in: amenities.split(',') };
+        if (unmarriedCouplesAllowed) filters['policies.unmarriedCouplesAllowed'] = unmarriedCouplesAllowed;
 
         // Add minPrice and maxPrice filtering
         if (minPrice || maxPrice) {
             let priceFilter = {};
             if (minPrice) priceFilter.$gte = parseFloat(minPrice);
             if (maxPrice) priceFilter.$lte = parseFloat(maxPrice);
-            filters.push({ 'rooms.price': priceFilter });
+            filters['rooms.price'] = priceFilter;
         }
 
-        // Combine filters using $or
-        const combinedFilters = filters.length > 0 ? { $or: filters } : {};
-
-        // Fetch hotels
-        const hotels = await hotelModel.find(combinedFilters);
+        // Fetch hotels that match all filters
+        const hotels = await hotelModel.find(filters);
         const acceptedHotels = hotels.filter((hotel) => hotel.isAccepted);
 
         // If checkInDate and checkOutDate are provided, check availability
