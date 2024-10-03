@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 
 export const Unauthorized = () => {
-    const userId = localStorage.getItem('rsUserId');
+    const token = localStorage.getItem('rsToken');
     const navigate = useNavigate(); // Initialize the navigate function
 
-    if (!userId) {
+    if (!token) {
         return (
             <div
                 style={{
