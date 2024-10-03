@@ -33,7 +33,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Button from '@mui/joy/Button';
 import './Booknow.css';
-import baseURL from '../../baseURL';
+import baseURL from '../../utils/baseURL';
 import { toast } from 'react-toastify';
 import Policies from './policies';
 import BookingDetails from './bookingDetails';

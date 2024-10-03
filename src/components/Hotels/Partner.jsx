@@ -10,7 +10,7 @@ import axios from 'axios';
 import { Button, Input, makeStyles } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
-import baseURL from '../../baseURL';
+import baseURL from '../../utils/baseURL';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
 import { fetchLocation } from '../../utils/fetchLocation';
 import NearMeIcon from '@mui/icons-material/NearMe';
@@ -198,7 +198,6 @@ export default function PartnerForm() {
                         sx={{
                             backgroundColor: '#f5f5f5',
                             borderBottom: '1px solid #e0e0e0',
-                           
                         }}
                     >
                         <Typography variant="p1" sx={{ fontWeight: 'bold', color: '#333' }}>

@@ -1,31 +1,31 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./Hotel/Header";
-import CarouselPage from "./Hotel/CarouselBanner";
+import Header from "./components/Header";
+import CarouselPage from "./components/CarouselBanner";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import SearchForm from "./Hotel/Search";
-import Offered from "./Hotel/Offered";
-import Footer from "./Hotel/Footer";
-import HeaderImage from "./Hotel/HeaderLocation";
+import SearchForm from "./components/Search";
+import Offered from "./components/Offered";
+import Footer from "./components/Footer";
+import HeaderImage from "./components/HeaderLocation";
 
-import LoginPage from "./Hotel/Authentication/Login.jsx";
-import RegisterPage from "./Hotel/Authentication/Register.jsx";
+import LoginPage from "./components/Authentication/Login.jsx";
+import RegisterPage from "./components/Authentication/Register.jsx";
 
 
-import BookNow from "./Hotel/Booknow/Booknow.jsx";
-import Hotel from "./Hotel/Hotels/Hotel.jsx";
-import PartnerForm from "./Hotel/Hotels/Partner.jsx";
-import PolicyForm from "./Hotel/Hotels/PartnerPolicy.jsx";
-import Bottom from "./Hotel/Bottom.jsx";
-import AmenitiesPage from "./Hotel/Hotels/PartnerAmenities.jsx";
-import PartnerFoods from "./Hotel/Hotels/PartnerFoods.jsx";
-import PartnerRooms from "./Hotel/Hotels/PartnerRooms.jsx";
+import BookNow from "./components/Booknow/Booknow.jsx";
+import Hotel from "./components/Hotels/Hotel.jsx";
+import PartnerForm from "./components/Hotels/Partner.jsx";
+import PolicyForm from "./components/Hotels/PartnerPolicy.jsx";
+import Bottom from "./components/Bottom.jsx";
+import AmenitiesPage from "./components/Hotels/PartnerAmenities.jsx";
+import PartnerFoods from "./components/Hotels/PartnerFoods.jsx";
+import PartnerRooms from "./components/Hotels/PartnerRooms.jsx";
 
 import { LoaderProvider } from "./utils/loader"; // Import the LoaderProvider
 import ScrollToTop from "./utils/scrollToTop";
-import Settings from "./Hotel/Profile/Settings";
+import Settings from "./components/Profile/Settings";
 
 function App() {
   return (

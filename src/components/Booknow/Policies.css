@@ -1,0 +1,116 @@
+.policies-container {
+    width: auto; /* Allow auto width */
+    max-width: auto; /* Max width constraint for larger screens */
+    margin: auto; /* Center the container */
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 15px; /* Reduced margin */
+    font-size: 1.5em; /* Smaller header size */
+    color: #007bff;
+    font-weight: 600;
+    border-bottom: 2px solid #007bff; /* Decorative bottom border */
+    background-color: #f1f9ff; /* Light background color */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.policy-card {
+    background: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px; /* Reduced margin */
+    padding: 5px; /* Slightly reduced padding */
+    border: 1px solid #e0e0e0;
+}
+
+.card-title {
+    font-size: 1.3em; /* Reduced size for compactness */
+    color: #444;
+    margin-bottom: 8px; /* Reduced margin */
+    padding: 6px; /* Reduced padding */
+    background-color: #e7f3ff; /* Light blue background */
+    border: 1px solid #007bff; /* Blue border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.sub-title {
+    font-size: 1em; /* Slightly smaller size */
+    color: #444;
+    margin: 8px 0 4px; /* Reduced margin */
+    font-weight: 500;
+    padding: 4px; /* Reduced padding */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #f7f7f7; /* Light gray background */
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px; /* Reduced margin */
+}
+
+.icon {
+    font-size: 1.1em; /* Slightly smaller icon size */
+    margin-right: 6px;
+    color: #007bff;
+}
+
+.title {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.text {
+    color: #666;
+    font-size: 0.85em; /* Smaller text size */
+}
+
+.statusIcon {
+    font-size: 1.1em; /* Slightly smaller icon size */
+    margin-right: 6px;
+}
+
+.allowed {
+    color: green;
+}
+
+.not-allowed {
+    color: red;
+}
+
+.divider {
+    border: 1px solid #ddd;
+    margin-top: 8px; /* Reduced margin */
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .header {
+        font-size: 1.3em; /* Smaller font size */
+    }
+
+    .card-title {
+        font-size: 1.1em; /* Smaller font size */
+    }
+
+    .sub-title {
+        font-size: 0.9em; /* Smaller font size */
+    }
+
+    .icon {
+        font-size: 1em; /* Smaller icon size */
+    }
+
+    .text {
+        font-size: 0.75em; /* Smaller font size */
+    }
+
+    .statusIcon {
+        font-size: 1em; /* Smaller icon size */
+    }
+}

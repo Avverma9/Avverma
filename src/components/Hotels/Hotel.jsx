@@ -22,7 +22,7 @@ import IconButton from '@mui/joy/IconButton';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import baseURL from '../../baseURL';
+import baseURL from '../../utils/baseURL';
 import Filterbar from './Filterbar';
 import './Hotel.css';
 import FilterSidebar from './FilterSidebar';

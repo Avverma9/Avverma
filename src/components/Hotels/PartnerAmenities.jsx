@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import baseURL from '../../baseURL';
+import baseURL from '../../utils/baseURL';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { amenitiesList } from '../../utils/extrasList';

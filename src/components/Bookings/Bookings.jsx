@@ -20,7 +20,7 @@ import { useLocation } from 'react-router-dom';
 import styles from './bookings.module.css';
 import noImage from '../../assets/noImage.jpg';
 import { toast } from 'react-toastify';
-import baseURL from '../../baseURL';
+import baseURL from '../../utils/baseURL';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilteredBooking } from '../../redux/reducers/bookingSlice';
 import { formatDateWithOrdinal } from '../../utils/_dateFunctions';
