@@ -1,4 +1,6 @@
 const Dashboard = require('../models/dashboardUser');
+const jwt = require('jsonwebtoken'); // Import the JWT library
+require('dotenv').config(); // Load environment variables
 
 // Register ===========================
 const registerUser = async (req, res) => {
@@ -6,6 +8,7 @@ const registerUser = async (req, res) => {
         const { name, email, mobile, password, role, address } = req.body;
         const emailExist = await Dashboard.findOne({ email: email });
         const mobileExist = await Dashboard.findOne({ mobile: mobile });
+
         if (role !== 'admin' && role !== 'superAdmin' && role !== 'PMS') {
             return res.status(400).json({ message: 'Invalid role selection' });
         }
@@ -15,6 +18,7 @@ const registerUser = async (req, res) => {
         if (mobileExist) {
             return res.status(400).json({ message: 'Mobile already existed' });
         }
+
         const images = req.files.map((file) => file.location);
         const created = await Dashboard.create({
             images,
@@ -25,6 +29,7 @@ const registerUser = async (req, res) => {
             mobile,
             password,
         });
+
         res.status(201).json({ message: 'Registration Done', created });
     } catch (error) {
         return res.status(500).json({ message: 'Internal server error' });
@@ -35,7 +40,7 @@ const registerUser = async (req, res) => {
 
 const loginUser = async function (req, res) {
     const { email, password } = req.body;
-    const emailRegex = new RegExp('^' + email + '$', 'i'); // "i" flag for case-insensitive search
+    const emailRegex = new RegExp('^' + email + '$', 'i');
 
     try {
         let loggedUser = await Dashboard.findOne({
@@ -52,7 +57,9 @@ const loginUser = async function (req, res) {
             return res.status(400).json({ message: 'User account is not active' });
         }
 
-        // User is authenticated and active
+        // User is authenticated and active, create a JWT token
+        const rsToken = jwt.sign({ id: loggedUser._id, role: loggedUser.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
         res.status(200).json({
             message: 'Logged in as',
             loggedUserRole: loggedUser.role,
@@ -61,13 +68,13 @@ const loginUser = async function (req, res) {
             loggedUserId: loggedUser._id,
             loggedUserName: loggedUser.name,
             loggedUserEmail: loggedUser.email,
+            rsToken, // Include the token in the response
         });
     } catch (error) {
         console.error('Error logging in:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
-
 //update status
 const updateStatus = async (req, res) => {
     const { id } = req.params; // Extracting id from parameters
@@ -206,7 +213,6 @@ const addMenu = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 
 const deleteMenu = async (req, res) => {
     const { id } = req.params;
