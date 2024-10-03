@@ -55,7 +55,7 @@ const GoogleSignIn = async function (req, res) {
 
         if (existingUser) {
             // If user already exists, generate a JWT token
-            const rsToken = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            const rsToken = jwt.sign({ id: existingUser.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
             return res.status(201).json({ message: 'User already exists', userId: existingUser.userId, token: rsToken });
         }
 
@@ -158,11 +158,6 @@ const update = async (req, res) => {
 //===============================================================================
 const getAllUsers = async (req, res) => {
     try {
-        const auth = req.user.id;
-
-        if (!auth) {
-            return res.status(403).json({ message: 'Unauthorized' });
-        }
         const userData = await userModel.find();
         return res.status(200).json({
             message: 'User data fetched successfully',
