@@ -57,10 +57,13 @@ const Google = () => {
             }
 
             const data = await response.json();
-            const { userId } = data;
+            const { userId,rsToken } = data;
 
             localStorage.setItem('isSignedIn', 'true');
-            localStorage.setItem('userId', userId);
+            localStorage.setItem('rsUserId', userId);
+            localStorage.setItem('rsToken', rsToken);
+
+
 
             const userDocRef = doc(db, 'users', userId);
             await setDoc(userDocRef, { email /* other user data */ });

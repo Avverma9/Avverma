@@ -24,7 +24,7 @@ export default function Reviews() {
         const fetchReviews = async () => {
             setLoading(true);
             try {
-                const userId = localStorage.getItem('userId');
+                const userId = localStorage.getItem('rsUserId');
                 if (!userId) {
                     setError('Unauthorized');
                     setLoading(false);

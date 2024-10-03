@@ -45,7 +45,7 @@ export const ConfirmBooking = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userId = localStorage.getItem('userId');
+                const userId = localStorage.getItem('rsUserId');
                 if (!userId) {
                     throw new Error('You are not logged in!');
                 }
@@ -108,7 +108,7 @@ export const ConfirmBooking = () => {
     };
 
     const postReview = async () => {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('rsUserId');
         const hotelId = localStorage.getItem('hotelId_review');
         try {
             const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, { comment, rating });

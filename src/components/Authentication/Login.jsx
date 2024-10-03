@@ -100,10 +100,11 @@ export default function LoginPage() {
             if (response.ok) {
                 const data = await response.json();
 
-                const { userId } = data;
-                console.log(userId);
+                const { userId, rsToken } = data;
                 localStorage.setItem('isSignedIn', 'true');
-                localStorage.setItem('userId', userId);
+                localStorage.setItem('rsUserId', userId);
+                localStorage.setItem('rsToken', rsToken);
+
                 navigate('/');
             } else {
                 // Handle login failure

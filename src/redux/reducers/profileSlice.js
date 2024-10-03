@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../utils/baseURL';
 import { toast } from 'react-toastify'; // Import toast
+import { token } from '../../utils/Unauthorized';
 
 // Async thunk for fetching profile data
 export const fetchProfileData = createAsyncThunk('profile/fetchProfileData', async (userId, { rejectWithValue }) => {
@@ -19,6 +20,7 @@ export const updateProfileData = createAsyncThunk('profile/updateProfileData', a
         const response = await axios.put(`${baseURL}/update`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
+                'Authorization':token
             },
         });
         return response.data;

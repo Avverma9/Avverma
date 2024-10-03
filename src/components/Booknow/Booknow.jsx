@@ -307,7 +307,7 @@ const BookNow = () => {
 
     const handleBookNow = async () => {
         try {
-            const userId = localStorage.getItem('userId');
+            const userId = localStorage.getItem('rsUserId');
             const userMobile = localStorage.getItem('userMobile');
 
             if (!userMobile) {

@@ -47,7 +47,7 @@ const Header = () => {
         handleClose();
     };
     const handleLoginLogout = () => {
-        localStorage.removeItem('userId');
+        localStorage.clear();
         navigate('/login');
         handleClose();
     };
