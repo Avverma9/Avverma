@@ -55,15 +55,15 @@ const GoogleSignIn = async function (req, res) {
 
         if (existingUser) {
             // If user already exists, generate a JWT token
-            const rsToken = jwt.sign({ id: existingUser.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
-            return res.status(201).json({ message: 'User already exists', userId: existingUser.userId, token: rsToken });
+            const token = jwt.sign({ id: existingUser.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+            return res.status(201).json({ message: 'User already exists', userId: existingUser.userId, rsToken: token });
         }
 
         // If user doesn't exist, create a new user
         const user = await userModel.create({ email, uid, userName, images });
-        const rsToken = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-        res.status(201).json({ message: 'Sign-in successful', userId: user.userId, token: rsToken });
+        res.status(201).json({ message: 'Sign-in successful', userId: user.userId, rsToken: token });
     } catch (error) {
         // Handle any errors that might occur during the process
         console.error(error);
@@ -91,10 +91,10 @@ const signIn = async function (req, res) {
         }
 
         // Generate JWT token
-        const rsToken = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         // Return success response with token
-        res.status(200).json({ message: 'Sign-in successful', userId: user.userId, token: rsToken });
+        res.status(200).json({ message: 'Sign-in successful', userId: user.userId, rsToken: token });
     } catch (error) {
         console.error('Sign-in error:', error);
         res.status(500).json({ message: 'Internal server error' });
