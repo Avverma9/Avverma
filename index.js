@@ -82,22 +82,7 @@ app.get('/update-status-of-a-user/messenger/:userId', async (req, res) => {
     }
 });
 
-app.get('/get-messages/of-chat/:userId1/:userId2', async (req, res) => {
-    const { userId1, userId2 } = req.params;
 
-    try {
-        const messages = await Message.find({
-            $or: [
-                { sender: userId1, receiver: userId2 },
-                { sender: userId2, receiver: userId1 },
-            ],
-        }).sort({ timestamp: 1 });
-
-        res.json(messages);
-    } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
-    }
-});
 
 // Connect to MongoDB
 connectDB(); // Use the new function
