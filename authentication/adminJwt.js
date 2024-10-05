@@ -17,7 +17,8 @@ const adminJWT = (req, res, next) => {
         }
         req.user = user; // Save user info to request
 
-        if (req.path.startsWith('/Admin') && !['Admin', 'PMS'].includes(user.role)) {
+        // Example: Check if user has admin role for admin-only route
+        if (req.path.startsWith('/Admin') && user.role !== 'Admin') {
             return res.status(403).json({ message: 'Access denied: insufficient permissions' });
         }
 

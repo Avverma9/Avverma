@@ -216,7 +216,7 @@ const addMenu = async (req, res) => {
 
 const deleteMenu = async (req, res) => {
     const { id } = req.params;
-    const { menuItem } = req.body;
+    const { menuItems } = req.body;
 
     try {
         // Find the user by ID
@@ -227,7 +227,7 @@ const deleteMenu = async (req, res) => {
         }
 
         // Check if the menuItem exists in the menuItems array
-        const itemIndex = user.menuItems.indexOf(menuItem);
+        const itemIndex = user.menuItems.indexOf(menuItems);
         if (itemIndex === -1) {
             return res.status(400).json({ message: 'Menu item not found' });
         }
