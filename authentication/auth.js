@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const userJWT = (req, res, next) => {
+const auth = (req, res, next) => {
     const token = req.headers['authorization'];
 
     if (!token) {
@@ -22,4 +22,4 @@ const userJWT = (req, res, next) => {
     });
 };
 
-module.exports = userJWT;
+module.exports = auth;
