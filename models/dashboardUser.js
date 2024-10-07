@@ -18,6 +18,8 @@ const dashboardUser = new mongoose.Schema(
         },
         menuItems: [String],
         address: String,
+        isOnline: { type: Boolean, default: false }, // Track online status
+
         password: String,
         status: {
             type: Boolean,

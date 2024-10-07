@@ -1,60 +1,42 @@
-const WebSocket = require("ws");
-const UserStatus = require("../../models/messenger/userStatus"); // Ensure this is the correct path
+const User = require('../../models/dashboardUser'); // Ensure this is the correct path
+const userSocketMap = {};
 
-const wss = new WebSocket.Server({ port: 8080 });
-const userConnections = new Map(); // userId -> WebSocket connection
+const webSocketHandler = (io) => {
+    io.on('connection', (socket) => {
+        console.log('A user connected:', socket.id);
 
-wss.on("connection", (ws) => {
-  let userId;
+        socket.on('registerUser', async (sender) => {
+            console.log(`Registering user: ${sender}`);
+            // If the user is already in the map, handle it
+            if (userSocketMap[socket.id]) {
+                console.log(`User ${sender} is already registered.`);
+                return;
+            }
 
-  ws.on("message", async (message) => {
-    const parsedMessage = JSON.parse(message);
+            userSocketMap[socket.id] = sender; // Store the mapping
+            await User.findByIdAndUpdate(sender, { isOnline: true });
+            console.log(`User ${sender} is now online`);
 
-    if (parsedMessage.type === "connect") {
-      userId = parsedMessage.userId;
-      userConnections.set(userId, ws);
+            // Optional: Emit user status to all clients
+            io.emit('userStatusUpdate', { senderId: sender, isOnline: true });
+        });
 
-      // Update user status in the database
-      await UserStatus.findOneAndUpdate(
-        { user: userId },
-        { online: true, lastSeen: undefined },
-        { upsert: true, new: true }
-      );
-      console.log(`User ${userId} connected`);
-    }
+        socket.on('disconnect', async () => {
+            console.log('User disconnected:', socket.id);
+            const sender = userSocketMap[socket.id]; // Get the sender associated with the socket
 
-    if (parsedMessage.type === "disconnect") {
-      if (userId) {
-        userConnections.delete(userId);
+            if (sender) {
+                await User.findByIdAndUpdate(sender, { isOnline: false }); // Update the user's online status
+                console.log(`User ${sender} is now offline`);
 
-        // Update user status in the database
-        await UserStatus.findOneAndUpdate(
-          { user: userId },
-          { online: false, lastSeen: Date.now() },
-          { upsert: true, new: true }
-        );
-        console.log(`User ${userId} disconnected`);
-      }
-    }
-  });
+                // Remove the mapping
+                delete userSocketMap[socket.id];
 
-  ws.on("close", async () => {
-    if (userId) {
-      userConnections.delete(userId);
+                // Optional: Emit user status to all clients
+                io.emit('userStatusUpdate', { senderId: sender, isOnline: false });
+            }
+        });
+    });
+};
 
-      // Update user status in the database
-      await UserStatus.findOneAndUpdate(
-        { user: userId },
-        { online: false, lastSeen: Date.now() },
-        { upsert: true, new: true }
-      );
-      console.log(`User ${userId} disconnected`);
-    }
-  });
-
-  ws.on("error", (error) => {
-    console.error("WebSocket error:", error);
-  });
-});
-
-console.log("WebSocket server is running on ws://localhost:8080");
+module.exports = webSocketHandler;

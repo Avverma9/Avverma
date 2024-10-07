@@ -15,7 +15,6 @@ const foodRouter = require("./hotel/food");
 const roomRouter = require("./hotel/room");
 const globalNotificationRouter = require("./notification/global");
 const userNotificationRouter = require("./notification/user");
-const messengerRouter = require("./messenger/messenger");
 const policyRouter = require("./hotel/policy");
 const amenitiesRouter = require("./hotel/amenities");
 const bulkRouter = require("./bulkOperation")
@@ -38,7 +37,6 @@ router.use("/", foodRouter);
 router.use("/", travelRouter);
 router.use("/", globalNotificationRouter);
 router.use("/", userNotificationRouter);
-router.use("/", messengerRouter);
 router.use("/", policyRouter);
 router.use("/", amenitiesRouter);
 router.use("/", bulkRouter);
