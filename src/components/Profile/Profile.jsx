@@ -8,7 +8,7 @@ import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCar
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import './Profile.css'; // Import your custom CSS file for styling
-import { Unauthorized } from '../../utils/Unauthorized';
+import { token, Unauthorized } from '../../utils/Unauthorized';
 
 export default function Profile() {
     const navigate = useNavigate();
