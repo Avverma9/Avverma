@@ -71,7 +71,7 @@ const setupRoutes = (io) => {
     });
 
     // Delete chat and messages
-    router.delete('/delete/added/chats/from/messenger-app', async (req, res) => {
+    router.delete('/delete/added/chats/from/messenger-app/:senderId/:receiverId', async (req, res) => {
         try {
             const { senderId, receiverId } = req.params;
             const result = await Message.deleteMany({
