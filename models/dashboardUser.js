@@ -19,7 +19,10 @@ const dashboardUser = new mongoose.Schema(
         menuItems: [String],
         address: String,
         isOnline: { type: Boolean, default: false }, // Track online status
-
+        lastSeen: {
+            type: Date,
+            default: null,
+        },
         password: String,
         status: {
             type: Boolean,

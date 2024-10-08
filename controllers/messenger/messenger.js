@@ -1,6 +1,7 @@
 const express = require('express');
 const Message = require('../../models/messenger/message');
 const User = require('../../models/dashboardUser');
+const { upload } = require('../../aws/upload');
 
 const setupRoutes = (io) => {
     const router = express.Router();
@@ -20,19 +21,26 @@ const setupRoutes = (io) => {
     });
 
     // Send message
-    router.post('/send-a-message/messenger', async (req, res) => {
+    router.post('/send-a-message/messenger', upload, async (req, res) => {
         const { senderId, receiverId, content } = req.body;
+
+        // Check if req.files exists and is an array
+        const images = req.files ? req.files.map((file) => file.location) : [];
+
         const newMessage = new Message({
             sender: senderId,
             receiver: receiverId,
             content,
+            images, // Use 'docs' for the document field
         });
+
         try {
             await newMessage.save();
-            io.emit('newMessage', newMessage);
+            io.emit('newMessage', newMessage); // Ensure io is defined and accessible here
             res.status(200).json(newMessage);
         } catch (err) {
-            res.status(500).json({ message: 'Server error', error: err });
+            console.error('Error saving message:', err); // Log the error for debugging
+            res.status(500).json({ message: 'Server error', error: err.message });
         }
     });
 
