@@ -1,116 +1,140 @@
-.policies-container {
-    width: auto; /* Allow auto width */
-    max-width: auto; /* Max width constraint for larger screens */
-    margin: auto; /* Center the container */
+/* Policies.css */
+
+body {
+    font-family: 'Georgia', serif; /* Newspaper-style font */
+    margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    color: #333;
+    background-color: #f4f4f4; /* Light background color */
+}
+
+.policies-container {
+    padding: 0; /* Remove padding */
+    width: 100%; /* Full width */
+    background-color: #fff; /* White background for content */
+    box-shadow: none; /* Remove box shadow for a flat look */
+    margin: 0; /* Remove margins */
+}
+
+.policy-card {
+    margin-bottom: 10px; /* Reduced margin for cards */
+    padding: 10px; /* Keep padding for card */
+    border: none; /* Remove border for a clean look */
 }
 
 .header {
     text-align: center;
+    font-size: 28px; /* Compact header size */
     margin-bottom: 15px; /* Reduced margin */
-    font-size: 1.5em; /* Smaller header size */
-    color: #007bff;
-    font-weight: 600;
-    border-bottom: 2px solid #007bff; /* Decorative bottom border */
-    background-color: #f1f9ff; /* Light background color */
-    border-radius: 4px; /* Rounded corners */
+    color: #333;
+    border-bottom: 2px solid #ccc; /* Underline for emphasis */
+    padding-bottom: 5px; /* Smaller padding */
 }
 
 .policy-card {
-    background: #f9f9f9;
-    border-radius: 6px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 8px; /* Reduced margin */
-    padding: 5px; /* Slightly reduced padding */
-    border: 1px solid #e0e0e0;
+    margin-bottom: 15px; /* Reduced margin for cards */
+    padding: 10px; /* Reduced padding for card */
+    border-bottom: 1px solid #ddd; /* Separation between cards */
 }
 
 .card-title {
-    font-size: 1.3em; /* Reduced size for compactness */
-    color: #444;
-    margin-bottom: 8px; /* Reduced margin */
-    padding: 6px; /* Reduced padding */
-    background-color: #e7f3ff; /* Light blue background */
-    border: 1px solid #007bff; /* Blue border */
-    border-radius: 4px; /* Rounded corners */
+    font-size: 14px; /* Set card title size */
+    color: #0056b3;
+    margin-bottom: 5px; /* Reduced margin */
+    border-bottom: 1px solid #ddd; /* Line below title */
+    padding-bottom: 5px; /* Smaller padding */
 }
 
 .sub-title {
-    font-size: 1em; /* Slightly smaller size */
-    color: #444;
-    margin: 8px 0 4px; /* Reduced margin */
-    font-weight: 500;
-    padding: 4px; /* Reduced padding */
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 4px; /* Rounded corners */
-    background-color: #f7f7f7; /* Light gray background */
+    font-size: 14px; /* Set subtitle size */
+    margin-top: 10px; /* Reduced margin */
+    margin-bottom: 5px; /* Reduced margin */
+    color: #0056b3;
+    border-bottom: 1px solid #ddd; /* Line below subtitle */
+    padding-bottom: 5px; /* Smaller padding */
 }
 
 .section {
     display: flex;
-    align-items: center;
-    margin-bottom: 4px; /* Reduced margin */
+    align-items: center; /* Align items vertically centered */
+    margin: 5px 0; /* Reduced margin for compactness */
 }
 
 .icon {
-    font-size: 1.1em; /* Slightly smaller icon size */
-    margin-right: 6px;
+    font-size: 20px; /* Smaller icon size */
+    margin-right: 8px; /* Space between icon and text */
     color: #007bff;
 }
 
 .title {
-    font-weight: 500;
-    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 14px; /* Set title size to 14px */
+    margin: 0;
 }
 
 .text {
-    color: #666;
-    font-size: 0.85em; /* Smaller text size */
+    margin: 0;
+    color: #555;
+    font-size: 14px; /* More compact text size */
 }
 
 .statusIcon {
-    font-size: 1.1em; /* Slightly smaller icon size */
-    margin-right: 6px;
+    font-size: 20px; /* Smaller icon size for status */
+    margin-right: 8px; /* Reduced spacing for icons */
 }
 
 .allowed {
-    color: green;
+    color: #28a745; /* Green for allowed */
 }
 
 .not-allowed {
-    color: red;
+    color: #dc3545; /* Red for not allowed */
 }
 
 .divider {
-    border: 1px solid #ddd;
-    margin-top: 8px; /* Reduced margin */
+    height: 2px;
+    background-color: #ddd;
+    margin: 20px 0;
 }
 
-/* Media Queries for Smaller Screens */
-@media (max-width: 768px) {
-    .header {
-        font-size: 1.3em; /* Smaller font size */
-    }
-
+/* Responsive adjustments */
+@media (max-width: 767px) {
     .card-title {
-        font-size: 1.1em; /* Smaller font size */
+        font-size: 12px; /* Card title for mobile */
     }
 
     .sub-title {
-        font-size: 0.9em; /* Smaller font size */
+        font-size: 12px; /* Subtitle for mobile */
+    }
+
+    .title {
+        font-size: 12px; /* Title for mobile */
     }
 
     .icon {
-        font-size: 1em; /* Smaller icon size */
-    }
-
-    .text {
-        font-size: 0.75em; /* Smaller font size */
+        font-size: 18px; /* Smaller icon size for mobile */
     }
 
     .statusIcon {
-        font-size: 1em; /* Smaller icon size */
+        font-size: 18px; /* Smaller icon size for status on mobile */
+    }
+}
+
+/* Responsive columns for larger screens */
+@media (min-width: 768px) {
+    .policy-card {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .section {
+        flex-wrap: wrap; /* Allow sections to wrap */
+    }
+    
+    .section .icon {
+        flex-basis: auto; /* Allow the icon to occupy its natural width */
+    }
+    
+    .section div {
+        flex-basis: auto; /* Allow text to occupy its natural width */
     }
 }

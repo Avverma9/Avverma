@@ -6,8 +6,6 @@ import './Policies.css'; // Import the CSS file
 const Policies = ({ hotelData, policies }) => {
     return (
         <div className="policies-container">
-            <h2 className="header">Hotel Policies</h2>
-
             <div className="policy-card">
                 <h3 className="card-title">General Information</h3>
                 <div className="section">
@@ -78,15 +76,24 @@ const Policies = ({ hotelData, policies }) => {
                     </div>
 
                     <h4 className="sub-title">Guest Policies</h4>
-                    {['bachelorAllowed', 'smokingAllowed', 'alcoholAllowed', 'unmarriedCouplesAllowed', 'internationalGuestAllowed'].map((item) => (
-                        <div className="section" key={item}>
-                            <FaCheckCircle className={`statusIcon ${policy[item] === 'Allowed' ? 'allowed' : 'not-allowed'}`} />
-                            <div>
-                                <p className="title">{item.replace(/([A-Z])/g, ' $1')}</p>
-                                <p className="text">{policy[item]}</p>
+                    {['bachelorAllowed', 'smokingAllowed', 'alcoholAllowed', 'unmarriedCouplesAllowed', 'internationalGuestAllowed'].map(
+                        (item) => (
+                            <div className="section" key={item}>
+                                <FaCheckCircle className={`statusIcon ${policy[item] === 'Allowed' ? 'allowed' : 'not-allowed'}`} />
+                                <div>
+                                    <p className="title">
+                                        {
+                                            item
+                                                .replace(/([A-Z])/g, ' $1') // Insert a space before each capital letter
+                                                .replace(/^./, (str) => str.toUpperCase()) // Capitalize the first letter
+                                                .trim() // Remove any leading/trailing spaces
+                                        }
+                                    </p>
+                                    <p className="text">{policy[item]}</p>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    )}
 
                     <h4 className="sub-title">Return Policy</h4>
                     <div className="section">
@@ -98,7 +105,6 @@ const Policies = ({ hotelData, policies }) => {
                     </div>
                 </div>
             ))}
-            <div className="divider" />
         </div>
     );
 };

@@ -27,7 +27,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import { IconContext } from 'react-icons';
 
-import { FaBed } from 'react-icons/fa';
+import { FaBed, FaWifi } from 'react-icons/fa';
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
@@ -468,10 +468,12 @@ const BookNow = () => {
         color: '#555',
     };
 
-    const iconStyle = {
-        marginRight: '8px',
-        color: '#007bff', // Icon color
-    };
+    const amenities = hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities) || [];
+
+    // Display the first 10 amenities and track how many are left
+    const visibleAmenities = amenities.slice(0, 10);
+    const remainingAmenitiesCount = amenities.length - visibleAmenities.length;
+
     return (
         <div className="book-now-container">
             {hotelData ? (
@@ -582,11 +584,9 @@ const BookNow = () => {
                                 marginBottom: 1,
                                 paddingX: 2,
                                 paddingY: 2,
-                                marginLeft: 0, // Align to the left
-                                border: '1px solid #ccc', // Add a light border
-                                borderRadius: '8px', // Rounded corners
+                                marginLeft: 0, // Align to the left 
                                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow
-                                backgroundColor: '#fff', // Ensure white background
+                                backgroundColor: 'transparent',
                             }}
                         >
                             <Typography variant="subtitle1" align="center" sx={{ marginBottom: 1, fontWeight: 'bold', fontSize: '1rem' }}>
@@ -702,99 +702,42 @@ const BookNow = () => {
                             </Typography>
                         </Box>
                     ))}
-                    <div className="extras">
-                        <div style={containerStyle}>
-                            <h6 style={titleStyle}>Our Amenities</h6>
-                            <div style={gridStyle}>
-                                {hotelData?.amenities?.flatMap((amenityArray, index) =>
-                                    amenityArray.amenities.slice(0, 5).map((amenity, innerIndex) => (
-                                        <div key={`${index}-${innerIndex}`} style={amenityStyle}>
-                                            <IconContext.Provider value={{ size: '1.2em', style: iconStyle }}>
-                                                {amenityIcons[amenity] || defaultIcon}
-                                            </IconContext.Provider>
-                                            <span>{amenity}</span>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
+                    <div className="amenities-and-policies">
+                        <h6 className="amenities-title">Amenities <FaWifi/></h6>
+                        <div className="amenities-list">
+                            {visibleAmenities.map((amenity, index) => (
+                                <div key={index} className="amenity-item">
+                                    <IconContext.Provider value={{ size: '1.5em', style: { marginRight: '8px', color: 'black' } }}>
+                                        {amenityIcons[amenity] || defaultIcon}
+                                    </IconContext.Provider>
+                                    <span style={{ color: 'black' }}>{amenity}</span>
+                                </div>
+                            ))}
                         </div>
 
-                        <div className="hotel-policies-container" style={{ width: '100%', marginBottom: '20px' }}>
-                            <Accordion
-                                expanded={expanded}
-                                onChange={handleExpansion}
-                                slotProps={{ transition: { timeout: 400 } }}
-                                sx={{
-                                    width: '100%',
-                                    border: '1px solid #e0e0e0',
-                                    borderRadius: '8px',
-                                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-                                }}
-                            >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls={`panel-content`}
-                                    id={`panel-header`}
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        backgroundColor: '#f5f5f5',
-                                        padding: '12px 16px',
-                                        borderRadius: '8px 8px 0 0',
-                                    }}
-                                >
-                                    <Typography
-                                        sx={{
-                                            fontWeight: '600',
-                                            color: '#333',
-                                        }}
-                                    >
-                                        See + {hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities).length - 5} more
-                                        amenities
-                                    </Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            padding: '16px',
-                                        }}
-                                    >
-                                        {/* Flatten the array of amenities */}
-                                        {hotelData?.amenities
-                                            ?.flatMap((amenityArray) => amenityArray.amenities)
-                                            .slice(5)
-                                            .map((amenity, index) => (
-                                                <div
-                                                    key={index}
-                                                    style={{
-                                                        marginBottom: '12px',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        width: '100%', // Full width for each amenity
-                                                        padding: '8px',
-                                                        border: '1px solid #e0e0e0',
-                                                        borderRadius: '8px',
-                                                        boxSizing: 'border-box',
-                                                        backgroundColor: '#f9f9f9', // Optional: background color for each amenity
-                                                    }}
+                        {remainingAmenitiesCount > 0 && (
+                            <div className="hotel-policies-container">
+                                <Accordion expanded={expanded} onChange={handleExpansion} className="accordion">
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} className="accordion-summary">
+                                        <Typography className="accordion-title">See + {remainingAmenitiesCount} more amenities</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails className="amenities-list">
+                                        {amenities.slice(10).map((amenity, index) => (
+                                            <div key={index} className="amenity-item">
+                                                <IconContext.Provider
+                                                    value={{ size: '1.5em', style: { marginRight: '8px', color: 'black' } }}
                                                 >
-                                                    <IconContext.Provider
-                                                        value={{ size: '1.2em', style: { marginRight: '8px', color: '#007bff' } }}
-                                                    >
-                                                        {amenityIcons[amenity] || defaultIcon}
-                                                    </IconContext.Provider>
-                                                    <Typography variant="body2" sx={{ color: '#555', flexGrow: 1 }}>
-                                                        {amenity}
-                                                    </Typography>
-                                                </div>
-                                            ))}
-                                    </div>
-                                </AccordionDetails>
-                            </Accordion>
-                        </div>
+                                                    {amenityIcons[amenity] || defaultIcon}
+                                                </IconContext.Provider>
+                                                <Typography variant="body2" style={{ color: 'black' }}>
+                                                    {amenity}
+                                                </Typography>
+                                            </div>
+                                        ))}
+                                    </AccordionDetails>
+                                </Accordion>
+                            </div>
+                        )}
                     </div>
                     {/* Rooms */}
                     <div ref={foodsRef}>
