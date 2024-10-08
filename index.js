@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: ['http://localhost:3030', 'https://roomsstay.vercel.app'], // Your client origin
+        origin: ['http://localhost:3030', 'https://roomsstay.vercel.app'], // Your client origins
         methods: ['GET', 'POST'],
         credentials: true,
     },
@@ -36,7 +36,8 @@ app.use('/', setupRoutes(io));
 
 // Start the server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
+    // Bind to 0.0.0.0 for Render
     console.log(`Server running on port ${PORT}`);
 });
 
@@ -47,6 +48,14 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
+
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+    });
+});
+
 // const express = require('express');
 // const http = require('http');
 // const socketIo = require('socket.io');
