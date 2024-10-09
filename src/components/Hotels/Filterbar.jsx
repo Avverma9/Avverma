@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Slider, Typography, FormControlLabel, Checkbox, Box, Stack, Button, Card, CardContent, CardHeader } from '@mui/material';
+import { Slider, Typography, FormControlLabel, Checkbox, Box, Stack, Button, Card, CardContent, CardHeader, Paper } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import amenityIcons from '../../utils/extrasList';
@@ -157,7 +157,15 @@ const Filterbar = ({ onFilterChange }) => {
     };
 
     return (
-        <Box sx={{ width: { xs: '100%', sm: 280 }, padding: 2 }}>
+        <Paper
+            elevation={3}
+            sx={{
+                padding: 2,
+                borderRadius: 2,
+                backgroundColor: '#fafafa',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+            }}
+        >
             <Button variant="contained" color="secondary" onClick={handleClearFilters} sx={{ mb: 2, width: '100%' }}>
                 Clear Filters
             </Button>
@@ -197,8 +205,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleAmenitiesChange}
                                             checked={selectedAmenities.includes(name)}
                                             sx={{
-                                                color: 'primary.main',
-                                                '&:hover': { color: 'primary.dark' },
+                                                color: 'black', // Set checkbox color to black
+                                                '&.Mui-checked': {
+                                                    color: 'black', // Ensure checked state is also black
+                                                },
+                                                '&:hover': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -214,6 +225,7 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('amenities')}
                             variant="text"
+                            color="dark"
                             endIcon={showMoreAmenities ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             sx={{ mt: 1 }}
                         >
@@ -234,8 +246,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleRoomTypeChange}
                                             checked={selectedRoomType === type}
                                             sx={{
-                                                color: 'primary.main',
-                                                '&:hover': { color: 'primary.dark' },
+                                                color: 'black', // Set checkbox color to black
+                                                '&.Mui-checked': {
+                                                    color: 'black', // Ensure checked state is also black
+                                                },
+                                                '&:hover': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -246,6 +261,7 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('roomTypes')}
                             variant="text"
+                            color="dark"
                             endIcon={showMoreRoomTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             sx={{ mt: 1 }}
                         >
@@ -266,8 +282,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleBedTypeChange}
                                             checked={selectedBedType === type}
                                             sx={{
-                                                color: 'primary.main',
-                                                '&:hover': { color: 'primary.dark' },
+                                                color: 'black', // Set checkbox color to black
+                                                '&.Mui-checked': {
+                                                    color: 'black', // Ensure checked state is also black
+                                                },
+                                                '&:hover': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -278,6 +297,7 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('bedTypes')}
                             variant="text"
+                            color="dark"
                             endIcon={showMoreBedTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             sx={{ mt: 1 }}
                         >
@@ -298,8 +318,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handlePropertyTypeChange}
                                             checked={selectedPropertyType === type}
                                             sx={{
-                                                color: 'primary.main',
-                                                '&:hover': { color: 'primary.dark' },
+                                                color: 'black', // Set checkbox color to black
+                                                '&.Mui-checked': {
+                                                    color: 'black', // Ensure checked state is also black
+                                                },
+                                                '&:hover': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -310,6 +333,7 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('propertyTypes')}
                             variant="text"
+                            color="dark"
                             endIcon={showMorePropertyTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             sx={{ mt: 1 }}
                         >
@@ -330,8 +354,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleRatingChange}
                                             checked={starRating === r}
                                             sx={{
-                                                color: 'primary.main',
-                                                '&:hover': { color: 'primary.dark' },
+                                                color: 'black', // Set checkbox color to black
+                                                '&.Mui-checked': {
+                                                    color: 'black', // Ensure checked state is also black
+                                                },
+                                                '&:hover': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -342,6 +369,7 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('ratings')}
                             variant="text"
+                            color="dark"
                             endIcon={showMoreRatings ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             sx={{ mt: 1 }}
                         >
@@ -350,7 +378,7 @@ const Filterbar = ({ onFilterChange }) => {
                     </CardContent>
                 </Card>
             </Stack>
-        </Box>
+        </Paper>
     );
 };
 

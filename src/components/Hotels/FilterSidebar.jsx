@@ -23,6 +23,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import amenityIcons from '../../utils/extrasList';
 import { roomTypes, propertyTypes, bedTypes, starRatings } from '../../utils/extrasList';
+import { CiFilter } from 'react-icons/ci';
 
 // Convert amenityIcons object to an array
 const amenityItems = Object.entries(amenityIcons).map(([name, icon]) => ({
@@ -58,8 +59,8 @@ const FilterSidebar = () => {
     const location = useLocation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const [minPrice, setMinPrice] = useState("");
-    const [maxPrice, setMaxPrice] = useState("");
+    const [minPrice, setMinPrice] = useState('');
+    const [maxPrice, setMaxPrice] = useState('');
     const [amenities, setAmenities] = useState([]);
     const [roomType, setRoomType] = useState([]);
     const [propertyType, setPropertyType] = useState([]);
@@ -125,8 +126,8 @@ const FilterSidebar = () => {
     };
 
     const clearFilters = () => {
-        setMinPrice("");
-        setMaxPrice("");
+        setMinPrice('');
+        setMaxPrice('');
         setAmenities([]);
         setRoomType([]);
         setPropertyType([]);
@@ -152,10 +153,6 @@ const FilterSidebar = () => {
 
     return (
         <div>
-            <Button variant="outlined" startIcon={<TuneIcon />} onClick={toggleDrawer}>
-                Filter
-            </Button>
-
             <Drawer
                 anchor={isMobile ? 'bottom' : 'left'}
                 open={drawerOpen}
@@ -355,6 +352,21 @@ const FilterSidebar = () => {
                     <Divider />
                 </Stack>
             </Drawer>
+            <Button
+                style={{ background: '#fff' }}
+                variant="contained"
+                startIcon={<CiFilter />}
+                onClick={toggleDrawer}
+                sx={{
+                    borderRadius: '50%',
+                    padding: '10px 20px',
+                    color: 'black',
+                    position: 'fixed',
+                    bottom: 60, // Adjust distance from the bottom
+                    right: 20, // Adjust distance from the right
+                    zIndex: 1000, // Ensure it appears above other components
+                }}
+            ></Button>
         </div>
     );
 };

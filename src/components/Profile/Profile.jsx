@@ -8,12 +8,11 @@ import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardBody, MDBCar
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import './Profile.css'; // Import your custom CSS file for styling
-import { token, Unauthorized } from '../../utils/Unauthorized';
+import { Unauthorized, userId } from '../../utils/Unauthorized';
 
 export default function Profile() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userId = localStorage.getItem('rsUserId');
 
     // Retrieve profile data, loading, and error from Redux store
     const { data, loading, error } = useSelector((state) => state.profile);

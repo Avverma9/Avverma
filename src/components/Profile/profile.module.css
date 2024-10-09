@@ -1,7 +1,6 @@
 /* Container to handle the layout of sidebar and content */
 .container {
   display: flex;
-  margin-top: 20px;
   border-radius: 30%;
   height: 60%;
   background-color: #ffffff; /* Light background for the page */

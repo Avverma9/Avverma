@@ -326,7 +326,7 @@ export const ConfirmBooking = () => {
                     sx={{ marginTop: 2 }}
                 />
             </div>
-
+            <hr />
             <BootstrapModal show={show} onHide={handleClose} centered size="xl">
                 <div className={styles.modalContainer}>
                     <div className={styles.modalHeader}>

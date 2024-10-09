@@ -1,5 +1,5 @@
 .extras {
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 10px;
 }
 .price {
@@ -22,10 +22,9 @@
     padding: 20px; /* Adjust the padding as per your design */
     margin: 20px; /* Adjust the margin as per your design */
     background-color: transparent;
-
     border-radius: 10px; /* Adjust the border-radius as per your design */
     overflow: hidden; /* Prevents box-shadow clipping with rounded corners */
-    max-width: 800px;
+    max-width: auto;
 }
 
 @media screen and (max-width: 767px) {
@@ -487,16 +486,13 @@
     border-bottom: none; /* Remove last item's bottom border */
 }
 
-
 @media screen and (min-width: 767px) {
-
-.amenity-item {
-  display: flex; /* Flexbox for individual amenities */
-  align-items: center; /* Center items vertically */
-  color: black; /* Black text color */
-  min-width: 100px; /* Minimum width for each item */
-  margin: 5px; /* Space around each item */
-  box-sizing: border-box; /* Include padding and border in width calculations */
-}
-
+    .amenity-item {
+        display: flex; /* Flexbox for individual amenities */
+        align-items: center; /* Center items vertically */
+        color: black; /* Black text color */
+        min-width: 100px; /* Minimum width for each item */
+        margin: 5px; /* Space around each item */
+        box-sizing: border-box; /* Include padding and border in width calculations */
+    }
 }

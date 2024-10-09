@@ -45,6 +45,7 @@ import amenityIcons from '../../utils/extrasList';
 import BookingReview from './BookingReview';
 import axios from 'axios';
 import { Divider, Grid } from '@mui/material';
+import { userId, userMobile } from '../../utils/Unauthorized';
 
 const BookNow = () => {
     const dispatch = useDispatch();
@@ -307,9 +308,6 @@ const BookNow = () => {
 
     const handleBookNow = async () => {
         try {
-            const userId = localStorage.getItem('rsUserId');
-            const userMobile = localStorage.getItem('userMobile');
-
             if (!userMobile) {
                 alert('Action required: Please update your mobile number in the profile.');
                 window.location.href = '/profile';
@@ -434,40 +432,6 @@ const BookNow = () => {
         setIsOpen(true);
     };
 
-    const containerStyle = {
-        padding: '16px',
-        backgroundColor: '#f9f9f9',
-        borderRadius: '8px',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-        marginBottom: '20px',
-    };
-
-    const titleStyle = {
-        fontSize: '1.2rem',
-        fontWeight: '600',
-        color: '#333',
-        marginBottom: '16px',
-    };
-
-    const gridStyle = {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Adjust columns to fill available space
-        gridGap: '12px', // Space between each amenity
-        alignItems: 'center',
-    };
-
-    const amenityStyle = {
-        backgroundColor: '#fff',
-        padding: '5px',
-        borderRadius: '2px',
-        boxShadow: '0 1px 4px rgba(0, 0, 0, 0.05)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        fontSize: '0.95rem',
-        color: '#555',
-    };
-
     const amenities = hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities) || [];
 
     // Display the first 10 amenities and track how many are left
@@ -584,7 +548,7 @@ const BookNow = () => {
                                 marginBottom: 1,
                                 paddingX: 2,
                                 paddingY: 2,
-                                marginLeft: 0, // Align to the left 
+                                marginLeft: 0, // Align to the left
                                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Add shadow
                                 backgroundColor: 'transparent',
                             }}
@@ -596,12 +560,12 @@ const BookNow = () => {
                             <Grid container spacing={1} sx={{ marginBottom: 1 }}>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-in:</strong> {policy?.checkInPolicy}
+                                        <strong>Check-in:</strong> {policy?.checkInPolicy.substring(0,80)}...
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-out:</strong> {policy?.checkOutPolicy}
+                                        <strong>Check-out:</strong> {policy?.checkOutPolicy.substring(0,80)}...
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -703,7 +667,9 @@ const BookNow = () => {
                         </Box>
                     ))}
                     <div className="amenities-and-policies">
-                        <h6 className="amenities-title">Amenities <FaWifi/></h6>
+                        <h6 className="amenities-title">
+                            Amenities <FaWifi />
+                        </h6>
                         <div className="amenities-list">
                             {visibleAmenities.map((amenity, index) => (
                                 <div key={index} className="amenity-item">
