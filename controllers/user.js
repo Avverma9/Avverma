@@ -115,12 +115,9 @@ const totalUser = async function (req, res) {
 //=====================================================================
 const update = async (req, res) => {
     try {
-        const auth = req.user.id;
         const { userId, userName, address, email, mobile, password } = req.body;
         let images = [];
-        if (auth !== userId) {
-            return res.status(403).json({ message: 'Not authorized' });
-        }
+       
         if (req.files && req.files.length > 0) {
             images = req.files.map((file) => file.location);
         } else {
