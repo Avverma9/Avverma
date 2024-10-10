@@ -34,7 +34,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/joy/Button';
 import './Booknow.css';
 import baseURL from '../../utils/baseURL';
-import { toast } from 'react-toastify';
 import Policies from './policies';
 import BookingDetails from './bookingDetails';
 import Rooms from './rooms';
@@ -46,6 +45,7 @@ import BookingReview from './BookingReview';
 import axios from 'axios';
 import { Divider, Grid } from '@mui/material';
 import { userId, userMobile } from '../../utils/Unauthorized';
+import alert from '../../utils/custom_alert/custom_alert';
 
 const BookNow = () => {
     const dispatch = useDispatch();
@@ -95,7 +95,7 @@ const BookNow = () => {
             // If the food item is not already selected, add it to the list
             setSelectedFood([...selectedFood, { ...food, quantity: 1 }]);
         }
-        toast.info(`One ${food.name} is added`);
+        alert(`One ${food.name} is added`);
     };
 
     const handleRemoveFood = (food) => {
@@ -110,7 +110,7 @@ const BookNow = () => {
         setSelectedRooms([room]); // Replace the previously selected room with the new one
         localStorage.setItem('toBeUpdatedRoomId', room.roomId);
         localStorage.setItem('toBeCheckRoomNumber', room.countRooms);
-        toast.info(`${room.type} is selected`); // Show toast notification
+        alert(`${room.type} is selected`);
     };
 
     const handleRemoveRoom = (room) => {
@@ -350,11 +350,11 @@ const BookNow = () => {
                     const response = axios.patch(`${baseURL}/decrease/room/count/by/one`, {
                         roomId: toBeUpdatedRoomId,
                     });
-                    toast.success('Booking successful');
+                    alert('Booking successful');
                     navigate('/bookings');
                 }
             } else {
-                toast.error('This room is already fully booked');
+                alert('This room is already fully booked');
             }
         } catch (error) {
             console.error('Error booking:', error);
@@ -373,7 +373,7 @@ const BookNow = () => {
         return null;
     }
     const handlePay = () => {
-        toast.warning('Currently we are accepting only Pay at Hotel method');
+        alert('Currently we are accepting only Pay at Hotel method');
     };
 
     const defaultIcon = <FaBed />;
@@ -393,7 +393,7 @@ const BookNow = () => {
     const handleCheckOutDateChange = (date) => {
         // Check if the selected date is after the check-in date
         if (date <= checkInDate) {
-            toast.warning('Checkout date must be after the check-in date.');
+            alert('Checkout date must be after the check-in date.');
             return; // Prevent setting an invalid checkout date
         }
         setCheckOutDate(date);
@@ -536,7 +536,7 @@ const BookNow = () => {
                                 <PlaceIcon />
                                 {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state}, {hotelData?.pinCode}
                             </p>{' '}
-                            <p>{hotelData?.customerWelcomeNote}</p>
+                            <p>{hotelData?.description}</p>
                         </div>
                     </div>{' '}
                     {hotelData?.policies?.map((policy, index) => (
@@ -560,12 +560,12 @@ const BookNow = () => {
                             <Grid container spacing={1} sx={{ marginBottom: 1 }}>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-in:</strong> {policy?.checkInPolicy.substring(0,80)}...
+                                        <strong>Check-in:</strong> {policy?.checkInPolicy.substring(0, 80)}...
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Typography variant="body2" align="center" sx={{ fontSize: '0.9rem' }}>
-                                        <strong>Check-out:</strong> {policy?.checkOutPolicy.substring(0,80)}...
+                                        <strong>Check-out:</strong> {policy?.checkOutPolicy.substring(0, 80)}...
                                     </Typography>
                                 </Grid>
                             </Grid>

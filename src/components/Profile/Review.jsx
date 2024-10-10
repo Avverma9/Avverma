@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import baseURL from '../../utils/baseURL';
 import { Star } from '@mui/icons-material';
-import { toast } from 'react-toastify';
 import { styled, IconButton } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
@@ -64,12 +63,12 @@ export default function Reviews() {
         try {
             const response = await axios.delete(`${baseURL}/delete/${reviewId}`);
             if (response.status === 200) {
-                toast.success('You have deleted a review');
+                alert('You have deleted a review');
                 setData((prevData) => prevData.filter((item) => item._id !== reviewId));
             }
         } catch (error) {
             console.error('Error deleting review:', error);
-            toast.error('Error deleting review');
+            alert('Error deleting review');
         }
     };
 

@@ -1,3 +1,5 @@
+import alert from "./custom_alert/custom_alert";
+
 export const fetchLocation = (setLatitude, setLongitude) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(

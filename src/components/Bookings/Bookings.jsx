@@ -18,13 +18,12 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import moment from 'moment';
 import { useLocation } from 'react-router-dom';
 import styles from './bookings.module.css';
-import noImage from '../../assets/noImage.jpg';
-import { toast } from 'react-toastify';
 import baseURL from '../../utils/baseURL';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFilteredBooking } from '../../redux/reducers/bookingSlice';
 import { formatDateWithOrdinal } from '../../utils/_dateFunctions';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
+import alert from '../../utils/custom_alert/custom_alert';
 
 export const ConfirmBooking = () => {
     const dispatch = useDispatch();
@@ -61,7 +60,7 @@ export const ConfirmBooking = () => {
                 dispatch(fetchFilteredBooking({ selectedStatus, userId }));
             } catch (error) {
                 const errorMessage = error.response?.data?.message || error.message || 'Error fetching data';
-                toast.error(errorMessage);
+                alert(errorMessage);
             }
         };
 
@@ -115,12 +114,12 @@ export const ConfirmBooking = () => {
             if (response.status === 201) {
                 setComment('');
                 setRating(0);
-                toast.success('Your review has been added');
+                alert('Your review has been added');
                 setShowReviewForm(false);
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Error posting review';
-            toast.error(errorMessage);
+            alert(errorMessage);
         }
     };
 

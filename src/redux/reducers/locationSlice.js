@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../utils/baseURL';
-import { toast } from 'react-toastify';
+import alert from '../../utils/custom_alert/custom_alert';
 
 // Define the async thunk
 export const fetchLocation = createAsyncThunk('location/fetchLocation', async (_, { rejectWithValue }) => {
@@ -35,7 +35,7 @@ const locationSlice = createSlice({
             .addCase(fetchLocation.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to fetch location data: ${action.payload || 'Unknown error'}`);
+                alert(`Failed to fetch location data: ${action.payload || 'Unknown error'}`);
             });
     },
 });

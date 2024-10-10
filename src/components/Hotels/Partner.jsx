@@ -15,6 +15,7 @@ import { Unauthorized, userId } from '../../utils/Unauthorized';
 import { fetchLocation } from '../../utils/fetchLocation';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { termsArray } from '../../utils/extrasList';
+import alert from '../../utils/custom_alert/custom_alert';
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',

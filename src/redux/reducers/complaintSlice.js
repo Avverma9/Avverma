@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import baseURL from '../../utils/baseURL';
+import alert from '../../utils/custom_alert/custom_alert';
 
 // Async thunk for posting a complaint
 export const postComplaint = createAsyncThunk('complaint/postComplaint', async (formData, { rejectWithValue }) => {
@@ -12,14 +12,14 @@ export const postComplaint = createAsyncThunk('complaint/postComplaint', async (
             },
         });
         if (response.status === 201) {
-            toast.success('Complaint submitted successfully!');
+            alert('Complaint submitted successfully!');
             return response.data; // Return data if needed for further processing
         } else {
-            toast.error('Failed to create complaint');
+            alert('Failed to create complaint');
             return rejectWithValue('Failed to create complaint');
         }
     } catch (error) {
-        toast.error('Failed to create complaint');
+        alert('Failed to create complaint');
         return rejectWithValue(error.message);
     }
 });
@@ -30,7 +30,7 @@ export const fetchComplaints = createAsyncThunk('complaint/fetchComplaints', asy
         const response = await axios.get(`${baseURL}/complaints/${userId}`);
         return response.data; // Assuming response data structure
     } catch (error) {
-        toast.error('Failed to fetch complaints');
+        alert('Failed to fetch complaints');
         return rejectWithValue(error.message);
     }
 });
@@ -40,14 +40,14 @@ export const deleteComplaint = createAsyncThunk('complaint/deleteComplaint', asy
     try {
         const response = await axios.delete(`${baseURL}/delete-a-particular/complaints/delete/by/id/${id}`);
         if (response.status === 200) {
-            toast.success('Complaint deleted successfully!');
+            alert('Complaint deleted successfully!');
             return id; // Return the id of the deleted complaint
         } else {
-            toast.error('Failed to delete complaint');
+            alert('Failed to delete complaint');
             return rejectWithValue('Failed to delete complaint');
         }
     } catch (error) {
-        toast.error('Failed to delete complaint');
+        alert('Failed to delete complaint');
         return rejectWithValue(error.message);
     }
 });
@@ -60,7 +60,7 @@ export const fetchHotelNamesByBookingId = createAsyncThunk(
             const response = await axios.get(`${baseURL}/get/all/filtered/booking/by/query?bookingId=${bookingId}`);
             return response.data; // Return the fetched data
         } catch (error) {
-            toast.error('Booking ID is not valid');
+            alert('Booking ID is not valid');
             return rejectWithValue(error.message); // Pass the error message
         }
     }
@@ -88,7 +88,7 @@ const complaintSlice = createSlice({
             .addCase(postComplaint.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to submit complaint: ${action.payload || 'Unknown error'}`);
+                alert(`Failed to submit complaint: ${action.payload || 'Unknown error'}`);
             })
             // Fetch complaints
             .addCase(fetchComplaints.pending, (state) => {
@@ -102,7 +102,7 @@ const complaintSlice = createSlice({
             .addCase(fetchComplaints.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to fetch complaints: ${action.payload || 'Unknown error'}`);
+                alert(`Failed to fetch complaints: ${action.payload || 'Unknown error'}`);
             })
             // Delete complaint
             .addCase(deleteComplaint.pending, (state) => {
@@ -117,7 +117,7 @@ const complaintSlice = createSlice({
             .addCase(deleteComplaint.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to delete complaint: ${action.payload || 'Unknown error'}`);
+                alert(`Failed to delete complaint: ${action.payload || 'Unknown error'}`);
             })
             // Fetch hotel names by booking ID
             .addCase(fetchHotelNamesByBookingId.pending, (state) => {

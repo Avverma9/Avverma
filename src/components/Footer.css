@@ -1,50 +1,55 @@
 .footer {
-  background-color: #6d787d;
-  color: white;
-  padding-top: 20px;
+    background-color: #6d787d;
+    color: white;
+    padding-top: 20px;
+    position: relative;
+    z-index: 1000; /* Ensure it's above the footer */
+    top: 0;
+    left: 0;
+    margin-top: auto;
 }
 
 .footer .app-store-link img {
-  max-height: 40px;
-  margin-right: 10px;
+    max-height: 40px;
+    margin-right: 10px;
 }
 
 .footer .footer-divider {
-  border-top: 1px solid #666;
+    border-top: 1px solid #666;
 }
 
 .footer h5 {
-  color: rgb(249, 249, 249);
-  font-weight: bold;
-  margin-bottom: 15px;
+    color: rgb(249, 249, 249);
+    font-weight: bold;
+    margin-bottom: 15px;
 }
 
 .footer ul {
-  padding-left: 0;
-  list-style: none;
+    padding-left: 0;
+    list-style: none;
 }
 
 .footer .footer-link {
-  color: #dbd5d5;
-  text-decoration: none;
+    color: #dbd5d5;
+    text-decoration: none;
 }
 
 .footer .footer-link:hover {
-  color: rgb(0, 0, 0);
-  text-decoration: underline;
+    color: rgb(0, 0, 0);
+    text-decoration: underline;
 }
 
 .footer .social-icon {
-  color: white;
-  text-decoration: none;
+    color: white;
+    text-decoration: none;
 }
 
 .footer .social-icon:hover {
-  color: #ffffff;
+    color: #ffffff;
 }
 
 .footer .footer-copy {
-  margin-top: 10px;
-  font-size: 14px;
-  color: #aaa;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #aaa;
 }

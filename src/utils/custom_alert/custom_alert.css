@@ -1,0 +1,87 @@
+.custom-alert {
+    animation: slide-in 0.5s ease-out, fade-out 0.5s ease-in forwards 2s; /* Change timings if needed */
+    border: 2px solid #ffee34; /* Colored border */
+    background: rgb(218, 218, 218); /* Solid background */
+    padding: 8px 12px; /* Reduced padding for lower height */
+    max-width: 400px; /* Limit width */
+    margin: 20px auto; /* Center the alert */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    font-family: 'Roboto', sans-serif; /* Example font family */
+    width: 90%; /* Responsive width */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between content */
+    align-items: center; /* Center vertically */
+    max-height: auto;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(-50%) translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px);
+    }
+}
+
+.custom-alert h4 {
+    margin: 0; /* Remove default margin */
+    font-weight: 600; /* Slightly bolder font */
+    color: #444; /* Darker header color */
+    font-size: 1rem; /* Adjust header font size */
+}
+
+.custom-alert p {
+    margin: 4px 0 0; /* Reduced margin for paragraph */
+    font-size: 0.85rem; /* Smaller text size */
+    font-weight: 400; /* Normal font weight */
+    color: #333; /* Darker text color */
+}
+
+.custom-alert button {
+    background-color: #d32f2f; /* Background color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 50%; /* Circular shape */
+    width: 36px; /* Fixed width */
+    height: 36px; /* Fixed height */
+    font-size: 1.2rem; /* Icon size */
+    cursor: pointer; /* Pointer cursor */
+    transition: background 0.3s ease; /* Transition for hover */
+}
+
+.custom-alert button:hover {
+    background-color: rgba(211, 47, 47, 0.8); /* Change background color on hover */
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 600px) {
+    .custom-alert {
+        padding: 10px 8px; /* Adjust padding */
+        max-width: 90%; /* Full width on smaller screens */
+        margin: 10px; /* Reduce margin */
+    }
+
+    .custom-alert h4 {
+        font-size: 1.1rem; /* Increase header font size for readability */
+    }
+
+    .custom-alert p {
+        font-size: 0.9rem; /* Increase paragraph font size for readability */
+    }
+
+    .custom-alert button {
+        width: 32px; /* Slightly smaller button */
+        height: 32px; /* Slightly smaller button */
+        font-size: 1rem; /* Smaller icon size */
+        margin-left: 10px; /* Adjust margin */
+    }
+}

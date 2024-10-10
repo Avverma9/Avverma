@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import baseURL from '../../utils/baseURL';
+import alert from '../../utils/custom_alert/custom_alert';
 
 // Async thunk for fetching booking data
 export const fetchBookingData = createAsyncThunk('booking/fetchBookingData', async (hotelId, { rejectWithValue }) => {
@@ -72,7 +72,7 @@ const bookingSlice = createSlice({
             .addCase(fetchBookingData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to fetch booking data: ${action.payload || 'Unknown error'}`);
+                alert(`Failed to fetch booking data: ${action.payload || 'Unknown error'}`);
             })
             // Fetch filtered booking data
             .addCase(fetchFilteredBooking.pending, (state) => {
@@ -86,7 +86,7 @@ const bookingSlice = createSlice({
             .addCase(fetchFilteredBooking.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error('There are no such bookings');
+               alert('There are no such bookings');
             })
             // Fetch monthly data
             .addCase(fetchMonthlyData.pending, (state) => {
@@ -100,7 +100,7 @@ const bookingSlice = createSlice({
             .addCase(fetchMonthlyData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error('Failed to fetch monthly data');
+                alert('Failed to fetch monthly data');
             });
     },
 });

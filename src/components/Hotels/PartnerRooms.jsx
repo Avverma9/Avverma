@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { postRooms, sendNotification } from '../../redux/reducers/partnerSlice'; // Adjust the import path as needed
 import { roomTypes, bedTypes as availableBedTypes } from '../../utils/extrasList';
-import { toast } from 'react-toastify';
+import alert from '../../utils/custom_alert/custom_alert';
 
 export default function PartnerRooms() {
     const dispatch = useDispatch();
@@ -43,12 +43,12 @@ export default function PartnerRooms() {
             await dispatch(sendNotification()).unwrap();
 
             // On success
-            toast.success('Thank you, you have filled all details! One of our customers will connect with you shortly.');
+            alert('Thank you, you have filled all details! One of our customers will connect with you shortly.');
             localStorage.removeItem('hotelId');
             navigate('/');
         } catch (error) {
             // On error
-            toast.error(`Failed to post room: ${error.message || 'Unknown error'}`);
+            alert(`Failed to post room: ${error.message || 'Unknown error'}`);
         }
     };
 

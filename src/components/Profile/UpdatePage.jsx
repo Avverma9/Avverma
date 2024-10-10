@@ -3,22 +3,25 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LinearProgress from '@mui/material/LinearProgress';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Box from '@mui/material/Box';
-import './UpdatePage.css';
+import Paper from '@mui/material/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfileData, fetchProfileData } from '../../redux/reducers/profileSlice';
 import { userId } from '../../utils/Unauthorized';
+import { Button, TextField, Typography } from '@mui/material';
+import alert from '../../utils/custom_alert/custom_alert';
+import { useLoader } from '../../utils/loader';
 
 const UpdatePage = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-
+    const { showLoader, hideLoader } = useLoader();
     const { data, loading, error } = useSelector((state) => state.profile);
 
     const [formData, setFormData] = useState({
         userId: userId,
         userName: '',
-        images: [], // Keep this as an array for file input
+        images: [],
         email: '',
         address: '',
         mobile: '',
@@ -26,9 +29,20 @@ const UpdatePage = () => {
     });
 
     useEffect(() => {
-        if (userId) {
-            dispatch(fetchProfileData(userId));
-        }
+        const fetchData = async () => {
+            try {
+                showLoader(); // Show loader before fetching
+                if (userId) {
+                    await dispatch(fetchProfileData(userId)); // Await the dispatch
+                }
+            } catch (error) {
+                console.error('Error fetching profile data:', error); // Log the error
+            } finally {
+                hideLoader(); // Hide loader after fetch attempt (success or error)
+            }
+        };
+
+        fetchData(); // Call the async function
     }, [dispatch, userId]);
 
     useEffect(() => {
@@ -40,7 +54,7 @@ const UpdatePage = () => {
                 mobile: data.mobile || '',
                 address: data.address || '',
                 password: data.password || '',
-                images: [], // Keep this as an array for file input
+                images: [],
             });
             localStorage.setItem('userMobile', data.mobile || '');
         }
@@ -56,7 +70,6 @@ const UpdatePage = () => {
 
     const handleImageChange = (e) => {
         const { name, files } = e.target;
-        // Convert FileList to an array
         const imageFiles = Array.from(files);
         setFormData({
             ...formData,
@@ -76,7 +89,7 @@ const UpdatePage = () => {
             }
 
             if (formData.images.length > 0) {
-                formDataObj.append('images', formData.images[0]); // Assuming you want to update only the first image if multiple are allowed
+                formDataObj.append('images', formData.images[0]);
             }
 
             if (formData.email) {
@@ -90,7 +103,7 @@ const UpdatePage = () => {
             if (formData.address) {
                 formDataObj.append('address', formData.address);
             }
-
+ 
             if (formData.password) {
                 formDataObj.append('password', formData.password);
             }
@@ -117,92 +130,72 @@ const UpdatePage = () => {
     }
 
     return (
-        <div className="update-container">
-            <form onSubmit={handleSubmit}>
-                <h5>
-                    <EditNoteIcon />
-                    Update Your details.....{' '}
-                </h5>
-                <div className="form-group">
-                    <label htmlFor="userName">Name</label>
-                    <input
-                        type="text"
-                        id="userName"
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Paper elevation={3} sx={{ padding: 3, width: '100%', maxWidth: 600 }}>
+                <Typography variant="h6" gutterBottom>
+                    <EditNoteIcon /> Update Your Details
+                </Typography>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        label="Name"
                         name="userName"
-                        className="form-control"
+                        fullWidth
+                        margin="normal"
                         placeholder={data?.userName || ''}
                         value={formData.userName}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
+                    <TextField
+                        label="Email"
                         name="email"
-                        className="form-control"
+                        fullWidth
+                        margin="normal"
+                        type="email"
                         placeholder={data?.email || ''}
                         value={formData.email}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="mobile">Mobile</label>
-                    <input
-                        type="text"
-                        id="mobile"
+                    <TextField
+                        label="Mobile"
                         name="mobile"
-                        className="form-control"
+                        fullWidth
+                        margin="normal"
                         placeholder={data?.mobile || ''}
                         value={formData.mobile}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="address">Address</label>
-                    <input
-                        type="text"
-                        id="address"
+                    <TextField
+                        label="Address"
                         name="address"
-                        className="form-control"
+                        fullWidth
+                        margin="normal"
                         placeholder={data?.address || ''}
                         value={formData.address}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
+                    <TextField
+                        label="Password"
                         name="password"
-                        className="form-control"
+                        fullWidth
+                        margin="normal"
+                        type="password"
                         placeholder="Enter your password"
                         value={formData.password}
                         onChange={handleInputChange}
                     />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="userImage">Images</label>
-                    <input type="file" id="userImage" name="images" className="form-control" onChange={handleImageChange} />
-                </div>
-
-                <button type="submit" className="btn btn-primary">
-                    Update
-                </button>
-            </form>
-            {loading && (
-                <Box sx={{ width: '100%' }}>
-                    <LinearProgress />
-                </Box>
-            )}
-        </div>
+                    <input
+                        type="file"
+                        id="userImage"
+                        name="images"
+                        onChange={handleImageChange}
+                        style={{ margin: '16px 0', width: '100%' }}
+                    />
+                    <Button type="submit" variant="contained" color="primary" fullWidth>
+                        Update
+                    </Button>
+                </form>
+            </Paper>
+        </Box>
     );
 };
 

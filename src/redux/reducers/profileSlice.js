@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../utils/baseURL';
-import { toast } from 'react-toastify'; // Import toast
 import { token } from '../../utils/Unauthorized';
 
 // Async thunk for fetching profile data
@@ -63,7 +62,6 @@ const profileSlice = createSlice({
             .addCase(fetchProfileData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                toast.error(`Failed to fetch profile: ${action?.payload?.message || 'Unknown error'}`);
             })
             // Update profile
             .addCase(updateProfileData.pending, (state) => {
@@ -74,13 +72,11 @@ const profileSlice = createSlice({
             .addCase(updateProfileData.fulfilled, (state) => {
                 state.loading = false;
                 state.updateSuccess = true;
-                toast.success('Profile updated successfully!');
             })
             .addCase(updateProfileData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
                 state.updateSuccess = false;
-                toast.error(`Failed to update profile: ${action?.payload?.message || 'Unknown error'}`);
             });
     },
 });

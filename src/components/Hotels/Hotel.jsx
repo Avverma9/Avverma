@@ -206,9 +206,10 @@ const Hotel = () => {
                                             </div>
                                         ))}
                                     </CardContent>
+
                                     <CardContent orientation="horizontal">
                                         <div>
-                                            <Typography level="body-xs">Price:</Typography>
+                                            <p className="mt-2">{hotel.customerWelcomeNote || 'No description available.'}</p>
                                             <Typography fontSize="sm" fontWeight="lg">
                                                 <CurrencyRupeeIcon /> {minPrice}
                                             </Typography>
@@ -315,7 +316,7 @@ const Hotel = () => {
                                                         <div className="col-md-5">
                                                             <h4>{hotel?.hotelName}</h4>
                                                             <p className="text-muted">
-                                                                {hotel?.city}, {hotel?.state}
+                                                                {hotel?.landmark},{hotel?.city}, {hotel?.state}, {hotel?.pinCode}
                                                             </p>
                                                             <span className="badge bg-warning text-dark">100% Safe Place to Stay™</span>
                                                             <div className="mt-2">
@@ -369,7 +370,9 @@ const Hotel = () => {
                                                                     ))}
                                                                 </CardContent>
                                                             </div>
-                                                            <p className="mt-2">{hotel.description || 'No description available.'}</p>
+                                                            <p className="mt-2">
+                                                                {hotel.customerWelcomeNote || 'No description available.'}
+                                                            </p>
                                                         </div>
                                                         <div className="col-md-3 text-center" style={{ marginTop: '90px' }}>
                                                             <ul className="list-unstyled">

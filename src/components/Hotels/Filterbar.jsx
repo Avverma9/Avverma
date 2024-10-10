@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const Filterbar = ({ onFilterChange }) => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
-    const [starRating, setRating] = useState(0);
+    const [starRating, setRating] = useState('');
     const [selectedAmenities, setSelectedAmenities] = useState([]);
     const [selectedRoomType, setSelectedRoomType] = useState('');
     const [selectedBedType, setSelectedBedType] = useState('');
