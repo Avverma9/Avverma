@@ -48,13 +48,24 @@ const setupRoutes = (io) => {
     router.get('/get-messages/of-chat/:userId1/:userId2', async (req, res) => {
         const { userId1, userId2 } = req.params;
         try {
-            const messages = await Message.find({
+            const responseMessages = await Message.find({
                 $or: [
                     { sender: userId1, receiver: userId2 },
                     { sender: userId2, receiver: userId1 },
                 ],
             }).sort({ timestamp: 1 });
-            res.json(messages);
+
+            const userImage = await User.findById(userId1);
+            const profilePic = userImage ? userImage.images : null;
+
+            // Add profilePic to each message
+            const messages = responseMessages.map((message) => ({
+                ...message.toObject(), // Convert mongoose document to plain object
+                profilePic, // Add profilePic to each message
+            }));
+
+            res.json(messages); // Send modified messages array
+            console.log(responseMessages);
         } catch (err) {
             res.status(500).json({ message: 'Server error', error: err });
         }
