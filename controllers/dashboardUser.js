@@ -111,9 +111,13 @@ const getPartners = async function (req, res) {
 };
 //delete
 const getPartnersById = async (req, res) => {
-    const { id } = req.params;
-    const fetchUser = await Dashboard.findById(id);
-    res.json(fetchUser);
+    try {
+        const { userId } = req.params;
+        const fetchUser = await Dashboard.findById(userId);
+        res.status(200).json(fetchUser);
+    } catch (error) {
+        return res.status(500).json(fetchUser);
+    }
 };
 const deletePartner = async function (req, res) {
     const { id } = req.params;
