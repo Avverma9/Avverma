@@ -95,6 +95,28 @@ const setupRoutes = (io) => {
         }
     });
 
+    router.delete('/delete/a/chat-and-message/from/messenger-app/:messageId/:senderId/:receiverId', async (req, res) => {
+        try {
+            const { messageId, senderId, receiverId } = req.params;
+
+            const deleteResult = await Message.deleteOne({ _id: messageId });
+
+            if (deleteResult.deletedCount === 0) {
+                return res.status(404).json({ message: 'Message not found' });
+            }
+
+            return res.status(200).json({
+                message: 'Successfully deleted the message and related chats',
+                result: {
+                    deletedMessage: deleteResult,
+                },
+            });
+        } catch (error) {
+            console.error('Error deleting chat and messages:', error);
+            return res.status(500).json({ message: 'Server error' });
+        }
+    });
+
     return router;
 };
 

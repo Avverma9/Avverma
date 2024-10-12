@@ -10,4 +10,7 @@ router.delete(
   "/delete/added/chats/from/messenger-app/:senderId/:receiverId?",
   messenger.deleteChatAndMessages
 ); //panel
+
+router.delete('/delete/a/chat-and-message/from/messenger-app/:messageId/:senderId/:receiverId',messenger)
 module.exports = router;
+
