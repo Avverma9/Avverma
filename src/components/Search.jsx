@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button, Container, Grid, TextField, FormControlLabel, Checkbox, IconButton, Typography } from '@mui/material';
-import { CiLocationArrow1 } from "react-icons/ci";
+import { CiLocationArrow1 } from 'react-icons/ci';
 
 const SearchForm = () => {
     const navigate = useNavigate();

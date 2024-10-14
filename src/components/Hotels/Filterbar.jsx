@@ -164,6 +164,26 @@ const Filterbar = ({ onFilterChange }) => {
                 borderRadius: 2,
                 backgroundColor: '#fafafa',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+                position: 'sticky',
+                top: 20, // Adjust this to control how far down it sticks
+                zIndex: 10,
+                height: 'calc(100vh - 40px)', // Ensure it occupies the desired height
+                overflowY: 'auto', // Allow vertical scrolling
+                '&::-webkit-scrollbar': {
+                    width: '8px', // Width of the scrollbar
+                },
+                '&::-webkit-scrollbar-track': {
+                    background: '#f1f1f1', // Background of the scrollbar track
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    background: '#888', // Color of the scrollbar thumb
+                    borderRadius: '10px', // Rounded corners
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                    background: '#555', // Color when hovering
+                },
+                scrollbarWidth: 'thin', // For Firefox
+                scrollbarColor: '#888 #f1f1f1', // Thumb and track color for Firefox
             }}
         >
             <Button variant="contained" color="secondary" onClick={handleClearFilters} sx={{ mb: 2, width: '100%' }}>

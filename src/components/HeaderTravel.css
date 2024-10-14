@@ -7,7 +7,14 @@
   width: 100%; /* Ensure full width of the viewport */
   background-color: #fff; /* Background color for desktop */
 }
+.header-travel a {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Use the color of the parent element */
+}
 
+.header-travel a:hover {
+  color: inherit; /* Ensure no color change on hover */
+}
 /* Sticky Header on Mobile */
 @media screen and (max-width: 768px) {
   .header-travel {

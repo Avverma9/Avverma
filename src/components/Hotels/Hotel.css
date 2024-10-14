@@ -26,3 +26,44 @@
   border: 1px solid #ddd; /* Optional: Border for styling */
   border-radius: 5px; /* Optional: Rounded corners */
 }
+
+
+.header-category {
+  display: flex; /* Use flexbox to align items in a row */
+  gap: 10px; /* Adds space between the links */
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  justify-content: center; /* Center the items */
+}
+
+.header-category a {
+  text-decoration: none; /* Removes the underline from links */
+  color: #070707; /* Sets the text color */
+  background-color: #dfdfdf; /* Background color for the links */
+  padding: 10px 15px; /* Adds padding for a button-like appearance */
+  border-radius: 50px; /* Rounds the corners */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.header-category a:hover {
+  background-color: #bababa; /* Darker shade on hover */
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  .header-category {
+    display: flex; /* Use flexbox to align items in a row */
+    gap: 5px; /* Adds space between the links */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    justify-content: center; /* Center the items */
+  }
+
+  .header-category a {
+    text-decoration: none; /* Removes the underline from links */
+    color: #070707; /* Sets the text color */
+    background-color: #dfdfdf; /* Background color for the links */
+    padding: 5px 8px; /* Adds padding for a button-like appearance */
+    border-radius: 50px; /* Rounds the corners */
+    font-size: 10px;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+}

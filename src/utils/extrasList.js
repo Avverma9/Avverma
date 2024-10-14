@@ -319,3 +319,18 @@ export const termsArray = [
     'Late check-out is subject to availability and may incur additional charges.',
     'Management reserves the right to refuse service.',
 ];
+
+export const categories = [
+    { name: 'Family-friendly', path: '/family-friendly' },
+    { name: 'Nature', path: '/nature' },
+    { name: 'Romantic', path: '/romantic' },
+    { name: 'Cultural', path: '/cultural' },
+    { name: 'Holiday', path: '/holiday' },
+];
+
+export const bannerImage = [
+    'https://img.freepik.com/premium-vector/travel-web-banner-design_710679-28.jpg',
+    'https://img.freepik.com/free-vector/flat-design-travel-twitter-header_23-2149058244.jpg',
+    'https://img.freepik.com/free-vector/flat-design-travel-twitter-header_23-2149054512.jpg?t=st=1728620210~exp=1728623810~hmac=24cf016d8d0e850fde35d9f02e9c6819136a34e8a40564b72861ab1b11a063f6',
+    'https://as2.ftcdn.net/v2/jpg/01/90/17/33/1000_F_190173326_RLQl1POQNFeRDzEDHnkEFMYWGDp6tnGB.jpg',
+];
