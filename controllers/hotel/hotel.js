@@ -19,6 +19,7 @@ const createHotel = async (req, res) => {
             city,
             landmark,
             pinCode,
+            hotelCategory,
             numRooms,
             latitude,
             longitude,
@@ -52,6 +53,7 @@ const createHotel = async (req, res) => {
             city,
             landmark,
             pinCode,
+            hotelCategory,
             numRooms,
             reviews,
             rating,
@@ -203,6 +205,7 @@ const UpdateHotelInfo = async function (req, res) {
         salesManagerContact,
         landmark,
         pinCode,
+        hotelCategory,
         propertyType,
         starRating,
         city,
@@ -223,6 +226,7 @@ const UpdateHotelInfo = async function (req, res) {
                     salesManagerContact: salesManagerContact,
                     landmark: landmark,
                     pinCode: pinCode,
+                    hotelCategory: hotelCategory,
                     propertyType: propertyType,
                     starRating: starRating,
                     city: city,
@@ -420,6 +424,7 @@ const getHotelsByFilters = async (req, res) => {
             latitude,
             longitude,
             countRooms,
+            hotelCategory,
             type,
             bedTypes,
             amenities,
@@ -446,6 +451,7 @@ const getHotelsByFilters = async (req, res) => {
         if (starRating) filters.starRating = starRating;
         if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, 'i') };
         if (localId) filters.localId = localId;
+        if (hotelCategory) filters.hotelCategory = hotelCategory;
         if (latitude) filters.latitude = latitude;
         if (longitude) filters.longitude = longitude;
         if (countRooms) filters['rooms.countRooms'] = { $gte: parseInt(countRooms) };
