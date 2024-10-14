@@ -116,7 +116,7 @@ const getPartnersById = async (req, res) => {
         const fetchUser = await Dashboard.findById(userId);
         res.status(200).json(fetchUser);
     } catch (error) {
-        return res.status(500).json(fetchUser);
+        return res.status(500).json({ message: "It seeem's an error !" });
     }
 };
 const deletePartner = async function (req, res) {
