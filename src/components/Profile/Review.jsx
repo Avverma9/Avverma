@@ -90,7 +90,7 @@ export default function Reviews() {
     if (loading) {
         return (
             <div className="loading">
-                <img src="https://assets-v2.lottiefiles.com/a/dad9a054-116e-11ee-aef8-9bf427a69ce4/rMSD8h3gzM.gif" alt="Loading" />
+                <img src="https://www.edgecrm.app/images/no-data.gif" alt="Loading" />
             </div>
         );
     }

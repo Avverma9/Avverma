@@ -14,7 +14,7 @@ import baseURL from '../../utils/baseURL';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
 import { fetchLocation } from '../../utils/fetchLocation';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import { termsArray } from '../../utils/extrasList';
+import { categories, termsArray } from '../../utils/extrasList';
 import alert from '../../utils/custom_alert/custom_alert';
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -47,7 +47,7 @@ export default function PartnerForm() {
     const { showLoader, hideLoader } = useLoader();
     const [hotelOwnerName, setHotelOwnerName] = useState('');
     const [description, setDescription] = useState('');
-    const [priceError, setPriceError] = useState('');
+    const [hotelCategory, setHotelCategory] = useState('');
     const [customerWelcomeNote, setCustomerWelcomeNote] = useState('');
     const [destination, setDestination] = useState('');
     const [startDate, setStartDate] = useState('');
@@ -85,12 +85,14 @@ export default function PartnerForm() {
             formData.append('startDate', startDate);
             formData.append('endDate', endDate);
             formData.append('latitude', latitude);
+            formData.append('hotelCategory', hotelCategory);
             formData.append('longitude', longitude);
             formData.append('state', state);
             formData.append('customerWelcomeNote', customerWelcomeNote);
             formData.append('city', city);
             formData.append('landmark', landmark);
             formData.append('pinCode', pinCode);
+
             formData.append('starRating', starRating);
             formData.append('contact', contact);
             formData.append('propertyType', propertyType);
@@ -466,6 +468,20 @@ export default function PartnerForm() {
                                 <option value="Accepted">Accepted</option>
                             </select>
                         </div>
+                        <select
+                            id="localId"
+                            className="form-control"
+                            required
+                            value={hotelCategory}
+                            onChange={(e) => setHotelCategory(e.target.value)}
+                        >
+                            {categories.map((item) => (
+                                <option key={item.name} value={item.name}>
+                                    {item.name}
+                                </option>
+                            ))}
+                        </select>
+
                         <div className="col-md-4 mb-3">
                             <label htmlFor="buyingRole" className="form-label">
                                 Property type ( Whether which property type you have )

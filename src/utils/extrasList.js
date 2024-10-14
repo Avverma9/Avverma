@@ -326,6 +326,7 @@ export const categories = [
     { name: 'Romantic', path: '/romantic' },
     { name: 'Cultural', path: '/cultural' },
     { name: 'Holiday', path: '/holiday' },
+    { name: 'General', path: '/' },
 ];
 
 export const bannerImage = [
