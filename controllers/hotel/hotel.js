@@ -451,7 +451,7 @@ const getHotelsByFilters = async (req, res) => {
         if (starRating) filters.starRating = starRating;
         if (propertyType) filters.propertyType = { $regex: new RegExp(propertyType, 'i') };
         if (localId) filters.localId = localId;
-        if (hotelCategory) filters.hotelCategory = hotelCategory;
+        if (hotelCategory) filters.hotelCategory = { $regex: new RegExp(hotelCategory, 'i') };
         if (latitude) filters.latitude = latitude;
         if (longitude) filters.longitude = longitude;
         if (countRooms) filters['rooms.countRooms'] = { $gte: parseInt(countRooms) };
