@@ -108,11 +108,11 @@ const Offered = () => {
                             <Carousel>
                                 {hotel?.images?.map((image, i) => (
                                     <Carousel.Item key={i}>
-                                        <img src={image} className="d-block w-100" alt="" style={{ height: '150px', objectFit: 'cover' }} />
+                                        <img src={image} className="d-block w-100" alt="" style={{ height: '200px', objectFit: 'cover' }} />
                                     </Carousel.Item>
                                 ))}
                             </Carousel>
-                            <CardContent style={{ maxHeight: '30px', overflow: 'hidden' }}>
+                            <CardContent style={{ maxHeight: '40px', overflow: 'hidden' }}>
                                 {/* Amenities Section */}
                                 {hotel?.amenities?.map((amenity, amenityIndex) => (
                                     <div
@@ -121,7 +121,7 @@ const Offered = () => {
                                             display: 'flex',
                                             flexDirection: 'row',
                                             flexWrap: 'wrap',
-                                            maxHeight: '30px',
+                                            maxHeight: '40px',
                                             overflow: 'hidden',
                                         }}
                                     >
@@ -132,7 +132,7 @@ const Offered = () => {
                                                 style={{
                                                     margin: '5px',
                                                     whiteSpace: 'nowrap',
-                                                    maxHeight: '30px',
+                                                    maxHeight: '40px',
                                                     overflow: 'hidden',
                                                     textOverflow: 'ellipsis',
                                                 }}
@@ -168,8 +168,7 @@ const Offered = () => {
                                         </>
                                     )}
                                 </div>
-                            </CardContent>
-                            <Button
+                                <Button
                                 variant="solid"
                                 size="sm"
                                 color="primary"
@@ -177,8 +176,9 @@ const Offered = () => {
                                 sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
                                 onClick={() => handleBuy(hotel.hotelId)}
                             >
-                                View details
+                                View
                             </Button>
+                            </CardContent>
                         </Card>
                     </div>
                 ))}

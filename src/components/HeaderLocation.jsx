@@ -74,7 +74,7 @@ const HeaderTravel = () => {
                                 <img key={imageIndex} className="circle" src={image} alt={`City Image ${imageIndex + 1}`} />
                             ))}
                         </div>
-                        <div className="city-name">{loc.location}</div>
+                        <div className="city-name">{loc?.location === 'Uttar Pradesh' ? 'UP' : loc?.location}</div>
                     </Link>
                 </div>
             ))}

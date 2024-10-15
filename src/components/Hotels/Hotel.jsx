@@ -116,7 +116,7 @@ const Hotel = () => {
                                 <Card
                                     sx={{
                                         width: '100%',
-                                        height: '400px',
+                                        height: '450px',
                                         overflow: 'hidden',
                                     }}
                                 >
@@ -129,14 +129,14 @@ const Hotel = () => {
                                                     right: '.5rem',
                                                 }}
                                             >
-                                                <Stack direction="row" spacing={1}>
+                                                {/* <Stack direction="row" spacing={1}>
                                                     <Chip
-                                                        label={`Get ₹${minPriceRoom?.offerPriceLess || 0} less`}
+                                                        label={`Get ₹${minPriceRoom?.offerPriceLess } less`}
                                                         color="success"
                                                         variant="filled"
                                                         avatar={<Avatar alt="Off" src="/static/images/avatar/1.jpg" />}
                                                     />
-                                                </Stack>
+                                                </Stack> */}
                                             </div>
                                         )}
                                         <br />
@@ -152,7 +152,7 @@ const Hotel = () => {
                                             size="sm"
                                             sx={{
                                                 position: 'absolute',
-                                                top: '0.5rem',
+                                                top: '0.1rem',
                                                 left: '.5rem',
                                             }}
                                         >
@@ -168,7 +168,7 @@ const Hotel = () => {
                                                     src={image}
                                                     className="d-block w-100"
                                                     alt=""
-                                                    style={{ height: '150px', objectFit: 'cover' }}
+                                                    style={{ height: '200px', objectFit: 'cover' }}
                                                 />
                                             </Carousel.Item>
                                         ))}
@@ -181,7 +181,7 @@ const Hotel = () => {
                                                     display: 'flex',
                                                     flexDirection: 'row',
                                                     flexWrap: 'wrap',
-                                                    maxHeight: '30px',
+                                                    maxHeight: '40px',
                                                     overflow: 'hidden',
                                                 }}
                                             >
@@ -214,21 +214,21 @@ const Hotel = () => {
                                                 <CurrencyRupeeIcon /> {minPrice}
                                             </Typography>
                                         </div>
+                                        <Button
+                                            variant="solid"
+                                            size="sm"
+                                            color="primary"
+                                            aria-label="Explore Bahamas Islands"
+                                            sx={{
+                                                ml: 'auto',
+                                                alignSelf: 'center',
+                                                fontWeight: 600,
+                                            }}
+                                            onClick={() => handleBuy(hotel.hotelId)}
+                                        >
+                                            View
+                                        </Button>
                                     </CardContent>
-                                    <Button
-                                        variant="solid"
-                                        size="sm"
-                                        color="primary"
-                                        aria-label="Explore Bahamas Islands"
-                                        sx={{
-                                            ml: 'auto',
-                                            alignSelf: 'center',
-                                            fontWeight: 600,
-                                        }}
-                                        onClick={() => handleBuy(hotel.hotelId)}
-                                    >
-                                        View details
-                                    </Button>
                                 </Card>
                             </div>
                         );
