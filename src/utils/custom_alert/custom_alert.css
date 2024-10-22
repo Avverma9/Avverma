@@ -47,8 +47,8 @@
 }
 
 .custom-alert button {
-    background-color: #d32f2f; /* Background color */
-    color: white; /* Text color */
+    background-color: #9eff6a; /* Background color */
+    color: rgb(0, 0, 0); /* Text color */
     border: none; /* No border */
     border-radius: 50%; /* Circular shape */
     width: 36px; /* Fixed width */
@@ -59,7 +59,7 @@
 }
 
 .custom-alert button:hover {
-    background-color: rgba(211, 47, 47, 0.8); /* Change background color on hover */
+    background-color: rgba(56, 255, 99, 0.8); /* Change background color on hover */
 }
 
 /* Media Queries for Mobile Responsiveness */

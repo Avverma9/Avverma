@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Box, Button, Typography } from '@mui/material';
 import './custom_alert.css'; // Import the CSS file
-
+import { SiTicktick } from 'react-icons/si';
 let showAlertTimeout;
 
 const CustomAlert = ({ message, onClose }) => {
@@ -34,7 +34,7 @@ const CustomAlert = ({ message, onClose }) => {
             }}
         >
             <Typography variant="body1" sx={{ display: 'inline-block' }}>
-                {message}
+                <SiTicktick /> {" "} {message}
             </Typography>
             <button onClick={onClose} className="custom-button" aria-label="Close Alert">
                 &times; {/* Close icon */}

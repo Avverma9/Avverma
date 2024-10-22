@@ -97,13 +97,12 @@ const Travel = () => {
                 <hr />
                 <div className="header-category">
                     {categories.map((category, index) => (
-                        <Link to={category.path} key={index}>
-                            {' '}
-                            {/* Use Link for React Router */}
+                        <Link to={`/travellers?hotelCategory=${encodeURIComponent(category.name)}`} key={index}>
                             {category.name}
                         </Link>
                     ))}
                 </div>
+
                 <hr />
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                     {hotelData.map((hotel, index) => {
@@ -230,21 +229,20 @@ const Travel = () => {
                                             </Typography>
                                         </div>
                                         <Button
-                                        variant="solid"
-                                        size="sm"
-                                        color="primary"
-                                        aria-label="Explore Bahamas Islands"
-                                        sx={{
-                                            ml: 'auto',
-                                            alignSelf: 'center',
-                                            fontWeight: 600,
-                                        }}
-                                        onClick={() => handleBuy(hotel.hotelId)}
-                                    >
-                                        View
-                                    </Button>
+                                            variant="solid"
+                                            size="sm"
+                                            color="primary"
+                                            aria-label="Explore Bahamas Islands"
+                                            sx={{
+                                                ml: 'auto',
+                                                alignSelf: 'center',
+                                                fontWeight: 600,
+                                            }}
+                                            onClick={() => handleBuy(hotel.hotelId)}
+                                        >
+                                            View
+                                        </Button>
                                     </CardContent>
-                                   
                                 </Card>
                             </div>
                         );
@@ -281,13 +279,11 @@ const Travel = () => {
                     {/*  ------------------- Desktop mode ---------------------- */}
 
                     <div className="container mt-4 d-none d-sm-block">
-                        <TravelBanner/>
+                        <TravelBanner />
                         <hr />
                         <div className="header-category">
                             {categories.map((category, index) => (
-                                <Link to={category.path} key={index}>
-                                    {' '}
-                                    {/* Use Link for React Router */}
+                                <Link to={`/travellers?hotelCategory=${encodeURIComponent(category.name)}`} key={index}>
                                     {category.name}
                                 </Link>
                             ))}

@@ -3,18 +3,17 @@
 }
 
 .travel-banner-image {
-    height: 100%; /* Set image height to fill the carousel item */
+    height: auto; /* Set image height to fill the carousel item */
     object-fit: cover; /* Ensures the image covers the area without distortion */
 }
 
 @media (max-width: 600px) {
     .carousel-item {
-        height: 200px; /* Set the height for the carousel item */
+        height: auto; /* Set the height for the carousel item */
     }
-    
+
     .travel-banner-image {
         height: 100%; /* Set image height to fill the carousel item */
         object-fit: cover; /* Ensures the image covers the area without distortion */
     }
-
 }

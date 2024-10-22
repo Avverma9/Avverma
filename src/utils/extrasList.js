@@ -321,12 +321,12 @@ export const termsArray = [
 ];
 
 export const categories = [
-    { name: 'Family-friendly', path: '/family-friendly' },
-    { name: 'Nature', path: '/nature' },
-    { name: 'Romantic', path: '/romantic' },
-    { name: 'Cultural', path: '/cultural' },
-    { name: 'Holiday', path: '/holiday' },
-    { name: 'General', path: '/' },
+    { name: 'Family-friendly' },
+    { name: 'Nature' },
+    { name: 'Romantic' },
+    { name: 'Cultural' },
+    { name: 'Holiday' },
+    { name: 'General' },
 ];
 
 export const bannerImage = [
