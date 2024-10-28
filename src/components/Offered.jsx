@@ -20,6 +20,7 @@ import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import baseURL from '../utils/baseURL';
+import { userId } from '../utils/Unauthorized';
 const Offered = () => {
     const [hotelData, setHotelData] = useState([]);
     const location = useLocation();
@@ -45,7 +46,7 @@ const Offered = () => {
     }
 
     const handleBuy = (hotelID) => {
-        window.location.href = `/book-hotels/${hotelID}`;
+        window.location.href = `/book-hotels/${userId}/${hotelID}`;
     };
 
     const defaultIcon = <DoneAllIcon />;
@@ -169,15 +170,15 @@ const Offered = () => {
                                     )}
                                 </div>
                                 <Button
-                                variant="solid"
-                                size="sm"
-                                color="primary"
-                                aria-label="Explore Bahamas Islands"
-                                sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
-                                onClick={() => handleBuy(hotel.hotelId)}
-                            >
-                                View
-                            </Button>
+                                    variant="solid"
+                                    size="sm"
+                                    color="primary"
+                                    aria-label="Explore Bahamas Islands"
+                                    sx={{ ml: 'auto', alignSelf: 'center', fontWeight: 600 }}
+                                    onClick={() => handleBuy(hotel.hotelId)}
+                                >
+                                    View
+                                </Button>
                             </CardContent>
                         </Card>
                     </div>
