@@ -352,7 +352,6 @@ const BookNow = () => {
                         roomId: toBeUpdatedRoomId,
                     });
                     alert('Booking successful');
-                    navigate('/bookings');
                 }
             } else {
                 alert('This room is already fully booked');
