@@ -82,7 +82,18 @@ const BookNow = () => {
     const handleExpansion = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
+    if (!userId || !userMobile) {
+        const storedUserId = localStorage.getItem('userId');
+        const storedUserMobile = localStorage.getItem('userMobile');
 
+        if (storedUserId) {
+            userId = storedUserId;
+        }
+
+        if (storedUserMobile) {
+            userMobile = storedUserMobile;
+        }
+    }
     const handleAddFood = (food) => {
         // Check if the food item is already selected
         const existingFoodIndex = selectedFood.findIndex((selected) => selected._id === food._id);
