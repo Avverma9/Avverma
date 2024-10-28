@@ -44,14 +44,12 @@ import amenityIcons from '../../utils/extrasList';
 import BookingReview from './BookingReview';
 import axios from 'axios';
 import { Divider, Grid } from '@mui/material';
-import { userId, userMobile } from '../../utils/Unauthorized';
 import alert from '../../utils/custom_alert/custom_alert';
 
 const BookNow = () => {
     const dispatch = useDispatch();
     const [hotelData, setHotelData] = useState(null);
     const [expanded, setExpanded] = useState(false);
-    const navigate = useNavigate();
     const [selectedRooms, setSelectedRooms] = useState([]);
     const location = useLocation();
     const [selectedFood, setSelectedFood] = useState([]);
@@ -65,7 +63,7 @@ const BookNow = () => {
     const tomorrow = addDays(today, 1);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
-
+    const navigate = useNavigate();
     const [guestsCount, setGuestsCount] = useState(3);
     const [currentPrice, setCurrentPrice] = useState(0);
     const [checkInDate, setCheckInDate] = useState(today);
@@ -84,13 +82,14 @@ const BookNow = () => {
     const handleExpansion = () => {
         setExpanded((prevExpanded) => !prevExpanded);
     };
-
+    useEffect(() => {
+        if (userId === 'null') {
+            window.location.href = '/login';
+        }
+    }, [userId, navigate]);
     const handleAddFood = (food) => {
-        // Check if the food item is already selected
         const existingFoodIndex = selectedFood.findIndex((selected) => selected._id === food._id);
-
         if (existingFoodIndex !== -1) {
-            // If the food item is already selected, replace it with the new one
             const updatedFood = selectedFood.map((item, index) => (index === existingFoodIndex ? { ...food, quantity: 1 } : item));
             setSelectedFood(updatedFood);
         } else {
