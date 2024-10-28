@@ -5,7 +5,7 @@ export const Unauthorized = () => {
     const token = localStorage.getItem('rsToken');
     const navigate = useNavigate(); // Initialize the navigate function
 
-    if (!token) {
+    if (!userId) {
         return (
             <div
                 style={{
