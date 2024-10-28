@@ -40,6 +40,7 @@
     window.addEventListener('message', (event) => {
       // Check if the event's origin matches the expected origin
       if (event.origin === 'https://roomsstay.vercel.app') { // Replace with actual parent domain
+        alert(JSON.Stringify(even.data))
         const { hotelId, userId, userMobile } = event.data;
 
         // Set the localStorage values
