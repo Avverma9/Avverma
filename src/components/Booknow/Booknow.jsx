@@ -57,8 +57,10 @@ const BookNow = () => {
     const [selectedFood, setSelectedFood] = useState([]);
     const [roomsCount, setRoomsCount] = useState(1);
     const [timeLeft, setTimeLeft] = useState(null);
-    const path = location.pathname;
-    const newhotelId = path.substring(path.lastIndexOf('/') + 1);
+    const path = location.pathname; // Get the current path
+    const parts = path.split('/'); // Split the path by '/'
+    const newhotelId = parts[parts.length - 1]; // Last element is newHotelId
+    const userId = parts[parts.length - 2]; // Second last element is userId
     const today = new Date();
     const tomorrow = addDays(today, 1);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -308,11 +310,11 @@ const BookNow = () => {
 
     const handleBookNow = async () => {
         try {
-            if (!userMobile) {
-                alert('Action required: Please update your mobile number in the profile.');
-                window.location.href = '/profile';
-                return;
-            }
+            // if (!userMobile) {
+            //     alert('Action required: Please update your mobile number in the profile.');
+            //     window.location.href = '/profile';
+            //     return;
+            // }
 
             const bookingData = {
                 hotelId: newhotelId,

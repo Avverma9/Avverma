@@ -28,6 +28,7 @@ import './Hotel.css';
 import FilterSidebar from './FilterSidebar';
 import { LuHeading4 } from 'react-icons/lu';
 import amenityIcons from '../../utils/extrasList';
+import { userId } from '../../utils/Unauthorized';
 const Hotel = () => {
     const [hotelData, setHotelData] = useState([]);
     const [roomPrice, setRoomPrice] = useState('');
@@ -70,7 +71,7 @@ const Hotel = () => {
     }
 
     const handleBuy = (hotelID) => {
-        navigate(`/book-hotels/${hotelID}`);
+        navigate(`/book-hotels/${userId}/${hotelID}`);
     };
 
     const defaultIcon = <DoneAllIcon />;
