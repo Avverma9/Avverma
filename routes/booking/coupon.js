@@ -3,7 +3,7 @@ const router = express.Router();
 const couponController = require('../../controllers/booking/coupon')
 router.post("/coupon/create-a-new/coupon", couponController.newCoupon);
 router.patch(
-  "/apply/a/coupon-to-room/:couponCode",
+  "/apply/a/coupon-to-room",
   couponController.ApplyCoupon
 );
 router.get("/coupon/get/all", couponController.GetAllCoupons);

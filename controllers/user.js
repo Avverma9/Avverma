@@ -5,10 +5,10 @@ require('dotenv').config(); // Load environment variables
 //====================================================================================
 const createSignup = async function (req, res) {
     try {
-        const userImage = req.files.map((file) => file.location);
+        const images = req.files.map((file) => file.location);
 
         const userData = {
-            userImage,
+            images,
             ...req.body,
         };
 
