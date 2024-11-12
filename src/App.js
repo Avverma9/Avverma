@@ -25,7 +25,7 @@ import PartnerRooms from './components/Hotels/PartnerRooms.jsx';
 import { LoaderProvider } from './utils/loader'; // Import the LoaderProvider
 import ScrollToTop from './utils/scrollToTop';
 import Settings from './components/Profile/Settings';
-import Travel from './components/TravelHotelPage/Travel';
+import Travel from './components/TravelHotelPage/travel-page';
 
 function App() {
     return (

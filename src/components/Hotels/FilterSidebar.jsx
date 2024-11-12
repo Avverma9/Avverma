@@ -158,10 +158,10 @@ const FilterSidebar = () => {
                 open={drawerOpen}
                 onClose={toggleDrawer}
                 sx={{
-                    width: isMobile ? '100%' : 320,
+                    width: isMobile ? '100%' : 420,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: isMobile ? '100%' : 320,
+                        width: isMobile ? '100%' : 420,
                         boxSizing: 'border-box',
                         padding: 3,
                         bgcolor: 'background.paper',

@@ -1,0 +1,316 @@
+/* Wrapper for centering filter */
+.filter-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%; /* Ensure the wrapper takes full width */
+    padding: 20px 0; /* Optional: Adds space around the filter bar */
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+/* Filter Container */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    justify-content: center;
+}
+
+/* General Styling for Filter Items */
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-weight: 500;
+    color: #333;
+    flex: 1; /* Allow filter items to grow and take up space */
+    min-width: 150px; /* Set a minimum width for each item */
+}
+
+/* Label Styling */
+.filter-item label {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Dropdown Styling */
+.from-city .dropdown {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: #e9f1ff;
+    border: 1px solid #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.dropdown .icon {
+    color: #333;
+}
+
+.dropdown select {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    background: transparent;
+}
+
+/* Sorted By Select Styling */
+.sorted-by .sorted-select {
+    border: 1px solid #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #333;
+    appearance: none;
+}
+
+/* Slider Containers */
+.slider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slider-value {
+    font-size: 12px;
+    color: #555;
+}
+
+.slider input[type='range'] {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 4px;
+    background: #007bff;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    border-radius: 5px;
+}
+
+.slider input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background-color: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider input[type='range']:hover {
+    opacity: 1;
+}
+
+/* Package Type Buttons */
+.package-type .package-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.package-button {
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #333;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.package-button.active {
+    border-color: #007bff;
+    color: #007bff;
+    background-color: #e0f0ff;
+}
+
+/* Clear and More Filters Links */
+.more-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.clear-link {
+    color: #007bff;
+    font-size: 12px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.more-filter-link {
+    display: flex;
+    align-items: center;
+    color: #007bff;
+    font-size: 12px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.more-filter-link svg {
+    margin-right: 5px;
+}
+
+.more-filter-link:hover,
+.clear-link:hover {
+    text-decoration: underline;
+}
+
+/* Media Queries for Full Responsiveness */
+
+/* Medium-Large Screens: 4 items per row */
+@media (max-width: 1199px) and (min-width: 992px) {
+    .filter-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .filter-item {
+        min-width: auto; /* Remove the minimum width restriction for smaller screens */
+    }
+}
+
+/* Medium Screens: 3 items per row */
+@media (max-width: 991px) and (min-width: 768px) {
+    .filter-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+    }
+}
+
+/* Small Screens: 2 items per row */
+@media (max-width: 767px) and (min-width: 480px) {
+    .filter-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+    }
+
+    .filter-item {
+        min-width: 45%; /* Set a minimum width of 45% for better stacking */
+    }
+}
+
+/* Extra Small Screens: 1 item per row */
+@media (max-width: 479px) {
+    .filter-container {
+        grid-template-columns: 1fr; /* 1 item per row */
+    }
+
+    .filter-item {
+        min-width: 100%; /* Items take up full width */
+    }
+
+    .slider input[type='range'] {
+        width: 80px; /* Reduce slider width on small screens */
+    }
+}
+
+/* Smaller Mobile Adjustments */
+@media (max-width: 600px) {
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .slider input[type='range'] {
+        width: 100%; /* Full-width slider on mobile */
+    }
+
+    .package-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+/* Filter Drawer (Mobile Only) */
+.filter-drawer {
+    position: fixed;
+    bottom: -100%; /* Hidden initially */
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0px -3px 6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    transition: bottom 0.3s ease-out;
+    height: 80vh; /* Drawer height */
+    padding: 10px 0;
+    overflow-y: auto;
+}
+
+/* Open Drawer */
+.filter-drawer.open {
+    bottom: 0;
+}
+
+/* Sticky Filter Button (Mobile Only) - Move to Bottom Right */
+.sticky-filter-button {
+    position: fixed;
+    bottom: 60px;
+    right: 15px; /* Change left to right to move to bottom-right corner */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    z-index: 10000; /* Ensure the button stays on top */
+    cursor: pointer;
+}
+
+/* Icon for Filter Button */
+.sticky-filter-button .icon {
+    font-size: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .desktop-filter-container {
+        display: none; /* Hide filter section on mobile */
+    }
+
+    /* Filter Drawer */
+    .filter-drawer {
+        height: 80vh; /* Ensure drawer is still large enough for mobile */
+        padding: 10px;
+    }
+
+    /* Make the sticky filter button visible */
+    .sticky-filter-button {
+        display: flex;
+    }
+
+    /* Adjust filter items for mobile */
+    .filter-item {
+        min-width: 100%;
+    }
+
+    /* Price Range Slider for Mobile */
+    .slider input[type='range'] {
+        width: 100%;
+    }
+}
+
+/* Show filter container on desktop */
+@media (min-width: 769px) {
+    .desktop-filter-container {
+        display: block; /* Show filter container on desktop */
+    }
+
+    /* Hide the sticky button on desktop */
+    .sticky-filter-button {
+        display: none;
+    }
+}
