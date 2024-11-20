@@ -126,13 +126,13 @@ const Filter = () => {
                     </div>
 
                     {/* Package Type */}
-                    <div className="filter-item package-type">
+                    {/* <div className="filter-item package-type">
                         <label>Package Type</label>
                         <div className="package-buttons">
                             <button className="package-button active">With Flights</button>
                             <button className="package-button">Without Flights</button>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Clear and More Filters */}
                     <div className="filter-item more-filters">

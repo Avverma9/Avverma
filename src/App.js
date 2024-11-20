@@ -25,7 +25,8 @@ import PartnerRooms from './components/Hotels/PartnerRooms.jsx';
 import { LoaderProvider } from './utils/loader'; // Import the LoaderProvider
 import ScrollToTop from './utils/scrollToTop';
 import Settings from './components/Profile/Settings';
-import Travel from './components/TravelHotelPage/travel-page';
+import Travel from './components/Travels/travel-page';
+import TravelForm from './components/Travels/partnerPage';
 
 function App() {
     return (
@@ -47,6 +48,8 @@ function App() {
                         <Route path="/travellers" element={<Travel />} />
 
                         <Route path="/partner" element={<PartnerForm />} />
+                        <Route path="/travel-partner" element={<TravelForm />} />
+
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />

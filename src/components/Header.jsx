@@ -38,6 +38,11 @@ const Header = () => {
         navigate('/partner');
         handleClose();
     };
+
+    const handleTravelPartner = () => {
+        navigate('/travel-partner');
+        handleClose();
+    };
     const logoClick = () => {
         window.location.href = '/';
         handleClose();
@@ -154,7 +159,13 @@ const Header = () => {
                             <ListItemIcon>
                                 <PersonAdd fontSize="small" />
                             </ListItemIcon>
-                            Become a Partner
+                            Become a Hotel Partner
+                        </MenuItem>
+                        <MenuItem onClick={handleTravelPartner}>
+                            <ListItemIcon>
+                                <PersonAdd fontSize="small" />
+                            </ListItemIcon>
+                            Become a Travel Partner
                         </MenuItem>
                         <MenuItem onClick={handleLoginLogout}>
                             <ListItemIcon>
