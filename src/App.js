@@ -27,6 +27,7 @@ import ScrollToTop from './utils/scrollToTop';
 import Settings from './components/Profile/Settings';
 import Travel from './components/Travels/travel-page';
 import TravelForm from './components/Travels/partnerPage';
+import TravelBooking from './components/Travels/travel-booking';
 
 function App() {
     return (
@@ -46,6 +47,8 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/travellers" element={<Travel />} />
+                        <Route path="/travellers/booking" element={<TravelBooking />} />
+
 
                         <Route path="/partner" element={<PartnerForm />} />
                         <Route path="/travel-partner" element={<TravelForm />} />

@@ -1,33 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { MdLabelImportant } from 'react-icons/md';
 import './css/partnerPage.css';
+import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
 import { createTravel } from '../../redux/reducers/travelSlice';
 import { useLoader } from '../../utils/loader';
-import { FaCity, FaMapMarkerAlt, FaCalendarAlt, FaStar, FaTools, FaFileImage, FaRegCheckCircle, FaRupeeSign } from 'react-icons/fa'; // Importing icons
+import { FaCity, FaMapMarkerAlt, FaCalendarAlt, FaStar, FaTools, FaFileImage, FaRegCheckCircle, FaRupeeSign, FaStreetView, FaStream, FaGlobe } from 'react-icons/fa';
 import iconsList from '../../utils/icons';
+import Select from 'react-select';
+import { FaLocationArrow } from 'react-icons/fa6';
 const TravelForm = () => {
     const [formData, setFormData] = useState({
         city: '',
+        country: '',
         state: '',
         place: '',
+        overview: '',
         price: '',
-        duration: '',
         nights: '',
         days: '',
         from: '',
         to: '',
-        amenities: [{ name: '', description: '' }],
+        amenities: [],
         inclusion: '',
         exclusion: '',
-        termsAndConditions: { cancellation: '', refund: '' },
+        termsAndConditions: { cancellation: '', refund: '', bookingPolicy: '' },
         dayWise: [{ day: '', description: '' }],
         starRating: '',
-        images: [], // This will store image files
+        images: [],
     });
 
     const dispatch = useDispatch();
     const { showLoader, hideLoader } = useLoader();
-    const [selectedIcon, setSelectedIcon] = useState(null);
+    const [countries, setCountries] = useState([]);
+    const [states, setStates] = useState([]);
+    const [cities, setCities] = useState([]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -47,31 +55,21 @@ const TravelForm = () => {
         }
     };
 
-    const handleAmenitiesChange = (index, e) => {
-        const updatedAmenities = [...formData.amenities];
-        updatedAmenities[index][e.target.name] = e.target.value;
-        setFormData({ ...formData, amenities: updatedAmenities });
+    const handleAmenitiesChange = (selectedOptions) => {
+        // Log the selected options for debugging
+        console.log('Selected Options:', selectedOptions);
+
+        // Update the state with selected amenities
+        setFormData({
+            ...formData,
+            amenities: selectedOptions ? selectedOptions.map((option) => option.value) : [],
+        });
     };
-    const handleIconChange = (event) => {
-        const icon = event.target.value;
-        setSelectedIcon(icon);
-    };
+
     const handleDayWiseChange = (index, e) => {
         const updatedDayWise = [...formData.dayWise];
         updatedDayWise[index][e.target.name] = e.target.value;
         setFormData({ ...formData, dayWise: updatedDayWise });
-    };
-
-    const handleAddAmenity = () => {
-        setFormData({
-            ...formData,
-            amenities: [...formData.amenities, { name: '', description: '' }],
-        });
-    };
-
-    const handleRemoveAmenity = (index) => {
-        const updatedAmenities = formData.amenities.filter((_, i) => i !== index);
-        setFormData({ ...formData, amenities: updatedAmenities });
     };
 
     const handleAddDay = () => {
@@ -107,10 +105,10 @@ const TravelForm = () => {
         const formDataToSend = new FormData();
         formDataToSend.append('city', formData.city);
         formDataToSend.append('state', formData.state);
+        formDataToSend.append('overview', formData.overview);
+
         formDataToSend.append('place', formData.place);
         formDataToSend.append('price', formData.price);
-
-        formDataToSend.append('duration', formData.duration);
         formDataToSend.append('nights', formData.nights);
         formDataToSend.append('days', formData.days);
         formDataToSend.append('from', formData.from);
@@ -119,9 +117,9 @@ const TravelForm = () => {
         formDataToSend.append('exclusion', formData.exclusion);
         formDataToSend.append('starRating', formData.starRating);
 
-        formData.amenities.forEach((amenity, index) => {
-            formDataToSend.append(`amenities[${index}][name]`, amenity.name);
-            formDataToSend.append(`amenities[${index}][description]`, amenity.description);
+        // Append amenities correctly
+        formData.amenities.forEach((amenity) => {
+            formDataToSend.append('amenities[]', amenity); // Use [] to indicate it's an array
         });
 
         formData.dayWise.forEach((day, index) => {
@@ -162,6 +160,23 @@ const TravelForm = () => {
         boxSizing: 'border-box',
     };
 
+    useEffect(() => {
+        // Fetch countries, states, and cities initially
+        const allCountries = Country.getAllCountries(); // Fetching all countries
+        setCountries(allCountries);
+
+        // Optionally you can initialize states and cities
+        if (formData.country) {
+            const initialStates = State.getStatesOfCountry(formData.country);
+            setStates(initialStates);
+        }
+
+        if (formData.state && formData.country) {
+            const initialCities = City.getCitiesOfState(formData.country, formData.state);
+            setCities(initialCities);
+        }
+    }, [formData.country, formData.state]);
+
     return (
         <div className="form-container">
             <h2>Travel Package Form</h2>
@@ -169,24 +184,57 @@ const TravelForm = () => {
                 <div className="form-row">
                     <div className="form-group">
                         <label>
-                            <FaCity /> City <span style={{ color: 'red' }}>*</span>
+                            <FaCity /> Country <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="text" style={inputStyles} name="city" value={formData.city} onChange={handleChange} required />
+                        <Select
+                            options={countries.map((country) => ({
+                                label: country.name,
+                                value: country.isoCode,
+                            }))}
+                            value={formData.country ? { label: formData.country, value: formData.country } : null}
+                            onChange={(selectedOption) => setFormData({ ...formData, country: selectedOption.value })}
+                            required
+                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
+                        />
                     </div>
                     <div className="form-group">
                         <label>
                             <FaMapMarkerAlt /> State <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="text" style={inputStyles} name="state" value={formData.state} onChange={handleChange} required />
+                        <Select
+                            options={states.map((state) => ({
+                                label: state.name,
+                                value: state.isoCode,
+                            }))}
+                            value={formData.state ? { label: formData.state, value: formData.state } : null}
+                            onChange={(selectedOption) => setFormData({ ...formData, state: selectedOption.value })}
+                            required
+                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
+                        />
                     </div>
                     <div className="form-group">
                         <label>
-                            <FaMapMarkerAlt /> Place <span style={{ color: 'red' }}>*</span>
+                            <FaLocationArrow /> City <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="text" style={inputStyles} name="place" value={formData.place} onChange={handleChange} required />
+                        <Select
+                            options={cities.map((city) => ({
+                                label: city.name,
+                                value: city.name,
+                            }))}
+                            value={formData.city ? { label: formData.city, value: formData.city } : null}
+                            onChange={(selectedOption) => setFormData({ ...formData, city: selectedOption.value })}
+                            required
+                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
+                        />
                     </div>
                 </div>
                 <div className="form-row">
+                <div className="form-group">
+                        <label>
+                            <FaGlobe /> Places to visit eg(1N Bihar|2N Patna|1N Delhi) <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <input type="text" style={inputStyles} name="price" value={formData.place} onChange={handleChange} required />
+                    </div>
                     <div className="form-group">
                         <label>
                             <FaRupeeSign /> Package Price <span style={{ color: 'red' }}>*</span>
@@ -195,16 +243,9 @@ const TravelForm = () => {
                     </div>
                     <div className="form-group">
                         <label>
-                            <FaCalendarAlt /> Duration of travel package(Days) <span style={{ color: 'red' }}>*</span>
+                            <FaStreetView /> Package Overview <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input
-                            type="number"
-                            style={inputStyles}
-                            name="duration"
-                            value={formData.duration}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="text" style={inputStyles} name="overview" value={formData.overview} onChange={handleChange} required />
                     </div>
                 </div>
                 <div className="form-row">
@@ -212,13 +253,33 @@ const TravelForm = () => {
                         <label>
                             <FaCalendarAlt /> Days <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="number" style={inputStyles} name="days" value={formData.days} onChange={handleChange} required />
+                        <select style={inputStyles} name="days" value={formData.days} onChange={handleChange} required>
+                            <option value="">Select Days</option>
+                            {[...Array(30).keys()].map((i) => {
+                                const dayOption = i + 1;
+                                return (
+                                    <option key={dayOption} value={dayOption}>
+                                        {dayOption} Day
+                                    </option>
+                                );
+                            })}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>
                             <FaCalendarAlt /> Nights <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="number" style={inputStyles} name="nights" value={formData.nights} onChange={handleChange} required />
+                        <select style={inputStyles} name="nights" value={formData.nights} onChange={handleChange} required>
+                            <option value="">Select nights</option>
+                            {[...Array(30).keys()].map((i) => {
+                                const nightOption = i + 1;
+                                return (
+                                    <option key={nightOption} value={nightOption}>
+                                        {nightOption} Night
+                                    </option>
+                                );
+                            })}
+                        </select>
                     </div>
                     <div className="form-group">
                         <label>
@@ -248,52 +309,12 @@ const TravelForm = () => {
                         <input type="date" style={inputStyles} name="to" value={formData.to} onChange={handleChange} required />
                     </div>
                 </div>
-                <hr />
-                <h4 style={inputStyles}>Amenities</h4>
-                {formData.amenities.map((amenity, index) => (
-                    <div key={index} className="form-row">
-                        <div className="form-group">
-                            <label>
-                                <FaTools /> Amenity Name <span style={{ color: 'red' }}>*</span>
-                            </label>
-                            {iconsList.map}
-                            <input
-                                type="text"
-                                style={inputStyles}
-                                name="name"
-                                value={amenity.name}
-                                onChange={(e) => handleAmenitiesChange(index, e)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>
-                                <FaTools /> Description <span style={{ color: 'red' }}>*</span>
-                            </label>
-                            <input
-                                type="text"
-                                style={inputStyles}
-                                name="description"
-                                value={amenity.description}
-                                onChange={(e) => handleAmenitiesChange(index, e)}
-                                required
-                            />
-                        </div>
-                        <button type="button" className="remove-button" onClick={() => handleRemoveAmenity(index)}>
-                            Remove Amenity
-                        </button>
-                    </div>
-                ))}
-                <button type="button" className="add-button" onClick={handleAddAmenity}>
-                    Add Amenity
-                </button>
-                <hr />
                 <div className="form-row">
                     <div className="form-group">
                         <label>
                             <FaRegCheckCircle /> Inclusion <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input
+                        <textarea
                             type="text"
                             style={inputStyles}
                             name="inclusion"
@@ -306,7 +327,7 @@ const TravelForm = () => {
                         <label>
                             <FaRegCheckCircle /> Exclusion <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input
+                        <textarea
                             type="text"
                             style={inputStyles}
                             name="exclusion"
@@ -316,22 +337,51 @@ const TravelForm = () => {
                         />
                     </div>
                 </div>
-                <h4 style={inputStyles}>Day-wise Itinerary</h4>
+                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
+                    <MdLabelImportant /> Amenities
+                </h4>
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>
+                            <FaTools /> Amenity Name <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <Select
+                            styles={{
+                                container: (provided) => ({ ...provided, width: '100%' }),
+                                control: (provided) => ({ ...provided, padding: '10px', borderRadius: '20px' }),
+                            }}
+                            isMulti
+                            value={formData.amenities.map((amenity) => ({ label: amenity, value: amenity }))}
+                            onChange={handleAmenitiesChange}
+                            options={iconsList.map((icon) => ({ label: icon.label, value: icon.label }))}
+                            placeholder="Select amenities..."
+                            required
+                        />
+                    </div>
+                </div>
+
+                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
+                    <MdLabelImportant /> Day-wise Itinerary
+                </h4>
                 {formData.dayWise.map((day, index) => (
                     <div key={index} className="form-row">
                         <div className="form-group">
                             <label>
                                 <FaCalendarAlt /> Day <span style={{ color: 'red' }}>*</span>
                             </label>
-                            <input
-                                type="number"
-                                style={inputStyles}
-                                name="day"
-                                value={day.day}
-                                onChange={(e) => handleDayWiseChange(index, e)}
-                                required
-                            />
+                            <select style={inputStyles} name="day" value={day.day} onChange={(e) => handleDayWiseChange(index, e)} required>
+                                <option value="">Select Day</option>
+                                {[...Array(30).keys()].map((i) => {
+                                    const dayOption = i + 1; // Creating day options from 1 to 100
+                                    return (
+                                        <option key={dayOption} value={dayOption}>
+                                            Day {dayOption}
+                                        </option>
+                                    );
+                                })}
+                            </select>
                         </div>
+
                         <div className="form-group">
                             <label>
                                 <FaCalendarAlt /> Description <span style={{ color: 'red' }}>*</span>
@@ -354,13 +404,15 @@ const TravelForm = () => {
                     Add Day
                 </button>
                 <hr />
-                <h4 style={inputStyles}>Terms and Conditions</h4>
+                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
+                    <MdLabelImportant /> Terms & conditions
+                </h4>
                 <div className="form-row">
                     <div className="form-group">
                         <label>
                             <FaRegCheckCircle /> Cancellation Policy <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input
+                        <textarea
                             type="text"
                             style={inputStyles}
                             name="cancellation"
@@ -373,7 +425,7 @@ const TravelForm = () => {
                         <label>
                             <FaRegCheckCircle /> Refund Policy <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input
+                        <textarea
                             type="text"
                             style={inputStyles}
                             name="refund"
@@ -382,10 +434,25 @@ const TravelForm = () => {
                             required
                         />
                     </div>
+                    <div className="form-group">
+                        <label>
+                            <FaRegCheckCircle /> Booking Policy <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <textarea
+                            type="text"
+                            style={inputStyles}
+                            name="refund"
+                            value={formData.termsAndConditions.bookingPolicy}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
                 </div>
 
                 <hr />
-                <h4 style={inputStyles}>Images</h4>
+                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
+                    <MdLabelImportant /> Upload images
+                </h4>
                 {formData.images.map((image, index) => (
                     <div key={index} className="form-row">
                         <div className="form-group">

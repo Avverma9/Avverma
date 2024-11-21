@@ -2,12 +2,12 @@
 import { FaBeer, FaCoffee, FaApple, FaCar, FaPlane, FaMusic } from 'react-icons/fa';
 
 const iconsList = [
-    { label: 'Beer', icon: <FaBeer /> },
-    { label: 'Coffee', icon: <FaCoffee /> },
-    { label: 'Apple', icon: <FaApple /> },
-    { label: 'Car', icon: <FaCar /> },
-    { label: 'Plane', icon: <FaPlane /> },
-    { label: 'Music', icon: <FaMusic /> },
+    { icon: <FaBeer />, label: 'Beer' },
+    { icon: <FaCoffee />, label: 'Coffee' },
+    { icon: <FaApple />, label: 'Apple' },
+    { icon: <FaCar />, label: 'Car' },
+    { icon: <FaPlane />, label: 'Plane' },
+    { icon: <FaMusic />, label: 'Music' },
 ];
 
 export default iconsList;
