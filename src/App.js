@@ -47,12 +47,9 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path="/travellers" element={<Travel />} />
-                        <Route path="/travellers/booking" element={<TravelBooking />} />
-
-
+                        <Route path="/travellers/booking/:id" element={<TravelBooking />} />
                         <Route path="/partner" element={<PartnerForm />} />
                         <Route path="/travel-partner" element={<TravelForm />} />
-
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />

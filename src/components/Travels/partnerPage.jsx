@@ -5,7 +5,19 @@ import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
 import { createTravel } from '../../redux/reducers/travelSlice';
 import { useLoader } from '../../utils/loader';
-import { FaCity, FaMapMarkerAlt, FaCalendarAlt, FaStar, FaTools, FaFileImage, FaRegCheckCircle, FaRupeeSign, FaStreetView, FaStream, FaGlobe } from 'react-icons/fa';
+import {
+    FaCity,
+    FaMapMarkerAlt,
+    FaCalendarAlt,
+    FaStar,
+    FaTools,
+    FaFileImage,
+    FaRegCheckCircle,
+    FaRupeeSign,
+    FaStreetView,
+    FaGlobe,
+    FaUser,
+} from 'react-icons/fa';
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
 import { FaLocationArrow } from 'react-icons/fa6';
@@ -14,7 +26,8 @@ const TravelForm = () => {
         city: '',
         country: '',
         state: '',
-        place: '',
+        travelAgencyName: '',
+        visitngPlaces: '',
         overview: '',
         price: '',
         nights: '',
@@ -22,8 +35,8 @@ const TravelForm = () => {
         from: '',
         to: '',
         amenities: [],
-        inclusion: '',
-        exclusion: '',
+        inclusion: [''],
+        exclusion: [''],
         termsAndConditions: { cancellation: '', refund: '', bookingPolicy: '' },
         dayWise: [{ day: '', description: '' }],
         starRating: '',
@@ -36,16 +49,41 @@ const TravelForm = () => {
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
 
-    const handleChange = (e) => {
+    const handleChange = (e, index = null) => {
         const { name, value } = e.target;
-
-        if (name === 'cancellation' || name === 'refund') {
+        if (['cancellation', 'refund', 'bookingPolicy'].includes(name)) {
             setFormData({
                 ...formData,
                 termsAndConditions: {
                     ...formData.termsAndConditions,
                     [name]: value,
                 },
+            });
+        } else if (name === 'inclusion') {
+            const newInclusion = [...formData.inclusion];
+            if (index !== null) {
+                newInclusion[index] = value;
+            } else {
+                newInclusion.push(value);
+            }
+            setFormData({
+                ...formData,
+                inclusion: newInclusion,
+            });
+        }
+        // Handle exclusion field, add/update based on index
+        else if (name === 'exclusion') {
+            const newExclusion = [...formData.exclusion];
+            if (index !== null) {
+                // Update specific exclusion point if index is provided
+                newExclusion[index] = value;
+            } else {
+                // Add a new empty exclusion point if no index
+                newExclusion.push(value);
+            }
+            setFormData({
+                ...formData,
+                exclusion: newExclusion,
             });
         } else {
             setFormData({
@@ -99,6 +137,11 @@ const TravelForm = () => {
         setFormData({ ...formData, images: updatedImages });
     };
 
+    // Add a new empty input field for inclusion
+    const handleAddInclusion = () => {
+        setFormData({ ...formData, inclusion: [...formData.inclusion, ''] });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -106,20 +149,23 @@ const TravelForm = () => {
         formDataToSend.append('city', formData.city);
         formDataToSend.append('state', formData.state);
         formDataToSend.append('overview', formData.overview);
-
-        formDataToSend.append('place', formData.place);
+        formDataToSend.append('travelAgencyName', formData.travelAgencyName);
+        formDataToSend.append('visitngPlaces', formData.visitngPlaces);
         formDataToSend.append('price', formData.price);
         formDataToSend.append('nights', formData.nights);
         formDataToSend.append('days', formData.days);
         formDataToSend.append('from', formData.from);
         formDataToSend.append('to', formData.to);
-        formDataToSend.append('inclusion', formData.inclusion);
-        formDataToSend.append('exclusion', formData.exclusion);
         formDataToSend.append('starRating', formData.starRating);
+        formData.inclusion.forEach((inclusions) => {
+            formDataToSend.append('inclusion[]', inclusions);
+        });
+        formData.exclusion.forEach((exclusions) => {
+            formDataToSend.append('exclusion[]', exclusions);
+        });
 
-        // Append amenities correctly
         formData.amenities.forEach((amenity) => {
-            formDataToSend.append('amenities[]', amenity); // Use [] to indicate it's an array
+            formDataToSend.append('amenities[]', amenity);
         });
 
         formData.dayWise.forEach((day, index) => {
@@ -127,12 +173,9 @@ const TravelForm = () => {
             formDataToSend.append(`dayWise[${index}][description]`, day.description);
         });
 
-        // For termsAndConditions, no need to stringify, send as an object
         for (const [key, value] of Object.entries(formData.termsAndConditions)) {
             formDataToSend.append(`termsAndConditions[${key}]`, value);
         }
-
-        // Append images
         formData.images.forEach((image) => {
             if (image instanceof File) {
                 formDataToSend.append('images', image);
@@ -161,11 +204,9 @@ const TravelForm = () => {
     };
 
     useEffect(() => {
-        // Fetch countries, states, and cities initially
         const allCountries = Country.getAllCountries(); // Fetching all countries
         setCountries(allCountries);
 
-        // Optionally you can initialize states and cities
         if (formData.country) {
             const initialStates = State.getStatesOfCountry(formData.country);
             setStates(initialStates);
@@ -176,11 +217,33 @@ const TravelForm = () => {
             setCities(initialCities);
         }
     }, [formData.country, formData.state]);
+    const pattern = /^[0-9]+N [a-zA-Z\s]+(\|[0-9]+N [a-zA-Z\s]+)*$/;
 
+    const isValid = pattern.test(formData.visitngPlaces);
+
+    const openDatePicker = (e) => {
+        e.target.showPicker();
+    };
     return (
         <div className="form-container">
             <h2>Travel Package Form</h2>
             <form onSubmit={handleSubmit}>
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>
+                            <FaUser />
+                            Enter your travel agency name
+                        </label>
+                        <input
+                            type="text"
+                            style={inputStyles}
+                            name="travelAgencyName"
+                            value={formData.travelAgencyName}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
                 <div className="form-row">
                     <div className="form-group">
                         <label>
@@ -226,26 +289,6 @@ const TravelForm = () => {
                             required
                             styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
                         />
-                    </div>
-                </div>
-                <div className="form-row">
-                <div className="form-group">
-                        <label>
-                            <FaGlobe /> Places to visit eg(1N Bihar|2N Patna|1N Delhi) <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input type="text" style={inputStyles} name="price" value={formData.place} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaRupeeSign /> Package Price <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input type="number" style={inputStyles} name="price" value={formData.price} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaStreetView /> Package Overview <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input type="text" style={inputStyles} name="overview" value={formData.overview} onChange={handleChange} required />
                     </div>
                 </div>
                 <div className="form-row">
@@ -298,15 +341,74 @@ const TravelForm = () => {
                 <div className="form-row">
                     <div className="form-group">
                         <label>
+                            <FaGlobe /> Places to visit eg(1N Bihar|2N Patna|1N Delhi)
+                            <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <input
+                            type="text"
+                            style={inputStyles}
+                            name="visitngPlaces"
+                            value={formData.visitngPlaces}
+                            onChange={handleChange}
+                            required
+                            placeholder="Enter places like 1N Bihar|2N Patna|1N Delhi"
+                        />
+                        {!isValid && formData.visitngPlaces && (
+                            <small style={{ color: 'red' }}>
+                                Please enter the places in the correct format (e.g., 1N Bihar|2N Patna|1N Delhi)
+                            </small>
+                        )}
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <FaRupeeSign /> Package Price <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <input type="number" style={inputStyles} name="price" value={formData.price} onChange={handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <FaStreetView /> Package Overview <span style={{ color: 'red' }}>*</span>
+                        </label>
+                        <textarea
+                            type="text"
+                            style={inputStyles}
+                            name="overview"
+                            value={formData.overview}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>
                             <FaCalendarAlt /> From Date <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="date" style={inputStyles} name="from" value={formData.from} onChange={handleChange} required />
+                        <input
+                            type="date"
+                            style={inputStyles}
+                            name="from"
+                            value={formData.from}
+                            onChange={handleChange}
+                            onClick={openDatePicker} // Open the date picker on click
+                            required
+                        />
                     </div>
+
                     <div className="form-group">
                         <label>
                             <FaCalendarAlt /> To Date <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <input type="date" style={inputStyles} name="to" value={formData.to} onChange={handleChange} required />
+                        <input
+                            type="date"
+                            style={inputStyles}
+                            name="to"
+                            value={formData.to}
+                            onChange={handleChange}
+                            onClick={openDatePicker} // Open the date picker on click
+                            required
+                        />
                     </div>
                 </div>
                 <div className="form-row">
@@ -314,27 +416,47 @@ const TravelForm = () => {
                         <label>
                             <FaRegCheckCircle /> Inclusion <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <textarea
-                            type="text"
-                            style={inputStyles}
-                            name="inclusion"
-                            value={formData.inclusion}
-                            onChange={handleChange}
-                            required
-                        />
+                        {formData.inclusion.map((inclusion, index) => (
+                            <div key={index}>
+                                <input
+                                    style={inputStyles}
+                                    name="inclusion"
+                                    value={inclusion}
+                                    onChange={(e) => handleChange(e, index)} // Pass the index here
+                                    required
+                                />
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            className="add-button"
+                            onClick={() => handleChange({ target: { name: 'inclusion', value: '' } })}
+                        >
+                            Add More Inclusion
+                        </button>
                     </div>
                     <div className="form-group">
                         <label>
                             <FaRegCheckCircle /> Exclusion <span style={{ color: 'red' }}>*</span>
                         </label>
-                        <textarea
-                            type="text"
-                            style={inputStyles}
-                            name="exclusion"
-                            value={formData.exclusion}
-                            onChange={handleChange}
-                            required
-                        />
+                        {formData.exclusion.map((exclusion, index) => (
+                            <div key={index}>
+                                <input
+                                    style={inputStyles}
+                                    name="exclusion"
+                                    value={exclusion}
+                                    onChange={(e) => handleChange(e, index)} // Pass the index here
+                                    required
+                                />
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            className="add-button"
+                            onClick={() => handleChange({ target: { name: 'exclusion', value: '' } })}
+                        >
+                            Add More Exclusion
+                        </button>
                     </div>
                 </div>
                 <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
@@ -386,7 +508,7 @@ const TravelForm = () => {
                             <label>
                                 <FaCalendarAlt /> Description <span style={{ color: 'red' }}>*</span>
                             </label>
-                            <input
+                            <textarea
                                 type="text"
                                 style={inputStyles}
                                 name="description"
@@ -395,8 +517,13 @@ const TravelForm = () => {
                                 required
                             />
                         </div>
-                        <button type="button" className="remove-button" onClick={() => handleRemoveDay(index)}>
-                            Remove Day
+                        <button
+                            type="button"
+                            className="remove-button"
+                            style={{ height: '60px', marginTop: '30px' }}
+                            onClick={() => handleRemoveDay(index)}
+                        >
+                            Remove
                         </button>
                     </div>
                 ))}
@@ -439,10 +566,9 @@ const TravelForm = () => {
                             <FaRegCheckCircle /> Booking Policy <span style={{ color: 'red' }}>*</span>
                         </label>
                         <textarea
-                            type="text"
                             style={inputStyles}
-                            name="refund"
-                            value={formData.termsAndConditions.bookingPolicy}
+                            name="bookingPolicy" // Name must match the nested property
+                            value={formData.termsAndConditions.bookingPolicy} // Bind to the correct state property
                             onChange={handleChange}
                             required
                         />
@@ -461,8 +587,13 @@ const TravelForm = () => {
                             </label>
                             <input type="file" accept="image/*" style={inputStyles} onChange={(e) => handleImageChange(index, e)} />
                         </div>
-                        <button type="button" className="remove-button" onClick={() => handleRemoveImage(index)}>
-                            Remove Image
+                        <button
+                            type="button"
+                            className="remove-button"
+                            style={{ height: '60px', marginTop: '20px' }}
+                            onClick={() => handleRemoveImage(index)}
+                        >
+                            Remove
                         </button>
                     </div>
                 ))}

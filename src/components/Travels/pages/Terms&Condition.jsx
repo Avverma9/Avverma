@@ -1,27 +1,22 @@
 import React from 'react';
 import { Box, Typography, Paper, Stack } from '@mui/material';
-import { CheckCircle as CheckCircleIcon, Info as InfoIcon } from '@mui/icons-material';
+import { FaInfoCircle } from 'react-icons/fa'; // Import FaInfo icon
 
-const TermsAndCondition = () => {
-    const terms = [
-        {
-            title: 'Easy Cancellation',
-            content:
-                '31 days or more before departure: Initial Booking Amount forfeited. Between 30–16 days: 75% of total cost charged as penalty. Less than 15 days: 100% charged.',
-            icon: <InfoIcon sx={{ color: '#2c3e50' }} />,
-        },
-        {
-            title: 'Travel Validity',
-            content: 'Valid for travel until 31 March 2025.',
-            icon: <CheckCircleIcon sx={{ color: '#2c3e50' }} />,
-        },
-        {
-            title: 'Guaranteed Dates',
-            content:
-                'Your selected dates are guaranteed. If seats sell out, we will offer dates +/- 1/2 days from your preference.',
-            icon: <CheckCircleIcon sx={{ color: '#2c3e50' }} />,
-        },
-    ];
+const TermsAndCondition = ({ data }) => {
+    // Check if data is loaded correctly
+    if (!data || !data.termsAndConditions) {
+        return (
+            <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
+                <Typography variant="h6">Terms & Conditions Not Available</Typography>
+            </Box>
+        );
+    }
+
+    console.log('Data in Terms and Conditions:', data); // For debugging
+
+    // Iterate over the termsAndConditions keys
+    const terms = data?.termsAndConditions;
+    const termKeys = Object.keys(terms);  // Get keys (e.g., cancellation, refund, bookingPolicy)
 
     return (
         <Box sx={{ padding: 4, maxWidth: 800, margin: '0 auto' }}>
@@ -30,7 +25,7 @@ const TermsAndCondition = () => {
                 sx={{
                     textAlign: 'center',
                     color: '#333',
-                    border: '2px solid #2c3e50',
+                    border: '2px solid #dedcdc',
                     borderRadius: '40px',
                     padding: '10px 20px',
                     marginBottom: '20px',
@@ -39,16 +34,17 @@ const TermsAndCondition = () => {
                 Terms & Conditions
             </Typography>
             <Stack spacing={2}>
-                {terms.map((term, index) => (
+                {termKeys.map((key) => (
                     <Paper
-                        key={index}
+                        key={key}
                         elevation={3}
                         sx={{
                             padding: 2,
-                            backgroundColor: '#ffff',
+                            backgroundColor: '#fff',
                             borderRadius: 3,
                             display: 'flex',
-                            alignItems: 'center',
+                            flexDirection: 'column',
+                            alignItems: 'flex-start',
                             boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
                             transition: 'transform 0.3s ease',
                             '&:hover': {
@@ -57,20 +53,15 @@ const TermsAndCondition = () => {
                             },
                         }}
                     >
-                        {/* Icon Section */}
-                        <Box sx={{ mr: 2 }}>
-                            {term.icon}
-                        </Box>
-
-                        {/* Content Section */}
-                        <Box>
-                            <Typography variant="body1" fontWeight="bold" sx={{ color: '#0277BD', mb: 0.5 }}>
-                                {term.title}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {term.content}
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                            <FaInfoCircle size={24} color="#0277BD" />
+                            <Typography variant="body1" fontWeight="bold" sx={{ color: '#0277BD', ml: 1 }}>
+                                {key.charAt(0).toUpperCase() + key.slice(1)} {/* Capitalize the key name */}
                             </Typography>
                         </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                            {terms[key] || `${key.charAt(0).toUpperCase() + key.slice(1)} details are not available.`}
+                        </Typography>
                     </Paper>
                 ))}
             </Stack>

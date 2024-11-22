@@ -4,20 +4,19 @@ import DayWiseItinerary from './DayWise';
 import InclusionExclusion from './InclusionExclusion';
 import TermsAndCondition from './Terms&Condition';
 
-const OverView = () => {
+const OverView = ({ data }) => {
+    console.log('object', data);
     return (
         <>
             <Box sx={{ mt: 2, padding: 2, borderRadius: 2 }}>
                 <Typography className="itinerary-title">Package Overview</Typography>
                 <Typography variant="body1" color="textSecondary" sx={{ mt: 1 }}>
-                    Kerala provides the best travel experiences to its visitors with its paradise-like atmosphere, especially for
-                    honeymooners. It ensures that you enjoy some dream holidays with peace of mind. Holidays in Kerala offer sightseeing,
-                    traveling, and relaxing experiences. Make your trip a rejuvenating experience with a Kerala vacation.
+                    {data?.overview}
                 </Typography>
             </Box>
-            <DayWiseItinerary />
-            <InclusionExclusion />
-            <TermsAndCondition />
+            <DayWiseItinerary data={data} />
+            <InclusionExclusion data={data} />
+            <TermsAndCondition data={data} />
         </>
     );
 };

@@ -103,7 +103,7 @@ const UpdatePage = () => {
             if (formData.address) {
                 formDataObj.append('address', formData.address);
             }
- 
+
             if (formData.password) {
                 formDataObj.append('password', formData.password);
             }

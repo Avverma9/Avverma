@@ -1,147 +1,74 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaHotel, FaUtensils, FaShuttleVan, FaPlane, FaGlobe, FaBinoculars } from 'react-icons/fa';
 import './travel-page.css';
 import Filter from './travel-filter';
+import { getTravelList } from '../../redux/reducers/travelSlice';
+import iconsList from '../../utils/icons';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
+
 const TravelPackages = () => {
-    const packages = [
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Goa with Zuri White Sands',
-            duration: '03 Nights and 04 Days Goa',
-            nights: 3,
-            price: 28999,
-            originalPrice: 32999,
-            emi: 5590,
-            amenities: [
-                { icon: <FaHotel />, label: 'Hotel' },
-                { icon: <FaBinoculars />, label: 'Sightseeing' }, // FaBinoculars for Sightseeing
-                { icon: <FaShuttleVan />, label: 'Transfer' },
-                { icon: <FaUtensils />, label: 'Meal' },
-            ],
-            flightIncluded: false,
-            buttonText: 'View Package',
-        },
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Best Singapore Holiday',
-            duration: '4N Singapore',
-            nights: 4,
-            price: 47587,
-            emi: 8688,
-            amenities: [
-                { icon: <FaHotel />, label: 'Hotel' },
-                { icon: <FaBinoculars />, label: 'Sightseeing' },
-                { icon: <FaShuttleVan />, label: 'Transfer' },
-                { icon: <FaUtensils />, label: 'Meal' },
-                { icon: <FaPlane />, label: 'Flight' },
-            ],
-            hotelRating: 4,
-            flightIncluded: true,
-            buttonText: 'Customize & Book',
-        },
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Best Singapore Holiday',
-            duration: '4N Singapore',
-            nights: 4,
-            price: 47587,
-            emi: 8688,
-            amenities: [
-              { icon: <FaHotel />, label: 'Hotel' },
-              { icon: <FaBinoculars />, label: 'Sightseeing' },
-              { icon: <FaShuttleVan />, label: 'Transfer' },
-              { icon: <FaUtensils />, label: 'Meal' },
-              { icon: <FaPlane />, label: 'Flight' }
-            ],
-            hotelRating: 4,
-            flightIncluded: true,
-            buttonText: 'Customize & Book'
-          },
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Best Singapore Holiday',
-            duration: '4N Singapore',
-            nights: 4,
-            price: 47587,
-            emi: 8688,
-            amenities: [
-                { icon: <FaHotel />, label: 'Hotel' },
-                { icon: <FaBinoculars />, label: 'Sightseeing' },
-                { icon: <FaShuttleVan />, label: 'Transfer' },
-                { icon: <FaUtensils />, label: 'Meal' },
-                { icon: <FaPlane />, label: 'Flight' },
-            ],
-            hotelRating: 4,
-            flightIncluded: true,
-            buttonText: 'Customize & Book',
-        },
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Best Singapore Holiday',
-            duration: '4N Singapore',
-            nights: 4,
-            price: 47587,
-            emi: 8688,
-            amenities: [
-                { icon: <FaHotel />, label: 'Hotel' },
-                { icon: <FaBinoculars />, label: 'Sightseeing' },
-                { icon: <FaShuttleVan />, label: 'Transfer' },
-                { icon: <FaUtensils />, label: 'Meal' },
-                { icon: <FaPlane />, label: 'Flight' },
-            ],
-            hotelRating: 4,
-            flightIncluded: true,
-            buttonText: 'Customize & Book',
-        },
-        {
-            image: 'https://media.easemytrip.com/media/Deal/DL638070533953597585/Attraction/Attractionlaa1f7.jpg',
-            title: 'Year End Singapore Vacay with City Tour',
-            duration: '5N Singapore',
-            nights: 5,
-            price: 38899,
-            emi: 7240,
-            amenities: [
-                { icon: <FaHotel />, label: 'Hotel' },
-                { icon: <FaBinoculars />, label: 'Sightseeing' },
-                { icon: <FaShuttleVan />, label: 'Transfer' },
-                { icon: <FaUtensils />, label: 'Meal' },
-                { icon: <FaGlobe />, label: 'Visa' },
-                { icon: <FaPlane />, label: 'Flight' },
-            ],
-            hotelRating: 3,
-            flightIncluded: true,
-            buttonText: 'Customize & Book',
-        },
-    ];
+    const dispatch = useDispatch();
+    const navigate = useNavigate(); // Initialize navigate
+
+    const { data } = useSelector((state) => state.travel);
+
+    useEffect(() => {
+        dispatch(getTravelList());
+    }, [dispatch]);
+
+    const getAmenityIcon = (amenity) => {
+        const iconObj = iconsList.find((icon) => icon.label.toLowerCase() === amenity.toLowerCase());
+        return iconObj ? iconObj.icon : null; // Return icon or null if not found
+    };
+
+    const handleBooking = (id) => {
+        // Use navigate to go to the booking page
+        navigate(`/travellers/booking/${id}`);
+    };
 
     return (
         <>
             <Filter />
             <div className="travel-packages">
-                {packages.map((pkg, index) => (
-                    <div key={index} className="package-card">
-                        <img src={pkg.image} alt={pkg.title} className="package-image" />
-                        <div className="package-info">
-                            <h3 className="package-title">{pkg.title}</h3>
-                            <p className="package-duration">{pkg.duration}</p>
-                            <div className="nights-badge">{pkg.nights} Nights</div>
-                            <div className="amenities">
-                                {pkg.amenities.map((amenity, idx) => (
-                                    <span key={idx} className="amenity">
-                                        {amenity.icon}
-                                        <span className="amenity-label">{amenity.label}</span>
-                                    </span>
-                                ))}
+                {data && data.length > 0 ? (
+                    data.map((pkg, index) => (
+                        <div key={index} className="package-card">
+                            <img
+                                src={pkg.images[0] || 'default-image.jpg'} // Add a fallback image if not available
+                                alt={pkg.travelAgencyName}
+                                className="package-image"
+                            />
+                            <div className="package-info">
+                                <h3 className="package-title">{pkg.travelAgencyName}</h3>
+                                <p className="package-duration">
+                                    {pkg?.nights} Nights & {pkg?.days} Days
+                                </p>
+                                <div className="nights-badge">{pkg.nights} Nights</div>
+                                <div className="amenities">
+                                    {pkg.amenities?.slice(0, 4).map((amenity, idx) => (
+                                        <span key={idx} className="amenity">
+                                            {getAmenityIcon(amenity) && (
+                                                <span className="amenity-icon">{getAmenityIcon(amenity)}</span>
+                                            )}
+                                            <span className="amenity-label">{amenity}</span>
+                                        </span>
+                                    ))}
+                                </div>
+                                <div className="price-section">
+                                    {/* Only show current price */}
+                                    {pkg.price && <span className="current-price">₹ {pkg.price}</span>}
+                                </div>
+
+                                <button className="package-button" onClick={() => handleBooking(pkg._id)}>
+                                    Customize & Book
+                                </button>
                             </div>
-                            <div className="price-section">
-                                {pkg.originalPrice && <span className="original-price">₹ {pkg.originalPrice}</span>}
-                                <span className="current-price">₹ {pkg.price}</span>
-                            </div>
-                            <p className="emi-info">No Cost EMI Starts from ₹ {pkg.emi}</p>
-                            <button className="package-button">{pkg.buttonText}</button>
                         </div>
-                    </div>
-                ))}
+                    ))
+                ) : (
+                    <div>No packages available.</div>
+                )}
             </div>
         </>
     );
