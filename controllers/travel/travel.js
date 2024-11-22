@@ -9,7 +9,6 @@ exports.createTravel = async (req, res) => {
         if (termsAndConditions && typeof termsAndConditions === 'object') {
             req.body.termsAndConditions = new Map(Object.entries(termsAndConditions));
         }
-
         const created = await Travel.create({
             ...body,
             images,
@@ -20,6 +19,25 @@ exports.createTravel = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Failed to create travel' });
+    }
+};
+
+exports.getTravelList = async function (_, res) {
+    try {
+        const findData = await Travel.find();
+        return res.status(200).json(findData);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+exports.getTravelById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const findData = await Travel.findById(id);
+        return res.status(200).json(findData);
+    } catch (error) {
+        console.error(error);
     }
 };
 
