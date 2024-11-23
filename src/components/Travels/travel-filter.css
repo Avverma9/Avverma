@@ -2,7 +2,6 @@
 .filter-wrapper {
     display: flex;
     justify-content: center;
-    width: 100%; /* Ensure the wrapper takes full width */
     padding: 20px 0; /* Optional: Adds space around the filter bar */
     box-sizing: border-box;
     background-color: #f9f9f9;
@@ -15,6 +14,7 @@
     align-items: center;
     gap: 20px;
     padding: 15px;
+    width: 50%; /* You can adjust this width as needed */
     background-color: #f9f9f9;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -22,6 +22,7 @@
     font-size: 14px;
     color: #333;
     justify-content: center;
+    margin: 0 auto; /* Center horizontally */
 }
 
 /* General Styling for Filter Items */

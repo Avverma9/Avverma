@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
+import { MdOutlineTravelExplore } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import Tooltip from '@mui/material/Tooltip';
@@ -75,15 +75,18 @@ const Header = () => {
             </div>
             <nav className="d-flex align-items-center">
                 <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
-                    <FaSuitcase size={24} />
-                    <a href="#" className="nav-link text-dark">
-                        Roomsstay for Business
+                    <a href="/travellers" className="nav-link text-dark">
+                        <MdOutlineTravelExplore size={24} />
+                        <br />
+                        Holidays
+                        <br />
+                        <small className="text-muted">Check our holiday packages</small>
                     </a>
-                    <small className="text-muted">Trusted by Our Corporates</small>
                 </div>
+
                 <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
                     <FaBuilding size={24} />
-                    <a href="#" className="nav-link text-dark">
+                    <a href="/partner" className="nav-link text-dark">
                         List your property
                     </a>
                     <small className="text-muted">Start earning in 30 mins</small>

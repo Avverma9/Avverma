@@ -3,7 +3,7 @@
   display: grid;
   gap: 20px;
   padding: 20px;
-  background-color: #f7f7f7;
+  background-color: #ffffff;
   justify-items: center; /* Center cards within grid cells */
   grid-template-columns: repeat(5, minmax(0, 1fr)); /* 5 cards per row by default, flexible */
   grid-template-rows: auto;

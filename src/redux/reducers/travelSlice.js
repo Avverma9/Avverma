@@ -33,6 +33,44 @@ export const getTravelList = createAsyncThunk('travel/getTravelList', async (_, 
     }
 });
 
+export const getTravelByPrice = createAsyncThunk('travel/getTravelByPrice', async ({ minPrice, maxPrice }, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${baseURL}/sort-travel/by-price?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+export const getTravelByDuration = createAsyncThunk('travel/getTravelByDuration', async ({ minNights, maxNights }, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${baseURL}/sort-travel/by-duration?minNights=${minNights}&maxNights=${maxNights}`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
+export const getTravelByOrder = createAsyncThunk('travel/getTravelByOrder', async (sort, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${baseURL}/sort-travel/by-order?sort=${sort}`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
 export const getTravelById = createAsyncThunk('travel/getTravelById', async (id, { rejectWithValue }) => {
     try {
         const response = await axios.get(`${baseURL}/get-travel/${id}`, {
@@ -87,6 +125,18 @@ const travelSlice = createSlice({
             })
             .addCase(getTravelById.fulfilled, (state, action) => {
                 state.travelById = action.payload;
+                state.loading = false;
+            })
+            .addCase(getTravelByPrice.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(getTravelByOrder.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(getTravelByDuration.fulfilled, (state, action) => {
+                state.data = action.payload;
                 state.loading = false;
             });
     },
