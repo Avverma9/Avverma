@@ -22,6 +22,57 @@ exports.createTravel = async (req, res) => {
     }
 };
 
+exports.sortByOrder = async function (req, res) {
+    try {
+        const { sort } = req.query; // Extract sort query parameter
+        let sortOrder = 1; // 1 is for ascending, -1 is for descending
+        if (sort === 'desc') {
+            sortOrder = -1; // If the sort is 'desc', use descending order
+        } else if (sort !== 'asc') {
+            return res.status(400).json({ message: 'Invalid sort parameter. Use "asc" or "desc".' });
+        }
+        const travels = await Travel.find().sort({ price: sortOrder });
+        res.json(travels);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching travels', error });
+    }
+};
+
+exports.sortByPrice = async (req, res) => {
+    const { minPrice, maxPrice } = req.query;
+
+    try {
+        const query = {};
+
+        if (minPrice) query.price = { $gte: minPrice };
+        if (maxPrice) query.price = { ...query.price, $lte: maxPrice };
+
+        const findData = await Travel.find(query);
+
+        return res.json(findData);
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+exports.sortByDuration = async (req, res) => {
+    const { minNights, maxNights } = req.query;
+
+    try {
+        let query = {};
+        if (minNights) {
+            query.nights = { ...query.nights, $gte: parseInt(minNights) };
+        }
+        if (maxNights) {
+            query.nights = { ...query.nights, $lte: parseInt(maxNights) };
+        }
+        const findData = await Travel.find(query);
+        return res.json(findData);
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 exports.getTravelList = async function (_, res) {
     try {
         const findData = await Travel.find();
