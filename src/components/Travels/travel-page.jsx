@@ -6,6 +6,7 @@ import Filter from './travel-filter';
 import { getTravelList } from '../../redux/reducers/travelSlice';
 import iconsList from '../../utils/icons';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
+import NotFoundPage from '../../utils/Not-found';
 
 const TravelPackages = () => {
     const dispatch = useDispatch();
@@ -26,12 +27,19 @@ const TravelPackages = () => {
         // Use navigate to go to the booking page
         navigate(`/travellers/booking/${id}`);
     };
-
+    if (!data || data.length === 0) {
+        return (
+            <div>
+                <NotFoundPage />
+            </div>
+        );
+    }
     return (
         <>
             <Filter />
             <div className="travel-packages">
-                {data && data.length > 0 ? (
+                {data &&
+                    data.length > 0 &&
                     data.map((pkg, index) => (
                         <div key={index} className="package-card">
                             <img
@@ -48,9 +56,7 @@ const TravelPackages = () => {
                                 <div className="amenities">
                                     {pkg.amenities?.slice(0, 4).map((amenity, idx) => (
                                         <span key={idx} className="amenity">
-                                            {getAmenityIcon(amenity) && (
-                                                <span className="amenity-icon">{getAmenityIcon(amenity)}</span>
-                                            )}
+                                            {getAmenityIcon(amenity) && <span className="amenity-icon">{getAmenityIcon(amenity)}</span>}
                                             <span className="amenity-label">{amenity}</span>
                                         </span>
                                     ))}
@@ -65,10 +71,7 @@ const TravelPackages = () => {
                                 </button>
                             </div>
                         </div>
-                    ))
-                ) : (
-                    <div>No packages available.</div>
-                )}
+                    ))}
             </div>
         </>
     );

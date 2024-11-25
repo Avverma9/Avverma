@@ -6,9 +6,6 @@
 .review-card {
   display: flex;
   align-items: flex-start;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow for compactness */
   margin-bottom: 10px; /* Reduced margin */
   padding: 10px; /* Reduced padding */
   position: relative; /* Required for positioning the Delete button */

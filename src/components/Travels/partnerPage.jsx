@@ -27,6 +27,7 @@ const TravelForm = () => {
         country: '',
         state: '',
         travelAgencyName: '',
+        themes: '',
         visitngPlaces: '',
         overview: '',
         price: '',
@@ -147,6 +148,7 @@ const TravelForm = () => {
 
         const formDataToSend = new FormData();
         formDataToSend.append('city', formData.city);
+        formDataToSend.append('themes', formData.themes);
         formDataToSend.append('state', formData.state);
         formDataToSend.append('overview', formData.overview);
         formDataToSend.append('travelAgencyName', formData.travelAgencyName);
@@ -242,6 +244,27 @@ const TravelForm = () => {
                             onChange={handleChange}
                             required
                         />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <FaUser />
+                            Select your travel theme
+                        </label>
+                        <select
+                            style={inputStyles} // Assuming `inputStyles` is defined
+                            name="themes" // The correct field name for the travel theme
+                            value={formData.themes} // Make sure `formData.themes` is managed in your state
+                            onChange={handleChange} // `handleChange` should update the `formData` state
+                            required
+                        >
+                            <option value="">Select theme</option>
+                            <option value="Winter">Winter</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Honeymoon">Honeymoon</option>
+                            <option value="Romantic">Romantic</option>
+                            <option value="Adventure">Adventure</option>
+                            <option value="Beach">Beach</option>
+                        </select>
                     </div>
                 </div>
                 <div className="form-row">

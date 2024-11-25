@@ -7,15 +7,13 @@ const InclusionExclusion = ({ data }) => {
     console.log('InclusionExclusion', data);
 
     return (
-        <Box className="booking-container" sx={{ padding: 3, maxWidth: 1200, margin: '0 auto' }}>
+        <Box className="booking-container" sx={{ padding: 1, maxWidth: 1200, margin: '0 auto' }}>
             <Typography
                 sx={{
                     textAlign: 'center',
-                    fontSize: '20px',
+                    fontSize: '16px',
                     fontWeight: 600,
                     color: '#333',
-                    border: '2px solid #dedcdc',
-                    borderRadius: '30px',
                     padding: '8px 20px',
                     marginBottom: '16px',
                 }}
@@ -25,16 +23,16 @@ const InclusionExclusion = ({ data }) => {
             <Grid container spacing={2}>
                 {/* Inclusions Section */}
                 <Grid item xs={12} md={6}>
-                    <Paper
-                        elevation={2}
+                    <Box
                         sx={{
                             padding: 2,
                             backgroundColor: '#E8F5E9',
-                            borderRadius: 2,
                             display: 'flex',
                             flexDirection: 'column',
                             height: '250px', // Fixed height for Inclusions
-                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+                            border: '1px solid #ddd', // Light grey border around inclusions
+                            borderRadius: '8px', // Rounded corners
+                            boxShadow: 'none', // Remove shadow to match Paper component appearance
                             transition: 'transform 0.3s ease',
                             '&:hover': { transform: 'scale(1.02)' },
                         }}
@@ -57,21 +55,21 @@ const InclusionExclusion = ({ data }) => {
                                 </Box>
                             ))}
                         </Stack>
-                    </Paper>
+                    </Box>
                 </Grid>
 
                 {/* Exclusions Section */}
                 <Grid item xs={12} md={6}>
-                    <Paper
-                        elevation={2}
+                    <Box
                         sx={{
                             padding: 2,
                             backgroundColor: '#FFEBEE',
-                            borderRadius: 2,
                             display: 'flex',
                             flexDirection: 'column',
                             height: '250px', // Fixed height for Exclusions
-                            boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)',
+                            border: '1px solid #ddd', // Light grey border around exclusions
+                            borderRadius: '8px', // Rounded corners
+                            boxShadow: 'none', // Remove shadow to match Paper component appearance
                             transition: 'transform 0.3s ease',
                             '&:hover': { transform: 'scale(1.02)' },
                         }}
@@ -94,7 +92,7 @@ const InclusionExclusion = ({ data }) => {
                                 </Box>
                             ))}
                         </Stack>
-                    </Paper>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>

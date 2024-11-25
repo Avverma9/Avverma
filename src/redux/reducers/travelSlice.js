@@ -58,6 +58,18 @@ export const getTravelByDuration = createAsyncThunk('travel/getTravelByDuration'
     }
 });
 
+export const getTravelByThemes = createAsyncThunk('travel/getTravelByThemes', async (themes, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${baseURL}/sort-travel/by-themes?themes=${themes}`, {
+            headers: {
+                Authorization: token,
+            },
+        });
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
 export const getTravelByOrder = createAsyncThunk('travel/getTravelByOrder', async (sort, { rejectWithValue }) => {
     try {
         const response = await axios.get(`${baseURL}/sort-travel/by-order?sort=${sort}`, {
@@ -136,6 +148,10 @@ const travelSlice = createSlice({
                 state.loading = false;
             })
             .addCase(getTravelByDuration.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.loading = false;
+            })
+            .addCase(getTravelByThemes.fulfilled, (state, action) => {
                 state.data = action.payload;
                 state.loading = false;
             });

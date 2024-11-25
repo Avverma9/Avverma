@@ -29,6 +29,7 @@ import FilterSidebar from './FilterSidebar';
 import { LuHeading4 } from 'react-icons/lu';
 import amenityIcons from '../../utils/extrasList';
 import { userId } from '../../utils/Unauthorized';
+import NotFoundPage from '../../utils/Not-found';
 const Hotel = () => {
     const [hotelData, setHotelData] = useState([]);
     const [roomPrice, setRoomPrice] = useState('');
@@ -408,19 +409,7 @@ const Hotel = () => {
                             </div>
                         ) : (
                             <div className="text-center">
-                                <img
-                                    src="https://www.waadaa.insure/images/not_found.gif"
-                                    alt="No Hotels Found"
-                                    className="img-fluid"
-                                    style={{
-                                        maxWidth: '600px',
-                                        width: '100%',
-                                        height: 'auto',
-                                        margin: '0 auto',
-                                    }}
-                                />
-                                <h3 className="mt-4">No Hotels Found</h3>
-                                <p>Please try again later or adjust your search criteria.</p>
+                               <NotFoundPage/>
                             </div>
                         )}
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>

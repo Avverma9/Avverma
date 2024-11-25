@@ -1,0 +1,46 @@
+.date-picker-container {
+    font-family: Arial, sans-serif;
+    max-width: 300px;
+    margin: 20px auto;
+  }
+  
+  .date-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+  
+  .date-range {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .modify-button {
+    color: #007bff;
+    font-size: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .modify-button:hover {
+    color: #0056b3;
+  }
+  
+  .subtitle {
+    color: #888;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
