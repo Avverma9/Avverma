@@ -7,6 +7,7 @@ const travelSchema = new mongoose.Schema(
         state: { type: String },
         city: { type: String },
         visitngPlaces: { type: String },
+        themes: String,
         price: Number,
         nights: { type: Number }, // Number of nights
         days: { type: Number }, // Number of days

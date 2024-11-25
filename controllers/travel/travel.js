@@ -24,10 +24,10 @@ exports.createTravel = async (req, res) => {
 
 exports.sortByOrder = async function (req, res) {
     try {
-        const { sort } = req.query; // Extract sort query parameter
-        let sortOrder = 1; // 1 is for ascending, -1 is for descending
+        const { sort } = req.query;
+        let sortOrder = 1;
         if (sort === 'desc') {
-            sortOrder = -1; // If the sort is 'desc', use descending order
+            sortOrder = -1;
         } else if (sort !== 'asc') {
             return res.status(400).json({ message: 'Invalid sort parameter. Use "asc" or "desc".' });
         }
@@ -67,6 +67,16 @@ exports.sortByDuration = async (req, res) => {
             query.nights = { ...query.nights, $lte: parseInt(maxNights) };
         }
         const findData = await Travel.find(query);
+        return res.json(findData);
+    } catch (error) {
+        return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
+exports.sortBythemes = async (req, res) => {
+    try {
+        const { themes } = req.query;
+        const findData = await Travel.find({ themes: themes });
         return res.json(findData);
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });

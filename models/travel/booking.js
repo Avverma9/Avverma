@@ -40,9 +40,7 @@ const bookingSchema = new mongoose.Schema(
             type: Number,
             required: true, // Number of people in the booking
         },
-        specialRequests: {
-            type: String, // Any special requests the customer might have
-        },
+     
         paymentStatus: {
             type: String,
             enum: ['not_paid', 'paid', 'refunded'],
