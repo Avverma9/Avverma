@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BiSolidOffer } from 'react-icons/bi';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { useLoader } from '../../utils/loader';
-import Stack from '@mui/material/Stack';
+import { useLoader } from '../../../utils/loader';
 import { IconContext } from 'react-icons';
 import Typography from '@mui/joy/Typography';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
@@ -12,8 +11,6 @@ import { Carousel } from 'react-bootstrap';
 import Rating from '@mui/material/Rating';
 import Button from '@mui/joy/Button';
 import { FaCheckCircle } from 'react-icons/fa';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
 
 import Card from '@mui/joy/Card';
 import Box from '@mui/material/Box';
@@ -22,14 +19,14 @@ import IconButton from '@mui/joy/IconButton';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import baseURL from '../../utils/baseURL';
-import Filterbar from './Filterbar';
-import './Hotel.css';
-import FilterSidebar from './FilterSidebar';
-import { LuHeading4 } from 'react-icons/lu';
-import amenityIcons from '../../utils/extrasList';
-import { userId } from '../../utils/Unauthorized';
-import NotFoundPage from '../../utils/Not-found';
+import baseURL from '../../../utils/baseURL';
+import Filterbar from '../Filterbar';
+import '../Hotel.css';
+import FilterSidebar from '../FilterSidebar';
+import amenityIcons from '../../../utils/extrasList';
+import { userId } from '../../../utils/Unauthorized';
+import NotFoundPage from '../../../utils/Not-found';
+import HotelMobileCard from './HotelMobileCard';
 const Hotel = () => {
     const [hotelData, setHotelData] = useState([]);
     const [roomPrice, setRoomPrice] = useState('');
@@ -85,180 +82,16 @@ const Hotel = () => {
         }).toString();
         navigate(`/search/hotels?${newQueryString}`);
     };
+
     return (
         <>
             <div className="filtesidebar-container">
                 <FilterSidebar />
             </div>
             {/* -----------------------mobile mode ----------------------------- */}
-            <div className="container mt-4 d-block d-md-none">
-                <div className="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                    {hotelData.map((hotel, index) => {
-                        // Initialize minPriceRoom and minPrice
-                        let minPriceRoom = null;
-                        let minPrice = 'N/A';
 
-                        // Check if rooms array exists and is not empty
-                        if (hotel.rooms && hotel.rooms.length > 0) {
-                            // Find the room with the minimum price
-                            minPriceRoom = hotel.rooms.reduce((minRoom, currentRoom) => {
-                                const minPrice = parseFloat(minRoom.price) || Infinity;
-                                const currentPrice = parseFloat(currentRoom.price) || Infinity;
-                                return currentPrice < minPrice ? currentRoom : minRoom;
-                            }, hotel.rooms[0]);
-
-                            // If minPriceRoom is defined, use its price
-                            if (minPriceRoom) {
-                                minPrice = minPriceRoom.price;
-                            }
-                        }
-
-                        return (
-                            <div key={index} className="col mb-3">
-                                <Card
-                                    sx={{
-                                        width: '100%',
-                                        height: '450px',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    <div>
-                                        {minPriceRoom && (
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '0.5rem',
-                                                    right: '.5rem',
-                                                }}
-                                            >
-                                                {/* <Stack direction="row" spacing={1}>
-                                                    <Chip
-                                                        label={`Get ₹${minPriceRoom?.offerPriceLess } less`}
-                                                        color="success"
-                                                        variant="filled"
-                                                        avatar={<Avatar alt="Off" src="/static/images/avatar/1.jpg" />}
-                                                    />
-                                                </Stack> */}
-                                            </div>
-                                        )}
-                                        <br />
-                                        <Typography level="title-sm">{hotel.hotelName}</Typography>
-                                        <Typography level="body-xs">
-                                            <FmdGoodIcon />
-                                            {hotel.city}, {hotel.state}
-                                        </Typography>
-                                        <IconButton
-                                            aria-label="bookmark Bahamas Islands"
-                                            variant="plain"
-                                            color="neutral"
-                                            size="sm"
-                                            sx={{
-                                                position: 'absolute',
-                                                top: '0.1rem',
-                                                left: '.5rem',
-                                            }}
-                                        >
-                                            <Box key={hotel._id} sx={{ '& > legend': { mt: 2 } }}>
-                                                <Rating name="hotel-rating" value={hotel?.starRating} readOnly />
-                                            </Box>
-                                        </IconButton>
-                                    </div>
-                                    <Carousel>
-                                        {hotel.images.map((image, i) => (
-                                            <Carousel.Item key={i}>
-                                                <img
-                                                    src={image}
-                                                    className="d-block w-100"
-                                                    alt=""
-                                                    style={{ height: '200px', objectFit: 'cover' }}
-                                                />
-                                            </Carousel.Item>
-                                        ))}
-                                    </Carousel>
-                                    <CardContent style={{ maxHeight: '30px', overflow: 'hidden' }}>
-                                        {hotel.amenities.map((amenity, amenityIndex) => (
-                                            <div
-                                                key={amenityIndex}
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    flexWrap: 'wrap',
-                                                    maxHeight: '40px',
-                                                    overflow: 'hidden',
-                                                }}
-                                            >
-                                                {amenity?.amenities?.slice(0, 5).map((singleAmenity, singleAmenityIndex) => (
-                                                    <Typography
-                                                        key={singleAmenityIndex}
-                                                        level="body-xs"
-                                                        style={{
-                                                            margin: '5px',
-                                                            whiteSpace: 'nowrap',
-                                                            maxHeight: '30px',
-                                                            overflow: 'hidden',
-                                                            textOverflow: 'ellipsis',
-                                                        }}
-                                                    >
-                                                        <IconContext.Provider value={{ size: '1.2em' }}>
-                                                            {amenityIcons[singleAmenity] || defaultIcon}
-                                                        </IconContext.Provider>{' '}
-                                                        {singleAmenity}
-                                                    </Typography>
-                                                ))}
-                                            </div>
-                                        ))}
-                                    </CardContent>
-
-                                    <CardContent orientation="horizontal">
-                                        <div>
-                                            <p className="mt-2">{hotel.customerWelcomeNote || 'No description available.'}</p>
-                                            <Typography fontSize="sm" fontWeight="lg">
-                                                <CurrencyRupeeIcon /> {minPrice}
-                                            </Typography>
-                                        </div>
-                                        <Button
-                                            variant="solid"
-                                            size="sm"
-                                            color="primary"
-                                            aria-label="Explore Bahamas Islands"
-                                            sx={{
-                                                ml: 'auto',
-                                                alignSelf: 'center',
-                                                fontWeight: 600,
-                                            }}
-                                            onClick={() => handleBuy(hotel.hotelId)}
-                                        >
-                                            View
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        );
-                    })}
-                </div>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <Pagination
-                        count={totalPages}
-                        page={page}
-                        onChange={(event, value) => setPage(value)}
-                        renderItem={(item) => (
-                            <PaginationItem
-                                component="a"
-                                {...item}
-                                onClick={(event) => {
-                                    if (item.type !== 'start-ellipsis' && item.type !== 'end-ellipsis') {
-                                        setPage(item.page);
-                                    }
-                                }}
-                            />
-                        )}
-                        shape="rounded"
-                        size="large"
-                    />
-                </Box>
-            </div>
             {/* -----------------------mobile mode end ----------------------------- */}
-
+            <HotelMobileCard hotelData={hotelData} totalPages={totalPages} page={page} />
             <div style={{ display: 'flex', margin: '20px' }}>
                 <div className="filterbar-container">
                     <Filterbar onFilterChange={handleFilterChange} />
@@ -409,7 +242,7 @@ const Hotel = () => {
                             </div>
                         ) : (
                             <div className="text-center">
-                               <NotFoundPage/>
+                                <NotFoundPage />
                             </div>
                         )}
                         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>

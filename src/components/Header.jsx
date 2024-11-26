@@ -12,13 +12,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Logout from '@mui/icons-material/Logout';
-import { useLocation, useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import { useLocation } from 'react-router-dom'; // Import the useLocation hook
 
 const Header = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const location = useLocation();
     const open = Boolean(anchorEl);
-    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -28,32 +27,19 @@ const Header = () => {
         setAnchorEl(null);
     };
 
-    // Define the navigation functions
-    const handleProfile = () => {
-        navigate('/profile');
-        handleClose();
-    };
-
-    const handlePartner = () => {
-        navigate('/partner');
-        handleClose();
-    };
-
-    const handleTravelPartner = () => {
-        navigate('/travel-partner');
-        handleClose();
-    };
     const logoClick = () => {
         window.location.href = '/';
         handleClose();
     };
-    const homeclick = () => {
-        navigate('/');
-        handleClose();
-    };
+
     const handleLoginLogout = () => {
         localStorage.clear();
-        navigate('/login');
+        window.location.href = '/login';
+        handleClose();
+    };
+
+    const handleRedirect = (path) => {
+        window.location.href = path;
         handleClose();
     };
 
@@ -138,7 +124,6 @@ const Header = () => {
                                     top: 0,
                                     right: 14,
                                     width: 10,
-
                                     height: 10,
                                     bgcolor: 'background.paper',
                                     transform: 'translateY(-50%) rotate(45deg)',
@@ -149,26 +134,26 @@ const Header = () => {
                         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                        <MenuItem onClick={handleProfile}>
+                        <MenuItem onClick={() => handleRedirect('/profile')}>
                             <Avatar /> Profile
                         </MenuItem>
-                        <MenuItem onClick={homeclick}>
+                        <MenuItem onClick={() => handleRedirect('/')}>
                             <ListItemIcon>
                                 <HomeIcon fontSize="small" />
                             </ListItemIcon>
                             Home
                         </MenuItem>
-                        <MenuItem onClick={handlePartner}>
+                        <MenuItem onClick={() => handleRedirect('/partner')}>
                             <ListItemIcon>
                                 <PersonAdd fontSize="small" />
                             </ListItemIcon>
-                            Become a Hotel Partner
+                            Hotel Partner
                         </MenuItem>
-                        <MenuItem onClick={handleTravelPartner}>
+                        <MenuItem onClick={() => handleRedirect('/travel-partner')}>
                             <ListItemIcon>
                                 <PersonAdd fontSize="small" />
                             </ListItemIcon>
-                            Become a Travel Partner
+                            Travel Partner
                         </MenuItem>
                         <MenuItem onClick={handleLoginLogout}>
                             <ListItemIcon>

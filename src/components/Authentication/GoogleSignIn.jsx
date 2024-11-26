@@ -63,7 +63,7 @@ const Google = () => {
             localStorage.setItem('rsUserId', userId);
             localStorage.setItem('rsToken', rsToken);
             localStorage.setItem('rsUserMobile', mobile);
-
+            localStorage.setItem('roomsstayUserImage', images);
             const userDocRef = doc(db, 'users', userId);
             await setDoc(userDocRef, { email /* other user data */ });
         } catch (error) {

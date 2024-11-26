@@ -14,7 +14,7 @@ import LoginPage from './components/Authentication/Login.jsx';
 import RegisterPage from './components/Authentication/Register.jsx';
 
 import BookNow from './components/Booknow/Booknow.jsx';
-import Hotel from './components/Hotels/Hotel.jsx';
+
 import PartnerForm from './components/Hotels/Partner.jsx';
 import PolicyForm from './components/Hotels/PartnerPolicy.jsx';
 import Bottom from './components/Bottom.jsx';
@@ -28,6 +28,8 @@ import Settings from './components/Profile/Settings';
 import Travel from './components/Travels/travel-page';
 import TravelForm from './components/Travels/partnerPage';
 import TravelBooking from './components/Travels/travel-booking';
+import Hotel from './components/Hotels/pages/Hotel';
+import Hero from './components/landingPage/Hero';
 
 function App() {
     return (
@@ -38,7 +40,7 @@ function App() {
                     <Settings />
                     <BookNow />
                     <HeaderImage />
-                    <Hotel />
+                    <Hotel /> <Hero />
                     <CarouselPage />
                     <SearchForm />
                     <Offered />
@@ -46,6 +48,8 @@ function App() {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
+                        {/* <Route path="/about" element={<NewComponent />} /> */}
+
                         <Route path="/travellers" element={<Travel />} />
                         <Route path="/travellers/booking/:id" element={<TravelBooking />} />
                         <Route path="/partner" element={<PartnerForm />} />
