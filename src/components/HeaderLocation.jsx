@@ -66,7 +66,7 @@ const HeaderTravel = () => {
 
     return (
         <div className="header-travel">
-            {locations.map((loc, index) => (
+            {locations?.map((loc, index) => (
                 <div key={index} className={`city ${index === currentIndex ? 'active' : ''}`}>
                     <Link to={`/search?search=${loc.location}`}>
                         <div className="image-container">
