@@ -4,29 +4,32 @@ import MobileSearchBox from './MobileSearchBox';
 import NotFoundPage from '../../../utils/Not-found';
 import { userId } from '../../../utils/Unauthorized';
 import { Button } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 const HotelMobileCard = ({ hotelData }) => {
     const [expandedHotelIndex, setExpandedHotelIndex] = useState(null);
+    const location = useLocation();
 
     // Toggle the expanded view of hotel prices
     const togglePriceView = (index) => {
         setExpandedHotelIndex(expandedHotelIndex === index ? null : index);
     };
 
-    if (!hotelData || hotelData.length === 0) {
-        return <NotFoundPage />;
+    const paths = ['/search/hotels', '/search'];
+    if (!paths.includes(location.pathname)) {
+        return null;
     }
-
-    // Handle the booking, this function will be called when clicking on the card
     const handleBuy = (hotelID) => {
         window.location.href = `/book-hotels/${userId}/${hotelID}`;
     };
-
     return (
-        <>
-            <div className="hotel-card">
-                <MobileSearchBox />
-                {hotelData.map((hotel, index) => (
+        <div className="hotel-card">
+            <MobileSearchBox />
+
+            {!hotelData || hotelData.length === 0 ? (
+                <NotFoundPage />
+            ) : (
+                hotelData.map((hotel, index) => (
                     <div
                         key={index}
                         className="card-content"
@@ -80,9 +83,9 @@ const HotelMobileCard = ({ hotelData }) => {
                             </div>
                         )}
                     </div>
-                ))}
-            </div>
-        </>
+                ))
+            )}
+        </div>
     );
 };
 

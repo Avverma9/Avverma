@@ -27,20 +27,16 @@ const TravelPackages = () => {
         // Use navigate to go to the booking page
         navigate(`/travellers/booking/${id}`);
     };
-    if (!data || data.length === 0) {
-        return (
-            <div>
-                <NotFoundPage />
-            </div>
-        );
-    }
+
     return (
         <>
-            <Filter />
-            <div className="travel-packages">
-                {data &&
-                    data.length > 0 &&
-                    data.map((pkg, index) => (
+            <Filter /> {/* Keep the Filter always visible */}
+            {/* Check if the data exists or is empty */}
+            {(!data || data.length === 0) ? (
+                <NotFoundPage /> // If no data, show NotFoundPage
+            ) : (
+                <div className="travel-packages">
+                    {data.map((pkg, index) => (
                         <div key={index} className="package-card">
                             <img
                                 src={pkg.images[0] || 'default-image.jpg'} // Add a fallback image if not available
@@ -72,7 +68,8 @@ const TravelPackages = () => {
                             </div>
                         </div>
                     ))}
-            </div>
+                </div>
+            )}
         </>
     );
 };

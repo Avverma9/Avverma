@@ -3,9 +3,9 @@ import { MdFilterList } from 'react-icons/md';
 import './travel-filter.css';
 import { useDispatch } from 'react-redux';
 import { getTravelByDuration, getTravelByOrder, getTravelByPrice, getTravelByThemes } from '../../redux/reducers/travelSlice';
-import { Slider, Box } from '@mui/material'; // Import MUI components
 import { Button } from 'react-bootstrap';
 import { useLoader } from '../../utils/loader';
+import Slider from 'react-slider'; // Ensure you are using react-slider
 
 const Filter = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -100,50 +100,92 @@ const Filter = () => {
                 </select>
             </div>
 
-            {/* Price Range with MUI Slider */}
+            {/* Price Range with react-slider */}
             <div className="filter-item price-range">
                 <label>Price</label>
-                <Box sx={{ width: 120 }}>
-                    <span className="slider-value">₹{minPrice}</span>
-
+                <div className="slider-container">
                     <Slider
                         value={[minPrice, maxPrice]}
-                        onChange={(event, newValue) => {
+                        onChange={(newValue) => {
                             setMinPrice(newValue[0]);
                             setMaxPrice(newValue[1]);
                         }}
-                        valueLabelDisplay="auto"
-                        valueLabelFormat={(value) => `₹${value}`}
                         min={500}
                         max={164990}
                         step={100}
-                        disableSwap
+                        renderTrack={(props, state) => (
+                            <div
+                                {...props}
+                                style={{
+                                    ...props.style,
+                                    background: '#e4e4e4',
+                                    height: '8px',
+                                    borderRadius: '4px',
+                                }}
+                            />
+                        )}
+                        renderThumb={(props, state) => (
+                            <div
+                                {...props}
+                                style={{
+                                    ...props.style,
+                                    backgroundColor: '#0061f2',
+                                    height: '16px',
+                                    width: '16px',
+                                    borderRadius: '50%',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                }}
+                            />
+                        )}
                     />
-                    <span className="slider-value">₹{maxPrice}</span>
-                </Box>
+                    <span className="slider-value">
+                        ₹{minPrice} - ₹{maxPrice}
+                    </span>
+                </div>
             </div>
 
-            {/* Duration Range */}
+            {/* Duration Range with react-slider */}
             <div className="filter-item duration-range">
                 <label>Duration</label>
-                <Box sx={{ width: 120 }}>
-                    <span className="slider-value">{minNights} Nights</span>
-
+                <div className="slider-container">
                     <Slider
                         value={[minNights, maxNights]}
-                        onChange={(event, newValue) => {
+                        onChange={(newValue) => {
                             setMinNights(newValue[0]);
                             setMaxNights(newValue[1]);
                         }}
-                        valueLabelDisplay="auto"
-                        valueLabelFormat={(value) => `${value} Nights`}
                         min={2}
                         max={9}
                         step={1}
-                        disableSwap
+                        renderTrack={(props, state) => (
+                            <div
+                                {...props}
+                                style={{
+                                    ...props.style,
+                                    background: 'gray',
+                                    height: '8px',
+                                    borderRadius: '4px',
+                                }}
+                            />
+                        )}
+                        renderThumb={(props, state) => (
+                            <div
+                                {...props}
+                                style={{
+                                    ...props.style,
+                                    backgroundColor: '#0061f2',
+                                    height: '16px',
+                                    width: '16px',
+                                    borderRadius: '50%',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                                }}
+                            />
+                        )}
                     />
-                    <span className="slider-value">{maxNights} Nights</span>
-                </Box>
+                    <span className="slider-value">
+                        {minNights} - {maxNights} Nights
+                    </span>
+                </div>
             </div>
 
             {/* Clear and More Filters */}

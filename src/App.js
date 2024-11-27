@@ -40,9 +40,10 @@ function App() {
                     <Settings />
                     <BookNow />
                     <HeaderImage />
-                    <Hotel /> <Hero />
-                    <CarouselPage />
+                    <Hotel />
+                    <Hero />
                     <SearchForm />
+                    <CarouselPage />
                     <Offered />
                     <ScrollToTop /> {/* Add ScrollToTop component */}
                     <Routes>

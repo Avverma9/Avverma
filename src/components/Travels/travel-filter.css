@@ -388,3 +388,8 @@
         justify-content: space-between; /* Make sure options align well on smaller screens */
     }
 }
+.slider-container {
+    width: 100%;
+    margin-bottom: 20px; /* Optional margin */
+  }
+  
