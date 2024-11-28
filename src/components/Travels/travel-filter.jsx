@@ -162,7 +162,7 @@ const Filter = () => {
                                 {...props}
                                 style={{
                                     ...props.style,
-                                    background: 'gray',
+                                    background: '#e4e4e4',
                                     height: '8px',
                                     borderRadius: '4px',
                                 }}

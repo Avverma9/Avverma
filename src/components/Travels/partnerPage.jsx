@@ -21,6 +21,7 @@ import {
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
 import { FaLocationArrow } from 'react-icons/fa6';
+import Disclaimer from '../Hotels/Disclaimer';
 const TravelForm = () => {
     const [formData, setFormData] = useState({
         city: '',
@@ -228,6 +229,7 @@ const TravelForm = () => {
     };
     return (
         <div className="form-container">
+            <Disclaimer />
             <h2>Travel Package Form</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-row">
@@ -285,7 +287,7 @@ const TravelForm = () => {
                     </div>
                     <div className="form-group">
                         <label>
-                            <FaMapMarkerAlt /> State <span style={{ color: 'red' }}>*</span>
+                            <FaMapMarkerAlt /> State
                         </label>
                         <Select
                             options={states.map((state) => ({
@@ -294,13 +296,12 @@ const TravelForm = () => {
                             }))}
                             value={formData.state ? { label: formData.state, value: formData.state } : null}
                             onChange={(selectedOption) => setFormData({ ...formData, state: selectedOption.value })}
-                            required
                             styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
                         />
                     </div>
                     <div className="form-group">
                         <label>
-                            <FaLocationArrow /> City <span style={{ color: 'red' }}>*</span>
+                            <FaLocationArrow /> City
                         </label>
                         <Select
                             options={cities.map((city) => ({
@@ -309,7 +310,6 @@ const TravelForm = () => {
                             }))}
                             value={formData.city ? { label: formData.city, value: formData.city } : null}
                             onChange={(selectedOption) => setFormData({ ...formData, city: selectedOption.value })}
-                            required
                             styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
                         />
                     </div>

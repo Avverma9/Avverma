@@ -40,7 +40,7 @@
   color: #070707; /* Sets the text color */
   background-color: #dfdfdf; /* Background color for the links */
   padding: 10px 15px; /* Adds padding for a button-like appearance */
-  border-radius: 50px; /* Rounds the corners */
+  border-radius: 20px; /* Rounds the corners */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 

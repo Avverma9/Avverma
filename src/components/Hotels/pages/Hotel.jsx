@@ -5,17 +5,11 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useLoader } from '../../../utils/loader';
 import { IconContext } from 'react-icons';
 import Typography from '@mui/joy/Typography';
-import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
-import FmdGoodIcon from '@mui/icons-material/FmdGood';
-import { Carousel } from 'react-bootstrap';
-import Rating from '@mui/material/Rating';
-import Button from '@mui/joy/Button';
+
 import { FaCheckCircle } from 'react-icons/fa';
 
-import Card from '@mui/joy/Card';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/joy/CardContent';
-import IconButton from '@mui/joy/IconButton';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -89,16 +83,16 @@ const Hotel = () => {
                 <FilterSidebar />
             </div>
             {/* -----------------------mobile mode ----------------------------- */}
-
-            {/* -----------------------mobile mode end ----------------------------- */}
             <HotelMobileCard hotelData={hotelData} totalPages={totalPages} page={page} />
             <div style={{ display: 'flex', margin: '20px' }}>
                 <div className="filterbar-container">
                     <Filterbar onFilterChange={handleFilterChange} />
                 </div>
-                <div style={{ flexGrow: 1, marginLeft: '20px' }}>
-                    {/*  ------------------- Desktop mode ---------------------- */}
-                    <div className="container mt-4 d-none d-sm-block">
+                {/* -----------------------mobile mode end ----------------------------- */}
+
+                {/*  ------------------- Desktop mode ---------------------- */}
+                <div className="container mt-4 d-none d-sm-block">
+                    <div style={{ flexGrow: 1, marginLeft: '20px' }}>
                         {hotelData && hotelData.length > 0 ? (
                             <div className="row border p-3 bg-white">
                                 {hotelData.map((hotel, index) => {
@@ -226,7 +220,8 @@ const Hotel = () => {
                                                             </h4>
                                                             <p className="text-muted">Lowest room price(Ex. GST)</p>
                                                             <button
-                                                                className="btn btn-warning btn-block text-white"
+                                                                className="btn btn-block text-white"
+                                                                style={{ backgroundColor: '#f66b58' }}
                                                                 onClick={() => handleBuy(hotel.hotelId)}
                                                             >
                                                                 View Details

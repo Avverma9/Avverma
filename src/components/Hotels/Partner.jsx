@@ -16,6 +16,7 @@ import { fetchLocation } from '../../utils/fetchLocation';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import { categories, termsArray } from '../../utils/extrasList';
 import alert from '../../utils/custom_alert/custom_alert';
+import Disclaimer from './Disclaimer';
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
@@ -182,7 +183,7 @@ export default function PartnerForm() {
         <>
             <div className="container mt-4" style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '20px' }}>
                 <h5 className="mb-3">Welcome to our team</h5>
-
+                <Disclaimer />
                 <form onSubmit={handleSubmit}>
                     <div className="row">
                         <div className="col-md-4 mb-3">
@@ -423,19 +424,6 @@ export default function PartnerForm() {
                                 <option value="Accepted">Accepted</option>
                             </select>
                         </div>
-                        <select
-                            id="localId"
-                            className="form-control"
-                            required
-                            value={hotelCategory}
-                            onChange={(e) => setHotelCategory(e.target.value)}
-                        >
-                            {categories.map((item) => (
-                                <option key={item.name} value={item.name}>
-                                    {item.name}
-                                </option>
-                            ))}
-                        </select>
 
                         <div className="col-md-4 mb-3">
                             <label htmlFor="buyingRole" className="form-label">
@@ -454,16 +442,6 @@ export default function PartnerForm() {
                                     </option>
                                 ))}
                             </select>
-                        </div>
-                        <div className="col-md-4 mb-3">
-                            <Button
-                                color="primary"
-                                onClick={() => fetchLocation(setLatitude, setLongitude)}
-                                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}
-                            >
-                                <NearMeIcon style={{ fontSize: '40px' }} />
-                                <p style={{ margin: 0 }}>Fetch Automatically</p>
-                            </Button>
                         </div>
 
                         <div className="col-md-4 mb-3">
@@ -492,7 +470,16 @@ export default function PartnerForm() {
                                 onChange={(e) => setLongitude(e.target.value)}
                             />
                         </div>
-
+                        <div className="col-md-4 mb-3">
+                            <Button
+                                color="primary"
+                                onClick={() => fetchLocation(setLatitude, setLongitude)}
+                                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}
+                            >
+                                <NearMeIcon style={{ fontSize: '40px' }} />
+                                <p style={{ margin: 0 }}>Fetch Automatically</p>
+                            </Button>
+                        </div>
                         <div className="col-md-12 mb-3">
                             <label htmlFor="images" className="form-label">
                                 Pictures (Select your room images, you can add multiple images)

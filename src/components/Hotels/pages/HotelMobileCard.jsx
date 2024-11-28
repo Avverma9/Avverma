@@ -15,7 +15,7 @@ const HotelMobileCard = ({ hotelData }) => {
         setExpandedHotelIndex(expandedHotelIndex === index ? null : index);
     };
 
-    const paths = ['/search/hotels', '/search'];
+    const paths = ['/search/hotels', '/search', '/'];
     if (!paths.includes(location.pathname)) {
         return null;
     }

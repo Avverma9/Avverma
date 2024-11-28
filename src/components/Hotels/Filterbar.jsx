@@ -144,7 +144,7 @@ const Filterbar = ({ onFilterChange }) => {
         setShowMoreRatings(false);
 
         onFilterChange({
-            minPrice: 0,
+            minPrice: 400,
             maxPrice: 10000,
             starRating: '',
             amenities: [],
@@ -161,49 +161,54 @@ const Filterbar = ({ onFilterChange }) => {
             elevation={3}
             sx={{
                 padding: 2,
-                borderRadius: 2,
-                backgroundColor: '#fafafa',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
                 position: 'sticky',
+
                 top: 20, // Adjust this to control how far down it sticks
                 zIndex: 10,
-                height: 'calc(100vh - 40px)', // Ensure it occupies the desired height
+                height: 'calc(100vh - 20px)', // Ensure it occupies the desired height
                 overflowY: 'auto', // Allow vertical scrolling
+                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Subtle shadow for a clean look
                 '&::-webkit-scrollbar': {
-                    width: '8px', // Width of the scrollbar
+                    width: '6px', // Thinner scrollbar
                 },
                 '&::-webkit-scrollbar-track': {
-                    background: '#f1f1f1', // Background of the scrollbar track
+                    background: '#f0f0f0', // Lighter track background
                 },
                 '&::-webkit-scrollbar-thumb': {
                     background: '#888', // Color of the scrollbar thumb
-                    borderRadius: '10px', // Rounded corners
+                    borderRadius: '10px', // Rounded corners for thumb
                 },
                 '&::-webkit-scrollbar-thumb:hover': {
                     background: '#555', // Color when hovering
                 },
                 scrollbarWidth: 'thin', // For Firefox
-                scrollbarColor: '#888 #f1f1f1', // Thumb and track color for Firefox
+                scrollbarColor: '#0D6EFD #CFE2FF', // Thumb and track color for Firefox
             }}
         >
-            <Button variant="contained" color="secondary" onClick={handleClearFilters} sx={{ mb: 2, width: '100%' }}>
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleClearFilters}
+                sx={{ mb: 2, width: '100%', borderRadius: '20px', fontWeight: 'bold', '&:hover': { backgroundColor: '#d32f2f' } }}
+            >
                 Clear Filters
             </Button>
+
             <Stack spacing={2}>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Price range</Typography>
+                {/* Price Range */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Filter Price</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Slider
                             value={[minPrice, maxPrice]}
                             onChange={handlePriceChange}
                             valueLabelDisplay="auto"
-                            min={0}
+                            min={400}
                             max={10000}
                             step={100}
-                            sx={{ mb: 1 }}
+                            sx={{ mb: 1, color: '#1976d2' }}
                         />
-
-                        <Typography>
+                        <Typography sx={{ fontSize: '1rem', fontWeight: 'bold' }}>
                             Min
                             <LiaRupeeSignSolid />
                             {minPrice} - Max
@@ -212,8 +217,10 @@ const Filterbar = ({ onFilterChange }) => {
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Amenities</Typography>
+
+                {/* Amenities */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Amenities</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Stack spacing={1}>
                             {amenityItems.slice(0, showMoreAmenities ? amenityItems.length : 5).map(({ name, icon }) => (
@@ -225,9 +232,9 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleAmenitiesChange}
                                             checked={selectedAmenities.includes(name)}
                                             sx={{
-                                                color: 'black', // Set checkbox color to black
+                                                color: 'black',
                                                 '&.Mui-checked': {
-                                                    color: 'black', // Ensure checked state is also black
+                                                    color: 'black',
                                                 },
                                                 '&:hover': { color: 'black' },
                                             }}
@@ -245,16 +252,18 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('amenities')}
                             variant="text"
-                            color="dark"
+                            color="primary"
                             endIcon={showMoreAmenities ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, fontSize: '0.9rem', fontWeight: 'bold', '&:hover': { color: '#1976d2' } }}
                         >
                             {showMoreAmenities ? 'Show Less' : 'Show More'}
                         </Button>
                     </CardContent>
                 </Card>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Room Types</Typography>
+
+                {/* Room Types */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Room Types</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Stack spacing={1}>
                             {roomTypes.slice(0, showMoreRoomTypes ? roomTypes.length : 5).map((type) => (
@@ -266,9 +275,9 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleRoomTypeChange}
                                             checked={selectedRoomType === type}
                                             sx={{
-                                                color: 'black', // Set checkbox color to black
+                                                color: 'black',
                                                 '&.Mui-checked': {
-                                                    color: 'black', // Ensure checked state is also black
+                                                    color: 'black',
                                                 },
                                                 '&:hover': { color: 'black' },
                                             }}
@@ -281,16 +290,18 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('roomTypes')}
                             variant="text"
-                            color="dark"
+                            color="primary"
                             endIcon={showMoreRoomTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, fontSize: '0.9rem', fontWeight: 'bold', '&:hover': { color: '#1976d2' } }}
                         >
                             {showMoreRoomTypes ? 'Show Less' : 'Show More'}
                         </Button>
                     </CardContent>
                 </Card>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Bed types</Typography>
+
+                {/* Bed Types */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Bed Types</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Stack spacing={1}>
                             {bedTypes.slice(0, showMoreBedTypes ? bedTypes.length : 5).map((type) => (
@@ -302,9 +313,9 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleBedTypeChange}
                                             checked={selectedBedType === type}
                                             sx={{
-                                                color: 'black', // Set checkbox color to black
+                                                color: 'black',
                                                 '&.Mui-checked': {
-                                                    color: 'black', // Ensure checked state is also black
+                                                    color: 'black',
                                                 },
                                                 '&:hover': { color: 'black' },
                                             }}
@@ -317,16 +328,18 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('bedTypes')}
                             variant="text"
-                            color="dark"
+                            color="primary"
                             endIcon={showMoreBedTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, fontSize: '0.9rem', fontWeight: 'bold', '&:hover': { color: '#1976d2' } }}
                         >
                             {showMoreBedTypes ? 'Show Less' : 'Show More'}
                         </Button>
                     </CardContent>
                 </Card>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Property Type</Typography>
+
+                {/* Property Type */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Property Type</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Stack spacing={1}>
                             {propertyTypes.slice(0, showMorePropertyTypes ? propertyTypes.length : 5).map((type) => (
@@ -338,9 +351,9 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handlePropertyTypeChange}
                                             checked={selectedPropertyType === type}
                                             sx={{
-                                                color: 'black', // Set checkbox color to black
+                                                color: 'black',
                                                 '&.Mui-checked': {
-                                                    color: 'black', // Ensure checked state is also black
+                                                    color: 'black',
                                                 },
                                                 '&:hover': { color: 'black' },
                                             }}
@@ -353,16 +366,18 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('propertyTypes')}
                             variant="text"
-                            color="dark"
+                            color="primary"
                             endIcon={showMorePropertyTypes ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, fontSize: '0.9rem', fontWeight: 'bold', '&:hover': { color: '#1976d2' } }}
                         >
                             {showMorePropertyTypes ? 'Show Less' : 'Show More'}
                         </Button>
                     </CardContent>
                 </Card>
-                <Card sx={{ mb: 2 }}>
-                    <Typography style={{ marginLeft: '15px', marginTop: '15px' }}>Rating</Typography>
+
+                {/* Rating */}
+                <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
+                    <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Rating</Typography>
                     <CardContent sx={{ padding: 2 }}>
                         <Stack spacing={1}>
                             {starRatings.slice(0, showMoreRatings ? starRatings.length : 5).map((r) => (
@@ -374,9 +389,9 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleRatingChange}
                                             checked={starRating === r}
                                             sx={{
-                                                color: 'black', // Set checkbox color to black
+                                                color: 'black',
                                                 '&.Mui-checked': {
-                                                    color: 'black', // Ensure checked state is also black
+                                                    color: 'black',
                                                 },
                                                 '&:hover': { color: 'black' },
                                             }}
@@ -389,9 +404,9 @@ const Filterbar = ({ onFilterChange }) => {
                         <Button
                             onClick={() => handleShowMoreClick('ratings')}
                             variant="text"
-                            color="dark"
+                            color="primary"
                             endIcon={showMoreRatings ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            sx={{ mt: 1 }}
+                            sx={{ mt: 1, fontSize: '0.9rem', fontWeight: 'bold', '&:hover': { color: '#1976d2' } }}
                         >
                             {showMoreRatings ? 'Show Less' : 'Show More'}
                         </Button>

@@ -85,12 +85,12 @@ const SearchForm = () => {
             <div className="search-input">
                 <TextField
                     variant="outlined"
-                    placeholder="Around Me"
+                    placeholder="Search for city, location, hotel"
                     name="search"
                     value={searchData.search}
                     onChange={handleInputChange}
                     className="search-field"
-                    label="Location"
+                    label="Search for hotel"
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
