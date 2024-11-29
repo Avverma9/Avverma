@@ -5,7 +5,23 @@ require('dotenv').config(); // Load environment variables
 //====================================================================================
 const createSignup = async function (req, res) {
     try {
-        const images = req.files.map((file) => file.location);
+        const { email, mobile } = req.body;
+
+        if (email) {
+            const findWithEmail = await userModel.findOne({ email: email });
+            if (findWithEmail) {
+                return res.status(400).json({ message: 'Email is already in use' });
+            }
+        }
+
+        if (mobile) {
+            const findWithMobile = await userModel.findOne({ mobile: mobile });
+            if (findWithMobile) {
+                return res.status(400).json({ message: 'Mobile number is already in use' });
+            }
+        }
+
+        const images = req.files ? req.files.map((file) => file.location) : [];
 
         const userData = {
             images,
@@ -14,14 +30,17 @@ const createSignup = async function (req, res) {
 
         const savedUser = await userModel.create(userData);
 
-        return res.status(201).send({
+        return res.status(201).json({
             status: true,
             message: 'User has been created successfully',
             data: savedUser,
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({
+            error: 'Internal Server Error',
+            message: error.message || 'Something went wrong while creating the user',
+        });
     }
 };
 
@@ -118,39 +137,52 @@ const totalUser = async function (req, res) {
 const update = async (req, res) => {
     try {
         const { userId, userName, address, email, mobile, password } = req.body;
-        let images = [];
 
+        if (email) {
+            const findWithEmail = await userModel.findOne({ email: email, userId: { $ne: userId } });
+            if (findWithEmail) {
+                return res.status(400).json({ message: 'Email is already in use by another user' });
+            }
+        }
+
+        if (mobile) {
+            const findWithMobile = await userModel.findOne({ mobile: mobile, userId: { $ne: userId } });
+            if (findWithMobile) {
+                return res.status(400).json({ message: 'Mobile number is already in use by another user' });
+            }
+        }
+
+        let images = [];
         if (req.files && req.files.length > 0) {
             images = req.files.map((file) => file.location);
         } else {
-            const user = await userModel.findOne({ userId }); // Find user by custom ID
+            const user = await userModel.findOne({ userId });
             if (user) {
-                images = user.images;
+                images = user.images || [];
             }
         }
 
         const updatedUser = await userModel.findOneAndUpdate(
-            { userId }, // Find user by custom ID
+            { userId },
             {
                 userName,
                 address,
                 email,
                 mobile,
                 password,
-
                 images,
             },
             { new: true }
         );
 
         if (updatedUser) {
-            res.json(updatedUser);
+            return res.json(updatedUser);
         } else {
-            res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' });
         }
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Internal server error', error });
+        return res.status(500).json({ message: 'Internal server error', error });
     }
 };
 
@@ -171,6 +203,34 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const findUser = async (req, res) => {
+    try {
+        let { mobile, email } = req.query;
+
+        // Build the query object
+        let query = {};
+        if (mobile) {
+            query.mobile = mobile;
+        }
+        if (email) {
+            query.email = email;
+        }
+
+        // Find user(s) based on the query
+        const findUserData = await userModel.find(query); // Correct the method call
+
+        // Check if any user data was found
+        if (findUserData.length > 0) {
+            return res.status(200).json({ success: true, data: findUserData });
+        } else {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
 module.exports = {
     createSignup,
     getUserById,
@@ -179,4 +239,5 @@ module.exports = {
     update,
     getAllUsers,
     totalUser,
+    findUser,
 };
