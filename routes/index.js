@@ -20,6 +20,9 @@ const amenitiesRouter = require('./hotel/amenities');
 const bulkRouter = require('./bulkOperation');
 const availability = require('./hotel/availability');
 const travelPageRouter = require('./travel/travel');
+const carRouter = require('./travel/car');
+const carOwnerRouter = require('./travel/carOwner');
+
 // Initialize the router
 const router = express.Router();
 
@@ -43,5 +46,7 @@ router.use('/', amenitiesRouter);
 router.use('/', bulkRouter);
 router.use('/', availability);
 router.use('/', travelPageRouter);
+router.use('/travel', carOwnerRouter);
+router.use('/travel', carRouter);
 
 module.exports = router;
