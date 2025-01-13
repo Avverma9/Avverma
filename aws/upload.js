@@ -1,4 +1,4 @@
-const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
+const { S3Client } = require("@aws-sdk/client-s3");
 const multerS3 = require("multer-s3");
 const multer = require("multer");
 const AWS_BUCKET_NAME = "happy-stay-hopspitiality";
@@ -29,6 +29,6 @@ const upload = multer({
       cb(new Error("Invalid file type. Only images are allowed."));
     }
   },
-}).array("images", 10);
+}).any(); // Accept files from any field name
 
 module.exports.upload = upload;
