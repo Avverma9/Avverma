@@ -4,7 +4,7 @@ const { addOwner, getOwnerById, getOwner, updateOwner, deleteOwner } = require('
 const router = express.Router();
 
 router.post('/add-an-owner', upload, addOwner);
-router.post('/get-all-owner', getOwner);
+router.get('/get-all-owner', getOwner);
 router.post('/get-an-owner/:id', getOwnerById);
 router.delete('/delete-an-owner/:id', deleteOwner);
 router.patch('/update-an-owner/:id', upload, updateOwner);

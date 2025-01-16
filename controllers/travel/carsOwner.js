@@ -3,16 +3,22 @@ const Owner = require('../../models/travel/carOwner');
 exports.addOwner = async (req, res) => {
     try {
         const { mobile, ...data } = req.body;
-        const images = req.files?.map((file) => file.location);
-        const dlImage = req.files?.map((file) => file.location);
 
-        const existingOwner = await Owner.findOne({ mobile });
+        const imagePromise = req.files?.filter((file) => file.fieldname === 'images').map((file) => file.location);
+        const dlImagePromise = req.files?.filter((file) => file.fieldname === 'dlImage').map((file) => file.location);
+
+        const existingOwnerPromise = Owner.findOne({ mobile });
+
+        const [images, dlImage, existingOwner] = await Promise.all([imagePromise, dlImagePromise, existingOwnerPromise]);
+
         if (existingOwner) {
             return res.status(400).json({ error: 'Mobile number already exists.' });
         }
+
         await Owner.create({ ...data, images, dlImage });
         return res.status(201).json('Successfully Created');
     } catch (error) {
+        console.error(error);
         return res.status(500).json('We are working hard to fix this');
     }
 };
@@ -39,15 +45,27 @@ exports.getOwnerById = async (req, res) => {
 exports.updateOwner = async (req, res) => {
     const { id } = req.params;
     const { ...data } = req.body;
-    const images = req.files?.map((file) => file.location);
-    const findImage = await Owner.findById(id);
-    if (images.length === 0 && findImage.images) {
-        data.images = findImage.images;
-    } else {
-        data.images = images;
+
+    try {
+        const imagesPromise = req.files?.filter((file) => file.fieldname === 'images').map((file) => file.location);
+        const dlImagePromise = req.files?.filter((file) => file.fieldname === 'dlImage').map((file) => file.location);
+        const findImagePromise = Owner.findById(id);
+        const [images, dlImage, findImage] = await Promise.all([imagesPromise, dlImagePromise, findImagePromise]);
+        if (!findImage) {
+            return res.status(404).json({ error: 'Owner not found' });
+        }
+        data.images = images?.length > 0 ? images : findImage.images;
+        if (dlImage?.length > 0) {
+            data.dlImage = dlImage;
+        } else if (!dlImage && findImage.dlImage) {
+            data.dlImage = findImage.dlImage;
+        }
+        const updatedOwner = await Owner.findByIdAndUpdate(id, data, { new: true });
+        return res.status(200).json({ message: 'Successfully Updated', updatedOwner });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'We are working hard to fix this' });
     }
-    const updateData = await Owner.findByIdAndUpdate({ id, ...data, images });
-    return res.staus(201).json({ message: 'Successfully Updated', updateData });
 };
 
 exports.deleteOwner = async (req, res) => {

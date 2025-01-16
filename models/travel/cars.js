@@ -19,6 +19,8 @@ const carSchema = new Schema({
         min: 1886,
         max: new Date().getFullYear(),
     },
+    seater: Number,
+    extraKm: Number,
     price: {
         type: Number,
         required: true,
