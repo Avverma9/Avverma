@@ -1,7 +1,5 @@
 const bookingModel = require('../../models/booking/booking');
-const hotelModel = require('../../models/hotel/basicDetails');
 const userModel = require('../../models/user');
-const month = require('../../models/booking/monthly');
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
     try {
