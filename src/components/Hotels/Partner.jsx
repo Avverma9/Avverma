@@ -420,6 +420,7 @@ export default function PartnerForm() {
                                 value={localId}
                                 onChange={(e) => setLocalId(e.target.value)}
                             >
+                            <option value="">Please Select</option>
                                 <option value="Not Accepted">Not Accepted</option>
                                 <option value="Accepted">Accepted</option>
                             </select>
