@@ -37,7 +37,7 @@
 }
 
 /* Dropdowns for rooms and guests */
-.dropdown {
+.dropdowns {
   flex: 0.8;
   min-width: 100px;
 }
@@ -79,7 +79,7 @@
   /* Adjust two fields in a row */
   .search-input,
   .date-picker,
-  .dropdown {
+  .dropdowns {
     flex: 1 1 48%;  /* Each input field will take 48% of the width */
   }
 

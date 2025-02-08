@@ -30,7 +30,12 @@
 .header .dropdown {
   position: relative;
 }
-
+/* Vertical line separator */
+.header .separator {
+  border-left: 1px solid #000000;
+  height: 50px;
+  margin: 0 1rem;
+}
 .header .dropdown-menu {
   position: absolute;
 
@@ -80,4 +85,7 @@
   .header {
     display: none;
   }
+  .header .separator {
+    display: none;
+}
 }

@@ -60,7 +60,7 @@ const Header = () => {
                 />
             </div>
             <nav className="d-flex align-items-center">
-                <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
+                <div className="nav-item mx-1 d-none d-md-flex flex-column align-items-center">
                     <a href="/travellers" className="nav-link text-dark">
                         <MdOutlineTravelExplore size={24} />
                         <br />
@@ -69,26 +69,27 @@ const Header = () => {
                         <small className="text-muted">Check our holiday packages</small>
                     </a>
                 </div>
-
-                <div className="nav-item mx-3 d-none d-md-flex flex-column align-items-center">
+                <div className="separator"></div>
+                <div className="nav-item mx-1 d-none d-md-flex flex-column align-items-center">
                     <FaBuilding size={24} />
                     <a href="/partner" className="nav-link text-dark">
                         List your property
                     </a>
                     <small className="text-muted">Start earning in 30 mins</small>
                 </div>
-                <div className="nav-item mx-3 d-flex flex-column align-items-center">
+                <div className="separator"></div>
+                <div className="nav-item mx-1 d-flex flex-column align-items-center">
                     <FaPhoneAlt size={24} />
                     <span className="nav-link text-dark">9917991758</span>
                     <small className="text-muted">Call us to Book now</small>
                 </div>
-
-                <div className="nav-item mx-3 dropdown d-flex align-items-center">
+                <div className="separator"></div>
+                <div className="nav-item mx-1 dropdown d-flex align-items-center">
                     <Tooltip title="Account settings">
                         <IconButton
                             onClick={handleClick}
                             size="small"
-                            sx={{ ml: 2 }}
+                            sx={{ ml: 12 }}
                             aria-controls={open ? 'account-menu' : undefined}
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
