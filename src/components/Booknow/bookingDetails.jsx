@@ -41,705 +41,386 @@ const BookingDetails = ({
       : "";
 
   return (
-    <div>
-      {/* For desktop view */}{" "}
-      <div className="col-md-4 d-none d-sm-block">
+  <div>
+  {/* For desktop view */}
+  <div className="col-md-4 d-sm-block">
+    <div
+      className="booking-details-container"
+      style={{
+        position: "sticky",
+        top: "0",
+        right: "20px",
+        width: "300px", // Reduced width
+        zIndex: "1000",
+        padding: "15px", // Reduced padding
+        backgroundColor: "#fff",
+        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+        borderRadius: "8px", // Reduced border-radius
+        fontSize: "0.9rem", // Reduced font size
+      }}
+    >
+      <h5 style={{ fontSize: "1rem" }}>
+        {" "}
+        <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details
+      </h5>
+      <hr style={{ margin: "10px 0" }} />
+
+      {/* Selected Food */}
+      <div className="selected-food-container">
         <div
-          className="booking-details-container"
+          className="selected-container"
           style={{
-            position: "sticky",
-            top: "0",
-            right: "20px",
-            width: "300px", // Reduced width
-            zIndex: "1000",
-            padding: "15px", // Reduced padding
-            backgroundColor: "#fff",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-            borderRadius: "8px", // Reduced border-radius
-            fontSize: "0.9rem", // Reduced font size
+            marginBottom: "15px",
+            display: "flex",
+            alignItems: "center",
+            borderBottom: "1px solid #e0e0e0", // Added border for separation
+            paddingBottom: "10px", // Added padding for separation
           }}
         >
-          <h5 style={{ fontSize: "1rem" }}>
-            {" "}
-            {/* Smaller header font size */}
-            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details
-          </h5>
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          {/* Selected Food */}
-          <div className="selected-food-container">
-            <div
-              className="selected-container"
-              style={{
-                marginBottom: "15px", // Reduced margin
-                display: "flex",
-                alignItems: "center",
-                borderBottom: "1px solid #e0e0e0", // Added border for separation
-                paddingBottom: "10px", // Added padding for separation
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                {selectedFood.length > 0 ? (
-                  <CardContent style={{ padding: "0" }}>
-                    {selectedFood.map((selected, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginBottom: "5px", // Reduced margin
-                        }}
-                      >
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          component="div"
-                          style={{ fontSize: "0.8rem" }}
-                        >
-                          {selected.name} Selected
-                        </Typography>
-                        <button
-                          size="small"
-                          className="custom-button"
-                 
-                          onClick={() => handleRemoveFood(selected)}
-                          style={{ fontSize: "0.7rem", padding: "4px 8px" }} // Reduced font size and padding
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                  </CardContent>
-                ) : (
+          <div style={{ flex: 1 }}>
+            {selectedFood.length > 0 ? (
+              <CardContent style={{ padding: "0" }}>
+                {selectedFood.map((selected, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: "5px", // Reduced margin
+                    }}
+                  >
+                    <Typography
+                      gutterBottom
+                      variant="body2"
+                      component="div"
+                      style={{ fontSize: "0.8rem" }}
+                    >
+                      {selected.name} Selected
+                    </Typography>
+                    <button
+                      size="small"
+                      className="custom-button"
+                      onClick={() => handleRemoveFood(selected)}
+                      style={{
+                        fontSize: "0.7rem",
+                        padding: "4px 8px", // Reduced font size and padding
+                        backgroundColor: "#f8d7da", // Light red background
+                        border: "1px solid #f5c6cb", // Red border
+                        color: "#721c24", // Dark red text color
+                        borderRadius: "4px",
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </CardContent>
+            ) : (
+              <Typography
+                gutterBottom
+                variant="body2"
+                component="div"
+                style={{ fontSize: "0.8rem" }}
+              >
+                Add Meals{" "}
+                <LunchDiningTwoToneIcon style={{ fontSize: "0.8rem" }} />
+              </Typography>
+            )}
+          </div>
+          <button
+            variant="outlined"
+            color="error"
+            className="custom-button"
+            style={{
+              marginLeft: "10px",
+              fontSize: "0.7rem",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              backgroundColor: "#d4edda", // Light green background
+              border: "1px solid #c3e6cb", // Green border
+              color: "#155724", // Dark green text
+            }}
+            onClick={scrollToFood}
+          >
+            Add
+          </button>
+        </div>
+
+        {/* Selected Rooms */}
+        <div
+          className="selected-rooms-container"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            borderBottom: "1px solid #e0e0e0", // Added border for separation
+            paddingBottom: "10px", // Added padding for separation
+          }}
+        >
+          <Typography
+            variant="body2"
+            component="div"
+            style={{
+              fontSize: "0.8rem",
+              color: "red",
+              marginBottom: "5px", // Reduced margin
+              display: "flex",
+              alignItems: "center",
+              fontWeight: "bold", // Added bold for emphasis
+            }}
+          >
+            Selected Rooms
+          </Typography>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            {selectedRooms?.map((selected, index) => (
+              <div
+                key={index}
+                style={{
+                  flex: "1 1 200px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                }}
+              >
+                <CardContent style={{ padding: "0" }}>
                   <Typography
                     gutterBottom
                     variant="body2"
                     component="div"
                     style={{ fontSize: "0.8rem" }}
                   >
-                    Add Meals{" "}
-                    <LunchDiningTwoToneIcon style={{ fontSize: "0.8rem" }} />
+                    {selected.type} & {selected.bedTypes} {" "}
+                    <BedOutlinedIcon style={{ fontSize: "1rem" }} />
                   </Typography>
-                )}
+                </CardContent>
               </div>
-              <button
-                variant="outlined"
-                color="error"
-                className="custom-button"
-                style={{
-                  marginLeft: "10px",
-                  fontSize: "0.7rem",
-                  padding: "4px 8px",
-                }} // Adjusted font size and padding
-                onClick={scrollToFood}
-              >
-                Add
-              </button>
-            </div>
-
-            {/* Selected Rooms */}
-            <div
-              className="selected-rooms-container"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                borderBottom: "1px solid #e0e0e0", // Added border for separation
-                paddingBottom: "10px", // Added padding for separation
-              }}
-            >
-              <Typography
-                variant="body2"
-                component="div"
-                style={{
-                  fontSize: "0.8rem",
-                  color:"red",
-                  marginBottom: "5px", // Reduced margin
-                  display: "flex",
-                  alignItems: "center",
-                  fontWeight: "bold", // Added bold for emphasis
-                }}
-              >
-                Selected Rooms
-              </Typography>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                {selectedRooms?.map((selected, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      flex: "1 1 200px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                    }} // Adjusted flex and gap
-                  >
-                    <CardContent style={{ padding: "0" }}>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="div"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        {selected.type} & {selected.bedTypes} Bed{" "}
-                        <BedOutlinedIcon style={{ fontSize: "1rem" }} />
-                      </Typography>
-                    </CardContent>
-                  </div>
-                ))}
-              </div>
-              <button
-                className="custom-button"
-                style={{
-                  marginTop: "10px",
-                  fontSize: "0.7rem",
-                  padding: "4px 8px",
-                }} // Adjusted font size and padding
-                onClick={scrollToRooms}
-              >
-                Change
-              </button>
-            </div>
+            ))}
           </div>
-          {/* Rooms and Guests */}
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          <label
+          <button
+            className="custom-button"
             style={{
-              fontFamily: "Arial, sans-serif",
-              fontSize: "0.8rem", // Reduced font size
-              color: "#555",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              display: "flex",
-              alignItems: "center",
+              marginTop: "10px",
+              fontSize: "0.7rem",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              backgroundColor: "#f8d7da", // Light red background
+              border: "1px solid #f5c6cb", // Red border
+              color: "#721c24", // Dark red text color
+            }}
+            onClick={scrollToRooms}
+          >
+            Change
+          </button>
+        </div>
+      </div>
+
+      {/* Rooms and Guests */}
+
+<p style={{color:"red", fontSize:"11px"}}>Note :- By default 1 room and 3 max guests is selected, you can select single room with maximum of 3 guests</p>
+<p>Rooms & Guests</p>
+      <div className="date-selection mt-3">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleDecrementRooms}
+            style={{
+              minWidth: "30px",
+              fontSize: "0.8rem",
+              padding: "5px",
+              backgroundColor: "#c3e6cb", // Light background
             }}
           >
-            Rooms & Guests
-          </label>
-          <div className="date-selection mt-3">
-            <div
-              className="check-in"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleDecrementRooms}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaMinus style={{ fontSize: "0.8rem" }} />
-              </button>
-              <input
-                type="number"
-                className="form-control"
-                style={{
-                  width: "70px",
-                  textAlign: "center",
-                  fontSize: "0.7rem",
-                }} // Reduced width and font size
-                placeholder="Rooms"
-                value={roomsCount}
-                readOnly
-              />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleIncrementRooms}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaPlus style={{ fontSize: "0.8rem" }} />
-              </button>
-            </div>
-            <div
-              className="check-out"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleDecrementGuests}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaMinus style={{ fontSize: "0.8rem" }} />
-              </button>
-              <input
-                type="number"
-                className="form-control"
-                style={{
-                  width: "70px",
-                  textAlign: "center",
-                  fontSize: "0.7rem",
-                }} // Reduced width and font size
-                placeholder="Guests"
-                value={guestsCount}
-                readOnly
-              />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleIncrementGuests}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaPlus style={{ fontSize: "0.8rem" }} />
-              </button>
-            </div>
-          </div>
-          {/* Date Selection */}
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          <div className="container mt-3">
-            <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
-              <div className="check-in">
-                <p style={{ fontSize: "0.8rem" }}>
-                  {" "}
-                  {/* Reduced font size */}
-                  Check-in <InventoryTwoToneIcon style={{ fontSize: "1rem" }} />
-                </p>
-                <DatePicker
-                  selected={checkInDate}
-                  onChange={handleCheckInDateChange}
-                  dateFormat="d MMMM yyyy"
-                  placeholderText={formatDate(checkInDate)}
-                  selectsStart
-                  startDate={checkInDate}
-                  endDate={checkOutDate}
-                  onChangeRaw={(e) => e.preventDefault()}
-                  className="datepicker-input"
-                  style={{ fontSize: "0.8rem" }} // Reduced font size
-                />
-              </div>
-              <div className="check-out">
-                <p style={{ fontSize: "0.8rem" }}>
-                  {" "}
-                  {/* Reduced font size */}
-                  Check-out{" "}
-                  <InventoryTwoToneIcon style={{ fontSize: "1rem" }} />
-                </p>
-                <DatePicker
-                  selected={checkOutDate}
-                  onChange={handleCheckOutDateChange}
-                  dateFormat="d MMMM yyyy"
-                  placeholderText={formatDate(checkOutDate)}
-                  selectsEnd
-                  startDate={checkInDate}
-                  endDate={checkOutDate}
-                  onChangeRaw={(e) => e.preventDefault()}
-                  className="datepicker-input"
-                  style={{ fontSize: "0.3rem" }} // Reduced font size
-                />
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
-            {" "}
-            {/* Reduced font size */}
-            Total Price
-          </p>
-          {/* Total Price */}
-          <div className="total-price mt-3" style={{ marginTop: "2rem" }}>
-            {" "}
-            {/* Reduced top margin */}
-            <h3
+            <FaMinus style={{ fontSize: "0.7rem" }} />
+          </button>
+        
+          <input
+            type="number"
+            className="form-control"
+            style={{
+              width: "70px",
+              textAlign: "center",
+              fontSize: "0.8rem",
+              padding: "6px",
+              border: "1px solid #ccc", // Subtle border for input
+            }}
+            placeholder="Rooms"
+            value={roomsCount}
+            readOnly
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleIncrementRooms}
+            style={{
+              minWidth: "30px",
+              fontSize: "0.8rem",
+              padding: "5px",
+              backgroundColor: "#c3e6cb", // Light background
+            }}
+          >
+            <FaPlus style={{ fontSize: "0.7rem" }} />
+          </button>
+        </div>
+        <div
+          className="check-out"
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleDecrementGuests}
+            style={{
+              minWidth: "30px",
+              fontSize: "0.8rem",
+              padding: "5px",
+              backgroundColor: "#c3e6cb", // Light background
+            }}
+          >
+            <FaMinus style={{ fontSize: "0.7rem" }} />
+          </button>
+          <input
+            type="number"
+            className="form-control"
+            style={{
+              width: "70px",
+              textAlign: "center",
+              fontSize: "0.8rem",
+              padding: "6px",
+              border: "1px solid #ccc", // Subtle border for input
+            }}
+            placeholder="Guests"
+            value={guestsCount}
+            readOnly
+          />
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={handleIncrementGuests}
+            style={{
+              minWidth: "30px",
+              fontSize: "0.8rem",
+              padding: "5px",
+              backgroundColor: "#c3e6cb", // Light background
+            }}
+          >
+            <FaPlus style={{ fontSize: "0.7rem" }} />
+          </button>
+        </div>
+      </div>
+
+      {/* Date Selection */}
+      <hr style={{ margin: "10px 0" }} />
+      <div className="container mt-3">
+        <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
+          <div className="check-in">
+            <p style={{ fontSize: "0.8rem" }}>
+              Check-in <InventoryTwoToneIcon style={{ fontSize: "1rem" }} />
+            </p>
+            <DatePicker
+              selected={checkInDate}
+              onChange={handleCheckInDateChange}
+              dateFormat="d MMMM yyyy"
+              placeholderText={formatDate(checkInDate)}
+              selectsStart
+              startDate={checkInDate}
+              endDate={checkOutDate}
+              onChangeRaw={(e) => e.preventDefault()}
+              className="datepicker-input"
               style={{
-                fontSize: "1.2rem", // Reduced font size
-                color: "red",
-                fontFamily: "Arial, sans-serif",
-              }}
-            >
-              <CurrencyRupeeIcon style={{ fontSize: "1.5rem" }} />{" "}
-              {/* Reduced icon size */}
-              {calculateTotalPrice()}
-            </h3>
-          </div>
-          {/* Payment Buttons */}
-          <div className="payment-buttons mt-3">
-            <button
-              className="custom-button"
-              onClick={handlePay}
-              style={{
-                width: "100%",
-                marginBottom: "5px",
                 fontSize: "0.8rem",
-                padding: "6px 12px",
-              }} // Reduced font size and padding
-            >
-              Pay Now
-            </button>
-            <button
-              className="custom-button"
-              style={{ width: "100%", fontSize: "0.8rem", padding: "6px 12px" }} // Reduced font size and padding
-              onClick={handleBookNow}
-            >
-              Pay at Hotel
-            </button>
+                padding: "6px",
+                borderRadius: "4px",
+                border: "1px solid #ccc", // Subtle border for date picker
+              }}
+            />
+          </div>
+          <div className="check-out">
+            <p style={{ fontSize: "0.8rem" }}>
+              Check-out{" "}
+              <InventoryTwoToneIcon style={{ fontSize: "1rem" }} />
+            </p>
+            <DatePicker
+              selected={checkOutDate}
+              onChange={handleCheckOutDateChange}
+              dateFormat="d MMMM yyyy"
+              placeholderText={formatDate(checkOutDate)}
+              selectsEnd
+              startDate={checkInDate}
+              endDate={checkOutDate}
+              onChangeRaw={(e) => e.preventDefault()}
+              className="datepicker-input"
+              style={{
+                fontSize: "0.8rem",
+                padding: "6px",
+                borderRadius: "4px",
+                border: "1px solid #ccc", // Subtle border for date picker
+              }}
+            />
           </div>
         </div>
       </div>
-      {/*                                 mobile                             */}
-      <div className="col-md-4 d-block d-md-none">
-        <div
-          className="booking-details-container"
+      <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
+        Total Price
+      </p>
+      {/* Total Price */}
+      <div className="total-price mt-3" style={{ marginTop: "2rem" }}>
+        <h3
           style={{
-            position: "sticky",
-            top: "0",
-            right: "25px",
-            width: "350px", // Reduced width
-            zIndex: "1000",
-            padding: "15px", // Reduced padding
-            backgroundColor: "#fff",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-            borderRadius: "8px", // Reduced border-radius
-            fontSize: "0.9rem", // Reduced font size
+            fontSize: "1.2rem",
+            color: "red",
+            fontFamily: "Arial, sans-serif",
           }}
         >
-          <h5 style={{ fontSize: "1rem" }}>
-            {" "}
-            {/* Smaller header font size */}
-            <BiSolidOffer style={{ fontSize: "1.2rem" }} /> Booking Details  
-          </h5>
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          {/* Selected Food */}
-          <div className="selected-food-container">
-            <div
-              className="selected-container"
-              style={{
-                marginBottom: "15px", // Reduced margin
-                display: "flex",
-                alignItems: "center",
-                borderBottom: "1px solid #e0e0e0", // Added border for separation
-                paddingBottom: "10px", // Added padding for separation
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                {selectedFood.length > 0 ? (
-                  <CardContent style={{ padding: "0" }}>
-                    {selectedFood.map((selected, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          marginBottom: "5px", // Reduced margin
-                        }}
-                      >
-                        <Typography
-                          gutterBottom
-                          variant="body2"
-                          component="div"
-                          style={{ fontSize: "0.8rem" }}
-                        >
-                          {selected.name} Selected
-                        </Typography>
-                        <button
-                          size="small"
-               
-                          className="custom-button"
-                          onClick={() => handleRemoveFood(selected)}
-                          style={{ fontSize: "0.7rem", padding: "4px 8px" }} // Reduced font size and padding
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ))}
-                  </CardContent>
-                ) : (
-                  <Typography
-                    gutterBottom
-                    variant="body2"
-                    component="div"
-                    style={{ fontSize: "0.8rem" }}
-                  >
-                    Add Meals{" "}
-                    {/* <LunchDiningTwoToneIcon style={{ fontSize: "0.8rem" }} /> */}
-                  </Typography>
-                )}
-              </div>
-              <button
-                className="custom-button"
-                variant="outlined"
-                color="error"
-                style={{
-                  marginLeft: "10px",
-                  fontSize: "0.7rem",
-                  padding: "4px 8px",
-                }} // Adjusted font size and padding
-                onClick={scrollToFood}
-              >
-                Add
-              </button>
-            </div>
+          <CurrencyRupeeIcon style={{ fontSize: "1.5rem" }} />
+          {calculateTotalPrice()}
+        </h3>
+      </div>
 
-            {/* Selected Rooms */}
-            <div
-              className="selected-rooms-container"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                borderBottom: "1px solid #e0e0e0", // Added border for separation
-                paddingBottom: "10px", // Added padding for separation
-              }}
-            >
-              <Typography
-                variant="body2"
-                component="div"
-                style={{
-                  color:"red",
-                  fontSize: "0.8rem",
-                  marginBottom: "5px", // Reduced margin
-                  display: "flex",
-                  alignItems: "center",
-                  fontWeight: "bold", // Added bold for emphasis
-                }}
-              >
-                Selected Rooms
-              </Typography>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                {selectedRooms?.map((selected, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      flex: "1 1 200px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "10px",
-                    }} // Adjusted flex and gap
-                  >
-                    <CardContent style={{ padding: "0" }}>
-                      <Typography
-                        gutterBottom
-                        variant="body2"
-                        component="div"
-                        style={{ fontSize: "0.8rem" }}
-                      >
-                        {selected.type} & {selected.bedTypes} Bed{" "}
-                        {/* <BedOutlinedIcon style={{ fontSize: "1rem" }} /> */}
-                      </Typography>
-                    </CardContent>
-                  </div>
-                ))}
-              </div>
-              <button
-                className="custom-button"
-                style={{
-                  marginTop: "10px",
-                  fontSize: "0.7rem",
-                }} // Adjusted font size and padding
-                onClick={scrollToRooms}
-              >
-                Change
-              </button>
-            </div>
-          </div>
-          {/* Rooms and Guests */}
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          <label
-            style={{
-              fontFamily: "Arial, sans-serif",
-              fontSize: "0.8rem", // Reduced font size
-              color: "#555",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            Rooms & Guests
-          </label>
-          <div className="date-selection mt-3">
-            <div
-              className="check-in"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleDecrementRooms}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaMinus style={{ fontSize: "0.8rem" }} />
-              </button>
-              <input
-                type="number"
-                className="form-control"
-                style={{
-                  width: "70px",
-                  textAlign: "center",
-                  fontSize: "0.7rem",
-                }} // Reduced width and font size
-                placeholder="Rooms"
-                value={roomsCount}
-                readOnly
-              />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleIncrementRooms}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaPlus style={{ fontSize: "0.8rem" }} />
-              </button>
-            </div>
-            <div
-              className="check-out"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleDecrementGuests}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaMinus style={{ fontSize: "0.8rem" }} />
-              </button>
-              <input
-                type="number"
-                className="form-control"
-                style={{
-                  width: "70px",
-                  textAlign: "center",
-                  fontSize: "0.7rem",
-                }} // Reduced width and font size
-                placeholder="Guests"
-                value={guestsCount}
-                readOnly
-              />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={handleIncrementGuests}
-                style={{
-                  minWidth: "20px",
-                  fontSize: "0.7rem",
-                  padding: "2px 5px",
-                }} // Reduced min width, font size, and padding
-              >
-                <FaPlus style={{ fontSize: "0.8rem" }} />
-              </button>
-            </div>
-          </div>
-          {/* Date Selection */}
-          <hr style={{ margin: "10px 0" }} />{" "}
-          {/* Adjusted margin for the horizontal line */}
-          <div className="container mt-3">
-            <div className="date-selection mt-3 d-flex justify-content-around align-items-center">
-              <div className="check-in">
-                <p style={{ fontSize: "0.8rem" }}>
-                  {" "}
-                  {/* Reduced font size */}
-                  Check-in <InventoryTwoToneIcon style={{ fontSize: "1rem" }} />
-                </p>
-                <DatePicker
-                  selected={checkInDate}
-                  onChange={handleCheckInDateChange}
-                  dateFormat="d MMMM yyyy"
-                  placeholderText={formatDate(checkInDate)}
-                  selectsStart
-                  startDate={checkInDate}
-                  endDate={checkOutDate}
-                  onChangeRaw={(e) => e.preventDefault()}
-                  className="datepicker-input"
-                  style={{ fontSize: "0.8rem" }} // Reduced font size
-                />
-              </div>
-              <div className="check-out">
-                <p style={{ fontSize: "0.8rem" }}>
-                  {" "}
-                  {/* Reduced font size */}
-                  Check-out{" "}
-                  <InventoryTwoToneIcon style={{ fontSize: "0.5rem" }} />
-                </p>
-                <DatePicker
-                  selected={checkOutDate}
-                  onChange={handleCheckOutDateChange}
-                  dateFormat="d MMMM yyyy"
-                  placeholderText={formatDate(checkOutDate)}
-                  selectsEnd
-                  startDate={checkInDate}
-                  endDate={checkOutDate}
-                  onChangeRaw={(e) => e.preventDefault()}
-                  className="datepicker-input"
-                  style={{ fontSize: "0.3rem" }} // Reduced font size
-                />
-              </div>
-            </div>
-          </div>
-          <p style={{ fontSize: "0.8rem", marginTop: "10px" }}>
-            {" "}
-            {/* Reduced font size */}
-            Total Price
-          </p>
-          {/* Total Price */}
-          <div className="total-price mt-3" style={{ marginTop: "2rem" }}>
-            {" "}
-            {/* Reduced top margin */}
-            <h3
-              style={{
-                fontSize: "1.2rem", // Reduced font size
-                color: "red",
-                fontFamily: "Arial, sans-serif",
-              }}
-            >
-              <CurrencyRupeeIcon style={{ fontSize: "1.5rem" }} />{" "}
-              {/* Reduced icon size */}
-              {calculateTotalPrice()}
-            </h3>
-          </div>
-          {/* Payment Buttons */}
-          <div className="payment-buttons mt-3">
-            <button
-              className="custom-button"
-              onClick={handlePay}
-              style={{
-                width: "100%",
-                marginBottom: "5px",
-                fontSize: "0.8rem",
-                padding: "6px 12px",
-              }} // Reduced font size and padding
-            >
-              Pay Now
-            </button>
-            <button
-              className="custom-button"
-              style={{ width: "100%", fontSize: "0.8rem", padding: "6px 12px" }} // Reduced font size and padding
-              onClick={handleBookNow}
-            >
-              Pay at Hotel
-            </button>
-          </div>
-        </div>
+      {/* Payment Buttons */}
+      <div className="payment-buttons mt-3">
+        <button
+          className="custom-button"
+          onClick={handlePay}
+          style={{
+            width: "100%",
+            marginBottom: "5px",
+            fontSize: "0.8rem",
+            padding: "6px 12px",
+            borderRadius: "4px",
+            backgroundColor: "#28a745", // Green background for "Pay Now"
+            color: "white",
+          }}
+        >
+          Pay Now
+        </button>
+        <button
+          className="custom-button"
+          style={{
+            width: "100%",
+            fontSize: "0.8rem",
+            padding: "6px 12px",
+            borderRadius: "4px",
+            backgroundColor: "#17a2b8", // Blue background for "Pay at Hotel"
+            color: "white",
+          }}
+          onClick={handleBookNow}
+        >
+          Pay at Hotel
+        </button>
       </div>
     </div>
+  </div>
+</div>
+
   );
 };
 
