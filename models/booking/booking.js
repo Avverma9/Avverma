@@ -40,6 +40,8 @@ const bookingSchema = new mongoose.Schema(
     checkOutTime: {
       type: String,
     },
+    pm:String,
+    bookingSource:String,
     guests: {
       type: Number,
       required: false,
