@@ -333,6 +333,8 @@ const BookNow = () => {
                     quantity: food.quantity,
                 })),
                 price: calculateTotalPrice(),
+                pm:"Offline",
+                bookingSource:"Site",
                 destination: hotelData.city,
                 hotelName: hotelData.hotelName,
                 hotelOwnerName: hotelData.hotelOwnerName,
