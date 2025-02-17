@@ -12,6 +12,8 @@ const createBooking = async (req, res) => {
             foodDetails,
             roomDetails,
             price,
+            pm,
+            bookingSource,
             hotelName,
             hotelEmail,
             hotelOwnerName,
@@ -48,6 +50,8 @@ const createBooking = async (req, res) => {
             checkOutDate,
             guests,
             price,
+                pm,
+            bookingSource,
             destination,
             roomDetails,
         });
