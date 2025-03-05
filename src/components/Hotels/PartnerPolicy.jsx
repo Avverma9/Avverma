@@ -145,11 +145,20 @@ export default function PolicyForm() {
     const handleChange = (e) => {
         const value = e.target.value;
 
-        // Ensure the last character is not a newline and add a bullet point if necessary
-        if (value.endsWith('\n')) {
-            setHotelsPolicy((prev) => `${prev.trim()}\n• `);
+        // Handle backspace key event
+        if (e.nativeEvent.inputType === 'deleteContentBackward') {
+            if (value === '') {
+                setHotelsPolicy('• ');
+            } else {
+                setHotelsPolicy(value);
+            }
         } else {
-            setHotelsPolicy(value);
+            // Ensure the last character is not a newline and add a bullet point if necessary
+            if (value.endsWith('\n')) {
+                setHotelsPolicy((prev) => `${prev.trim()}\n• `);
+            } else {
+                setHotelsPolicy(value);
+            }
         }
     };
 
@@ -162,6 +171,7 @@ export default function PolicyForm() {
             setHotelsPolicy(lines.join('\n'));
         }
     };
+    
     return (
         <div
             className="container mt-4"

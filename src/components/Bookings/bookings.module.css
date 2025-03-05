@@ -5,262 +5,266 @@
   height: 10vh; /* Adjust the height as needed */
 }
 
+.bookingDetails {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  width: 96%;
+  padding: 10px 5px 20px 5px;
+  border-bottom: 1px solid #2a3943; /* Set border color to blue */
+}
 
+.bookingDetails img {
+  width: 120px;
+  height: 80px;
+}
+
+.bookingDetails h4 {
+  color: #596069;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.bookingDetails h6 {
+  color: #7d858f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.link {
+  color: #ea6565;
+  font-size: 14px;
+  font-weight: 600;
+  background: none;
+  border: none;
+}
+
+.bookingRowOne {
+  text-align: start;
+}
+
+.bookingRowTwo {
+  text-align: end;
+}
+
+.modalContainer {
+  padding: 10px 15px;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.modalHeader button {
+  background-color: #fff;
+  color: #435062;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.print {
+  padding: 2px 5px !important;
+  border: 2px solid #7d858f !important;
+  border-radius: 3px;
+  width: 120px;
+}
+
+.print span {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #7d858f;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.body {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.borderBottom {
+  border-bottom: 1px solid #7d858f;
+  margin: 15px 0;
+}
+
+.body h4 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.body h6 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.body span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4d4f52;
+}
+
+.body p {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4d4f52;
+}
+
+.body img {
+  width: 120px;
+  height: 80px;
+}
+
+.errorText {
+  color: #ea6565 !important;
+  font-weight: 700 !important;
+}
+
+@media print {
+  body > * {
+    display: none;
+  }
+
+  .modalContainer * {
+    visibility: visible;
+  }
+
+  .modalContainer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .printable {
+    visibility: visible;
+    break-before: auto;
+    page-break-before: auto;
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}
+/* Mobile CSS example */
+@media only screen and (max-width: 768px) {
   .bookingDetails {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+    width: 100%; /* Set width to 100% for smaller screens */
+    /* Add any additional mobile-specific styles here */
+  }
+  .body p {
+    font-size: 10px;
+    font-weight: 500;
+    color: #4d4f52;
+  }
+  .bookingsContainer {
+    width: 100%;
+    justify-content: center;
+    align-content: center;
     align-items: center;
-    width: 96%;
-    padding: 10px 5px 20px 5px;
-    border-bottom: 1px solid #2a3943; /* Set border color to blue */
-   
+    margin-left: 1%;
   }
-
-
   .bookingDetails img {
-    width: 120px;
-    height: 80px;
+    width: 12%;
+    height: 8%;
   }
-  
+
   .bookingDetails h4 {
     color: #596069;
-    font-size: 24px;
+    font-size: 12px;
     font-weight: 600;
   }
-  
+
   .bookingDetails h6 {
     color: #7d858f;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: 500;
   }
-  
-  .link {
-    color: #ea6565;
-    font-size: 14px;
-    font-weight: 600;
-    background: none;
-    border: none;
-  }
-  
-  .bookingRowOne {
-    text-align: start;
-  }
-  
-  .bookingRowTwo {
-    text-align: end;
-  }
-  
-  .modalContainer {
-    padding: 10px 15px;
-  }
-  
-  .modalHeader {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  
-  .modalHeader button {
-    background-color: #fff;
-    color: #435062;
-    border: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .print {
-    padding: 2px 5px !important;
-    border: 2px solid #7d858f !important;
-    border-radius: 3px;
-    width: 120px;
-  }
-  
-  .print span {
-    font-size: 14px;
-    font-weight: 600;
-  }
-  
-  .modalBody {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #7d858f;
-    margin: 10px 0;
-    padding: 5px 10px;
-    border-radius: 3px;
-  }
-  
-  .body {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  
-  .borderBottom {
-    border-bottom: 1px solid #7d858f;
-    margin: 15px 0;
-  }
-  
-  .body h4 {
-    font-size: 22px;
-    font-weight: 600;
-  }
-  
-  .body h6 {
+  .bookingHeader h2 {
+    color: #e9ecf1;
     font-size: 16px;
-    font-weight: 600;
+    background-color: #3498db;
+    font-weight: 400;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 1px solid #2e3940; /* Set border color to blue */
+    border-radius: 5px;
   }
-  
-  .body span {
-    font-size: 14px;
-    font-weight: 500;
-    color: #4d4f52;
+  .bookingRowOne h5 {
+    text-align: start;
+    font-size: 12px;
   }
-  
-  .body p {
-    font-size: 14px;
-    font-weight: 500;
-    color: #4d4f52;
+  .selectOption {
+    font-size: 12px;
+    width: auto;
+    color: #333;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+    padding: 5px;
+    border: 1px solid #5bc7fa;
+    border-radius: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    cursor: pointer;
   }
-  
-  .body img {
-    width: 120px;
-    height: 80px;
-  }
-  
-  .errorText {
-    color: #ea6565 !important;
-    font-weight: 700 !important;
-  }
+}
 
-  
-  
-  @media print {
-    body > * {
-      display: none;
-    }
-  
-    .modalContainer * {
-      visibility: visible;
-    }
-  
-    .modalContainer {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-    }
-  
-    .printable {
-      visibility: visible;
-      break-before: auto;
-      page-break-before: auto;
-      page-break-inside: avoid;
-      page-break-after: auto;
-    }
-  
-    @page {
-      size: A4;
-      margin: 0;
-    }
-  
-    .page-break {
-      page-break-before: always;
-    }
-  }
-    /* Mobile CSS example */
-    @media only screen and (max-width: 768px) {
-        .bookingDetails {
-          width: 100%; /* Set width to 100% for smaller screens */
-          /* Add any additional mobile-specific styles here */
-        }
-        .body p {
-            font-size: 10px;
-            font-weight: 500;
-            color: #4d4f52;
-          }
-          .bookingsContainer{
-          
-            width: 100%;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            margin-left: 1%;
-          }
-          .bookingDetails img {
-            width: 12%;
-            height: 8%;
-          }
-            
-      .bookingDetails h4 {
-        color: #596069;
-        font-size: 12px;
-        font-weight: 600;
-      }
-      
-      .bookingDetails h6 {
-        color: #7d858f;
-        font-size: 10px;
-        font-weight: 500;
-      }
-      .bookingHeader h2 {
-        color: #e9ecf1;
-        font-size: 16px;
-        background-color: #3498db;
-        font-weight: 400;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        border: 1px solid #2e3940; /* Set border color to blue */
-            border-radius: 5px; 
-      }
-      .bookingRowOne h5 {
-        text-align: start;
-        font-size: 12px;
-      }
-      .selectOption {
-        font-size: 12px;
-        width: auto;
-        color: #333;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        padding: 5px;
-        border: 1px solid #5bc7fa;
-        border-radius: 5px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-color: #fff;
-        cursor: pointer;
-      }
-      
-    }
+.reviewContainer {
+  margin-top: 10px;
+}
 
-    .reviewContainer {
-      margin-top: 10px;
-    }
-    
-    .reviewInput {
-      margin-top: 2vh;
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-    }
-    
-    .star {
-      font-size: 24px;
-      cursor: pointer;
-    }
-    
-    .filledStar {
-      color: #ffd700; /* Golden color for filled stars */
-    }
-    
-    .star:hover,
-    .star:hover ~ .star {
-      color: #ffcc00; /* Change color on hover */
-    }
-    
+.reviewInput {
+  margin-top: 2vh;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.star {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.filledStar {
+  color: #ffd700; /* Golden color for filled stars */
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: #ffcc00; /* Change color on hover */
+}
+.sectionHeader {
+  background-color: #f4f4f4;
+  border: 2px solid #ddd;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #ff0f0f;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
