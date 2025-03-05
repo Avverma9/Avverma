@@ -11,22 +11,13 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    hotelId: {
-      type: String,
-      required: false,
-    },
     user: {
       type: Object,
       required: false,
     },
-    hotelName: {
-      type: String,
-    },
-    hotelOwnerName: {
-      type: String,
-    },
-    hotelEmail: {
-      type: String,
+    hotelDetails: {
+      type: Object,
+      required: false,
     },
     checkInDate: {
       type: String,
@@ -40,8 +31,8 @@ const bookingSchema = new mongoose.Schema(
     checkOutTime: {
       type: String,
     },
-    pm:String,
-    bookingSource:String,
+    pm: String,
+    bookingSource: String,
     guests: {
       type: Number,
       required: false,
@@ -60,7 +51,6 @@ const bookingSchema = new mongoose.Schema(
         price: { type: Number },
       },
     ],
-
     numRooms: {
       type: Number,
       required: false,
