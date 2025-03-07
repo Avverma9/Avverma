@@ -31,6 +31,33 @@ exports.getCarById = async (req, res) => {
     }
 };
 
+exports.filterCar = async (req, res) => {
+    try {
+        const { make, model, fuelType, seater } = req.query;
+        const query = {};
+
+        if (make) query.make = make;
+        if (model) query.model = model;
+        if (fuelType) query.fuelType = fuelType;
+        if (seater) query.seater = seater;
+
+        if (Object.keys(query).length === 0) {
+            return res.status(400).json({ message: "No filter parameters provided" });
+        }
+
+        const cars = await Car.find(query);
+
+        if (cars.length === 0) {
+            return res.status(404).json({ message: "No cars found matching the filters" });
+        }
+
+        return res.status(200).json(cars);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "An error occurred while fetching cars", error: error.message });
+    }
+};
+
 exports.updateCar = async (req, res) => {
     try {
         const { id } = req.params;

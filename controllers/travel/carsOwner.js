@@ -15,7 +15,7 @@ exports.addOwner = async (req, res) => {
             return res.status(400).json({ error: 'Mobile number already exists.' });
         }
 
-        await Owner.create({ ...data, images, dlImage });
+        await Owner.create({ ...data, images, dlImage , mobile });
         return res.status(201).json('Successfully Created');
     } catch (error) {
         console.error(error);
