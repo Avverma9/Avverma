@@ -86,6 +86,7 @@ exports.checkAvailability = async (req, res) => {
         return res.json({
             hotelId,
             hotelName: hotel.hotelName,
+            hotelCity: hotel.city,
             totalRooms,
             bookedRooms,
             availableRooms,
