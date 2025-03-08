@@ -185,6 +185,7 @@ exports.findAllAvailableHotels = async (req, res) => {
             const hotelAvailability = {
                 hotelId: hotel.hotelId,
                 hotelName: hotel.hotelName,
+                hotelCity: hotel.city,
                 totalRooms,
                 bookedRooms,
                 availableRooms,
