@@ -33,10 +33,12 @@ exports.getCarById = async (req, res) => {
 
 exports.filterCar = async (req, res) => {
     try {
-        const { make, model, fuelType, seater } = req.query;
+        const { make, model, fuelType, seater , from, to } = req.query;
         const query = {};
 
         if (make) query.make = make;
+        if(from) query.from = from;
+        if(to) query.to = to;
         if (model) query.model = model;
         if (fuelType) query.fuelType = fuelType;
         if (seater) query.seater = seater;
