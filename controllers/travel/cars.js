@@ -33,15 +33,17 @@ exports.getCarById = async (req, res) => {
 
 exports.filterCar = async (req, res) => {
     try {
-        const { make, model, fuelType, seater , from, to } = req.query;
+        const { make, model, fuelType, seater, from, to } = req.query;
         const query = {};
 
         if (make) query.make = make;
-        if(from) query.from = from;
-        if(to) query.to = to;
         if (model) query.model = model;
         if (fuelType) query.fuelType = fuelType;
         if (seater) query.seater = seater;
+
+        // Case-insensitive search for 'from' and 'to' fields
+        if (from) query.from = { $regex: new RegExp(from, 'i') };  // 'i' flag for case-insensitive search
+        if (to) query.to = { $regex: new RegExp(to, 'i') };        // 'i' flag for case-insensitive search
 
         if (Object.keys(query).length === 0) {
             return res.status(400).json({ message: "No filter parameters provided" });
