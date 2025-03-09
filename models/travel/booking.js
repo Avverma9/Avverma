@@ -1,56 +1,62 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const bookingSchema = new mongoose.Schema(
-    {
-        travelId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Travel',
-            required: true, // Reference to the travel package being booked
-        },
-        customerName: {
-            type: String,
-            required: true, // Name of the person booking
-        },
-        customerEmail: {
-            type: String,
-            required: true, // Email for communication
-        },
-        customerPhone: {
-            type: String,
-            required: true, // Phone number of the customer
-        },
-        bookingDate: {
-            type: Date,
-            default: Date.now, // Date when the booking was made
-        },
-        travelDates: {
-            from: { type: Date, required: true }, // Start date of the travel
-            to: { type: Date, required: true },   // End date of the travel
-        },
-        totalPrice: {
-            type: Number,
-            required: true, // Total cost for the booking
-        },
-        status: {
-            type: String,
-            enum: ['pending', 'confirmed', 'canceled', 'completed'],
-            default: 'pending', // Booking status
-        },
-        numberOfPeople: {
-            type: Number,
-            required: true, // Number of people in the booking
-        },
-     
-        paymentStatus: {
-            type: String,
-            enum: ['not_paid', 'paid', 'refunded'],
-            default: 'not_paid', // Payment status of the booking
-        },
-    },
-    { timestamps: true }
-);
+// Define the booking schema
+const bookingSchema = new Schema({
+    carId: {
+        type: Schema.Types.ObjectId,
+        ref: "Car",
+        required: true,
+      },
+  seatId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+  },
+  seatNumber: {
+    type: Number,
+    required: true,
+  },
+  seatPrice: {
+    type: Number,
+    required: true,
+  },
 
-// Model for Booking
-const Booking = mongoose.model('Booking', bookingSchema);
+  bookedBy: {
+    type: String, // Could be user ID or name
+  },
+  seatType: {
+    type: String,
+  },
+  bookingDate: {
+    type: Date,
+    default: Date.now,
+  },
+ 
+});
+
+// Create a method to update the car's seat status
+bookingSchema.methods.updateCarSeatStatus = async function () {
+  const car = await mongoose.model("Car").findById(this.carId);
+
+  if (!car) {
+    throw new Error("Car not found");
+  }
+
+  const seat = car.seatConfig.find(
+    (seat) => seat.seatNumber === this.seatNumber,
+  );
+
+  if (!seat) {
+    throw new Error("Seat not found in the car configuration");
+  }
+
+  seat.isBooked = true;
+
+  // Save the car document with the updated seat status
+  await car.save();
+};
+
+// Create and export the Booking model
+const Booking = mongoose.model("Booking", bookingSchema);
 
 module.exports = Booking;

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// Define the car schema
 const carSchema = new Schema({
     make: {
         type: String,
@@ -19,7 +20,6 @@ const carSchema = new Schema({
     year: {
         type: Number,
         required: true,
-        min: 1886,
         max: new Date().getFullYear()
     },
     from: {
@@ -32,8 +32,30 @@ const carSchema = new Schema({
     },
     seater: {
         type: Number,
-        min: 1
+      
     },
+    seatConfig: [
+        {
+            seatType: {
+                type: String,
+            },
+            seatNumber: {
+                type: Number,
+              
+            },
+            isBooked: {
+                type: Boolean,
+            },
+            seatPrice: {
+                type: Number,
+             
+            },
+            bookedBy: {
+                type: String,
+               
+            }
+        }
+    ],
     extraKm: {
         type: Number,
         min: 0
@@ -87,6 +109,8 @@ const carSchema = new Schema({
     },
 });
 
+
+// Create and export the Car model
 const Car = mongoose.model('Car', carSchema);
 
 module.exports = Car;

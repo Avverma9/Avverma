@@ -2,14 +2,53 @@ const Car = require('../../models/travel/cars');
 
 exports.addCar = async (req, res) => {
     try {
-        const { ...data } = req.body;
+        const { seatConfig, ...data } = req.body;
         const images = req.files?.map((file) => file.location) || [];
-        await Car.create({ ...data, images });
-        return res.status(201).json('Successfully Created');
+        const parsedSeatConfig = seatConfig.map(config => JSON.parse(config));
+
+        const carData = {
+            ...data,
+            images,
+            seatConfig: parsedSeatConfig,
+        };
+
+        // Create the car in the database
+        const newCar = await Car.create(carData);
+
+        // Return the created car data as a response
+        return res.status(201).json({
+            message: 'Successfully Created',
+            car: newCar,
+        });
     } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Something went wrong',
+            error: error.message,
+        });
+    }
+};
+
+exports.getSeatsData = async (req, res) => {    
+    try {
+        const { id } = req.params;
+        const findCar = await Car.findById(id);
+        if (!findCar) return res.status(404).json('Car not found'); 
+
+        // Sort the seatConfig array by seatNumber
+        const sortedSeatConfig = findCar.seatConfig.sort((a, b) => a.seatNumber - b.seatNumber);
+
+        // Return carId along with the sorted seatConfig as an array
+        return res.status(200).json({
+            carId: id,
+            seats: sortedSeatConfig
+        });
+    } catch (error) {
+        console.error(error); // Log the error for debugging purposes
         return res.status(500).json('We are working hard to fix this');
     }
 };
+
 
 exports.getAllCars = async (_, res) => {
     try {
