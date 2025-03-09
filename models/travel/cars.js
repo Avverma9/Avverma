@@ -12,26 +12,50 @@ const carSchema = new Schema({
         required: true,
         trim: true,
     },
-    images: [String],
+    images: {
+        type: [String],
+        default: []
+    },
     year: {
         type: Number,
         required: true,
         min: 1886,
-        max: new Date().getFullYear(),
+        max: new Date().getFullYear()
     },
-    from:String,
-    to:String,
-    seater: Number,
-    extraKm: Number,
+    from: {
+        type: String,
+        trim: true
+    },
+    to: {
+        type: String,
+        trim: true
+    },
+    seater: {
+        type: Number,
+        min: 1
+    },
+    extraKm: {
+        type: Number,
+        min: 0
+    },
+    perPersonCost: {
+        type: Number,
+    },
+    availableFrom: {
+        type: Date
+    },
+    availableTo: {
+        type: Date
+    },
     price: {
         type: Number,
         required: true,
-        min: 0,
+        min: 0
     },
     color: {
         type: String,
         required: true,
-        trim: true,
+        trim: true
     },
     mileage: {
         type: Number,
