@@ -39,8 +39,8 @@ exports.filterCar = async (req, res) => {
         if (make) query.make = make;
 
         if(availableFrom && availableTo){
-            query.availableFrom = { $gte: availableFrom };
-            query.availableTo = { $lte: availableTo };
+            query.availableFrom = { $lte: availableFrom };
+            query.availableTo = { $gte: availableTo };
         }
         if (model) query.model = model;
         if (fuelType) query.fuelType = fuelType;
