@@ -42,10 +42,10 @@ const carSchema = new Schema({
         type: Number,
     },
     availableFrom: {
-        type: String,
+        type: Date,
     },
     availableTo: {
-        type: String,
+        type: Date,
     },
     price: {
         type: Number,

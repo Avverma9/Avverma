@@ -33,10 +33,15 @@ exports.getCarById = async (req, res) => {
 
 exports.filterCar = async (req, res) => {
     try {
-        const { make, model, fuelType, seater, from, to } = req.query;
+        const { make, model, fuelType, seater, from, to , availableFrom, availableTo} = req.query;
         const query = {};
 
         if (make) query.make = make;
+
+        if(availableFrom && availableTo){
+            query.availableFrom = { $gte: availableFrom };
+            query.availableTo = { $lte: availableTo };
+        }
         if (model) query.model = model;
         if (fuelType) query.fuelType = fuelType;
         if (seater) query.seater = seater;
