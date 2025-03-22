@@ -54,7 +54,7 @@ const Header = () => {
             <div className="logo">
                 <img
                     onClick={logoClick}
-                    src="https://www.reshot.com/preview-assets/icons/4DE7B2XR9S/hotel-sign-4DE7B2XR9S.svg"
+                    src="https://avverma.s3.ap-south-1.amazonaws.com/image-removebg-preview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARRSTFGSV74HCL27W%2F20250322%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20250322T063913Z&X-Amz-Expires=300&X-Amz-Signature=af6239615530f7b104108820b1a3283ac4a258b20a3c048eb5c5d901bd7104fd&X-Amz-SignedHeaders=host"
                     alt="Hotel Roomsstay"
                     className="img-fluid"
                 />
