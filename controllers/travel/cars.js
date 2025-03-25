@@ -4,12 +4,12 @@ exports.addCar = async (req, res) => {
     try {
         const { seatConfig, ...data } = req.body;
         const images = req.files?.map((file) => file.location) || [];
-        const parsedSeatConfig = seatConfig.map(config => JSON.parse(config));
+        const parsedSeatConfig = seatConfig?.map(config => JSON.parse(config));
 
         const carData = {
             ...data,
             images,
-            seatConfig: parsedSeatConfig,
+            seatConfig: parsedSeatConfig || [],
         };
 
         // Create the car in the database
@@ -63,6 +63,17 @@ exports.getCarById = async (req, res) => {
     try {
         const { id } = req.params;
         const findCar = await Car.findById(id);
+        if (!findCar) return res.status(404).json('Car not found');
+        return res.status(200).json(findCar);
+    } catch (error) {
+        return res.status(500).json('We are working hard to fix this');
+    }
+};
+
+exports.getCarByOwnerId = async (req, res) => {
+    try {
+        const { ownerId } = req.params;
+        const findCar = await Car.find({ownerId:ownerId});
         if (!findCar) return res.status(404).json('Car not found');
         return res.status(200).json(findCar);
     } catch (error) {
