@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: '*', // Your client origins
+        origin: ['http://localhost:3030', 'https://roomsstay.vercel.app'], // Your client origins
         methods: ['GET', 'POST'],
         credentials: true,
     },
