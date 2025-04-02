@@ -12,6 +12,5 @@ router.patch('/update-a-car/:id', upload, updateCar);
 router.delete('/delete-a-car/:id', updateCar);
 router.get('/filter-car/by-query',filterCar);
 router.get('/get-seat-data/by-id/:id',getSeatsData);
-router.post('/book-seat/car-booking',bookCar);
 
 module.exports = router;

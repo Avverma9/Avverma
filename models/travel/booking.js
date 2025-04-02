@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Define the booking schema
-const bookingSchema = new mongoose.Schema({
+const travelBookingSchema = new mongoose.Schema({
   carId: {
     type: mongoose.Schema.Types.ObjectId, // Use mongoose.Schema.Types.ObjectId
     ref: "Car",
@@ -31,7 +31,6 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
-// Check if the model already exists in mongoose.models to avoid redefinition
-const Booking = mongoose.models.Booking || mongoose.model("Booking", bookingSchema);
+const TravelBooking =  mongoose.model("TravelBooking", travelBookingSchema);
 
-module.exports = Booking;
+module.exports = TravelBooking;
