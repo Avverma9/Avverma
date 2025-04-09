@@ -1,5 +1,5 @@
 const express = require('express'); 
-const router = require('../travel/car');
+const router = express.Router();
 
 router.post('/create-gst', createGST); // Create a new GST entry
 router.patch('/update-gst', updateGST); // Update the latest GST entry

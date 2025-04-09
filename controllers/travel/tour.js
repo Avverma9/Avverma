@@ -1,4 +1,4 @@
-const Travel = require('../../models/travel/travelModel');
+const Travel = require('../../models/travel/tourModel');
 
 exports.createTravel = async (req, res) => {
     try {
