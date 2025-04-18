@@ -22,6 +22,29 @@ exports.createTravel = async (req, res) => {
     }
 };
 
+
+exports.updateTour = async function (req, res) {
+    const { id } = req.params;
+    const { termsAndConditions, ...body } = req.body;
+    try {
+        const images = req.files ? req.files.map((file) => file.location) : [];
+
+        if (termsAndConditions && typeof termsAndConditions === 'object') {
+            req.body.termsAndConditions = new Map(Object.entries(termsAndConditions));
+        }
+        const updated = await Travel.findByIdAndUpdate(id, {
+            ...body,
+            images,
+            termsAndConditions: req.body.termsAndConditions,
+        }, { new: true });
+
+        res.status(200).json({ success: true, data: updated });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to update travel' });
+    }
+}
 exports.sortByOrder = async function (req, res) {
     try {
         const { sort } = req.query;
