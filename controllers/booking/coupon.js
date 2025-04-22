@@ -156,7 +156,7 @@ const GetAllCoupons = async (req, res) => {
         // Fetch coupons where `roomId` does not exist and validity is greater than or equal to the current date
         const coupons = await couponModel
             .find({
-                roomId: { $exists: false },
+            expired: false, // Ensure expired is false
                 validity: { $gte: currentDateIST },
             })
             .sort({ validity: -1 });
