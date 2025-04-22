@@ -667,7 +667,22 @@ cron.schedule('0 0 1 * *', async () => {
 // The second 0 represents the hour (00).
 // The 1 in the third position represents the day of the month (1st).
 // The * in the fourth and fifth positions represents any month and any day of the week.
-
+//=========================================list of applied coupons hotel==========================
+const getCouponsAppliedHotels = async (req, res) => {
+    try {
+      // Find hotels where at least one room has isOffer: true
+      const hotelsWithOfferRooms = await hotelModel.find({
+        "rooms.isOffer": true
+      });
+  
+      res.status(200).json(hotelsWithOfferRooms);
+    } catch (error) {
+      console.error("Error fetching hotels with offers:", error);
+      res.status(500).json({ message: "Error fetching hotels", error });
+    }
+  };
+  
+  
 //================================================================================================
 module.exports = {
     createHotel,
@@ -687,6 +702,7 @@ module.exports = {
     getHotelsCityByState,
     monthlyPrice,
     getCount,
+    getCouponsAppliedHotels,
     getCountPendingHotels,
     updateHotelImage,
     deleteHotelImages,

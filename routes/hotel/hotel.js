@@ -20,6 +20,7 @@ router.get('/hotels/query/get/by', hotelController.getByQuery); // on admin pane
 router.get('/see-all/hotels-state/get/all/hotels', hotelController.getHotelsState); // get all hotels state name
 router.get('/see-all/hotels-city/get/city', hotelController.getHotelsCityByState); // enter state and get city
 router.get('/get-hotels/count', hotelController.getCount);
+router.get("/get-hotel-list/filter-by-applied-coupons",hotelController.getCouponsAppliedHotels) // on admin panel
 router.get('/get-pending-hotels/count', hotelController.getCountPendingHotels);
 router.patch('/update-hotels-image-by-hotel-id/:hotelId', upload, hotelController.updateHotelImage); // on panel
 router.delete('/hotels/:hotelId/images/imageUrl', hotelController.deleteHotelImages); // on panel
