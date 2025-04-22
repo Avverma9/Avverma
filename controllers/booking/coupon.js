@@ -9,13 +9,10 @@ const newCoupon = async (req, res) => {
   try {
       const { couponName, discountPrice, validity } = req.body;
 
-      // Parse the validity in UTC and convert to IST (+5:30)
       const validityDate = new Date(validity);
-      const istOffset = 5.5 * 60; // IST offset in minutes
+      const istOffset = 5.5 * 60; 
       const utcOffset = validityDate.getTimezoneOffset(); // UTC offset in minutes
       const validityInIST = new Date(validityDate.getTime() + (istOffset + utcOffset) * 60 * 1000);
-
-      // Create the coupon with the IST validity
       const createdCoupon = await couponModel.create({
           couponName,
           discountPrice,
@@ -32,23 +29,11 @@ const newCoupon = async (req, res) => {
 //VALIDATE AND APPLY COUPON
 const ApplyCoupon = async (req, res) => {
     try {
-        const { hotelId, roomId, couponCode } = req.query;
+        const { hotelIds, roomIds, couponCode } = req.body;
 
-        // Check if both hotelId and roomId are provided
-        if (!hotelId || !roomId) {
-            return res.status(400).json({ message: 'Both hotelId and roomId are required.' });
-        }
-
-        // Find the coupon by couponCode
         const coupon = await couponModel.findOne({ couponCode });
-
         if (!coupon) {
             return res.status(404).json({ message: 'Coupon code not found' });
-        }
-
-        // Check if the coupon has already been used
-        if (coupon.roomId) {
-            return res.status(400).json({ message: 'Coupon already used' });
         }
 
         const currentDate = new Date().toISOString().slice(0, 10); // Get the current date as YYYY-MM-DD
@@ -57,49 +42,61 @@ const ApplyCoupon = async (req, res) => {
             return res.status(400).json({ message: 'Coupon code has expired' });
         }
 
-        // Retrieve the current room details
-        const hotel = await hotelModel.findOne({
-            'rooms.roomId': roomId,
-            hotelId: hotelId,
-        });
-        if (!hotel) {
-            return res.status(404).json({ message: 'Hotel not found' });
+        // Filter out already used hotelIds and roomIds
+        const unusedHotelIds = hotelIds.filter((hotelId) => !coupon.hotelId?.includes(hotelId));
+        const unusedRoomIds = roomIds.filter((roomId) => !coupon.roomId?.includes(roomId));
+
+        if (unusedHotelIds.length === 0 && unusedRoomIds.length === 0) {
+            return res.status(400).json({ message: 'Coupon already applied to all provided IDs' });
         }
 
-        const room = hotel.rooms.find((r) => r.roomId === roomId);
-        if (!room) {
-            return res.status(404).json({ message: 'Room not found' });
-        }
+        // Apply coupon to unused hotelIds and roomIds
+        for (let i = 0; i < unusedRoomIds.length; i++) {
+            const roomId = unusedRoomIds[i];
+            const hotelId = unusedHotelIds[i];
 
-        // Calculate new price
-        const newPrice = room.price - coupon.discountPrice;
+            const hotel = await hotelModel.findOne({
+                'rooms.roomId': roomId,
+                hotelId: hotelId,
+            });
 
-        // Update the room with new offer details
-        const updatedHotel = await hotelModel.findOneAndUpdate(
-            { 'rooms.roomId': roomId, hotelId: hotelId },
-            {
-                $set: {
-                    'rooms.$.offerName': coupon.couponName,
-                    'rooms.$.offerPriceLess': coupon.discountPrice,
-                    'rooms.$.offerExp': coupon.validity,
-                    'rooms.$.isOffer': true,
-                    'rooms.$.price': newPrice,
+            if (!hotel) {
+                continue; // Skip if the hotel or room is not found
+            }
+
+            const room = hotel.rooms.find((r) => r.roomId === roomId);
+            if (!room) {
+                continue; // Skip if the room is not found
+            }
+
+            // Calculate new price
+            const newPrice = room.price - coupon.discountPrice;
+
+            // Update the room with new offer details
+            await hotelModel.findOneAndUpdate(
+                { 'rooms.roomId': roomId, hotelId: hotelId },
+                {
+                    $set: {
+                        'rooms.$.offerName': coupon.couponName,
+                        'rooms.$.offerPriceLess': coupon.discountPrice,
+                        'rooms.$.offerExp': coupon.validity,
+                        'rooms.$.isOffer': true,
+                        'rooms.$.price': newPrice,
+                    },
                 },
-            },
-            { new: true } // Return the updated document
-        );
-
-        if (!updatedHotel) {
-            return res.status(404).json({ message: 'Room or hotel not found or update failed' });
+                { new: true } // Return the updated document
+            );
         }
 
-        // Mark the coupon as used by updating the roomId field
-        coupon.roomId = roomId; // Use the roomId to mark the coupon as used
-        coupon.hotelId = hotelId;
+        // Update the coupon with the newly applied IDs
+        coupon.roomId = [...new Set([...(coupon.roomId || []), ...unusedRoomIds])]; // Avoid duplicates
+        coupon.hotelId = [...new Set([...(coupon.hotelId || []), ...unusedHotelIds])]; // Avoid duplicates
         await coupon.save();
 
         res.status(200).json({
-            message: `Your coupon code ${coupon.couponCode} applied successfully`,
+            message: `Coupon applied successfully to unused rooms and hotels.`,
+            appliedRoomIds: unusedRoomIds,
+            appliedHotelIds: unusedHotelIds,
         });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

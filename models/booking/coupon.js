@@ -5,8 +5,6 @@ const moment = require("moment");
 const generateCouponCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
-
-// Define the coupon schema
 const couponSchema = new mongoose.Schema({
   couponCode: {
     type: String,
@@ -29,12 +27,8 @@ const couponSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  roomId: {
-    type: String,
-  },
-  hotelId: {
-    type: String,
-  },
+  roomId: [String],
+  hotelId: [String],
 });
 
 // Middleware to generate a coupon code before saving
