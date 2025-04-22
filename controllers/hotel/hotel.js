@@ -580,7 +580,7 @@ const getHotelsState = async function (req, res) {
     }
 };
 
-const getHotelsCity = async function (req, res) {
+const getHotelsCityByState = async function (req, res) {
     try {
         const { state } = req.query;
 
@@ -616,6 +616,19 @@ const getHotelsCity = async function (req, res) {
     }
 };
 
+
+const getHotelsCity = async (req,res)=>{
+    const fetchCity = await hotelModel.find()
+    const finalData = fetchCity.filter((city)=>city.isAccepted ===true)
+    const uniqueCities = new Set();
+    finalData.forEach((hotel) => {
+        if (hotel.city) {
+            uniqueCities.add(hotel.city);
+        }
+    });
+    const cityArray = Array.from(uniqueCities);
+    res.status(200).json(cityArray);
+}
 //=================================Update price monthly============================================
 const monthlyPrice = async function (req, res) {
     try {
@@ -671,6 +684,7 @@ module.exports = {
     UpdateHotelInfo,
     getHotelsState,
     getHotelsCity,
+    getHotelsCityByState,
     monthlyPrice,
     getCount,
     getCountPendingHotels,

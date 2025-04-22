@@ -15,9 +15,10 @@ router.get('/hotels/get-by-id/:hotelId', hotelController.getHotelsById);
 router.get('/hotelsLocalId', hotelController.getHotelsByLocalID);
 router.get('/hotels/filters', hotelController.getHotelsByFilters); // Using on main site
 router.get('/hotels/destination/get/all', hotelController.getCity); //filter hotel by city
+router.get("/get-hotels-all/city",hotelController.getHotelsCity)
 router.get('/hotels/query/get/by', hotelController.getByQuery); // on admin panel
 router.get('/see-all/hotels-state/get/all/hotels', hotelController.getHotelsState); // get all hotels state name
-router.get('/see-all/hotels-city/get/city', hotelController.getHotelsCity); // enter state and get city
+router.get('/see-all/hotels-city/get/city', hotelController.getHotelsCityByState); // enter state and get city
 router.get('/get-hotels/count', hotelController.getCount);
 router.get('/get-pending-hotels/count', hotelController.getCountPendingHotels);
 router.patch('/update-hotels-image-by-hotel-id/:hotelId', upload, hotelController.updateHotelImage); // on panel
