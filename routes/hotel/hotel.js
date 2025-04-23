@@ -5,7 +5,7 @@ const hotelController = require('../../controllers/hotel/hotel');
 
 // Routes with authentication
 router.post('/data/hotels-new/post/upload/data', upload, hotelController.createHotel);
-router.patch('/hotels/update/:hotelId', hotelController.UpdateHotelStatus); // isAccepted, onFront
+router.patch('/hotels/update/:hotelId', hotelController.UpdateHotelStatus); // isAccepted, onFront admin panel
 router.patch('/hotels/update/info/:hotelId', hotelController.UpdateHotelInfo); // basic details
 router.get('/get/all/hotels', hotelController.getAllHotels); // on panel
 router.delete('/delete/hotels/by/:hotelId', hotelController.deleteHotelById); // on panel
