@@ -4,5 +4,5 @@ const bulk = require('../controllers/bulkOperation')
 
 router.patch("/remove-bulk-coupons-from-hotels/by-hotel/id",bulk.removeCoupon)
 router.patch("/remove-bulk-hotel-from-hotels/by-hotel/ids",bulk.changeStatus)
-
+router.delete("/delete-bulk-hotels-from-list-of-hotels/by-ids",bulk.removeCoupon)
 module.exports=router
