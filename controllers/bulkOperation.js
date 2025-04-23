@@ -4,54 +4,56 @@ const couponModel = require('../models/booking/coupon');
 exports.removeCoupon = async (req, res) => {
     const { hotelIds } = req.body;
 
-    if (!hotelIds) {
-        return res.status(400).json({ message: 'hotelId is required.' });
+    if (!Array.isArray(hotelIds) || hotelIds.some(isNaN)) {
+        return res.status(400).json({ message: 'hotelIds must be an array of numeric hotel IDs.' });
     }
 
     try {
-        const hotel = await hotelModel.findOne({ hotelId: hotelIds });
+        const hotels = await hotelModel.find({ hotelId: { $in: hotelIds } });
 
-        if (!hotel) {
-            return res.status(404).json({ message: 'Hotel not found.' });
+        if (hotels.length === 0) {
+            return res.status(404).json({ message: 'No hotels found with the provided IDs.' });
         }
 
-        if (!hotel.rooms || hotel.rooms.length === 0) {
-            return res.status(200).json({ message: 'No rooms found for this hotel.' });
-        }
-
-        const bulkUpdates = hotel.rooms
-            .filter(room => room.isOffer)
-            .map(room => ({
-                updateOne: {
-                    filter: { hotelId: hotelIds, 'rooms.roomId': room.roomId },
-                    update: {
-                        $set: {
-                            'rooms.$.isOffer': false,
-                            'rooms.$.offerPriceLess': 0,
-                            'rooms.$.offerExp': '',
-                            'rooms.$.offerName': '',
-                            'rooms.$.price': room.price + room.offerPriceLess,
+        const bulkRoomUpdates = [];
+        for (const hotel of hotels) {
+            if (hotel.rooms && hotel.rooms.length > 0) {
+                const updates = hotel.rooms
+                    .filter(room => room.isOffer)
+                    .map(room => ({
+                        updateOne: {
+                            filter: { hotelId: hotel.hotelId, 'rooms.roomId': room.roomId },
+                            update: {
+                                $set: {
+                                    'rooms.$.isOffer': false,
+                                    'rooms.$.offerPriceLess': 0,
+                                    'rooms.$.offerExp': '',
+                                    'rooms.$.offerName': '',
+                                    'rooms.$.price': room.price + room.offerPriceLess,
+                                },
+                            },
                         },
-                    },
-                },
-            }));
+                    }));
+                bulkRoomUpdates.push(...updates);
+            }
+        }
 
-        if (bulkUpdates.length > 0) {
-            await hotelModel.bulkWrite(bulkUpdates);
+        if (bulkRoomUpdates.length > 0) {
+            await hotelModel.bulkWrite(bulkRoomUpdates);
         }
 
         const couponUpdates = await couponModel.updateMany(
-            { hotelId: hotelIds, expired: false },
+            { hotelId: { $in: hotelIds }, expired: false },
             { $set: { expired: true } }
         );
 
-        const modifiedCount = (bulkUpdates.length > 0 ? bulkUpdates.length : 0) + couponUpdates.modifiedCount;
+        const modifiedCount = bulkRoomUpdates.length + couponUpdates.modifiedCount;
 
         if (modifiedCount === 0) {
-            return res.status(200).json({ message: 'No active coupons or room offers found for this hotel.' });
+            return res.status(200).json({ message: 'No active coupons or room offers found for the provided hotels.' });
         }
 
-        res.status(200).json({ message: 'Active coupons and room offers removed successfully.' });
+        res.status(200).json({ message: 'Active coupons and room offers removed successfully for the selected hotels.' });
 
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
