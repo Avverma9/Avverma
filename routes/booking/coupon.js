@@ -12,5 +12,5 @@ router.patch(
   couponController.checkAndUpdateOffers
 );
 router.get("/valid-coupons",couponController.GetValidCoupons)
-router.patch("/remove/coupon/before-time-from-hotel",couponController.removeCoupon)
+
 module.exports = router

@@ -56,7 +56,7 @@ const ApplyCoupon = async (req, res) => {
     if (unusedHotelIds.length === 0 && unusedRoomIds.length === 0) {
       return res
         .status(400)
-        .json({ message: "Coupon already applied to all provided IDs" });
+        .json({ message: "Coupon code used in selected hotel create another one" });
     }
 
     // Apply coupon to unused hotelIds and roomIds
@@ -114,7 +114,7 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 
-//=============================remove coupon=================================
+//=============================remove coupon automatically=================================
 const checkAndUpdateOffers = async () => {
   try {
     // Find hotels with expired offers
@@ -178,63 +178,6 @@ const GetAllCoupons = async (req, res) => {
   }
 };
 
-const removeCoupon = async (req, res) => {
-  const { roomId } = req.body;
-
-  if (!roomId) {
-    return res.status(400).json({ message: "roomId is required." });
-  }
-
-  try {
-    // Find the hotel and room that needs to be updated
-    const hotel = await hotelModel.findOne({
-      "rooms.roomId": roomId,
-    });
-
-    if (!hotel) {
-      return res.status(404).json({ message: "Hotel or room not found." });
-    }
-
-    // Update the room to revert offer details
-    const updatedHotel = await hotelModel.findOneAndUpdate(
-      { "rooms.roomId": roomId },
-      {
-        $set: {
-          "rooms.$.isOffer": false,
-          "rooms.$.offerPriceLess": 0,
-          "rooms.$.offerExp": "",
-          "rooms.$.offerName": "",
-          "rooms.$.price":
-            hotel.rooms.find((r) => r.roomId === roomId).price +
-            hotel.rooms.find((r) => r.roomId === roomId).offerPriceLess, // Revert to original price
-        },
-      },
-      { new: true }, // Return the updated document
-    );
-
-    if (!updatedHotel) {
-      return res.status(404).json({ message: "Update failed." });
-    }
-
-    // Find and update the coupon to set expired to true
-    const couponUpdate = await couponModel.findOneAndUpdate(
-      { roomId: roomId, expired: false }, // Ensure we are updating the correct coupon
-      { $set: { expired: true } },
-      { new: true }, // Return the updated coupon
-    );
-
-    if (!couponUpdate) {
-      return res
-        .status(404)
-        .json({ message: "Coupon not found or already expired." });
-    }
-
-    res.status(200).json({ message: "Coupon removed successfully." });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-};
-
 const GetValidCoupons = async (req, res) => {
   try {
     const coupons = await couponModel.find({
@@ -254,5 +197,5 @@ module.exports = {
   GetValidCoupons,
   GetAllCoupons,
   checkAndUpdateOffers,
-  removeCoupon, // Ensure to export the removeCoupon function
+
 };
