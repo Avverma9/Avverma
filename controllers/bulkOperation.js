@@ -42,12 +42,9 @@ exports.removeCoupon = async (req, res) => {
       await hotelModel.bulkWrite(bulkRoomUpdates);
     }
 
-    const couponUpdates = await couponModel.updateMany(
-      { hotelId: { $in: hotelIds }, expired: false },
-      { $set: { expired: true } }
-    );
+  
 
-    const modifiedCount = bulkRoomUpdates.length + couponUpdates.modifiedCount;
+    const modifiedCount = bulkRoomUpdates.length
 
     if (modifiedCount === 0) {
       return res.status(200).json({ message: 'No active coupons or room offers found for the provided hotels.' });
