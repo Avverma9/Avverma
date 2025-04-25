@@ -1,4 +1,5 @@
 const bookingModel = require("../../models/booking/booking");
+const hotelModel = require("../../models/hotel/basicDetails");
 const userModel = require("../../models/user");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
@@ -66,7 +67,11 @@ const createBooking = async (req, res) => {
 
     // Save the booking
     const savedBooking = await booking.save();
-
+    await hotelModel.findOneAndUpdate(
+      { hotelId: hotelId },
+      { $inc: { "rooms.$[].countRooms": -numRooms } },
+      { new: true },
+    );
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -103,13 +108,39 @@ const getTotalSell = async function (req, res) {
 const updateBooking = async (req, res) => {
   const { bookingId } = req.params;
   const data = req.body;
-  const updatedData = await bookingModel.findOneAndUpdate(
-    { bookingId: bookingId },
-    { $set: data },
-    { new: true },
-  );
-  res.json(updatedData);
+
+  try {
+    const updatedData = await bookingModel.findOneAndUpdate(
+      { bookingId: bookingId },
+      { $set: data },
+      { new: true },
+    );
+    if (updatedData && updatedData.bookingStatus === "Cancelled") {
+      const roomId = updatedData?.roomDetails[0]?.roomId; // Extract roomId from the booking
+
+      const findHotel = await hotelModel.findOne({
+        hotelId: updatedData.hotelDetails.hotelId,
+      });
+      if (findHotel) {
+        const roomIndex = findHotel.rooms.findIndex(
+          (room) => room.roomId === roomId,
+        );
+
+        if (roomIndex !== -1) {
+          findHotel.rooms[roomIndex].countRooms += 1;
+          findHotel.markModified(`rooms.${roomIndex}.countRooms`); // 👈 tell Mongoose this field was changed
+          await findHotel.save();
+        }
+        
+      }
+    }
+    res.json(updatedData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+
 //==========================================================getallBookingByID=======================
 const getAllFilterBookings = async (req, res) => {
   try {
