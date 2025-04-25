@@ -17,6 +17,7 @@ const createBooking = async (req, res) => {
       bookingSource,
       hotelName,
       hotelEmail,
+      hotelCity,
       hotelOwnerName,
       destination,
     } = req.body;
@@ -47,6 +48,7 @@ const createBooking = async (req, res) => {
       },
 
       hotelDetails: {
+        hotelCity,
         hotelId,
         hotelName,
         hotelEmail,
