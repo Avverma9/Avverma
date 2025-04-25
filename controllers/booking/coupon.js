@@ -32,58 +32,46 @@ const newCoupon = async (req, res) => {
 //VALIDATE AND APPLY COUPON
 const ApplyCoupon = async (req, res) => {
   try {
-    const { hotelIds, roomIds, couponCode } = req.body;
+    const { hotelIds, roomIds = [], couponCode } = req.body;
 
     const coupon = await couponModel.findOne({ couponCode });
     if (!coupon) {
       return res.status(404).json({ message: "Coupon code not found" });
     }
 
-    const currentDate = new Date().toISOString().slice(0, 10); // Get the current date as YYYY-MM-DD
-    const validityDate = new Date(coupon.validity).toISOString().slice(0, 10); // Get the coupon validity date as YYYY-MM-DD
+    const currentDate = new Date().toISOString().slice(0, 10);
+    const validityDate = new Date(coupon.validity).toISOString().slice(0, 10);
     if (currentDate > validityDate) {
       return res.status(400).json({ message: "Coupon code has expired" });
     }
 
-    // Filter out already used hotelIds and roomIds
-    const unusedHotelIds = hotelIds.filter(
-      (hotelId) => !coupon.hotelId?.includes(hotelId),
-    );
-    const unusedRoomIds = roomIds.filter(
-      (roomId) => !coupon.roomId?.includes(roomId),
-    );
+    let finalAppliedRoomIds = [];
+    let finalAppliedHotelIds = [];
 
-    if (unusedHotelIds.length === 0 && unusedRoomIds.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Coupon code used in selected hotel create another one" });
-    }
+    for (const hotelId of hotelIds) {
+      const hotel = await hotelModel.findOne({ hotelId });
+      if (!hotel) continue;
 
-    // Apply coupon to unused hotelIds and roomIds
-    for (let i = 0; i < unusedRoomIds.length; i++) {
-      const roomId = unusedRoomIds[i];
-      const hotelId = unusedHotelIds[i];
+      let applicableRooms = [];
 
-      const hotel = await hotelModel.findOne({
-        "rooms.roomId": roomId,
-        hotelId: hotelId,
-      });
-
-      if (!hotel) {
-        continue; // Skip if the hotel or room is not found
+      if (roomIds.length > 0) {
+        // Filter only user-provided roomIds with isOffer !== true
+        applicableRooms = hotel.rooms.filter(
+          (room) => roomIds.includes(room.roomId) && room.isOffer !== true
+        );
+      } else {
+        // Get all rooms without offer
+        applicableRooms = hotel.rooms.filter((room) => room.isOffer !== true);
       }
 
-      const room = hotel.rooms.find((r) => r.roomId === roomId);
-      if (!room) {
-        continue; // Skip if the room is not found
-      }
+      if (applicableRooms.length === 0) continue;
 
-      // Calculate new price
-      const newPrice = room.price - coupon.discountPrice;
+      // Select only the first applicable room for each hotel
+      const selectedRoom = applicableRooms[0];
+      const newPrice = selectedRoom.price - coupon.discountPrice;
 
-      // Update the room with new offer details
       await hotelModel.findOneAndUpdate(
-        { "rooms.roomId": roomId, hotelId: hotelId },
+        { "rooms.roomId": selectedRoom.roomId, hotelId },
         {
           $set: {
             "rooms.$.offerName": coupon.couponName,
@@ -92,22 +80,28 @@ const ApplyCoupon = async (req, res) => {
             "rooms.$.isOffer": true,
             "rooms.$.price": newPrice,
           },
-        },
-        { new: true }, // Return the updated document
+        }
       );
+
+      finalAppliedRoomIds.push(selectedRoom.roomId);
+      finalAppliedHotelIds.push(hotelId);
     }
 
-    // Update the coupon with the newly applied IDs
-    coupon.roomId = [...new Set([...(coupon.roomId || []), ...unusedRoomIds])]; // Avoid duplicates
-    coupon.hotelId = [
-      ...new Set([...(coupon.hotelId || []), ...unusedHotelIds]),
-    ]; // Avoid duplicates
+    if (finalAppliedRoomIds.length === 0) {
+      return res.status(400).json({
+        message: "Coupon has already been applied to all eligible rooms in the selected hotels",
+      });
+    }
+
+    // Update coupon document
+    coupon.roomId = [...new Set([...(coupon.roomId || []), ...finalAppliedRoomIds])];
+    coupon.hotelId = [...new Set([...(coupon.hotelId || []), ...finalAppliedHotelIds])];
     await coupon.save();
 
     res.status(200).json({
-      message: `Coupon applied successfully to unused rooms and hotels.`,
-      appliedRoomIds: unusedRoomIds,
-      appliedHotelIds: unusedHotelIds,
+      message: "Coupon applied successfully to one room per eligible hotel.",
+      appliedRoomIds: finalAppliedRoomIds,
+      appliedHotelIds: finalAppliedHotelIds,
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -151,7 +145,7 @@ const checkAndUpdateOffers = async () => {
   }
 };
 
-cron.schedule("30 18 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   const now = moment().tz("Asia/Kolkata");
   if (now.hour() === 0 && now.minute() === 0) {
     await checkAndUpdateOffers();

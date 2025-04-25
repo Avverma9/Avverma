@@ -39,6 +39,7 @@ const bookingSchema = new mongoose.Schema(
     },
     foodDetails: [
       {
+        foodId:String,
         name: String,
         price: Number,
         quantity: Number,
@@ -46,6 +47,7 @@ const bookingSchema = new mongoose.Schema(
     ],
     roomDetails: [
       {
+        roomId:String,
         type: { type: String },
         bedTypes: { type: String },
         price: { type: Number },
