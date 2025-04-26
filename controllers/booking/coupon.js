@@ -123,29 +123,24 @@ const deleteCouponAutomatically = async () => {
       validity: { $lte: utcFormatted },
     });
 
-    console.log(`${result.deletedCount} expired coupons deleted.`);
   } catch (error) {
     console.error("Error deleting expired coupons:", error);
   }
 };
 
 cron.schedule("* * * * *", async () => {
-  console.log("Running cron job every minute");
   await deleteCouponAutomatically();
-  console.log("✅ Cron finished");
 });
 //================================== remove offer from hotel automatically=========================
-exports.removeOffersAutomatically = async () => {
+const removeOffersAutomatically = async () => {
   try {
     const currentIST = moment.tz("Asia/Kolkata");
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const currentDate = formattedIST.slice(0, -6) + "+00:00";
 
-    console.log("Fetching all hotels...");
     const hotels = await hotelModel.find();
     const hotelIdsWithExpiredOffers = [];
     
-    console.log("Checking for expired offers...");
     for (const hotel of hotels) {
       const hasExpiredOffer = hotel.rooms.some(
         (room) =>
@@ -157,18 +152,15 @@ exports.removeOffersAutomatically = async () => {
       }
     }
 
-    console.log("Fetching hotels with expired offers...");
     const hotelsToBeFind = await hotelModel.find({
       hotelId: { $in: hotelIdsWithExpiredOffers },
     });
 
     if (hotelsToBeFind.length === 0) {
-      console.log("No hotels found with expired offers.");
       return;
     }
 
     const bulkRoomUpdates = [];
-    console.log("Preparing bulk update...");
     for (const hotel of hotelsToBeFind) {
       if (hotel.rooms && hotel.rooms.length > 0) {
         const updates = hotel.rooms
@@ -192,23 +184,19 @@ exports.removeOffersAutomatically = async () => {
     }
 
     if (bulkRoomUpdates.length > 0) {
-      console.log(`Executing bulk update for ${bulkRoomUpdates.length} rooms...`);
       await hotelModel.bulkWrite(bulkRoomUpdates);
     }
 
-    console.log("Expired offers removed successfully.");
   } catch (error) {
     console.error("Error in removeOffersAutomatically:", error);
   }
 };
 
 cron.schedule("* * * * *", async () => {
-  console.log("Running cron for offer remove");
-
   await removeOffersAutomatically();
-  console.log("✅ Cron finished");
 });
 
+//================================== get all coupons =========================================
 const GetAllCoupons = async (req, res) => {
   try {
     // Get the current date in IST timezone
@@ -226,7 +214,7 @@ const GetAllCoupons = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
+//================================== get valid coupons =========================================
 const GetValidCoupons = async (req, res) => {
   try {
     const coupons = await couponModel.find({
@@ -245,4 +233,5 @@ module.exports = {
   ApplyCoupon,
   GetValidCoupons,
   GetAllCoupons,
+  removeOffersAutomatically
 };
