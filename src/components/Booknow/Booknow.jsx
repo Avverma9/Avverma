@@ -269,10 +269,8 @@ const BookNow = () => {
       const countdownDate = new Date(roomToShow.offerExp).getTime();
 
       const interval = setInterval(() => {
-        const now = new Date().getTime();
+        const now = new Date().getTime() + 5.5 * 60 * 60 * 1000; // Adjust for UTC+5:30
         const distance = countdownDate - now;
-
-        // Calculate days, hours, minutes, and seconds left
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
           (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
