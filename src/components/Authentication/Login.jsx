@@ -105,7 +105,7 @@ export default function LoginPage() {
                 localStorage.setItem('rsUserId', userId);
                 localStorage.setItem('rsToken', rsToken);
 
-                navigate('/');
+                navigate(-1);
             } else {
                 // Handle login failure
                 const errorData = await response.json();

@@ -4,6 +4,7 @@ import "./BookingReview.css"; // Import the CSS file
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBookingReview } from "../../redux/reducers/reviewSlice";
+import { Divider, Typography } from "@mui/material";
 
 const BookingReview = ({ hotelId }) => {
   const [showAll, setShowAll] = useState(false);
@@ -46,6 +47,10 @@ const BookingReview = ({ hotelId }) => {
   return (
     <div className="review-container">
       {loading && <p>Loading reviews...</p>}
+      <Typography variant="p6" component="h6" className="testimonial-title">
+        Here’s what our customers say...
+      </Typography>
+      <hr />
       {!loading &&
         !error &&
         (reviewsToShow.length > 0 ? (
