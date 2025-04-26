@@ -73,7 +73,7 @@ const createBooking = async (req, res) => {
       const { roomId } = bookedRoom;
       await hotelModel.updateOne(
         { hotelId: hotelId, "rooms.roomId": roomId },
-        { $inc: { "rooms.$.countRooms": -1 } },
+        { $inc: { "rooms.$.countRooms": -1 } }
       );
     }
     res.status(201).json({ success: true, data: savedBooking });
@@ -135,6 +135,7 @@ const updateBooking = async (req, res) => {
           findHotel.markModified(`rooms.${roomIndex}.countRooms`); // 👈 tell Mongoose this field was changed
           await findHotel.save();
         }
+        
       }
     }
     res.json(updatedData);
@@ -169,10 +170,11 @@ const getAllFilterBookings = async (req, res) => {
   }
 };
 
+
+
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId, bookingId, hotelEmail, date, hotelCity } =
-      req.query;
+    const { bookingStatus, userId, bookingId, hotelEmail, date , hotelCity } = req.query;
     const filter = {};
 
     if (userId) {
@@ -183,21 +185,20 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     }
     if (hotelEmail) {
       filter["hotelDetails.hotelEmail"] = { $regex: hotelEmail, $options: "i" };
+
     }
     if (bookingId) {
       filter.bookingId = bookingId;
     }
     if (hotelCity) {
-      filter["hotelDetails.hotelCity"] = {
-        $regex: new RegExp(hotelCity.trim(), "i"),
-      };
+      filter["hotelDetails.hotelCity"] = { $regex: new RegExp(hotelCity.trim(), "i") };
     }
-
+    
     if (date) {
       const queryDate = new Date(date);
       const startOfDay = new Date(queryDate.setHours(0, 0, 0, 0));
       const endOfDay = new Date(queryDate.setHours(23, 59, 59, 999));
-
+    
       filter.$or = [
         { checkInDate: date },
         { checkOutDate: date },
@@ -205,9 +206,7 @@ const getAllFilterBookingsByQuery = async (req, res) => {
       ];
     }
 
-    const bookings = await bookingModel
-      .find(filter)
-      .sort({ updatedAt: -1, createdAt: -1 });
+    const bookings = await bookingModel.find(filter).sort({createdAt: -1});
 
     if (bookings.length === 0) {
       return res.status(400).json({ message: "No bookings found" });
