@@ -192,7 +192,7 @@ exports.findAllAvailableHotels = async (req, res) => {
         let note = null;
         if (initialAvailableRooms < totalRooms) {
           note =
-            "If total rooms are higher than available rooms means hotel owner has set manual availability for this hotel. Please check with hotel owner for more details.";
+            "The hotel owner may have listed more total rooms, but fewer are available because some might have been booked before the listing. You can check the 👇'Booked before listing' section below for those bookings. Contact and ask the hotel owner for clarification.";
         }
         // ✅ Add to final result
         results.push({
@@ -202,6 +202,7 @@ exports.findAllAvailableHotels = async (req, res) => {
           totalRooms,
           initialAvailableRooms,
           actualAvailableRooms,
+          bookedFromOthers:totalRooms - initialAvailableRooms,
           note,
           bookingSummary: summary,
           bookings: hotelBookings.map((b) => ({

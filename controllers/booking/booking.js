@@ -69,11 +69,13 @@ const createBooking = async (req, res) => {
 
     // Save the booking
     const savedBooking = await booking.save();
-    await hotelModel.findOneAndUpdate(
-      { hotelId: hotelId },
-      { $inc: { "rooms.$[].countRooms": -numRooms } },
-      { new: true },
-    );
+    for (const bookedRoom of roomDetails) {
+      const { roomId } = bookedRoom;
+      await hotelModel.updateOne(
+        { hotelId: hotelId, "rooms.roomId": roomId },
+        { $inc: { "rooms.$.countRooms": -1 } }
+      );
+    }
     res.status(201).json({ success: true, data: savedBooking });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -143,59 +145,63 @@ const updateBooking = async (req, res) => {
   }
 };
 
-//==========================================================getallBookingByID=======================
+//==========================================================getallBookingByID main site bookings list=======================
 const getAllFilterBookings = async (req, res) => {
   try {
     const { bookingStatus, userId } = req.query;
-    const bookings = await bookingModel.find({
-      "user.userId": userId,
-      bookingStatus,
-    });
+
+    const bookings = await bookingModel
+      .find({
+        "user.userId": userId,
+        bookingStatus,
+      })
+      .sort({ createdAt: -1 }); // ✅ Correct sort
+
     if (bookings.length === 0) {
-      return res
-        .status(400)
-        .json({ message: `Seems you have No ${bookingStatus} booking` });
+      return res.status(400).json({
+        message: `Seems you have no ${bookingStatus} bookings.`,
+      });
     }
+
     res.json(bookings);
   } catch (error) {
     console.error("Error in getAllFilterBookings:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId, bookingId, hotelEmail, date } = req.query;
+    const { bookingStatus, userId, bookingId, hotelEmail, date , hotelCity } = req.query;
     const filter = {};
 
-    // Include userId and bookingStatus filters if provided
     if (userId) {
-      filter.userId = userId;
+      filter["user.userId"] = userId;
     }
     if (bookingStatus) {
       filter.bookingStatus = bookingStatus;
     }
     if (hotelEmail) {
-      filter.hotelEmail = { $regex: hotelEmail, $options: "i" };
+      filter.hotelDetails = { hotelEmail: { $regex: hotelEmail, $options: "i" } };
     }
-    // Include bookingId filter if provided
     if (bookingId) {
       filter.bookingId = bookingId;
     }
-
-    // Include date filters if provided
+    if (hotelCity) {
+      filter["hotelDetails.hotelCity"] = { $regex: new RegExp(hotelCity.trim(), "i") };
+    }
+    
     if (date) {
-      // Create a date object for the provided date string
       const queryDate = new Date(date);
-
-      // Calculate the start and end of the day for the date
       const startOfDay = new Date(queryDate.setHours(0, 0, 0, 0));
       const endOfDay = new Date(queryDate.setHours(23, 59, 59, 999));
-
-      // Match for checkInDate, checkOutDate, and createdAt
+    
       filter.$or = [
-        { checkInDate: date }, // Exact match for checkInDate string
-        { checkOutDate: date }, // Exact match for checkOutDate string
-        { createdAt: { $gte: startOfDay, $lte: endOfDay } }, // CreatedAt range for the entire day
+        { checkInDate: date },
+        { checkOutDate: date },
+        { createdAt: { $gte: startOfDay, $lte: endOfDay } },
       ];
     }
 
