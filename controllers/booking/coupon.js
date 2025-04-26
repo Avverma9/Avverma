@@ -8,17 +8,10 @@ const rooms = require("../../models/hotel/rooms");
 const newCoupon = async (req, res) => {
   try {
     const { couponName, discountPrice, validity } = req.body;
-
-    const validityDate = new Date(validity);
-    const istOffset = 5.5 * 60;
-    const utcOffset = validityDate.getTimezoneOffset(); // UTC offset in minutes
-    const validityInIST = new Date(
-      validityDate.getTime() + (istOffset + utcOffset) * 60 * 1000,
-    );
     const createdCoupon = await couponModel.create({
       couponName,
       discountPrice,
-      validity: validityInIST,
+      validity,
     });
 
     res
