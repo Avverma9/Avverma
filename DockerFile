@@ -1,4 +1,4 @@
-FROM node:23-alpine3.18
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -6,7 +6,9 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY . /app
+
+ENV NODE_ENV=production
 
 EXPOSE 3000
 
