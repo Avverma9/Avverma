@@ -184,7 +184,8 @@ const getAllFilterBookingsByQuery = async (req, res) => {
       filter.bookingStatus = bookingStatus;
     }
     if (hotelEmail) {
-      filter.hotelDetails = { hotelEmail: { $regex: hotelEmail, $options: "i" } };
+      filter["hotelDetails.hotelEmail"] = { $regex: hotelEmail, $options: "i" };
+
     }
     if (bookingId) {
       filter.bookingId = bookingId;
