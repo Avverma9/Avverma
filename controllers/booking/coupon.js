@@ -31,9 +31,13 @@ const ApplyCoupon = async (req, res) => {
     if (!coupon) {
       return res.status(404).json({ message: "Coupon code not found" });
     }
+    const currentIST = moment.tz("Asia/Kolkata");
+    const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
 
-    const currentDate = new Date().toISOString().slice(0, 10);
-    const validityDate = new Date(coupon.validity).toISOString().slice(0, 10);
+    const currentDate = formattedIST.slice(0, -6) + "+00:00";
+
+    const validityDate = coupon.validity;
+ 
     if (currentDate > validityDate) {
       return res.status(400).json({ message: "Coupon code has expired" });
     }
@@ -50,7 +54,7 @@ const ApplyCoupon = async (req, res) => {
       if (roomIds.length > 0) {
         // Filter only user-provided roomIds with isOffer !== true
         applicableRooms = hotel.rooms.filter(
-          (room) => roomIds.includes(room.roomId) && room.isOffer !== true
+          (room) => roomIds.includes(room.roomId) && room.isOffer !== true,
         );
       } else {
         // Get all rooms without offer
@@ -73,7 +77,7 @@ const ApplyCoupon = async (req, res) => {
             "rooms.$.isOffer": true,
             "rooms.$.price": newPrice,
           },
-        }
+        },
       );
 
       finalAppliedRoomIds.push(selectedRoom.roomId);
@@ -82,13 +86,18 @@ const ApplyCoupon = async (req, res) => {
 
     if (finalAppliedRoomIds.length === 0) {
       return res.status(400).json({
-        message: "Coupon has already been applied to all eligible rooms in the selected hotels",
+        message:
+          "Coupon has already been applied to all eligible rooms in the selected hotels",
       });
     }
 
     // Update coupon document
-    coupon.roomId = [...new Set([...(coupon.roomId || []), ...finalAppliedRoomIds])];
-    coupon.hotelId = [...new Set([...(coupon.hotelId || []), ...finalAppliedHotelIds])];
+    coupon.roomId = [
+      ...new Set([...(coupon.roomId || []), ...finalAppliedRoomIds]),
+    ];
+    coupon.hotelId = [
+      ...new Set([...(coupon.hotelId || []), ...finalAppliedHotelIds]),
+    ];
     await coupon.save();
 
     res.status(200).json({
@@ -100,58 +109,45 @@ const ApplyCoupon = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-//=============================remove coupon automatically=================================
-const checkAndUpdateOffers = async () => {
+//===============================delete coupon automatically=================================
+const deleteCouponAutomatically = async () => {
   try {
-    // Find hotels with expired offers
-    const expiredOffers = await hotelModel.find({
-      "rooms.offerExp": { $lt: new Date() },
+    const moment = require("moment-timezone");
+
+    const currentIST = moment.tz("Asia/Kolkata");
+    const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+
+    const utcFormatted = formattedIST.slice(0, -6) + "+00:00";
+
+    console.log("Full formatted IST:", formattedIST);
+    console.log("Only Timezone Offset:", utcFormatted);
+
+    const result = await couponModel.deleteMany({
+      expired: false,
+      validity: { $lte: utcFormatted },
     });
 
-    for (const hotel of expiredOffers) {
-      // Iterate through each room and update expired offers
-      let updatedRooms = hotel.rooms.map((room) => {
-        if (room.offerExp && new Date(room.offerExp) < new Date()) {
-          // Revert to original price by adding offerPriceLess back
-          return {
-            ...room,
-            isOffer: false,
-            expired: false,
-            offerPriceLess: 0,
-            offerExp: "",
-            offerName: "",
-            price: room.price + room.offerPriceLess, // Revert to original price
-          };
-        }
-        return room;
-      });
-
-      // Update the hotel document with the modified rooms array
-      hotel.rooms = updatedRooms;
-      await hotel.save();
-    }
-
-    console.log("Expired offers processed successfully.");
+    console.log(`${result.deletedCount} expired coupons deleted.`);
   } catch (error) {
-    console.error("Error processing expired offers:", error);
+    console.error("Error deleting expired coupons:", error);
   }
 };
 
+
 cron.schedule("* * * * *", async () => {
-  const now = moment().tz("Asia/Kolkata");
-  if (now.hour() === 0 && now.minute() === 0) {
-    await checkAndUpdateOffers();
-  }
+  console.log(
+    "⏰ Cron started at:",
+    new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+  );
+  await deleteCouponAutomatically();
+  console.log("✅ Cron finished");
 });
-//GET ALL
 
 const GetAllCoupons = async (req, res) => {
   try {
     // Get the current date in IST timezone
-    const currentDateIST = moment().tz("Asia/Kolkata").startOf("day").toDate();
-
-    // Fetch coupons where `roomId` does not exist and validity is greater than or equal to the current date
+    const currentDate = new Date();
+    const currentDateIST = currentDate.getTime() + 5.5 * 60 * 60 * 1000; // Convert to IST
     const coupons = await couponModel
       .find({
         expired: false, // Ensure expired is false
@@ -183,6 +179,4 @@ module.exports = {
   ApplyCoupon,
   GetValidCoupons,
   GetAllCoupons,
-  checkAndUpdateOffers,
-
 };

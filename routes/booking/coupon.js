@@ -7,10 +7,6 @@ router.patch(
   couponController.ApplyCoupon
 );
 router.get("/coupon/get/all", couponController.GetAllCoupons);
-router.patch(
-  "/remove-an-ongoing/offer/from/hotel",
-  couponController.checkAndUpdateOffers
-);
 router.get("/valid-coupons",couponController.GetValidCoupons)
 
 module.exports = router
