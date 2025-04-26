@@ -110,80 +110,102 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 //===============================delete coupon automatically=================================
-
-
 const deleteCouponAutomatically = async () => {
   try {
+    const moment = require("moment-timezone");
+
     const currentIST = moment.tz("Asia/Kolkata");
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const utcFormatted = formattedIST.slice(0, -6) + "+00:00";
-    
-    const expiredCoupons = await couponModel.find({
+
+    const result = await couponModel.deleteMany({
       expired: false,
       validity: { $lte: utcFormatted },
     });
 
-    if (expiredCoupons.length > 0) {
-      for (const coupon of expiredCoupons) {
-        const { hotelId, roomId, discountPrice } = coupon;
-
-        // Loop through each hotel-room pair
-        for (let i = 0; i < hotelId.length; i++) {
-          const hId = hotelId[i];
-          const rId = roomId[i];
-
-          const hotel = await hotelModel.findOne({
-            hotelId: hId,
-            "rooms.roomId": rId,
-          });
-
-          if (!hotel) continue;
-
-          const room = hotel.rooms.find((r) => r.roomId === rId);
-          if (!room) continue;
-
-          const updatedPrice = room.price + discountPrice;
-
-          await hotelModel.updateOne(
-            { hotelId: hId, "rooms.roomId": rId },
-            {
-              $set: {
-                "rooms.$.isOffer": false,
-                "rooms.$.offerName": "",
-                "rooms.$.offerPriceLess": 0,
-                "rooms.$.offerExp": "",
-                "rooms.$.price": updatedPrice,
-              },
-            },
-          );
-        }
-      }
-
-      // Optionally, mark as expired before deleting
-      await couponModel.updateMany(
-        { _id: { $in: expiredCoupons.map((c) => c._id) } },
-        { $set: { expired: true } },
-      );
-
-      const result = await couponModel.deleteMany({
-        _id: { $in: expiredCoupons.map((c) => c._id) },
-      });
-
-      console.log(`${result.deletedCount} expired coupons deleted.`);
-    } else {
-      console.log("No expired coupons to delete.");
-    }
+    console.log(`${result.deletedCount} expired coupons deleted.`);
   } catch (error) {
     console.error("Error deleting expired coupons:", error);
   }
 };
 
 cron.schedule("* * * * *", async () => {
-  console.log(
-    "⏰ Cron started at:",
-    new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-  );
+  console.log("Running cron job every minute");
   await deleteCouponAutomatically();
+  console.log("✅ Cron finished");
+});
+//================================== remove offer from hotel automatically=========================
+exports.removeOffersAutomatically = async () => {
+  try {
+    const currentIST = moment.tz("Asia/Kolkata");
+    const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+    const currentDate = formattedIST.slice(0, -6) + "+00:00";
+
+    console.log("Fetching all hotels...");
+    const hotels = await hotelModel.find();
+    const hotelIdsWithExpiredOffers = [];
+    
+    console.log("Checking for expired offers...");
+    for (const hotel of hotels) {
+      const hasExpiredOffer = hotel.rooms.some(
+        (room) =>
+          room.isOffer === true &&
+          new Date(room.offerExp) <= new Date(currentDate),
+      );
+      if (hasExpiredOffer) {
+        hotelIdsWithExpiredOffers.push(hotel.hotelId.toString());
+      }
+    }
+
+    console.log("Fetching hotels with expired offers...");
+    const hotelsToBeFind = await hotelModel.find({
+      hotelId: { $in: hotelIdsWithExpiredOffers },
+    });
+
+    if (hotelsToBeFind.length === 0) {
+      console.log("No hotels found with expired offers.");
+      return;
+    }
+
+    const bulkRoomUpdates = [];
+    console.log("Preparing bulk update...");
+    for (const hotel of hotelsToBeFind) {
+      if (hotel.rooms && hotel.rooms.length > 0) {
+        const updates = hotel.rooms
+          .filter((room) => room.isOffer)
+          .map((room) => ({
+            updateOne: {
+              filter: { hotelId: hotel.hotelId, "rooms.roomId": room.roomId },
+              update: {
+                $set: {
+                  "rooms.$.isOffer": false,
+                  "rooms.$.offerPriceLess": 0,
+                  "rooms.$.offerExp": "",
+                  "rooms.$.offerName": "",
+                  "rooms.$.price": room.price + room.offerPriceLess,
+                },
+              },
+            },
+          }));
+        bulkRoomUpdates.push(...updates);
+      }
+    }
+
+    if (bulkRoomUpdates.length > 0) {
+      console.log(`Executing bulk update for ${bulkRoomUpdates.length} rooms...`);
+      await hotelModel.bulkWrite(bulkRoomUpdates);
+    }
+
+    console.log("Expired offers removed successfully.");
+  } catch (error) {
+    console.error("Error in removeOffersAutomatically:", error);
+  }
+};
+
+cron.schedule("* * * * *", async () => {
+  console.log("Running cron for offer remove");
+
+  await removeOffersAutomatically();
   console.log("✅ Cron finished");
 });
 
