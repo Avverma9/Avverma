@@ -22,6 +22,7 @@ const availability = require('./hotel/availability');
 const travelPageRouter = require('./travel/travel');
 const carRouter = require('./travel/car');
 const carOwnerRouter = require('./travel/carOwner');
+const additionalSettings =require("./additional/additional")
 
 // Initialize the router
 const router = express.Router();
@@ -48,5 +49,6 @@ router.use('/', availability);
 router.use('/', travelPageRouter);
 router.use('/travel', carOwnerRouter);
 router.use('/travel', carRouter);
+router.use('/additional', additionalSettings);
 
 module.exports = router;
