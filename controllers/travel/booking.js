@@ -3,7 +3,7 @@ const Car = require("../../models/travel/cars");
 
 exports.bookCar = async (req, res) => {
     try {
-        const { seatId, carId, bookedBy } = req.body;
+        const { seatId, carId, bookedBy,customerMobile } = req.body;
         const GST_RATE = 0.18; // 18% GST
         const GST_THRESHOLD = 1000; // Hypothetical GST rule threshold
         
@@ -44,6 +44,7 @@ exports.bookCar = async (req, res) => {
             seatNumber: seat.seatNumber,
             seatPrice: totalSeatPrice, // Seat price including GST
             bookedBy: bookedBy, // Storing bookedBy in booking data as well
+            customerMobile: customerMobile,
             seatType: seat.seatType,
             bookingDate: new Date()
         });
