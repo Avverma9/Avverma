@@ -23,7 +23,7 @@ const travelPageRouter = require('./travel/travel');
 const carRouter = require('./travel/car');
 const carOwnerRouter = require('./travel/carOwner');
 const additionalSettings =require("./additional/additional")
-
+const GSTRouter = require('./GST/gst');
 // Initialize the router
 const router = express.Router();
 
@@ -47,6 +47,7 @@ router.use('/', amenitiesRouter);
 router.use('/', bulkRouter);
 router.use('/', availability);
 router.use('/', travelPageRouter);
+router.use('/gst', GSTRouter);
 router.use('/travel', carOwnerRouter);
 router.use('/travel', carRouter);
 router.use('/additional', additionalSettings);

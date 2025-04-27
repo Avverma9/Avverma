@@ -4,6 +4,15 @@ const gstSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    gstThreshold: {
+        type: Number,
+        required: true,
+    },
+    type: {
+        type: String,
+        enum: ['Tour', 'Travel','Hotel'],
+        required: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
