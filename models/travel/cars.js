@@ -13,7 +13,7 @@ const carSchema = new Schema({
     required: true,
     trim: true,
   },
-  carNumber: {
+  vehicleNumber: {
     type: String,
     required: true,
     trim: true,
@@ -28,11 +28,11 @@ const carSchema = new Schema({
     required: true,
     max: new Date().getFullYear(),
   },
-  from: {
+  pickupP: {
     type: String,
     trim: true,
   },
-  to: {
+  dropP: {
     type: String,
     trim: true,
   },
@@ -71,11 +71,11 @@ const carSchema = new Schema({
   perPersonCost: {
     type: Number,
   },
-  availableFrom: {
-    type: String,
+  pickupD: {
+    type: Date,
   },
-  availableTo: {
-    type: String,
+  dropD: {
+    type: Date,
   },
   price: {
     type: Number,

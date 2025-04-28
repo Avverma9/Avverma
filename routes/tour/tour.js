@@ -1,5 +1,5 @@
 const express = require('express');
-const { createTravel, getTravelList, getTravelById, sortByOrder, sortByPrice, sortByDuration, sortBythemes, updateTour } = require('../../controllers/travel/tour');
+const { createTravel, getTravelList, getTravelById, sortByOrder, sortByPrice, sortByDuration, sortBythemes, updateTour } = require('../../controllers/tour/tour');
 const { upload } = require('../../aws/upload');
 
 const router = express.Router();

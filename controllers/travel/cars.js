@@ -83,23 +83,24 @@ exports.getCarByOwnerId = async (req, res) => {
 
 exports.filterCar = async (req, res) => {
     try {
-        const { make, model, carNumber, fuelType, seater, from, to , availableFrom, availableTo} = req.query;
+        const { make, model, carNumber, fuelType, seater, pickupP, dropP, pickupD, dropD } = req.query;
         const query = {};
 
         if (make) query.make = make;
-
-        if(availableFrom && availableTo){
-            query.availableFrom = { $lte: availableFrom };
-            query.availableTo = { $gte: availableTo };
-        }
         if (model) query.model = model;
         if (carNumber) query.carNumber = carNumber;
         if (fuelType) query.fuelType = fuelType;
         if (seater) query.seater = seater;
 
-        // Case-insensitive search for 'from' and 'to' fields
-        if (from) query.from = { $regex: new RegExp(from, 'i') };  // 'i' flag for case-insensitive search
-        if (to) query.to = { $regex: new RegExp(to, 'i') };        // 'i' flag for case-insensitive search
+        if (pickupP && dropP) {
+            query.pickupP = { $regex: new RegExp(pickupP, 'i') };
+            query.dropP = { $regex: new RegExp(dropP, 'i') };
+        }
+
+        if (pickupD && dropD) {
+            query.pickupD = { $gte: new Date(pickupD) };
+            query.dropD = { $lte: new Date(dropD) };
+        }
 
         if (Object.keys(query).length === 0) {
             return res.status(400).json({ message: "No filter parameters provided" });
@@ -107,7 +108,7 @@ exports.filterCar = async (req, res) => {
 
         const cars = await Car.find(query);
 
-        if (cars.length === 0) {
+        if (!cars.length) {
             return res.status(404).json({ message: "No cars found matching the filters" });
         }
 

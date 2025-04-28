@@ -19,7 +19,7 @@ const policyRouter = require('./hotel/policy');
 const amenitiesRouter = require('./hotel/amenities');
 const bulkRouter = require('./bulkOperation');
 const availability = require('./hotel/availability');
-const travelPageRouter = require('./travel/travel');
+const tourRouter = require('./tour/tour');
 const carRouter = require('./travel/car');
 const carOwnerRouter = require('./travel/carOwner');
 const additionalSettings =require("./additional/additional")
@@ -47,7 +47,7 @@ router.use('/', policyRouter);
 router.use('/', amenitiesRouter);
 router.use('/', bulkRouter);
 router.use('/', availability);
-router.use('/', travelPageRouter);
+router.use('/', tourRouter);
 router.use('/gst', GSTRouter);
 router.use('/travel', carOwnerRouter);
 router.use('/travel', carRouter);

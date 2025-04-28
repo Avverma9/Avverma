@@ -22,6 +22,26 @@ const travelBookingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  vehicleNumber: {
+    type: String,
+    required: true,
+  },
+  pickupP:{
+    type: String,
+    required: true,
+  },
+  dropP:{
+    type: String,
+    required: true,
+  },
+  pickupD:{
+    type: Date,
+    required: true,
+  },
+  dropD:{
+    type: Date,
+    required: true,
+  },
   seatNumber: {
     type: Number,
     required: true,
