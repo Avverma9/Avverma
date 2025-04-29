@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Utility function to generate 8-character alphanumeric uppercase ID
 const generateBookingId = () => {
   return [...Array(8)]
     .map(() => Math.random().toString(36).charAt(2).toUpperCase())
@@ -18,47 +17,38 @@ const travelBookingSchema = new mongoose.Schema({
     ref: "Car",
     required: true,
   },
-  seatId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  },
   vehicleNumber: {
     type: String,
     required: true,
   },
-  pickupP:{
+  pickupP: {
     type: String,
     required: true,
   },
-  dropP:{
+  dropP: {
     type: String,
     required: true,
   },
-  pickupD:{
+  pickupD: {
     type: Date,
     required: true,
   },
-  dropD:{
+  dropD: {
     type: Date,
     required: true,
   },
-  seatNumber: {
-    type: Number,
-    required: true,
-  },
-  seatPrice: {
-    type: Number,
-    required: true,
-  },
+  seats: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
+  ],
   bookedBy: {
     type: String,
   },
   customerMobile: {
     type: String,
     required: true,
-  },
-  seatType: {
-    type: String,
   },
   bookingDate: {
     type: Date,

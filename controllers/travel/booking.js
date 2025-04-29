@@ -3,43 +3,40 @@ const Car = require("../../models/travel/cars");
 
 exports.bookCar = async (req, res) => {
     try {
-        const { seatId, carId, bookedBy, customerMobile } = req.body;
-       
-        const car = await Car.findById(carId);
-        const seat = car.seatConfig.find(seat => seat._id.toString() === seatId);
+        const { seats, carId, bookedBy, customerMobile } = req.body;
 
-        if (!seat) return res.status(404).json({ message: 'Seat not found' });
-        if (seat.isBooked) return res.status(400).json({ message: 'Seat is already booked' });
-        const totalSeatPrice = seat.seatPrice 
-        seat.isBooked = true;
-        seat.bookedBy = bookedBy;
+        const car = await Car.findById(carId);
+        if (!car) return res.status(404).json({ message: 'Car not found' });
+
+        const bookedSeatIds = [];
+
+        for (const seatId of seats) {
+            const seatToBook = car.seatConfig.find(s => s._id.toString() === seatId);
+            if (!seatToBook) return res.status(404).json({ message: `Seat ${seatId} not found` });
+            if (seatToBook.isBooked) return res.status(400).json({ message: `Seat ${seatId} is already booked` });
+
+            seatToBook.isBooked = true;
+            seatToBook.bookedBy = bookedBy;
+            bookedSeatIds.push(seatToBook._id);
+        }
+
         await car.save();
 
         const newBooking = await TravelBooking.create({
             carId: car._id,
-            seatId: seat._id,
-            seatNumber: seat.seatNumber,
-            seatPrice: totalSeatPrice,
+
+            seats: bookedSeatIds,
             bookedBy,
             customerMobile,
             pickupP: car.pickupP,
             dropP: car.dropP,
             pickupD: car.pickupD,
             dropD: car.dropD,
-            vehicleNumber: car.carNumber,
-            seatType: seat.seatType,
-            bookingDate: new Date(),
+            vehicleNumber: car.vehicleNumber,
         });
 
-        return res.status(201).json({
-            message: 'Successfully Booked',
-            booking: newBooking,
-            gstDetails: {
-                gstRate: `${GST_RATE * 100}%`,
-                gstAmount,
-                totalSeatPrice,
-            }
-        });
+        return res.status(201).json(newBooking);
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -52,8 +49,28 @@ exports.bookCar = async (req, res) => {
 
 exports.getTravelBookings = async (req, res) => {
     try {
-        const findBookings = await TravelBooking.find()
-        res.status(200).json(findBookings)
+        const bookings = await TravelBooking.find();
+
+        const enrichedBookings = await Promise.all(
+            bookings.map(async (booking) => {
+                const car = await Car.findById(booking.carId);
+                if (!car) return { ...booking.toObject(), seatsData: [] };
+
+                // Filter seatConfig by matching IDs from booking
+                const seatsData = car.seatConfig.filter(seat =>
+                    booking.seats.some(seatId =>
+                        seat._id.toString() === seatId.toString()
+                    )
+                );
+
+                return {
+                    ...booking.toObject(),
+                    seatsData, // actual seat info
+                };
+            })
+        );
+
+        res.status(200).json(enrichedBookings);
     } catch (error) {
         console.error(error);
         return res.status(500).json({
@@ -61,4 +78,51 @@ exports.getTravelBookings = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
+
+
+const mongoose = require('mongoose');
+
+exports.updateBooking = async function (req, res) {
+    try {
+        const { id, data } = req.body;
+
+        if (!id) {
+            return res.status(400).json({ message: "Booking ID is required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid Booking ID" });
+        }
+
+        // Find the booking document first
+        const booking = await TravelBooking.findOne({ _id: id });
+
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" });
+        }
+
+        // Update only fields that exist in `data`
+        Object.keys(data).forEach((key) => {
+            booking[key] = data[key];
+        });
+
+        // Save the updated document
+        const updatedBooking = await booking.save();
+
+        return res.status(200).json({
+            message: "Booking updated successfully",
+            booking: updatedBooking,
+        });
+
+    } catch (error) {
+        console.error("Update Booking Error:", error);
+        return res.status(500).json({
+            message: "Something went wrong",
+            error: error.message,
+        });
+    }
+};
+
+
+
