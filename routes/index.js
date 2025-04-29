@@ -25,7 +25,7 @@ const carOwnerRouter = require('./travel/carOwner');
 const additionalSettings =require("./additional/additional")
 const GSTRouter = require('./GST/gst');
 const travelBookings = require('./travel/booking');
-// Initialize the router
+const userCoupon = require('./userCoupon/userCoupon')
 const router = express.Router();
 
 // Define routes with root paths
@@ -52,6 +52,7 @@ router.use('/gst', GSTRouter);
 router.use('/travel', carOwnerRouter);
 router.use('/travel', carRouter);
 router.use('/travel', travelBookings);
+router.use('/user-coupon',userCoupon)
 router.use('/additional', additionalSettings);
 
 module.exports = router;

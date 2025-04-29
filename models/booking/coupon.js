@@ -11,6 +11,8 @@ const couponSchema = new mongoose.Schema({
     unique: true,
     length: 6,
   },
+  quantity: Number,
+  userIds: [String],
   validity: {
     type: Date,
     required: true,
