@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceIcon from "@mui/icons-material/Place";
 import Carousel from "react-bootstrap/Carousel";
@@ -50,6 +50,8 @@ import { Divider, Grid } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { popup } from "../../utils/custom_alert/pop";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
+import { token } from "../../utils/Unauthorized";
+import { toast } from "react-toastify";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -84,7 +86,7 @@ const BookNow = () => {
   const { monthlyData, loading, error } = useSelector((state) => state.booking);
   const showLowestPrice = localStorage.getItem("lowestPrice");
   const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
-  const {showLoader,hideLoader} =useLoader()
+  const { showLoader, hideLoader } = useLoader();
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
@@ -138,6 +140,30 @@ const BookNow = () => {
       );
     });
   };
+
+  // const handleApplyCoupon = useCallback(
+  //   async (hotelId, roomId) => {
+  //     showLoader();
+  //     try {
+  //       const url = `${localUrl}/user-coupon/apply/a/coupon-to-room`;
+
+  //       const response = await axios.patch(url, payload, {
+  //         headers: {
+  //           Authorization: token,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+  
+  //     } catch (error) {
+  //       console.error("Error in applyCoupon thunk:", error);
+  //       const errorMessage = error.response?.data?.message || error.message;
+  //       toast.error(`Error: ${errorMessage}`);
+  //       return rejectWithValue(error.response?.data || errorMessage);
+  //     }
+  //   },
+
+  //   [dispatch, showLoader, hideLoader, couponCode],
+  // );
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
@@ -343,7 +369,7 @@ const BookNow = () => {
   };
   const handleBookNow = async () => {
     try {
-        showLoader()
+      showLoader();
       const bookingData = {
         hotelId: newhotelId,
         user: userId,
@@ -402,8 +428,8 @@ const BookNow = () => {
       }
     } catch (error) {
       console.error("Error booking:", error);
-    }finally{
-        hideLoader()
+    } finally {
+      hideLoader();
     }
   };
 
