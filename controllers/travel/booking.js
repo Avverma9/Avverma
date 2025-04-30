@@ -130,12 +130,29 @@ exports.getBookingsOfOwner = async (req, res) => {
         const { ownerId } = req.params;
         const ownerCars = await Car.find({ ownerId: ownerId });
         const carIds = ownerCars.map((car) => car._id);
+        
+        
         const bookings = await TravelBooking.find({ carId: { $in: carIds } });
 
-        res.status(200).json({
-            totalBookings: bookings.length,
-            bookings
-        });
+        const enrichedBookings = await Promise.all(
+            bookings.map(async (booking) => {
+                const car = await Car.findById(booking.carId).lean();
+
+                if (!car || !Array.isArray(car.seatConfig)) {
+                    return {
+                        ...booking.toObject(),
+                        availableSeatsOnCar: [],
+                    };
+                }
+
+                return {
+                    ...booking.toObject(),
+                    availableSeatsOnCar: car.seatConfig,
+                };
+            })
+        );
+
+        res.status(200).json(enrichedBookings);
     } catch (error) {
         console.error('Error fetching booking count:', error);
         res.status(500).json({ message: 'Server error' });

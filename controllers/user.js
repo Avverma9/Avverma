@@ -231,12 +231,31 @@ const findUser = async (req, res) => {
     }
 };
 
+
+const getAllUserBulkById = async (req, res) => {
+    try {
+        const { userIds } = req.body;
+
+        if (!Array.isArray(userIds) || userIds.length === 0) {
+            return res.status(400).json({ message: "userIds must be a non-empty array." });
+        }
+
+        const users = await userModel.find({ _id: { $in: userIds } }).select("name email _id");
+
+        res.status(200).json({ users });
+    } catch (error) {
+        console.error("Error fetching users by IDs:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
+
 module.exports = {
     createSignup,
     getUserById,
     signIn,
     GoogleSignIn,
     update,
+    getAllUserBulkById,
     getAllUsers,
     totalUser,
     findUser,
