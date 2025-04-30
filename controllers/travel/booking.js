@@ -1,4 +1,5 @@
 const TravelBooking = require("../../models/travel/booking");
+const carOwner = require("../../models/travel/carOwner");
 const Car = require("../../models/travel/cars");
 
 exports.bookCar = async (req, res) => {
@@ -53,27 +54,26 @@ exports.getTravelBookings = async (req, res) => {
 
         const enrichedBookings = await Promise.all(
             bookings.map(async (booking) => {
-                const car = await Car.findById(booking.carId);
-                if (!car) return { ...booking.toObject(), seatsData: [] };
+                const car = await Car.findById(booking.carId).lean();
 
-                // Filter seatConfig by matching IDs from booking
-                const seatsData = car.seatConfig.filter(seat =>
-                    booking.seats.some(seatId =>
-                        seat._id.toString() === seatId.toString()
-                    )
-                );
+                if (!car || !Array.isArray(car.seatConfig)) {
+                    return {
+                        ...booking.toObject(),
+                        availableSeatsOnCar: [],
+                    };
+                }
 
                 return {
                     ...booking.toObject(),
-                    seatsData, // actual seat info
+                    availableSeatsOnCar: car.seatConfig,
                 };
             })
         );
 
         res.status(200).json(enrichedBookings);
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
+        console.error("Error in getTravelBookings:", error);
+        res.status(500).json({
             message: 'Something went wrong',
             error: error.message,
         });
@@ -125,4 +125,19 @@ exports.updateBooking = async function (req, res) {
 };
 
 
+exports.getBookingsOfOwner = async (req, res) => {
+    try {
+        const { ownerId } = req.params;
+        const ownerCars = await Car.find({ ownerId: ownerId });
+        const carIds = ownerCars.map((car) => car._id);
+        const bookings = await TravelBooking.find({ carId: { $in: carIds } });
 
+        res.status(200).json({
+            totalBookings: bookings.length,
+            bookings
+        });
+    } catch (error) {
+        console.error('Error fetching booking count:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};

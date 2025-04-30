@@ -39,7 +39,7 @@ const travelBookingSchema = new mongoose.Schema({
   },
   seats: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true
     }
   ],
