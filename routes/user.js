@@ -12,6 +12,6 @@ router.post('/signIn/google', userController.GoogleSignIn);
 router.put('/update', upload, userController.update);
 router.get('/get/all-users-data/all-data', userController.getAllUsers);
 router.get('/get-total/user-details', userController.totalUser); // user count
-router.get('/get-user-data/in-bulk', userController.getAllUserBulkById)
+router.post('/get-user-data/in-bulk', userController.getAllUserBulkById)
 
 module.exports = router;

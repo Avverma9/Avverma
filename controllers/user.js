@@ -236,11 +236,7 @@ const getAllUserBulkById = async (req, res) => {
     try {
         const { userIds } = req.body;
 
-        if (!Array.isArray(userIds) || userIds.length === 0) {
-            return res.status(400).json({ message: "userIds must be a non-empty array." });
-        }
-
-        const users = await userModel.find({ _id: { $in: userIds } }).select("name email _id");
+        const users = await userModel.find({ userId: { $in: userIds } }).select("userName mobile");
 
         res.status(200).json({ users });
     } catch (error) {

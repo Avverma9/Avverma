@@ -89,11 +89,12 @@ const ApplyCoupon = async (req, res) => {
             finalAppliedRoomIds.push(selectedRoom.roomId);
             finalAppliedHotelIds.push(hotelId);
         }
+        console.log("here is applied room ids", finalAppliedRoomIds);
 
-        if (finalAppliedRoomIds.length === 0) {
+        if (finalAppliedRoomIds.length === 0 || !finalAppliedRoomIds) {
             return res.status(400).json({
                 message:
-                    "Coupon has already been applied to all eligible rooms in the selected hotels",
+                    "Coupon has already been applied to all eligible rooms",
             });
         }
 
