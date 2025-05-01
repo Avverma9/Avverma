@@ -15,9 +15,6 @@ const carSchema = new Schema({
   },
   vehicleNumber: {
     type: String,
-    required: true,
-    trim: true,
-    unique: true,
   },
   images: {
     type: [String],
