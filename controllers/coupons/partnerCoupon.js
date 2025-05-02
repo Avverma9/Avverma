@@ -23,19 +23,29 @@ const newCoupon = async (req, res) => {
 
 const ApplyCoupon = async (req, res) => {
   try {
-    const { hotelIds, roomIds = [], couponCode, userIds } = req.body;
+    const { hotelIds, roomIds = [], couponCode, userIds = [] } = req.body;
 
     const coupon = await PartnerCoupon.findOne({ couponCode });
     if (!coupon) {
       return res.status(404).json({ message: "Coupon code not found" });
     }
 
+    // Check expiry
     const currentIST = moment.tz("Asia/Kolkata");
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const currentDate = formattedIST.slice(0, -6) + "+00:00";
 
     if (currentDate > coupon.validity) {
       return res.status(400).json({ message: "Coupon code has expired" });
+    }
+
+    // ✅ Check usage limit
+    const currentUsage = (coupon.userIds || []).length;
+    const incomingUsage = userIds.length;
+    if (currentUsage + incomingUsage > coupon.quantity) {
+      return res
+        .status(400)
+        .json({ message: "Coupon usage limit exceeded" });
     }
 
     let discountDetails = [];
@@ -79,10 +89,11 @@ const ApplyCoupon = async (req, res) => {
         .json({ message: "No eligible rooms found for discount" });
     }
 
-    // ✅ Update coupon fields
-    coupon.userIds = [...new Set([...(coupon.userIds || []), userIds])]; // unique
-    coupon.roomId = [...(coupon.roomId || []), ...allRoomIds]; // duplicates allowed
-    coupon.hotelId = [...(coupon.hotelId || []), ...allHotelIds]; // duplicates allowed
+    // ✅ Append all values, including duplicates
+    coupon.userIds = [...(coupon.userIds || []), ...userIds];
+    coupon.roomId = [...(coupon.roomId || []), ...allRoomIds];
+    coupon.hotelId = [...(coupon.hotelId || []), ...allHotelIds];
+
     await coupon.save();
 
     return res.status(200).json(discountDetails);
@@ -91,7 +102,8 @@ const ApplyCoupon = async (req, res) => {
   }
 };
 
-const deleteCouponAutomatically = async () => {
+
+const deletePartnerCouponAutomatically = async () => {
   try {
     const moment = require("moment-timezone");
 
@@ -109,7 +121,7 @@ const deleteCouponAutomatically = async () => {
 };
 
 cron.schedule("* * * * *", async () => {
-  await deleteCouponAutomatically();
+  await deletePartnerCouponAutomatically();
 });
 
 const GetAllCoupons = async (req, res) => {

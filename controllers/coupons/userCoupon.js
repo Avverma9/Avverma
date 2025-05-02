@@ -23,55 +23,77 @@ const newUserCoupon = async (req, res) => {
 
 const ApplyUserCoupon = async (req, res) => {
   try {
-    const { hotelIds, roomIds = [], couponCode, userIds } = req.body;
+    const { hotelIds = [], roomIds = [], couponCode, userIds = [] } = req.body;
 
-    const coupon = await UserCoupon.findOne({ couponCode });
-    if (!coupon) return res.status(404).json({ message: "Coupon code not found" });
-
-    const alreadyUsedByUser = (coupon.usages || []).some(
-      (usage) => usage.userId === userIds
-    );
-    if (alreadyUsedByUser) {
-      return res.status(400).json({ message: "Coupon already used by you" });
+    // Basic validation
+    if (!couponCode || hotelIds.length === 0 || userIds.length === 0) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const currentIST = moment.tz("Asia/Kolkata");
-    const currentDate = currentIST.format("YYYY-MM-DDTHH:mm:ssZ");
-    if (currentDate > coupon.validity) {
+    // Fetch coupon
+    const coupon = await UserCoupon.findOne({ couponCode });
+    if (!coupon) {
+      return res.status(404).json({ message: "Coupon code not found" });
+    }
+
+    // Check if any user already used this coupon
+    const usedUserIds = (coupon.usages || []).map(usage => usage.userId.toString());
+    const alreadyUsed = userIds.filter(userId => usedUserIds.includes(userId.toString()));
+    if (alreadyUsed.length > 0) {
+      return res.status(400).json({
+        message: "One or more users have already used this coupon",
+        usedBy: alreadyUsed
+      });
+    }
+
+    // Check coupon expiration
+    const currentIST = moment().tz("Asia/Kolkata");
+    const couponExpiry = moment(coupon.validity);
+    if (currentIST.isAfter(couponExpiry)) {
       return res.status(400).json({ message: "Coupon code has expired" });
     }
 
-    let discountDetails = [];
-    let newUsages = [];
+    // Check coupon usage limit
+    const totalUsage = (coupon.usages || []).length;
+    if (totalUsage + 1 > coupon.quantity) {
+      return res.status(400).json({ message: "Coupon usage limit exceeded" });
+    }
+
+    // Apply coupon to eligible rooms
+    const discountDetails = [];
+    const newUsages = [];
 
     for (const hotelId of hotelIds) {
       const hotel = await hotelModel.findOne({ hotelId });
-      if (!hotel) continue;
+      if (!hotel || !Array.isArray(hotel.rooms)) continue;
 
-      const applicableRooms = hotel.rooms.filter(
+      const eligibleRooms = hotel.rooms.filter(
         (room) =>
           (roomIds.length === 0 || roomIds.includes(room.roomId)) &&
           room.isOffer !== true
       );
 
-      for (const room of applicableRooms) {
-        const discountedPrice = room.price - coupon.discountPrice;
+      for (const room of eligibleRooms) {
+        const finalPrice = Math.max(0, room.price - coupon.discountPrice);
 
         discountDetails.push({
           hotelId,
           roomId: room.roomId,
           originalPrice: room.price,
           discountPrice: coupon.discountPrice,
-          finalPrice: discountedPrice,
+          finalPrice,
         });
 
-        newUsages.push({
-          userId: userIds,
-          hotelId,
-          roomId: room.roomId,
+        // Add usage for all users
+        userIds.forEach(userId => {
+          newUsages.push({
+            userId,
+            hotelId,
+            roomId: room.roomId,
+          });
         });
 
-        break;
+        break; // Apply coupon to one room per hotel
       }
     }
 
@@ -79,14 +101,17 @@ const ApplyUserCoupon = async (req, res) => {
       return res.status(400).json({ message: "No eligible rooms found for discount" });
     }
 
+    // Save coupon usages
     coupon.usages = [...(coupon.usages || []), ...newUsages];
     await coupon.save();
 
-    res.status(200).json(discountDetails);
+    return res.status(200).json(discountDetails);
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error("Error applying coupon:", error);
+    return res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
+
 
 
 const deleteUserCouponAutomatically = async () => {
@@ -107,7 +132,7 @@ const deleteUserCouponAutomatically = async () => {
 };
 
 cron.schedule("* * * * *", async () => {
-  await deleteCouponAutomatically();
+  await deleteUserCouponAutomatically();
 });
 
 const GetAllUserCoupons = async (req, res) => {
