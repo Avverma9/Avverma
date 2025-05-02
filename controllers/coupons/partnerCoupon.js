@@ -23,43 +23,46 @@ const newCoupon = async (req, res) => {
 
 const ApplyCoupon = async (req, res) => {
   try {
-    const { hotelIds, roomIds = [], couponCode, userIds = [] } = req.body;
+    const { hotelIds = [], roomIds = [], couponCode, userIds = [] } = req.body;
 
     const coupon = await PartnerCoupon.findOne({ couponCode });
     if (!coupon) {
       return res.status(404).json({ message: "Coupon code not found" });
     }
 
-    // Check expiry
+    // Check expiration
     const currentIST = moment.tz("Asia/Kolkata");
-    const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
-    const currentDate = formattedIST.slice(0, -6) + "+00:00";
+    const isExpiredByDate = currentIST.isAfter(moment(coupon.validity));
+    const isManuallyExpired = coupon.expired === true;
 
-    if(coupon.userIds.includes[userIds]){
-      return res.status(400).json({ message: "Coupon already applied by you" });
-
-    }
-    if (currentDate > coupon.validity) {
+    if (isExpiredByDate || isManuallyExpired) {
       return res.status(400).json({ message: "Coupon code has expired" });
     }
-   
+
+    // Check usage limit
+    const totalUsage = coupon.userIds.length;
+    const remainingUses = coupon.quantity - totalUsage;
+
+    if (remainingUses <= 0) {
+      return res.status(400).json({ message: "Coupon usage limit exceeded" });
+    }
+
+    // Check if we're exceeding remaining quantity
+    if (userIds.length > remainingUses) {
+      return res.status(400).json({ message: `Only ${remainingUses} use(s) remaining for this coupon` });
+    }
+
     let discountDetails = [];
-    let allRoomIds = [];
-    let allHotelIds = [];
+    let usedRoomIds = [];
+    let usedHotelIds = [];
 
     for (const hotelId of hotelIds) {
       const hotel = await hotelModel.findOne({ hotelId });
       if (!hotel) continue;
 
-      let applicableRooms = [];
-
-      if (roomIds.length > 0) {
-        applicableRooms = hotel.rooms.filter(
-          (room) => roomIds.includes(room.roomId) && room.isOffer !== true,
-        );
-      } else {
-        applicableRooms = hotel.rooms.filter((room) => room.isOffer !== true);
-      }
+      let applicableRooms = roomIds.length > 0
+        ? hotel.rooms.filter(room => roomIds.includes(room.roomId) && room.isOffer !== true)
+        : hotel.rooms.filter(room => room.isOffer !== true);
 
       if (applicableRooms.length === 0) continue;
 
@@ -74,26 +77,27 @@ const ApplyCoupon = async (req, res) => {
         finalPrice: discountedPrice,
       });
 
-      allRoomIds.push(selectedRoom.roomId);
-      allHotelIds.push(hotelId);
+      usedRoomIds.push(selectedRoom.roomId);
+      usedHotelIds.push(hotelId);
     }
 
     if (discountDetails.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "No eligible rooms found for discount" });
+      return res.status(400).json({ message: "No eligible rooms found for discount" });
     }
 
-    // ✅ Append all values, including duplicates
-    coupon.userIds = [...(coupon.userIds || []), ...userIds];
-    coupon.roomId = [...(coupon.roomId || []), ...allRoomIds];
-    coupon.hotelId = [...(coupon.hotelId || []), ...allHotelIds];
+    // Append user IDs (allow reuse, just track usage)
+    coupon.userIds = [...coupon.userIds, ...userIds];
+
+    // Update related room and hotel IDs (no duplicates)
+    coupon.roomId = [...new Set([...(coupon.roomId || []), ...usedRoomIds])];
+    coupon.hotelId = [...new Set([...(coupon.hotelId || []), ...usedHotelIds])];
 
     await coupon.save();
 
     return res.status(200).json(discountDetails);
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error("ApplyCoupon error:", error);
+    return res.status(500).json({ success: false, error: error.message });
   }
 };
 
