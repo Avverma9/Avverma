@@ -5,7 +5,7 @@ const hotelModel = require("../../models/hotel/basicDetails");
 
 const newUserCoupon = async (req, res) => {
   try {
-    const { couponName, discountPrice, validity } = req.body;
+    const { couponName, discountPrice, validity, quantity } = req.body;
     const createdCoupon = await UserCoupon.create({
       couponName,
       discountPrice,
@@ -41,7 +41,7 @@ const ApplyUserCoupon = async (req, res) => {
       return res.status(400).json({ message: "Coupon has already been used" });
     }
 
-    const hotel = await hotelModel.findOne({ _id: { $in: hotelIds } });
+    const hotel = await hotelModel.findOne({ hotelId: { $in: hotelIds } });
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
@@ -57,7 +57,7 @@ const ApplyUserCoupon = async (req, res) => {
       const finalPrice = originalPrice - discountPrice;
 
       return {
-        hotelId: hotel._id,
+        hotelId: hotel.hotelId,
         roomId: room.roomId,
         userId,
         originalPrice,
@@ -66,15 +66,17 @@ const ApplyUserCoupon = async (req, res) => {
       };
     });
 
-    // Mark coupon as used
+    // Add userId, roomIds, and hotelId to coupon before marking it used
     coupon.userIds.push(userId);
+
+    // Ensure arrays are initialized before pushing
+    coupon.roomId = [...new Set([...(coupon.roomId || []), ...selectedRooms.map(r => r.roomId)])];
+    coupon.hotelId = [...new Set([...(coupon.hotelId || []), hotel._id.toString()])];
+
     coupon.expired = true;
     await coupon.save();
 
-    return res.status(200).json({
-      message: "Coupon applied successfully",
-      discountDetails
-    });
+    return res.status(200).json(discountDetails);
   } catch (error) {
     console.error("Error applying coupon:", error);
     return res.status(500).json({ message: "Internal server error" });

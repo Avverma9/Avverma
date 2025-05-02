@@ -25,7 +25,9 @@ const userCouponSchema = new mongoose.Schema({
   },
   discountPrice: {
     type: Number,
-  }
+  },
+  roomId: [String],
+  hotelId: [String],
 });
 
 // Middleware to generate a coupon code before saving
