@@ -5,7 +5,7 @@ const moment = require("moment");
 const generateCouponCode = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
-const userCouponSchema = new mongoose.Schema({
+const partnerCouponSchema = new mongoose.Schema({
   couponCode: {
     type: String,
     unique: true,
@@ -44,6 +44,6 @@ userCouponSchema.methods.isValid = function () {
 };
 
 // Create the model
-const UserCoupon = mongoose.model("UserCoupon", userCouponSchema);
+const PartnerCoupon = mongoose.model("PartnerCoupon", partnerCouponSchema);
 
-module.exports = UserCoupon;
+module.exports = PartnerCoupon;
