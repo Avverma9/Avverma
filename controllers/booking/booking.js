@@ -14,6 +14,7 @@ const createBooking = async (req, res) => {
       roomDetails,
       price,
       pm,
+      couponCode,
       bookingSource,
       hotelName,
       hotelEmail,
@@ -61,6 +62,7 @@ const createBooking = async (req, res) => {
       checkOutDate,
       guests,
       price,
+      couponCode,
       pm,
       bookingSource,
       destination,
@@ -98,7 +100,6 @@ const getTotalSell = async function (req, res) {
       },
     ]);
 
-    // Extract the totalSell value from the result
     const totalSell = result.length > 0 ? result[0].totalSell : 0;
 
     res.status(200).json({ totalSell });

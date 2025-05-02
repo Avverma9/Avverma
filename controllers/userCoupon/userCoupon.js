@@ -30,12 +30,6 @@ const ApplyCoupon = async (req, res) => {
       return res.status(404).json({ message: "Coupon code not found" });
     }
 
-    if ((coupon.userIds || []).includes(userIds)) {
-      return res
-        .status(400)
-        .json({ message: "Coupon already used by this user" });
-    }
-
     const currentIST = moment.tz("Asia/Kolkata");
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const currentDate = formattedIST.slice(0, -6) + "+00:00";
