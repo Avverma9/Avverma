@@ -35,19 +35,14 @@ const ApplyCoupon = async (req, res) => {
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const currentDate = formattedIST.slice(0, -6) + "+00:00";
 
+    if(coupon.userIds.includes[userIds]){
+      return res.status(400).json({ message: "Coupon already applied by you" });
+
+    }
     if (currentDate > coupon.validity) {
       return res.status(400).json({ message: "Coupon code has expired" });
     }
-
-    // ✅ Check usage limit
-    const currentUsage = (coupon.userIds || []).length;
-    const incomingUsage = userIds.length;
-    if (currentUsage + incomingUsage > coupon.quantity) {
-      return res
-        .status(400)
-        .json({ message: "Coupon usage limit exceeded" });
-    }
-
+   
     let discountDetails = [];
     let allRoomIds = [];
     let allHotelIds = [];

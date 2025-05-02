@@ -23,94 +23,64 @@ const newUserCoupon = async (req, res) => {
 
 const ApplyUserCoupon = async (req, res) => {
   try {
-    const { hotelIds = [], roomIds = [], couponCode, userIds = [] } = req.body;
+    const { hotelIds = [], roomIds = [], couponCode, userId } = req.body;
 
-    // Basic validation
-    if (!couponCode || hotelIds.length === 0 || userIds.length === 0) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    // Fetch coupon
     const coupon = await UserCoupon.findOne({ couponCode });
     if (!coupon) {
-      return res.status(404).json({ message: "Coupon code not found" });
+      return res.status(404).json({ message: "Coupon not found" });
     }
 
-    // Check if any user already used this coupon
-    const usedUserIds = (coupon.usages || []).map(usage => usage.userId.toString());
-    const alreadyUsed = userIds.filter(userId => usedUserIds.includes(userId.toString()));
-    if (alreadyUsed.length > 0) {
-      return res.status(400).json({
-        message: "One or more users have already used this coupon",
-        usedBy: alreadyUsed
-      });
-    }
-
-    // Check coupon expiration
     const currentIST = moment().tz("Asia/Kolkata");
     const couponExpiry = moment(coupon.validity);
-    if (currentIST.isAfter(couponExpiry)) {
-      return res.status(400).json({ message: "Coupon code has expired" });
+
+    if (currentIST.isAfter(couponExpiry) || coupon.expired === true) {
+      return res.status(400).json({ message: "Coupon code has expired or already used" });
     }
 
-    // Check coupon usage limit
-    const totalUsage = (coupon.usages || []).length;
-    if (totalUsage + 1 > coupon.quantity) {
-      return res.status(400).json({ message: "Coupon usage limit exceeded" });
+    if (coupon.userIds.length > 0) {
+      return res.status(400).json({ message: "Coupon has already been used" });
     }
 
-    // Apply coupon to eligible rooms
-    const discountDetails = [];
-    const newUsages = [];
-
-    for (const hotelId of hotelIds) {
-      const hotel = await hotelModel.findOne({ hotelId });
-      if (!hotel || !Array.isArray(hotel.rooms)) continue;
-
-      const eligibleRooms = hotel.rooms.filter(
-        (room) =>
-          (roomIds.length === 0 || roomIds.includes(room.roomId)) &&
-          room.isOffer !== true
-      );
-
-      for (const room of eligibleRooms) {
-        const finalPrice = Math.max(0, room.price - coupon.discountPrice);
-
-        discountDetails.push({
-          hotelId,
-          roomId: room.roomId,
-          originalPrice: room.price,
-          discountPrice: coupon.discountPrice,
-          finalPrice,
-        });
-
-        // Add usage for all users
-        userIds.forEach(userId => {
-          newUsages.push({
-            userId,
-            hotelId,
-            roomId: room.roomId,
-          });
-        });
-
-        break; // Apply coupon to one room per hotel
-      }
+    const hotel = await hotelModel.findOne({ _id: { $in: hotelIds } });
+    if (!hotel) {
+      return res.status(404).json({ message: "Hotel not found" });
     }
 
-    if (discountDetails.length === 0) {
-      return res.status(400).json({ message: "No eligible rooms found for discount" });
+    const selectedRooms = hotel.rooms.filter(room => roomIds.includes(String(room.roomId)));
+    if (selectedRooms.length === 0) {
+      return res.status(404).json({ message: "No matching rooms found" });
     }
 
-    // Save coupon usages
-    coupon.usages = [...(coupon.usages || []), ...newUsages];
+    const discountDetails = selectedRooms.map(room => {
+      const originalPrice = room.price;
+      const discountPrice = coupon.discountPrice;
+      const finalPrice = originalPrice - discountPrice;
+
+      return {
+        hotelId: hotel._id,
+        roomId: room.roomId,
+        userId,
+        originalPrice,
+        discountPrice,
+        finalPrice,
+      };
+    });
+
+    // Mark coupon as used
+    coupon.userIds.push(userId);
+    coupon.expired = true;
     await coupon.save();
 
-    return res.status(200).json(discountDetails);
+    return res.status(200).json({
+      message: "Coupon applied successfully",
+      discountDetails
+    });
   } catch (error) {
     console.error("Error applying coupon:", error);
-    return res.status(500).json({ message: "Internal server error", error: error.message });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 
@@ -122,7 +92,7 @@ const deleteUserCouponAutomatically = async () => {
     const formattedIST = currentIST.format("YYYY-MM-DDTHH:mm:ss.SSSZ");
     const utcFormatted = formattedIST.slice(0, -6) + "+00:00";
 
-    const result = await PartnerCoupon.deleteMany({
+    const result = await UserCoupon.deleteMany({
       expired: false,
       validity: { $lte: utcFormatted },
     });

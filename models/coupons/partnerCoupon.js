@@ -31,7 +31,7 @@ const partnerCouponSchema = new mongoose.Schema({
 });
 
 // Middleware to generate a coupon code before saving
-userCouponSchema.pre("save", function (next) {
+partnerCouponSchema.pre("save", function (next) {
   if (!this.couponCode) {
     this.couponCode = generateCouponCode();
   }
@@ -39,7 +39,7 @@ userCouponSchema.pre("save", function (next) {
 });
 
 // Method to check if the coupon is still valid
-userCouponSchema.methods.isValid = function () {
+partnerCouponSchema.methods.isValid = function () {
   return moment().isBefore(moment(this.validity));
 };
 
