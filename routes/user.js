@@ -13,5 +13,6 @@ router.put('/update', upload, userController.update);
 router.get('/get/all-users-data/all-data', userController.getAllUsers);
 router.get('/get-total/user-details', userController.totalUser); // user count
 router.post('/get-user-data/in-bulk', userController.getAllUserBulkById)
+router.get("/get-all-users-booking-details/full-details",userController.getAllUserDetails)
 
 module.exports = router;

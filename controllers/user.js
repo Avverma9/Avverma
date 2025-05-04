@@ -1,3 +1,4 @@
+const booking = require('../models/booking/booking');
 const userModel = require('../models/user');
 const jwt = require('jsonwebtoken'); // Import the JWT library
 require('dotenv').config(); // Load environment variables
@@ -245,6 +246,54 @@ const getAllUserBulkById = async (req, res) => {
     }
 };
 
+
+const getAllUserDetails= async (req, res) => {
+    try {
+        const users = await userModel.find();
+
+        if (!users || users.length === 0) {
+            return res.status(404).json({ message: "No users found" });
+        }
+
+        const userData = await Promise.all(
+            users.map(async (user) => {
+                const bookings = await booking.find(
+                    { 'user.userId': user.userId },
+                    {
+                        _id: 0,
+                        bookingId: 1,
+                        checkInDate: 1,
+                        checkOutDate: 1,
+                        bookingStatus: 1,
+                        price: 1,
+                        roomDetails: 1,
+                        hotelDetails: {
+                            hotelName: 1,
+                            hotelCity: 1,
+                            hotelEmail: 1
+                        }
+                    }
+                );
+
+                return {
+                    userId: user.userId,
+                    name: user.userName,
+                    email: user.email,
+                    mobile: user.mobile,
+                    profile: user?.images,
+                    address:user?.address,
+                    bookings: bookings
+                };
+            })
+        );
+
+        res.status(200).json(userData);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
 module.exports = {
     createSignup,
     getUserById,
@@ -255,4 +304,5 @@ module.exports = {
     getAllUsers,
     totalUser,
     findUser,
+    getAllUserDetails
 };
