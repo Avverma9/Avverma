@@ -2,8 +2,8 @@ const month = require("../../models/booking/monthly");
 
 const newMonth = async (req, res) => {
   try {
-    const { hotelId ,roomId } = req.params;
-    const { startDate, endDate,monthPrice } = req.body;
+    const { hotelId, roomId } = req.params;
+    const { startDate, endDate, monthPrice } = req.body;
 
     // Use the correct property names when creating the document
     const createdPrice = await month.create({
@@ -50,5 +50,23 @@ const deleteMonth = async (req, res) => {
     console.error("Internal Server error ");
   }
 };
+
+const autoDelete = async (req, res) => {
+  try {
+    const currentDate = Date.now();
+    const result = await month.deleteMany({ endDate: { $lt: currentDate } });
+    res.status(200).json({ message: "Old data deleted successfully", deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while deleting data", details: error.message });
+  }
+};
+cron.schedule('0 0 * * *', async () => {
+  try {
+    await autoDelete();
+    console.log('autoDelete ran successfully');
+  } catch (error) {
+    console.error('autoDelete failed:', error.message);
+  }
+});
 
 module.exports = { newMonth, getPriceByHotelId, deleteMonth };
