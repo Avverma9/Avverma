@@ -1,5 +1,6 @@
 const month = require("../../models/booking/monthly");
-
+const basicDetails = require("../../models/hotel/basicDetails");
+const cron = require('node-cron')
 const newMonth = async (req, res) => {
   try {
     const { hotelId, roomId } = req.params;
@@ -28,18 +29,39 @@ const getPriceByHotelId = async function (req, res) {
   try {
     const monthlyPrices = await month.find({ hotelId }).exec();
 
-    if (!monthlyPrices) {
+    if (!monthlyPrices || monthlyPrices.length === 0) {
       return res
         .status(404)
         .json({ error: "No monthly prices found for the specified hotelId" });
     }
 
-    return res.status(200).json(monthlyPrices);
+    const roomIds = monthlyPrices.map(price => price.roomId);
+    const hotel = await basicDetails.findOne({ hotelId });
+
+    if (!hotel) {
+      return res.status(404).json({ error: "Hotel not found" });
+    }
+
+    const matchedRooms = hotel.rooms.filter(room =>
+      roomIds.includes(room.roomId)
+    );
+
+    // Merge price data with room details
+    const combinedData = monthlyPrices.map(price => {
+      const roomInfo = matchedRooms.find(room => room.roomId === price.roomId);
+      return {
+        ...price.toObject(), // convert Mongoose doc to plain object
+        roomInfo: roomInfo.type
+      };
+    });
+
+    return res.status(200).json(combinedData);
   } catch (error) {
     console.error("Error fetching monthly prices:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 const deleteMonth = async (req, res) => {
   try {
