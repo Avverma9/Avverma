@@ -25,7 +25,11 @@ const ApplyUserCoupon = async (req, res) => {
   try {
     const { hotelId, roomId, couponCode, userId } = req.body;
 
-    // Fetch the coupon using the couponCode
+    if (!hotelId || !roomId || !couponCode || !userId) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Fetch coupon by couponCode
     const coupon = await UserCoupon.findOne({ couponCode });
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
@@ -34,58 +38,51 @@ const ApplyUserCoupon = async (req, res) => {
     const currentIST = moment().tz("Asia/Kolkata");
     const couponExpiry = moment(coupon.validity);
 
-    // Check if the coupon is expired or already used
     if (currentIST.isAfter(couponExpiry) || coupon.expired === true) {
-      return res.status(400).json({ message: "Coupon code has expired or already used" });
+      return res.status(400).json({ message: "Coupon has expired or already used" });
     }
 
-    // Check if the coupon has already been used by the user
-    if (coupon.userId.includes(userId)) {
-      return res.status(400).json({ message: "Coupon has already been used by this user" });
+    // Ensure user hasn't used the coupon before
+    if (coupon.userId.includes(String(userId))) {
+      return res.status(400).json({ message: "Coupon already used by this user" });
     }
 
-    // Find the hotel by hotelId (ensure hotelId is a string in the comparison)
-    const hotel = await hotelModel.findOne({ hotelId });
+    // Find hotel by hotelId
+    const hotel = await hotelModel.findOne({ hotelId: String(hotelId) });
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    // Ensure roomId is a string and filter the rooms by the provided roomId
-    const selectedRoom = hotel.rooms.find(room => String(room.roomId) === String(roomId));
+    // Find the specific room
+    const selectedRoom = hotel.rooms.find(
+      room => String(room.roomId) === String(roomId)
+    );
+
     if (!selectedRoom) {
-      return res.status(404).json({ message: "No matching room found" });
+      return res.status(404).json({ message: "Room not found in the specified hotel" });
     }
 
-    // Calculate the discount for the selected room
     const originalPrice = selectedRoom.price;
     const discountPrice = coupon.discountPrice;
     const finalPrice = originalPrice - discountPrice;
 
-    const discountDetails = {
-      hotelId: hotel.hotelId,
-      roomId: selectedRoom.roomId,
-      userId,
+    // Update coupon details
+    coupon.userId.push(String(userId));
+    coupon.hotelId = String(hotelId);
+    coupon.roomId = String(roomId);
+    coupon.expired = true;
+
+    await coupon.save();
+
+    return res.status(200).json({
+      hotelId: String(hotelId),
+      roomId: String(roomId),
+      userId: String(userId),
       originalPrice,
       discountPrice,
-      finalPrice,
-    };
+      finalPrice
+    });
 
-    // Update the coupon's used details
-    coupon.userId.push(userId); // Add userId to the list of users who used the coupon
-
-    // Since coupon.hotelId and coupon.roomId are single string values, we check and update them
-    if (String(coupon.hotelId) !== String(hotelId)) {
-      coupon.hotelId = hotelId; // Update the hotelId if it's not the same
-    }
-
-    if (String(coupon.roomId) !== String(roomId)) {
-      coupon.roomId = roomId; // Update the roomId if it's not the same
-    }
-
-    coupon.expired = true; // Mark the coupon as expired
-    await coupon.save(); // Save the coupon with the updated details
-
-    return res.status(200).json(discountDetails);
   } catch (error) {
     console.error("Error applying coupon:", error);
     return res.status(500).json({ message: "Internal server error" });

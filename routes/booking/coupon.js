@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router();
-const couponController = require('../../controllers/booking/coupon')
+const couponController = require('../../controllers/booking/partnerCoupon')
 router.post("/coupon/create-a-new/coupon", couponController.newCoupon);           // on panel
 router.patch(
   "/apply/a/coupon-to-room",
