@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import baseURL from '../../utils/baseURL';
 import axios from 'axios';
-import { Button, makeStyles, TextareaAutosize } from '@material-ui/core';
+// import { Button, makeStyles, TextareaAutosize } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
+import { Button,TextareaAutosize} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
     form: {

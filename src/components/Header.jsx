@@ -1,171 +1,177 @@
-import React from 'react';
-import { FaSuitcase, FaBuilding, FaPhoneAlt, FaUser } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Header.css'; // Ensure to include the CSS file for styles
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import { MdOutlineTravelExplore } from 'react-icons/md';
-import IconButton from '@mui/material/IconButton';
+import React, { useState } from 'react';
+import {
+    AppBar,
+    Toolbar,
+    IconButton,
+    Typography,
+    Collapse,
+    Box,
+    Avatar,
+    Menu,
+    MenuItem,
+    ListItemIcon,
+    useMediaQuery,
+    Tooltip,
+    Button
+} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import HomeIcon from '@mui/icons-material/Home';
-import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Logout from '@mui/icons-material/Logout';
-import { useLocation } from 'react-router-dom'; // Import the useLocation hook
+import LogoutIcon from '@mui/icons-material/Logout';
+import PersonIcon from '@mui/icons-material/Person';
+import BusinessIcon from '@mui/icons-material/Business';
+import PhoneIcon from '@mui/icons-material/Phone';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import { useTheme } from '@mui/material/styles';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [menuAnchor, setMenuAnchor] = useState(null);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const open = Boolean(menuAnchor);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const location = useLocation();
-    const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    const isLoggedIn = localStorage.getItem('isSignedIn');
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const logoClick = () => {
-        window.location.href = '/';
-        handleClose();
-    };
-
-    const handleLoginLogout = () => {
-        localStorage.clear();
-        window.location.href = '/login';
-        handleClose();
-    };
+    const handleMenuOpen = (e) => setMenuAnchor(e.currentTarget);
+    const handleMenuClose = () => setMenuAnchor(null);
 
     const handleRedirect = (path) => {
         window.location.href = path;
-        handleClose();
+        handleMenuClose();
+        setMobileMenuOpen(false);
     };
 
-    if (location.pathname === '/login' || location.pathname === '/register') {
-        return null;
-    }
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.href = '/login';
+        handleMenuClose();
+    };
 
-    const handleAuth = localStorage.getItem('isSignedIn', true);
+    if (['/login', '/register'].includes(location.pathname)) return null;
+
+    const navLinks = [
+        { text: 'Holidays', icon: <TravelExploreIcon />, path: '/travellers' },
+        { text: 'List Property', icon: <BusinessIcon />, path: '/partner' },
+        { text: 'Travel Partner', icon: <BusinessIcon />, path: '/travel-partner' },
+        { text: 'Call: 9917991758', icon: <PhoneIcon />, path: null },
+    ];
 
     return (
-        <header className="header d-flex align-items-center justify-content-between p-3 border-bottom">
-            <div className="logo">
-                <img
-                    onClick={logoClick}
-                    src="/logo.png"
-                    alt="Hotel Roomsstay"
-                    className="img-fluid"
-                />
-            </div>
-            <nav className="d-flex align-items-center">
-                <div className="nav-item mx-1 d-none d-md-flex flex-column align-items-center">
-                    <a href="/travellers" className="nav-link text-dark">
-                        <MdOutlineTravelExplore size={24} />
-                        <br />
-                        Holidays
-                        <br />
-                        <small className="text-muted">Check our holiday packages</small>
-                    </a>
-                </div>
-                <div className="separator"></div>
-                <div className="nav-item mx-1 d-none d-md-flex flex-column align-items-center">
-                    <FaBuilding size={24} />
-                    <a href="/partner" className="nav-link text-dark">
-                        List your property
-                    </a>
-                    <small className="text-muted">Start earning in 30 mins</small>
-                </div>
-                <div className="separator"></div>
-                <div className="nav-item mx-1 d-flex flex-column align-items-center">
-                    <FaPhoneAlt size={24} />
-                    <span className="nav-link text-dark">9917991758</span>
-                    <small className="text-muted">Call us to Book now</small>
-                </div>
-                <div className="separator"></div>
-                <div className="nav-item mx-1 dropdown d-flex align-items-center">
-                    <Tooltip title="Account settings">
-                        <IconButton
-                            onClick={handleClick}
-                            size="small"
-                            sx={{ ml: 12 }}
-                            aria-controls={open ? 'account-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
+        <>
+            <AppBar position="static" color="default" elevation={1}>
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
+                    {/* Logo */}
+                    <Box onClick={() => handleRedirect('/')} sx={{ cursor: 'pointer' }}>
+                        <img src="/logo.png" alt="Logo" height={40} />
+                    </Box>
+
+                    {/* Right Side */}
+                    <Box display="flex" alignItems="center">
+                        {isMobile ? (
+                            <IconButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+                                <MenuIcon />
+                            </IconButton>
+                        ) : (
+                            navLinks.map((link, idx) => (
+                                <Button
+                                    key={idx}
+                                    onClick={() => link.path && handleRedirect(link.path)}
+                                    startIcon={link.icon}
+                                    sx={{
+                                        color: 'black',
+                                        fontWeight: 'bold',
+                                        textTransform: 'none',
+                                        mx: 1,
+                                    }}
+                                >
+                                    {link.text}
+                                </Button>
+
+                            ))
+                        )}
+
+                        {/* Avatar Menu */}
+                        <Tooltip title="Account Settings">
+                            <IconButton onClick={handleMenuOpen}>
+                                <Avatar>
+                                    <PersonIcon />
+                                </Avatar>
+                            </IconButton>
+                        </Tooltip>
+                        <Menu
+                            anchorEl={menuAnchor}
+                            open={open}
+                            onClose={handleMenuClose}
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                            PaperProps={{
+                                elevation: 3,
+                                sx: {
+                                    border: '1px solid #e0e0e0',
+                                    borderRadius: 2,
+                                    backgroundColor: '#ffffff',
+                                    minWidth: 180,
+                                    mt: 1.5,
+                                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
+                                    '& .MuiMenuItem-root': {
+                                        fontWeight: 500,
+                                        color: '#333',
+                                        '&:hover': {
+                                            backgroundColor: '#f5f5f5',
+                                            color: '#1976d2',
+                                        },
+                                    },
+                                    '& .MuiListItemIcon-root': {
+                                        color: '#1976d2',
+                                        minWidth: '36px',
+                                    },
+                                },
+                            }}
                         >
-                            <Avatar sx={{ width: 32, height: 32 }}>
-                                <FaUser />
-                            </Avatar>
-                        </IconButton>
-                    </Tooltip>
-                    <Menu
-                        anchorEl={anchorEl}
-                        id="account-menu"
-                        open={open}
-                        onClose={handleClose}
-                        onClick={handleClose}
-                        PaperProps={{
-                            elevation: 0,
-                            sx: {
-                                overflow: 'visible',
-                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                mt: 1.5,
-                                '& .MuiAvatar-root': {
-                                    width: 32,
-                                    height: 32,
-                                    padding: 2,
-                                    ml: -0.5,
-                                    mr: 1,
-                                },
-                                '&::before': {
-                                    content: '""',
-                                    display: 'block',
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 14,
-                                    width: 10,
-                                    height: 10,
-                                    bgcolor: 'background.paper',
-                                    transform: 'translateY(-50%) rotate(45deg)',
-                                    zIndex: 0,
-                                },
-                            },
-                        }}
-                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                    >
-                        <MenuItem onClick={() => handleRedirect('/profile')}>
-                            <Avatar /> Profile
-                        </MenuItem>
-                        <MenuItem onClick={() => handleRedirect('/')}>
-                            <ListItemIcon>
-                                <HomeIcon fontSize="small" />
-                            </ListItemIcon>
-                            Home
-                        </MenuItem>
-                        <MenuItem onClick={() => handleRedirect('/partner')}>
-                            <ListItemIcon>
-                                <PersonAdd fontSize="small" />
-                            </ListItemIcon>
-                            Hotel Partner
-                        </MenuItem>
-                        <MenuItem onClick={() => handleRedirect('/travel-partner')}>
-                            <ListItemIcon>
-                                <PersonAdd fontSize="small" />
-                            </ListItemIcon>
-                            Travel Partner
-                        </MenuItem>
-                        <MenuItem onClick={handleLoginLogout}>
-                            <ListItemIcon>
-                                <Logout fontSize="small" />
-                            </ListItemIcon>
-                            {handleAuth && handleAuth ? 'Logout' : 'Login'}
-                        </MenuItem>
-                    </Menu>
-                </div>
-            </nav>
-        </header>
+                            <MenuItem onClick={() => handleRedirect('/profile')}>
+                                <ListItemIcon>
+                                    <PersonIcon fontSize="small" />
+                                </ListItemIcon>
+                                Profile
+                            </MenuItem>
+                            <MenuItem onClick={() => handleRedirect('/')}>
+                                <ListItemIcon>
+                                    <HomeIcon fontSize="small" />
+                                </ListItemIcon>
+                                Home
+                            </MenuItem>
+                            <MenuItem onClick={handleLogout}>
+                                <ListItemIcon>
+                                    <LogoutIcon fontSize="small" />
+                                </ListItemIcon>
+                                {isLoggedIn ? 'Logout' : 'Login'}
+                            </MenuItem>
+                        </Menu>
+
+                    </Box>
+                </Toolbar>
+            </AppBar>
+
+            {/* Slide-down mobile menu */}
+            {isMobile && (
+                <Collapse in={mobileMenuOpen} timeout="auto" unmountOnExit>
+                    <Box sx={{ bgcolor: '#f5f5f5', px: 2, py: 1 }}>
+                        {navLinks.map((link, idx) => (
+                            <Box
+                                key={idx}
+                                onClick={() => link.path && handleRedirect(link.path)}
+                                sx={{ display: 'flex', alignItems: 'center', py: 1, cursor: 'pointer' }}
+                            >
+                                {link.icon}
+                                <Typography sx={{ ml: 1 }}>{link.text}</Typography>
+                            </Box>
+                        ))}
+                    </Box>
+                </Collapse>
+            )}
+        </>
     );
 };
 

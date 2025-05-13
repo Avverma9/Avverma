@@ -7,7 +7,7 @@ import { useLoader } from '../../utils/loader';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import axios from 'axios';
-import { Button, Input, makeStyles } from '@material-ui/core';
+import { Button, Input } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import baseURL from '../../utils/baseURL';
@@ -17,6 +17,7 @@ import NearMeIcon from '@mui/icons-material/NearMe';
 import { categories, termsArray } from '../../utils/extrasList';
 import alert from '../../utils/custom_alert/custom_alert';
 import Disclaimer from './Disclaimer';
+import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
@@ -24,17 +25,17 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '1400px',
         margin: 'auto',
         border: '5px solid blue', // Add border style here
-        padding: theme.spacing(3),
-        marginTop: theme.spacing(4),
+        padding: theme?.spacing(3),
+        marginTop: theme?.spacing(4),
     },
     textarea: {
         width: '100%', // Set the width as per your design
         minHeight: '100px', // Set the height as per your design
-        padding: theme.spacing(1),
+        padding: theme?.spacing(1),
         resize: 'vertical', // Allow vertical resizing
     },
     input: {
-        marginBottom: theme.spacing(2),
+        marginBottom: theme?.spacing(2),
     },
 }));
 

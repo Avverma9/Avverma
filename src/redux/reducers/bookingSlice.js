@@ -21,7 +21,7 @@ export const fetchMonthlyData = createAsyncThunk('booking/fetchMonthlyData', asy
     try {
         const response = await fetch(`${baseURL}/monthly-set-room-price/get/by/${hotelId}`);
         if (response.status !== 200) {
-            throw new Error('Failed to fetch month data');
+            return rejectWithValue('Failed to fetch monthly data');
         }
         const data = await response.json();
 
@@ -100,7 +100,6 @@ const bookingSlice = createSlice({
             .addCase(fetchMonthlyData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                alert('Failed to fetch monthly data');
             });
     },
 });
