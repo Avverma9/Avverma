@@ -43,7 +43,7 @@ const ApplyUserCoupon = async (req, res) => {
     }
 
     // Ensure user hasn't used the coupon before
-    if (coupon.userId.includes(String(userId))) {
+    if (coupon.userId) {
       return res.status(400).json({ message: "Coupon already used by this user" });
     }
 
@@ -67,7 +67,7 @@ const ApplyUserCoupon = async (req, res) => {
     const finalPrice = originalPrice - discountPrice;
 
     // Update coupon details
-    coupon.userId.push(String(userId));
+    coupon.userId=(String(userId));
     coupon.hotelId = String(hotelId);
     coupon.roomId = String(roomId);
     coupon.expired = true;
