@@ -140,7 +140,7 @@ const BookNow = () => {
       );
     });
   };
-
+  const discountPrice = Number(sessionStorage.getItem("discountPrice") || 0);
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     // Calculate room price
@@ -161,10 +161,7 @@ const BookNow = () => {
     }
     totalPrice *= daysDifference; // Multiply by the number of days
     totalPrice += foodPrice; // Add food price
-    if (sessionStorage.getItem("discountPrice")) {
-      const discountPrice = sessionStorage.getItem("discountPrice");
-      totalPrice -= discountPrice; // Subtract discount price
-    }
+    // Subtract discount price
     monthlyData?.forEach((bookingData) => {
       const startDate = new Date(bookingData.startDate);
       const endDate = new Date(bookingData.endDate);
@@ -337,6 +334,9 @@ const BookNow = () => {
       setRoomsCount(newRoomsCount);
     }
   };
+  const finalPrice = calculateTotalPrice() - discountPrice;
+  console.log("Final Price:", finalPrice);
+
   const handleBookNow = async () => {
     try {
       showLoader();
@@ -359,7 +359,7 @@ const BookNow = () => {
           price: food.price,
           quantity: food.quantity,
         })),
-        price: calculateTotalPrice(),
+        price: finalPrice,
         pm: "Offline",
         bookingSource: "Site",
         destination: hotelData.city,
@@ -391,7 +391,10 @@ const BookNow = () => {
                 bookedDetails?.data?.checkOutDate,
               )}`,
           );
-          sessionStorage.removeItem("discountPrice");
+          setInterval(() => {
+            sessionStorage.removeItem("discountPrice");
+          }, 2000);
+          window.location.reload();
         }
         console.log("Booking response:", JSON.stringify(response.json));
       } else {
