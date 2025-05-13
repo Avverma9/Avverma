@@ -8,6 +8,6 @@ body {
 }
 
 #root {
-  padding: 16px 24px; /* Adds left & right padding for the whole app */
+  padding: 5px 10px;
   box-sizing: border-box;
 }

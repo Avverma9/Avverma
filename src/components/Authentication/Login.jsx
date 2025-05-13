@@ -4,7 +4,6 @@ import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Checkbox from '@mui/joy/Checkbox';
 import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
@@ -22,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import LinearProgress from '@mui/material/LinearProgress';
 import baseURL from '../../utils/baseURL';
+import { Button } from '@mui/material';
 
 function ColorSchemeToggle(props) {
     const { onClick, ...other } = props;

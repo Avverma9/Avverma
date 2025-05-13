@@ -31,7 +31,6 @@ import { FaBed, FaWifi } from "react-icons/fa";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
-import Button from "@mui/joy/Button";
 import "./Booknow.css";
 import baseURL from "../../utils/baseURL";
 import Policies from "./policies";
@@ -46,12 +45,13 @@ import {
 import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
 import axios from "axios";
-import { Divider, Grid } from "@mui/material";
+import { Button, Divider, Grid } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { popup } from "../../utils/custom_alert/pop";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import { token } from "../../utils/Unauthorized";
 import { toast } from "react-toastify";
+import { StarHalfSharp } from "@mui/icons-material";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -412,14 +412,14 @@ const BookNow = () => {
         if (response.status === 201) {
           popup(
             `🎉 Congratulations! Your booking is confirmed.\n` +
-            `For more details go for profile section and select bookings\n\n` +
-            `📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-            `📅 Check-in Date: ${formatDateWithOrdinal(
-              bookedDetails?.data?.checkInDate,
-            )}\n` +
-            `📅 Check-out Date: ${formatDateWithOrdinal(
-              bookedDetails?.data?.checkOutDate,
-            )}`,
+              `For more details go for profile section and select bookings\n\n` +
+              `📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
+              `📅 Check-in Date: ${formatDateWithOrdinal(
+                bookedDetails?.data?.checkInDate,
+              )}\n` +
+              `📅 Check-out Date: ${formatDateWithOrdinal(
+                bookedDetails?.data?.checkOutDate,
+              )}`,
           );
         }
         console.log("Booking response:", JSON.stringify(response.json));
@@ -516,6 +516,38 @@ const BookNow = () => {
     <div className="book-now-container">
       {hotelData ? (
         <>
+          <Box display="flex" alignItems="center" marginBottom="10px">
+            <span
+              style={{
+                fontSize: "1.5rem",
+                color: "grey",
+                fontWeight: "bold",
+                marginRight: "10px", // gap between hotel name and rating
+              }}
+            >
+              {hotelData?.hotelName}
+            </span>
+
+            <span
+              style={{
+                backgroundColor: "#008009", // Green background like OYO
+                color: "white",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                padding: "2px 4px",
+              }}
+            >
+              <StarHalfSharp />
+              {hotelData?.starRating}
+            </span>
+          </Box>
+          <div className="hotel-address">
+            <p>
+              <PlaceIcon />
+              {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
+              {hotelData?.pinCode}
+            </p>
+          </div>
           {hotelData?.images && (
             <Carousel>
               {hotelData?.images?.map((image, index) => (
@@ -536,20 +568,20 @@ const BookNow = () => {
               mainSrc={hotelData.images[currentImageIndex]}
               nextSrc={
                 hotelData.images[
-                (currentImageIndex + 1) % hotelData.images.length
+                  (currentImageIndex + 1) % hotelData.images.length
                 ]
               }
               prevSrc={
                 hotelData.images[
-                (currentImageIndex + hotelData.images.length - 1) %
-                hotelData.images.length
+                  (currentImageIndex + hotelData.images.length - 1) %
+                    hotelData.images.length
                 ]
               }
               onCloseRequest={() => setIsOpen(false)}
               onMovePrevRequest={() =>
                 setCurrentImageIndex(
                   (currentImageIndex + hotelData.images.length - 1) %
-                  hotelData.images.length,
+                    hotelData.images.length,
                 )
               }
               onMoveNextRequest={() =>
@@ -571,29 +603,7 @@ const BookNow = () => {
                 </div>
               </div>
             </div>
-
             <h5 className="hotel-name">
-              <span
-                style={{
-                  fontSize: "2.0rem",
-                  marginRight: "10px",
-                  color: "green",
-                }}
-              >
-                {hotelData?.hotelName}
-              </span>
-              <Box
-                key={hotelData._id}
-                sx={{
-                  "& > legend": { mt: 2 },
-                }}
-              >
-                <Rating
-                  name="hotel-rating"
-                  value={hotelData?.starRating}
-                  readOnly
-                />
-              </Box>
               {roomToShow?.offerPriceLess > 0 ? (
                 <>
                   <del>
@@ -639,15 +649,6 @@ const BookNow = () => {
                 </p>
               )}
             </h5>
-            <div className="hotel-address">
-              <p>
-                <PlaceIcon />
-                {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
-                {hotelData?.pinCode}
-              </p>
-            </div>
-
-
             <p>{hotelData?.description}</p>
           </div>{" "}
           {hotelData?.policies?.map((policy, index) => (
