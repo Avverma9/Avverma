@@ -48,7 +48,21 @@ export const fetchFilteredBooking = createAsyncThunk(
         }
     }
 );
-
+export const applyCouponCode = createAsyncThunk(
+    'booking/applyCouponCode',
+    async (payload, { rejectWithValue }) => {
+      try {
+        const response = await axios.patch(`${baseURL}/user-coupon/apply/a/coupon-to-room/user`, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        return response.data;
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    }
+  );
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {

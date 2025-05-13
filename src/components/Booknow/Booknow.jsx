@@ -141,64 +141,35 @@ const BookNow = () => {
     });
   };
 
-  // const handleApplyCoupon = useCallback(
-  //   async (hotelId, roomId) => {
-  //     showLoader();
-  //     try {
-  //       const url = `${localUrl}/user-coupon/apply/a/coupon-to-room`;
-
-  //       const response = await axios.patch(url, payload, {
-  //         headers: {
-  //           Authorization: token,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //     } catch (error) {
-  //       console.error("Error in applyCoupon thunk:", error);
-  //       const errorMessage = error.response?.data?.message || error.message;
-  //       toast.error(`Error: ${errorMessage}`);
-  //       return rejectWithValue(error.response?.data || errorMessage);
-  //     }
-  //   },
-
-  //   [dispatch, showLoader, hideLoader, couponCode],
-  // );
-
   const calculateTotalPrice = () => {
     let totalPrice = 0;
-
     // Calculate room price
     selectedRooms?.forEach((room) => {
       totalPrice += room.price * roomsCount;
     });
-
     // Calculate food price
     const foodPrice = selectedFood.reduce(
       (total, food) => total + food.price * food.quantity,
       0,
     );
-
     // Calculate the number of days for the stay
     const daysDifference = Math.ceil(
       (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
     );
-
     if (daysDifference < 1) {
       return 0; // If the dates are invalid, return 0
     }
-
     totalPrice *= daysDifference; // Multiply by the number of days
     totalPrice += foodPrice; // Add food price
-
-    // Check against monthly bookingData
+    if (sessionStorage.getItem("discountPrice")) {
+      const discountPrice = sessionStorage.getItem("discountPrice");
+      totalPrice -= discountPrice; // Subtract discount price
+    }
     monthlyData?.forEach((bookingData) => {
       const startDate = new Date(bookingData.startDate);
       const endDate = new Date(bookingData.endDate);
-
       // code me monthly bookingData ko each se map karke month bookingData ki validity and roomid ko localStorage me selected
       // roomId se match karake room ka month price nikala ja raha hai
-
       if (
         selectedRooms &&
         checkInDate < endDate &&
@@ -210,7 +181,6 @@ const BookNow = () => {
         }
       }
     });
-
     return totalPrice;
   };
 
@@ -421,6 +391,7 @@ const BookNow = () => {
                 bookedDetails?.data?.checkOutDate,
               )}`,
           );
+          sessionStorage.removeItem("discountPrice");
         }
         console.log("Booking response:", JSON.stringify(response.json));
       } else {
@@ -522,6 +493,7 @@ const BookNow = () => {
                 fontSize: "1.5rem",
                 color: "grey",
                 fontWeight: "bold",
+                marginTop: "20px",
                 marginRight: "10px", // gap between hotel name and rating
               }}
             >
@@ -534,6 +506,8 @@ const BookNow = () => {
                 color: "white",
                 fontWeight: "bold",
                 fontSize: "1rem",
+                marginTop: "20px",
+                marginRight: "10px",
                 padding: "2px 4px",
               }}
             >
@@ -864,11 +838,11 @@ const BookNow = () => {
               </div>
             )}
           </div>
-          {/* Rooms */}
+          {/* Rooms
           <div ref={foodsRef}>
             {" "}
             <Foods hotelData={hotelData} handleAddFood={handleAddFood} />
-          </div>
+          </div> */}
           <h6
             style={{
               color: "#333",
@@ -922,6 +896,7 @@ const BookNow = () => {
                     calculateTotalPrice={calculateTotalPrice}
                     handlePay={handlePay}
                     handleBookNow={handleBookNow}
+                    hotelData={hotelData}
                   />
                 </div>
               </div>
