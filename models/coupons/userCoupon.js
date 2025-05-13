@@ -12,7 +12,7 @@ const userCouponSchema = new mongoose.Schema({
     length: 6,
   },
   quantity: Number,
-  userIds: [String],
+  userId: String,
   validity: {
     type: Date,
   },
@@ -26,8 +26,8 @@ const userCouponSchema = new mongoose.Schema({
   discountPrice: {
     type: Number,
   },
-  roomId: [String],
-  hotelId: [String],
+  roomId: String,
+  hotelId: String,
 });
 
 // Middleware to generate a coupon code before saving
