@@ -153,7 +153,7 @@ const BookNow = () => {
   //           "Content-Type": "application/json",
   //         },
   //       });
-  
+
   //     } catch (error) {
   //       console.error("Error in applyCoupon thunk:", error);
   //       const errorMessage = error.response?.data?.message || error.message;
@@ -412,14 +412,14 @@ const BookNow = () => {
         if (response.status === 201) {
           popup(
             `🎉 Congratulations! Your booking is confirmed.\n` +
-              `For more details go for profile section and select bookings\n\n` +
-              `📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-              `📅 Check-in Date: ${formatDateWithOrdinal(
-                bookedDetails?.data?.checkInDate,
-              )}\n` +
-              `📅 Check-out Date: ${formatDateWithOrdinal(
-                bookedDetails?.data?.checkOutDate,
-              )}`,
+            `For more details go for profile section and select bookings\n\n` +
+            `📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
+            `📅 Check-in Date: ${formatDateWithOrdinal(
+              bookedDetails?.data?.checkInDate,
+            )}\n` +
+            `📅 Check-out Date: ${formatDateWithOrdinal(
+              bookedDetails?.data?.checkOutDate,
+            )}`,
           );
         }
         console.log("Booking response:", JSON.stringify(response.json));
@@ -536,20 +536,20 @@ const BookNow = () => {
               mainSrc={hotelData.images[currentImageIndex]}
               nextSrc={
                 hotelData.images[
-                  (currentImageIndex + 1) % hotelData.images.length
+                (currentImageIndex + 1) % hotelData.images.length
                 ]
               }
               prevSrc={
                 hotelData.images[
-                  (currentImageIndex + hotelData.images.length - 1) %
-                    hotelData.images.length
+                (currentImageIndex + hotelData.images.length - 1) %
+                hotelData.images.length
                 ]
               }
               onCloseRequest={() => setIsOpen(false)}
               onMovePrevRequest={() =>
                 setCurrentImageIndex(
                   (currentImageIndex + hotelData.images.length - 1) %
-                    hotelData.images.length,
+                  hotelData.images.length,
                 )
               }
               onMoveNextRequest={() =>
@@ -571,17 +571,29 @@ const BookNow = () => {
                 </div>
               </div>
             </div>
+
             <h5 className="hotel-name">
               <span
                 style={{
-                  fontSize: "1.3rem",
+                  fontSize: "2.0rem",
                   marginRight: "10px",
                   color: "green",
                 }}
               >
                 {hotelData?.hotelName}
               </span>
-
+              <Box
+                key={hotelData._id}
+                sx={{
+                  "& > legend": { mt: 2 },
+                }}
+              >
+                <Rating
+                  name="hotel-rating"
+                  value={hotelData?.starRating}
+                  readOnly
+                />
+              </Box>
               {roomToShow?.offerPriceLess > 0 ? (
                 <>
                   <del>
@@ -627,27 +639,16 @@ const BookNow = () => {
                 </p>
               )}
             </h5>
-            <Box
-              key={hotelData._id}
-              sx={{
-                "& > legend": { mt: 2 },
-              }}
-            >
-              <Rating
-                name="hotel-rating"
-                value={hotelData?.starRating}
-                readOnly
-              />
-            </Box>
-            <div className="hote-address">
-              {" "}
+            <div className="hotel-address">
               <p>
                 <PlaceIcon />
                 {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
                 {hotelData?.pinCode}
-              </p>{" "}
-              <p>{hotelData?.description}</p>
+              </p>
             </div>
+
+
+            <p>{hotelData?.description}</p>
           </div>{" "}
           {hotelData?.policies?.map((policy, index) => (
             <Box

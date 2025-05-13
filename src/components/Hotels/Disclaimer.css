@@ -98,10 +98,12 @@
 }
 
 .action-button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    text-transform: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-transform: none;
+  float: right;
 }
+
 
 .action-button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);

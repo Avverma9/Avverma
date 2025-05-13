@@ -2,36 +2,54 @@
     margin-top: 5px;
     padding: 10px;
 }
+
 .price {
     color: red;
-    font-size: 28px; /* Adjust the font size as needed */
-    font-weight: bold; /* Optionally make the text bold */
+    font-size: 28px;
+    /* Adjust the font size as needed */
+    font-weight: bold;
+    /* Optionally make the text bold */
     /* Additional styling properties can be added based on your design requirements */
 }
 
 .hotel-name {
-    font-size: 24px; /* Adjust the font size as per your design */
+    font-size: 24px;
+    /* Adjust the font size as per your design */
     font-weight: bold;
-    color: #333; /* Text color */
-    margin-bottom: 10px; /* Adjust the margin as needed */
+    color: #333;
+    /* Text color */
+    margin-bottom: 10px;
+    /* Adjust the margin as needed */
+}
+
+.hotel-address {
+    margin-top: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #868383;
 }
 
 .booknow-container {
     box-shadow: 0 4px 6px rgba(221, 132, 132, 0.1);
     border: 1px solid rgb(206, 187, 180);
-    padding: 20px; /* Adjust the padding as per your design */
-    margin: 20px; /* Adjust the margin as per your design */
+    padding: 20px;
+    /* Adjust the padding as per your design */
+    margin: 20px;
+    /* Adjust the margin as per your design */
     background-color: transparent;
-    border-radius: 10px; /* Adjust the border-radius as per your design */
-    overflow: hidden; /* Prevents box-shadow clipping with rounded corners */
+    border-radius: 10px;
+    /* Adjust the border-radius as per your design */
+    overflow: hidden;
+    /* Prevents box-shadow clipping with rounded corners */
     max-width: auto;
 }
 
 @media screen and (max-width: 767px) {
     #carouselExample {
-        max-width: 100%; /* Make the carousel take up the full width */
+        max-width: 100%;
+        /* Make the carousel take up the full width */
         max-height: 400px;
-        margin-bottom: 10px; /* Add some bottom margin for spacing */
+        margin-bottom: 10px;
+        /* Add some bottom margin for spacing */
     }
 
     .carousel-inner img {
@@ -41,7 +59,8 @@
 
     .carousel-control-prev,
     .carousel-control-next {
-        display: none; /* Hide carousel navigation controls on mobile */
+        display: none;
+        /* Hide carousel navigation controls on mobile */
     }
 }
 
@@ -49,11 +68,11 @@
     margin-top: 20px;
 }
 
-.amenities-container > div {
+.amenities-container>div {
     margin-bottom: 10px;
 }
 
-.amenities-container > div > div {
+.amenities-container>div>div {
     padding: 5px 10px;
     display: inline-block;
     margin-right: 10px;
@@ -72,7 +91,8 @@
 .checkIn-policy {
     margin-top: 15px;
     padding-left: 20px;
-    border-left: 2px solid #4caf50; /* Green border for Check In Policy */
+    border-left: 2px solid #4caf50;
+    /* Green border for Check In Policy */
 }
 
 .policy-container p {
@@ -81,7 +101,7 @@
 }
 
 /* Styling for individual policies */
-.policy-container p:not(.checkIn-policy) + * {
+.policy-container p:not(.checkIn-policy)+* {
     margin-bottom: 15px;
 }
 
@@ -196,6 +216,7 @@
     background-color: transparent;
     border-color: #007bff;
 }
+
 /* CSS */
 .booking-details-container {
     position: sticky;
@@ -209,6 +230,7 @@
     border-radius: 20px;
     box-shadow: 0 2px 5px rgba(82, 81, 81, 0.659);
 }
+
 /* Hide booking details container on screens smaller than 992px */
 /* @media (max-width: 991px) {
   .booking-details-container {
@@ -217,19 +239,25 @@
 } */
 .extras-container {
     display: flex;
-    align-items: flex-start; /* Align items at the top */
+    align-items: flex-start;
+    /* Align items at the top */
 }
 
 .description {
-    flex: 1; /* Take up remaining space */
-    margin-right: 20px; /* Space between description and booking details */
+    flex: 1;
+    /* Take up remaining space */
+    margin-right: 20px;
+    /* Space between description and booking details */
 }
 
 .booking-details-container {
-    position: -webkit-sticky; /* For Safari */
+    position: -webkit-sticky;
+    /* For Safari */
     position: sticky;
-    top: 0; /* Stick to the top of the viewport */
-    width: 300px; /* Adjust width as needed */
+    top: 0;
+    /* Stick to the top of the viewport */
+    width: 300px;
+    /* Adjust width as needed */
     z-index: 1000;
     padding: 20px;
     background-color: transparent;
@@ -250,7 +278,7 @@
     margin-bottom: 20px;
 }
 
-.selected-cotainer > div {
+.selected-cotainer>div {
     flex: 1;
 }
 
@@ -267,7 +295,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-    flex-direction: row; /* Display input fields in a row */
+    flex-direction: row;
+    /* Display input fields in a row */
 }
 
 /* Adjust width of "Check-in" and "Check-out" input fields */
@@ -278,7 +307,8 @@
 
 .rooms-guests .input-group input[type='number'] {
     padding: 5px;
-    width: 100px; /* Adjust width as needed */
+    width: 100px;
+    /* Adjust width as needed */
 }
 
 .rooms-guests .input-group button {
@@ -312,6 +342,7 @@
 .card-content p {
     margin-bottom: 5px;
 }
+
 .date-selection {
     display: flex;
     justify-content: space-between;
@@ -321,13 +352,15 @@
 .checkIn,
 .checkOut {
     flex: 1;
-    margin-right: 10px; /* Adjust margin as needed */
+    margin-right: 10px;
+    /* Adjust margin as needed */
 }
 
 .rooms-guests {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align items to the start */
+    align-items: flex-start;
+    /* Align items to the start */
     margin-top: 20px;
 }
 
@@ -338,15 +371,20 @@
 }
 
 .input-group label {
-    margin-right: 10px; /* Adjust margin as needed */
+    margin-right: 10px;
+    /* Adjust margin as needed */
 }
+
 .datepicker-input {
     width: 150px;
 }
+
 .btn-circle {
     border-radius: 50%;
-    padding: 12px; /* Increased padding */
-    margin: 0 5px; /* Added margin for spacing */
+    padding: 12px;
+    /* Increased padding */
+    margin: 0 5px;
+    /* Added margin for spacing */
 }
 
 .btn-circle:hover {
@@ -354,55 +392,74 @@
 }
 
 .form-control {
-    padding: 6px; /* Increased padding */
+    padding: 6px;
+    /* Increased padding */
 }
 
 .form-control:focus {
-    border-color: #007bff; /* Added focus border color */
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Added focus shadow */
+    border-color: #007bff;
+    /* Added focus border color */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    /* Added focus shadow */
 }
+
 .container-fluid {
     display: flex;
     flex-direction: row;
-    justify-content: space-between; /* Align children to the start and end of the container */
-    gap: 20px; /* Adjust spacing between the columns */
+    justify-content: space-between;
+    /* Align children to the start and end of the container */
+    gap: 20px;
+    /* Adjust spacing between the columns */
 }
 
 .row {
     display: flex;
-    flex: 1; /* Allow row to take up full available space */
+    flex: 1;
+    /* Allow row to take up full available space */
 }
 
 .rooms {
-    flex: 2; /* Adjust this to control the width of the Rooms component */
-    padding: 10px; /* Add padding for spacing inside the Rooms component */
-    border: 1px solid #ddd; /* Optional: Add a border for visual separation */
+    flex: 2;
+    /* Adjust this to control the width of the Rooms component */
+    padding: 10px;
+    /* Add padding for spacing inside the Rooms component */
+    border: 1px solid #ddd;
+    /* Optional: Add a border for visual separation */
 }
 
 .booking-details {
-    flex: 1; /* Adjust this to control the width of the BookingDetails component */
-    padding: 10px; /* Add padding for spacing inside the BookingDetails component */
+    flex: 1;
+    /* Adjust this to control the width of the BookingDetails component */
+    padding: 10px;
+    /* Add padding for spacing inside the BookingDetails component */
 }
+
 /* Add these styles to your CSS file */
 .datepicker-input {
-    width: 120px; /* Adjust width as needed */
-    font-size: 0.8rem; /* Adjust font size as needed */
+    width: 120px;
+    /* Adjust width as needed */
+    font-size: 0.8rem;
+    /* Adjust font size as needed */
 }
 
 .check-in p,
 .check-out p {
     margin: 0;
-    font-size: 0.8rem; /* Adjust font size */
+    font-size: 0.8rem;
+    /* Adjust font size */
 }
 
 .datepicker-container {
     display: flex;
     flex-direction: column;
 }
+
 .custom-button {
     background-color: transparent;
-    border: 1px solid #d1cdcd; /* Red border for 'error' color */
-    color: #000000; /* Red text color */
+    border: 1px solid #d1cdcd;
+    /* Red border for 'error' color */
+    color: #000000;
+    /* Red text color */
     font-size: 0.7rem;
     padding: 4px 8px;
     cursor: pointer;
@@ -413,86 +470,132 @@
 /* Styles.css */
 
 .amenities-and-policies {
-    width: 100%; /* Full width for the main container */
-    padding: 20px; /* Padding around the main container */
-    background-color: transparent; /* White background */
+    width: 100%;
+    /* Full width for the main container */
+    padding: 20px;
+    /* Padding around the main container */
+    background-color: transparent;
+    /* White background */
 }
 
 .amenities-title {
-    font-size: 18px; /* Title size */
-    font-weight: bold; /* Bold title */
-    color: black; /* Black color for text */
-    margin-bottom: 10px; /* Space below the title */
+    font-size: 18px;
+    /* Title size */
+    font-weight: bold;
+    /* Bold title */
+    color: black;
+    /* Black color for text */
+    margin-bottom: 10px;
+    /* Space below the title */
 }
 
 .amenities-list {
-    display: flex; /* Flexbox for horizontal layout */
-    flex-wrap: wrap; /* Allow items to wrap */
-    gap: 20px; /* Space between items */
-    justify-content: flex-start; /* Align items to the left */
+    display: flex;
+    /* Flexbox for horizontal layout */
+    flex-wrap: wrap;
+    /* Allow items to wrap */
+    gap: 20px;
+    /* Space between items */
+    justify-content: flex-start;
+    /* Align items to the left */
 }
 
 .amenity-item {
-    display: flex; /* Flexbox for individual amenities */
-    align-items: center; /* Center items vertically */
-    color: black; /* Black text color */
-    flex: 1 1 auto; /* Allow items to grow and shrink as needed */
-    min-width: 100px; /* Minimum width for each item */
-    margin: 5px; /* Space around each item */
+    display: flex;
+    /* Flexbox for individual amenities */
+    align-items: center;
+    /* Center items vertically */
+    color: black;
+    /* Black text color */
+    flex: 1 1 auto;
+    /* Allow items to grow and shrink as needed */
+    min-width: 100px;
+    /* Minimum width for each item */
+    margin: 5px;
+    /* Space around each item */
 }
 
 .hotel-policies-container {
-    width: 100%; /* Full width for accordion */
-    margin-top: 20px; /* Space above policies */
+    width: 100%;
+    /* Full width for accordion */
+    margin-top: 20px;
+    /* Space above policies */
 }
 
 .accordion {
-    width: 100%; /* Full width for accordion */
-    background-color: transparent; /* White background */
-    box-shadow: none; /* Remove shadow for a flat look */
-    border: none; /* No border */
+    width: 100%;
+    /* Full width for accordion */
+    background-color: transparent;
+    /* White background */
+    box-shadow: none;
+    /* Remove shadow for a flat look */
+    border: none;
+    /* No border */
 }
 
 .accordion-summary {
-    padding: 12px 16px; /* Padding inside summary */
-    background-color: transparent; /* Light grey background */
-    border-radius: 4px; /* Rounded corners */
-    display: flex; /* Flexbox for alignment */
-    align-items: center; /* Center content vertically */
-    justify-content: space-between; /* Space between items */
+    padding: 12px 16px;
+    /* Padding inside summary */
+    background-color: transparent;
+    /* Light grey background */
+    border-radius: 4px;
+    /* Rounded corners */
+    display: flex;
+    /* Flexbox for alignment */
+    align-items: center;
+    /* Center content vertically */
+    justify-content: space-between;
+    /* Space between items */
 }
 
 .accordion-title {
-    font-weight: 600; /* Bold title */
-    color: black; /* Black color for text */
+    font-weight: 600;
+    /* Bold title */
+    color: black;
+    /* Black color for text */
 }
 
 .accordion-details {
-    display: flex; /* Flexbox for details */
-    flex-direction: column; /* Column layout */
-    padding: 16px; /* Padding inside details */
+    display: flex;
+    /* Flexbox for details */
+    flex-direction: column;
+    /* Column layout */
+    padding: 16px;
+    /* Padding inside details */
 
-    background-color: transparent; /* White background for details */
+    background-color: transparent;
+    /* White background for details */
 }
 
 .additional-amenity {
-    display: flex; /* Flexbox for individual amenities */
-    align-items: center; /* Center items vertically */
-    padding: 8px; /* Padding inside each item */
-    border-bottom: 1px solid transparent; /* Line between items */
+    display: flex;
+    /* Flexbox for individual amenities */
+    align-items: center;
+    /* Center items vertically */
+    padding: 8px;
+    /* Padding inside each item */
+    border-bottom: 1px solid transparent;
+    /* Line between items */
 }
 
 .additional-amenity:last-child {
-    border-bottom: none; /* Remove last item's bottom border */
+    border-bottom: none;
+    /* Remove last item's bottom border */
 }
 
 @media screen and (min-width: 767px) {
     .amenity-item {
-        display: flex; /* Flexbox for individual amenities */
-        align-items: center; /* Center items vertically */
-        color: black; /* Black text color */
-        min-width: 100px; /* Minimum width for each item */
-        margin: 5px; /* Space around each item */
-        box-sizing: border-box; /* Include padding and border in width calculations */
+        display: flex;
+        /* Flexbox for individual amenities */
+        align-items: center;
+        /* Center items vertically */
+        color: black;
+        /* Black text color */
+        min-width: 100px;
+        /* Minimum width for each item */
+        margin: 5px;
+        /* Space around each item */
+        box-sizing: border-box;
+        /* Include padding and border in width calculations */
     }
 }
