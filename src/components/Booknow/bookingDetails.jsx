@@ -26,12 +26,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { userId } from "../../utils/Unauthorized";
 import { applyCouponCode } from "../../redux/reducers/bookingSlice";
 import { useDispatch } from "react-redux";
+import { useLoader } from "../../utils/loader";
+import { format } from "date-fns";
+import baseURL from "../../utils/baseURL";
+import { popup } from "../../utils/custom_alert/pop";
 
 const BookingDetails = ({
+  hotelId,
   hotelData,
+  monthlyData,
   selectedRooms,
-  // selectedFood,
-  // setSelectedFood,
   roomsCount,
   guestsCount,
   checkInDate,
@@ -43,32 +47,33 @@ const BookingDetails = ({
   handleCheckInDateChange,
   handleCheckOutDateChange,
   scrollToRooms,
-  calculateTotalPrice,
   handlePay,
-  handleBookNow,
 }) => {
   const dispatch = useDispatch();
+  const { showLoader, hideLoader } = useLoader();
 
   const [showCouponField, setShowCouponField] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [discountPrice, setDiscountPrice] = useState(0);
   const [selectedFood, setSelectedFood] = useState([]);
-
   const [openModal, setOpenModal] = useState(false);
+
+  const toBeCheckRoomNumber =
+    parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
+  const compareRoomId = selectedRooms?.[0]?.roomId;
+
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const handleToggleCoupon = () => {
-    setShowCouponField((prev) => !prev);
-  };
+  const handleToggleCoupon = () => setShowCouponField((prev) => !prev);
 
   const handleSelectFood = (foodItem) => {
     const isAlreadySelected = selectedFood.some(
       (item) => item.foodId === foodItem.foodId,
     );
     if (!isAlreadySelected) {
-      setSelectedFood((prev) => [...prev, foodItem]);
+      setSelectedFood((prev) => [...prev, { ...foodItem, quantity: 1 }]);
     }
   };
 
@@ -80,7 +85,7 @@ const BookingDetails = ({
 
   const handleCouponSubmit = () => {
     if (couponCode.trim() !== "") {
-      handleApplyCoupon(hotelData.hotelId, selectedRooms[0].roomId, couponCode);
+      handleApplyCoupon(hotelId, compareRoomId, couponCode);
       setCouponCode("");
       setShowCouponField(false);
     }
@@ -88,17 +93,14 @@ const BookingDetails = ({
 
   const handleApplyCoupon = useCallback(
     async (hotelId, roomId, couponCode) => {
-      const payload = {
-        hotelId,
-        roomId,
-        couponCode,
-        userId,
-      };
-
+      const payload = { hotelId, roomId, couponCode, userId };
       try {
         const response = await dispatch(applyCouponCode(payload));
-        setDiscountPrice(response.payload.discountPrice);
-        sessionStorage.setItem("discountPrice", response.payload.discountPrice);
+        setDiscountPrice(response.payload.discountPrice || 0);
+        sessionStorage.setItem(
+          "discountPrice",
+          response.payload.discountPrice || 0,
+        );
         setIsCouponApplied(true);
       } catch (error) {
         console.error("Error applying coupon:", error);
@@ -108,10 +110,118 @@ const BookingDetails = ({
     [dispatch],
   );
 
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+
+    const daysDifference = Math.ceil(
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
+    );
+    if (daysDifference < 1) return 0;
+
+    selectedRooms?.forEach((room) => {
+      totalPrice += room.price * roomsCount;
+    });
+
+    totalPrice *= daysDifference;
+
+    monthlyData?.forEach((bookingData) => {
+      const startDate = new Date(bookingData.startDate);
+      const endDate = new Date(bookingData.endDate);
+
+      if (
+        checkInDate < endDate &&
+        checkOutDate > startDate &&
+        compareRoomId === bookingData.roomId
+      ) {
+        totalPrice = bookingData.monthPrice * daysDifference;
+      }
+    });
+
+    const foodPrice = selectedFood.reduce(
+      (total, food) => total + food.price * (food.quantity || 1),
+      0,
+    );
+
+    totalPrice += foodPrice;
+    return totalPrice;
+  };
+
   const getFinalPrice = () => {
     const roomPrice = calculateTotalPrice();
-    const mealPrice = selectedFood.reduce((sum, item) => sum + item.price, 0);
-    return roomPrice - discountPrice + mealPrice;
+    return roomPrice - discountPrice;
+  };
+
+  const handleBookNow = async () => {
+    try {
+      showLoader();
+      const bookingData = {
+        hotelId,
+        user: userId,
+        checkInDate: format(checkInDate, "yyyy-MM-dd"),
+        checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
+        guests: guestsCount,
+        numRooms: roomsCount,
+        roomDetails: selectedRooms?.map((room) => ({
+          roomId: room.roomId,
+          type: room.type,
+          bedTypes: room.bedTypes,
+          price: room.price,
+        })),
+        foodDetails: selectedFood?.map((food) => ({
+          foodId: food.foodId,
+          name: food.name,
+          price: food.price,
+          quantity: food.quantity,
+        })),
+        price: getFinalPrice(),
+        pm: "Offline",
+        bookingSource: "Site",
+        destination: hotelData.city,
+        hotelName: hotelData.hotelName,
+        hotelOwnerName: hotelData.hotelOwnerName,
+        hotelEmail: hotelData.hotelEmail,
+      };
+
+      if (toBeCheckRoomNumber > 0) {
+        const response = await fetch(
+          `${baseURL}/booking/${userId}/${hotelId}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookingData),
+          },
+        );
+
+        const bookedDetails = await response.json();
+        if (response.status === 201) {
+          popup(
+            `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
+              `📅 Check-in: ${format(
+                new Date(bookedDetails?.data?.checkInDate),
+                "dd MMM yyyy",
+              )}\n` +
+              `📅 Check-out: ${format(
+                new Date(bookedDetails?.data?.checkOutDate),
+                "dd MMM yyyy",
+              )}`,
+          );
+          sessionStorage.removeItem("discountPrice");
+          setSelectedFood([]);
+          setIsCouponApplied(false);
+          setDiscountPrice(0);
+          window.location.reload();
+        } else {
+          alert(bookedDetails?.message || "Booking failed");
+        }
+      } else {
+        alert("This room is already fully booked");
+      }
+    } catch (error) {
+      console.error("Error booking:", error);
+      alert("Something went wrong during booking.");
+    } finally {
+      hideLoader();
+    }
   };
 
   return (
@@ -470,7 +580,7 @@ const BookingDetails = ({
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => handleBookNow(getFinalPrice(), selectedFood)}
+              onClick={() => handleBookNow()}
             >
               Pay at Hotel
             </Button>

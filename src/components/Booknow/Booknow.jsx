@@ -1,42 +1,32 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceIcon from "@mui/icons-material/Place";
 import Carousel from "react-bootstrap/Carousel";
 import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
-import "react-datepicker/dist/react-datepicker.css";
-import Rating from "@mui/material/Rating";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
-import "react-image-lightbox/style.css"; // Import the CSS for lightbox
 import Lightbox from "react-image-lightbox";
-
-import { useLoader } from "../../utils/loader";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { format, addDays } from "date-fns";
-import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
+import { addDays } from "date-fns";
 import { BsClockHistory } from "react-icons/bs";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { IconContext } from "react-icons";
-
 import { FaBed, FaWifi } from "react-icons/fa";
-
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import "./Booknow.css";
-import baseURL from "../../utils/baseURL";
 import Policies from "./policies";
 import BookingDetails from "./bookingDetails";
 import Rooms from "./rooms";
-import Foods from "./foods";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchBookingData,
@@ -44,13 +34,8 @@ import {
 } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
-import axios from "axios";
 import { Button, Divider, Grid } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
-import { popup } from "../../utils/custom_alert/pop";
-import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import { token } from "../../utils/Unauthorized";
-import { toast } from "react-toastify";
 import { StarHalfSharp } from "@mui/icons-material";
 
 const BookNow = () => {
@@ -62,10 +47,10 @@ const BookNow = () => {
   const [selectedFood, setSelectedFood] = useState([]);
   const [roomsCount, setRoomsCount] = useState(1);
   const [timeLeft, setTimeLeft] = useState(null);
-  const path = location.pathname; // Get the current path
-  const parts = path.split("/"); // Split the path by '/'
-  const newhotelId = parts[parts.length - 1]; // Last element is newHotelId
-  const userId = parts[parts.length - 2]; // Second last element is userId
+  const path = location.pathname;
+  const parts = path.split("/");
+  const newhotelId = parts[parts.length - 1];
+  const userId = parts[parts.length - 2];
   const today = new Date();
   const tomorrow = addDays(today, 1);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -78,23 +63,24 @@ const BookNow = () => {
   const roomsRef = useRef(null);
   const foodsRef = useRef(null);
   const [open, setOpen] = useState(false);
-  const [shouldScrollToTop, setShouldScrollToTop] = useState(false); // New state
+  const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
   const theme = useTheme();
-  const toBeCheckRoomNumber = localStorage.getItem("toBeCheckRoomNumber");
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { bookingData } = useSelector((state) => state.booking);
-  const { monthlyData, loading, error } = useSelector((state) => state.booking);
+  const { monthlyData } = useSelector((state) => state.booking);
   const showLowestPrice = localStorage.getItem("lowestPrice");
   const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
-  const { showLoader, hideLoader } = useLoader();
+
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
   };
+
   useEffect(() => {
     if (userId === "null") {
       window.location.href = "/login";
     }
   }, [userId, navigate]);
+
   const handleAddFood = (food) => {
     const existingFoodIndex = selectedFood.findIndex(
       (selected) => selected._id === food._id,
@@ -105,10 +91,9 @@ const BookNow = () => {
       );
       setSelectedFood(updatedFood);
     } else {
-      // If the food item is not already selected, add it to the list
       setSelectedFood([...selectedFood, { ...food, quantity: 1 }]);
     }
-    alert(`One ${food.name} is added`);
+    alert(`${food.name} is added`);
   };
 
   const handleRemoveFood = (food) => {
@@ -124,7 +109,7 @@ const BookNow = () => {
   };
 
   const handleAddRoom = (room) => {
-    setSelectedRooms([room]); // Replace the previously selected room with the new one
+    setSelectedRooms([room]);
     localStorage.setItem("toBeUpdatedRoomId", room.roomId);
     localStorage.setItem("toBeCheckRoomNumber", room.countRooms);
     alert(`${room.type} is selected`);
@@ -140,33 +125,24 @@ const BookNow = () => {
       );
     });
   };
+
   const discountPrice = Number(sessionStorage.getItem("discountPrice") || 0);
+
   const calculateTotalPrice = () => {
     let totalPrice = 0;
-    // Calculate room price
     selectedRooms?.forEach((room) => {
       totalPrice += room.price * roomsCount;
     });
-    // Calculate food price
-    const foodPrice = selectedFood.reduce(
-      (total, food) => total + food.price * food.quantity,
-      0,
-    );
-    // Calculate the number of days for the stay
     const daysDifference = Math.ceil(
       (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
     );
     if (daysDifference < 1) {
-      return 0; // If the dates are invalid, return 0
+      return 0;
     }
-    totalPrice *= daysDifference; // Multiply by the number of days
-    totalPrice += foodPrice; // Add food price
-    // Subtract discount price
+    totalPrice *= daysDifference;
     monthlyData?.forEach((bookingData) => {
       const startDate = new Date(bookingData.startDate);
       const endDate = new Date(bookingData.endDate);
-      // code me monthly bookingData ko each se map karke month bookingData ki validity and roomid ko localStorage me selected
-      // roomId se match karake room ka month price nikala ja raha hai
       if (
         selectedRooms &&
         checkInDate < endDate &&
@@ -174,7 +150,7 @@ const BookNow = () => {
         compareRoomId === bookingData.roomId
       ) {
         if (bookingData) {
-          totalPrice = bookingData.monthPrice * daysDifference; // Add monthly price
+          totalPrice = bookingData.monthPrice * daysDifference;
         }
       }
     });
@@ -193,17 +169,15 @@ const BookNow = () => {
     guestsCount,
     monthlyData,
   ]);
-  // Function to format date to YYYY-MM-DD
+
   const formatDate = (date) => {
-    const localDate = new Date(date.getTime() + 5.5 * 60 * 60 * 1000); // Adjust for UTC+5:30
-    return localDate.toISOString().split("T")[0]; // Returns YYYY-MM-DD
+    const localDate = new Date(date.getTime() + 5.5 * 60 * 60 * 1000);
+    return localDate.toISOString().split("T")[0];
   };
 
-  // Example check-in and check-out dates
-  const setcheckInDate = checkInDate; // Replace with your actual check-in date
-  const setcheckOutDate = checkOutDate; // Replace with your actual check-out date
+  const setcheckInDate = checkInDate;
+  const setcheckOutDate = checkOutDate;
 
-  // Set the formatted dates in localStorage
   localStorage.setItem("selectedCheckInDate", formatDate(setcheckInDate));
   localStorage.setItem("selectedCheckOutDate", formatDate(setcheckOutDate));
 
@@ -235,34 +209,34 @@ const BookNow = () => {
   useEffect(() => {
     if (shouldScrollToTop) {
       window.scrollTo(0, 0);
-      setShouldScrollToTop(false); // Reset the flag
+      setShouldScrollToTop(false);
     }
   }, [shouldScrollToTop]);
+
   const calculateGuests = (roomsCount) => {
     return roomsCount * 3;
   };
+
   const eligibleRooms =
     hotelData?.rooms?.filter((item) => item.offerPriceLess > 0) || [];
 
-  // Step 2: Determine the room to display based on the conditions
   let roomToShow;
 
   if (eligibleRooms.length > 0) {
-    // If there are eligible rooms, take the first one
     roomToShow = eligibleRooms[0];
   } else {
-    // If no eligible rooms, find the room with the lowest price
     roomToShow =
       hotelData?.rooms?.reduce((lowest, current) => {
         return lowest.price < current.price ? lowest : current;
-      }, hotelData.rooms[0]) || null; // Fallback to null if no rooms exist
+      }, hotelData.rooms[0]) || null;
   }
+
   useEffect(() => {
     if (roomToShow?.offerExp) {
       const countdownDate = new Date(roomToShow.offerExp).getTime();
 
       const interval = setInterval(() => {
-        const now = new Date().getTime() + 5.5 * 60 * 60 * 1000; // Adjust for UTC+5:30
+        const now = new Date().getTime() + 5.5 * 60 * 60 * 1000;
         const distance = countdownDate - now;
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
@@ -275,7 +249,6 @@ const BookNow = () => {
           clearInterval(interval);
           setTimeLeft("Offer expired");
         } else {
-          // Construct time left string based on days
           let timeLeft;
           if (days > 0) {
             timeLeft = `${days}d ${hours}h ${minutes}m ${seconds}s`;
@@ -284,9 +257,9 @@ const BookNow = () => {
           }
           setTimeLeft(timeLeft);
         }
-      }, 1000); // Update every second
+      }, 1000);
 
-      return () => clearInterval(interval); // Clear interval on component unmount
+      return () => clearInterval(interval);
     }
   }, [roomToShow]);
 
@@ -294,14 +267,12 @@ const BookNow = () => {
     if (bookingData) {
       setHotelData(bookingData);
 
-      // If roomToShow is available, set it as the default selected room
       if (roomToShow) {
         setSelectedRooms([roomToShow]);
         localStorage.setItem("toBeUpdatedRoomId", roomToShow.roomId);
         localStorage.setItem("toBeCheckRoomNumber", roomToShow.countRooms);
       } else if (bookingData.rooms?.length > 0) {
-        // Fallback in case roomToShow is not set
-        const defaultRoom = bookingData.rooms[0]; // Or any other logic to pick a room
+        const defaultRoom = bookingData.rooms[0];
         setSelectedRooms([defaultRoom]);
         localStorage.setItem("toBeUpdatedRoomId", defaultRoom.roomId);
         localStorage.setItem("toBeCheckRoomNumber", defaultRoom.countRooms);
@@ -334,78 +305,8 @@ const BookNow = () => {
       setRoomsCount(newRoomsCount);
     }
   };
-  const finalPrice = calculateTotalPrice() - discountPrice;
-  console.log("Final Price:", finalPrice);
 
-  const handleBookNow = async () => {
-    try {
-      showLoader();
-      const bookingData = {
-        hotelId: newhotelId,
-        user: userId,
-        checkInDate: format(checkInDate, "yyyy-MM-dd"),
-        checkOutDate: format(checkOutDate, "yyyy-MM-dd"),
-        guests: guestsCount,
-        numRooms: roomsCount,
-        roomDetails: selectedRooms?.map((room) => ({
-          roomId: room.roomId,
-          type: room.type,
-          bedTypes: room.bedTypes,
-          price: room.price,
-        })),
-        foodDetails: selectedFood?.map((food) => ({
-          foodId: food.foodId,
-          name: food.name,
-          price: food.price,
-          quantity: food.quantity,
-        })),
-        price: finalPrice,
-        pm: "Offline",
-        bookingSource: "Site",
-        destination: hotelData.city,
-        hotelName: hotelData.hotelName,
-        hotelOwnerName: hotelData.hotelOwnerName,
-        hotelEmail: hotelData.hotelEmail,
-      };
-      if (toBeCheckRoomNumber > 0) {
-        const response = await fetch(
-          `${baseURL}/booking/${userId}/${newhotelId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookingData),
-          },
-        );
-        const bookedDetails = await response.json();
-        if (response.status === 201) {
-          popup(
-            `🎉 Congratulations! Your booking is confirmed.\n` +
-              `For more details go for profile section and select bookings\n\n` +
-              `📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-              `📅 Check-in Date: ${formatDateWithOrdinal(
-                bookedDetails?.data?.checkInDate,
-              )}\n` +
-              `📅 Check-out Date: ${formatDateWithOrdinal(
-                bookedDetails?.data?.checkOutDate,
-              )}`,
-          );
-          setInterval(() => {
-            sessionStorage.removeItem("discountPrice");
-          }, 2000);
-          window.location.reload();
-        }
-        console.log("Booking response:", JSON.stringify(response.json));
-      } else {
-        alert("This room is already fully booked");
-      }
-    } catch (error) {
-      console.error("Error booking:", error);
-    } finally {
-      hideLoader();
-    }
-  };
+  const finalPrice = calculateTotalPrice() - discountPrice;
 
   const scrollToRooms = () => {
     roomsRef.current.scrollIntoView({ behavior: "smooth" });
@@ -418,6 +319,7 @@ const BookNow = () => {
   if (!path.includes("/book-hotels/")) {
     return null;
   }
+
   const handlePay = () => {
     alert("Currently we are accepting only Pay at Hotel method");
   };
@@ -426,21 +328,17 @@ const BookNow = () => {
 
   const handleCheckInDateChange = (date) => {
     if (checkOutDate && date >= checkOutDate) {
-      // If the new check-in date is on or after the current checkout date, reset checkout date
       setCheckOutDate(null);
     }
     setCheckInDate(date);
-
-    // Automatically set checkout date to the next day after check-in date
     const nextDay = addDays(date, 1);
     setCheckOutDate(nextDay);
   };
 
   const handleCheckOutDateChange = (date) => {
-    // Check if the selected date is after the check-in date
     if (date <= checkInDate) {
       alert("Checkout date must be after the check-in date.");
-      return; // Prevent setting an invalid checkout date
+      return;
     }
     setCheckOutDate(date);
   };
@@ -473,6 +371,7 @@ const BookNow = () => {
 
     return styles;
   }
+
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
     setIsOpen(true);
@@ -481,8 +380,6 @@ const BookNow = () => {
   const amenities =
     hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities) ||
     [];
-
-  // Display the first 10 amenities and track how many are left
   const visibleAmenities = amenities.slice(0, 10);
   const remainingAmenitiesCount = amenities.length - visibleAmenities.length;
 
@@ -878,6 +775,8 @@ const BookNow = () => {
 
                 <div className="booking-details">
                   <BookingDetails
+                    hotelId={newhotelId}
+                    monthlyData={monthlyData}
                     selectedFood={selectedFood}
                     selectedRooms={selectedRooms}
                     roomsCount={roomsCount}
@@ -898,14 +797,12 @@ const BookNow = () => {
                     scrollToRooms={scrollToRooms}
                     calculateTotalPrice={calculateTotalPrice}
                     handlePay={handlePay}
-                    handleBookNow={handleBookNow}
                     hotelData={hotelData}
                   />
                 </div>
               </div>
             </div>
           </div>
-          {/* foods section */}
           <BookingReview hotelId={hotelData?.hotelId} />
         </>
       ) : (
