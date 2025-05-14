@@ -1,15 +1,15 @@
 const express = require('express');
-const { newCoupon, ApplyCoupon, GetAllCoupons } = require('../../controllers/booking/partnerCoupon');
+const { newPartnerCoupon, ApplyPartnerCoupon, GetAllUserCoupons, GetAllPartnerCoupons } = require('../../controllers/coupons/partnerCoupon');
 const router = express.Router()
 
 
 
 //===============================Partner coupon=============================================
-router.post("/coupon/create-a-new/coupon", newCoupon);           // on panel
+router.post("/coupon/create-a-new/coupon",newPartnerCoupon );           // on panel
 router.patch(
-    "/apply/a/coupon-to-room", ApplyCoupon // on panel
+    "/apply/a/coupon-to-room", ApplyPartnerCoupon // on panel
 );
-router.get("/coupon/get/all", GetAllCoupons); // on panel
+router.get("/coupon/get/all", GetAllPartnerCoupons); // on panel
 
 
 module.exports = router
