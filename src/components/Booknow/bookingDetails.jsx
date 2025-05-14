@@ -437,7 +437,7 @@ const BookingDetails = ({
       <Modal open={openModal} onClose={handleCloseModal}>
         <Box
           sx={{
-            width: 500,
+            width: { xs: "90%", sm: 500 }, // 90% width on mobile, 500px width on larger screens
             maxHeight: "90vh",
             overflowY: "auto",
             bgcolor: "background.paper",
@@ -525,7 +525,9 @@ const BookingDetails = ({
                 (f) => f.foodId === food.foodId,
               );
               return (
-                <Grid item xs={12} key={food.foodId}>
+                <Grid item xs={12} sm={6} md={4} key={food.foodId}>
+                  {" "}
+                  {/* Responsiveness for food cards */}
                   <Card sx={{ p: 2, display: "flex", alignItems: "center" }}>
                     <Box
                       component="img"
@@ -576,11 +578,16 @@ const BookingDetails = ({
           </Typography>
 
           {/* Action Buttons */}
-          <Stack direction="row" spacing={2} mt={2}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }} // Stack vertically on small screens, horizontally on larger screens
+            spacing={2}
+            mt={2}
+          >
             <Button
               fullWidth
               variant="outlined"
               onClick={() => handleBookNow()}
+              sx={{ mb: { xs: 1, sm: 0 } }} // Adds marginBottom for mobile screens only
             >
               Pay at Hotel
             </Button>
