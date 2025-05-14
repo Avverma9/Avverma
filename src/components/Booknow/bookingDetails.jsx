@@ -120,11 +120,11 @@ const BookingDetails = ({
         sx={{
           position: "sticky",
           top: 0,
-          width: 340,
+          width: 330,
           p: 3,
-          borderRadius: 4,
+ 
           boxShadow: 4,
-          backgroundColor: "#ffffff",
+          backgroundColor: "#fbfbfb",
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
