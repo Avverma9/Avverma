@@ -56,4 +56,133 @@
       max-height: 150px; /* Decreased max-height for the image on smaller screens */
     }
   }
-  
+  /* Root */
+.login-page {
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page.light {
+    background-image: url('https://images2.alphacoders.com/462/462295.jpg');
+    color: #000;
+}
+
+.login-page.dark {
+    background-image: url('https://c4.wallpaperflare.com/wallpaper/132/777/256/vacation-costa-adeje-gran-hotel-best-hotels-of-2017-resort-wallpaper-preview.jpg');
+    color: #fff;
+}
+
+/* Header */
+.login-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mode-toggle {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Container */
+.login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.login-container h1 {
+    margin-bottom: 10px;
+}
+
+.google-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    border-bottom: 1px solid #ccc;
+    line-height: 0.1rem;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.password-group {
+    position: relative;
+}
+
+.eye-toggle {
+    position: absolute;
+    right: 10px;
+    top: 35px;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Footer section of form */
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.submit-btn {
+    padding: 10px;
+    border: none;
+    background-color: #1976d2;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Footer */
+.login-footer {
+    text-align: center;
+    margin-top: auto;
+    font-size: 0.75rem;
+    padding-top: 2rem;
+}
