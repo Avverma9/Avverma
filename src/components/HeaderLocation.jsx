@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLocation } from '../redux/reducers/locationSlice';
+import Skeleton from 'react-loading-skeleton'; // Importing skeleton loader
+import 'react-loading-skeleton/dist/skeleton.css'; // Import skeleton CSS
+
 import './HeaderTravel.css'; // Import the provided CSS file
 
 const HeaderTravel = () => {
@@ -57,7 +60,17 @@ const HeaderTravel = () => {
     }
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <div className="header-travel">
+                {/* Render Skeletons for each city */}
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <div key={index} className="skeleton-container">
+                        <Skeleton height={150} width={150} circle={true} />
+                        <Skeleton width={120} height={20} />
+                    </div>
+                ))}
+            </div>
+        );
     }
 
     if (error) {
@@ -71,10 +84,17 @@ const HeaderTravel = () => {
                     <Link to={`/search?search=${loc.location}`}>
                         <div className="image-container">
                             {loc.images.map((image, imageIndex) => (
-                                <img key={imageIndex} className="circle" src={image} alt={`City Image ${imageIndex + 1}`} />
+                                <img
+                                    key={imageIndex}
+                                    className="circle"
+                                    src={image}
+                                    alt={`City Image ${imageIndex + 1}`}
+                                />
                             ))}
                         </div>
-                        <div className="city-name">{loc?.location === 'Uttar Pradesh' ? 'UP' : loc?.location}</div>
+                        <div className="city-name">
+                            {loc?.location === 'Uttar Pradesh' ? 'UP' : loc?.location}
+                        </div>
                     </Link>
                 </div>
             ))}
