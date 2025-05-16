@@ -4,7 +4,21 @@ import axios from "axios";
 import CloseIcon from "@mui/icons-material/Close";
 import { Modal as BootstrapModal } from "react-bootstrap";
 import { AiOutlineClose } from "react-icons/ai";
-import { Select, MenuItem, FormControl, InputLabel, Button, Rating, Box, Typography, Card, CardContent, Paper, Divider, Pagination } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Button,
+  Rating,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Paper,
+  Divider,
+  Pagination,
+} from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -18,6 +32,8 @@ import { Unauthorized, userId } from "../../utils/Unauthorized";
 import alert from "../../utils/custom_alert/custom_alert";
 import baseURL from "../../utils/baseURL";
 import styles from "./bookings.module.css";
+import { Stack } from "@mui/system";
+import { TuneRounded } from "@mui/icons-material";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -44,7 +60,11 @@ export const ConfirmBooking = () => {
         setUserData(userResponse.data.data);
         dispatch(fetchFilteredBooking({ selectedStatus, userId }));
       } catch (error) {
-        alert(error.response?.data?.message || error.message || "Error fetching data");
+        alert(
+          error.response?.data?.message ||
+            error.message ||
+            "Error fetching data",
+        );
       }
     };
 
@@ -84,7 +104,10 @@ export const ConfirmBooking = () => {
     const userId = localStorage.getItem("rsUserId");
     const hotelId = localStorage.getItem("hotelId_review");
     try {
-      const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, { comment, rating });
+      const response = await axios.post(
+        `${baseURL}/reviews/${userId}/${hotelId}`,
+        { comment, rating },
+      );
       if (response.status === 201) {
         setComment("");
         setRating(0);
@@ -98,7 +121,10 @@ export const ConfirmBooking = () => {
 
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
-  const currentBooking = bookingDetails.slice(indexOfFirstBooking, indexOfLastBooking);
+  const currentBooking = bookingDetails.slice(
+    indexOfFirstBooking,
+    indexOfLastBooking,
+  );
   const totalPages = Math.ceil(bookingDetails.length / bookingsPerPage);
 
   const handlePageChange = (event, value) => {
@@ -115,65 +141,245 @@ export const ConfirmBooking = () => {
   if (!userId) {
     return <Unauthorized />;
   }
+  // Calculate food total
+  const foodTotal = Array.isArray(modalData?.foodDetails)
+    ? modalData.foodDetails.reduce((acc, f) => acc + (Number(f.price) || 0), 0)
+    : 0;
+
+  // Calculate room total (raw)
+  const rawRoomTotal = Array.isArray(modalData?.roomDetails)
+    ? modalData.roomDetails.reduce((acc, r) => acc + (Number(r.price) || 0), 0)
+    : 0;
+
+  // Final total
+  const finalTotal = Number(modalData?.price) || 0;
+
+  // Adjusted room total
+  const adjustedRoomTotal =
+    rawRoomTotal > finalTotal - foodTotal
+      ? finalTotal - foodTotal
+      : rawRoomTotal;
 
   return (
-    <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px", background: "#ffffff" }}>
+    <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px" }}>
       <div className={styles.bookingHeader}></div>
       <div>
-        <div className={styles.selectContainer} style={{ display: "flex", justifyContent: "flex-end", marginBottom: "10px" }}>
-          <FormControl variant="outlined" style={{ minWidth: "200px", backgroundColor: "#f5f5f5", borderRadius: "5px" }}>
-            <InputLabel id="status-select-label" style={{ background: "#f5f5f5", padding: "0 5px" }}>Filter bookings</InputLabel>
-            <Select labelId="status-select-label" id="status-select" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} label="Filter bookings" className={styles.selectOption} style={{ borderRadius: "5px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            mb: 2,
+            px: 1,
+          }}
+        >
+          <FormControl
+            size="small"
+            variant="outlined"
+            sx={{
+              minWidth: 160,
+              backgroundColor: "#ffffff",
+              border: "1px solid #ddd",
+              borderRadius: "30px",
+              px: 1.5,
+              py: 0.5,
+              boxShadow: "0 2px 5px rgba(0,0,0,0.06)",
+              "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+              "&:hover": {
+                boxShadow: "0 3px 6px rgba(0,0,0,0.1)",
+              },
+            }}
+          >
+            <InputLabel
+              id="status-select-label"
+              sx={{
+                fontSize: "0.85rem",
+                pl: 1,
+                color: "#555",
+              }}
+            >
+              <TuneRounded sx={{ mr: 1, fontSize: 18 }} />
+              Filter
+            </InputLabel>
+
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              label="Filter"
+              sx={{
+                fontSize: "0.9rem",
+                pl: 3.5,
+              }}
+            >
               <MenuItem value="Confirmed">Confirmed</MenuItem>
               <MenuItem value="Failed">Failed</MenuItem>
               <MenuItem value="Checked-in">Checked In</MenuItem>
               <MenuItem value="Checked-out">Checked Out</MenuItem>
               <MenuItem value="Cancelled">Cancelled</MenuItem>
-              <MenuItem value="No-show">No show</MenuItem>
+              <MenuItem value="No-show">No Show</MenuItem>
             </Select>
           </FormControl>
-        </div>
+        </Box>
 
         {currentBooking.length > 0 ? (
           <>
-            <BootstrapModal show={showReviewForm} onHide={handleCloseReview} centered size="lg">
-              <Box sx={{ position: "relative", p: 2, width: "100%", bgcolor: "background.paper" }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                  <Typography variant="h6">Write about your experience</Typography>
-                  <CloseIcon onClick={handleCloseReview} style={{ cursor: "pointer" }} />
+            <BootstrapModal
+              show={showReviewForm}
+              onHide={handleCloseReview}
+              centered
+              size="lg"
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  p: 2,
+                  width: "100%",
+                  bgcolor: "background.paper",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    mb: 2,
+                  }}
+                >
+                  <Typography variant="h6">
+                    Write about your experience
+                  </Typography>
+                  <CloseIcon
+                    onClick={handleCloseReview}
+                    style={{ cursor: "pointer" }}
+                  />
                 </Box>
-                <MDBTextArea label="Comment" id="formControlLg" size="lg" value={comment} onChange={(e) => setComment(e.target.value)} style={{ marginBottom: "10px" }} />
-                <Rating name="simple-controlled" value={rating} onChange={(event, newValue) => setRating(newValue)} />
-                <Button variant="contained" onClick={postReview} style={{ marginTop: "10px", width: "100%" }}>
+                <MDBTextArea
+                  label="Comment"
+                  id="formControlLg"
+                  size="lg"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  style={{ marginBottom: "10px" }}
+                />
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(event, newValue) => setRating(newValue)}
+                />
+                <Button
+                  variant="contained"
+                  onClick={postReview}
+                  style={{ marginTop: "10px", width: "100%" }}
+                >
                   <SendIcon style={{ marginRight: "5px" }} /> Send Review
                 </Button>
               </Box>
             </BootstrapModal>
-
             <div className={styles.bookingsContainer}>
               {currentBooking.map((bookingDetail) => (
-                <div key={bookingDetail.bookingId}>
-                  <Paper sx={{ width: "100%", position: "relative", overflow: "auto", mb: 2, p: 2 }}>
-                    <Card sx={{ display: "flex", flexDirection: "column", overflow: "auto", mb: 2 }}>
-                      <CardContent>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <Typography variant="h6">{bookingDetail?.hotelDetails?.hotelName}</Typography>
-                          <div>
-                            <Button variant="outlined" onClick={() => handleShow(bookingDetail)} style={{ marginRight: "5px" }}>View Booking</Button>
-                            <Button variant="contained" onClick={() => handleReview(bookingDetail.hotelId)}>Review</Button>
-                          </div>
-                        </div>
-                        <Typography variant="body2" color="textSecondary" sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                          <CalendarMonthIcon /> From {formatDateWithOrdinal(bookingDetail.checkInDate)} to {formatDateWithOrdinal(bookingDetail.checkOutDate)}
+                <Paper
+                  key={bookingDetail.bookingId}
+                  sx={{
+                    width: "100%",
+                    mb: 2,
+                    p: 1.5,
+                    borderRadius: 2,
+                    boxShadow: 2,
+                  }}
+                >
+                  <Card
+                    elevation={0}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      bgcolor: "transparent",
+                    }}
+                  >
+                    <CardContent sx={{ p: 1.5 }}>
+                      {/* Hotel Name and Actions */}
+                      <Stack spacing={1}>
+                        <Typography variant="subtitle1" fontWeight="bold">
+                          {bookingDetail?.hotelDetails?.hotelName}
                         </Typography>
-                        <Divider sx={{ my: 2 }} />
-                        <Typography variant="body2">ID: <StickyNote2Icon /> {bookingDetail.bookingId}</Typography>
-                        <Typography variant="body2">{bookingDetail.guests} {bookingDetail.guests > 1 ? "Guests" : "Guest"} | {bookingDetail.rooms} {bookingDetail.rooms > 1 ? "Rooms" : "Room"}</Typography>
-                        <Typography variant="body2"><CurrencyRupeeIcon /> {bookingDetail.price}</Typography>
-                      </CardContent>
-                    </Card>
-                  </Paper>
-                </div>
+
+                        {/* Dates */}
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <CalendarMonthIcon fontSize="small" />
+                          {formatDateWithOrdinal(
+                            bookingDetail.checkInDate,
+                          )} —{" "}
+                          {formatDateWithOrdinal(bookingDetail.checkOutDate)}
+                        </Typography>
+
+                        {/* Booking ID */}
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <StickyNote2Icon fontSize="small" />
+                          Booking ID: {bookingDetail.bookingId}
+                        </Typography>
+
+                        {/* Room & Guest Info */}
+                        <Typography variant="body2">
+                          {bookingDetail.guests}{" "}
+                          {bookingDetail.guests > 1 ? "Guests" : "Guest"} |{" "}
+                          {bookingDetail.rooms}{" "}
+                          {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
+                        </Typography>
+
+                        {/* Price */}
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
+                        >
+                          <CurrencyRupeeIcon fontSize="small" />
+                          {bookingDetail.price}
+                        </Typography>
+
+                        <Divider sx={{ my: 1 }} />
+
+                        {/* Buttons */}
+                        <Stack direction="row" spacing={1}>
+                          <Button
+                            size="small"
+                            fullWidth
+                            variant="outlined"
+                            onClick={() => handleShow(bookingDetail)}
+                          >
+                            View
+                          </Button>
+                          <Button
+                            size="small"
+                            fullWidth
+                            variant="contained"
+                            onClick={() => handleReview(bookingDetail.hotelId)}
+                          >
+                            Review
+                          </Button>
+                        </Stack>
+                      </Stack>
+                    </CardContent>
+                  </Card>
+                </Paper>
               ))}
             </div>
           </>
@@ -181,59 +387,242 @@ export const ConfirmBooking = () => {
           <p>No bookings available.</p>
         )}
 
-        <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} color="primary" siblingCount={1} boundaryCount={1} sx={{ marginTop: 2 }} />
+        <Pagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          color="primary"
+          siblingCount={1}
+          boundaryCount={1}
+          sx={{ marginTop: 8 }}
+        />
       </div>
 
-      <hr />
-
-      <BootstrapModal show={show} onHide={handleClose} centered size="xl">
+      <BootstrapModal show={show} onHide={handleClose} centered size="lg">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            <button onClick={handlePrint} className={styles.print}>Print</button>
-            <button onClick={handleClose}><AiOutlineClose /></button>
+            <button onClick={handlePrint} className={styles.printBtn}>
+              Print
+            </button>
+            <button onClick={handleClose} className={styles.closeBtn}>
+              <AiOutlineClose />
+            </button>
           </div>
 
           <div className={styles.modalBody}>
-            <div className={styles.body}>
-              <div className={styles.detailRow}><h4 className={styles.header}>Booking ID</h4><p className={styles.content}>{modalData?.bookingId}</p></div>
-              {userData && userData?.name && <div className={styles.detailRow}><h5 className={styles.header}>Booked by {userData?.name} on <span>{modalData?.createdAt && moment(modalData?.createdAt).format("dddd, Do MMMM YYYY")}</span></h5></div>}
-            </div>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6">Hotel Details</Typography>
-            <div className={styles.body}>
-              <div className={styles.detailRow}><Typography variant="body2">Hotel Name & Location</Typography><p className={styles.content}>{modalData?.hotelDetails?.hotelName}, {modalData?.destination}</p></div>
-            </div>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6">Room Details</Typography>
-            <div className={styles.body}>
-              {modalData?.roomDetails?.map((room, index) => (
-                <React.Fragment key={index}>
-                  <div className={styles.detailRow}><Typography variant="body2">Room Type</Typography><p className={styles.content}>{room?.type}</p></div>
-                  <div className={styles.detailRow}><Typography variant="body2">Bed Type</Typography><p className={styles.content}>{room?.bedTypes}</p></div>
-                  <div className={styles.detailRow}><Typography variant="body2">Price</Typography><p className={styles.content}>{room?.price}</p></div>
-                </React.Fragment>
-              ))}
-            </div>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6">Guest Information</Typography>
-            <div className={styles.body}>
-              <div className={styles.detailRow}><Typography variant="body2">Primary Guest</Typography><p className={styles.content}>{modalData?.user?.name}</p></div>
-              <div className={styles.detailRow}><Typography variant="body2">Rooms</Typography><p className={styles.content}>{modalData?.numRooms}</p></div>
-              <div className={styles.detailRow}><Typography variant="body2">Guests</Typography><p className={styles.content}>{modalData?.guests}</p></div>
-              {modalData?.checkInDate && modalData?.checkOutDate && (
-                <div className={styles.detailRow}>
-                  <Typography variant="body2">Check-In</Typography>
-                  <p className={styles.content}>{modalData?.checkInDate.substring(0, 10)} (YY/MM/DD)</p>
-                  <Typography variant="body2">Check-Out</Typography>
-                  <p className={styles.content}>{modalData?.checkOutDate.substring(0, 10)} (YY/MM/DD)</p>
+            {/* Booking Summary */}
+            <section className={styles.section}>
+              <h5>Booking Summary</h5>
+              <div className={styles.grid}>
+                <div>
+                  <label>Booking ID</label>
+                  <p>{modalData?.bookingId}</p>
                 </div>
-              )}
-            </div>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="h6">Total Price</Typography>
-            <div className={styles.body}>
-              <div className={styles.detailRow}><Typography variant="body2">Total</Typography><p className={styles.content}>{modalData?.price}</p></div>
-            </div>
+                <div>
+                  <label>Booked By</label>
+                  <p>{modalData?.user?.name}</p>
+                </div>
+                <div>
+                  <label>Booking Date</label>
+                  <p>{moment(modalData?.createdAt).format("Do MMM YYYY")}</p>
+                </div>
+                <div>
+                  <label>Status</label>
+                  <p>{modalData?.bookingStatus}</p>
+                </div>
+              </div>
+            </section>
+
+            <section className={styles.section}>
+              <h5>Hotel Info</h5>
+              <div className={styles.grid}>
+                <div>
+                  <label>Hotel</label>
+                  <p>{modalData?.hotelDetails?.hotelName}</p>
+                </div>
+                <div>
+                  <label>Location</label>
+                  <p>{modalData?.destination}</p>
+                </div>
+                <div>
+                  <label>Owner</label>
+                  <p>{modalData?.hotelDetails?.hotelOwnerName}</p>
+                </div>
+                <div>
+                  <label>Email</label>
+                  <p>{modalData?.hotelDetails?.hotelEmail}</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Room Info */}
+            <section className={styles.section}>
+              <h5>Room Details</h5>
+              {modalData?.roomDetails?.map((room, index) => (
+                <div key={index} className={styles.grid}>
+                  <div>
+                    <label>Room Type</label>
+                    <p>{room?.type}</p>
+                  </div>
+                  <div>
+                    <label>Bed Type</label>
+                    <p>{room?.bedTypes}</p>
+                  </div>
+                  <div>
+                    <label>Price</label>
+                    <p>
+                      ₹
+                      {(() => {
+                        const foodTotal = Array.isArray(modalData?.foodDetails)
+                          ? modalData.foodDetails.reduce(
+                              (acc, f) => acc + (Number(f.price) || 0),
+                              0,
+                            )
+                          : 0;
+
+                        const finalTotal = Number(modalData?.price) || 0;
+                        const discount = Number(modalData?.discountPrice) || 0;
+
+                        const adjustedRoomTotal =
+                          finalTotal - foodTotal + discount;
+
+                        const numberOfRooms = Array.isArray(
+                          modalData?.roomDetails,
+                        )
+                          ? modalData.roomDetails.length
+                          : 1;
+
+                        const perRoomPrice = Math.round(
+                          adjustedRoomTotal / numberOfRooms,
+                        );
+
+                        return perRoomPrice;
+                      })()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            {/* Food Details */}
+            {modalData?.foodDetails?.length > 0 && (
+              <>
+                <section className={styles.section}>
+                  <h5>Food Ordered</h5>
+                  {modalData?.foodDetails?.map((food, index) => (
+                    <div key={index} className={styles.grid}>
+                      <div>
+                        <label>Food</label>
+                        <p>{food?.type ? food?.type : "Breakfast"}</p>
+                      </div>
+                      <div>
+                        <label>Price</label>
+                        <p>₹{food.price}</p>
+                      </div>
+                    </div>
+                  ))}
+                </section>
+              </>
+            )}
+
+            {/* Guest Info */}
+            <section className={styles.section}>
+              <h5>Guest Info</h5>
+              <div className={styles.grid}>
+                <div>
+                  <label>Name</label>
+                  <p>{modalData?.user?.name}</p>
+                </div>
+                <div>
+                  <label>Mobile</label>
+                  <p>{modalData?.user?.mobile}</p>
+                </div>
+                <div>
+                  <label>Guests</label>
+                  <p>{modalData?.guests}</p>
+                </div>
+                <div>
+                  <label>Rooms</label>
+                  <p>{modalData?.numRooms}</p>
+                </div>
+              </div>
+              <div className={styles.grid}>
+                <div>
+                  <label>Check-In</label>
+                  <p>{modalData?.checkInDate}</p>
+                </div>
+                <div>
+                  <label>Check-Out</label>
+                  <p>{modalData?.checkOutDate}</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Price Summary */}
+            <section className={styles.section}>
+              <h5>Price Summary</h5>
+              <div className={styles.grid}>
+                <div>
+                  <label>Room Total</label>
+                  <p>
+                    ₹
+                    {(() => {
+                      const foodTotal = Array.isArray(modalData?.foodDetails)
+                        ? modalData.foodDetails.reduce(
+                            (acc, f) => acc + (Number(f.price) || 0),
+                            0,
+                          )
+                        : 0;
+
+                      const finalTotal = Number(modalData?.price) || 0;
+                      const discount = Number(modalData?.discountPrice) || 0;
+
+                      const adjustedRoomTotal =
+                        finalTotal - foodTotal + discount;
+
+                      const numberOfRooms = Array.isArray(
+                        modalData?.roomDetails,
+                      )
+                        ? modalData.roomDetails.length
+                        : 1;
+
+                      const perRoomPrice = Math.round(
+                        adjustedRoomTotal / numberOfRooms,
+                      );
+
+                      return perRoomPrice;
+                    })()}
+                  </p>
+                </div>
+                {modalData?.discountPrice && (
+                  <div>
+                    <label>Coupon Discount</label>
+                    <p>- ₹{modalData?.discountPrice}</p>
+                  </div>
+                )}
+                {modalData?.foodDetails?.length > 0 && (
+                  <div>
+                    <label>Food Total</label>
+                    <p>
+                      ₹
+                      {Array.isArray(modalData?.foodDetails) &&
+                      modalData.foodDetails.length > 0
+                        ? modalData.foodDetails.reduce((acc, f) => {
+                            const price = Number(f.price) || 0;
+                            const quantity = 1;
+                            return acc + price * quantity;
+                          }, 0)
+                        : 0}
+                    </p>
+                  </div>
+                )}
+
+                <div className={styles.totalWrap}>
+                  <label className={styles.totalLabel}>Final Total</label>
+                  <p className={styles.total}>₹{modalData?.price}</p>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </BootstrapModal>

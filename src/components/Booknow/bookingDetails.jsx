@@ -92,7 +92,6 @@ const BookingDetails = ({
   const handleCouponSubmit = () => {
     if (couponCode.trim() !== "") {
       handleApplyCoupon(hotelId, compareRoomId, couponCode);
-      setCouponCode("");
       setShowCouponField(false);
     }
   };
@@ -181,6 +180,8 @@ const BookingDetails = ({
         })),
         price: getFinalPrice(),
         pm: "Offline",
+        couponCode: couponCode,
+        discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
         hotelName: hotelData.hotelName,
@@ -210,12 +211,15 @@ const BookingDetails = ({
                 new Date(bookedDetails?.data?.checkOutDate),
                 "dd MMM yyyy",
               )}`,
+            () => {
+              window.location.href = "/bookings"; // <-- Redirect to /bookings
+            },
           );
+
           sessionStorage.removeItem("discountPrice");
           setSelectedFood([]);
           setIsCouponApplied(false);
           setDiscountPrice(0);
-          window.location.reload();
         } else {
           alert(bookedDetails?.message || "Booking failed");
         }

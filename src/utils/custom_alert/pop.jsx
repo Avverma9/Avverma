@@ -64,13 +64,14 @@ const Popup = ({ message, onClose }) => {
   );
 };
 
-export const popup = (message) => {
+export const popup = (message, onOkayCallback) => {
   const div = document.createElement("div");
   document.body.appendChild(div);
 
   const handleClose = () => {
     ReactDOM.unmountComponentAtNode(div);
     div.remove();
+    if (onOkayCallback) onOkayCallback(); // <-- Trigger callback
   };
 
   ReactDOM.render(<Popup message={message} onClose={handleClose} />, div);
