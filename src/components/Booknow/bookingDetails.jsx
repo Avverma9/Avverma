@@ -15,6 +15,10 @@ import {
   Collapse,
   TextField,
   Modal,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { Add, Close, CloseOutlined, Remove } from "@mui/icons-material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -58,6 +62,7 @@ const BookingDetails = ({
   const [discountPrice, setDiscountPrice] = useState(0);
   const [selectedFood, setSelectedFood] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
@@ -441,13 +446,43 @@ const BookingDetails = ({
               <Button
                 variant="contained"
                 color="success"
-                onClick={handleCouponSubmit}
+                onClick={() => setShowConfirmModal(true)}
               >
                 Apply
               </Button>
             </Stack>
           </Collapse>
+
+          {/* Confirm Apply Coupon Modal */}
+          <Dialog
+            open={showConfirmModal}
+            onClose={() => setShowConfirmModal(false)}
+          >
+            <DialogTitle>Apply Coupon?</DialogTitle>
+            <DialogContent>
+              <Typography variant="body2">
+                Once this coupon is applied, it cannot be used again—even if you
+                don’t book.
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setShowConfirmModal(false)} color="error">
+                Don’t Apply
+              </Button>
+              <Button
+                onClick={() => {
+                  handleCouponSubmit();
+                  setShowConfirmModal(false);
+                }}
+                color="success"
+                variant="contained"
+              >
+                Okay, Apply
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
+
         <Box mt={3}>
           <Typography fontSize={14} color="text.secondary">
             Pricing Summary
@@ -455,12 +490,12 @@ const BookingDetails = ({
 
           {discountPrice > 0 && (
             <Typography color="error" fontSize={14}>
-              Discount: ₹{discountPrice}
+              Applied Coupon Discount: ₹{discountPrice}
             </Typography>
           )}
 
           <Typography fontWeight="bold" fontSize={18}>
-            Total: ₹{getFinalPrice()}
+            Total Payable Amount: ₹{getFinalPrice()}
           </Typography>
         </Box>
         {/* Final Booking Button */}
@@ -620,6 +655,11 @@ const BookingDetails = ({
           {/* Price Summary */}
           <Divider sx={{ my: 3 }} />
           <Box textAlign="right">
+          {discountPrice > 0 && (
+            <Typography color="error" fontSize={14}>
+              Applied Coupon Discount: - ₹{discountPrice}
+            </Typography>
+          )}
             <Typography variant="body2">
               Room Price:{" "}
               <strong>
@@ -630,7 +670,7 @@ const BookingDetails = ({
             </Typography>
             {selectedFood.length > 0 && (
               <Typography variant="body2">
-                Meal Price: ₹
+                Meal Price: + ₹
                 {selectedFood.reduce((sum, item) => sum + item.price, 0)}
               </Typography>
             )}
