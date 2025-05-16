@@ -37,9 +37,6 @@ const HotelPolicyCard = ({ hotelData }) => {
               maxWidth: 460,
               mb: 2,
               p: 2,
-              borderRadius: 2,
-              backgroundColor: "#fafafa",
-              border: `1px solid ${theme.palette.divider}`,
             }}
           >
             <Typography

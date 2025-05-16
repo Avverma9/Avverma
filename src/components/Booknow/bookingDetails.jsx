@@ -21,7 +21,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { Add, Close, CloseOutlined, Remove } from "@mui/icons-material";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
 import { BiSolidOffer } from "react-icons/bi";
@@ -34,6 +34,7 @@ import { useLoader } from "../../utils/loader";
 import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
+import { width } from "@mui/system";
 
 const BookingDetails = ({
   hotelId,
@@ -237,11 +238,11 @@ const BookingDetails = ({
         sx={{
           position: "sticky",
           top: 0,
-          width: 340,
+          width: 370,
           p: 3,
-          borderRadius: 4,
           boxShadow: 4,
           backgroundColor: "#ffffff",
+          overflow: "visible", // ensure the calendar is visible outside
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
@@ -387,6 +388,17 @@ const BookingDetails = ({
                 endDate={checkOutDate}
                 placeholderText="Select date"
                 minDate={new Date()}
+                customInput={
+                  <OutlinedInput
+                    size="small"
+                    sx={{ width: "155px" }} // Adjust the width here
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <CalendarMonthIcon fontSize="small" />
+                      </InputAdornment>
+                    }
+                  />
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -404,6 +416,17 @@ const BookingDetails = ({
                 endDate={checkOutDate}
                 placeholderText="Select date"
                 minDate={checkInDate || new Date()}
+                customInput={
+                  <OutlinedInput
+                    size="small"
+                    sx={{ width: "155px" }} // Adjust the width here
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <CalendarMonthIcon fontSize="small" />
+                      </InputAdornment>
+                    }
+                  />
+                }
               />
             </Grid>
           </Grid>
@@ -494,7 +517,7 @@ const BookingDetails = ({
             </Typography>
           )}
 
-          <Typography fontWeight="bold" fontSize={18}>
+          <Typography fontWeight="bold" fontSize={14}>
             Total Payable Amount: ₹{getFinalPrice()}
           </Typography>
         </Box>
@@ -655,11 +678,11 @@ const BookingDetails = ({
           {/* Price Summary */}
           <Divider sx={{ my: 3 }} />
           <Box textAlign="right">
-          {discountPrice > 0 && (
-            <Typography color="error" fontSize={14}>
-              Applied Coupon Discount: - ₹{discountPrice}
-            </Typography>
-          )}
+            {discountPrice > 0 && (
+              <Typography color="error" fontSize={14}>
+                Applied Coupon Discount: - ₹{discountPrice}
+              </Typography>
+            )}
             <Typography variant="body2">
               Room Price:{" "}
               <strong>

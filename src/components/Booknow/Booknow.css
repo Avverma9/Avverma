@@ -1,6 +1,6 @@
 .extras {
     margin-top: 5px;
-    padding: 10px;
+    padding: 0px;
 }
 
 .price {
@@ -392,19 +392,6 @@
     flex: 1;
     /* Allow row to take up full available space */
 }
-
-.rooms {
-    flex: 2;
-    /* Adjust this to control the width of the Rooms component */
-    padding: 10px;
-    /* Add padding for spacing inside the Rooms component */
-    border: 1px solid #ddd;
-    /* Optional: Add a border for visual separation */
-}
-
-
-
-/* Add these styles to your CSS file */
 .datepicker-input {
     width: 120px;
     /* Adjust width as needed */
