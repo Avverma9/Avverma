@@ -529,38 +529,65 @@ const BookNow = () => {
           <div className="hotel-page">
             <div className="main-content">
               <HotelPolicyCard hotelData={hotelData} />
-              <h6
-                style={{
-                  color: "#333",
-                  fontFamily: "Arial, sans-serif",
-                  fontSize: "16px",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  backgroundImage:
-                    "linear-gradient(to right, #ff8c00, #ffc300)",
-                  padding: "10px",
-                }}
-                ref={roomsRef}
-              >
-                Select our special rooms
-              </h6>
-              <div
-                className="extras"
-                style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-              >
-                <div className="container-fluid">
-                  <div className="row">
-                    {/* Special rooms view */}
-                    <div className="rooms" ref={roomsRef}>
-                      <Rooms
-                        hotelData={hotelData}
-                        selectedRooms={selectedRooms}
-                        handleAddRoom={handleAddRoom}
-                        handleRemoveRoom={handleRemoveRoom}
-                      />
+
+              <div className="amenities-and-policies">
+                <h6 className="amenities-title">
+                  Amenities <FaWifi />
+                </h6>
+                <div className="amenities-list">
+                  {visibleAmenities.map((amenity, index) => (
+                    <div key={index} className="amenity-item">
+                      <IconContext.Provider
+                        value={{
+                          size: "1.5em",
+                          style: { marginRight: "8px", color: "black" },
+                        }}
+                      >
+                        {amenityIcons[amenity] || defaultIcon}
+                      </IconContext.Provider>
+                      <span style={{ color: "black" }}>{amenity}</span>
                     </div>
-                  </div>
+                  ))}
                 </div>
+
+                {remainingAmenitiesCount > 0 && (
+                  <div className="hotel-policies-container">
+                    <Accordion
+                      expanded={expanded}
+                      onChange={handleExpansion}
+                      className="accordion"
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        className="accordion-summary"
+                      >
+                        <Typography className="accordion-title">
+                          See +{remainingAmenitiesCount} more amenities
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails className="amenities-list">
+                        {amenities.slice(10).map((amenity, index) => (
+                          <div key={index} className="amenity-item">
+                            <IconContext.Provider
+                              value={{
+                                size: "1.5em",
+                                style: { marginRight: "8px", color: "black" },
+                              }}
+                            >
+                              {amenityIcons[amenity] || defaultIcon}
+                            </IconContext.Provider>
+                            <Typography
+                              variant="body2"
+                              style={{ color: "black" }}
+                            >
+                              {amenity}
+                            </Typography>
+                          </div>
+                        ))}
+                      </AccordionDetails>
+                    </Accordion>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -592,61 +619,37 @@ const BookNow = () => {
               />
             </div>
           </div>
-          <div className="amenities-and-policies">
-            <h6 className="amenities-title">
-              Amenities <FaWifi />
-            </h6>
-            <div className="amenities-list">
-              {visibleAmenities.map((amenity, index) => (
-                <div key={index} className="amenity-item">
-                  <IconContext.Provider
-                    value={{
-                      size: "1.5em",
-                      style: { marginRight: "8px", color: "black" },
-                    }}
-                  >
-                    {amenityIcons[amenity] || defaultIcon}
-                  </IconContext.Provider>
-                  <span style={{ color: "black" }}>{amenity}</span>
+          <h6
+            style={{
+              color: "#333",
+              fontFamily: "Arial, sans-serif",
+              fontSize: "16px",
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
+              padding: "10px",
+            }}
+            ref={roomsRef}
+          >
+            Select our special rooms
+          </h6>
+          <div
+            className="extras"
+            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+          >
+            <div className="container-fluid">
+              <div className="row">
+                {/* Special rooms view */}
+                <div className="rooms" ref={roomsRef}>
+                  <Rooms
+                    hotelData={hotelData}
+                    selectedRooms={selectedRooms}
+                    handleAddRoom={handleAddRoom}
+                    handleRemoveRoom={handleRemoveRoom}
+                  />
                 </div>
-              ))}
-            </div>
-
-            {remainingAmenitiesCount > 0 && (
-              <div className="hotel-policies-container">
-                <Accordion
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  className="accordion"
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    className="accordion-summary"
-                  >
-                    <Typography className="accordion-title">
-                      See +{remainingAmenitiesCount} more amenities
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails className="amenities-list">
-                    {amenities.slice(10).map((amenity, index) => (
-                      <div key={index} className="amenity-item">
-                        <IconContext.Provider
-                          value={{
-                            size: "1.5em",
-                            style: { marginRight: "8px", color: "black" },
-                          }}
-                        >
-                          {amenityIcons[amenity] || defaultIcon}
-                        </IconContext.Provider>
-                        <Typography variant="body2" style={{ color: "black" }}>
-                          {amenity}
-                        </Typography>
-                      </div>
-                    ))}
-                  </AccordionDetails>
-                </Accordion>
               </div>
-            )}
+            </div>
           </div>
           <BookingReview hotelId={hotelData?.hotelId} />
         </>
