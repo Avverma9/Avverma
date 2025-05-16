@@ -2,16 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PlaceIcon from "@mui/icons-material/Place";
 import Carousel from "react-bootstrap/Carousel";
-import LinearProgress from "@mui/material/LinearProgress";
 import Accordion from "@mui/material/Accordion";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
-import Lightbox from "react-image-lightbox";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { addDays } from "date-fns";
@@ -24,7 +19,6 @@ import { FaBed, FaWifi } from "react-icons/fa";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Box from "@mui/material/Box";
 import "./Booknow.css";
-import Policies from "./policies";
 import BookingDetails from "./bookingDetails";
 import Rooms from "./rooms";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +28,7 @@ import {
 } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
-import { Button, Divider, Grid, Modal } from "@mui/material";
+import { Modal } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { StarHalfSharp } from "@mui/icons-material";
 import HotelPolicyCard from "./policy-card";
@@ -396,7 +390,7 @@ const BookNow = () => {
 
   return (
     <div className="book-now-container">
-      {hotelData ? (
+      {hotelData && (
         <>
           <Box display="flex" alignItems="center" marginBottom="10px">
             <span
@@ -716,10 +710,6 @@ const BookNow = () => {
           </div>
           <BookingReview hotelId={hotelData?.hotelId} />
         </>
-      ) : (
-        <Box sx={{ width: "100%" }}>
-          <LinearProgress />
-        </Box>
       )}
     </div>
   );

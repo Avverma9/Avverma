@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProfileData } from '../../redux/reducers/profileSlice'; 
-import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import { Paper, Typography, Avatar, Button, Grid, Stack } from '@mui/material';
 import './Profile.css'; 
@@ -25,14 +24,6 @@ export default function Profile() {
         return <Unauthorized />;
     }
 
-    if (loading) {
-        return (
-            <Box sx={{ width: '100%' }}>
-                <LinearProgress />
-            </Box>
-        );
-    }
-
     if (error) {
         return <p>Error loading profile data: {error.message}</p>;
     }
@@ -47,7 +38,7 @@ export default function Profile() {
     };
 
     return (
-        <section className="vh-100" style={{ backgroundColor: '#ffffff' }}>
+        <section className="vh-90" style={{ backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Paper elevation={3} sx={{ padding: 3, maxWidth: 600, width: '100%' }}>
                     <Grid container spacing={2}>

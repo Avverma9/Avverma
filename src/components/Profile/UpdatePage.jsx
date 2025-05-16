@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import LinearProgress from '@mui/material/LinearProgress';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -121,9 +120,6 @@ const UpdatePage = () => {
         return null;
     }
 
-    if (loading) {
-        return <LinearProgress />;
-    }
 
     if (error) {
         return <div>Error: {error.message}</div>;

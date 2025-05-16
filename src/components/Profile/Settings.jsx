@@ -41,52 +41,33 @@ const Settings = () => {
                     {isSidebarOpen ? <AiOutlineCloseCircle /> : <HiOutlineMenuAlt2 />}
                 </button>
                 <nav className={styles.nav}>
-                    <ul className={styles.menu}>
-                        <a className={styles.menuItem}>
-                            <Link to="/profile" onClick={() => setSidebarOpen(false)}>
-                                <CgProfile
-                                    style={{
-                                        height: '22px',
-                                        marginRight: '10px',
-                                    }}
-                                />{' '}
-                                Profile
-                            </Link>
-                        </a>
-                        <a className={styles.menuItem}>
-                            <Link to="/bookings" onClick={() => setSidebarOpen(false)}>
-                                <PiTicketThin
-                                    style={{
-                                        height: '22px',
-                                        marginRight: '10px',
-                                    }}
-                                />{' '}
-                                Bookings
-                            </Link>
-                        </a>
-                        <a className={styles.menuItem}>
-                            <Link to="/complaints" onClick={() => setSidebarOpen(false)}>
-                                <Info
-                                    style={{
-                                        height: '22px',
-                                        marginRight: '10px',
-                                    }}
-                                />{' '}
-                                Complaint
-                            </Link>
-                        </a>
-                        <a className={styles.menuItem}>
-                            <Link to="/reviews" onClick={() => setSidebarOpen(false)}>
-                                <MdOutlineRateReview
-                                    style={{
-                                        height: '22px',
-                                        marginRight: '10px',
-                                    }}
-                                />{' '}
-                                Reviews
-                            </Link>
-                        </a>
-                    </ul>
+                <ul className={styles.menu}>
+    <li className={styles.menuItem}>
+        <a href="/profile" onClick={() => setSidebarOpen(false)}>
+            <CgProfile style={{ height: '22px', marginRight: '10px' }} />
+            Profile
+        </a>
+    </li>
+    <li className={styles.menuItem}>
+        <a href="/bookings" onClick={() => setSidebarOpen(false)}>
+            <PiTicketThin style={{ height: '22px', marginRight: '10px' }} />
+            Bookings
+        </a>
+    </li>
+    <li className={styles.menuItem}>
+        <a href="/complaints" onClick={() => setSidebarOpen(false)}>
+            <Info style={{ height: '22px', marginRight: '10px' }} />
+            Complaint
+        </a>
+    </li>
+    <li className={styles.menuItem}>
+        <a href="/reviews" onClick={() => setSidebarOpen(false)}>
+            <MdOutlineRateReview style={{ height: '22px', marginRight: '10px' }} />
+            Reviews
+        </a>
+    </li>
+</ul>
+
                 </nav>
             </aside>
             <main className={`${styles.content} ${!isSidebarOpen ? styles.fullWidth : ''}`}>
