@@ -33,8 +33,8 @@ export const LoaderProvider = ({ children }) => {
                         src={loaderImage} // Using the imported loader image
                         alt="Loading..."
                         style={{
-                            maxWidth: '80%', // Limit the width to 80% of the container
-                            maxHeight: '80%', // Limit the height to 80% of the container
+                            maxWidth: '60%', // Limit the width to 80% of the container
+                            maxHeight: '60%', // Limit the height to 80% of the container
                         }} // Adjust size as needed
                     />
                 </Box>
