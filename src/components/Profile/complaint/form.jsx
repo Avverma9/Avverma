@@ -234,8 +234,8 @@ const Complaint = () => {
                     label="Hotel Name"
                   >
                     {hotels?.map((hotel) => (
-                      <MenuItem key={hotel.hotelId} value={hotel.hotelId}>
-                        {hotel.hotelName}
+                      <MenuItem key={hotel?.hotelDetails?.hotelId} value={hotel?.hotelDetails?.hotelId}>
+                        {hotel?.hotelDetails?.hotelName}
                       </MenuItem>
                     ))}
                   </Select>
