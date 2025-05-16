@@ -72,7 +72,7 @@ const bookingSchema = new mongoose.Schema(
         "Checked-in",
         "Checked-out",
         "No-Show",
-        "Pending"
+        "Pending",
       ],
       default: "Confirmed",
     },
@@ -92,7 +92,6 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
-
   },
   {
     timestamps: {
@@ -102,7 +101,7 @@ const bookingSchema = new mongoose.Schema(
         return new Date(currentDate.getTime() + offset);
       },
     },
-  }
+  },
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);
