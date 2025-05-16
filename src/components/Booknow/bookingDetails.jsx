@@ -16,7 +16,7 @@ import {
   TextField,
   Modal,
 } from "@mui/material";
-import { Add, Close, Remove } from "@mui/icons-material";
+import { Add, Close, CloseOutlined, Remove } from "@mui/icons-material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import InventoryTwoToneIcon from "@mui/icons-material/InventoryTwoTone";
@@ -223,6 +223,8 @@ const BookingDetails = ({
       hideLoader();
     }
   };
+  const formatDate = (date) =>
+    date ? new Date(date).toLocaleDateString() : "N/A";
 
   return (
     <>
@@ -432,165 +434,175 @@ const BookingDetails = ({
           </Button>
         </Stack>
       </Card>
-
       {/* Final Confirmation Modal */}
-      <Modal open={openModal} onClose={handleCloseModal}>
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backdropFilter: "blur(4px)",
+          px: 2,
+        }}
+      >
         <Box
           sx={{
-            width: { xs: "90%", sm: 500 }, // 90% width on mobile, 500px width on larger screens
+            width: { xs: "100%", sm: 550, md: 650 },
             maxHeight: "90vh",
-            overflowY: "auto",
             bgcolor: "background.paper",
-            borderRadius: 3,
-            boxShadow: 24,
-            p: 4,
-            mx: "auto",
-            mt: "5%",
-            position: "relative", // Positioning context for the close button
+            borderRadius: 2,
+            boxShadow: 10,
+            p: { xs: 2, sm: 4 },
+            overflowY: "auto",
+            position: "relative",
           }}
         >
           {/* Close Button */}
           <IconButton
-            onClick={() => setOpenModal(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              zIndex: 10, // Ensures the close button appears above other content
-            }}
+            onClick={handleCloseModal}
+            sx={{ position: "absolute", top: 16, right: 16 }}
             aria-label="close"
           >
-            <Close />
+            <CloseOutlined fontSize="small" />
           </IconButton>
 
-          {/* Modal Title */}
-          <Typography variant="h6" fontWeight="bold" mb={2}>
+          {/* Title */}
+          <Typography variant="h6" fontWeight="600" mb={3}>
             Confirm Your Booking
           </Typography>
 
-          {/* Booking Summary */}
+          {/* SECTION: Booking Details */}
           <Box mb={3}>
-            <Typography variant="subtitle1" fontWeight="bold" mb={1}>
-              Booking Summary
+            <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              Booking Details
             </Typography>
-
-            {/* Check-In and Check-Out Dates */}
-            <Typography variant="body2" mb={0.5}>
-              <strong>Check-In Date:</strong>{" "}
-              {checkInDate ? new Date(checkInDate).toLocaleDateString() : "N/A"}
-            </Typography>
-            <Typography variant="body2" mb={0.5}>
-              <strong>Check-Out Date:</strong>{" "}
-              {checkOutDate
-                ? new Date(checkOutDate).toLocaleDateString()
-                : "N/A"}
-            </Typography>
-
-            {/* Guests Count */}
-            <Typography variant="body2" mb={0.5}>
-              <strong>Guests:</strong> {guestsCount} guest
-              {guestsCount > 1 ? "s" : ""}
-            </Typography>
-
-            {/* Rooms Count */}
-            <Typography variant="body2" mb={0.5}>
-              <strong>Rooms:</strong> {roomsCount} room
-              {roomsCount > 1 ? "s" : ""}
-            </Typography>
-
-            {/* Coupon Discount (if any) */}
-            {isCouponApplied && (
-              <Typography variant="body2" mb={1}>
-                <strong>Discount Applied:</strong>{" "}
-                <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
-                {discountPrice}
-              </Typography>
-            )}
+            <Grid container spacing={1}>
+              <Grid item xs={6}>
+                <Typography variant="body2">
+                  Check-In: <strong>{formatDate(checkInDate)}</strong>
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">
+                  Check-Out: <strong>{formatDate(checkOutDate)}</strong>
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">
+                  Guests: <strong>{guestsCount}</strong>
+                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="body2">
+                  Rooms: <strong>{roomsCount}</strong>
+                </Typography>
+              </Grid>
+              {isCouponApplied && (
+                <Grid item xs={12}>
+                  <Typography variant="body2">
+                    Discount: <strong>₹{discountPrice}</strong>
+                  </Typography>
+                </Grid>
+              )}
+            </Grid>
           </Box>
 
-          {/* Room Price */}
-          <Typography variant="body2" mb={1}>
-            Room Price: <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
-            {calculateTotalPrice()}
-          </Typography>
+          {/* SECTION: Room Price */}
+          <Box mb={3}>
+            <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              Room Pricing
+            </Typography>
+            <Typography variant="body2">
+              Total Room Price: <strong>₹{calculateTotalPrice()}</strong>
+            </Typography>
+          </Box>
 
-          {/* Food Selection */}
-          <Typography variant="subtitle1" fontWeight="bold" mt={2} mb={1}>
-            Add Meals
-          </Typography>
-
-          <Grid container spacing={2}>
-            {hotelData.foods?.map((food) => {
-              const isSelected = selectedFood.some(
-                (f) => f.foodId === food.foodId,
-              );
-              return (
-                <Grid item xs={12} sm={6} md={4} key={food.foodId}>
-                  {" "}
-                  {/* Responsiveness for food cards */}
-                  <Card sx={{ p: 2, display: "flex", alignItems: "center" }}>
-                    <Box
-                      component="img"
-                      src={food.images[0]}
-                      alt={food.name}
+          {/* SECTION: Meal Selection */}
+          <Box mb={3}>
+            <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              Add Meals
+            </Typography>
+            <Grid container spacing={2}>
+              {hotelData.foods?.map((food) => {
+                const isSelected = selectedFood.some(
+                  (f) => f.foodId === food.foodId,
+                );
+                return (
+                  <Grid item xs={12} sm={6} key={food.foodId}>
+                    <Card
+                      variant="outlined"
                       sx={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 2,
-                        objectFit: "cover",
-                        mr: 2,
+                        p: 2,
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        borderColor: isSelected ? "success.main" : "grey.300",
+                        backgroundColor: isSelected ? "grey.100" : "white",
+                        transition: "all 0.2s ease",
                       }}
-                    />
-                    <Box flexGrow={1}>
-                      <Typography fontWeight="bold">{food.name}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {food.about}
-                      </Typography>
-                      <Typography variant="body2" mt={0.5}>
-                        <CurrencyRupeeIcon sx={{ fontSize: 14 }} />
-                        {food.price}
-                      </Typography>
-                    </Box>
-                    <Button
-                      variant={isSelected ? "contained" : "outlined"}
-                      color={isSelected ? "error" : "primary"}
-                      size="small"
-                      onClick={() =>
-                        isSelected
-                          ? handleRemoveFood(food)
-                          : handleSelectFood(food)
-                      }
                     >
-                      {isSelected ? "Remove" : "Select"}
-                    </Button>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
+                      <Box>
+                        <Typography fontWeight="500">
+                          {food.foodType}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          ₹{food.price}
+                        </Typography>
+                      </Box>
+                      <Button
+                        variant={isSelected ? "contained" : "outlined"}
+                        color={isSelected ? "error" : "primary"}
+                        size="small"
+                        onClick={() =>
+                          isSelected
+                            ? handleRemoveFood(food)
+                            : handleSelectFood(food)
+                        }
+                      >
+                        {isSelected ? "Remove" : "Add"}
+                      </Button>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
 
-          <Divider sx={{ my: 2 }} />
+          {/* SECTION: Selected Meals Summary */}
+          {selectedFood.length > 0 && (
+            <Box mb={3}>
+              <Typography variant="subtitle2" color="text.secondary" mb={1}>
+                Selected Meals
+              </Typography>
+              {selectedFood.map((item) => (
+                <Box
+                  key={item.foodId}
+                  display="flex"
+                  justifyContent="space-between"
+                  py={0.5}
+                >
+                  <Typography variant="body2">{item.foodType}</Typography>
+                  <Typography variant="body2">₹{item.price}</Typography>
+                </Box>
+              ))}
+              <Divider sx={{ my: 1 }} />
+              <Typography variant="body2" fontWeight="600">
+                Meal Total: ₹
+                {selectedFood.reduce((sum, item) => sum + item.price, 0)}
+              </Typography>
+            </Box>
+          )}
+
+          <Divider sx={{ my: 3 }} />
 
           {/* Final Total */}
-          <Typography variant="body1" fontWeight="bold" mb={2}>
-            Final Total: <CurrencyRupeeIcon sx={{ fontSize: 16 }} />
-            {getFinalPrice()}
+          <Typography variant="body1" fontWeight="600" textAlign="right" mb={3}>
+            Total Amount: ₹{getFinalPrice()}
           </Typography>
 
-          {/* Action Buttons */}
-          <Stack
-            direction={{ xs: "column", sm: "row" }} // Stack vertically on small screens, horizontally on larger screens
-            spacing={2}
-            mt={2}
-          >
-            <Button
-              fullWidth
-              variant="outlined"
-              onClick={() => handleBookNow()}
-              sx={{ mb: { xs: 1, sm: 0 } }} // Adds marginBottom for mobile screens only
-            >
-              Pay at Hotel
-            </Button>
+          {/* Buttons */}
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <Button
               fullWidth
               variant="contained"
@@ -598,6 +610,9 @@ const BookingDetails = ({
               onClick={() => handlePay(getFinalPrice(), selectedFood)}
             >
               Pay Now
+            </Button>
+            <Button fullWidth variant="outlined" onClick={handleBookNow}>
+              Pay at Hotel
             </Button>
           </Stack>
         </Box>
