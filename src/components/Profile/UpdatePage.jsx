@@ -108,7 +108,6 @@ const UpdatePage = () => {
             }
 
             await dispatch(updateProfileData(formDataObj));
-            alert('Update successful');
             navigate('/');
         } catch (error) {
             console.error('Error updating user:', error);
