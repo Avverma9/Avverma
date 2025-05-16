@@ -34,7 +34,7 @@ import {
 } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
-import { Button, Divider, Grid } from "@mui/material";
+import { Button, Divider, Grid, Modal } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { StarHalfSharp } from "@mui/icons-material";
 import HotelPolicyCard from "./policy-card";
@@ -71,6 +71,11 @@ const BookNow = () => {
   const { monthlyData } = useSelector((state) => state.booking);
   const showLowestPrice = localStorage.getItem("lowestPrice");
   const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
+
+  const openLightbox = (index) => {
+    setCurrentImageIndex(index);
+    setIsOpen(true);
+  };
 
   const handleExpansion = () => {
     setExpanded((prevExpanded) => !prevExpanded);
@@ -373,16 +378,21 @@ const BookNow = () => {
     return styles;
   }
 
-  const openLightbox = (index) => {
-    setCurrentImageIndex(index);
-    setIsOpen(true);
-  };
-
   const amenities =
     hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities) ||
     [];
   const visibleAmenities = amenities.slice(0, 10);
   const remainingAmenitiesCount = amenities.length - visibleAmenities.length;
+  const navButtonStyle = (side) => ({
+    position: "absolute",
+    top: "50%",
+    [side]: 16,
+    transform: "translateY(-50%)",
+    bgcolor: "rgba(0,0,0,0.4)",
+    color: "white",
+    zIndex: 10,
+    "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
+  });
 
   return (
     <div className="book-now-container">
@@ -423,48 +433,100 @@ const BookNow = () => {
               {hotelData?.pinCode}
             </p>
           </div>
-          {hotelData?.images && (
-            <Carousel>
-              {hotelData?.images?.map((image, index) => (
-                <Carousel.Item key={index} interval={1000}>
+          {hotelData?.images?.length > 0 && (
+            <>
+              {/* Carousel */}
+              <Carousel>
+                {hotelData.images.map((image, index) => (
+                  <Carousel.Item key={index} interval={2000}>
+                    <img
+                      src={image}
+                      alt={`Hotel Image ${index + 1}`}
+                      className="d-block w-100 object-fit-cover"
+                      style={{
+                        height: 500,
+                        cursor: "pointer",
+                        objectFit: "cover",
+                      }}
+                      onClick={() => openLightbox(index)}
+                    />
+                  </Carousel.Item>
+                ))}
+              </Carousel>
+
+              {/* Custom Lightbox Modal */}
+              <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    bgcolor: "rgba(0,0,0,0.95)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 1300,
+                  }}
+                >
+                  {/* Close Button */}
+                  <IconButton
+                    onClick={() => setIsOpen(false)}
+                    sx={{
+                      position: "absolute",
+                      top: 16,
+                      right: 16,
+                      color: "white",
+                      bgcolor: "rgba(0,0,0,0.5)",
+                      "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+
+                  {/* Image */}
                   <img
-                    src={image}
-                    alt={`Hotel Image ${index + 1}`}
-                    className="d-block w-100 h-300 object-fit-cover"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => openLightbox(index)} // Open lightbox on click
+                    src={hotelData.images[currentImageIndex]}
+                    alt={`Image ${currentImageIndex + 1}`}
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain",
+                      borderRadius: 4,
+                    }}
                   />
-                </Carousel.Item>
-              ))}
-            </Carousel>
-          )}
-          {isOpen && (
-            <Lightbox
-              mainSrc={hotelData.images[currentImageIndex]}
-              nextSrc={
-                hotelData.images[
-                  (currentImageIndex + 1) % hotelData.images.length
-                ]
-              }
-              prevSrc={
-                hotelData.images[
-                  (currentImageIndex + hotelData.images.length - 1) %
-                    hotelData.images.length
-                ]
-              }
-              onCloseRequest={() => setIsOpen(false)}
-              onMovePrevRequest={() =>
-                setCurrentImageIndex(
-                  (currentImageIndex + hotelData.images.length - 1) %
-                    hotelData.images.length,
-                )
-              }
-              onMoveNextRequest={() =>
-                setCurrentImageIndex(
-                  (currentImageIndex + 1) % hotelData.images.length,
-                )
-              }
-            />
+
+                  {/* Navigation Buttons */}
+                  {hotelData.images.length > 1 && (
+                    <>
+                      <IconButton
+                        onClick={() =>
+                          setCurrentImageIndex(
+                            (currentImageIndex + hotelData.images.length - 1) %
+                              hotelData.images.length,
+                          )
+                        }
+                        sx={navButtonStyle("left")}
+                      >
+                        {"<"}
+                      </IconButton>
+
+                      <IconButton
+                        onClick={() =>
+                          setCurrentImageIndex(
+                            (currentImageIndex + 1) % hotelData.images.length,
+                          )
+                        }
+                        sx={navButtonStyle("right")}
+                      >
+                        {">"}
+                      </IconButton>
+                    </>
+                  )}
+                </Box>
+              </Modal>
+            </>
           )}
           <div className="extras">
             {" "}
@@ -590,37 +652,38 @@ const BookNow = () => {
                 )}
               </div>
               <h6
-            style={{
-              color: "#333",
-              fontFamily: "Arial, sans-serif",
-              fontSize: "16px",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
-              padding: "10px",
-            }}
-            ref={roomsRef}
-          >
-            Select our special rooms
-          </h6>
-          <div
-            className="extras"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-          >
-            <div className="container-fluid">
-              <div className="row">
-                {/* Special rooms view */}
-                <div className="rooms" ref={roomsRef}>
-                  <Rooms
-                    hotelData={hotelData}
-                    selectedRooms={selectedRooms}
-                    handleAddRoom={handleAddRoom}
-                    handleRemoveRoom={handleRemoveRoom}
-                  />
+                style={{
+                  color: "#333",
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  backgroundImage:
+                    "linear-gradient(to right, #ff8c00, #ffc300)",
+                  padding: "10px",
+                }}
+                ref={roomsRef}
+              >
+                Select our special rooms
+              </h6>
+              <div
+                className="extras"
+                style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
+              >
+                <div className="container-fluid">
+                  <div className="row">
+                    {/* Special rooms view */}
+                    <div className="rooms" ref={roomsRef}>
+                      <Rooms
+                        hotelData={hotelData}
+                        selectedRooms={selectedRooms}
+                        handleAddRoom={handleAddRoom}
+                        handleRemoveRoom={handleRemoveRoom}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
             </div>
 
             <div className="booking-sidebar">
@@ -651,7 +714,6 @@ const BookNow = () => {
               />
             </div>
           </div>
-      
           <BookingReview hotelId={hotelData?.hotelId} />
         </>
       ) : (

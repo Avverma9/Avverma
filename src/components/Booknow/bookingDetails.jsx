@@ -509,42 +509,33 @@ const BookingDetails = ({
           <IconButton
             onClick={handleCloseModal}
             sx={{ position: "absolute", top: 16, right: 16 }}
-            aria-label="close"
           >
             <CloseOutlined fontSize="small" />
           </IconButton>
 
           {/* Title */}
-          <Typography variant="h6" fontWeight="600" mb={3}>
+          <Typography variant="h6" fontWeight={600} mb={3}>
             Confirm Your Booking
           </Typography>
 
-          {/* SECTION: Booking Details */}
+          {/* Booking Details */}
           <Box mb={3}>
             <Typography variant="subtitle2" color="text.secondary" mb={1}>
               Booking Details
             </Typography>
             <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <Typography variant="body2">
-                Check in : <strong>{formatDate(checkInDate)}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">
-                Check Out : <strong>{formatDate(checkOutDate)}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">
-                  Guests: <strong>{guestsCount}</strong>
-                </Typography>
-              </Grid>
-              <Grid item xs={6}>
-                <Typography variant="body2">
-                  Rooms: <strong>{roomsCount}</strong>
-                </Typography>
-              </Grid>
+              {[
+                { label: "Check in", value: formatDate(checkInDate) },
+                { label: "Check out", value: formatDate(checkOutDate) },
+                { label: "Guests", value: guestsCount },
+                { label: "Rooms", value: roomsCount },
+              ].map(({ label, value }, i) => (
+                <Grid item xs={6} key={i}>
+                  <Typography variant="body2">
+                    {label}: <strong>{value}</strong>
+                  </Typography>
+                </Grid>
+              ))}
               {isCouponApplied && (
                 <Grid item xs={12}>
                   <Typography variant="body2">
@@ -555,25 +546,22 @@ const BookingDetails = ({
             </Grid>
           </Box>
 
-          {/* SECTION: Room Price */}
-          <Box mb={3}>
-            <Box
-              sx={{
-                borderBottom: "2px dotted black", // Dotted border color (light grey)
-                pb: 2, // Padding bottom to separate from the next content
-                mb: 2, // Margin bottom for spacing
-              }}
-            >
-              <Typography variant="subtitle2" color="text.secondary" mb={1}>
-                Room Pricing
-              </Typography>
-              <Typography variant="body2">
-                Total Room Price: <strong>₹{calculateTotalPrice()}</strong>
-              </Typography>
-            </Box>
+          {/* Room Pricing */}
+          <Box mb={3} sx={{ borderBottom: "2px dotted", pb: 2, mb: 2 }}>
+            <Typography variant="subtitle2" color="text.secondary" mb={1}>
+              Room Pricing
+            </Typography>
+            <Typography variant="body2">
+              Total Room Price:{" "}
+              <strong>
+                ₹
+                {calculateTotalPrice() -
+                  selectedFood.reduce((sum, item) => sum + item.price, 0)}
+              </strong>
+            </Typography>
           </Box>
 
-          {/* SECTION: Meal Selection */}
+          {/* Meal Selection */}
           <Box mb={3}>
             <Typography variant="subtitle2" color="text.secondary" mb={1}>
               Add Meals
@@ -593,12 +581,11 @@ const BookingDetails = ({
                         justifyContent: "space-between",
                         alignItems: "center",
                         borderColor: isSelected ? "success.main" : "grey.300",
-                        backgroundColor: isSelected ? "grey.100" : "white",
-                        transition: "all 0.2s ease",
+                        bgcolor: isSelected ? "grey.100" : "white",
                       }}
                     >
                       <Box>
-                        <Typography fontWeight="500">
+                        <Typography fontWeight={500}>
                           {food.foodType}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
@@ -607,14 +594,14 @@ const BookingDetails = ({
                       </Box>
                       <Button
                         variant={isSelected ? "contained" : "outlined"}
+                        color={isSelected ? "error" : "inherit"}
+                        size="small"
                         sx={{
                           mt: 1,
-                          backgroundColor: "black",
+                          bgcolor: "black",
                           color: "white",
-                          "&:hover": { backgroundColor: "#f2deff2" },
+                          "&:hover": { bgcolor: "#f2deff2" },
                         }}
-                        color={isSelected ? "error" : "black"}
-                        size="small"
                         onClick={() =>
                           isSelected
                             ? handleRemoveFood(food)
@@ -630,39 +617,29 @@ const BookingDetails = ({
             </Grid>
           </Box>
 
-          {/* SECTION: Selected Meals Summary */}
-          {selectedFood.length > 0 && (
-            <Box mb={3}>
-              <Typography variant="subtitle2" color="text.secondary" mb={1}>
-                Selected Meals
-              </Typography>
-              {selectedFood.map((item) => (
-                <Box
-                  key={item.foodId}
-                  display="flex"
-                  justifyContent="space-between"
-                  py={0.5}
-                >
-                  <Typography variant="body2">{item.foodType}</Typography>
-                  <Typography variant="body2">₹{item.price}</Typography>
-                </Box>
-              ))}
-              <Divider sx={{ my: 1 }} />
-              <Typography variant="body2" fontWeight="600">
-                Meal Total: ₹
+          {/* Price Summary */}
+          <Divider sx={{ my: 3 }} />
+          <Box textAlign="right">
+            <Typography variant="body2">
+              Room Price:{" "}
+              <strong>
+                ₹
+                {calculateTotalPrice() -
+                  selectedFood.reduce((sum, item) => sum + item.price, 0)}
+              </strong>
+            </Typography>
+            {selectedFood.length > 0 && (
+              <Typography variant="body2">
+                Meal Price: ₹
                 {selectedFood.reduce((sum, item) => sum + item.price, 0)}
               </Typography>
-            </Box>
-          )}
+            )}
+            <Typography variant="body1" fontWeight={600} mt={1} mb={3}>
+              Total Amount: ₹{getFinalPrice()}
+            </Typography>
+          </Box>
 
-          <Divider sx={{ my: 3 }} />
-
-          {/* Final Total */}
-          <Typography variant="body1" fontWeight="600" textAlign="right" mb={3}>
-            Total Amount: ₹{getFinalPrice()}
-          </Typography>
-
-          {/* Buttons */}
+          {/* Action Buttons */}
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
             <Button
               fullWidth
@@ -678,9 +655,9 @@ const BookingDetails = ({
               onClick={handleBookNow}
               sx={{
                 mt: 1,
-                backgroundColor: "black",
+                bgcolor: "black",
                 color: "white",
-                "&:hover": { backgroundColor: "#f2deff2" },
+                "&:hover": { bgcolor: "#f2deff2" },
               }}
             >
               Pay at Hotel
