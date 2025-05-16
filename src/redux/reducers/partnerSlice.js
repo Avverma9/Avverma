@@ -17,7 +17,7 @@ export const postRooms = createAsyncThunk('partner/postRooms', async (formData, 
 // Define the async thunk for sending notifications
 export const sendNotification = createAsyncThunk('partner/sendNotification', async (_, { rejectWithValue }) => {
     try {
-        const userName = localStorage.getItem('userName');
+        const userName = localStorage.getItem('user_name');
         await axios.post(`${baseURL}/push-a-new-notification-to-the-panel/dashboard/user`, {
             name: 'New partner request',
             message: `A new hotel is uploaded by ${userName} please checkout`,
