@@ -58,6 +58,7 @@ const bookingSchema = new mongoose.Schema(
       required: false,
     },
     couponCode: String,
+    discountPrice: Number,
     price: {
       type: Number,
       required: false,
