@@ -16,11 +16,11 @@
 
 .header {
     text-align: center;
-    font-size: 28px; /* Compact header size */
-    margin-bottom: 15px; /* Reduced margin */
+    font-size: 28px; 
+    margin-bottom: 15px; 
     color: #333;
-    border-bottom: 2px solid #ccc; /* Underline for emphasis */
-    padding-bottom: 5px; /* Smaller padding */
+    border-bottom: 2px solid #ccc; 
+    padding-bottom: 5px; 
 }
 
 .policy-card {
@@ -60,27 +60,27 @@
 
 .title {
     font-weight: bold;
-    font-size: 14px; /* Set title size to 14px */
+    font-size: 14px;
     margin: 0;
 }
 
 .text {
     margin: 0;
     color: #555;
-    font-size: 14px; /* More compact text size */
+    font-size: 14px; 
 }
 
 .statusIcon {
-    font-size: 20px; /* Smaller icon size for status */
-    margin-right: 8px; /* Reduced spacing for icons */
+    font-size: 20px; 
+    margin-right: 8px; 
 }
 
 .allowed {
-    color: #28a745; /* Green for allowed */
+    color: #28a745; 
 }
 
 .not-allowed {
-    color: #dc3545; /* Red for not allowed */
+    color: #dc3545; 
 }
 
 .divider {
@@ -89,30 +89,29 @@
     margin: 20px 0;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 767px) {
     .card-title {
-        font-size: 12px; /* Card title for mobile */
+        font-size: 12px;
     }
 
     .sub-title {
-        font-size: 12px; /* Subtitle for mobile */
+        font-size: 12px;
     }
 
     .title {
-        font-size: 12px; /* Title for mobile */
+        font-size: 12px; 
     }
 
     .icon {
-        font-size: 18px; /* Smaller icon size for mobile */
+        font-size: 18px; 
     }
 
     .statusIcon {
-        font-size: 18px; /* Smaller icon size for status on mobile */
+        font-size: 18px;
     }
 }
 
-/* Responsive columns for larger screens */
 @media (min-width: 768px) {
     .policy-card {
         display: flex;
@@ -120,14 +119,14 @@
     }
     
     .section {
-        flex-wrap: wrap; /* Allow sections to wrap */
+        flex-wrap: wrap; 
     }
     
     .section .icon {
-        flex-basis: auto; /* Allow the icon to occupy its natural width */
+        flex-basis: auto; 
     }
     
     .section div {
-        flex-basis: auto; /* Allow text to occupy its natural width */
+        flex-basis: auto;
     }
 }
