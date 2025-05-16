@@ -37,6 +37,7 @@ import BookingReview from "./BookingReview";
 import { Button, Divider, Grid } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { StarHalfSharp } from "@mui/icons-material";
+import HotelPolicyCard from "./policy-card";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -525,163 +526,72 @@ const BookNow = () => {
             </h5>
             <p>{hotelData?.description}</p>
           </div>{" "}
-          {hotelData?.policies?.map((policy, index) => (
-            <Box
-              key={index}
-              sx={{
-                width: "100%", // Set fixed width
-                maxWidth: "420px",
-                marginBottom: 1,
-                paddingX: 2,
-                paddingY: 2,
-                marginLeft: 0, // Align to the left
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Add shadow
-                backgroundColor: "transparent",
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                align="center"
-                sx={{ marginBottom: 1, fontWeight: "bold", fontSize: "1rem" }}
+          <div className="hotel-page">
+            <div className="main-content">
+              <HotelPolicyCard hotelData={hotelData} />
+              <h6
+                style={{
+                  color: "#333",
+                  fontFamily: "Arial, sans-serif",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  backgroundImage:
+                    "linear-gradient(to right, #ff8c00, #ffc300)",
+                  padding: "10px",
+                }}
+                ref={roomsRef}
               >
-                Hotel Policies
-              </Typography>
-
-              <Grid container spacing={1} sx={{ marginBottom: 1 }}>
-                <Grid item xs={6}>
-                  <Typography
-                    variant="body2"
-                    align="center"
-                    sx={{ fontSize: "0.9rem" }}
-                  >
-                    <strong>Check-in:</strong>{" "}
-                    {policy?.checkInPolicy.substring(0, 80)}...
-                  </Typography>
-                </Grid>
-                <Grid item xs={6}>
-                  <Typography
-                    variant="body2"
-                    align="center"
-                    sx={{ fontSize: "0.9rem" }}
-                  >
-                    <strong>Check-out:</strong>{" "}
-                    {policy?.checkOutPolicy.substring(0, 80)}...
-                  </Typography>
-                </Grid>
-              </Grid>
-
-              <Divider sx={{ marginY: 1 }} />
-
-              <Typography
-                variant="body2"
-                sx={{ marginBottom: 0.5, fontSize: "0.85rem" }}
+                Select our special rooms
+              </h6>
+              <div
+                className="extras"
+                style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
               >
-                <strong>Hotel's Policy:</strong>
-              </Typography>
-              <ul style={{ marginLeft: "1rem", marginBottom: "0.5rem" }}>
-                {policy?.hotelsPolicy &&
-                  policy.hotelsPolicy.split("•").map((sentence, index) => {
-                    const trimmedSentence = sentence.trim();
-                    return trimmedSentence ? (
-                      <li key={index} style={{ fontSize: "0.85rem" }}>
-                        {trimmedSentence}
-                      </li>
-                    ) : null; // Avoid rendering empty list items
-                  })}
-              </ul>
-
-              <Divider sx={{ marginY: 1 }} />
-
-              <Typography
-                variant="body2"
-                sx={{ marginBottom: 0.5, fontSize: "0.85rem" }}
-              >
-                <strong>Couples Friendly:</strong>
-              </Typography>
-              <ul style={{ marginLeft: "1rem", marginBottom: 0.5 }}>
-                <li style={{ fontSize: "0.85rem" }}>
-                  {" "}
-                  {policy.unmarriedCouplesAllowed
-                    ? "Yes we allow couples"
-                    : "Current not accepting couples"}
-                </li>
-              </ul>
-
-              <Divider sx={{ marginY: 1 }} />
-
-              <Typography variant="body2" sx={{ fontSize: "0.85rem" }}>
-                <strong>Local ID:</strong>{" "}
-                {hotelData?.localId === true
-                  ? "Local and outstation IDs are accepted."
-                  : "Local and outstation IDs are not accepted."}
-              </Typography>
-
-              <Divider sx={{ marginY: 1 }} />
-
-              <Typography variant="body2" sx={{ fontSize: "0.85rem" }}>
-                <strong>Cancellation Policy: </strong>{" "}
-                {policy?.cancellationPolicy}
-                <React.Fragment>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span style={{ marginRight: "200px" }}></span>
-                    <hr />
-                    <button className="custom-button" onClick={handleClickOpen}>
-                      ... View more
-                    </button>
-                  </div>
-
-                  <BootstrapDialog
-                    onClose={handleClose}
-                    aria-labelledby="customized-dialog-title"
-                    open={open}
-                    PaperProps={{
-                      sx: {
-                        width: "100%", // Set width to 100%
-                        maxWidth: "none", // Override BootstrapDialog's default maxWidth
-                      },
-                    }}
-                  >
-                    <DialogTitle
-                      sx={{ m: 0, p: 2 }}
-                      id="customized-dialog-title"
-                    >
-                      Our Policies
-                    </DialogTitle>
-                    <IconButton
-                      aria-label="close"
-                      onClick={handleClose}
-                      sx={{
-                        position: "absolute",
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                      }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <DialogContent dividers>
-                      <Policies
+                <div className="container-fluid">
+                  <div className="row">
+                    {/* Special rooms view */}
+                    <div className="rooms" ref={roomsRef}>
+                      <Rooms
                         hotelData={hotelData}
-                        policies={hotelData.policies}
-                        isSmallScreen={isSmallScreen}
+                        selectedRooms={selectedRooms}
+                        handleAddRoom={handleAddRoom}
+                        handleRemoveRoom={handleRemoveRoom}
                       />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button autoFocus onClick={handleClose}>
-                        I read
-                      </Button>
-                    </DialogActions>
-                  </BootstrapDialog>
-                </React.Fragment>
-              </Typography>
-            </Box>
-          ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="booking-sidebar">
+              <BookingDetails
+                hotelId={newhotelId}
+                monthlyData={monthlyData}
+                selectedFood={selectedFood}
+                selectedRooms={selectedRooms}
+                roomsCount={roomsCount}
+                guestsCount={guestsCount}
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+                handleAddFood={handleAddFood}
+                handleRemoveFood={handleRemoveFood}
+                handleAddRoom={handleAddRoom}
+                handleRemoveRoom={handleRemoveRoom}
+                handleIncrementRooms={handleIncrementRooms}
+                handleDecrementRooms={handleDecrementRooms}
+                handleIncrementGuests={handleIncrementGuests}
+                handleDecrementGuests={handleDecrementGuests}
+                handleCheckInDateChange={handleCheckInDateChange}
+                handleCheckOutDateChange={handleCheckOutDateChange}
+                scrollToFood={scrollToFood}
+                scrollToRooms={scrollToRooms}
+                calculateTotalPrice={calculateTotalPrice}
+                handlePay={handlePay}
+                hotelData={hotelData}
+              />
+            </div>
+          </div>
           <div className="amenities-and-policies">
             <h6 className="amenities-title">
               Amenities <FaWifi />
@@ -714,7 +624,7 @@ const BookNow = () => {
                     className="accordion-summary"
                   >
                     <Typography className="accordion-title">
-                      See + {remainingAmenitiesCount} more amenities
+                      See +{remainingAmenitiesCount} more amenities
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails className="amenities-list">
@@ -737,71 +647,6 @@ const BookNow = () => {
                 </Accordion>
               </div>
             )}
-          </div>
-          {/* Rooms
-          <div ref={foodsRef}>
-            {" "}
-            <Foods hotelData={hotelData} handleAddFood={handleAddFood} />
-          </div> */}
-          <h6
-            style={{
-              color: "#333",
-              fontFamily: "Arial, sans-serif",
-              fontSize: "16px",
-              fontWeight: "bold",
-              textTransform: "uppercase",
-              backgroundImage: "linear-gradient(to right, #ff8c00, #ffc300)",
-              padding: "10px",
-            }}
-            ref={roomsRef}
-          >
-            Select our special rooms
-          </h6>
-          <div
-            className="extras"
-            style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}
-          >
-            <div className="container-fluid">
-              <div className="row">
-                {/* Special rooms view */}
-                <div className="rooms" ref={roomsRef}>
-                  <Rooms
-                    hotelData={hotelData}
-                    selectedRooms={selectedRooms}
-                    handleAddRoom={handleAddRoom}
-                    handleRemoveRoom={handleRemoveRoom}
-                  />
-                </div>
-
-                <div className="booking-details">
-                  <BookingDetails
-                    hotelId={newhotelId}
-                    monthlyData={monthlyData}
-                    selectedFood={selectedFood}
-                    selectedRooms={selectedRooms}
-                    roomsCount={roomsCount}
-                    guestsCount={guestsCount}
-                    checkInDate={checkInDate}
-                    checkOutDate={checkOutDate}
-                    handleAddFood={handleAddFood}
-                    handleRemoveFood={handleRemoveFood}
-                    handleAddRoom={handleAddRoom}
-                    handleRemoveRoom={handleRemoveRoom}
-                    handleIncrementRooms={handleIncrementRooms}
-                    handleDecrementRooms={handleDecrementRooms}
-                    handleIncrementGuests={handleIncrementGuests}
-                    handleDecrementGuests={handleDecrementGuests}
-                    handleCheckInDateChange={handleCheckInDateChange}
-                    handleCheckOutDateChange={handleCheckOutDateChange}
-                    scrollToFood={scrollToFood}
-                    scrollToRooms={scrollToRooms}
-                    calculateTotalPrice={calculateTotalPrice}
-                    handlePay={handlePay}
-                    hotelData={hotelData}
-                  />
-                </div>
-              </div>
-            </div>
           </div>
           <BookingReview hotelId={hotelData?.hotelId} />
         </>

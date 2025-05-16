@@ -196,11 +196,11 @@ const BookingDetails = ({
         if (response.status === 201) {
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-              `📅 Check-in: ${format(
+              `📅 Check in Date: ${format(
                 new Date(bookedDetails?.data?.checkInDate),
                 "dd MMM yyyy",
               )}\n` +
-              `📅 Check-out: ${format(
+              `📅 Check out Date: ${format(
                 new Date(bookedDetails?.data?.checkOutDate),
                 "dd MMM yyyy",
               )}`,
@@ -241,7 +241,18 @@ const BookingDetails = ({
       >
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <BiSolidOffer size={22} color="#f44336" />
-          <Typography variant="h6" fontWeight="bold">
+          <Typography
+            variant="p6"
+            fontWeight="bold"
+            sx={{
+              backgroundColor: "#f44336", // Light red (Material UI red[500])
+              color: "white",
+              px: 2,
+              py: 1,
+              borderRadius: 1,
+              display: "inline-block", // Keeps the background tight around the text
+            }}
+          >
             Booking Summary
           </Typography>
         </Stack>
@@ -265,9 +276,14 @@ const BookingDetails = ({
             variant="outlined"
             size="small"
             onClick={scrollToRooms}
-            sx={{ mt: 1 }}
+            sx={{
+              mt: 1,
+              backgroundColor: "black",
+              color: "white",
+              "&:hover": { backgroundColor: "#f2deff2" },
+            }}
           >
-            Change Rooms
+            Change
           </Button>
         </Box>
 
@@ -275,10 +291,22 @@ const BookingDetails = ({
         <Typography fontSize={12} color="text.secondary" mb={1}>
           * Max: 1 room & 3 guests per booking
         </Typography>
+        <Divider />
+        <br />
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <FormControl fullWidth size="small">
-              <InputLabel>Rooms</InputLabel>
+              <InputLabel
+                sx={{
+                  color: "black",
+                  fontSize: "1.1rem", // Increase this value for larger text
+                  "&.Mui-focused": {
+                    color: "black",
+                  },
+                }}
+              >
+                Rooms
+              </InputLabel>
               <OutlinedInput
                 label="Rooms"
                 value={roomsCount}
@@ -302,7 +330,17 @@ const BookingDetails = ({
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth size="small">
-              <InputLabel>Guests</InputLabel>
+              <InputLabel
+                sx={{
+                  color: "black",
+                  fontSize: "1.1rem", // Increase this value for larger text
+                  "&.Mui-focused": {
+                    color: "black",
+                  },
+                }}
+              >
+                Guests
+              </InputLabel>
               <OutlinedInput
                 label="Guests"
                 value={guestsCount}
@@ -374,6 +412,15 @@ const BookingDetails = ({
             onClick={isCouponApplied ? null : handleToggleCoupon}
             fullWidth
             disabled={isCouponApplied}
+            sx={{
+              backgroundColor: isCouponApplied ? "success.main" : "black",
+              color: "white",
+              borderColor: "black",
+              "&:hover": {
+                backgroundColor: isCouponApplied ? "success.dark" : "#222",
+                borderColor: isCouponApplied ? "success.dark" : "black",
+              },
+            }}
           >
             {isCouponApplied
               ? "Coupon Applied"
@@ -480,12 +527,12 @@ const BookingDetails = ({
             <Grid container spacing={1}>
               <Grid item xs={6}>
                 <Typography variant="body2">
-                  Check-In: <strong>{formatDate(checkInDate)}</strong>
+                Check in : <strong>{formatDate(checkInDate)}</strong>
                 </Typography>
               </Grid>
               <Grid item xs={6}>
                 <Typography variant="body2">
-                  Check-Out: <strong>{formatDate(checkOutDate)}</strong>
+                Check Out : <strong>{formatDate(checkOutDate)}</strong>
                 </Typography>
               </Grid>
               <Grid item xs={6}>
@@ -510,12 +557,20 @@ const BookingDetails = ({
 
           {/* SECTION: Room Price */}
           <Box mb={3}>
-            <Typography variant="subtitle2" color="text.secondary" mb={1}>
-              Room Pricing
-            </Typography>
-            <Typography variant="body2">
-              Total Room Price: <strong>₹{calculateTotalPrice()}</strong>
-            </Typography>
+            <Box
+              sx={{
+                borderBottom: "2px dotted black", // Dotted border color (light grey)
+                pb: 2, // Padding bottom to separate from the next content
+                mb: 2, // Margin bottom for spacing
+              }}
+            >
+              <Typography variant="subtitle2" color="text.secondary" mb={1}>
+                Room Pricing
+              </Typography>
+              <Typography variant="body2">
+                Total Room Price: <strong>₹{calculateTotalPrice()}</strong>
+              </Typography>
+            </Box>
           </Box>
 
           {/* SECTION: Meal Selection */}
@@ -552,7 +607,13 @@ const BookingDetails = ({
                       </Box>
                       <Button
                         variant={isSelected ? "contained" : "outlined"}
-                        color={isSelected ? "error" : "primary"}
+                        sx={{
+                          mt: 1,
+                          backgroundColor: "black",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#f2deff2" },
+                        }}
+                        color={isSelected ? "error" : "black"}
                         size="small"
                         onClick={() =>
                           isSelected
@@ -611,7 +672,17 @@ const BookingDetails = ({
             >
               Pay Now
             </Button>
-            <Button fullWidth variant="outlined" onClick={handleBookNow}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={handleBookNow}
+              sx={{
+                mt: 1,
+                backgroundColor: "black",
+                color: "white",
+                "&:hover": { backgroundColor: "#f2deff2" },
+              }}
+            >
               Pay at Hotel
             </Button>
           </Stack>
