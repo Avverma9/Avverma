@@ -1,4 +1,3 @@
-/* Hero Section */
 .hero {
     display: flex;
     justify-content: space-between;
@@ -7,19 +6,17 @@
     height: 100vh;
     overflow: hidden;
     position: relative;
-    flex-direction: row; /* Default direction for larger screens */
-}
-
-/* Image container */
-.hero-images {
+    flex-direction: row;
+  }
+  
+  .hero-images {
     position: relative;
-    width: 50%; /* Take up half the screen */
+    width: 50%;
     height: 100%;
     overflow: hidden;
-}
-
-/* Hero images */
-.hero-image {
+  }
+  
+  .hero-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,175 +27,146 @@
     opacity: 0;
     transition: opacity 1s ease-in-out;
     z-index: 0;
-}
-
-/* Smoke effect overlay - Only visible when changing image */
-.hero-image::before {
+  }
+  
+  .hero-image::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.5); /* Slight white color to simulate smoke/fog */
+    background: rgba(255, 255, 255, 0.5);
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     z-index: 1;
-}
-
-.hero-image.smoke::before {
-    opacity: 1; /* Show smoke effect when image is changing */
-}
-
-.hero-image.active {
+  }
+  
+  .hero-image.smoke::before {
     opacity: 1;
-}
-
-/* Text content on the right */
-.hero-content {
-    width: 50%; /* Take up half the screen */
-    text-align: left; /* Align text to the left */
+  }
+  
+  .hero-image.active {
+    opacity: 1;
+  }
+  
+  .hero-content {
+    width: 50%;
+    text-align: left;
     padding: 0 40px;
     color: white;
     z-index: 1;
-}
-
-.protest-revolution-regular {
+  }
+  
+  .protest-revolution-regular {
     font-family: 'Protest Revolution', sans-serif;
     font-weight: 400;
     font-style: normal;
-}
-
-.animate-title {
+  }
+  
+  .animate-title {
     font-size: 3rem;
     font-weight: bold;
     font-family: Roboto;
     color: black;
     margin-bottom: 20px;
     animation: fadeInTitle 2s ease-out, shakeText 0.5s ease-in-out infinite;
-}
-
-.animate-text {
+  }
+  
+  .animate-text {
     font-size: 1.25rem;
     color: black;
     margin-bottom: 30px;
     animation: fadeInText 2s ease-out 1s, shakeText 0.5s ease-in-out infinite;
-}
-
-.cta-btn {
+  }
+  
+  .cta-btn {
     display: inline-block;
     background-color: #e3e3e3c5;
     color: #090909;
     padding: 15px 30px;
     font-size: 1.2rem;
-    font-family: 'Protest Revolution', sans-serif; /* Apply custom font */
+    font-family: 'Protest Revolution', sans-serif;
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
-
-.cta-btn:hover {
+  }
+  
+  .cta-btn:hover {
     background-color: #f8f8f8c5;
-}
-
-/* Fade in animations */
-@keyframes fadeInTitle {
-    0% {
-        opacity: 0;
-        transform: translateY(-30px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeInText {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Shake animation for title and text */
-@keyframes shakeText {
-    0% {
-        transform: translateX(0);
-    }
-    25% {
-        transform: translateX(-2px);
-    }
-    50% {
-        transform: translateX(3px);
-    }
-    75% {
-        transform: translateX(-1px);
-    }
-    100% {
-        transform: translateX(1px);
-    }
-}
-
-/* Responsive Styles for Mobile Devices */
-
-/* For screens less than or equal to 768px */
-@media (max-width: 768px) {
+  }
+  
+  @keyframes fadeInTitle {
+    0% { opacity: 0; transform: translateY(-30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes fadeInText {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes shakeText {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-1px); }
+    100% { transform: translateX(1px); }
+  }
+  
+  @media (max-width: 768px) {
     .hero {
-        flex-direction: column; /* Stack image and content vertically */
-        height: auto; /* Allow the height to adjust based on content */
-        text-align: center; /* Center text content */
+      flex-direction: column;
+      height: auto;
+      text-align: center;
     }
-
+  
     .hero-images {
-        width: 100%; /* Full width for images */
-        height: 300px; /* Set a fixed height for images */
+      width: 100%;
+      height: 300px;
     }
-
+  
     .hero-content {
-        width: 100%; /* Full width for text content */
-        padding: 20px; /* Add padding for better spacing */
+      width: 100%;
+      padding: 20px;
     }
-
+  
     .animate-title {
-        font-size: 2rem; /* Smaller font size for smaller screens */
-        margin-bottom: 15px;
+      font-size: 2rem;
+      margin-bottom: 15px;
     }
-
+  
     .animate-text {
-        font-size: 1rem; /* Adjust text size */
-        margin-bottom: 20px;
+      font-size: 1rem;
+      margin-bottom: 20px;
     }
-
+  
     .cta-btn {
-        padding: 12px 25px; /* Smaller button padding for mobile */
-        font-size: 1rem; /* Smaller font size */
+      padding: 12px 25px;
+      font-size: 1rem;
     }
-}
-
-/* For screens less than or equal to 480px */
-@media (max-width: 480px) {
+  }
+  
+  @media (max-width: 480px) {
     .hero {
-        padding: 10px; /* Add some padding to the hero section */
+      padding: 10px;
     }
-
+  
     .hero-images {
-        height: 200px; /* Smaller height for mobile devices */
+      height: 200px;
     }
-
+  
     .animate-title {
-        font-size: 1.5rem; /* Even smaller font for smaller screens */
+      font-size: 1.0rem;
     }
-
+  
     .animate-text {
-        font-size: 0.9rem; /* Adjust text size */
+      font-size: 0.9rem;
     }
-
+  
     .cta-btn {
-        padding: 10px 20px; /* Further reduce button padding */
-        font-size: 0.9rem; /* Adjust font size for button */
+      padding: 10px 20px;
+      font-size: 0.5rem;
     }
-}
+  }
+  
