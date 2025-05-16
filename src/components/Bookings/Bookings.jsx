@@ -34,6 +34,7 @@ import baseURL from "../../utils/baseURL";
 import styles from "./bookings.module.css";
 import { Stack } from "@mui/system";
 import { TuneRounded } from "@mui/icons-material";
+import NotFoundPage from "../../utils/Not-found";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -159,7 +160,9 @@ export const ConfirmBooking = () => {
     rawRoomTotal > finalTotal - foodTotal
       ? finalTotal - foodTotal
       : rawRoomTotal;
-
+  if (!data) {
+    return <NotFoundPage />;
+  }
   return (
     <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px" }}>
       <div className={styles.bookingHeader}></div>
@@ -222,7 +225,7 @@ export const ConfirmBooking = () => {
           </FormControl>
         </Box>
 
-        {currentBooking.length > 0 ? (
+        {currentBooking.length > 0 && (
           <>
             <BootstrapModal
               show={showReviewForm}
@@ -383,8 +386,6 @@ export const ConfirmBooking = () => {
               ))}
             </div>
           </>
-        ) : (
-          <p>No bookings available.</p>
         )}
 
         <Pagination

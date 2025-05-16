@@ -99,7 +99,7 @@ const NotFoundPage = () => {
                     style={{ width: '100%', maxWidth: '400px', marginBottom: '20px' }}
                 />
                 <h1 style={headingStyle}>404</h1>
-                <h2 style={subHeadingStyle}>Page Not Found</h2>
+                <h2 style={subHeadingStyle}>Data Not Found</h2>
                 <p style={textStyle}>The page you are looking for does not exist or has been moved.</p>
                 <div>
                     <button

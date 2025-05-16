@@ -64,7 +64,7 @@ const Complaint = () => {
         setLoadingHotels(true); // Start loading spinner
         try {
           const response = await dispatch(
-            fetchHotelNamesByBookingId(bookingId)
+            fetchHotelNamesByBookingId(bookingId),
           ).unwrap();
           setHotels(response); // Assuming response contains an array of hotels
         } catch (error) {
@@ -150,7 +150,7 @@ const Complaint = () => {
 
   const handleHotelChange = (event) => {
     const selectedHotel = hotels.find(
-      (hotel) => hotel.hotelId === event.target.value
+      (hotel) => hotel.hotelId === event.target.value,
     );
     setHotelId(event.target.value);
     setHotelName(selectedHotel ? selectedHotel.hotelName : "");
@@ -234,7 +234,10 @@ const Complaint = () => {
                     label="Hotel Name"
                   >
                     {hotels?.map((hotel) => (
-                      <MenuItem key={hotel?.hotelDetails?.hotelId} value={hotel?.hotelDetails?.hotelId}>
+                      <MenuItem
+                        key={hotel?.hotelDetails?.hotelId}
+                        value={hotel?.hotelDetails?.hotelId}
+                      >
                         {hotel?.hotelDetails?.hotelName}
                       </MenuItem>
                     ))}
