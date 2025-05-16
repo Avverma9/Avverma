@@ -589,37 +589,7 @@ const BookNow = () => {
                   </div>
                 )}
               </div>
-            </div>
-
-            <div className="booking-sidebar">
-              <BookingDetails
-                hotelId={newhotelId}
-                monthlyData={monthlyData}
-                selectedFood={selectedFood}
-                selectedRooms={selectedRooms}
-                roomsCount={roomsCount}
-                guestsCount={guestsCount}
-                checkInDate={checkInDate}
-                checkOutDate={checkOutDate}
-                handleAddFood={handleAddFood}
-                handleRemoveFood={handleRemoveFood}
-                handleAddRoom={handleAddRoom}
-                handleRemoveRoom={handleRemoveRoom}
-                handleIncrementRooms={handleIncrementRooms}
-                handleDecrementRooms={handleDecrementRooms}
-                handleIncrementGuests={handleIncrementGuests}
-                handleDecrementGuests={handleDecrementGuests}
-                handleCheckInDateChange={handleCheckInDateChange}
-                handleCheckOutDateChange={handleCheckOutDateChange}
-                scrollToFood={scrollToFood}
-                scrollToRooms={scrollToRooms}
-                calculateTotalPrice={calculateTotalPrice}
-                handlePay={handlePay}
-                hotelData={hotelData}
-              />
-            </div>
-          </div>
-          <h6
+              <h6
             style={{
               color: "#333",
               fontFamily: "Arial, sans-serif",
@@ -651,6 +621,37 @@ const BookNow = () => {
               </div>
             </div>
           </div>
+            </div>
+
+            <div className="booking-sidebar">
+              <BookingDetails
+                hotelId={newhotelId}
+                monthlyData={monthlyData}
+                selectedFood={selectedFood}
+                selectedRooms={selectedRooms}
+                roomsCount={roomsCount}
+                guestsCount={guestsCount}
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+                handleAddFood={handleAddFood}
+                handleRemoveFood={handleRemoveFood}
+                handleAddRoom={handleAddRoom}
+                handleRemoveRoom={handleRemoveRoom}
+                handleIncrementRooms={handleIncrementRooms}
+                handleDecrementRooms={handleDecrementRooms}
+                handleIncrementGuests={handleIncrementGuests}
+                handleDecrementGuests={handleDecrementGuests}
+                handleCheckInDateChange={handleCheckInDateChange}
+                handleCheckOutDateChange={handleCheckOutDateChange}
+                scrollToFood={scrollToFood}
+                scrollToRooms={scrollToRooms}
+                calculateTotalPrice={calculateTotalPrice}
+                handlePay={handlePay}
+                hotelData={hotelData}
+              />
+            </div>
+          </div>
+      
           <BookingReview hotelId={hotelData?.hotelId} />
         </>
       ) : (
