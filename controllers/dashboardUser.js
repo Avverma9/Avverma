@@ -9,17 +9,65 @@ const registerUser = async (req, res) => {
         const emailExist = await Dashboard.findOne({ email: email });
         const mobileExist = await Dashboard.findOne({ mobile: mobile });
 
-        if (role !== 'Admin' && role !== 'Developer' && role !== 'PMS' && role !== 'CMS' && role !== 'TP' && role !== 'CA') {
+        if (!['Admin', 'Developer', 'PMS', 'CMS', 'TP', 'CA'].includes(role)) {
             return res.status(400).json({ message: 'Invalid role selection' });
         }
+
         if (emailExist) {
             return res.status(400).json({ message: 'Email already existed' });
         }
+
         if (mobileExist) {
             return res.status(400).json({ message: 'Mobile already existed' });
         }
 
         const images = req.files.map((file) => file.location);
+
+        let menuItems = [];
+
+        if (role === 'Admin') {
+            menuItems = [
+                "Dashboard",
+                "Your Bookings",
+                "Your Complaints",
+                "Bookings",
+                "Hotels",
+                "Your Hotel",
+                "Set Monthly Price",
+                "PMS Manage Coupons",
+                "Admin Complaints",
+                "Bulk Operation",
+                "Add travel location",
+                "Availability",
+                "Set Month",
+                "Change banner",
+                "Admin Manage Coupons",
+                "Push notification",
+                "Messenger",
+                "Partners",
+                "Complaints",
+                "Reviews",
+                "Manage Coupons",
+                "Create Booking",
+                "Apply Coupons",
+                "Cars",
+                "Car Owner"
+            ];
+        } else if (role === 'PMS') {
+            menuItems = [
+                "Dashboard",
+                "Your Bookings",
+                "Your Complaints",
+                "Create Booking",
+                "Bookings",
+                "Hotels",
+                "Messenger",
+                "Your Hotel",
+                "Set Monthly Price",
+                "PMS Manage Coupons"
+            ];
+        }
+
         const created = await Dashboard.create({
             images,
             name,
@@ -28,9 +76,11 @@ const registerUser = async (req, res) => {
             address,
             mobile,
             password,
+            menuItems
         });
 
         res.status(201).json({ message: 'Registration Done', created });
+
     } catch (error) {
         return res.status(500).json({ message: 'Internal server error' });
     }
