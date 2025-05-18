@@ -24,7 +24,6 @@ export const fetchMonthlyData = createAsyncThunk('booking/fetchMonthlyData', asy
             return rejectWithValue('Failed to fetch monthly data');
         }
         const data = await response.json();
-
         return data;
     } catch (error) {
         return rejectWithValue(error.message);
