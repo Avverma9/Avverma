@@ -60,8 +60,9 @@ function App() {
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />
                         <Route path="/partner/last-step" element={<PartnerRooms />} />
                     </Routes>
+                  
+                    <Footer />  
                     <Bottom />
-                    <Footer />
                     <ToastContainer /> {/* Add ToastContainer here */}
                 </Router>
             </div>
