@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
         const emailExist = await Dashboard.findOne({ email: email });
         const mobileExist = await Dashboard.findOne({ mobile: mobile });
 
-        if (!['Admin', 'Developer', 'PMS', 'CMS', 'TP', 'CA'].includes(role)) {
+        if (!['Admin', 'Developer', 'PMS', 'CMS', 'TMS', 'CA', "Rider"].includes(role)) {
             return res.status(400).json({ message: 'Invalid role selection' });
         }
 
@@ -60,12 +60,32 @@ const registerUser = async (req, res) => {
                 "Your Complaints",
                 "Create Booking",
                 "Bookings",
-                "Hotels",
                 "Messenger",
                 "Your Hotel",
                 "Set Monthly Price",
                 "PMS Manage Coupons"
             ];
+        }
+        else if (role === 'Rider') {
+            menuItems = [
+                "Messenger",
+                "My Bookings",
+                "Add Car",
+                "My Ride",
+            ]
+        }
+        else if (role === 'TMS') {
+            menuItems = [
+                "Messenger",
+                "My Bookings",
+                "Add Car",
+                "Cars",
+                "My Ride",
+                "Add Owner",
+                "Tour List",
+                "Add Tour",
+                "Car Owner",
+            ]
         }
 
         const created = await Dashboard.create({
