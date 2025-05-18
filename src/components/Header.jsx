@@ -23,7 +23,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import { useTheme } from "@mui/material/styles";
 import { useLocation } from "react-router-dom";
-import { LocalOffer } from "@mui/icons-material";
+import { LocalOffer, OfflineShareRounded } from "@mui/icons-material";
 
 const Header = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
@@ -112,7 +112,7 @@ const Header = () => {
                   border: "1px solid #e0e0e0",
                   borderRadius: 7,
                   backgroundColor: "#ffffff",
-                  minWidth: 100,
+                  minWidth: 120,
                   mt: 1.5,
                   boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                   "& .MuiMenuItem-root": {
@@ -142,11 +142,11 @@ const Header = () => {
                 </ListItemIcon>
                 Bookings
               </MenuItem>
-              <MenuItem onClick={() => handleRedirect("/")}>
+              <MenuItem onClick={() => handleRedirect("/coupons")}>
                 <ListItemIcon>
-                  <HomeIcon fontSize="small" />
+                  <OfflineShareRounded fontSize="small" />
                 </ListItemIcon>
-                Home
+                Coupons
               </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
