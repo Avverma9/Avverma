@@ -15,6 +15,10 @@ const bookingSchema = new mongoose.Schema(
       type: Object,
       required: false,
     },
+    createdBy: {
+      type: Object,
+      required: false,
+    },
     hotelDetails: {
       type: Object,
       required: false,

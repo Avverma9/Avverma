@@ -14,6 +14,7 @@ const createBooking = async (req, res) => {
       roomDetails,
       price,
       pm,
+      createdBy,
       couponCode,
       discountPrice,
       bookingSource,
@@ -48,7 +49,11 @@ const createBooking = async (req, res) => {
         email: user.email,
         mobile: user.mobile,
       },
-
+      createdBy: {
+        user: createdBy.user,
+        name: createdBy.name,
+        email: createdBy.email,
+      },
       hotelDetails: {
         hotelCity,
         hotelId,
@@ -186,7 +191,7 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (bookingStatus) {
       filter.bookingStatus = bookingStatus;
     }
-    if(couponCode) {
+    if (couponCode) {
       filter.couponCode = couponCode
     }
     if (hotelEmail) {
