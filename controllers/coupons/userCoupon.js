@@ -23,8 +23,13 @@ const newUserCoupon = async (req, res) => {
 
 const ApplyUserCoupon = async (req, res) => {
   try {
-    const { hotelIds = [], roomIds = [], couponCode, userId } = req.body;
+    const { hotelId, roomId, couponCode, userId } = req.body;
 
+    if (!hotelId || !roomId || !couponCode || !userId) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Fetch coupon by couponCode
     const coupon = await UserCoupon.findOne({ couponCode });
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
@@ -34,56 +39,55 @@ const ApplyUserCoupon = async (req, res) => {
     const couponExpiry = moment(coupon.validity);
 
     if (currentIST.isAfter(couponExpiry) || coupon.expired === true) {
-      return res.status(400).json({ message: "Coupon code has expired or already used" });
+      return res.status(400).json({ message: "Coupon has expired or already used" });
     }
 
-    if (coupon.userIds.length > 0) {
-      return res.status(400).json({ message: "Coupon has already been used" });
+    // Ensure user hasn't used the coupon before
+    if (coupon.userId) {
+      return res.status(400).json({ message: "Coupon already used by this user" });
     }
 
-    const hotel = await hotelModel.findOne({ hotelId: { $in: hotelIds } });
+    // Find hotel by hotelId
+    const hotel = await hotelModel.findOne({ hotelId: String(hotelId) });
     if (!hotel) {
       return res.status(404).json({ message: "Hotel not found" });
     }
 
-    const selectedRooms = hotel.rooms.filter(room => roomIds.includes(String(room.roomId)));
-    if (selectedRooms.length === 0) {
-      return res.status(404).json({ message: "No matching rooms found" });
+    // Find the specific room
+    const selectedRoom = hotel.rooms.find(
+      room => String(room.roomId) === String(roomId)
+    );
+
+    if (!selectedRoom) {
+      return res.status(404).json({ message: "Room not found in the specified hotel" });
     }
 
-    const discountDetails = selectedRooms.map(room => {
-      const originalPrice = room.price;
-      const discountPrice = coupon.discountPrice;
-      const finalPrice = originalPrice - discountPrice;
+    const originalPrice = selectedRoom.price;
+    const discountPrice = coupon.discountPrice;
+    const finalPrice = originalPrice - discountPrice;
 
-      return {
-        hotelId: hotel.hotelId,
-        roomId: room.roomId,
-        userId,
-        originalPrice,
-        discountPrice,
-        finalPrice,
-      };
-    });
-
-    // Add userId, roomIds, and hotelId to coupon before marking it used
-    coupon.userIds.push(userId);
-
-    // Ensure arrays are initialized before pushing
-    coupon.roomId = [...new Set([...(coupon.roomId || []), ...selectedRooms.map(r => r.roomId)])];
-    coupon.hotelId = [...new Set([...(coupon.hotelId || []), hotel._id.toString()])];
-
+    // Update coupon details
+    coupon.userId=(String(userId));
+    coupon.hotelId = String(hotelId);
+    coupon.roomId = String(roomId);
     coupon.expired = true;
+
     await coupon.save();
 
-    return res.status(200).json(discountDetails);
+    return res.status(200).json({
+      hotelId: String(hotelId),
+      roomId: String(roomId),
+      userId: String(userId),
+      originalPrice,
+      discountPrice,
+      finalPrice
+    });
+
   } catch (error) {
     console.error("Error applying coupon:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
-
 
 
 const deleteUserCouponAutomatically = async () => {
