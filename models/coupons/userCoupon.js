@@ -13,6 +13,7 @@ const userCouponSchema = new mongoose.Schema({
   },
   quantity: Number,
   userId: String,
+  assignedTo: String,
   validity: {
     type: Date,
   },
