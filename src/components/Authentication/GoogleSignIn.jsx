@@ -51,18 +51,20 @@ const Google = () => {
                 }),
             });
             if (response.ok) {
-                window.location.href = '/profile';
+                window.history.back();
             } else {
                 setShowErrorImage(true);
             }
 
             const data = await response.json();
+            console.log('Google login data:', GoogleEmail);
 
             const { userId, rsToken, mobile } = data;
 
             localStorage.setItem('rsUserId', userId);
             localStorage.setItem('rsToken', rsToken);
             localStorage.setItem('rsUserMobile', mobile);
+            localStorage.setItem('roomsstayUserEmail', GoogleEmail);
             localStorage.setItem('roomsstayUserImage', images);
             const userDocRef = doc(db, 'users', userId);
             await setDoc(userDocRef, { email /* other user data */ });

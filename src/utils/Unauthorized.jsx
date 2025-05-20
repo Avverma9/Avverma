@@ -55,3 +55,4 @@ export const Unauthorized = () => {
 export const userId = localStorage.getItem('rsUserId');
 export const token = localStorage.getItem('rsToken');
 export const userMobile = localStorage.getItem('rsUserMobile');
+export const userEmail = localStorage.getItem('roomsstayUserEmail');

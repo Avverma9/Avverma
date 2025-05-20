@@ -1,10 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
-import { token } from "../../utils/Unauthorized";
+import { token, userEmail } from "../../utils/Unauthorized";
 import alert from "../../utils/custom_alert/custom_alert";
 
-// Async thunk for fetching profile data
 export const fetchProfileData = createAsyncThunk(
   "profile/fetchProfileData",
   async (userId, { rejectWithValue }) => {
@@ -14,10 +13,9 @@ export const fetchProfileData = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
-  },
+  }
 );
 
-// Async thunk for updating profile data
 export const updateProfileData = createAsyncThunk(
   "profile/updateProfileData",
   async (formData, { rejectWithValue }) => {
@@ -27,31 +25,58 @@ export const updateProfileData = createAsyncThunk(
           "Content-Type": "multipart/form-data",
           Authorization: token,
         },
-      });      
+      });
       alert("Profile updated successfully");
       return response.data;
-
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message ||
         error?.message ||
         "Something went wrong. Please try again.";
       alert(errorMessage);
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(error?.response?.data);
     }
-  },
+  }
+);
+
+export const fetchDefaultCoupon = createAsyncThunk(
+  "profile/fetchDefaultCoupon",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${baseURL}/user-coupon/get-default-coupon/user`,
+        { email: userEmail },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+        }
+      );
+      alert("Default coupon fetched successfully");
+      return response.data;
+    } catch (error) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Something went wrong. Please try again.";
+      alert(errorMessage);
+      return rejectWithValue(error?.response?.data);
+    }
+  }
 );
 
 const profileSlice = createSlice({
   name: "profile",
   initialState: {
     data: null,
+    coupon: [],
     loading: false,
     error: null,
     updateSuccess: false,
-    bookingData: null, // New state for booking data
-    bookingLoading: false, // New state for booking data loading
-    bookingError: null, // New state for booking data error
+    bookingData: null,
+    bookingLoading: false,
+    bookingError: null,
   },
   reducers: {
     clearUpdateSuccess: (state) => {
@@ -60,7 +85,6 @@ const profileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Fetch profile
       .addCase(fetchProfileData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -68,7 +92,7 @@ const profileSlice = createSlice({
       .addCase(fetchProfileData.fulfilled, (state, action) => {
         state.data = action.payload;
         state.loading = false;
-        if (action.payload.userImage && action.payload.userImage.length > 0) {
+        if (action.payload.userImage?.length > 0) {
           const firstImageUrl = action.payload.userImage[0];
           localStorage.setItem("userImage", firstImageUrl);
         }
@@ -77,7 +101,6 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      // Update profile
       .addCase(updateProfileData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -91,8 +114,21 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.updateSuccess = false;
+      })
+      .addCase(fetchDefaultCoupon.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDefaultCoupon.fulfilled, (state, action) => {
+        state.loading = false;
+        state.coupon = action.payload;
+      })
+      .addCase(fetchDefaultCoupon.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
+export const { clearUpdateSuccess } = profileSlice.actions;
 export default profileSlice.reducer;

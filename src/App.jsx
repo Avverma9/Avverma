@@ -30,6 +30,7 @@ import TravelForm from './components/Travels/partnerPage';
 import TravelBooking from './components/Travels/travel-booking';
 import Hotel from './components/Hotels/pages/Hotel';
 import Hero from './components/landingPage/Hero';
+import Coupon from './components/Profile/coupon.jsx';
 
 function App() {
     return (
@@ -38,6 +39,7 @@ function App() {
                 <Router>
                     <Header />
                     <Settings />
+                    <Coupon/>
                     <BookNow />
                     <HeaderImage />
                     <Hotel />
