@@ -131,7 +131,7 @@ const GetAllUserCoupons = async (req, res) => {
 const getUserDefaultCoupon = async (req, res) => {
   try {
     const { email } = req.body
-    console.log("Email:", email);
+ 
     const findData = await UserCoupon.find({ assignedTo: email, expired: false })
     if (findData.length > 0) {
       return res.status(200).json(findData)
