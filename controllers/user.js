@@ -1,5 +1,6 @@
 const booking = require('../models/booking/booking');
 const userModel = require('../models/user');
+const UserCoupon = require('../models/coupons/userCoupon')
 const jwt = require('jsonwebtoken'); // Import the JWT library
 require('dotenv').config(); // Load environment variables
 
@@ -7,7 +8,22 @@ require('dotenv').config(); // Load environment variables
 const createSignup = async function (req, res) {
     try {
         const { email, mobile } = req.body;
+        if (email) {
+            const existingCoupon = await UserCoupon.findOne({ assignedTo: email });
 
+            if (!existingCoupon) {
+                const currentDate = new Date();
+                const validity = new Date(currentDate.setDate(currentDate.getDate() + 7)); // 7-day validity
+
+                await UserCoupon.create({
+                    couponName: "Welcome50",
+                    disCountPrice: 50,
+                    validity,
+                    quantity: 1,
+                    assignedTo: email,
+                });
+            }
+        }
         if (email) {
             const findWithEmail = await userModel.findOne({ email: email });
             if (findWithEmail) {
@@ -28,16 +44,6 @@ const createSignup = async function (req, res) {
             images,
             ...req.body,
         };
-        const currentDate = new Date();
-        const validity = new Date(currentDate.setDate(currentDate.getDate() + 7)); // 7-day validity
-
-        await couponModel.create({
-            couponName: "Welcome50",
-            disCountPrice: 50,
-            validity,
-            quantity: 1,
-            assignTo: mobile,
-        });
 
         const savedUser = await userModel.create(userData);
 
@@ -79,7 +85,22 @@ const getUserById = async function (req, res) {
 const GoogleSignIn = async function (req, res) {
     try {
         const { email, uid, userName, images } = req.body;
+        if (email) {
+            const existingCoupon = await UserCoupon.findOne({ assignedTo: email });
 
+            if (!existingCoupon) {
+                const currentDate = new Date();
+                const validity = new Date(currentDate.setDate(currentDate.getDate() + 7)); // 7-day validity
+
+                await UserCoupon.create({
+                    couponName: "Welcome50",
+                    disCountPrice: 50,
+                    validity,
+                    quantity: 1,
+                    assignedTo: email,
+                });
+            }
+        }
         // Check if the user already exists based on email or UID
         const existingUser = await userModel.findOne({ $or: [{ email }, { uid }] });
 
@@ -93,33 +114,8 @@ const GoogleSignIn = async function (req, res) {
 
         // If user doesn't exist, create a new user
         const user = await userModel.create({ email, uid, userName, images });
-        if (mobile) {
-            const existingCoupon = await couponModel.findOne({ assignTo: mobile });
 
-            if (!existingCoupon) {
-                const currentDate = new Date();
-                const validity = new Date(currentDate.setDate(currentDate.getDate() + 7)); // 7-day validity
 
-                await couponModel.create({
-                    couponName: "Welcome50",
-                    disCountPrice: 50,
-                    validity,
-                    quantity: 1,
-                    assignTo: mobile,
-                });
-            }
-        }
-
-        const currentDate = new Date();
-        const validity = new Date(currentDate.setDate(currentDate.getDate() + 7)); // 7-day validity
-
-        await couponModel.create({
-            couponName: "Welcome50",
-            disCountPrice: 50,
-            validity,
-            quantity: 1,
-            assignTo: mobile,
-        });
         const token = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         res.status(201).json({ message: 'Sign-in successful', userId: user.userId, rsToken: token });

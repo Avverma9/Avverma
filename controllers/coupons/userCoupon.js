@@ -67,7 +67,7 @@ const ApplyUserCoupon = async (req, res) => {
     const finalPrice = originalPrice - discountPrice;
 
     // Update coupon details
-    coupon.userId=(String(userId));
+    coupon.userId = (String(userId));
     coupon.hotelId = String(hotelId);
     coupon.roomId = String(roomId);
     coupon.expired = true;
@@ -127,8 +127,27 @@ const GetAllUserCoupons = async (req, res) => {
   }
 };
 
+
+const getUserDefaultCoupon = async (req, res) => {
+  try {
+    const { email } = req.body
+    const findData = await UserCoupon.find({ assignedTo: email, expired: false })
+    if (findData.length > 0) {
+      return res.status(200).json({ message: "Coupon found", findData })
+    } else {
+      return res.status(404).json({ message: "No coupon found" })
+    }
+  }
+  catch (error) {
+    console.error("Error fetching user coupon:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
+}
+
 module.exports = {
   GetAllUserCoupons,
   ApplyUserCoupon,
   newUserCoupon,
+  getUserDefaultCoupon,
 };

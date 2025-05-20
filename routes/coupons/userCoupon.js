@@ -4,6 +4,7 @@ const {
   newUserCoupon,
   ApplyUserCoupon,
   GetAllUserCoupons,
+  getUserDefaultCoupon,
 } = require("../../controllers/coupons/userCoupon");
 //=====================================Customer/User coupon==================================
 
@@ -13,5 +14,6 @@ router.patch(
   ApplyUserCoupon, // on panel
 );
 router.get("/coupon/get/all/user", GetAllUserCoupons); // on panel
+router.get("/get-default-coupon/user", getUserDefaultCoupon); // on panel
 
 module.exports = router;
