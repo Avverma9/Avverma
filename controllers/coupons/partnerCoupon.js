@@ -189,7 +189,6 @@ const GetAllPartnerCoupons = async (req, res) => {
     const currentDate = new Date();
     const currentDateIST = currentDate.getTime() + 5.5 * 60 * 60 * 1000; // Convert to IST
     const coupons = await PartnerCoupon.find({
-      expired: false, // Ensure expired is false
       validity: { $gte: currentDateIST },
     }).sort({ validity: -1 });
 
