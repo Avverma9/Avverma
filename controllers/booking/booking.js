@@ -49,7 +49,11 @@ const createBooking = async (req, res) => {
         email: user.email,
         mobile: user.mobile,
       },
-       
+      createdBy: {
+        user: createdBy.user,
+        name: createdBy.name,
+        email: createdBy.email,
+      },
       hotelDetails: {
         hotelCity,
         hotelId,
