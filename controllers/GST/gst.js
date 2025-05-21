@@ -12,6 +12,31 @@ exports.createGST = async (req, res) => {
   }
 };
 
+exports.getGST = async (req, res) => {
+  const { type } = req.query;
+  try {
+    const gst = await GST.findOne({ type: type });
+    if (!gst) {
+      return res.status(404).json({ message: "GST document not found" });
+    }
+    res.status(200).json(gst);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching GST", error });
+  }
+}
+
+exports.getAllGST = async (req, res) => {
+  try {
+    const gst = await GST.find();
+    if (!gst) {
+      return res.status(404).json({ message: "GST document not found" });
+    }
+    res.status(200).json(gst);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching GST", error });
+  }
+}
+
 exports.updateGST = async (req, res) => {
   const { id, gstPrice, gstThreshold } = req.body;
 
