@@ -5,12 +5,13 @@ const hotelModel = require("../../models/hotel/basicDetails");
 
 const newUserCoupon = async (req, res) => {
   try {
-    const { couponName, discountPrice, validity, quantity } = req.body;
+    const { couponName, discountPrice, validity, quantity, assignedTo } = req.body;
     const createdCoupon = await UserCoupon.create({
       couponName,
       discountPrice,
       validity,
       quantity,
+      assignedTo,
     });
 
     res
