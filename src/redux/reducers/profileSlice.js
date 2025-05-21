@@ -53,7 +53,7 @@ export const fetchDefaultCoupon = createAsyncThunk(
           },
         }
       );
-      alert("Default coupon fetched successfully");
+    
       return response.data;
     } catch (error) {
       const errorMessage =
