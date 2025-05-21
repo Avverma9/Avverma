@@ -4,7 +4,11 @@ const gstSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    gstThreshold: {
+    gstMaxThreshold : {
+        type: Number,
+        required: true,
+    },
+    gstMinThreshold : {
         type: Number,
         required: true,
     },
