@@ -445,14 +445,6 @@ export const ConfirmBooking = () => {
                   <label>Location</label>
                   <p>{modalData?.destination}</p>
                 </div>
-                <div>
-                  <label>Owner</label>
-                  <p>{modalData?.hotelDetails?.hotelOwnerName}</p>
-                </div>
-                <div>
-                  <label>Email</label>
-                  <p>{modalData?.hotelDetails?.hotelEmail}</p>
-                </div>
               </div>
             </section>
 
