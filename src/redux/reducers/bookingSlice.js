@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../utils/baseURL';
 import alert from '../../utils/custom_alert/custom_alert';
+import { toast } from 'react-toastify';
 
 // Async thunk for fetching booking data
 export const fetchBookingData = createAsyncThunk('booking/fetchBookingData', async (hotelId, { rejectWithValue }) => {
@@ -57,8 +58,15 @@ export const applyCouponCode = createAsyncThunk(
           },
         });
         return response.data;
-      } catch (error) {
+      } catch (error) { 
+        toast.error(
+          error?.response?.data?.message ||
+            error?.message ||
+            'Something went wrong. Please try again.'
+        );
         return rejectWithValue(error.message);
+       
+
       }
     }
   );

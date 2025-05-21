@@ -42,7 +42,13 @@ export default function Coupon() {
                         <div style={styles.left}>
                             <div style={styles.code}>{item.couponCode}</div>
                             <div style={styles.name}>{item.couponName}</div>
-                            <div style={styles.validity}>Expires in {daysRemaining[index]} day{daysRemaining[index] !== 1 ? 's' : ''}</div>
+                         <div style={styles.statusTag}>
+                                {item.expired
+                                    ? (new Date(item.validity) < new Date()
+                                        ? 'Expired'
+                                        : 'Already Used')
+                                    : `Expires in ${daysRemaining[index]} day${daysRemaining[index] !== 1 ? 's' : ''}`}
+                            </div>
                         </div>
                         <div style={styles.right}>
                             <div style={styles.discount}>₹{item.discountPrice} OFF</div>
@@ -129,5 +135,15 @@ const styles = {
         fontSize: '0.75rem',
         cursor: 'pointer',
         transition: 'all 0.2s',
+    },
+      statusTag: {
+        backgroundColor: '#f87171', // Tailwind's red-400
+        color: '#fff',
+        padding: '2px 6px',
+        borderRadius: '4px',
+        fontSize: '0.75rem',
+        fontWeight: 600,
+        display: 'inline-block',
+        width: 'fit-content',
     },
 };
