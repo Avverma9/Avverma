@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -29,12 +29,13 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { userId } from "../../utils/Unauthorized";
 import { applyCouponCode } from "../../redux/reducers/bookingSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../../utils/loader";
 import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
 import { width } from "@mui/system";
+import { getGst } from "../../redux/reducers/gstSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -64,6 +65,7 @@ const BookingDetails = ({
   const [selectedFood, setSelectedFood] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const gstData = useSelector((state) => state.gst.gst);
 
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
@@ -115,7 +117,27 @@ const BookingDetails = ({
     [dispatch],
   );
 
-  const calculateTotalPrice = () => {
+  useEffect(() => {
+    const gstThreshold = calculateBasePrice();
+    if (gstThreshold > 0) {
+      const payload = {
+        type: "Hotel",
+        gstThreshold,
+      };
+      dispatch(getGst(payload));
+    }
+  }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
+
+  const calculateTotalWithGST = () => {
+    const basePrice = calculateBasePrice();
+    const gstPercent = parseFloat(gstData?.gstPrice || 0);
+    const gstAmount = (gstPercent / 100) * basePrice;
+
+    return Math.round(basePrice + gstAmount);
+  };
+
+  console.log("GST Data:", gstData);
+  const calculateBasePrice = () => {
     let totalPrice = 0;
 
     const daysDifference = Math.ceil(
@@ -151,8 +173,12 @@ const BookingDetails = ({
     return totalPrice;
   };
 
+
   const getFinalPrice = () => {
-    const roomPrice = calculateTotalPrice();
+    const roomPrice = selectedRooms.reduce(
+      (total, room) => total + room.price * roomsCount,
+      0,
+    );
     return roomPrice - discountPrice;
   };
 
@@ -181,6 +207,7 @@ const BookingDetails = ({
         price: getFinalPrice(),
         pm: "Offline",
         couponCode: couponCode,
+        gstPrice: gstData?.gstPrice,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
@@ -203,14 +230,14 @@ const BookingDetails = ({
         if (response.status === 201) {
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-              `📅 Check in Date: ${format(
-                new Date(bookedDetails?.data?.checkInDate),
-                "dd MMM yyyy",
-              )}\n` +
-              `📅 Check out Date: ${format(
-                new Date(bookedDetails?.data?.checkOutDate),
-                "dd MMM yyyy",
-              )}`,
+            `📅 Check in Date: ${format(
+              new Date(bookedDetails?.data?.checkInDate),
+              "dd MMM yyyy",
+            )}\n` +
+            `📅 Check out Date: ${format(
+              new Date(bookedDetails?.data?.checkOutDate),
+              "dd MMM yyyy",
+            )}`,
             () => {
               window.location.href = "/bookings"; // <-- Redirect to /bookings
             },
@@ -457,8 +484,8 @@ const BookingDetails = ({
             {isCouponApplied
               ? "Coupon Applied"
               : showCouponField
-              ? "Cancel"
-              : "Apply Coupon"}
+                ? "Cancel"
+                : "Apply Coupon"}
           </Button>
 
           <Collapse in={showCouponField && !isCouponApplied}>
@@ -522,7 +549,16 @@ const BookingDetails = ({
           )}
 
           <Typography fontWeight="bold" fontSize={14}>
-            Total Payable Amount: ₹{getFinalPrice()}
+            Room Price: ₹{getFinalPrice()}
+          </Typography>
+          <Typography variant="body2">
+            GST ({gstData?.gstPrice || 0}%): + ₹
+            {gstData?.gstPrice
+              ? ((parseFloat(gstData.gstPrice) / 100) * calculateBasePrice()).toFixed(2)
+              : '0.00'}
+          </Typography>
+          <Typography fontWeight="bold" fontSize={14}>
+            Total Payable Amount: ₹{calculateTotalWithGST()}
           </Typography>
         </Box>
         {/* Final Booking Button */}
@@ -605,6 +641,11 @@ const BookingDetails = ({
                   </Typography>
                 </Grid>
               )}
+              <Grid item xs={12}>
+                <Typography variant="body2">
+                  GST Price :{gstData?.gstPrice}%
+                </Typography>
+              </Grid>
             </Grid>
           </Box>
 
@@ -617,7 +658,7 @@ const BookingDetails = ({
               Total Room Price:{" "}
               <strong>
                 ₹
-                {calculateTotalPrice() -
+                {calculateTotalWithGST() -
                   selectedFood.reduce((sum, item) => sum + item.price, 0)}
               </strong>
             </Typography>
@@ -691,7 +732,7 @@ const BookingDetails = ({
               Room Price:{" "}
               <strong>
                 ₹
-                {calculateTotalPrice() -
+                {calculateTotalWithGST() -
                   selectedFood.reduce((sum, item) => sum + item.price, 0)}
               </strong>
             </Typography>
@@ -701,9 +742,18 @@ const BookingDetails = ({
                 {selectedFood.reduce((sum, item) => sum + item.price, 0)}
               </Typography>
             )}
-            <Typography variant="body1" fontWeight={600} mt={1} mb={3}>
-              Total Amount: ₹{getFinalPrice()}
+            <Typography variant="body2">
+              GST ({gstData?.gstPrice || 0}%): ₹
+              {gstData?.gstPrice
+                ? ((parseFloat(gstData.gstPrice) / 100) * calculateBasePrice()).toFixed(2)
+                : '0.00'}
             </Typography>
+
+            <Typography variant="body1" fontWeight={600} mt={1} mb={3}>
+              Total Amount: ₹{calculateTotalWithGST()}
+            </Typography>
+
+
           </Box>
 
           {/* Action Buttons */}

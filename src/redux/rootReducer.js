@@ -7,6 +7,7 @@ import locationReducer from './reducers/locationSlice';
 import partnerReducer from './reducers/partnerSlice';
 import complaintReducer from './reducers/complaintSlice';
 import travelReducer from './reducers/travelSlice';
+import gstReducer from './reducers/gstSlice';
 // Combine reducers into a rootReducer
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     partner: partnerReducer,
     complaint: complaintReducer,
     travel: travelReducer,
+    gst: gstReducer,
 });
 
 export default rootReducer;
