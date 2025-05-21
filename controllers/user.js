@@ -17,7 +17,7 @@ const createSignup = async function (req, res) {
 
                 await UserCoupon.create({
                     couponName: "Welcome50",
-                    disCountPrice: 50,
+                    discountPrice: 50,
                     validity,
                     quantity: 1,
                     assignedTo: email,
@@ -94,7 +94,7 @@ const GoogleSignIn = async function (req, res) {
 
                 await UserCoupon.create({
                     couponName: "Welcome50",
-                    disCountPrice: 50,
+                    discountPrice: 50,
                     validity,
                     quantity: 1,
                     assignedTo: email,
