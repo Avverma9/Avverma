@@ -11,6 +11,7 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    gstPrice: Number,
     user: {
       type: Object,
       required: false,

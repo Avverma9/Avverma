@@ -1,14 +1,19 @@
 const GST = require("../../models/GST/gst");
 
-// Create a new GST document
 exports.createGST = async (req, res) => {
   const { gstPrice, gstMinThreshold, gstMaxThreshold, type } = req.body;
 
   try {
+    const existingGst = await GST.findOne({ type });
+
+    if (existingGst) {
+      return res.status(400).json({ message: "GST entry for this type already exists" });
+    }
+
     const gst = new GST({
       gstPrice,
-      gstMinThreshold,  // Added gstMinThreshold
-      gstMaxThreshold,  // Added gstMaxThreshold
+      gstMinThreshold,
+      gstMaxThreshold,
       type,
     });
 
@@ -19,33 +24,24 @@ exports.createGST = async (req, res) => {
   }
 };
 
-// Get GST document by type
 exports.getGST = async (req, res) => {
-  const { type, gstMinThreshold, gstMaxThreshold } = req.query;
+  const { type, gstThreshold } = req.query;
 
-  // Create filter object
   let filter = {};
 
-  // If `type` is provided, add it to the filter
   if (type) {
     filter.type = type;
   }
 
-  // If `gstMinThreshold` and `gstMaxThreshold` are provided, add them to the filter
-  if (gstMinThreshold || gstMaxThreshold) {
-    filter.gstThreshold = {};
+  if (gstThreshold) {
+    const gstThresholdValue = parseFloat(gstThreshold);
 
-    if (gstMinThreshold) {
-      filter.gstThreshold.$gte = gstMinThreshold; // Greater than or equal to gstMinThreshold
-    }
-
-    if (gstMaxThreshold) {
-      filter.gstThreshold.$lte = gstMaxThreshold; // Less than or equal to gstMaxThreshold
-    }
+    filter.gstMinThreshold = { $lte: gstThresholdValue };
+    filter.gstMaxThreshold = { $gte: gstThresholdValue };
   }
 
   try {
-    const gst = await GST.findOne(filter); // Apply the filter
+    const gst = await GST.findOne(filter);
 
     if (!gst) {
       return res.status(404).json({ message: "GST document not found" });
@@ -57,12 +53,10 @@ exports.getGST = async (req, res) => {
   }
 };
 
-
-// Get all GST documents
 exports.getAllGST = async (req, res) => {
   try {
     const gst = await GST.find();
-    if (!gst || gst.length === 0) { // Added a check to handle empty arrays
+    if (!gst || gst.length === 0) {
       return res.status(404).json({ message: "No GST documents found" });
     }
     res.status(200).json(gst);
@@ -71,14 +65,13 @@ exports.getAllGST = async (req, res) => {
   }
 };
 
-// Update GST document by ID
 exports.updateGST = async (req, res) => {
-  const { id, gstPrice, gstMinThreshold, gstMaxThreshold, type } = req.body;
+  const { _id, gstPrice, gstMinThreshold, gstMaxThreshold, type } = req.body;
 
   try {
     const updatedGst = await GST.findOneAndUpdate(
-      { _id: id },
-      { gstPrice, gstMinThreshold, gstMaxThreshold, type }, // Added missing fields here
+      { _id: _id },
+      { gstPrice, gstMinThreshold, gstMaxThreshold, type },
       { new: true },
     );
 
