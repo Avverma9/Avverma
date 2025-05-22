@@ -50,11 +50,12 @@ const createBooking = async (req, res) => {
         email: user.email,
         mobile: user.mobile,
       },
-      createdBy: {
-        user: createdBy.user,
-        name: createdBy.name,
-        email: createdBy.email,
-      },
+      createdBy: createdBy
+        ? {
+          user: createdBy.user,
+          email: createdBy.email,
+        }
+        : undefined, // or leave it out completely if not needed
       hotelDetails: {
         hotelCity,
         hotelId,
@@ -77,7 +78,6 @@ const createBooking = async (req, res) => {
       destination,
       roomDetails,
     });
-
     // Save the booking
     const savedBooking = await booking.save();
     for (const bookedRoom of roomDetails) {
