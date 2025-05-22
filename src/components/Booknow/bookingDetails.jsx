@@ -204,7 +204,7 @@ const BookingDetails = ({
           price: food.price,
           quantity: food.quantity,
         })),
-        price: getFinalPrice(),
+        price: calculateTotalWithGST(),
         pm: "Offline",
         couponCode: couponCode,
         gstPrice: gstData?.gstPrice,
