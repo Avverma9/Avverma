@@ -56,11 +56,6 @@ export const fetchDefaultCoupon = createAsyncThunk(
     
       return response.data;
     } catch (error) {
-      const errorMessage =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong. Please try again.";
-      alert(errorMessage);
       return rejectWithValue(error?.response?.data);
     }
   }

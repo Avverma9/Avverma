@@ -528,93 +528,93 @@ export const ConfirmBooking = () => {
             </section>
 
             {/* Price Summary */}
-           <section className={styles.section}>
-  <h5>Price Summary</h5>
-  <div className={styles.grid}>
-    {/* Room Total */}
-    <div>
-      <label>Room Total</label>
-      <p>
-        ₹
-        {(() => {
-          return modalData?.roomDetails?.reduce(
-            (acc, room) => acc + (Number(room?.price) || 0),
-            0
-          );
-        })()}
-      </p>
-    </div>
+            <section className={styles.section}>
+              <h5>Price Summary</h5>
+              <div className={styles.grid}>
+                {/* Room Total */}
+                <div>
+                  <label>Room Total</label>
+                  <p>
+                    ₹
+                    {(() => {
+                      return modalData?.roomDetails?.reduce(
+                        (acc, room) => acc + (Number(room?.price) || 0),
+                        0
+                      );
+                    })()}
+                  </p>
+                </div>
 
-    {/* Food Total */}
-    <div>
-      <label>Food Total</label>
-      <p>
-        ₹
-        {(() => {
-          return modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0);
-        })()}
-      </p>
-    </div>
+                {/* Food Total */}
+                <div>
+                  <label>Food Total</label>
+                  <p>
+                    ₹
+                    {(() => {
+                      return modalData?.foodDetails?.reduce((acc, food) => {
+                        const price = Number(food.price) || 0;
+                        const quantity = Number(food.quantity) || 1;
+                        return acc + price * quantity;
+                      }, 0);
+                    })()}
+                  </p>
+                </div>
 
-    {/* GST */}
-    <div>
-      <label>GST ({modalData?.gstPrice || 0}%)</label>
-      <p>
-        ₹
-        {(() => {
-          const roomTotal = modalData?.roomDetails?.reduce(
-            (acc, room) => acc + (Number(room?.price) || 0),
-            0
-          );
-          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0);
-          const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
-          return gst.toFixed(2); // keep decimal precision
-        })()}
-      </p>
-    </div>
+                {/* GST */}
+                <div>
+                  <label>GST ({modalData?.gstPrice || 0}%)</label>
+                  <p>
+                    ₹
+                    {(() => {
+                      const roomTotal = modalData?.roomDetails?.reduce(
+                        (acc, room) => acc + (Number(room?.price) || 0),
+                        0
+                      );
+                      const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
+                        const price = Number(food.price) || 0;
+                        const quantity = Number(food.quantity) || 1;
+                        return acc + price * quantity;
+                      }, 0);
+                      const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
+                      return gst.toFixed(2); // keep decimal precision
+                    })()}
+                  </p>
+                </div>
 
-    {/* Discount */}
-    <div>
-      <label>Discount</label>
-      <p>
-        {Number(modalData?.discountPrice) > 0
-          ? `- ₹${modalData?.discountPrice}`
-          : "No Discount"}
-      </p>
-    </div>
+                {/* Discount */}
+                <div>
+                  <label>Discount</label>
+                  <p>
+                    {Number(modalData?.discountPrice) > 0
+                      ? `- ₹${modalData?.discountPrice}`
+                      : "No Discount"}
+                  </p>
+                </div>
 
-    {/* Final Total */}
-    <div className={styles.totalWrap}>
-      <label className={styles.totalLabel}>Final Total</label>
-      <p className={styles.total}>
-        ₹
-        {(() => {
-          const roomTotal = modalData?.roomDetails?.reduce(
-            (acc, room) => acc + (Number(room?.price) || 0),
-            0
-          );
-          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0);
-          const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
-          const discount = Number(modalData?.discountPrice) || 0;
+                {/* Final Total */}
+                <div className={styles.totalWrap}>
+                  <label className={styles.totalLabel}>Final Total</label>
+                  <p className={styles.total}>
+                    ₹
+                    {(() => {
+                      const roomTotal = modalData?.roomDetails?.reduce(
+                        (acc, room) => acc + (Number(room?.price) || 0),
+                        0
+                      );
+                      const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
+                        const price = Number(food.price) || 0;
+                        const quantity = Number(food.quantity) || 1;
+                        return acc + price * quantity;
+                      }, 0);
+                      const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
+                      const discount = Number(modalData?.discountPrice) || 0;
 
-          return Math.round(roomTotal + foodTotal + gst - discount);
-        })()}
-      </p>
-    </div>
-  </div>
-</section>
+                      return Math.round(roomTotal + foodTotal + gst - discount);
+                    })()}
+                  </p>
+                </div>
+              </div>
+            </section>
 
 
 
