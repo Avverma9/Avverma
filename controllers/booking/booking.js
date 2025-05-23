@@ -196,8 +196,8 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (couponCode) {
       filter.couponCode = couponCode
     }
-    if (createdBy) {
-      filter["createdBy.email"] = createdBy.email
+      if (createdBy) {
+      filter["createdBy.email"] = createdBy;
     }
 
     if (hotelEmail) {
