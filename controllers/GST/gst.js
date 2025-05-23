@@ -4,12 +4,6 @@ exports.createGST = async (req, res) => {
   const { gstPrice, gstMinThreshold, gstMaxThreshold, type } = req.body;
 
   try {
-    const existingGst = await GST.findOne({ type });
-
-    if (existingGst) {
-      return res.status(400).json({ message: "GST entry for this type already exists" });
-    }
-
     const gst = new GST({
       gstPrice,
       gstMinThreshold,
@@ -84,3 +78,20 @@ exports.updateGST = async (req, res) => {
     res.status(500).json({ message: "Error updating GST", error: error.message });
   }
 };
+
+
+exports.deleteGST = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedGst = await GST.findByIdAndDelete(id);
+
+    if (!deletedGst) {
+      return res.status(404).json({ message: "GST document not found" });
+    }
+
+    res.status(200).json({ message: "GST document deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting GST", error });
+  }
+}
