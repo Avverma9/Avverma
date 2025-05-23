@@ -9,7 +9,7 @@ const registerUser = async (req, res) => {
         const emailExist = await Dashboard.findOne({ email: email });
         const mobileExist = await Dashboard.findOne({ mobile: mobile });
 
-        if (!['Admin', 'Developer', 'PMS', 'CMS', 'TMS', 'CA', "Rider"].includes(role)) {
+        if (!['Admin', 'Developer', 'PMS', 'TMS', 'CA', "Rider"].includes(role)) {
             return res.status(400).json({ message: 'Invalid role selection' });
         }
 
