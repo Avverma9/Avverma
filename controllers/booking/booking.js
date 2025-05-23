@@ -184,7 +184,7 @@ const getAllFilterBookings = async (req, res) => {
 
 const getAllFilterBookingsByQuery = async (req, res) => {
   try {
-    const { bookingStatus, userId, bookingId, hotelEmail, date, hotelCity, couponCode } = req.query;
+    const { bookingStatus, userId, bookingId, hotelEmail, date, hotelCity, couponCode, createdBy } = req.query;
     const filter = {};
 
     if (userId) {
@@ -196,6 +196,10 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (couponCode) {
       filter.couponCode = couponCode
     }
+    if (createdBy.email) {
+      filter["createdBy.email"] = createdBy.email
+    }
+
     if (hotelEmail) {
       filter["hotelDetails.hotelEmail"] = { $regex: hotelEmail, $options: "i" };
 
