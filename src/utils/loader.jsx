@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import Box from "@mui/material/Box";
-import logo from "../../public/logo.png"; // path adjust karo
+
 
 const LoaderContext = createContext();
 
@@ -67,7 +67,7 @@ export const LoaderProvider = ({ children }) => {
             />
             {/* Logo Image */}
             <img
-              src={logo}
+              src="/logo.png"
               alt="Loading..."
               style={{
                 position: "absolute",

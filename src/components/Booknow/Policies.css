@@ -1,132 +1,155 @@
-/* Policies.css */
+/* Reset some default styling */
+* {
+  margin: 0;
+  padding: 0;
 
-
-.policies-container {
-    padding: 0; /* Remove padding */
-    width: 100%; /* Full width */
-    background-color: #fff; /* White background for content */
-    box-shadow: none; /* Remove box shadow for a flat look */
-    margin: 0; /* Remove margins */
 }
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Container for the policies page */
+.policies-page {
+  max-width: 1200px;
+
+}
+
+/* Main page title */
+.page-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  color: #1a202c;
+  border: 2px solid red;
+  background-color: red;
+  color: white; /* Optional: makes the text readable on red background */
+  padding: 0.5rem 1rem;
+  border-radius: 4px; /* Optional: rounded corners */
+  margin-bottom: 1rem; /* Space below title */
+}
+
+
+/* Card that holds a section of policies */
+.policy-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Individual card style */
 .policy-card {
-    margin-bottom: 10px; /* Reduced margin for cards */
-    padding: 10px; /* Keep padding for card */
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 6px solid #4a90e2;
 }
 
-.header {
-    text-align: center;
-    font-size: 28px; 
-    margin-bottom: 15px; 
-    color: #333;
-    border-bottom: 2px solid #ccc; 
-    padding-bottom: 5px; 
-}
-
-.policy-card {
-    margin-bottom: 15px; /* Reduced margin for cards */
-    padding: 10px; /* Reduced padding for card */
-    border-bottom: 1px solid #ddd; /* Separation between cards */
-}
-
+/* Section title */
 .card-title {
-    font-size: 14px; /* Set card title size */
-    color: #0056b3;
-    margin-bottom: 5px; /* Reduced margin */
-    border-bottom: 1px solid #ddd; /* Line below title */
-    padding-bottom: 5px; /* Smaller padding */
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
+  color: #2d3748;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
 }
 
-.sub-title {
-    font-size: 14px; /* Set subtitle size */
-    margin-top: 10px; /* Reduced margin */
-    margin-bottom: 5px; /* Reduced margin */
-    color: #0056b3;
-    border-bottom: 1px solid #ddd; /* Line below subtitle */
-    padding-bottom: 5px; /* Smaller padding */
-}
-
+/* Section block (icon + text) */
 .section {
-    display: flex;
-    align-items: center; /* Align items vertically centered */
-    margin: 5px 0; /* Reduced margin for compactness */
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 0.75rem;
 }
 
-.icon {
-    font-size: 20px; /* Smaller icon size */
-    margin-right: 8px; /* Space between icon and text */
-    color: #007bff;
+.section .icon {
+  color: #4a90e2;
+  font-size: 1.4rem;
+  margin-top: 4px;
 }
 
+/* Sub-titles for smaller sections */
+.sub-title {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2c5282;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Titles within each section */
 .title {
-    font-weight: bold;
-    font-size: 14px;
-    margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: #1a202c;
 }
 
+/* Text content within each section */
 .text {
-    margin: 0;
-    color: #555;
-    font-size: 14px; 
+  font-size: 0.95rem;
+  color: #4a5568;
+  line-height: 1.5;
 }
 
+/* Dot styling for bullet points */
+.dot-point {
+  color: #4a90e2;
+  margin-right: 0.25rem;
+}
+
+/* Icons representing status (Allowed or Not Allowed) */
 .statusIcon {
-    font-size: 20px; 
-    margin-right: 8px; 
+  font-size: 1.3rem;
+  margin-top: 4px;
 }
 
-.allowed {
-    color: #28a745; 
+.statusIcon.allowed {
+  color: #38a169; /* Green */
 }
 
-.not-allowed {
-    color: #dc3545; 
+.statusIcon.not-allowed {
+  color: #e53e3e; /* Red */
 }
 
-.divider {
-    height: 2px;
-    background-color: #ddd;
-    margin: 20px 0;
+/* Responsive layout */
+@media (max-width: 768px) {
+  .policies-page {
+    padding: 0;       /* Remove left/right padding */
+    margin: 0;        /* Remove left/right margin */
+    width: 100vw;     /* Ensure it uses the full viewport width */
+  }
+
+  .policy-card {
+    padding: 1rem;    /* Optional: reduce internal padding for small screens */
+    border-left-width: 4px; /* Slightly thinner border on mobile */
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    padding: 1rem 1rem 0.5rem 1rem; /* Add top padding if needed */
+  }
+
+  .card-title {
+    font-size: 1.3rem;
+  }
+
+  .sub-title {
+    font-size: 1.1rem;
+  }
+}
+.go-back-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-
-@media (max-width: 767px) {
-    .card-title {
-        font-size: 12px;
-    }
-
-    .sub-title {
-        font-size: 12px;
-    }
-
-    .title {
-        font-size: 12px; 
-    }
-
-    .icon {
-        font-size: 18px; 
-    }
-
-    .statusIcon {
-        font-size: 18px;
-    }
-}
-
-@media (min-width: 768px) {
-    .policy-card {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .section {
-        flex-wrap: wrap; 
-    }
-    
-    .section .icon {
-        flex-basis: auto; 
-    }
-    
-    .section div {
-        flex-basis: auto;
-    }
+@media (max-width: 768px) {
+  .go-back-container {
+    padding: 0 1rem;
+    margin-top: 1.5rem;
+  }
 }

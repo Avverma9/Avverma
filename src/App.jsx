@@ -31,6 +31,7 @@ import TravelBooking from './components/Travels/travel-booking';
 import Hotel from './components/Hotels/pages/Hotel';
 import Hero from './components/landingPage/Hero';
 import Coupon from './components/Profile/coupon.jsx';
+import Policies from './components/Booknow/policies.jsx';
 
 function App() {
     return (
@@ -38,8 +39,9 @@ function App() {
             <div className="App">
                 <Router>
                     <Header />
+
                     <Settings />
-                    <Coupon/>
+                    <Coupon />
                     <BookNow />
                     <HeaderImage />
                     <Hotel />
@@ -52,7 +54,7 @@ function App() {
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         {/* <Route path="/about" element={<NewComponent />} /> */}
-
+                        <Route path='/policies' element={<Policies />} />
                         <Route path="/travellers" element={<Travel />} />
                         <Route path="/travellers/booking/:id" element={<TravelBooking />} />
                         <Route path="/partner" element={<PartnerForm />} />
@@ -62,8 +64,8 @@ function App() {
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />
                         <Route path="/partner/last-step" element={<PartnerRooms />} />
                     </Routes>
-                  
-                    <Footer />  
+
+                    <Footer />
                     <Bottom />
                     <ToastContainer /> {/* Add ToastContainer here */}
                 </Router>
