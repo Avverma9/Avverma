@@ -14,6 +14,8 @@ import {
 } from "@mui/icons-material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { format, formatISO } from "date-fns";
+import { formatDate } from "../../utils/convertDate";
 
 // Make sure to pass all required props from parent
 const BookingPage = ({
@@ -45,7 +47,6 @@ const BookingPage = ({
     handleOpenModal,
     openModal,
     handleCloseModal,
-    formatDate,
     selectedFood,
     hotelData,
     handleRemoveFood,
@@ -54,6 +55,7 @@ const BookingPage = ({
     handlePartialPayment,
     handleBookNow
 }) => {
+
     return (
         <>
             <Card
@@ -117,7 +119,7 @@ const BookingPage = ({
 
                 {/* Rooms & Guests */}
                 <Typography fontSize={12} color="text.secondary" mb={1}>
-                    * Max: 1 room & 3 guests per booking
+                    * Max: 3 guests per 1 room booking
                 </Typography>
                 <Divider />
                 <br />

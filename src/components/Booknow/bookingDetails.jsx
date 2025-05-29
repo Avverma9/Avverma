@@ -110,7 +110,6 @@ const BookingDetails = ({
     return Math.round(basePrice + gstAmount);
   };
 
-  console.log("GST Data:", gstData);
   const calculateBasePrice = () => {
     let totalPrice = 0;
 
@@ -450,8 +449,6 @@ const BookingDetails = ({
     }
   };
 
-  const formatDate = (date) =>
-    date ? new Date(date).toLocaleDateString() : "N/A";
 
   return (
     <>
@@ -484,7 +481,7 @@ const BookingDetails = ({
         handleOpenModal={handleOpenModal}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
-        formatDate={formatDate}
+
         selectedFood={selectedFood}
         hotelData={hotelData}
         handleRemoveFood={handleRemoveFood}
