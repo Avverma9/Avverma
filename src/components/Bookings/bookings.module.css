@@ -319,12 +319,21 @@
   gap: 0.8rem;
 }
 
-.printBtn, .closeBtn {
+ .closeBtn {
   background: none;
   border: none;
   font-size: 1rem;
   cursor: pointer;
   color: #444;
+}
+
+.printBtn {
+  background-color: blue;
+  color: white;      /* for better contrast */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .modalContainer {

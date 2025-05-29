@@ -102,13 +102,20 @@ const BookingDetails = ({
     }
   }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
 
-  const calculateTotalWithGST = () => {
-    const basePrice = calculateBasePrice();
-    const gstPercent = parseFloat(gstData?.gstPrice || 0);
-    const gstAmount = (gstPercent / 100) * basePrice;
+const calculateTotalWithGST = () => {
+  const basePrice = calculateBasePrice();
+  const gstPercent = parseFloat(gstData?.gstPrice || 0);
+  const gstAmount = (gstPercent / 100) * basePrice;
 
-    return Math.round(basePrice + gstAmount);
-  };
+  const totalWithGST = basePrice + gstAmount;
+
+  // Subtract discount if any
+  const discountedTotal = totalWithGST - (discountPrice || 0);
+
+  // Ensure it doesn't go below zero
+  return Math.round(discountedTotal > 0 ? discountedTotal : 0);
+};
+
 
   const calculateBasePrice = () => {
     let totalPrice = 0;

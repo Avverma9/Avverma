@@ -160,9 +160,7 @@ export const ConfirmBooking = () => {
     rawRoomTotal > finalTotal - foodTotal
       ? finalTotal - foodTotal
       : rawRoomTotal;
-  if (!data) {
-    return <NotFoundPage />;
-  }
+
   return (
     <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px" }}>
       <div className={styles.bookingHeader}></div>
@@ -216,6 +214,7 @@ export const ConfirmBooking = () => {
               }}
             >
               <MenuItem value="Confirmed">Confirmed</MenuItem>
+              <MenuItem value="Pending">Pending</MenuItem>
               <MenuItem value="Failed">Failed</MenuItem>
               <MenuItem value="Checked-in">Checked In</MenuItem>
               <MenuItem value="Checked-out">Checked Out</MenuItem>
@@ -225,7 +224,7 @@ export const ConfirmBooking = () => {
           </FormControl>
         </Box>
 
-        {currentBooking.length > 0 && (
+        {currentBooking.length > 0 ? (
           <>
             <BootstrapModal
               show={showReviewForm}
@@ -279,6 +278,7 @@ export const ConfirmBooking = () => {
                 </Button>
               </Box>
             </BootstrapModal>
+
             <div className={styles.bookingsContainer}>
               {currentBooking.map((bookingDetail) => (
                 <Paper
@@ -300,13 +300,11 @@ export const ConfirmBooking = () => {
                     }}
                   >
                     <CardContent sx={{ p: 1.5 }}>
-                      {/* Hotel Name and Actions */}
                       <Stack spacing={1}>
                         <Typography variant="subtitle1" fontWeight="bold">
                           {bookingDetail?.hotelDetails?.hotelName}
                         </Typography>
 
-                        {/* Dates */}
                         <Typography
                           variant="body2"
                           color="text.secondary"
@@ -317,13 +315,10 @@ export const ConfirmBooking = () => {
                           }}
                         >
                           <CalendarMonthIcon fontSize="small" />
-                          {formatDateWithOrdinal(
-                            bookingDetail.checkInDate,
-                          )} —{" "}
+                          {formatDateWithOrdinal(bookingDetail.checkInDate)} —{" "}
                           {formatDateWithOrdinal(bookingDetail.checkOutDate)}
                         </Typography>
 
-                        {/* Booking ID */}
                         <Typography
                           variant="caption"
                           color="text.secondary"
@@ -337,7 +332,6 @@ export const ConfirmBooking = () => {
                           Booking ID: {bookingDetail.bookingId}
                         </Typography>
 
-                        {/* Room & Guest Info */}
                         <Typography variant="body2">
                           {bookingDetail.guests}{" "}
                           {bookingDetail.guests > 1 ? "Guests" : "Guest"} |{" "}
@@ -345,7 +339,6 @@ export const ConfirmBooking = () => {
                           {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
                         </Typography>
 
-                        {/* Price */}
                         <Typography
                           variant="body2"
                           sx={{
@@ -360,7 +353,6 @@ export const ConfirmBooking = () => {
 
                         <Divider sx={{ my: 1 }} />
 
-                        {/* Buttons */}
                         <Stack direction="row" spacing={1}>
                           <Button
                             size="small"
@@ -386,6 +378,8 @@ export const ConfirmBooking = () => {
               ))}
             </div>
           </>
+        ) : (
+          <NotFoundPage />
         )}
 
         <Pagination
@@ -402,9 +396,20 @@ export const ConfirmBooking = () => {
       <BootstrapModal show={show} onHide={handleClose} centered size="lg">
         <div className={styles.modalContainer}>
           <div className={styles.modalHeader}>
-            <button onClick={handlePrint} className={styles.printBtn}>
+            <button
+              onClick={handlePrint}
+              style={{
+                backgroundColor: "blue",
+                color: "white",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "4px",
+                cursor: "pointer"
+              }}
+            >
               Print
             </button>
+
             <button onClick={handleClose} className={styles.closeBtn}>
               <AiOutlineClose />
             </button>
@@ -613,6 +618,36 @@ export const ConfirmBooking = () => {
                     })()}
                   </p>
                 </div>
+
+                {modalData?.isPartialBooking && (
+                  <>
+                    <div>
+                      <label>Partial Booking</label>
+                      {modalData.isPartialBooking ? <p>Yes</p> : <p>No</p>}
+                    </div>
+                    <div>
+                      <label
+                        style={{
+                          backgroundColor: "red",
+                          color: "white",
+                          border: "1px solid darkred",
+                          padding: "4px 8px",
+                          borderRadius: "4px",
+                          display: "inline-block"
+                        }}
+                      >
+                        Partially Paid Amount
+                      </label>
+
+                      {modalData?.partialAmount ? (
+                        <p>₹{modalData.partialAmount}</p>
+                      ) : (
+                        <p>₹0</p>
+                      )}
+                    </div>
+                  </>
+                )}
+
               </div>
             </section>
 
