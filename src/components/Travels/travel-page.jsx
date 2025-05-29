@@ -7,15 +7,24 @@ import { getTravelList } from '../../redux/reducers/travelSlice';
 import iconsList from '../../utils/icons';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
 import NotFoundPage from '../../utils/Not-found';
+import { useLoader } from '../../utils/loader';
 
 const TravelPackages = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // Initialize navigate
-
+    const { showLoader, hideLoader } = useLoader();
     const { data } = useSelector((state) => state.travel);
 
     useEffect(() => {
-        dispatch(getTravelList());
+        showLoader();
+
+        try {
+            dispatch(getTravelList());
+        } catch (error) {
+            console.error('Error fetching travel packages:', error);
+        } finally {
+            hideLoader();
+        }
     }, [dispatch]);
 
     const getAmenityIcon = (amenity) => {
