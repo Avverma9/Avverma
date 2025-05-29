@@ -14,6 +14,9 @@ const createBooking = async (req, res) => {
       roomDetails,
       price,
       pm,
+      isPartialBooking,
+      partialAmount,
+      bookingStatus,
       gstPrice,
       createdBy,
       couponCode,
@@ -74,6 +77,9 @@ const createBooking = async (req, res) => {
       couponCode,
       discountPrice,
       pm,
+      isPartialBooking,
+      partialAmount,
+      bookingStatus,
       bookingSource,
       destination,
       roomDetails,
@@ -196,7 +202,7 @@ const getAllFilterBookingsByQuery = async (req, res) => {
     if (couponCode) {
       filter.couponCode = couponCode
     }
-      if (createdBy) {
+    if (createdBy) {
       filter["createdBy.email"] = createdBy;
     }
 

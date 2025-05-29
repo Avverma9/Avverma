@@ -11,6 +11,14 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    isPartialBooking: {
+      type: Boolean,
+      default: false,
+    },
+    partialAmount: {
+      type: Number,
+      default: 0,
+    },
     gstPrice: Number,
     user: {
       type: Object,
