@@ -6,7 +6,7 @@ const webSocketHandler = require('./controllers/messenger/webSocket');
 const setupRoutes = require('./controllers/messenger/messenger');
 const routes = require('./routes/index');
 const connectDB = require('./config/db');
-
+const mailerRoutes = require('./nodemailer/routes')
 // Create an Express application
 const app = express();
 const server = http.createServer(app);
@@ -21,6 +21,7 @@ const io = socketIo(server, {
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/mail', mailerRoutes);
 
 // Connect to the database
 connectDB()
