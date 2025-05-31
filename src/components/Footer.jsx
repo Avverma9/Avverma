@@ -1,11 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube, FaPinterest } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Footer.css'; // Custom styles for the footer
+import './Footer.css';
 import { hotelList } from '../utils/extrasList';
 
-// Utility function to split array into chunks
+// Utility to split into chunks
 const chunkArray = (array, size) => {
     const result = [];
     for (let i = 0; i < array.length; i += size) {
@@ -15,11 +15,11 @@ const chunkArray = (array, size) => {
 };
 
 const Footer = () => {
-
-    const chunks = chunkArray(hotelList, 10); // Split hotelList into chunks of 10
-
+    const navigate = useNavigate();
+    const chunks = chunkArray(hotelList, 10); // now hotelList is array of objects
+    console.log("here is chunks", chunks);
     return (
-        <footer className="footer" >
+        <footer className="footer">
             <div className="container">
                 <div className="row mb-4">
                     <div className="col-md-6 text-center text-md-start">
@@ -49,8 +49,16 @@ const Footer = () => {
                             <ul className="list-unstyled">
                                 {chunk.map((hotel, subIndex) => (
                                     <li key={subIndex}>
-                                        <a href="#" className="footer-link">
-                                            {hotel}
+                                        <a
+                                            href="#"
+                                            className="footer-link"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                navigate(`/search?search=${hotel.path.replace('/', '').replace(/\s+/g, '+')}`);
+                                                ;
+                                            }}
+                                        >
+                                            {hotel.hotel}
                                         </a>
                                     </li>
                                 ))}
@@ -60,21 +68,11 @@ const Footer = () => {
                 </div>
                 <div className="row mb-4">
                     <div className="col-md-12 d-flex justify-content-center">
-                        <a href="#" className="social-icon mx-2">
-                            <FaFacebook size={24} />
-                        </a>
-                        <a href="#" className="social-icon mx-2">
-                            <FaInstagram size={24} />
-                        </a>
-                        <a href="#" className="social-icon mx-2">
-                            <FaTwitter size={24} />
-                        </a>
-                        <a href="#" className="social-icon mx-2">
-                            <FaYoutube size={24} />
-                        </a>
-                        <a href="#" className="social-icon mx-2">
-                            <FaPinterest size={24} />
-                        </a>
+                        <a href="#" className="social-icon mx-2"><FaFacebook size={24} /></a>
+                        <a href="#" className="social-icon mx-2"><FaInstagram size={24} /></a>
+                        <a href="#" className="social-icon mx-2"><FaTwitter size={24} /></a>
+                        <a href="#" className="social-icon mx-2"><FaYoutube size={24} /></a>
+                        <a href="#" className="social-icon mx-2"><FaPinterest size={24} /></a>
                     </div>
                 </div>
                 <div className="row">

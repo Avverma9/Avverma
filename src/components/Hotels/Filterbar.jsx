@@ -160,9 +160,8 @@ const Filterbar = ({ onFilterChange }) => {
         <Paper
             elevation={3}
             sx={{
-                padding: 2,
+                padding: 1,
                 position: 'sticky',
-
                 top: 20, // Adjust this to control how far down it sticks
                 zIndex: 10,
                 height: 'calc(100vh - 20px)', // Ensure it occupies the desired height
@@ -198,7 +197,7 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Price Range */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Filter Price</Typography>
-                    <CardContent sx={{ padding: 2 }}>
+                    <CardContent sx={{ padding: 1.5 }}>
                         <Slider
                             value={[minPrice, maxPrice]}
                             onChange={handlePriceChange}
@@ -221,8 +220,8 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Amenities */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Amenities</Typography>
-                    <CardContent sx={{ padding: 2 }}>
-                        <Stack spacing={1}>
+                    <CardContent sx={{ padding: 1.5 }}>
+                        <Stack spacing={0.5}>
                             {amenityItems.slice(0, showMoreAmenities ? amenityItems.length : 5).map(({ name, icon }) => (
                                 <FormControlLabel
                                     key={name}
@@ -232,11 +231,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleAmenitiesChange}
                                             checked={selectedAmenities.includes(name)}
                                             sx={{
+                                                p: 0.5, // Checkbox padding
+                                                mr: 1,
+                                                '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size
                                                 color: 'black',
-                                                '&.Mui-checked': {
-                                                    color: 'black',
-                                                },
-                                                '&:hover': { color: 'black' },
+                                                '&.Mui-checked': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -264,8 +263,8 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Room Types */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Room Types</Typography>
-                    <CardContent sx={{ padding: 2 }}>
-                        <Stack spacing={1}>
+                    <CardContent sx={{ padding: 1.5 }}>
+                        <Stack spacing={0.5}>
                             {roomTypes.slice(0, showMoreRoomTypes ? roomTypes.length : 5).map((type) => (
                                 <FormControlLabel
                                     key={type}
@@ -274,12 +273,12 @@ const Filterbar = ({ onFilterChange }) => {
                                             value={type}
                                             onChange={handleRoomTypeChange}
                                             checked={selectedRoomType === type}
-                                            sx={{
+                                           sx={{
+                                                p: 0.5, // Checkbox padding
+                                                mr: 1,
+                                                '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size
                                                 color: 'black',
-                                                '&.Mui-checked': {
-                                                    color: 'black',
-                                                },
-                                                '&:hover': { color: 'black' },
+                                                '&.Mui-checked': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -302,8 +301,8 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Bed Types */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Bed Types</Typography>
-                    <CardContent sx={{ padding: 2 }}>
-                        <Stack spacing={1}>
+                    <CardContent sx={{ padding: 1.5 }}>
+                        <Stack spacing={0.5}>
                             {bedTypes.slice(0, showMoreBedTypes ? bedTypes.length : 5).map((type) => (
                                 <FormControlLabel
                                     key={type}
@@ -313,11 +312,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleBedTypeChange}
                                             checked={selectedBedType === type}
                                             sx={{
+                                                p: 0.5, // Checkbox padding
+                                                mr: 1,
+                                                '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size
                                                 color: 'black',
-                                                '&.Mui-checked': {
-                                                    color: 'black',
-                                                },
-                                                '&:hover': { color: 'black' },
+                                                '&.Mui-checked': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -340,8 +339,8 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Property Type */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Property Type</Typography>
-                    <CardContent sx={{ padding: 2 }}>
-                        <Stack spacing={1}>
+                    <CardContent sx={{ padding: 1.5 }}>
+                        <Stack spacing={0.5}>
                             {propertyTypes.slice(0, showMorePropertyTypes ? propertyTypes.length : 5).map((type) => (
                                 <FormControlLabel
                                     key={type}
@@ -351,11 +350,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handlePropertyTypeChange}
                                             checked={selectedPropertyType === type}
                                             sx={{
+                                                p: 0.5, // Checkbox padding
+                                                mr: 1,
+                                                '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size
                                                 color: 'black',
-                                                '&.Mui-checked': {
-                                                    color: 'black',
-                                                },
-                                                '&:hover': { color: 'black' },
+                                                '&.Mui-checked': { color: 'black' },
                                             }}
                                         />
                                     }
@@ -378,8 +377,8 @@ const Filterbar = ({ onFilterChange }) => {
                 {/* Rating */}
                 <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Rating</Typography>
-                    <CardContent sx={{ padding: 2 }}>
-                        <Stack spacing={1}>
+                    <CardContent sx={{ padding: 1.5 }}>
+                        <Stack spacing={0.5}>
                             {starRatings.slice(0, showMoreRatings ? starRatings.length : 5).map((r) => (
                                 <FormControlLabel
                                     key={r}
@@ -389,11 +388,11 @@ const Filterbar = ({ onFilterChange }) => {
                                             onChange={handleRatingChange}
                                             checked={starRating === r}
                                             sx={{
+                                                p: 0.5, // Checkbox padding
+                                                mr: 1,
+                                                '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size
                                                 color: 'black',
-                                                '&.Mui-checked': {
-                                                    color: 'black',
-                                                },
-                                                '&:hover': { color: 'black' },
+                                                '&.Mui-checked': { color: 'black' },
                                             }}
                                         />
                                     }
