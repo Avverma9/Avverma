@@ -63,10 +63,10 @@ const HeaderTravel = () => {
         return (
             <div className="header-travel">
                 {/* Render Skeletons for each city */}
-                {Array.from({ length: 5 }).map((_, index) => (
+                {Array.from({ length: 12 }).map((_, index) => (
                     <div key={index} className="skeleton-container">
-                        <Skeleton height={150} width={150} circle={true} />
-                        <Skeleton width={120} height={20} />
+                        <Skeleton height={100} width={80} circle={true} />
+                        <Skeleton width={80} height={10} />
                     </div>
                 ))}
             </div>

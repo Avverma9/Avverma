@@ -41,8 +41,27 @@ const TravelPackages = () => {
         <>
             <Filter /> {/* Keep the Filter always visible */}
             {/* Check if the data exists or is empty */}
-            {(!data || data.length === 0) ? (
-                <NotFoundPage /> // If no data, show NotFoundPage
+            {!data || data.length === 0 ? (
+                <div className="skeleton-loader">
+                    {Array(6).fill().map((_, i) => (
+                        <div key={i} className="skeleton-card">
+                            <div className="skeleton-image" />
+                            <div className="skeleton-content">
+                                <div className="skeleton-line long" />
+                                <div className="skeleton-line medium" />
+                                <div className="skeleton-line short" />
+                                <div className="skeleton-amenities">
+                                    <div className="skeleton-icon" />
+                                    <div className="skeleton-icon" />
+                                    <div className="skeleton-icon" />
+                                </div>
+                                <div className="skeleton-line medium" />
+                                <div className="skeleton-button" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
             ) : (
                 <div className="travel-packages">
                     {data.map((pkg, index) => (
