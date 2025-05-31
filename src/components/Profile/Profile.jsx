@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProfileData } from '../../redux/reducers/profileSlice'; 
+import { fetchProfileData } from '../../redux/reducers/profileSlice';
 import Box from '@mui/material/Box';
 import { Paper, Typography, Avatar, Button, Grid, Stack } from '@mui/material';
-import './Profile.css'; 
+import './Profile.css';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
+import ProfileSkeleton from './profileSkeleton';
 
 export default function Profile() {
     const navigate = useNavigate();
@@ -36,7 +37,9 @@ export default function Profile() {
         localStorage.clear();
         navigate('/login');
     };
-
+    if (loading) {
+        return <ProfileSkeleton />;
+    }
     return (
         <section className="vh-90" style={{ backgroundColor: '#ffffff' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>

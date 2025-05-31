@@ -169,4 +169,137 @@
       font-size: 0.5rem;
     }
   }
-  
+  /* Base animation for all skeleton blocks */
+.skeleton-box {
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+/* Full wrapper to mirror .hero layout */
+.hero-skeleton-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+/* Match left side image section */
+.hero-skeleton-wrapper .hero-images {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fake full-image with pulse */
+.hero-image-skeleton {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+/* Right content area */
+.hero-skeleton-wrapper .hero-content {
+  width: 50%;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Skeleton Title */
+.skeleton-title {
+  width: 70%;
+  height: 48px;
+  border-radius: 8px;
+}
+
+/* Skeleton Paragraph */
+.skeleton-text {
+  width: 60%;
+  height: 20px;
+  border-radius: 6px;
+}
+
+/* Skeleton Button */
+.skeleton-button {
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+/* =============================== */
+/* Responsive Matching Breakpoints */
+/* =============================== */
+
+@media (max-width: 768px) {
+  .hero-skeleton-wrapper {
+    flex-direction: column;
+    height: auto;
+    text-align: center;
+  }
+
+  .hero-skeleton-wrapper .hero-images {
+    width: 100%;
+    height: 300px;
+  }
+
+  .hero-skeleton-wrapper .hero-content {
+    width: 100%;
+    padding: 20px;
+    align-items: center;
+  }
+
+  .skeleton-title {
+    width: 80%;
+    height: 30px;
+  }
+
+  .skeleton-text {
+    width: 70%;
+    height: 16px;
+  }
+
+  .skeleton-button {
+    width: 160px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-skeleton-wrapper {
+    padding: 10px;
+  }
+
+  .hero-skeleton-wrapper .hero-images {
+    height: 200px;
+  }
+
+  .skeleton-title {
+    width: 70%;
+    height: 24px;
+  }
+
+  .skeleton-text {
+    width: 60%;
+    height: 14px;
+  }
+
+  .skeleton-button {
+    width: 140px;
+    height: 36px;
+  }
+}

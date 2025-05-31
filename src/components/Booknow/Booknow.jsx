@@ -32,6 +32,7 @@ import { Modal } from "@mui/material";
 import alert from "../../utils/custom_alert/custom_alert";
 import { StarHalfSharp } from "@mui/icons-material";
 import HotelPolicyCard from "./policy-card";
+import BookNowSkeleton from "./BookNowSkeleton";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -305,9 +306,6 @@ const BookNow = () => {
       setRoomsCount(newRoomsCount);
     }
   };
-
-  const finalPrice = calculateTotalPrice() - discountPrice;
-
   const scrollToRooms = () => {
     roomsRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -342,36 +340,6 @@ const BookNow = () => {
     }
     setCheckOutDate(date);
   };
-
-  const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    "& .MuiDialogContent-root": {
-      padding: theme.spacing(2),
-    },
-    "& .MuiDialogActions-root": {
-      padding: theme.spacing(1),
-    },
-  }));
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  function getResponsiveImageStyle() {
-    const styles = {
-      height: 550,
-    };
-
-    if (window.innerWidth < 468) {
-      styles.height = "200px";
-    }
-
-    return styles;
-  }
-
   const amenities =
     hotelData?.amenities?.flatMap((amenityArray) => amenityArray.amenities) ||
     [];
@@ -390,8 +358,8 @@ const BookNow = () => {
 
   return (
     <div className="book-now-container">
-      {hotelData && (
-        <>
+      {!hotelData ? <BookNowSkeleton /> : (
+        <div className="book-now-container">
           <Box display="flex" alignItems="center" marginBottom="10px">
             <span
               style={{
@@ -498,7 +466,7 @@ const BookNow = () => {
                         onClick={() =>
                           setCurrentImageIndex(
                             (currentImageIndex + hotelData.images.length - 1) %
-                              hotelData.images.length,
+                            hotelData.images.length,
                           )
                         }
                         sx={navButtonStyle("left")}
@@ -709,7 +677,8 @@ const BookNow = () => {
             </div>
           </div>
           <BookingReview hotelId={hotelData?.hotelId} />
-        </>
+
+        </div>
       )}
     </div>
   );

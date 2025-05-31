@@ -39,7 +39,8 @@ export default function LoginPage() {
                 localStorage.setItem('isSignedIn', 'true');
                 localStorage.setItem('rsUserId', userId);
                 localStorage.setItem('rsToken', rsToken);
-                navigate(-1);
+                window.history.back();
+
             } else {
                 const err = await response.json();
                 console.error('Login failed:', err.message);

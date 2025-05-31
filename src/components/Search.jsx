@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { CiLocationArrow1 } from "react-icons/ci";
 import "./Search.css"; // Include the custom CSS file
 import { useNavigate, useLocation } from "react-router-dom";
+import SearchSkeleton from "./SearchSkeleton";
 
 const SearchForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentDate = new Date().toISOString().split("T")[0];
+
+  const [loading, setLoading] = useState(true); // New loading state
+
   const [searchData, setSearchData] = useState({
     search: "",
     checkInDate: currentDate,
@@ -20,6 +24,21 @@ const SearchForm = () => {
     longitude: "",
   });
 
+  // Simulate loading for 1.5 seconds then show form
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (location.pathname !== "/") {
+    return null;
+  }
+
+  if (loading) {
+    return <SearchSkeleton />;
+  }
+
+  // Rest of your existing code
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
     const inputValue =
@@ -32,7 +51,6 @@ const SearchForm = () => {
   };
 
   const handleSearch = () => {
-    // Ensure guests is capped at 3
     const finalGuests = Math.min(parseInt(searchData.guests) || 0, 3);
 
     const queryString = Object.entries({
@@ -43,7 +61,7 @@ const SearchForm = () => {
       .filter(([key, value]) => {
         return value || key === "countRooms" || key === "guests";
       })
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`) // Properly encode
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join("&");
 
     navigate(`/search?${queryString}`);
@@ -51,7 +69,7 @@ const SearchForm = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent default form submission
+      e.preventDefault();
       handleSearch();
     }
   };
@@ -76,10 +94,6 @@ const SearchForm = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   };
-
-  if (location.pathname !== "/") {
-    return null;
-  }
 
   return (
     <div className="search-bar">

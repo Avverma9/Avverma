@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import Box from "@mui/material/Box";
 
-
 const LoaderContext = createContext();
 
 export const LoaderProvider = ({ children }) => {
@@ -22,68 +21,71 @@ export const LoaderProvider = ({ children }) => {
             position: "fixed",
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: "100vw",
+            height: "100vh",
             backgroundColor: "rgba(0, 0, 0, 0.4)",
             zIndex: 9999,
           }}
         >
+          {/* Outer spinning ring */}
           <Box
             sx={{
               position: "relative",
-              width: 160,
-              height: 160,
+              width: 130,
+              height: 130,
+              borderRadius: "50%",
+              padding: "6px",
+              boxSizing: "border-box",
+              zIndex: 0,
             }}
           >
-            {/* Stylish spinning gradient border */}
+            {/* Spinning ring */}
             <Box
               sx={{
                 position: "absolute",
                 top: 0,
                 left: 0,
-                width: "160px",
-                height: "160px",
+                width: "100%",
+                height: "100%",
                 borderRadius: "50%",
                 background:
                   "conic-gradient(from 0deg, #007bff, #00c6ff, #007bff, #00c6ff)",
                 animation: "spin 1.8s linear infinite",
                 filter: "drop-shadow(0 0 6px #00c6ff)",
-                zIndex: 0,
+                zIndex: 1,
               }}
             />
-            {/* Inner smaller white circle for spacing */}
+
+            {/* Inner white circle */}
             <Box
               sx={{
-                position: "absolute",
-                top: 8,
-                left: 8,
-                right: 8,
-                bottom: 8,
+                position: "relative",
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
                 backgroundColor: "white",
-                borderRadius: "50%",
-                zIndex: 1,
-                margin: "auto",
-              }}
-            />
-            {/* Logo Image */}
-            <img
-              src="/logo.png"
-              alt="Loading..."
-              style={{
-                position: "absolute",
-                top: 8,
-                left: 8,
-                right: 8,
-                bottom: 8,
-                margin: "auto",
-                width: "128px",
-                height: "128px",
-                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 zIndex: 2,
-                objectFit: "cover",
-                boxShadow: "0 0 12px rgba(0,123,255,0.6)",
+                padding: "10px", // padding so logo doesn’t touch edges
+                boxSizing: "border-box",
               }}
-            />
+            >
+              {/* Logo image (non-spinning) */}
+              <img
+                src="/logo.png"
+                alt="Loading..."
+                style={{
+                  width: "110px",
+                  height: "110px",
+                  borderRadius: "50%",
+                  objectFit: "contain",
+                  boxShadow: "0 0 12px rgba(0,123,255,0.6)",
+                  userSelect: "none",
+                }}
+              />
+            </Box>
           </Box>
 
           <style>{`
