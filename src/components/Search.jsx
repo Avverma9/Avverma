@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, TextField, InputAdornment } from "@mui/material";
 import { CiLocationArrow1 } from "react-icons/ci";
-import "./Search.css"; // Include the custom CSS file
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchSkeleton from "./SearchSkeleton";
+import "./Search.css";
 
 const SearchForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentDate = new Date().toISOString().split("T")[0];
 
-  const [loading, setLoading] = useState(true); // New loading state
-
+  const [loading, setLoading] = useState(true);
   const [searchData, setSearchData] = useState({
     search: "",
     checkInDate: currentDate,
@@ -24,10 +23,43 @@ const SearchForm = () => {
     longitude: "",
   });
 
-  // Simulate loading for 1.5 seconds then show form
+  // Fetch current location on mount and reverse geocode
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
+    if (!navigator.geolocation) {
+      console.error("Geolocation is not supported by this browser.");
+      setLoading(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await res.json();
+
+          const residentialName = data.address?.residential || "";
+
+          setSearchData((prev) => ({
+            ...prev,
+            latitude,
+            longitude,
+            search: residentialName,
+          }));
+        } catch (error) {
+          console.error("Reverse geocoding failed:", error);
+        } finally {
+          setLoading(false);
+        }
+      },
+      (error) => {
+        console.error("Error getting location: ", error);
+        setLoading(false);
+      }
+    );
   }, []);
 
   if (location.pathname !== "/") {
@@ -38,14 +70,12 @@ const SearchForm = () => {
     return <SearchSkeleton />;
   }
 
-  // Rest of your existing code
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
-    const inputValue =
-      type === "checkbox" ? (checked ? "Accepted" : "") : value; // Allow spaces
+    const inputValue = type === "checkbox" ? (checked ? "Accepted" : "") : value;
 
-    setSearchData((prevSearchData) => ({
-      ...prevSearchData,
+    setSearchData((prev) => ({
+      ...prev,
       [name]: inputValue,
     }));
   };
@@ -55,8 +85,8 @@ const SearchForm = () => {
 
     const queryString = Object.entries({
       ...searchData,
-      latitude: "",
-      longitude: "",
+      latitude: searchData.latitude || "",
+      longitude: searchData.longitude || "",
     })
       .filter(([key, value]) => {
         return value || key === "countRooms" || key === "guests";
@@ -74,25 +104,40 @@ const SearchForm = () => {
     }
   };
 
+  // On clicking location icon, get fresh location & reverse geocode
   const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setSearchData((prevData) => ({
-            ...prevData,
+    if (!navigator.geolocation) {
+      console.error("Geolocation is not supported by this browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+          );
+          const data = await res.json();
+
+          const residentialName = data.address?.residential || "";
+
+          setSearchData((prev) => ({
+            ...prev,
             latitude,
             longitude,
+            search: residentialName,
           }));
+
           navigate(`/search?latitude=${latitude}&longitude=${longitude}`);
-        },
-        (error) => {
-          console.error("Error getting location: ", error);
+        } catch (error) {
+          console.error("Reverse geocoding failed:", error);
         }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
+      },
+      (error) => {
+        console.error("Error getting location: ", error);
+      }
+    );
   };
 
   return (
@@ -130,7 +175,7 @@ const SearchForm = () => {
         className="dropdowns"
         label="Guests"
         InputLabelProps={{ shrink: true }}
-      />{" "}
+      />
       <div className="search-input">
         <TextField
           variant="outlined"
@@ -151,6 +196,7 @@ const SearchForm = () => {
             ),
           }}
           InputLabelProps={{ shrink: true }}
+          onKeyPress={handleKeyPress}
         />
       </div>
       <Button
