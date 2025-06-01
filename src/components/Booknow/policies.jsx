@@ -32,8 +32,7 @@ const Policies = () => {
 
   return (
     <div className="policies-page">
-      <h1 className="page-title">Our Hotel Policies</h1>
-
+      <h1 className="policypage-title">Our Hotel Policies</h1>
       <div className="policy-container">
         <div className="policy-card">
           <h3 className="card-title">General Information</h3>

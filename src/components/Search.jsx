@@ -45,8 +45,8 @@ const SearchForm = () => {
 
           setSearchData((prev) => ({
             ...prev,
-            latitude,
-            longitude,
+            // latitude,
+            // longitude,
             search: residentialName,
           }));
         } catch (error) {
@@ -129,7 +129,7 @@ const SearchForm = () => {
             search: residentialName,
           }));
 
-          navigate(`/search?latitude=${latitude}&longitude=${longitude}`);
+          // navigate(`/search?latitude=${latitude}&longitude=${longitude}`);
         } catch (error) {
           console.error("Reverse geocoding failed:", error);
         }
