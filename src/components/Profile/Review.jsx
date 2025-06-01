@@ -10,6 +10,7 @@ import { formatDateWithOrdinal } from '../../utils/_dateFunctions';
 import './reviews.css';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ReviewSkeleton from './reviewSkeleton';
 
 export default function Reviews() {
     const location = useLocation();
@@ -87,14 +88,6 @@ export default function Reviews() {
         return null;
     }
 
-    if (loading) {
-        return (
-            <div className="loading">
-                <img src="https://www.edgecrm.app/images/no-data.gif" alt="Loading" />
-            </div>
-        );
-    }
-
     if (!userId) {
         return (
             <div>
@@ -111,11 +104,17 @@ export default function Reviews() {
 
     return (
         <div className="review-container" style={{ background: '#f5f5f5', padding: '20px' }}>
-            {currentReviews.length > 0 ? (
+            {loading ? (
+                <ReviewSkeleton />
+            ) : currentReviews.length > 0 ? (
                 currentReviews.map((reviewData, index) => (
                     <div key={index} className="review-card">
                         <div className="userImage-container">
-                            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User" loading="lazy" />
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                                alt="User"
+                                loading="lazy"
+                            />
                         </div>
                         <div className="review-content">
                             <div className="user-info">
@@ -138,6 +137,7 @@ export default function Reviews() {
             ) : (
                 <p className="no-reviews">No reviews available.</p>
             )}
+
             <div className="pagination">
                 <Pagination
                     count={totalPages}

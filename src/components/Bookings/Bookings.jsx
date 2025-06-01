@@ -35,6 +35,7 @@ import styles from "./bookings.module.css";
 import { Stack } from "@mui/system";
 import { TuneRounded } from "@mui/icons-material";
 import NotFoundPage from "../../utils/Not-found";
+import BookingSkeleton from "./bookingSkeleton";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ export const ConfirmBooking = () => {
   const [bookingDetails, setBookingDetails] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const [show, setShow] = useState(false);
   const bookingsPerPage = 3;
@@ -54,6 +56,7 @@ export const ConfirmBooking = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true); // Start loading
         const userId = localStorage.getItem("rsUserId");
         if (!userId) throw new Error("You are not logged in!");
         setBookingDetails([]);
@@ -66,6 +69,8 @@ export const ConfirmBooking = () => {
           error.message ||
           "Error fetching data",
         );
+      } finally {
+        setLoading(false); // Stop loading no matter success or failure
       }
     };
 
@@ -126,6 +131,7 @@ export const ConfirmBooking = () => {
     indexOfFirstBooking,
     indexOfLastBooking,
   );
+
   const totalPages = Math.ceil(bookingDetails.length / bookingsPerPage);
 
   const handlePageChange = (event, value) => {
@@ -224,7 +230,9 @@ export const ConfirmBooking = () => {
           </FormControl>
         </Box>
 
-        {currentBooking.length > 0 ? (
+        {loading ? (
+          <BookingSkeleton />
+        ) : currentBooking.length > 0 ? (
           <>
             <BootstrapModal
               show={showReviewForm}
@@ -248,9 +256,7 @@ export const ConfirmBooking = () => {
                     mb: 2,
                   }}
                 >
-                  <Typography variant="h6">
-                    Write about your experience
-                  </Typography>
+                  <Typography variant="h6">Write about your experience</Typography>
                   <CloseIcon
                     onClick={handleCloseReview}
                     style={{ cursor: "pointer" }}
