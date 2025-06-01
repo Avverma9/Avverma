@@ -27,6 +27,7 @@ const GSTRouter = require('./GST/gst');
 const travelBookings = require('./travel/booking');
 const userCoupon = require('./coupons/userCoupon')
 const partnerCoupon = require('./coupons/partnerCoupon');
+
 const router = express.Router();
 
 // Define routes with root paths

@@ -52,7 +52,6 @@ router.post('/verify-otp', (req, res) => {
 
 router.post('/send-message', async (req, res) => {
   const { email, subject, message, link } = req.body;
-
   try {
     await sendCustomEmail(email, subject, message, link);
     res.status(200).json({ message: 'Email sent successfully' });

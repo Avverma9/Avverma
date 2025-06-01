@@ -1,4 +1,4 @@
-const Travel = require('../../models/travel/tourModel');
+const Tour = require("../../models/tour/tour");
 
 exports.createTravel = async (req, res) => {
     try {
@@ -9,7 +9,7 @@ exports.createTravel = async (req, res) => {
         if (termsAndConditions && typeof termsAndConditions === 'object') {
             req.body.termsAndConditions = new Map(Object.entries(termsAndConditions));
         }
-        const created = await Travel.create({
+        const created = await Tour.create({
             ...body,
             images,
             termsAndConditions: req.body.termsAndConditions,
@@ -32,7 +32,7 @@ exports.updateTour = async function (req, res) {
         if (termsAndConditions && typeof termsAndConditions === 'object') {
             req.body.termsAndConditions = new Map(Object.entries(termsAndConditions));
         }
-        const updated = await Travel.findByIdAndUpdate(id, {
+        const updated = await Tour.findByIdAndUpdate(id, {
             ...body,
             images,
             termsAndConditions: req.body.termsAndConditions,
@@ -54,7 +54,7 @@ exports.sortByOrder = async function (req, res) {
         } else if (sort !== 'asc') {
             return res.status(400).json({ message: 'Invalid sort parameter. Use "asc" or "desc".' });
         }
-        const travels = await Travel.find().sort({ price: sortOrder });
+        const travels = await Tour.find().sort({ price: sortOrder });
         res.json(travels);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching travels', error });
@@ -70,7 +70,7 @@ exports.sortByPrice = async (req, res) => {
         if (minPrice) query.price = { $gte: minPrice };
         if (maxPrice) query.price = { ...query.price, $lte: maxPrice };
 
-        const findData = await Travel.find(query);
+        const findData = await Tour.find(query);
 
         return res.json(findData);
     } catch (error) {
@@ -89,7 +89,7 @@ exports.sortByDuration = async (req, res) => {
         if (maxNights) {
             query.nights = { ...query.nights, $lte: parseInt(maxNights) };
         }
-        const findData = await Travel.find(query);
+        const findData = await Tour.find(query);
         return res.json(findData);
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
@@ -99,7 +99,7 @@ exports.sortByDuration = async (req, res) => {
 exports.sortBythemes = async (req, res) => {
     try {
         const { themes } = req.query;
-        const findData = await Travel.find({ themes: themes });
+        const findData = await Tour.find({ themes: themes });
         return res.json(findData);
     } catch (error) {
         return res.status(500).json({ message: 'Server error', error: error.message });
@@ -108,7 +108,7 @@ exports.sortBythemes = async (req, res) => {
 
 exports.getTravelList = async function (_, res) {
     try {
-        const findData = await Travel.find();
+        const findData = await Tour.find();
         return res.status(200).json(findData);
     } catch (error) {
         console.error(error);
@@ -118,7 +118,7 @@ exports.getTravelList = async function (_, res) {
 exports.getTravelById = async (req, res) => {
     try {
         const { id } = req.params;
-        const findData = await Travel.findById(id);
+        const findData = await Tour.findById(id);
         return res.status(200).json(findData);
     } catch (error) {
         console.error(error);
@@ -129,7 +129,7 @@ exports.getByCity = async function (req, res) {
     const { city } = req.query;
     try {
         const query = city ? { city: { $regex: city, $options: 'i' } } : {};
-        const results = await Travel.find(query);
+        const results = await Tour.find(query);
         res.status(200).json({ success: true, data: results });
     } catch (error) {
         console.error(error);
@@ -139,7 +139,7 @@ exports.getByCity = async function (req, res) {
 
 exports.getAllCities = async (req, res) => {
     try {
-        const findAll = await Travel.find();
+        const findAll = await Tour.find();
         if (findAll && findAll.length > 0) {
             const cities = [...new Set(findAll.map((travel) => travel.city))];
             res.status(200).json(cities);

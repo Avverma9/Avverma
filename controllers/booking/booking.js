@@ -39,9 +39,13 @@ const createBooking = async (req, res) => {
     }
 
     // Generate a random bookingId
-    const bookingId = Math.floor(
-      1000000000 + Math.random() * 9000000000,
-    ).toString();
+    const bookingId = [...Array(10)]
+      .map(() => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        return chars.charAt(Math.floor(Math.random() * chars.length));
+      })
+      .join('');
+
 
     // Create the booking object
     const booking = new bookingModel({

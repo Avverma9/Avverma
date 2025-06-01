@@ -1,4 +1,5 @@
-const TravelBooking = require("../../models/travel/booking");
+
+const TravelBooking = require("../../models/travel/travelBooking");
 const carOwner = require("../../models/travel/carOwner");
 const Car = require("../../models/travel/cars");
 
@@ -80,9 +81,6 @@ exports.getTravelBookings = async (req, res) => {
     }
 };
 
-
-const mongoose = require('mongoose');
-
 exports.updateBooking = async function (req, res) {
     try {
         const { id, data } = req.body;
@@ -130,10 +128,7 @@ exports.getBookingsOfOwner = async (req, res) => {
         const { ownerId } = req.params;
         const ownerCars = await Car.find({ ownerId: ownerId });
         const carIds = ownerCars.map((car) => car._id);
-        
-        
         const bookings = await TravelBooking.find({ carId: { $in: carIds } });
-
         const enrichedBookings = await Promise.all(
             bookings.map(async (booking) => {
                 const car = await Car.findById(booking.carId).lean();
