@@ -4,7 +4,7 @@ const tourSchema = new mongoose.Schema(
   {
     travelAgencyName: String,
     agencyId: String,
-    agencyNumber: String,
+    agencyPhone: String,
     agencyEmail: String,
     isAccepted: { type: Boolean, default: false },
     country: String,

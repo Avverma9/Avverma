@@ -14,6 +14,7 @@ const tourBookingSchema = new mongoose.Schema(
                     .join(''),
         },
         userId: { type: String, required: true },
+        travelId: { type: String, required: true },
         visitngPlaces: { type: String },
         travelAgencyName: { type: String },
         country: { type: String },

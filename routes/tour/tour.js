@@ -1,7 +1,7 @@
 const express = require('express');
 const { createTravel, getTravelList, getTravelById, sortByOrder, sortByPrice, sortByDuration, sortBythemes, updateTour } = require('../../controllers/tour/tour');
 const { upload } = require('../../aws/upload');
-const { createBooking } = require('../../controllers/tour/booking');
+const { createBooking, getBookings } = require('../../controllers/tour/booking');
 
 const router = express.Router();
 router.post('/create-travel', upload, createTravel);
@@ -16,5 +16,5 @@ router.patch('/update-tour/data/:id', updateTour)
 
 //==========================================Booking Routes==========================================
 router.post("/tour-booking/create-tour-booking", createBooking);
-router.get("/tour-booking/get")
+router.get("/tour-booking/get-bookings",getBookings)
 module.exports = router;
