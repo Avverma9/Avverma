@@ -1,6 +1,5 @@
-import TourBooking from "../../models/tour/booking.js";
-
-export const createBooking = async (req, res) => {
+const TourBooking = require('../../models/tour/booking');
+exports.createBooking = async (req, res) => {
     const { ...data } = req.body;
     try {
         const newBooking = await TourBooking.create(data);
@@ -15,7 +14,7 @@ export const createBooking = async (req, res) => {
     }
 }
 
-export const getBookings = async (req, res) => {
+exports.getBookings = async (req, res) => {
     try {
         const bookings = await TourBooking.find();
         res.status(200).json(bookings);
@@ -27,7 +26,7 @@ export const getBookings = async (req, res) => {
         });
     }
 };
-export const getBookingById = async (req, res) => {
+exports.getBookingById = async (req, res) => {
     const { bookingId } = req.params;
     try {
         const booking = await TourBooking.find({ bookingId: bookingId });
@@ -45,7 +44,7 @@ export const getBookingById = async (req, res) => {
     }
 }
 
-export const getTotalSell = async (req, res) => {
+exports.getTotalSell = async (req, res) => {
     try {
         const result = await TourBooking.aggregate([
             {
@@ -64,7 +63,7 @@ export const getTotalSell = async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
-export const updateBooking = async (req, res) => {
+exports.updateBooking = async (req, res) => {
     const { bookingId } = req.params;
     const data = req.body;
 
@@ -80,7 +79,7 @@ export const updateBooking = async (req, res) => {
         res.status(500).json({ message: "Internal Server Error", error: error.message });
     }
 }
-export const deleteBooking = async (req, res) => {
+exports.deleteBooking = async (req, res) => {
     const { bookingId } = req.params;
     try {
         const booking = await TourBooking.findOneAndDelete({ bookingId: bookingId });
