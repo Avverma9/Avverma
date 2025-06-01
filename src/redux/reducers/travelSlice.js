@@ -96,11 +96,11 @@ export const getTravelById = createAsyncThunk('travel/getTravelById', async (id,
     }
 });
 
-export const bookNow = createAsyncThunk('travel/bookNow', async (_, { rejectWithValue }) => {
+export const bookNow = createAsyncThunk('travel/bookNow', async (data, { rejectWithValue }) => {
     try {
         const response = await axios.post(
-            `${baseURL}/book-now`,
-
+            `${baseURL}/tour-booking/create-tour-booking`,
+            data,
             {
                 headers: {
                     Authorization: token,

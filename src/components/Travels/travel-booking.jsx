@@ -22,11 +22,13 @@ import TermsAndCondition from './pages/Terms&Condition';
 import 'react-datepicker/dist/react-datepicker.css';
 import iconsList from '../../utils/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTravelById } from '../../redux/reducers/travelSlice';
+import { bookNow, getTravelById } from '../../redux/reducers/travelSlice';
 import DatePicker from 'react-datepicker';
 import QueryForm from './pages/QueryForm';
 import { useLoader } from '../../utils/loader';
 import './css/booking.css';
+import { userId } from '../../utils/Unauthorized';
+import { popup } from '../../utils/custom_alert/pop';
 const TravelBooking = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [showPicker, setShowPicker] = useState(false);
@@ -57,9 +59,7 @@ const TravelBooking = () => {
     }
   }, [travelById, showLoader, hideLoader]);
 
-  if (!travelById) {
-    return null;
-  }
+  if (!travelById) return null;
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -95,6 +95,46 @@ const TravelBooking = () => {
 
   const item = travelById;
 
+const handleBooking = async () => {
+  const data = {
+    userId: userId,
+    travelId: item._id,
+    travelAgencyName: item.travelAgencyName,
+    price: item.price,
+    visitngPlaces: item.visitngPlaces,
+    nights: item.nights,
+    days: item.days,
+    images: item.images,
+    amenities: item.amenities,
+    from: dateRange.startDate,
+    to: dateRange.endDate,
+    themes: item.themes,
+    state: item.state,
+    country: item.country,
+    city: item.city,
+    inclusion: item.inclusion,
+    exclusion: item.exclusion,
+    termsAndCondition: item.termsAndConditions,
+    dayWise: item.dayWise.map(({ day, description }) => ({
+      day,
+      description,
+    })),
+  };
+
+  if (!userId) {
+    alert('Please login to book this travel package.');
+    return;
+  }
+
+  try {
+    const res = await dispatch(bookNow(data)).unwrap(); // ← This gives you access to the returned response directly
+    const bookingId = res?.bookingId || res?.data?._id || 'N/A';
+
+    popup(`✅ Booking is done!\n\n🆔 Booking ID: ${bookingId}`);
+  } catch (err) {
+    popup(`❌ Booking failed.\n\nReason: ${err}`);
+  }
+};
   return (
     <Box sx={{ padding: 1, maxWidth: 'calc(100vw - 20px)', margin: '0 auto', fontFamily: 'Arial' }}>
       <Typography variant="h4" fontWeight="bold">
@@ -103,8 +143,7 @@ const TravelBooking = () => {
       <Typography variant="subtitle1" color="textSecondary">
         {item?.nights} Nights / {item?.days} Days
         <Box component="span" sx={{ fontSize: 12, color: '#f3ba1f' }}>
-          {' '}
-          Land Only
+          {' '}Land Only
         </Box>
       </Typography>
 
@@ -114,8 +153,8 @@ const TravelBooking = () => {
             <CardMedia
               component="img"
               height="350"
-              image={item?.images[0]}
-              alt={item.title || 'Colourful Kerala Landscape'}
+              image={item?.images?.[0]}
+              alt={item?.title || 'Travel Image'}
             />
           </Card>
 
@@ -143,6 +182,7 @@ const TravelBooking = () => {
                 <Tab label="Additional Info" />
               </Tabs>
             </div>
+
             <Box>
               {activeTab === 0 && <OverView data={item} />}
               {activeTab === 1 && <DayWiseItinerary data={item} />}
@@ -153,6 +193,7 @@ const TravelBooking = () => {
         </Grid>
 
         <Grid item xs={12} md={4}>
+          {/* Booking Card */}
           <Card
             sx={{
               padding: 4,
@@ -198,7 +239,7 @@ const TravelBooking = () => {
               )}
             </div>
 
-            <Button variant="contained" color="warning" fullWidth>
+            <Button variant="contained" color="warning" fullWidth onClick={handleBooking}>
               BOOK NOW
             </Button>
             <Button variant="outlined" fullWidth sx={{ mt: 2 }} onClick={toggleQueryForm}>
@@ -206,6 +247,7 @@ const TravelBooking = () => {
             </Button>
           </Card>
 
+          {/* Benefits Card */}
           <Card
             sx={{
               padding: 4,
@@ -232,7 +274,7 @@ const TravelBooking = () => {
               Package Benefits
             </Typography>
             <Grid container spacing={1} sx={{ mt: 1, justifyContent: 'center' }}>
-              {item?.amenities.slice(0, 4).map((amenity, idx) => (
+              {item?.amenities?.slice(0, 4).map((amenity, idx) => (
                 <Grid item xs={3} textAlign="center" key={idx}>
                   <IconButton sx={{ p: 0, fontSize: 30 }}>
                     {getAmenityIcon(amenity)}
@@ -252,6 +294,7 @@ const TravelBooking = () => {
             </Grid>
           </Card>
 
+          {/* Help Card */}
           <Card
             sx={{
               padding: 4,

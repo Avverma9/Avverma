@@ -19,7 +19,6 @@ const Popup = ({ message, onClose }) => {
   const boxStyle = {
     backgroundColor: "#ffffff",
     padding: "24px 32px",
-    borderRadius: "12px",
     boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
     minWidth: "320px",
     maxWidth: "90vw",
@@ -43,8 +42,6 @@ const Popup = ({ message, onClose }) => {
     padding: "8px 16px",
     backgroundColor: "#4CAF50",
     color: "white",
-    border: "none",
-    borderRadius: "6px",
     cursor: "pointer",
     fontWeight: "500",
     fontSize: "14px",

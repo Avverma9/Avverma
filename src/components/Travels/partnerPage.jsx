@@ -28,6 +28,9 @@ const TravelForm = () => {
         country: '',
         state: '',
         travelAgencyName: '',
+        agencyId: '',
+        agencyEmail: '',
+        agencyPhone: '',
         themes: '',
         visitngPlaces: '',
         overview: '',
@@ -153,6 +156,9 @@ const TravelForm = () => {
         formDataToSend.append('state', formData.state);
         formDataToSend.append('overview', formData.overview);
         formDataToSend.append('travelAgencyName', formData.travelAgencyName);
+        formDataToSend.append('agencyId', formData.agencyId);
+        formDataToSend.append('agencyEmail', formData.agencyEmail);
+        formDataToSend.append('agencyPhone', formData.agencyPhone);
         formDataToSend.append('visitngPlaces', formData.visitngPlaces);
         formDataToSend.append('price', formData.price);
         formDataToSend.append('nights', formData.nights);
@@ -187,12 +193,14 @@ const TravelForm = () => {
 
         try {
             showLoader();
-            await dispatch(createTravel(formDataToSend));
+            dispatch(createTravel(formDataToSend));
         } catch (error) {
             console.error('Error submitting form:', error);
         } finally {
             hideLoader();
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000)
         }
     };
 
@@ -253,10 +261,10 @@ const TravelForm = () => {
                             Select your travel theme
                         </label>
                         <select
-                            style={inputStyles} // Assuming `inputStyles` is defined
-                            name="themes" // The correct field name for the travel theme
-                            value={formData.themes} // Make sure `formData.themes` is managed in your state
-                            onChange={handleChange} // `handleChange` should update the `formData` state
+                            style={inputStyles}
+                            name="themes"
+                            value={formData.themes}
+                            onChange={handleChange}
                             required
                         >
                             <option value="">Select theme</option>
@@ -267,6 +275,50 @@ const TravelForm = () => {
                             <option value="Adventure">Adventure</option>
                             <option value="Beach">Beach</option>
                         </select>
+                    </div>
+                </div>
+                <div className="form-row">
+                    <div className="form-group">
+                        <label>
+                            <FaUser />
+                            Enter your travel agency ID
+                        </label>
+                        <input
+                            type="text"
+                            style={inputStyles}
+                            name="agencyId"
+                            value={formData.agencyId}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <FaUser />
+                            Contact Email
+                        </label>
+                        <input
+                            type="text"
+                            style={inputStyles}
+                            name="agencyEmail"
+                            value={formData.agencyEmail}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            <FaUser />
+                            Contact Number
+                        </label>
+                        <input
+                            type="text"
+                            style={inputStyles}
+                            name="agencyPhone"
+                            value={formData.agencyPhone}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                 </div>
                 <div className="form-row">
