@@ -12,7 +12,6 @@ const TermsAndCondition = ({ data }) => {
         );
     }
 
-    console.log('Data in Terms and Conditions:', data); // For debugging
 
     // Iterate over the termsAndConditions keys
     const terms = data?.termsAndConditions;

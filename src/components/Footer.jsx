@@ -17,7 +17,6 @@ const chunkArray = (array, size) => {
 const Footer = () => {
     const navigate = useNavigate();
     const chunks = chunkArray(hotelList, 10); // now hotelList is array of objects
-    console.log("here is chunks", chunks);
     return (
         <footer className="footer">
             <div className="container">

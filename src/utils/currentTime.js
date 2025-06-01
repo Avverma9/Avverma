@@ -31,4 +31,3 @@ export function getCurrentTime(timeZone) {
 
 // Example usage:
 // const currentTime = getCurrentTime('Asia/Kolkata');
-// console.log(currentTime);

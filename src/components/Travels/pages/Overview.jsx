@@ -5,7 +5,6 @@ import InclusionExclusion from './InclusionExclusion';
 import TermsAndCondition from './Terms&Condition';
 
 const OverView = ({ data }) => {
-    console.log('object', data);
     return (
         <>
             <Box sx={{ mt: 2, padding: 1 }}>

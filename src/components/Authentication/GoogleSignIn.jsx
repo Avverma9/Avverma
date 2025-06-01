@@ -57,7 +57,6 @@ const Google = () => {
             }
 
             const data = await response.json();
-            console.log('Google login data:', GoogleEmail);
 
             const { userId, rsToken, mobile } = data;
 

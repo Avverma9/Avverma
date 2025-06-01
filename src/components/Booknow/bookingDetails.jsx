@@ -307,7 +307,6 @@ const calculateTotalWithGST = () => {
       });
 
       const data = await response.json();
-      console.log("Booking response:", data);
       if (response.status !== 200 && response.status !== 201) {
         alert(data.message || "Booking failed during payment setup");
         return;
@@ -409,7 +408,6 @@ const calculateTotalWithGST = () => {
       });
 
       const data = await response.json();
-      console.log("Booking response:", data);
       if (response.status !== 200 && response.status !== 201) {
         alert(data.message || "Booking failed during payment setup");
         return;

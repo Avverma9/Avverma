@@ -4,7 +4,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 const InclusionExclusion = ({ data }) => {
-    console.log('InclusionExclusion', data);
 
     return (
         <Box className="booking-container" sx={{ padding: 1, maxWidth: 1200, margin: '0 auto' }}>

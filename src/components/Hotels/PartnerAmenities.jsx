@@ -39,7 +39,6 @@ const AmenitiesPage = () => {
             });
 
             // Handle the API response if needed
-            console.log('API Response:', response.data);
 
             // Check if the submission was successful
             if (response.status === 201) {
@@ -48,7 +47,6 @@ const AmenitiesPage = () => {
                 window.location.href = '/partner/fourth-step';
             } else {
                 // Handle other cases if needed
-                console.log('Submission failed:', response.data.error);
             }
         } catch (error) {
             // Handle errors during the API request

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getTravelList } from '../../redux/reducers/travelSlice';
@@ -13,17 +13,25 @@ const TravelPackages = () => {
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
   const { data } = useSelector((state) => state.travel);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    showLoader();
-    try {
-      dispatch(getTravelList());
-    } catch (error) {
-      console.error('Error fetching travel packages:', error);
-    } finally {
-      hideLoader();
-    }
+    const fetchData = async () => {
+      showLoader();
+      setLoading(true);
+      try {
+        await dispatch(getTravelList());
+      } catch (error) {
+        console.error('Error fetching travel packages:', error);
+      } finally {
+        hideLoader();
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [dispatch]);
+
 
   const getAmenityIcon = (amenity) => {
     const iconObj = iconsList.find((icon) => icon.label.toLowerCase() === amenity.toLowerCase());
@@ -37,7 +45,7 @@ const TravelPackages = () => {
   return (
     <>
       <Filter />
-      {!data ? (
+      {loading ? (
         <div className="skeleton-loader">
           {Array(6)
             .fill()
@@ -59,7 +67,7 @@ const TravelPackages = () => {
               </div>
             ))}
         </div>
-      ) : data.length === 0 ? (
+      ) : !data || data.length === 0 ? (
         <NotFoundPage />
       ) : (
         <div className="travel-packages">

@@ -42,7 +42,6 @@ const QueryForm = ({ onClose }) => {
         setIsSubmitting(true);
 
         setTimeout(() => {
-            console.log(formData);
             setIsSubmitting(false);
             // Submit the form data to an API or handle it accordingly
         }, 2000);
