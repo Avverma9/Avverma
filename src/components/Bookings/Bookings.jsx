@@ -204,8 +204,7 @@ export const ConfirmBooking = () => {
                 color: "#555",
               }}
             >
-              <TuneRounded sx={{ mr: 1, fontSize: 18 }} />
-              Filter
+              <TuneRounded sx={{ mt: 4, fontSize: 18 }} />
             </InputLabel>
 
             <Select
@@ -624,7 +623,6 @@ export const ConfirmBooking = () => {
                     })()}
                   </p>
                 </div>
-
                 {modalData?.isPartialBooking && (
                   <>
                     <div>
@@ -656,9 +654,6 @@ export const ConfirmBooking = () => {
 
               </div>
             </section>
-
-
-
           </div>
         </div>
       </BootstrapModal>

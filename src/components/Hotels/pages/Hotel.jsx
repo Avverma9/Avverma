@@ -22,7 +22,7 @@ import HotelMobileCard from './HotelMobileCard';
 
 const Hotel = () => {
     const [hotelData, setHotelData] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [totalPages, setTotalPages] = useState(1);
     const { showLoader, hideLoader } = useLoader();
     const navigate = useNavigate();
@@ -48,8 +48,9 @@ const Hotel = () => {
         } catch (error) {
             console.error('Error fetching hotel data:', error);
         } finally {
-            hideLoader();
             setLoading(false);
+            hideLoader();
+
         }
     };
 
@@ -74,76 +75,6 @@ const Hotel = () => {
         }).toString();
         navigate(`/search/hotels?${newQueryString}`);
     };
-
-    if (loading) {
-        return (
-            <div style={{ display: 'flex', margin: '20px' }}>
-                {/* Left Skeleton - Filter Bar */}
-                <div
-                    className="filterbar-skeleton"
-                    style={{ width: '300px', height: "800px", padding: '16px', boxSizing: 'border-box' }}
-                >
-                    <div className="skeleton-filterbar p-3">
-                        <div className="skeleton-line" style={{ width: '80%', height: '20px', marginBottom: '10px' }} />
-                        <div className="skeleton-line" style={{ width: '90%', height: '15px', marginBottom: '8px' }} />
-                        <div className="skeleton-line" style={{ width: '70%', height: '15px', marginBottom: '8px' }} />
-                        <div className="skeleton-line" style={{ width: '85%', height: '15px', marginBottom: '8px' }} />
-                        <div className="skeleton-line" style={{ width: '60%', height: '15px', marginBottom: '8px' }} />
-                    </div>
-                </div>
-
-                {/* Separator Line */}
-                <div
-                    style={{
-                        width: '1px',
-                        backgroundColor: '#ddd',
-                        margin: '0 20px',
-                        height: 'auto',
-                        alignSelf: 'stretch',
-                    }}
-                />
-
-                {/* Right Skeleton - Hotel Cards */}
-                <div style={{ flexGrow: 1 }}>
-                    {Array.from({ length: 3 }).map((_, idx) => (
-                        <div
-                            key={idx}
-                            className="card skeleton-card p-3 mb-4"
-                            style={{ display: 'flex', gap: '16px', maxHeight: '380px', maxWidth: '900px' }}
-                        >
-                            {/* Image Skeleton */}
-                            <div
-                                className="skeleton-image"
-                                style={{ width: '300px', height: '180px', borderRadius: '6px' }}
-                            />
-
-                            {/* Text Skeletons */}
-                            <div style={{ flexGrow: 1 }}>
-                                <div className="skeleton-line" style={{ width: '100%', height: '24px', marginBottom: '12px' }} />
-                                <div className="skeleton-line" style={{ width: '100%', height: '18px', marginBottom: '10px' }} />
-                                <div className="skeleton-line" style={{ width: '60%', height: '18px', marginBottom: '10px' }} />
-                                <div className="skeleton-line" style={{ width: '40%', height: '18px', marginBottom: '10px' }} />
-                                <div className="skeleton-line" style={{ width: '80%', height: '18px', marginBottom: '10px' }} />
-                            </div>
-
-                            {/* Button Skeleton */}
-                            <div style={{ width: '120px', alignSelf: 'center' }}>
-                                <div
-                                    className="skeleton-button"
-                                    style={{
-                                        width: '100%',
-                                        height: '40px',
-                                        borderRadius: '6px',
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    }
-
 
     return (
         <>

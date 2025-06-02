@@ -1,165 +1,186 @@
-/* Container to handle the layout of sidebar and content */
 .container {
   display: flex;
-  border-radius: 30%;
-  height: 60%;
-  background-color: #ffffff; /* Light background for the page */
-  transition: margin-left 0.3s ease-in-out; /* Smooth transition for content margin */
-}
-
-/* Sidebar styles */
-.sidebar {
-  margin-top: 20px;
-  width: 200px;
-  height: 60%;
-  background-color: #ededed;
-  padding: 20px;
-  border-radius: 3%;
-  color: #333333;
-  display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(0); /* Default visible position */
-  position: absolute; /* Position for toggle button */
-  z-index: 1; /* Ensure sidebar is above other content */
+  height: 100vh;
+  background-color: #ffffff;
 }
 
-/* Sidebar hidden styles */
-.sidebar.hidden {
-  transform: translateX(-100%); /* Move sidebar off-screen */
-}
-
-/* Toggle button styles (inside sidebar) */
-.toggleButton {
-  display: none; /* Hide by default */
-  position: absolute; /* Absolute positioning within sidebar */
-  top: 20px; /* Space from top */
-  right: -40px; /* Position outside sidebar */
-  background: #007bff; /* Blue background color */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 50%; /* Circular button */
-  width: 50px; /* Button width */
-  height: 50px; /* Button height */
+/* Top navigation bar */
+.topbar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer; /* Pointer cursor */
-  font-size: 24px; /* Larger icon size */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for button */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
+  justify-content: space-between;
+  /* menu left, toggle right */
+  padding: 10px 20px;
+  position: relative;
+  z-index: 10;
 }
 
-/* Toggle button hover effect */
-.toggleButton:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Icon visible when sidebar is closed */
-.openIcon {
-  display: none; /* Hide by default */
-  position: fixed; /* Fixed positioning outside sidebar */
-  top: 20px; /* Space from top */
-  left: 20px; /* Space from left */
-  background: #007bff; /* Blue background color */
-  color: #ffffff; /* White text color */
-  border: none; /* Remove border */
-  border-radius: 50%; /* Circular icon */
-  width: 50px; /* Icon width */
-  height: 50px; /* Icon height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer; /* Pointer cursor */
-  font-size: 24px; /* Larger icon size */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for icon */
-  transition: background-color 0.3s ease; /* Smooth background color transition */
-  z-index: 1000; /* Ensure icon is on top */
-}
-
-/* Icon hover effect */
-.openIcon:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Show toggle button and open icon on mobile screens */
-@media (max-width: 768px) {
-  .toggleButton {
-    display: flex; /* Show toggle button */
-  }
-
-  .openIcon {
-    display: none; /* Hide open icon on mobile */
-  }
-
-  .sidebar {
-    width: 200px; /* Adjust sidebar width for mobile */
-    height: 400px;
-  }
-
-  .content {
-    margin-left: 0; /* Remove margin for mobile view */
-    padding: 20px; /* Adjust padding for mobile view */
-  }
-}
-
-/* Navigation styles */
+/* Navigation menu container */
 .nav {
-  list-style: none; /* Remove default list styles */
-  padding: 0;
-  margin: 0;
+  flex: 1;
 }
 
 /* Menu styles */
 .menu {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, background-color 0.3s ease;
+  overflow: hidden;
 }
 
-/* Menu item styles */
+
+/* Menu visible state */
+.menuVisible {
+  max-height: 500px;
+  /* enough height for all menu items */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Menu hidden state */
+.menuHidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Individual menu item */
 .menuItem {
-  margin-bottom: 20px; /* Space between menu items */
-  text-decoration: none;
+  margin-right: 20px;
+  padding-right: 20px;
+  border-right: 1px solid #ddd;
 }
 
-/* Link styles */
+/* Remove the separator after the last item */
+.menuItem:last-child {
+  margin-right: 0;
+  padding-right: 0;
+  border-right: none;
+}
+
+/* Menu links */
 .menuItem a {
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #333333; /* Dark text color */
-  font-size: 18px;
-  font-weight: 600; /* Semi-bold */
-  padding: 12px 10px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 8px 12px;
   border-radius: 12px;
-  transition: background-color 0.3s, color 0.3s, transform 0.3s;
-  position: relative;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* Link hover styles */
 .menuItem a:hover {
-  background-color: #51a1fc7d; /* Light grey background on hover */
-  color: #000000; /* Blue text color on hover */
-  transform: translateX(8px); /* Slide link slightly to the right */
+  background-color: #51a1fc7d;
+  color: #000;
 }
 
-/* Active link styles */
 .menuItem a.active {
-  background-color: #007bff; /* Blue background for active link */
-  color: #ffffff; /* White text color for active link */
+  background-color: #007bff;
+  color: #fff;
 }
 
-/* Adjust content margin when sidebar is hidden */
-.container .sidebar.hidden ~ .content {
-  flex: 1;
-  margin-left: 200px; /* Adjust based on the width of your sidebar */
-  transition: margin-left 0.3s; /* Smooth transition for margin */
-  margin-left: 0; /* Remove margin when sidebar is closed */
+/* Toggle button on right */
+.toggleButton {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Styles when the sidebar is visible */
-.container .sidebar:not(.hidden) ~ .content {
+.toggleButton:hover {
+  background-color: #0056b3;
+}
+
+/* Main content area */
+.content {
   flex: 1;
-  margin-left: 220px; /* Adjust based on the width of your sidebar */
-  transition: margin-left 0.3s; /* Smooth transition for margin */
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Full width content when menu closed (optional) */
+.fullWidth {
+  width: 100%;
+}
+
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .menu {
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    padding: 8px 12px;
+    border-top: 2px solid #ccc;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.4s ease, opacity 0.3s ease;
+    z-index: 20;
+  }
+
+  .menuVisible {
+    max-height: 500px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .menuHidden {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+
+  .menuItem {
+    margin: 0;
+    padding: 6px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .menuItem:last-child {
+    border-bottom: none;
+    /* remove last separator */
+  }
+
+  .menuItem a {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: #333;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+  }
+
+  .menuItem a:hover {
+    background-color: #f0f4ff;
+    color: #000;
+  }
+
+  .menuItem a.active {
+    background-color: #007bff;
+    color: #fff;
+  }
 }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, TextField, InputAdornment } from "@mui/material";
-import { CiLocationArrow1 } from "react-icons/ci";
+import { Button, TextField, InputAdornment, CircularProgress, IconButton } from "@mui/material";
+import { CiLocationArrow1, CiSearch } from "react-icons/ci"; // 🔘 Location Icon
 import { useNavigate, useLocation } from "react-router-dom";
-import SearchSkeleton from "./SearchSkeleton";
 import "./Search.css";
 
 const SearchForm = () => {
@@ -11,6 +10,8 @@ const SearchForm = () => {
   const currentDate = new Date().toISOString().split("T")[0];
 
   const [loading, setLoading] = useState(true);
+  const [fetchingLocation, setFetchingLocation] = useState(false); // Optional loader state for location fetch
+
   const [searchData, setSearchData] = useState({
     search: "",
     checkInDate: currentDate,
@@ -23,53 +24,14 @@ const SearchForm = () => {
     longitude: "",
   });
 
-  // Fetch current location on mount and reverse geocode
+  // ⛔ Removed automatic location fetch on mount
   useEffect(() => {
-    if (!navigator.geolocation) {
-      console.error("Geolocation is not supported by this browser.");
-      setLoading(false);
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        const { latitude, longitude } = position.coords;
-
-        try {
-          const res = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-          );
-          const data = await res.json();
-
-          const residentialName = data.address?.residential || "";
-
-          setSearchData((prev) => ({
-            ...prev,
-            // latitude,
-            // longitude,
-            search: residentialName,
-          }));
-        } catch (error) {
-          console.error("Reverse geocoding failed:", error);
-        } finally {
-          setLoading(false);
-        }
-      },
-      (error) => {
-        console.error("Error getting location: ", error);
-        setLoading(false);
-      }
-    );
+    setLoading(false); // Only used to simulate loading effect
   }, []);
 
   if (location.pathname !== "/") {
     return null;
   }
-
-  if (loading) {
-    return <SearchSkeleton />;
-  }
-
   const handleInputChange = (e) => {
     const { name, type, checked, value } = e.target;
     const inputValue = type === "checkbox" ? (checked ? "Accepted" : "") : value;
@@ -85,6 +47,7 @@ const SearchForm = () => {
 
     const queryString = Object.entries({
       ...searchData,
+      guests: finalGuests,
       latitude: searchData.latitude || "",
       longitude: searchData.longitude || "",
     })
@@ -104,12 +67,15 @@ const SearchForm = () => {
     }
   };
 
-  // On clicking location icon, get fresh location & reverse geocode
+  // 📍 Manually fetch location and reverse geocode when icon is clicked
   const getLocation = () => {
     if (!navigator.geolocation) {
       console.error("Geolocation is not supported by this browser.");
       return;
     }
+
+    setFetchingLocation(true);
+
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
@@ -128,14 +94,15 @@ const SearchForm = () => {
             longitude,
             search: residentialName,
           }));
-
-          // navigate(`/search?latitude=${latitude}&longitude=${longitude}`);
         } catch (error) {
           console.error("Reverse geocoding failed:", error);
+        } finally {
+          setFetchingLocation(false);
         }
       },
       (error) => {
         console.error("Error getting location: ", error);
+        setFetchingLocation(false);
       }
     );
   };
@@ -188,10 +155,15 @@ const SearchForm = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <CiLocationArrow1
-                  onClick={getLocation}
-                  style={{ cursor: "pointer", fontSize: "20px" }}
-                />
+                {fetchingLocation ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <CiLocationArrow1
+                    onClick={getLocation}
+                    style={{ cursor: "pointer", fontSize: "20px", color: "blue" }}
+                    title="Use current location"
+                  />
+                )}
               </InputAdornment>
             ),
           }}
@@ -199,14 +171,16 @@ const SearchForm = () => {
           onKeyPress={handleKeyPress}
         />
       </div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSearch}
-        className="search-btn"
-      >
-        Search
-      </Button>
+   <IconButton
+  onClick={handleSearch}
+  style={{
+    backgroundColor: 'transparent',
+    padding: 4,
+  }}
+>
+  <CiSearch size={28} color="#007bff" />
+</IconButton>
+
     </div>
   );
 };

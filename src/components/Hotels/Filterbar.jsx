@@ -273,7 +273,7 @@ const Filterbar = ({ onFilterChange }) => {
                                             value={type}
                                             onChange={handleRoomTypeChange}
                                             checked={selectedRoomType === type}
-                                           sx={{
+                                            sx={{
                                                 p: 0.5, // Checkbox padding
                                                 mr: 1,
                                                 '& .MuiSvgIcon-root': { fontSize: 18 }, // Checkbox icon size

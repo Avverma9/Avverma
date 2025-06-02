@@ -1,86 +1,90 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import styles from './profile.module.css';
-import Profile from './Profile'; // Import the Profile component
+import Profile from './Profile';
 import { HiOutlineMenuAlt2 } from 'react-icons/hi';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { PiTicketThin } from 'react-icons/pi';
 import { CgProfile } from 'react-icons/cg';
-import { FaInfo } from 'react-icons/fa6';
 import { MdOutlineRateReview } from 'react-icons/md';
 import { ConfirmBooking } from '../Bookings/Bookings';
 import Reviews from './Review';
 import UpdatePage from './UpdatePage';
 import Complaint from './complaint/form';
 import { Info } from '@mui/icons-material';
+
 const Settings = () => {
-    const [isSidebarOpen, setSidebarOpen] = useState(true);
-    const location = useLocation();
+  const [isMenuOpen, setMenuOpen] = useState(true);
+  const location = useLocation();
 
-    // Handle sidebar closing on mobile when navigating
-    useEffect(() => {
-        if (window.innerWidth <= 768) {
-            setSidebarOpen(false);
-        }
-    }, [location]);
-
-    const toggleSidebar = () => {
-        setSidebarOpen(!isSidebarOpen);
-    };
-
-    const paths = ['/bookings', '/reviews', '/complaints', '/profile', '/profile-update/user-data/page'];
-
-    if (!paths.includes(location.pathname)) {
-        return null; // Render nothing if the current path is not in the specified paths
+  useEffect(() => {
+    if (window.innerWidth <= 768) {
+      setMenuOpen(false);
     }
+  }, [location]);
 
-    return (
-        <div className={styles.container}>
-            <aside className={`${styles.sidebar} ${!isSidebarOpen ? styles.hidden : ''}`}>
-                <button className={styles.toggleButton} onClick={toggleSidebar}>
-                    {isSidebarOpen ? <AiOutlineCloseCircle /> : <HiOutlineMenuAlt2 />}
-                </button>
-                <nav className={styles.nav}>
-                <ul className={styles.menu}>
-    <li className={styles.menuItem}>
-        <a href="/profile" onClick={() => setSidebarOpen(false)}>
-            <CgProfile style={{ height: '22px', marginRight: '10px' }} />
-            Profile
-        </a>
-    </li>
-    <li className={styles.menuItem}>
-        <a href="/bookings" onClick={() => setSidebarOpen(false)}>
-            <PiTicketThin style={{ height: '22px', marginRight: '10px' }} />
-            Bookings
-        </a>
-    </li>
-    <li className={styles.menuItem}>
-        <a href="/complaints" onClick={() => setSidebarOpen(false)}>
-            <Info style={{ height: '22px', marginRight: '10px' }} />
-            Complaint
-        </a>
-    </li>
-    <li className={styles.menuItem}>
-        <a href="/reviews" onClick={() => setSidebarOpen(false)}>
-            <MdOutlineRateReview style={{ height: '22px', marginRight: '10px' }} />
-            Reviews
-        </a>
-    </li>
-</ul>
+  const toggleMenu = () => {
+    setMenuOpen(prev => !prev);
+  };
 
-                </nav>
-            </aside>
-            <main className={`${styles.content} ${!isSidebarOpen ? styles.fullWidth : ''}`}>
-                <Routes>
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/bookings" element={<ConfirmBooking />} />
-                    <Route path="/complaints" element={<Complaint />} />
-                    <Route path="/reviews" element={<Reviews />} />
-                    <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
-                </Routes>
-            </main>
-        </div>
-    );
+  const paths = [
+    '/bookings',
+    '/reviews',
+    '/complaints',
+    '/profile',
+    '/profile-update/user-data/page',
+  ];
+  if (!paths.includes(location.pathname)) return null;
+
+  return (
+    <div className={styles.container}>
+      <header className={styles.topbar}>
+        <nav className={styles.nav}>
+          <ul className={`${styles.menu} ${isMenuOpen ? styles.menuVisible : styles.menuHidden}`}>
+            <li className={styles.menuItem}>
+              <a href="/profile" onClick={() => setMenuOpen(false)}>
+                <CgProfile style={{ marginRight: '6px' }} /> Profile
+              </a>
+            </li>
+            <li className={styles.menuItem}>
+              <a href="/bookings" onClick={() => setMenuOpen(false)}>
+                <PiTicketThin style={{ marginRight: '6px' }} /> Hotel Bookings
+              </a>
+            </li>
+             <li className={styles.menuItem}>
+              <a href="/tour-bookings" onClick={() => setMenuOpen(false)}>
+                <PiTicketThin style={{ marginRight: '6px' }} /> Tour Bookings
+              </a>
+            </li>
+            <li className={styles.menuItem}>
+              <a href="/complaints" onClick={() => setMenuOpen(false)}>
+                <Info style={{ marginRight: '6px' }} /> Complaint
+              </a>
+            </li>
+            <li className={styles.menuItem}>
+              <a href="/reviews" onClick={() => setMenuOpen(false)}>
+                <MdOutlineRateReview style={{ marginRight: '6px' }} /> Reviews
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <button className={styles.toggleButton} onClick={toggleMenu} aria-label="Toggle menu">
+          {isMenuOpen ? <AiOutlineCloseCircle size={24} /> : <HiOutlineMenuAlt2 size={24} />}
+        </button>
+      </header>
+
+      <main className={`${styles.content} ${!isMenuOpen ? styles.fullWidth : ''}`}>
+        <Routes>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/bookings" element={<ConfirmBooking />} />
+           <Route path="/tour-bookings" element={<ConfirmBooking />} />
+          <Route path="/complaints" element={<Complaint />} />
+          <Route path="/reviews" element={<Reviews />} />
+          <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
+        </Routes>
+      </main>
+    </div>
+  );
 };
 
 export default Settings;
