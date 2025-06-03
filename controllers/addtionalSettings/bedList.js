@@ -20,6 +20,26 @@ exports.addBed = async (req, res) => {
   }
 };
 
+exports.addBedBulk = async (req, res) => {
+  try {
+    const bedNames = req.body;
+
+    if (!Array.isArray(bedNames) || bedNames.length === 0) {
+      return res.status(400).json({ message: "Please provide an array of bed names" });
+    }
+
+    const bedsToInsert = bedNames.map((name) => ({ name }));
+    const insertedBeds = await BedList.insertMany(bedsToInsert);
+
+    return res.status(201).json({
+      message: "Bulk beds added successfully",
+      beds: insertedBeds,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+};
+
 exports.getBed = async (req, res) => {
   try {
     const bed = await BedList.find();
@@ -31,7 +51,7 @@ exports.getBed = async (req, res) => {
       };
     });
 
-    return res.status(200).json({ bed: capitalizedBed });
+    return res.status(200).json(capitalizedBed);
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }

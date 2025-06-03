@@ -4,18 +4,15 @@ exports.addTravelAmenities = async (req, res) => {
   try {
     const { name } = req.body;
 
-    // Check if name is an array and not empty
     if (!Array.isArray(name) || name.length === 0) {
       return res.status(400).json({ message: "Name must be a non-empty array of strings" });
     }
 
-    // Check if all elements are non-empty strings
     const invalidNames = name.filter(n => typeof n !== 'string' || n.trim() === '');
     if (invalidNames.length > 0) {
       return res.status(400).json({ message: "All names must be non-empty strings" });
     }
 
-    // Create and save multiple amenities
     const amenities = await TravelAmenities.insertMany(
       name.map(n => ({ name: n }))
     );
