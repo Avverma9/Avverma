@@ -14,9 +14,11 @@ const dashboardUser = new mongoose.Schema(
         role: {
             type: String,
             required: true,
-            enum: ['Admin', 'PMS', 'Developer', 'TMS', 'CA',"Rider"], //TMS - Travel Management , CA - Company Agent, PMS - Partner management system
+            enum: ['Admin', 'PMS', 'Developer', 'TMS', 'CA', "Rider"], //TMS - Travel Management , CA - Company Agent, PMS - Partner management system
         },
-        menuItems: [String],
+        menuItems: [{
+            name: String, path: String
+        }],
         address: String,
         isOnline: { type: Boolean, default: false }, // Track online status
         lastSeen: {
