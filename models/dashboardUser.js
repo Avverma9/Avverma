@@ -17,7 +17,8 @@ const dashboardUser = new mongoose.Schema(
             enum: ['Admin', 'PMS', 'Developer', 'TMS', 'CA', "Rider"], //TMS - Travel Management , CA - Company Agent, PMS - Partner management system
         },
         menuItems: [{
-            name: String, path: String
+            name:String,
+            path: String,
         }],
         address: String,
         isOnline: { type: Boolean, default: false }, // Track online status

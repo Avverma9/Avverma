@@ -265,28 +265,41 @@ const updatePartner = async function (req, res) {
 
 const addMenu = async (req, res) => {
     const { id } = req.params;
-    const { menuItems } = req.body; // Expecting an array of menu items
+    const { menuItems } = req.body; // Expecting array of { name, path }
 
     try {
-        // Ensure menuItems is an array and flatten it to handle duplicates
-        const itemsToAdd = Array.isArray(menuItems) ? menuItems : [menuItems];
-
-        // Use $addToSet to avoid duplicates
-        const user = await Dashboard.findByIdAndUpdate(
-            id,
-            { $addToSet: { menuItems: { $each: itemsToAdd } } }, // Add multiple items
-            { new: true }
-        );
-
+        const user = await Dashboard.findById(id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json(user);
+        // Create a Set of existing "name:path" combos
+        const existingSet = new Set(
+            user.menuItems.map(item => `${item.name}:${item.path}`)
+        );
+
+        // Filter incoming items to only keep ones that aren't already in the DB
+        const uniqueItems = menuItems.filter(
+            item => !existingSet.has(`${item.name}:${item.path}`)
+        );
+
+        if (uniqueItems.length === 0) {
+            return res.status(200).json({ message: 'No new unique menu items to add' });
+        }
+
+        // Add the filtered unique items
+        const updatedUser = await Dashboard.findByIdAndUpdate(
+            id,
+            { $push: { menuItems: { $each: uniqueItems } } },
+            { new: true }
+        );
+
+        res.json(updatedUser);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const deleteMenu = async (req, res) => {
     const { id } = req.params;
