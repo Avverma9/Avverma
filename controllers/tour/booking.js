@@ -26,7 +26,8 @@ exports.getBookings = async (req, res) => {
         });
     }
 };
-exports.getBookingById = async (req, res) => {
+
+exports.getBookingsByBookingId = async (req, res) => {
     const { bookingId } = req.params;
     try {
         const booking = await TourBooking.find({ bookingId: bookingId });
@@ -41,6 +42,17 @@ exports.getBookingById = async (req, res) => {
             message: 'Something went wrong while fetching the booking',
             error: error.message,
         });
+    }
+}
+
+exports.getBookingByUser = async (req, res) => {
+    try {
+        const { userId } = req.body
+        const findBooking = await TourBooking.find({ userId: userId })
+        return res.status(200).json(findBooking)
+    } catch (error) {
+        console.error(error
+        )
     }
 }
 
