@@ -302,34 +302,30 @@ const addMenu = async (req, res) => {
 
 
 const deleteMenu = async (req, res) => {
-    const { id } = req.params;
-    const { menuItems } = req.body;
+    const { id } = req.params;        // User ID
+    const { menuId } = req.body;      // ID of the menu item to remove
 
     try {
         // Find the user by ID
         const user = await Dashboard.findById(id);
-
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Check if the menuItem exists in the menuItems array
-        const itemIndex = user.menuItems.indexOf(menuItems);
-        if (itemIndex === -1) {
-            return res.status(400).json({ message: 'Menu item not found' });
-        }
+        // Filter out the menu item with the matching _id
+        user.menuItems = user.menuItems.filter(
+            (item) => item._id.toString() !== menuId
+        );
 
-        // Remove the menu item from the array
-        user.menuItems.splice(itemIndex, 1);
-
-        // Save the updated user document
+        // Save the updated user
         await user.save();
 
-        res.json(user);
+        res.status(200).json({ message: 'Menu item removed', user });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 module.exports = {
     registerUser,
