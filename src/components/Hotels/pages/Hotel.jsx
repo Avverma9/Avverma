@@ -20,6 +20,10 @@ import { userId } from '../../../utils/Unauthorized';
 import NotFoundPage from '../../../utils/Not-found';
 import HotelMobileCard from './HotelMobileCard';
 
+// Redux imports for GST
+import { useSelector, useDispatch } from 'react-redux';
+import { getGst } from '../../../redux/reducers/gstSlice';
+
 const Hotel = () => {
     const [hotelData, setHotelData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -36,6 +40,9 @@ const Hotel = () => {
         amenities: [],
     });
 
+    const dispatch = useDispatch();
+    const gstData = useSelector((state) => state.gst.gst);
+
     const fetchData = async () => {
         showLoader();
         setLoading(true);
@@ -45,12 +52,26 @@ const Hotel = () => {
             const data = await response.json();
             setHotelData(data.data);
             setTotalPages(data.totalPages);
+
+            // After fetching hotels, dispatch GST based on max room price
+            if (data.data && data.data.length > 0) {
+                const allRoomPrices = data.data.flatMap(hotel =>
+                    hotel.rooms?.map(room => room.price) || []
+                );
+                const maxRoomPrice = Math.max(...allRoomPrices);
+                if (maxRoomPrice) {
+                    const payload = {
+                        type: 'Hotel',
+                        gstThreshold: maxRoomPrice,
+                    };
+                    dispatch(getGst(payload));
+                }
+            }
         } catch (error) {
             console.error('Error fetching hotel data:', error);
         } finally {
             setLoading(false);
             hideLoader();
-
         }
     };
 
@@ -76,6 +97,18 @@ const Hotel = () => {
         navigate(`/search/hotels?${newQueryString}`);
     };
 
+    // GST Calculation helper
+    const calculateGstAmount = (price) => {
+        if (
+            gstData &&
+            price >= gstData.gstMinThreshold &&
+            price <= gstData.gstMaxThreshold
+        ) {
+            return (price * gstData.gstPrice) / 100;
+        }
+        return 0;
+    };
+
     return (
         <>
             <div className="filtesidebar-container">
@@ -92,16 +125,18 @@ const Hotel = () => {
                             {hotelData.map((hotel, index) => {
                                 let minPriceRoom = null;
                                 let minPrice = 'N/A';
+                                let gstAmount = 0;
 
                                 if (hotel.rooms && hotel.rooms.length > 0) {
                                     minPriceRoom = hotel.rooms.reduce((minRoom, currentRoom) => {
-                                        const minPrice = parseFloat(minRoom.price) || Infinity;
-                                        const currentPrice = parseFloat(currentRoom.price) || Infinity;
-                                        return currentPrice < minPrice ? currentRoom : minRoom;
+                                        const minPriceVal = parseFloat(minRoom.price) || Infinity;
+                                        const currentPriceVal = parseFloat(currentRoom.price) || Infinity;
+                                        return currentPriceVal < minPriceVal ? currentRoom : minRoom;
                                     }, hotel.rooms[0]);
 
                                     if (minPriceRoom) {
                                         minPrice = minPriceRoom.price;
+                                        gstAmount = calculateGstAmount(minPrice);
                                     }
                                 }
 
@@ -190,9 +225,10 @@ const Hotel = () => {
                                                             </li>
                                                         </ul>
                                                         <h4>
-                                                            ₹{minPrice} <small className="text-muted">/night</small>
+                                                            ₹{(parseFloat(minPrice) + gstAmount).toFixed(0)}{' '}
+                                                            <small className="text-muted">/night</small>
                                                         </h4>
-                                                        <p className="text-muted">Lowest room price(Ex. GST)</p>
+                                                        <p className="text-muted">Lowest room price (Incl. GST ₹{gstAmount.toFixed(0)})</p>
                                                         <button
                                                             className="btn btn-block text-white"
                                                             style={{ backgroundColor: '#f66b58' }}

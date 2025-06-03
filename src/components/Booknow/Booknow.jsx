@@ -33,6 +33,7 @@ import alert from "../../utils/custom_alert/custom_alert";
 import { StarHalfSharp } from "@mui/icons-material";
 import HotelPolicyCard from "./policy-card";
 import BookNowSkeleton from "./BookNowSkeleton";
+import { getGst } from "../../redux/reducers/gstSlice";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -58,7 +59,6 @@ const BookNow = () => {
   const [checkOutDate, setCheckOutDate] = useState(tomorrow);
   const roomsRef = useRef(null);
   const foodsRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -66,7 +66,7 @@ const BookNow = () => {
   const { monthlyData } = useSelector((state) => state.booking);
   const showLowestPrice = localStorage.getItem("lowestPrice");
   const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
-
+  const gstData = useSelector((state) => state.gst.gst);
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
     setIsOpen(true);
@@ -128,6 +128,19 @@ const BookNow = () => {
   };
 
   const discountPrice = Number(sessionStorage.getItem("discountPrice") || 0);
+
+  useEffect(() => {
+    const payload = {
+      type: 'Hotel',
+      gstThreshold: showLowestPrice,
+    };
+    dispatch(getGst(payload));
+  }, [])
+  const lowestPrice = parseInt(showLowestPrice)
+  const gstPercent = gstData?.gstPrice || 0;
+  const gstAmount = lowestPrice * gstPercent / 100;
+  const finalPrice = Math.round(lowestPrice + gstAmount);
+
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
@@ -535,7 +548,7 @@ const BookNow = () => {
                 </>
               ) : (
                 <p>
-                  <strong>₹{showLowestPrice}</strong>{" "}
+                  <strong>₹{finalPrice}</strong>{" "}
                   <span
                     style={{
                       color: "red",
@@ -543,7 +556,7 @@ const BookNow = () => {
                       marginRight: "5px",
                     }}
                   >
-                    Starting price{" "}
+                    Starting price with ₹{gstAmount.toFixed(0)} GST included
                   </span>
                 </p>
               )}
