@@ -47,7 +47,7 @@ exports.getBookingsByBookingId = async (req, res) => {
 
 exports.getBookingByUser = async (req, res) => {
     try {
-        const { userId } = req.body
+        const { userId } = req.query
         const findBooking = await TourBooking.find({ userId: userId })
         return res.status(200).json(findBooking)
     } catch (error) {
