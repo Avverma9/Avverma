@@ -95,46 +95,55 @@ const TravelBooking = () => {
 
   const item = travelById;
 
-const handleBooking = async () => {
-  const data = {
-    userId: userId,
-    travelId: item._id,
-    travelAgencyName: item.travelAgencyName,
-    price: item.price,
-    visitngPlaces: item.visitngPlaces,
-    nights: item.nights,
-    days: item.days,
-    images: item.images,
-    amenities: item.amenities,
-    from: dateRange.startDate,
-    to: dateRange.endDate,
-    themes: item.themes,
-    state: item.state,
-    country: item.country,
-    city: item.city,
-    inclusion: item.inclusion,
-    exclusion: item.exclusion,
-    termsAndCondition: item.termsAndConditions,
-    dayWise: item.dayWise.map(({ day, description }) => ({
-      day,
-      description,
-    })),
+  const handleBooking = async () => {
+    const data = {
+      userId: userId,
+      travelId: item._id,
+      travelAgencyName: item.travelAgencyName,
+      price: item.price,
+      visitngPlaces: item.visitngPlaces,
+      nights: item.nights,
+      days: item.days,
+      images: item.images,
+      amenities: item.amenities,
+      from: dateRange.startDate,
+      to: dateRange.endDate,
+      themes: item.themes,
+      state: item.state,
+      country: item.country,
+      city: item.city,
+      inclusion: item.inclusion,
+      exclusion: item.exclusion,
+      termsAndCondition: item.termsAndConditions,
+      dayWise: item.dayWise.map(({ day, description }) => ({
+        day,
+        description,
+      })),
+    };
+
+    if (!userId) {
+      alert('Please login to book this travel package.');
+      return;
+    }
+
+    try {
+      const res = await dispatch(bookNow(data)).unwrap();
+      const bookingId = res?.bookingId || res?.data?._id || 'N/A';
+
+      popup(`✅ Booking Confirmed!
+
+📍 City: ${data.city}
+📅 From: ${formatDate(data.from)}
+📅 To: ${formatDate(data.to)}
+🆔 Booking ID: ${bookingId}`);
+      setTimeout(() => {
+        window.location.href = "/tour-bookings";
+      }, 3000);
+    } catch (err) {
+      popup(`❌ Booking failed.\n\nReason: ${err}`);
+    }
   };
 
-  if (!userId) {
-    alert('Please login to book this travel package.');
-    return;
-  }
-
-  try {
-    const res = await dispatch(bookNow(data)).unwrap(); // ← This gives you access to the returned response directly
-    const bookingId = res?.bookingId || res?.data?._id || 'N/A';
-
-    popup(`✅ Booking is done!\n\n🆔 Booking ID: ${bookingId}`);
-  } catch (err) {
-    popup(`❌ Booking failed.\n\nReason: ${err}`);
-  }
-};
   return (
     <Box sx={{ padding: 1, maxWidth: 'calc(100vw - 20px)', margin: '0 auto', fontFamily: 'Arial' }}>
       <Typography variant="h4" fontWeight="bold">

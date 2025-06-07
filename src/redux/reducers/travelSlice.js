@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import baseURL from '../../utils/baseURL';
 import alert from '../../utils/custom_alert/custom_alert';
-import { token } from '../../utils/Unauthorized';
+import { token, userId } from '../../utils/Unauthorized';
 
 export const createTravel = createAsyncThunk('travel/createTravel', async (formDataToSend, { rejectWithValue }) => {
     try {
@@ -113,10 +113,30 @@ export const bookNow = createAsyncThunk('travel/bookNow', async (data, { rejectW
     }
 });
 
+export const getBookings = createAsyncThunk('travel/getBookings', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(
+            `${baseURL}/tour-booking/get-users-booking`,
+            {
+                params: {
+                    userId: userId,  // 👈 This sends userId as a query parameter
+                },
+                headers: {
+                    Authorization: token,
+                },
+            }
+        );
+        return response?.data;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
 const travelSlice = createSlice({
     name: 'travel',
     initialState: {
         data: [],
+        bookings: [],
         travelById: null,
         loading: false,
         error: null,
@@ -154,7 +174,11 @@ const travelSlice = createSlice({
             .addCase(getTravelByThemes.fulfilled, (state, action) => {
                 state.data = action.payload;
                 state.loading = false;
-            });
+            })
+            .addCase(getBookings.fulfilled, (state, action) => {
+                state.bookings = action.payload;
+                state.loading = false;
+            })
     },
 });
 
