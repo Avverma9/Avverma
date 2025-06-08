@@ -4,7 +4,7 @@ exports.addMenu = async (req, res) => {
     try {
         const { title, path, role } = req.body
         await MenuItem.create({ title, path, role });
-        res.status(201).json({ message: 'Menu item added successfully', menuItem });
+        res.status(201).json({ message: 'Menu item added successfully' });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
