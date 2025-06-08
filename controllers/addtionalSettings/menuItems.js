@@ -2,8 +2,8 @@ const MenuItem = require("../../models/additionalSettings/menuItem");
 
 exports.addMenu = async (req, res) => {
     try {
-        const menuItem = new MenuItem(req.body);
-        await menuItem.save();
+        const { title, path, role } = req.body
+        await MenuItem.create({ title, path, role });
         res.status(201).json({ message: 'Menu item added successfully', menuItem });
     } catch (error) {
         res.status(400).json({ error: error.message });
