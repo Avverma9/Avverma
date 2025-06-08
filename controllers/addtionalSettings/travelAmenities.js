@@ -29,15 +29,7 @@ exports.addTravelAmenities = async (req, res) => {
 exports.getTravelAmenities = async (req, res) => {
   try {
     const travelAmenities = await TravelAmenities.find();
-
-    const capitalizedAmenities = travelAmenities.map((amenity) => {
-      return {
-        ...amenity.toObject(),
-        name: amenity.name.charAt(0).toUpperCase() + amenity.name.slice(1),
-      };
-    });
-    const amenitiesList = capitalizedAmenities.map(amenity => amenity.name);
-    return res.status(200).json(amenitiesList);
+    return res.status(200).json(travelAmenities);
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }
