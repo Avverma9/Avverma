@@ -1,6 +1,6 @@
 const express = require('express');
 const { addTravelAmenities, getTravelAmenities } = require('../../controllers/addtionalSettings/travelAmenities');
-const { addMenuBulk, getAllMenuItems } = require('../../controllers/addtionalSettings/menuItems');
+const { addMenuBulk, getAllMenuItems, addMenu, deleteMenuById } = require('../../controllers/addtionalSettings/menuItems');
 const { addBed, addBedBulk, getBed } = require('../../controllers/addtionalSettings/bedList');
 const { addRoom, getRooms, addRoomBulk } = require('../../controllers/addtionalSettings/roomList');
 const { addAmenities, addBulkAmenities, getAmenities, deleteAmenityById } = require('../../controllers/addtionalSettings/hotelAmenities');
@@ -12,6 +12,8 @@ router.post("/add/travel-amenities", addTravelAmenities)
 router.get("/get/travel-amenities", getTravelAmenities)
 //=====================================MenuItems==============================
 router.post('/bulk-add-menuItems', addMenuBulk)
+router.post('/add-single/menu',addMenu)
+router.delete("/delete-menu-item/:id",deleteMenuById)
 router.get("/get-menu-items", getAllMenuItems)
 //========================================Bed list=============================
 router.post("/add-bed", addBed)

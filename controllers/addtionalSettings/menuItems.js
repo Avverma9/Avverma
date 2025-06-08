@@ -19,7 +19,7 @@ exports.addMenuBulk = async (req, res) => {
         }
 
         const insertedItems = await MenuItem.insertMany(data);
-        res.status(201).json( insertedItems);
+        res.status(201).json(insertedItems);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -33,3 +33,12 @@ exports.getAllMenuItems = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+exports.deleteMenuById = async (req, res) => {
+    try {
+        const { id } = req.params
+        await MenuItem.findByIdAndDelete(id)
+        res.status(200).json({ message: "Deleted Successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
