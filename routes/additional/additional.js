@@ -1,8 +1,8 @@
 const express = require('express');
-const { addTravelAmenities, getTravelAmenities } = require('../../controllers/addtionalSettings/travelAmenities');
+const { addTravelAmenities, getTravelAmenities,deleteTravelAmenityById } = require('../../controllers/addtionalSettings/travelAmenities');
 const { addMenuBulk, getAllMenuItems, addMenu, deleteMenuById } = require('../../controllers/addtionalSettings/menuItems');
-const { addBed, addBedBulk, getBed } = require('../../controllers/addtionalSettings/bedList');
-const { addRoom, getRooms, addRoomBulk } = require('../../controllers/addtionalSettings/roomList');
+const { addBed, addBedBulk, getBed, deleteBedById } = require('../../controllers/addtionalSettings/bedList');
+const { addRoom, getRooms, addRoomBulk, deleteRoomById } = require('../../controllers/addtionalSettings/roomList');
 const { addAmenities, addBulkAmenities, getAmenities, deleteAmenityById } = require('../../controllers/addtionalSettings/hotelAmenities');
 const { addRole, getRole, deleteRoleById } = require('../../controllers/addtionalSettings/role');
 const router = express.Router();
@@ -10,6 +10,7 @@ const router = express.Router();
 //==================================amenities=============================
 router.post("/add/travel-amenities", addTravelAmenities)
 router.get("/get/travel-amenities", getTravelAmenities)
+router.delete("/delete-travel/amenities/:id",deleteTravelAmenityById)
 //=====================================MenuItems==============================
 router.post('/bulk-add-menuItems', addMenuBulk)
 router.post('/add-single/menu',addMenu)
@@ -18,10 +19,12 @@ router.get("/get-menu-items", getAllMenuItems)
 //========================================Bed list=============================
 router.post("/add-bed", addBed)
 router.get("/get-bed", getBed)
+router.delete('/delete-bed/:id',deleteBedById)
 router.post("/add-bed-bulk", addBedBulk)
 //=====================================Room List ===========================
 router.post("/add-room", addRoom)
 router.get("/get-room", getRooms)
+router.delete('/delete-room/:id',deleteRoomById)
 router.post("/add-room-bulk", addRoomBulk)
 //==================================Hotel Amenities===============================
 router.post("/add-amenities", addAmenities)

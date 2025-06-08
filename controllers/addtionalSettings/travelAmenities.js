@@ -37,8 +37,14 @@ exports.getTravelAmenities = async (req, res) => {
       };
     });
     const amenitiesList = capitalizedAmenities.map(amenity => amenity.name);
-    return res.status(200).json(amenitiesList );
+    return res.status(200).json(amenitiesList);
   } catch (error) {
     return res.status(500).json({ message: "Server error", error });
   }
 };
+exports.deleteTravelAmenityById = async (req, res) => {
+  const { id } = req.body
+  await TravelAmenities.findByIdAndDelete(id)
+  return res.status(200).json({ message: "deleted" });
+
+}
