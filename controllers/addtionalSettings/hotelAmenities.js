@@ -56,3 +56,14 @@ exports.getAmenities = async (req, res) => {
     return res.status(500).json({ message: "Server error", error });
   }
 };
+
+exports.deleteAmenityById = async (req, res) => {
+  try {
+    const { id } = req.params
+    await Amenities.findByIdAndDelete(id)
+    return res.status(200).json({ message: "You have delete a amenity" })
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
+  }
+
+}

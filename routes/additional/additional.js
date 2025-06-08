@@ -3,7 +3,8 @@ const { addTravelAmenities, getTravelAmenities } = require('../../controllers/ad
 const { addMenuBulk, getAllMenuItems } = require('../../controllers/addtionalSettings/menuItems');
 const { addBed, addBedBulk, getBed } = require('../../controllers/addtionalSettings/bedList');
 const { addRoom, getRooms, addRoomBulk } = require('../../controllers/addtionalSettings/roomList');
-const { addAmenities, addBulkAmenities, getAmenities } = require('../../controllers/addtionalSettings/hotelAmenities');
+const { addAmenities, addBulkAmenities, getAmenities, deleteAmenityById } = require('../../controllers/addtionalSettings/hotelAmenities');
+const { addRole, getRole, deleteRoleById } = require('../../controllers/addtionalSettings/role');
 const router = express.Router();
 
 //==================================amenities=============================
@@ -24,6 +25,11 @@ router.post("/add-room-bulk", addRoomBulk)
 router.post("/add-amenities", addAmenities)
 router.get("/get-amenities", getAmenities)
 router.post("/add-amenities-bulk", addBulkAmenities)
+router.delete("/delete-amenity/:id",deleteAmenityById)
+//================================ role========================================
+router.post('/roles', addRole);
+router.get('/roles', getRole);
+router.delete('/roles/:id', deleteRoleById);
 module.exports = router
 
 
