@@ -4,8 +4,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import amenityIcons from '../../utils/extrasList';
 import { LiaRupeeSignSolid } from 'react-icons/lia';
-import { roomTypes, propertyTypes, bedTypes, starRatings } from '../../utils/extrasList';
+import {  propertyTypes, starRatings } from '../../utils/extrasList';
 import { useNavigate } from 'react-router-dom';
+import { useBedTypes } from '../../utils/additional-fields/bedTypes';
+import { useRoomTypes } from '../../utils/additional-fields/roomTypes';
 
 const Filterbar = ({ onFilterChange }) => {
     const [minPrice, setMinPrice] = useState('');
@@ -20,6 +22,8 @@ const Filterbar = ({ onFilterChange }) => {
     const [showMoreBedTypes, setShowMoreBedTypes] = useState(false);
     const [showMorePropertyTypes, setShowMorePropertyTypes] = useState(false);
     const [showMoreRatings, setShowMoreRatings] = useState(false);
+    const bedTypes = useBedTypes()
+    const roomTypes = useRoomTypes()
     const navigate = useNavigate();
     const amenityItems = Object.entries(amenityIcons).map(([name, icon]) => ({
         name,
@@ -265,14 +269,14 @@ const Filterbar = ({ onFilterChange }) => {
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Room Types</Typography>
                     <CardContent sx={{ padding: 1.5 }}>
                         <Stack spacing={0.5}>
-                            {roomTypes.slice(0, showMoreRoomTypes ? roomTypes.length : 5).map((type) => (
+                            {roomTypes.slice(0, showMoreRoomTypes ? roomTypes.length : 5).map((item,index) => (
                                 <FormControlLabel
-                                    key={type}
+                                    key={index}
                                     control={
                                         <Checkbox
-                                            value={type}
+                                            value={item.name}
                                             onChange={handleRoomTypeChange}
-                                            checked={selectedRoomType === type}
+                                            checked={selectedRoomType === item.name}
                                             sx={{
                                                 p: 0.5, // Checkbox padding
                                                 mr: 1,
@@ -282,7 +286,7 @@ const Filterbar = ({ onFilterChange }) => {
                                             }}
                                         />
                                     }
-                                    label={type}
+                                    label={item.name}
                                 />
                             ))}
                         </Stack>
@@ -303,14 +307,14 @@ const Filterbar = ({ onFilterChange }) => {
                     <Typography sx={{ ml: 2, mt: 2, fontWeight: 'bold', fontSize: '1.1rem' }}>Bed Types</Typography>
                     <CardContent sx={{ padding: 1.5 }}>
                         <Stack spacing={0.5}>
-                            {bedTypes.slice(0, showMoreBedTypes ? bedTypes.length : 5).map((type) => (
+                            {bedTypes.slice(0, showMoreBedTypes ? bedTypes.length : 5).map((item, index) => (
                                 <FormControlLabel
-                                    key={type}
+                                    key={index}
                                     control={
                                         <Checkbox
-                                            value={type}
+                                            value={item.name}
                                             onChange={handleBedTypeChange}
-                                            checked={selectedBedType === type}
+                                            checked={selectedBedType === item.name}
                                             sx={{
                                                 p: 0.5, // Checkbox padding
                                                 mr: 1,
@@ -320,7 +324,7 @@ const Filterbar = ({ onFilterChange }) => {
                                             }}
                                         />
                                     }
-                                    label={type}
+                                    label={item.name}
                                 />
                             ))}
                         </Stack>

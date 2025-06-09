@@ -21,8 +21,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import amenityIcons from '../../utils/extrasList';
-import { roomTypes, propertyTypes, bedTypes, starRatings } from '../../utils/extrasList';
+import { propertyTypes, starRatings } from '../../utils/extrasList';
 import { CiFilter } from 'react-icons/ci';
+import { useBedTypes } from '../../utils/additional-fields/bedTypes';
+import { useRoomTypes } from '../../utils/additional-fields/roomTypes';
 
 // Convert amenityIcons object to an array
 const amenityItems = Object.entries(amenityIcons).map(([name, icon]) => ({
@@ -71,7 +73,8 @@ const FilterSidebar = () => {
     const [showMorePropertyTypes, setShowMorePropertyTypes] = useState(false);
     const [showMoreBedTypes, setShowMoreBedTypes] = useState(false);
     const [showMoreStarRatings, setShowMoreStarRatings] = useState(false);
-
+    const bedTypes = useBedTypes()
+    const roomTypes = useRoomTypes()
     useEffect(() => {
         window.history.pushState({}, '', window.location.href);
     }, []);
@@ -82,17 +85,20 @@ const FilterSidebar = () => {
     };
 
     const filterByAll = () => {
+        const encode = (val) => encodeURIComponent(val).replace(/%20/g, '+');
+
         const filterQuery =
             `?minPrice=${minPrice}&maxPrice=${maxPrice}` +
-            `&amenities=${amenities.join(',')}` +
-            `&propertyType=${propertyType.join(',')}` +
-            `&roomType=${roomType.join(',')}` +
-            `&bedType=${bedType.join(',')}` +
-            `&starRating=${starRating.join(',')}`;
+            `&amenities=${amenities.map(encode).join(',')}` +
+            `&propertyType=${propertyType.map(encode).join(',')}` +
+            `&type=${roomType.map(encode).join(',')}` +
+            `&bedTypes=${bedType.map(encode).join(',')}` +
+            `&starRating=${starRating.map(encode).join(',')}`;
 
         navigate(`/search/hotels${filterQuery}`);
         toggleDrawer(); // Close the drawer after applying filters
     };
+
 
     const handleAmenityChange = (selectedAmenity) => {
         setAmenities((prev) =>
@@ -241,18 +247,20 @@ const FilterSidebar = () => {
                         Room Type:
                     </Typography>
                     <FormGroup>
-                        {Object.entries(roomTypes).map(([key, value]) => (
-                            <FormControlLabel
-                                key={key}
-                                control={
-                                    <Checkbox
-                                        checked={roomType.includes(key)} // Adjust to use keys
-                                        onChange={() => handleRoomTypeChange(key)} // Adjust to use keys
-                                    />
-                                }
-                                label={value}
-                            />
-                        ))}
+                        {roomTypes
+                            .slice(0, showMoreRoomTypes ? undefined : 7)
+                            .map((item, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    control={
+                                        <Checkbox
+                                            checked={roomType.includes(item.name)}
+                                            onChange={() => handleRoomTypeChange(item.name)}
+                                        />
+                                    }
+                                    label={item.name}
+                                />
+                            ))}
 
                         {roomTypes.length > 7 && (
                             <Button
@@ -264,6 +272,8 @@ const FilterSidebar = () => {
                             </Button>
                         )}
                     </FormGroup>
+
+
                     <Divider />
                     <Typography variant="subtitle1" gutterBottom>
                         Property Type:
@@ -297,19 +307,22 @@ const FilterSidebar = () => {
                         Bed Type:
                     </Typography>
                     <FormGroup>
-                        {bedTypes.slice(0, showMoreBedTypes ? undefined : 7).map((type) => (
-                            <FormControlLabel
-                                key={type}
-                                control={
-                                    <Checkbox
-                                        checked={bedType.includes(type)}
-                                        onChange={() => handleBedTypeChange(type)}
-                                        sx={{ '&.Mui-checked': { color: 'primary.main' } }}
-                                    />
-                                }
-                                label={type}
-                            />
-                        ))}
+                        {bedTypes
+                            .slice(0, showMoreBedTypes ? undefined : 7)
+                            .map((item, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    control={
+                                        <Checkbox
+                                            checked={bedType.includes(item.name)}
+                                            onChange={() => handleBedTypeChange(item.name)}
+                                            sx={{ '&.Mui-checked': { color: 'primary.main' } }}
+                                        />
+                                    }
+                                    label={item.name}
+                                />
+                            ))}
+
                         {bedTypes.length > 7 && (
                             <Button
                                 onClick={() => setShowMoreBedTypes((prev) => !prev)}
@@ -320,6 +333,7 @@ const FilterSidebar = () => {
                             </Button>
                         )}
                     </FormGroup>
+
                     <Divider />
                     <Typography variant="subtitle1" gutterBottom>
                         Star Rating:

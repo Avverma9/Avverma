@@ -193,7 +193,7 @@ import { FaElevator } from 'react-icons/fa6';
 import { GiDesk } from 'react-icons/gi';
 import { MdMicrowave } from 'react-icons/md';
 
-export const roomTypes = ['Single Room', 'Double Room', 'Suite', 'Deluxe Room', 'Executive Room', 'Family Room', 'Penthouse', 'Studio'];
+
 
 export const propertyTypes = [
     'Hotel',
@@ -208,38 +208,26 @@ export const propertyTypes = [
     'Chalet',
 ];
 
-export const bedTypes = [
-    'King Size Bed',
-    'Queen Size Bed',
-    'Double Bed',
-    'Single Bed',
-    'Twin Beds',
-    'Sofa Bed',
-    'Rollaway Bed',
-    'Bunk Beds',
-    'Extra Large Bed',
-];
-
 export const starRatings = ['1', '2', '3', '4', '5'];
 
 const amenityIcons = {
     'Continental Breakfast': <FaUtensils />,
     'Room Service': <FaPhone />,
     'Coffee Maker': <FaCoffee />,
-    Balcony: <FaDoorOpen />,
-    Jacuzzi: <FaHotTub />,
-    TV: <FaTv />,
+    'Balcony': <FaDoorOpen />,
+    'Jacuzzi': <FaHotTub />,
+    'TV': <FaTv />,
     'Free Wi-Fi': <FaWifi />,
-    Gym: <FaDumbbell />,
+    'Gym': <FaDumbbell />,
     '24-Hour Front Desk': <FaShuttleVan />,
     'Shuttle Service': <FaShuttleVan />,
-    Pool: <FaSwimmingPool />,
+    'Pool': <FaSwimmingPool />,
     'Fitness Center': <FaDumbbell />,
-    Spa: <FaSpa />,
-    Restaurant: <FaUtensils />,
+    'Spa': <FaSpa />,
+    'Restaurant': <FaUtensils />,
     'Conference Room': <FaChalkboardTeacher />,
     'Wi-Fi(Paid)': <FaWifi />,
-    Parking: <FaParking />,
+    'Parking': <FaParking />,
     'Pet Friendly': <FaDog />,
     'Laundry Service': <FaTshirt />,
     'Business Center': <FaBriefcase />,
@@ -255,15 +243,15 @@ const amenityIcons = {
     'Hair Dryer': <BiSolidDryer />,
     Safe: <FaLock />,
     'Mini Fridge': <LuRefrigerator />,
-    Microwave: <MdMicrowave />,
-    Desk: <GiDesk />,
+    'Microwave': <MdMicrowave />,
+    'Desk': <GiDesk />,
     'Wake-up Service': <FaClock />,
-    Heating: <FaThermometer />,
+    'Heating': <FaThermometer />,
     'Cable Channels': <FaTv />,
     'Non-Smoking Rooms': <FaSmokingBan />,
     'Soundproof Rooms': <FaVolumeMute />,
     'Family Rooms': <FaBed />,
-    Elevator: <FaElevator />,
+    'Elevator': <FaElevator />,
     'Wheelchair Accessible': <FaWheelchair />,
     'Airport Shuttle': <FaPlaneDeparture />,
     'Concierge Service': <FaUserFriends />,
@@ -275,18 +263,18 @@ const amenityIcons = {
     'Tour Desk': <FaMapMarkedAlt />,
     'Ticket Service': <FaTicketAlt />,
     'Luggage Storage': <FaSuitcase />,
-    Library: <FaBookOpen />,
+    'Library': <FaBookOpen />,
     'Sun Terrace': <FaSun />,
-    Garden: <FaLeaf />,
+    'Garden': <FaLeaf />,
     'Picnic Area': <FaTree />,
     'Outdoor Furniture': <FaChair />,
-    Terrace: <FaCity />,
+    'Terrace': <FaCity />,
     'BBQ Facilities': <FaFireAlt />,
     'Vending Machine (Drinks)': <FaCocktail />,
     'Vending Machine (Snacks)': <FaCandyCane />,
     'Special Diet Menus (on request)': <FaAppleAlt />,
     'Packed Lunches': <FaHamburger />,
-    Bar: <FaCocktail />,
+    'Bar': <FaCocktail />,
     'Wine/Champagne': <FaWineGlass />,
     'Bottle of Water': <FaCocktail />,
     'Chocolate/Cookies': <FaCookieBite />,
@@ -295,7 +283,7 @@ const amenityIcons = {
     'Breakfast in the Room': <FaUtensils />,
     'Restaurant Buffet': <FaUtensils />,
     'Snack Bar': <FaUtensils />,
-    Fruit: <FaAppleAlt />,
+    'Fruit': <FaAppleAlt />,
     'Buffet Breakfast': <FaUtensils />,
     'Gluten-Free Options': <FaBan />,
     'Vegetarian Options': <FaCarrot />,
@@ -305,7 +293,7 @@ const amenityIcons = {
     'Allergy-Free Room': <FaAllergies />,
     'Designated Smoking Area': <FaSmoking />,
     'Non-Smoking Throughout': <FaSmokingBan />,
-    Kitchen: <FaUtensils />,
+    'Kitchen': <FaUtensils />,
 };
 export default amenityIcons;
 

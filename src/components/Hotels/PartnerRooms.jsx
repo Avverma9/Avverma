@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { postRooms, sendNotification } from '../../redux/reducers/partnerSlice'; // Adjust the import path as needed
-import { roomTypes, bedTypes as availableBedTypes } from '../../utils/extrasList';
 import alert from '../../utils/custom_alert/custom_alert';
+import { useBedTypes } from '../../utils/additional-fields/bedTypes';
+import { useRoomTypes } from '../../utils/additional-fields/roomTypes';
 
 export default function PartnerRooms() {
     const dispatch = useDispatch();
@@ -14,7 +15,8 @@ export default function PartnerRooms() {
     const [countRooms, setCountRooms] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const hotelId = localStorage.getItem('hotelId');
-
+    const availableBedTypes = useBedTypes()
+    const roomTypes = useRoomTypes()
     // Selector to get loading and error states from the store
     const { loading, error } = useSelector((state) => state.partner); // Adjusted to the correct slice
 
@@ -67,9 +69,9 @@ export default function PartnerRooms() {
                         <option value="" disabled>
                             Select Room Type
                         </option>
-                        {roomTypes?.map((roomType) => (
-                            <option key={roomType} value={roomType}>
-                                {roomType}
+                        {roomTypes?.map((item,index) => (
+                            <option key={index} value={item.name}>
+                                {item.name}
                             </option>
                         ))}
                     </select>
@@ -82,9 +84,9 @@ export default function PartnerRooms() {
                         <option value="" disabled>
                             Select Bed Type
                         </option>
-                        {availableBedTypes?.map((bedType) => (
-                            <option key={bedType} value={bedType}>
-                                {bedType}
+                        {availableBedTypes?.map((item,index) => (
+                            <option key={index} value={item}>
+                                {item.name}
                             </option>
                         ))}
                     </select>
