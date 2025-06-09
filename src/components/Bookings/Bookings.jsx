@@ -166,7 +166,6 @@ export const ConfirmBooking = () => {
     rawRoomTotal > finalTotal - foodTotal
       ? finalTotal - foodTotal
       : rawRoomTotal;
-
   return (
     <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px" }}>
       <div className={styles.bookingHeader}></div>
@@ -551,13 +550,22 @@ export const ConfirmBooking = () => {
                   <p>
                     ₹
                     {(() => {
-                      return modalData?.roomDetails?.reduce(
-                        (acc, room) => acc + (Number(room?.price) || 0),
-                        0
-                      );
+                      const checkIn = new Date(modalData?.checkInDate);
+                      const checkOut = new Date(modalData?.checkOutDate);
+
+                      const timeDiff = checkOut.getTime() - checkIn.getTime();
+                      const dayDiff = Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24))); // Ensure at least 1 day
+
+                      const total = modalData?.roomDetails?.reduce((acc, room) => {
+                        const pricePerDay = Number(room?.price) || 0;
+                        return acc + pricePerDay * dayDiff;
+                      }, 0);
+
+                      return total;
                     })()}
                   </p>
                 </div>
+
 
                 {/* Food Total */}
                 <div>
@@ -610,7 +618,7 @@ export const ConfirmBooking = () => {
                   <label className={styles.totalLabel}>Final Total</label>
                   <p className={styles.total}>
                     ₹
-                    {(() => {
+                    {/* {(() => {
                       const roomTotal = modalData?.roomDetails?.reduce(
                         (acc, room) => acc + (Number(room?.price) || 0),
                         0
@@ -624,7 +632,9 @@ export const ConfirmBooking = () => {
                       const discount = Number(modalData?.discountPrice) || 0;
 
                       return Math.round(roomTotal + foodTotal + gst - discount);
-                    })()}
+                    })()} */}
+
+                    {modalData?.price}
                   </p>
                 </div>
                 {modalData?.isPartialBooking && (
