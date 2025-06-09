@@ -33,6 +33,7 @@ const Settings = () => {
     '/complaints',
     '/profile',
     '/profile-update/user-data/page',
+    '/tour-bookings'
   ];
   if (!paths.includes(location.pathname)) return null;
 
