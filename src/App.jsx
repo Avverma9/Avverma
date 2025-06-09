@@ -60,7 +60,6 @@ function App() {
                         <Route path="/travellers/booking/:id" element={<TravelBooking />} />
                         <Route path="/partner" element={<PartnerForm />} />
                         <Route path="/travel-partner" element={<TravelForm />} />
-                        <Route path='/tour-bookings' element={<TourBooking />} />
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />

@@ -384,8 +384,12 @@ export const ConfirmBooking = () => {
             </div>
           </>
         ) : (
-          <NotFoundPage />
+          // This is the fallback when there are no bookings
+          <Typography variant="body1" align="center" sx={{ mt: 4 }}>
+            You have no current bookings.
+          </Typography>
         )}
+
 
         <Pagination
           count={totalPages}

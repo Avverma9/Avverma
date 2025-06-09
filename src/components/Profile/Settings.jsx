@@ -12,6 +12,7 @@ import Reviews from './Review';
 import UpdatePage from './UpdatePage';
 import Complaint from './complaint/form';
 import { Info } from '@mui/icons-material';
+import TourBooking from './tour-booking/tour-booking';
 
 const Settings = () => {
   const [isMenuOpen, setMenuOpen] = useState(true);
@@ -28,12 +29,12 @@ const Settings = () => {
   };
 
   const paths = [
+    '/tour-bookings',
     '/bookings',
     '/reviews',
     '/complaints',
     '/profile',
     '/profile-update/user-data/page',
-    '/tour-bookings'
   ];
   if (!paths.includes(location.pathname)) return null;
 
@@ -52,7 +53,7 @@ const Settings = () => {
                 <PiTicketThin style={{ marginRight: '6px' }} /> Hotel Bookings
               </a>
             </li>
-             <li className={styles.menuItem}>
+            <li className={styles.menuItem}>
               <a href="/tour-bookings" onClick={() => setMenuOpen(false)}>
                 <PiTicketThin style={{ marginRight: '6px' }} /> Tour Bookings
               </a>
@@ -76,9 +77,9 @@ const Settings = () => {
 
       <main className={`${styles.content} ${!isMenuOpen ? styles.fullWidth : ''}`}>
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />  
+           <Route path="/tour-bookings" element={<TourBooking />} />
           <Route path="/bookings" element={<ConfirmBooking />} />
-           <Route path="/tour-bookings" element={<ConfirmBooking />} />
           <Route path="/complaints" element={<Complaint />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
