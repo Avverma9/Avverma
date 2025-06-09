@@ -102,20 +102,33 @@ const BookingDetails = ({
     }
   }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
 
-const calculateTotalWithGST = () => {
-  const basePrice = calculateBasePrice();
-  const gstPercent = parseFloat(gstData?.gstPrice || 0);
-  const gstAmount = (gstPercent / 100) * basePrice;
+  const calculateTotalWithGST = () => {
+    const singleRoom = selectedRooms[0];
+    if (!singleRoom) return 0;
 
-  const totalWithGST = basePrice + gstAmount;
+    const roomPricePerNight = singleRoom.price || 0;
+    const gstPercent = parseFloat(gstData?.gstPrice || 0);
 
-  // Subtract discount if any
-  const discountedTotal = totalWithGST - (discountPrice || 0);
+    const daysDifference = Math.ceil(
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
+    );
 
-  // Ensure it doesn't go below zero
-  return Math.round(discountedTotal > 0 ? discountedTotal : 0);
-};
+    if (daysDifference < 1) return 0;
 
+    const baseRoomPrice = roomPricePerNight * daysDifference;
+
+    // GST is applied ONLY on one room per night × number of nights
+    const gstAmount = (roomPricePerNight * daysDifference * gstPercent) / 100;
+
+
+    const totalWithGST = baseRoomPrice + gstAmount;
+
+    const discountedTotal = totalWithGST - (discountPrice || 0);
+
+    return Math.round(discountedTotal > 0 ? discountedTotal : 0);
+  };
+
+  console.log("selected rom", selectedRooms)
 
   const calculateBasePrice = () => {
     let totalPrice = 0;
@@ -381,7 +394,7 @@ const calculateTotalWithGST = () => {
         gstPrice: gstData?.gstPrice,
         isPartialBooking: true,
         bookingStatus: "Pending",
-        partialAmount: (calculateTotalWithGST() * 0.5 ).toFixed(0), // 50% of total
+        partialAmount: (calculateTotalWithGST() * 0.5).toFixed(0), // 50% of total
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,

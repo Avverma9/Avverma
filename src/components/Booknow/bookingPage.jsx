@@ -346,10 +346,12 @@ const BookingPage = ({
                     </Typography>
                     <Typography variant="body2">
                         GST ({gstData?.gstPrice || 0}%): + ₹
-                        {gstData?.gstPrice
-                            ? ((parseFloat(gstData.gstPrice) / 100) * calculateBasePrice()).toFixed(2)
-                            : '0.00'}
+                        {(
+                            (calculateTotalWithGST() * (gstData?.gstPrice || 0)) /
+                            (100 + (gstData?.gstPrice || 0))
+                        ).toFixed(2)}
                     </Typography>
+
                     <Typography fontWeight="bold" fontSize={14}>
                         Total Payable Amount: ₹{calculateTotalWithGST()}
                     </Typography>
