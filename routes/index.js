@@ -27,6 +27,7 @@ const GSTRouter = require('./GST/gst');
 const travelBookings = require('./travel/booking');
 const userCoupon = require('./coupons/userCoupon')
 const partnerCoupon = require('./coupons/partnerCoupon');
+const chatApp = require('./chatApp/chatAppRoutes')
 
 const router = express.Router();
 
@@ -57,5 +58,6 @@ router.use('/travel', travelBookings);
 router.use('/user-coupon',userCoupon)
 router.use('/partner-coupon', partnerCoupon);
 router.use('/additional', additionalSettings);
+// router.use('/chatApp',chatApp)
 
 module.exports = router;

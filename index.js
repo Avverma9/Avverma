@@ -2,11 +2,11 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
-const webSocketHandler = require('./controllers/messenger/webSocket');
-const setupRoutes = require('./controllers/messenger/messenger');
+const webSocketHandler = require('./controllers/chatApp/webSocket');
 const routes = require('./routes/index');
 const connectDB = require('./config/db');
-const mailerRoutes = require('./nodemailer/routes')
+const mailerRoutes = require('./nodemailer/routes');
+const setupChatRoutes = require('./routes/chatApp/chatAppRoutes');
 // Create an Express application
 const app = express();
 const server = http.createServer(app);
@@ -33,7 +33,7 @@ webSocketHandler(io);
 
 // Set up routes
 app.use('/', routes);
-app.use('/', setupRoutes(io));
+app.use('/chatApp', setupChatRoutes(io));
 
 // Start the server
 const PORT = process.env.PORT || 5000;

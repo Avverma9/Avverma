@@ -17,7 +17,7 @@ const dashboardUser = new mongoose.Schema(
             enum: ['Admin', 'PMS', 'Developer', 'TMS', 'CA', "Rider"], //TMS - Travel Management , CA - Company Agent, PMS - Partner management system
         },
         menuItems: [{
-            title:String,
+            title: String,
             path: String,
         }],
         address: String,
@@ -31,6 +31,12 @@ const dashboardUser = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+      contacts: [
+  {
+    userId: String
+  }
+]
+
     },
     { timestamps: true }
 );
