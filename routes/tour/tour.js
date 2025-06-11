@@ -4,14 +4,14 @@ const { upload } = require('../../aws/upload');
 const { createBooking, getBookings, getBookingByUser, getBookingsByBookingId, getTotalSell, updateBooking, deleteBooking } = require('../../controllers/tour/booking');
 
 const router = express.Router();
-router.post('/create-travel', upload, createTravel);
-router.post('/get-requests',getRequests)
-router.get('/get-travel-list', getTravelList);
-router.get('/get-travel/:id', getTravelById);
-router.get('/sort-travel/by-order', sortByOrder);
-router.get('/sort-travel/by-price', sortByPrice);
-router.get('/sort-travel/by-duration', sortByDuration);
-router.get('/sort-travel/by-themes', sortBythemes);
+router.post('/create-tour', upload, createTravel);
+router.get('/get-requests',getRequests)
+router.get('/get-tour-list', getTravelList);
+router.get('/get-tour/:id', getTravelById);
+router.get('/sort-tour/by-order', sortByOrder);
+router.get('/sort-tour/by-price', sortByPrice);
+router.get('/sort-tour/by-duration', sortByDuration);
+router.get('/sort-tour/by-themes', sortBythemes);
 router.patch('/update-tour/data/:id', updateTour)
 
 
