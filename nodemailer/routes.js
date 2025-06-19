@@ -1,5 +1,8 @@
 const express = require('express');
+const jwt = require('jsonwebtoken'); // Import the JWT library
+require('dotenv').config(); // Load environment variables
 const { generateOtp, sendOtpEmail, sendCustomEmail } = require('./nodemailer');
+const dashboardUser = require('../models/dashboardUser');
 const router = express.Router();
 
 const otpStore = new Map();
@@ -24,7 +27,7 @@ router.post('/send-otp', async (req, res) => {
     }
 });
 
-router.post('/verify-otp', (req, res) => {
+router.post('/verify-otp', async (req, res) => {
     const { email, otp } = req.body;
 
     if (!email || !otp) {
@@ -34,7 +37,7 @@ router.post('/verify-otp', (req, res) => {
     const stored = otpStore.get(email);
 
     if (!stored) {
-        return res.status(400).json({ message: 'No OTP found for this email' });
+        return res.status(400).json({ message: 'OTP not found for this email. Please request a new one.' });
     }
 
     if (Date.now() > stored.expiresAt) {
@@ -47,17 +50,45 @@ router.post('/verify-otp', (req, res) => {
     }
 
     otpStore.delete(email);
-    res.status(200).json({ message: 'OTP verified successfully' });
+  const emailRegex = new RegExp('^' + email + '$', 'i');
+    try {
+        const loggedUser = await dashboardUser.findOne({ email: emailRegex });
+
+        if (!loggedUser) {
+            return res.status(400).json({ message: 'No user account found with this email' });
+        }
+
+        if (loggedUser.status !== true) {
+            return res.status(400).json({ message: 'Your account is not active. Please contact support.' });
+        }
+
+        const rsToken = jwt.sign({ id: loggedUser._id, role: loggedUser.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+
+        return res.status(200).json({
+            message: 'Logged in successfully',
+            loggedUserRole: loggedUser.role,
+            loggedUserStatus: loggedUser.status,
+            loggedUserImage: loggedUser.images,
+            loggedUserId: loggedUser._id,
+            loggedUserName: loggedUser.name,
+            loggedUserEmail: loggedUser.email,
+            rsToken,
+        });
+
+    } catch (error) {
+        console.error('Error during login after OTP verification:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 router.post('/send-message', async (req, res) => {
-  const { email, subject, message, link } = req.body;
-  try {
-    await sendCustomEmail(email, subject, message, link);
-    res.status(200).json({ message: 'Email sent successfully' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    const { email, subject, message, link } = req.body;
+    try {
+        await sendCustomEmail(email, subject, message, link);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 module.exports = router;

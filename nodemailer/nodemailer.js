@@ -2,14 +2,22 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 require('dotenv').config();
 
+// const transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: process.env.NODEMAILER_EMAIL,
+//         pass: process.env.NODEMAILER_PASSWORD,
+//     },
+// });
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: "smtp.hostinger.com",     // Hostinger SMTP Server
+    port: 465,                       // SSL Port
+    secure: true,                    // true for 465, false for other ports
     auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
+        user: process.env.NODEMAILER_EMAIL, // आपका ईमेल: info@hotelroomsstay.com
+        pass: process.env.NODEMAILER_PASSWORD, // आपका ईमेल पासवर्ड
     },
 });
-
 
 const sendOtpEmail = async (email, otp) => {
     const currentYear = new Date().getFullYear();
