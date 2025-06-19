@@ -6,7 +6,6 @@
     z-index: 1000; /* Ensure it's above the footer */
     top: 0;
     left: 0;
-    margin-top: 50px;
 }
 
 .footer .app-store-link img {
