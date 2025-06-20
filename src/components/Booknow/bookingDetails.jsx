@@ -221,26 +221,27 @@ const BookingDetails = ({
 
         const bookedDetails = await response.json();
         if (response.status === 201) {
+          
           const payload = {
             email: userEmail,
             subject: "Booking Confirmation",
-            message: `Your booking is confirmed with Booking ID: ${bookedDetails?.data?.bookingId}`,
-            link: `/booking/${bookedDetails?.data?.bookingId}`,
+            message: `Your booking is confirmed`,
+            link: `https://hotelroomsstay.com/booking/${bookedDetails?.data?.bookingId}`,
           }
           dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
             `📅 Check in Date: ${format(
               new Date(bookedDetails?.data?.checkInDate),
-              "dd MMM yyyy",
+              "dd MMM YYYY",
             )}\n` +
             `📅 Check out Date: ${format(
               new Date(bookedDetails?.data?.checkOutDate),
-              "dd MMM yyyy",
+              "dd MMM YYYY",
             )}`,
-            // () => {
-            //   window.location.href = "/bookings"; // <-- Redirect to /bookings
-            // },
+            () => {
+              window.location.href = "/bookings"; // <-- Redirect to /bookings
+            },
           );
 
           sessionStorage.removeItem("discountPrice");
@@ -339,10 +340,17 @@ const BookingDetails = ({
         description: "Room + Food Booking",
         order_id: data.bookingId,
         handler: function (response) {
+          const payload = {
+            email: userEmail,
+            subject: "Booking Confirmation",
+            message: `Your booking is confirmed`, // Corrected
+            link: `https://hotelroomsstay.com/booking/${data?.bookingId}`, // Corrected
+          }
+          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
+            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM YYYY")}\n` + // Corrected
+            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM YYYY")}`, // Corrected
             () => {
               window.location.href = "/bookings";
             }
@@ -440,10 +448,17 @@ const BookingDetails = ({
         description: "Room + Food Booking",
         order_id: data.bookingId,
         handler: function (response) {
+          const payload = {
+            email: userEmail,
+            subject: "Booking Confirmation",
+            message: `Your booking is confirmed`, // Corrected
+            link: `https://hotelroomsstay.com/booking/${data?.bookingId}`, // Corrected
+          }
+          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
+            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM YYYY")}\n` + // Corrected
+            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM YYYY")}`, // Corrected
             () => {
               window.location.href = "/bookings";
             }
