@@ -12,6 +12,7 @@ import { popup } from "../../utils/custom_alert/pop";
 
 import { getGst } from "../../redux/reducers/gstSlice";
 import BookingPage from "./bookingPage";
+import { sendMessage } from "../../redux/reducers/mailSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -128,7 +129,6 @@ const BookingDetails = ({
     return Math.round(discountedTotal > 0 ? discountedTotal : 0);
   };
 
-  console.log("selected rom", selectedRooms)
 
   const calculateBasePrice = () => {
     let totalPrice = 0;
@@ -221,6 +221,13 @@ const BookingDetails = ({
 
         const bookedDetails = await response.json();
         if (response.status === 201) {
+          const payload = {
+            email: userEmail,
+            subject: "Booking Confirmation",
+            message: `Your booking is confirmed with Booking ID: ${bookedDetails?.data?.bookingId}`,
+            link: `/booking/${bookedDetails?.data?.bookingId}`,
+          }
+          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
             `📅 Check in Date: ${format(
@@ -231,9 +238,9 @@ const BookingDetails = ({
               new Date(bookedDetails?.data?.checkOutDate),
               "dd MMM yyyy",
             )}`,
-            () => {
-              window.location.href = "/bookings"; // <-- Redirect to /bookings
-            },
+            // () => {
+            //   window.location.href = "/bookings"; // <-- Redirect to /bookings
+            // },
           );
 
           sessionStorage.removeItem("discountPrice");

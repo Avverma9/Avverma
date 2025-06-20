@@ -8,6 +8,7 @@ import partnerReducer from './reducers/partnerSlice';
 import complaintReducer from './reducers/complaintSlice';
 import travelReducer from './reducers/travelSlice';
 import gstReducer from './reducers/gstSlice';
+import mailReducer from './reducers/mailSlice'; // Import the mail reducer
 // Combine reducers into a rootReducer
 const rootReducer = combineReducers({
     profile: profileReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     complaint: complaintReducer,
     travel: travelReducer,
     gst: gstReducer,
+    mail:mailReducer, // Add the mail reducer
 });
 
 export default rootReducer;
