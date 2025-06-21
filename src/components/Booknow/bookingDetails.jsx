@@ -12,7 +12,6 @@ import { popup } from "../../utils/custom_alert/pop";
 
 import { getGst } from "../../redux/reducers/gstSlice";
 import BookingPage from "./bookingPage";
-import { sendMessage } from "../../redux/reducers/mailSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -129,6 +128,7 @@ const BookingDetails = ({
     return Math.round(discountedTotal > 0 ? discountedTotal : 0);
   };
 
+  console.log("selected rom", selectedRooms)
 
   const calculateBasePrice = () => {
     let totalPrice = 0;
@@ -221,23 +221,15 @@ const BookingDetails = ({
 
         const bookedDetails = await response.json();
         if (response.status === 201) {
-          
-          const payload = {
-            email: userEmail,
-            subject: "Booking Confirmation",
-            message: `Your booking is confirmed`,
-            link: `https://hotelroomsstay.com/booking/${bookedDetails?.data?.bookingId}`,
-          }
-          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
             `📅 Check in Date: ${format(
               new Date(bookedDetails?.data?.checkInDate),
-              "dd MMM YYYY",
+              "dd MMM yyyy",
             )}\n` +
             `📅 Check out Date: ${format(
               new Date(bookedDetails?.data?.checkOutDate),
-              "dd MMM YYYY",
+              "dd MMM yyyy",
             )}`,
             () => {
               window.location.href = "/bookings"; // <-- Redirect to /bookings
@@ -340,17 +332,10 @@ const BookingDetails = ({
         description: "Room + Food Booking",
         order_id: data.bookingId,
         handler: function (response) {
-          const payload = {
-            email: userEmail,
-            subject: "Booking Confirmation",
-            message: `Your booking is confirmed`, // Corrected
-            link: `https://hotelroomsstay.com/booking/${data?.bookingId}`, // Corrected
-          }
-          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM YYYY")}\n` + // Corrected
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM YYYY")}`, // Corrected
+            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
+            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
             () => {
               window.location.href = "/bookings";
             }
@@ -448,17 +433,10 @@ const BookingDetails = ({
         description: "Room + Food Booking",
         order_id: data.bookingId,
         handler: function (response) {
-          const payload = {
-            email: userEmail,
-            subject: "Booking Confirmation",
-            message: `Your booking is confirmed`, // Corrected
-            link: `https://hotelroomsstay.com/booking/${data?.bookingId}`, // Corrected
-          }
-          dispatch(sendMessage(payload))
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM YYYY")}\n` + // Corrected
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM YYYY")}`, // Corrected
+            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
+            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
             () => {
               window.location.href = "/bookings";
             }
