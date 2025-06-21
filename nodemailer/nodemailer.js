@@ -10,24 +10,24 @@ require('dotenv').config();
 //     },
 // });
 const transporter = nodemailer.createTransport({
-    host: "smtp.hostinger.com",     // Hostinger SMTP Server
-    port: 465,                       // SSL Port
-    secure: true,                    // true for 465, false for other ports
-    auth: {
-        user: process.env.NODEMAILER_EMAIL, // आपका ईमेल: info@hotelroomsstay.com
-        pass: process.env.NODEMAILER_PASSWORD, // आपका ईमेल पासवर्ड
-    },
+  host: "smtp.hostinger.com",     // Hostinger SMTP Server
+  port: 465,                       // SSL Port
+  secure: true,                    // true for 465, false for other ports
+  auth: {
+    user: process.env.NODEMAILER_EMAIL, // आपका ईमेल: info@hotelroomsstay.com
+    pass: process.env.NODEMAILER_PASSWORD, // आपका ईमेल पासवर्ड
+  },
 });
 
 const sendOtpEmail = async (email, otp) => {
-    const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-    const mailOptions = {
-        from: `"HRS (HotelRoomsstay)" <${process.env.NODEMAILER_EMAIL}>`,
-        to: email,
-        subject: 'Your OTP for Email Verification - HotelRoomsstay',
-        text: `Your OTP for email verification is: ${otp}`,
-        html: `
+  const mailOptions = {
+    from: `"HRS (HotelRoomsstay)" <${process.env.NODEMAILER_EMAIL}>`,
+    to: email,
+    subject: 'Your OTP for Email Verification - HotelRoomsstay',
+    text: `Your OTP for email verification is: ${otp}`,
+    html: `
       <div style="
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         max-width: 600px;
@@ -97,20 +97,117 @@ const sendOtpEmail = async (email, otp) => {
         </footer>
       </div>
     `,
-    };
+  };
 
-    try {
-        await transporter.sendMail(mailOptions);
-        console.log(`OTP sent to ${email}`);
-    } catch (error) {
-        console.error('Error sending OTP email:', error);
-        throw new Error('Failed to send OTP email');
-    }
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`OTP sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending OTP email:', error);
+    throw new Error('Failed to send OTP email');
+  }
 };
 
 const generateOtp = () => {
-    return crypto.randomInt(100000, 999999).toString();
+  return crypto.randomInt(100000, 999999).toString();
 };
+const { format } = require("date-fns");
+
+const generateBookingHtml = (data) => {
+  const {
+    bookingId,
+    checkInDate,
+    checkOutDate,
+    price,
+    bookingStatus,
+    user: { name },
+    hotelDetails: { hotelName, destination },
+    roomDetails,
+    numRooms,
+    guests,
+  } = data;
+
+  const formattedCheckIn = format(new Date(checkInDate), "dd MMM yyyy");
+  const formattedCheckOut = format(new Date(checkOutDate), "dd MMM yyyy");
+  const roomTypes = roomDetails?.map(room => room.type).join(", ") || "N/A";
+
+  return `
+    <div style="font-family: 'Segoe UI', Roboto, sans-serif; background: #f7f9fc; padding: 30px; max-width: 640px; margin: auto; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+      <div style="background: #2563eb; color: #fff; padding: 20px 30px; border-radius: 10px 10px 0 0;">
+        <h2 style="margin: 0; font-size: 24px; text-align: center;">🎉 Booking Confirmed 🎉</h2>
+      </div>
+
+      <div style="background: #fff; padding: 30px 30px 10px 30px; border-radius: 0 0 10px 10px;">
+        <p style="font-size: 16px;">Hi <strong>${name}</strong>,</p>
+        <p style="font-size: 15px; color: #444;">We're excited to let you know that your booking has been <strong style="color: green;">successfully confirmed!</strong></p>
+
+        <table style="width: 100%; margin-top: 25px; font-size: 14.5px; color: #333; border-collapse: collapse;">
+          <tbody>
+            <tr><td style="padding: 8px 0;"><strong>🏨 Hotel</strong></td><td>: ${hotelName}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>📍 Destination</strong></td><td>: ${destination}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>🛏 Room Type(s)</strong></td><td>: ${roomTypes}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>🛎 Rooms Booked</strong></td><td>: ${numRooms}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>👥 Guests</strong></td><td>: ${guests}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>📅 Check-In</strong></td><td>: ${formattedCheckIn}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>📅 Check-Out</strong></td><td>: ${formattedCheckOut}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>💰 Total Price</strong></td><td>: ₹${price}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>📄 Status</strong></td><td>: ${bookingStatus}</td></tr>
+            <tr><td style="padding: 8px 0;"><strong>🔖 Booking ID</strong></td><td>: <strong>${bookingId}</strong></td></tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top: 25px; font-size: 14.5px; color: #444;">
+          Thank you for choosing <strong>HotelRoomsStay</strong>! We look forward to making your stay comfortable and memorable. ✨
+        </p>
+      </div>
+    </div>
+  `;
+};
+
+const sendBookingMail = async (email, subject, bookingData, link) => {
+  const currentYear = new Date().getFullYear();
+
+  const linkHtml = link
+    ? `<p style="text-align:center; margin: 30px 0;">
+         <a href="${link}" style="
+           background: #2563eb;
+           color: #fff;
+           padding: 14px 28px;
+           text-decoration: none;
+           border-radius: 6px;
+           font-weight: bold;
+           display: inline-block;
+         ">View Booking</a>
+       </p>`
+    : "";
+
+  const message = generateBookingHtml(bookingData);
+
+  const mailOptions = {
+    from: `"HRS (HotelRoomsStay)" <${process.env.NODEMAILER_EMAIL}>`,
+    to: email,
+    subject,
+    text: `Booking confirmation for ${bookingData?.bookingId}`,
+    html: `
+      ${message}
+      ${linkHtml}
+      <hr style="margin-top: 40px; border: none; border-top: 1px solid #ccc;" />
+      <footer style="text-align: center; font-size: 12px; color: #888;">
+        &copy; ${currentYear} HotelRoomsStay. All rights reserved.
+      </footer>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent to", email);
+  } catch (err) {
+    console.error("Failed to send email:", err.message);
+    throw err;
+  }
+};
+
+
 
 const sendCustomEmail = async (email, subject, message, link) => {
     const currentYear = new Date().getFullYear();
@@ -189,5 +286,4 @@ const sendCustomEmail = async (email, subject, message, link) => {
     }
 };
 
-
-module.exports = { sendOtpEmail, generateOtp, sendCustomEmail };
+module.exports = { sendOtpEmail, generateOtp, sendBookingMail,sendCustomEmail };

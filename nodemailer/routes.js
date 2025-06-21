@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken'); // Import the JWT library
 require('dotenv').config(); // Load environment variables
-const { generateOtp, sendOtpEmail, sendCustomEmail } = require('./nodemailer');
+const { generateOtp, sendOtpEmail, sendBookingMail, sendCustomEmail } = require('./nodemailer');
 const dashboardUser = require('../models/dashboardUser');
 const router = express.Router();
 
@@ -81,6 +81,15 @@ router.post('/verify-otp', async (req, res) => {
     }
 });
 
+router.post('/send-booking-mail', async (req, res) => {
+    const { email, subject, bookingData, link } = req.body;
+    try {
+        await sendBookingMail(email, subject, bookingData, link);
+        res.status(200).json({ message: 'Email sent successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 router.post('/send-message', async (req, res) => {
     const { email, subject, message, link } = req.body;
     try {
@@ -90,5 +99,4 @@ router.post('/send-message', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 module.exports = router;
