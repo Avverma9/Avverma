@@ -50,7 +50,7 @@ router.post('/verify-otp', async (req, res) => {
     }
 
     otpStore.delete(email);
-  const emailRegex = new RegExp('^' + email + '$', 'i');
+    const emailRegex = new RegExp('^' + email + '$', 'i');
     try {
         const loggedUser = await dashboardUser.findOne({ email: emailRegex });
 
