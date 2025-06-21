@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-
-
+import useBookingMail from "./bookingMailConfirmation";
 import "react-datepicker/dist/react-datepicker.css";
 import { userEmail, userId, userMobile, userName } from "../../utils/Unauthorized";
 import { applyCouponCode } from "../../redux/reducers/bookingSlice";
@@ -9,7 +8,6 @@ import { useLoader } from "../../utils/loader";
 import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
-
 import { getGst } from "../../redux/reducers/gstSlice";
 import BookingPage from "./bookingPage";
 
@@ -40,7 +38,7 @@ const BookingDetails = ({
   const [openModal, setOpenModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const gstData = useSelector((state) => state.gst.gst);
-
+  const sendMail = useBookingMail()
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
@@ -128,7 +126,6 @@ const BookingDetails = ({
     return Math.round(discountedTotal > 0 ? discountedTotal : 0);
   };
 
-  console.log("selected rom", selectedRooms)
 
   const calculateBasePrice = () => {
     let totalPrice = 0;
@@ -178,6 +175,7 @@ const BookingDetails = ({
   const handleBookNow = async () => {
     try {
       showLoader();
+
       const bookingData = {
         hotelId,
         user: userId,
@@ -199,7 +197,7 @@ const BookingDetails = ({
         })),
         price: calculateTotalWithGST(),
         pm: "Offline",
-        couponCode: couponCode,
+        couponCode,
         gstPrice: gstData?.gstPrice,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
@@ -210,31 +208,25 @@ const BookingDetails = ({
       };
 
       if (toBeCheckRoomNumber > 0) {
-        const response = await fetch(
-          `${baseURL}/booking/${userId}/${hotelId}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(bookingData),
-          },
-        );
+        const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bookingData),
+        });
 
         const bookedDetails = await response.json();
+
         if (response.status === 201) {
           popup(
-            `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails?.data?.bookingId}\n` +
-            `📅 Check in Date: ${format(
-              new Date(bookedDetails?.data?.checkInDate),
-              "dd MMM yyyy",
-            )}\n` +
-            `📅 Check out Date: ${format(
-              new Date(bookedDetails?.data?.checkOutDate),
-              "dd MMM yyyy",
-            )}`,
+            `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails.data.bookingId}\n` +
+            `📅 Check in Date: ${format(new Date(bookedDetails.data.checkInDate), "dd MMM yyyy")}\n` +
+            `📅 Check out Date: ${format(new Date(bookedDetails.data.checkOutDate), "dd MMM yyyy")}`,
             () => {
-              window.location.href = "/bookings"; // <-- Redirect to /bookings
+              window.location.href = "/bookings";
             },
+            6
           );
+          sendMail(bookedDetails.data); // ✅ using the hook
 
           sessionStorage.removeItem("discountPrice");
           setSelectedFood([]);
@@ -248,11 +240,11 @@ const BookingDetails = ({
       }
     } catch (error) {
       console.error("Error booking:", error);
-      alert("Something went wrong during booking.");
     } finally {
       hideLoader();
     }
   };
+
 
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
@@ -320,6 +312,11 @@ const BookingDetails = ({
       });
 
       const data = await response.json();
+      if (response.status === 201) {
+        sendMail(data.data);
+      }
+
+
       if (response.status !== 200 && response.status !== 201) {
         alert(data.message || "Booking failed during payment setup");
         return;
@@ -421,6 +418,9 @@ const BookingDetails = ({
       });
 
       const data = await response.json();
+      if (response.status === 201) {
+        sendMail(data.data);
+      }
       if (response.status !== 200 && response.status !== 201) {
         alert(data.message || "Booking failed during payment setup");
         return;

@@ -1,28 +1,56 @@
 // Popup.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
-const Popup = ({ message, onClose }) => {
+const Popup = ({ message, onClose, delay = 6 }) => {
+  const [countdown, setCountdown] = useState(delay);
+  const [clickable, setClickable] = useState(false);
+
+  // Countdown timer effect
+  useEffect(() => {
+    if (countdown <= 0) {
+      setClickable(true);
+      return;
+    }
+
+    const timer = setTimeout(() => setCountdown((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  // ESC key close
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape" && clickable) {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [clickable, onClose]);
+
+  // Styles
   const overlayStyle = {
     position: "fixed",
     top: 0,
     left: 0,
     height: "100vh",
     width: "100vw",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 9999,
+    fontFamily: "'Segoe UI', sans-serif",
   };
 
   const boxStyle = {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     padding: "24px 32px",
-    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+    borderRadius: "8px",
+    boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
     minWidth: "320px",
     maxWidth: "90vw",
-    fontFamily: "'Segoe UI', sans-serif",
+    animation: "fadeIn 0.3s ease-out",
   };
 
   const messageStyle = {
@@ -30,7 +58,7 @@ const Popup = ({ message, onClose }) => {
     color: "#333",
     fontSize: "15px",
     whiteSpace: "pre-line",
-    lineHeight: "1.5",
+    lineHeight: "1.6",
   };
 
   const buttonContainerStyle = {
@@ -39,12 +67,15 @@ const Popup = ({ message, onClose }) => {
   };
 
   const buttonStyle = {
-    padding: "8px 16px",
-    backgroundColor: "#4CAF50",
+    padding: "10px 20px",
+    backgroundColor: clickable ? "#4CAF50" : "#a5d6a7",
     color: "white",
-    cursor: "pointer",
+    border: "none",
+    borderRadius: "4px",
     fontWeight: "500",
     fontSize: "14px",
+    cursor: clickable ? "pointer" : "not-allowed",
+    transition: "background-color 0.3s",
   };
 
   return (
@@ -52,8 +83,12 @@ const Popup = ({ message, onClose }) => {
       <div style={boxStyle}>
         <p style={messageStyle}>{message}</p>
         <div style={buttonContainerStyle}>
-          <button style={buttonStyle} onClick={onClose}>
-            OK
+          <button
+            style={buttonStyle}
+            onClick={clickable ? onClose : undefined}
+            disabled={!clickable}
+          >
+            {clickable ? "OK" : `OK (${countdown}s)`}
           </button>
         </div>
       </div>
@@ -61,15 +96,19 @@ const Popup = ({ message, onClose }) => {
   );
 };
 
-export const popup = (message, onOkayCallback) => {
+// Render Popup to DOM
+export const popup = (message, onOkayCallback, delay = 6) => {
   const div = document.createElement("div");
   document.body.appendChild(div);
 
   const handleClose = () => {
     ReactDOM.unmountComponentAtNode(div);
     div.remove();
-    if (onOkayCallback) onOkayCallback(); // <-- Trigger callback
+    if (onOkayCallback) onOkayCallback();
   };
 
-  ReactDOM.render(<Popup message={message} onClose={handleClose} />, div);
+  ReactDOM.render(
+    <Popup message={message} onClose={handleClose} delay={delay} />,
+    div
+  );
 };
