@@ -103,6 +103,8 @@ const createBooking = async (req, res) => {
   }
 };
 
+
+
 const getBookingCounts = async function (req, res) {
   const getCount = await bookingModel.countDocuments({});
   res.json(getCount);
