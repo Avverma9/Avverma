@@ -263,6 +263,15 @@ const BookingDetails = ({
   const handlePayment = async () => {
     try {
       showLoader();
+
+      if (toBeCheckRoomNumber <= 0) {
+        alert("This room is already fully booked");
+        return;
+      }
+
+      const totalAmount = calculateTotalWithGST();
+
+      // Prepare bookingData but don't send yet
       const bookingData = {
         hotelId,
         user: userId,
@@ -282,9 +291,9 @@ const BookingDetails = ({
           price: food.price,
           quantity: food.quantity,
         })),
-        price: calculateTotalWithGST(),
+        price: totalAmount,
         pm: "Online",
-        couponCode: couponCode,
+        couponCode,
         gstPrice: gstData?.gstPrice,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
@@ -294,57 +303,79 @@ const BookingDetails = ({
         hotelEmail: hotelData.hotelEmail,
       };
 
-      const res = await loadRazorpayScript();
-      if (!res) {
+      // Load Razorpay script
+      const razorpayLoaded = await loadRazorpayScript();
+      if (!razorpayLoaded) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
-      if (toBeCheckRoomNumber <= 0) {
-        alert("This room is already fully booked");
-        return;
-      }
-      const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+
+      // Create Razorpay order on backend
+      const orderRes = await fetch(`${baseURL}/create-order`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: totalAmount * 100 }), // amount in paisa
       });
 
-      const data = await response.json();
-      if (response.status === 201) {
-        sendMail(data.data);
-      }
-
-
-      if (response.status !== 200 && response.status !== 201) {
-        alert(data.message || "Booking failed during payment setup");
+      if (!orderRes.ok) {
+        const errorText = await orderRes.text();
+        console.error("Order creation failed:", errorText);
+        alert("Failed to initiate payment. Try again.");
         return;
       }
+
+      const orderData = await orderRes.json();
+
+      // Set up Razorpay options
       const options = {
-        key: "rzp_test_7xbcyn4tIZfQPE",
-        amount: calculateTotalWithGST() * 100, // Convert ₹ to paise
+        key: "rzp_test_0UMxKeTqqehh1o", // Replace with LIVE key in production
+        amount: totalAmount * 100,
         currency: "INR",
         name: "Hotel Booking",
         description: "Room + Food Booking",
-        order_id: data.bookingId,
-        handler: function (response) {
-          popup(
-            `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
-            () => {
-              window.location.href = "/bookings";
-            }
-          );
+        order_id: orderData.orderId,
+        handler: async function (response) {
+          try {
+            // Payment succeeded — continue with booking
+            bookingData.paymentId = response.razorpay_payment_id;
 
-          sessionStorage.removeItem("discountPrice");
-          setSelectedFood([]);
-          setIsCouponApplied(false);
-          setDiscountPrice(0);
+            const bookingRes = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(bookingData),
+            });
+
+            if (!bookingRes.ok) {
+              const errorText = await bookingRes.text();
+              console.error("Booking failed:", errorText);
+              alert("Booking failed after payment. Please contact support.");
+              return;
+            }
+
+            const bookingRespData = await bookingRes.json();
+
+            popup(
+              `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookingRespData.data.bookingId}\n` +
+              `📅 Check-in: ${format(new Date(bookingRespData.data.checkInDate), "dd MMM yyyy")}\n` +
+              `📅 Check-out: ${format(new Date(bookingRespData.data.checkOutDate), "dd MMM yyyy")}`,
+              () => window.location.href = "/bookings",
+              6
+            );
+
+            sendMail(bookingRespData.data);
+
+            // Cleanup
+            sessionStorage.removeItem("discountPrice");
+            setSelectedFood([]);
+            setIsCouponApplied(false);
+            setDiscountPrice(0);
+          } catch (err) {
+            console.error("Error booking after payment:", err);
+            alert("Something went wrong while finalizing your booking.");
+          }
         },
         prefill: {
-          name: userName.displayName,
+          name: userName?.displayName || "",
           email: userEmail,
           contact: userMobile,
         },
@@ -362,10 +393,21 @@ const BookingDetails = ({
       hideLoader();
     }
   };
+
 
   const handlePartialPayment = async () => {
     try {
       showLoader();
+
+      if (toBeCheckRoomNumber <= 0) {
+        alert("This room is already fully booked");
+        return;
+      }
+
+      const totalAmount = calculateTotalWithGST();
+      const partialAmount = Math.round(totalAmount * 0.5); // 50% in ₹
+      const partialAmountPaise = partialAmount * 100; // Convert to paise
+
       const bookingData = {
         hotelId,
         user: userId,
@@ -385,13 +427,13 @@ const BookingDetails = ({
           price: food.price,
           quantity: food.quantity,
         })),
-        price: calculateTotalWithGST(),
+        price: totalAmount,
         pm: "Online",
-        couponCode: couponCode,
+        couponCode,
         gstPrice: gstData?.gstPrice,
         isPartialBooking: true,
         bookingStatus: "Pending",
-        partialAmount: (calculateTotalWithGST() * 0.5).toFixed(0), // 50% of total
+        partialAmount,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
@@ -400,55 +442,82 @@ const BookingDetails = ({
         hotelEmail: hotelData.hotelEmail,
       };
 
+      // Load Razorpay
       const res = await loadRazorpayScript();
       if (!res) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
-      if (toBeCheckRoomNumber <= 0) {
-        alert("This room is already fully booked");
-        return;
-      }
-      const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+
+      // Create Razorpay order from backend
+      const orderRes = await fetch(`${baseURL}/create-order`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookingData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: partialAmountPaise }), // sending amount in paise
       });
 
-      const data = await response.json();
-      if (response.status === 201) {
-        sendMail(data.data);
-      }
-      if (response.status !== 200 && response.status !== 201) {
-        alert(data.message || "Booking failed during payment setup");
+      if (!orderRes.ok) {
+        const errorText = await orderRes.text();
+        console.error("Order creation failed:", errorText);
+        alert("Failed to initiate payment. Try again.");
         return;
       }
+
+      const orderData = await orderRes.json();
+
+      // Set up Razorpay options
       const options = {
-        key: "rzp_test_7xbcyn4tIZfQPE",
-        amount: (calculateTotalWithGST() * 0.5 * 100).toFixed(0), // 50% of total
+        key: "rzp_test_7xbcyn4tIZfQPE", // ✅ Replace with live key in prod
+        amount: partialAmountPaise,
         currency: "INR",
         name: "Hotel Booking",
-        description: "Room + Food Booking",
-        order_id: data.bookingId,
-        handler: function (response) {
-          popup(
-            `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(data?.checkInDate), "dd MMM yyyy")}\n` +
-            `📅 Check out Date: ${format(new Date(data?.checkOutDate), "dd MMM yyyy")}`,
-            () => {
-              window.location.href = "/bookings";
-            }
-          );
+        description: "50% Advance Payment - Room + Food",
+        order_id: orderData.orderId, // ✅ use Razorpay order ID
+        handler: async function (paymentResponse) {
+          try {
+            // Add Razorpay payment ID to booking data
+            bookingData.paymentId = paymentResponse.razorpay_payment_id;
 
-          sessionStorage.removeItem("discountPrice");
-          setSelectedFood([]);
-          setIsCouponApplied(false);
-          setDiscountPrice(0);
+            // Now confirm the booking (AFTER successful payment)
+            const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(bookingData),
+            });
+
+            if (!response.ok) {
+              const errText = await response.text();
+              console.error("Booking failed:", errText);
+              alert("Booking failed after payment. Please contact support.");
+              return;
+            }
+
+            const data = await response.json();
+
+            sendMail(data.data);
+
+            popup(
+              `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
+              `📅 Check-in: ${format(new Date(data?.data?.checkInDate), "dd MMM yyyy")}\n` +
+              `📅 Check-out: ${format(new Date(data?.data?.checkOutDate), "dd MMM yyyy")}`,
+              () => {
+                window.location.href = "/bookings";
+              }
+            );
+
+            // Clean up UI
+            sessionStorage.removeItem("discountPrice");
+            setSelectedFood([]);
+            setIsCouponApplied(false);
+            setDiscountPrice(0);
+
+          } catch (bookingError) {
+            console.error("Booking failed after payment:", bookingError);
+            alert("Something went wrong while finalizing your booking.");
+          }
         },
         prefill: {
-          name: userName.displayName,
+          name: userName?.displayName || "",
           email: userEmail,
           contact: userMobile,
         },
@@ -466,6 +535,7 @@ const BookingDetails = ({
       hideLoader();
     }
   };
+
 
 
   return (
