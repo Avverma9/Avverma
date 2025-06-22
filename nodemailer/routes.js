@@ -121,7 +121,7 @@ router.post('/verify-otp/site', async (req, res) => {
 
         return res.status(200).json({
             message: 'Logged in successfully',
-            userId: foundUser.userId, // assuming you store `userId`
+            userId: foundUser.userId, 
             rsToken,
             email: foundUser.email,
             mobile: foundUser.mobile,
