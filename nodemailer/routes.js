@@ -106,27 +106,19 @@ router.post('/verify-otp/site', async (req, res) => {
     otpStore.delete(email);
     const emailRegex = new RegExp('^' + email + '$', 'i');
     try {
-        const loggedUser = await user.findOne({ email: emailRegex });
+        const user = await user.findOne({ email: emailRegex });
 
-        if (!loggedUser) {
+        if (!user) {
             return res.status(400).json({ message: 'No user account found with this email' });
         }
 
-        if (loggedUser.status !== true) {
-            return res.status(400).json({ message: 'Your account is not active. Please contact support.' });
-        }
+
 
         const rsToken = jwt.sign({ id: loggedUser._id, role: loggedUser.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
         return res.status(200).json({
             message: 'Logged in successfully',
-            loggedUserRole: loggedUser.role,
-            loggedUserStatus: loggedUser.status,
-            loggedUserImage: loggedUser.images,
-            loggedUserId: loggedUser.userId,
-            loggedUserName: loggedUser.name,
-            loggedUserEmail: loggedUser.email,
-            rsToken,
+            userId: user.userId, rsToken: rsToken
         });
 
     } catch (error) {
