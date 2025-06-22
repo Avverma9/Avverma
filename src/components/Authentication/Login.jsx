@@ -41,6 +41,8 @@ export default function LoginPage() {
             localStorage.setItem('isSignedIn', 'true');
             localStorage.setItem('rsUserId', res.data.userId);
             localStorage.setItem('rsToken', res.data.rsToken);
+            localStorage.setItem('roomsstayUserEmail', res.data.email);
+            localStorage.setItem('rsUserMobile', res.data.mobile);
             navigate('/');
         } catch (err) {
             toast.error(err.response?.data?.message || 'Login failed.');
@@ -86,6 +88,8 @@ export default function LoginPage() {
                 localStorage.setItem('isSignedIn', 'true');
                 localStorage.setItem('rsUserId', response.data.userId);
                 localStorage.setItem('rsToken', response.data.rsToken);
+                localStorage.setItem('roomsstayUserEmail', response.data.email);
+                localStorage.setItem('rsUserMobile', response.data.mobile);
             }
 
             navigate('/');

@@ -4,10 +4,11 @@ import { fetchDefaultCoupon } from '../../redux/reducers/profileSlice';
 
 export default function Coupon() {
     const dispatch = useDispatch();
+    const location = window.location;
     const coupon = useSelector((state) => state.profile.coupon);
     const [daysRemaining, setDaysRemaining] = useState([]);
     const [copiedCode, setCopiedCode] = useState(null);
-
+    if (location.pathname !== '/coupons') return null;
     useEffect(() => {
         dispatch(fetchDefaultCoupon()).unwrap();
     }, [dispatch]);
@@ -42,7 +43,7 @@ export default function Coupon() {
                         <div style={styles.left}>
                             <div style={styles.code}>{item.couponCode}</div>
                             <div style={styles.name}>{item.couponName}</div>
-                         <div style={styles.statusTag}>
+                            <div style={styles.statusTag}>
                                 {item.expired
                                     ? (new Date(item.validity) < new Date()
                                         ? 'Expired'
@@ -136,7 +137,7 @@ const styles = {
         cursor: 'pointer',
         transition: 'all 0.2s',
     },
-      statusTag: {
+    statusTag: {
         backgroundColor: '#f87171', // Tailwind's red-400
         color: '#fff',
         padding: '2px 6px',
