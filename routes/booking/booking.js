@@ -13,8 +13,8 @@ router.get('/get/all/filtered/booking/by/query', bookingController.getAllFilterB
 router.get('/get-all/bookings-count', bookingController.getBookingCounts);
 router.get('/get-all/sell-count', bookingController.getTotalSell);
 const razorpay = new Razorpay({
-    key_id: "rzp_test_7xbcyn4tIZfQPE", // your Razorpay test key
-    key_secret: "your_secret_key",     // your Razorpay test secret
+    key_id: "rzp_test_0UMxKeTqqehh1o", // your Razorpay test key
+    key_secret: "4jWFyvZdChirSt9fHuujwr5p",     // your Razorpay test secret
 });
 
 router.post("/create-order", async (req, res) => {
