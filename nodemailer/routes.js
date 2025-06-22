@@ -105,20 +105,24 @@ router.post('/verify-otp/site', async (req, res) => {
 
     otpStore.delete(email);
     const emailRegex = new RegExp('^' + email + '$', 'i');
-    try {
-        const user = await user.findOne({ email: emailRegex });
 
-        if (!user) {
+    try {
+        const foundUser = await user.findOne({ email: emailRegex });
+
+        if (!foundUser) {
             return res.status(400).json({ message: 'No user account found with this email' });
         }
 
-
-
-        const rsToken = jwt.sign({ id: loggedUser._id, role: loggedUser.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        const rsToken = jwt.sign(
+            { id: foundUser._id }, // removed role
+            process.env.JWT_SECRET,
+            { expiresIn: '24h' }
+        );
 
         return res.status(200).json({
             message: 'Logged in successfully',
-            userId: user.userId, rsToken: rsToken
+            userId: foundUser.userId, // assuming you store `userId`
+            rsToken
         });
 
     } catch (error) {
@@ -126,6 +130,7 @@ router.post('/verify-otp/site', async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 router.post('/send-booking-mail', async (req, res) => {
     const { email, subject, bookingData, link } = req.body;
     try {
