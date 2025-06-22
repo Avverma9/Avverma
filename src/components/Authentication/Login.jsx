@@ -1,111 +1,232 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Google from './GoogleSignIn';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import './Login.css';
 import baseURL from '../../utils/baseURL';
-import './Login.css'; // ⬅ Link to external CSS file
 
 export default function LoginPage() {
-    const [loginData, setLoginData] = useState({ email: '', password: '' });
-    const [showPassword, setShowPassword] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-
     const navigate = useNavigate();
 
+    const [mode, setMode] = useState('password'); // 'password' or 'otp'
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [otp, setOtp] = useState('');
+    const [otpSent, setOtpSent] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [resendTimer, setResendTimer] = useState(0);
+
     useEffect(() => {
-        const storedUser = localStorage.getItem('loggedUser');
-        if (storedUser) {
-            const data = JSON.parse(storedUser).providerData[0];
-            localStorage.setItem('uid', data.uid);
-            localStorage.setItem('userImage', data.photoURL);
-            localStorage.setItem('useremail', data.email);
-            localStorage.setItem('userName', data.displayName);
+        if (resendTimer > 0) {
+            const interval = setInterval(() => setResendTimer((prev) => prev - 1), 1000);
+            return () => clearInterval(interval);
         }
-    }, []);
+    }, [resendTimer]);
 
-    const handleLogin = async (e) => {
+    const toggleMode = () => {
+        setOtp('');
+        setPassword('');
+        setOtpSent(false);
+        setResendTimer(0);
+        setMode(mode === 'password' ? 'otp' : 'password');
+    };
+
+    const handlePasswordLogin = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
+        if (!email || !password) return toast.warn('Email and password required.');
+        setLoading(true);
         try {
-            const response = await fetch(`${baseURL}/signIn`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(loginData),
-            });
-
-            if (response.ok) {
-                const { userId, rsToken } = await response.json();
-                localStorage.setItem('isSignedIn', 'true');
-                localStorage.setItem('rsUserId', userId);
-                localStorage.setItem('rsToken', rsToken);
-                window.history.back();
-
-            } else {
-                const err = await response.json();
-                console.error('Login failed:', err.message);
-            }
+            const res = await axios.post(`${baseURL}/signIn`, { email, password });
+            localStorage.setItem('isSignedIn', 'true');
+            localStorage.setItem('rsUserId', res.data.userId);
+            localStorage.setItem('rsToken', res.data.rsToken);
+            navigate('/');
         } catch (err) {
-            console.error('Network error:', err);
+            toast.error(err.response?.data?.message || 'Login failed.');
         } finally {
-            setIsLoading(false);
+            setLoading(false);
+        }
+    };
+
+    const requestOtp = async () => {
+        if (!email) return toast.warn('Please enter your email.');
+        setLoading(true);
+        try {
+            const response = await axios.post(`${baseURL}/mail/send-otp`, { email });
+            if (response.status === 200) {
+                toast.success(response.data.message || 'OTP sent successfully.');
+                if (!otpSent) setOtpSent(true);
+                setResendTimer(30);
+            }
+        } catch (error) {
+            if (error.response?.status === 400) {
+                toast.error(error.response.data.message || 'Could not send OTP.');
+            } else {
+                console.error('Send OTP failed:', error);
+                toast.error('Failed to send OTP. Try again.');
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSendOtpSubmit = (e) => {
+        e.preventDefault();
+        requestOtp();
+    };
+
+    const handleOtpSubmit = async (e) => {
+        e.preventDefault();
+        if (!otp) return toast.warn('Please enter the OTP.');
+        setLoading(true);
+        try {
+            const response = await axios.post(`${baseURL}/mail/verify-otp/site`, { email, otp });
+            if (response.status === 200) {
+                localStorage.setItem('isSignedIn', 'true');
+                localStorage.setItem('rsUserId', response.data.userId);
+                localStorage.setItem('rsToken', response.data.rsToken);
+            }
+
+            navigate('/');
+        } catch (error) {
+            if (error.response?.status === 400) {
+                toast.error(error.response.data.message || 'Invalid OTP.');
+            } else {
+                console.error('OTP verification failed:', error);
+                toast.error('OTP verification failed. Please try again.');
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <div className={`login-page ${isDarkMode ? 'dark' : 'light'}`}>
-            <div className="login-header">
-                <div className="logo">
-                    <span role="img" aria-label="logo">🏨</span>
-                    <h2>Hotel Roomsstay</h2>
-                </div>
-                <button className="mode-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
-                    {isDarkMode ? '🌙' : '☀️'}
-                </button>
-            </div>
+        <div className="login-wrapper">
+            <div className="login-box" role="main" aria-label="Login form">
+                <h2 className="login-title">Welcome Back</h2>
+                <p className="login-subtitle">Sign in to manage your bookings</p>
 
-            <div className="login-container">
-                <h1>Sign in</h1>
-                <p>
-                    New to Roomsstay? <a href="/register">Sign up!</a>
-                </p>
-
-                <button className="google-button">
+                <button type="button" className="google-button" aria-label="Sign in with Google">
                     <Google />
                 </button>
+                <div className="toggle-mode">
+                    <button
+                        type="button"
+                        onClick={toggleMode}
+                        className="toggle-btn"
+                        aria-label={`Switch to ${mode === 'password' ? 'OTP' : 'Password'
+                            } login`}
+                    >
+                        {mode === 'password' ? 'Login with OTP' : 'Login with Password'}
+                    </button>
+                </div>
+                <div className="divider" aria-hidden="true">or</div>
 
-                <div className="divider">or</div>
-
-                <form onSubmit={handleLogin}>
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" onChange={(e) => setLoginData({ ...loginData, email: e.target.value })} required />
+                <form
+                    onSubmit={
+                        mode === 'password'
+                            ? handlePasswordLogin
+                            : otpSent
+                                ? handleOtpSubmit
+                                : handleSendOtpSubmit
+                    }
+                    noValidate
+                    className="login-form"
+                >
+                    <div className="form-control">
+                        <label htmlFor="email">Email Address</label>
+                        <input
+                            id="email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            disabled={mode === 'otp' && otpSent}
+                            autoComplete="email"
+                            placeholder="you@example.com"
+                        />
                     </div>
 
-                    <div className="form-group password-group">
-                        <label>Password</label>
-                        <input type={showPassword ? 'text' : 'password'} name="password" onChange={(e) => setLoginData({ ...loginData, password: e.target.value })} required />
-                        <button type="button" className="eye-toggle" onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? <FaEye /> : <FaEyeSlash />}
-                        </button>
-                    </div>
+                    {mode === 'password' && (
+                        <div className="form-control">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                autoComplete="current-password"
+                                placeholder="Enter your password"
+                            />
+                        </div>
+                    )}
 
-                    <div className="form-footer">
-                        <label>
-                            <input type="checkbox" /> Remember me
-                        </label>
-                        <a href="#">Forgot password?</a>
-                    </div>
+                    {mode === 'otp' && otpSent && (
+                        <div
+                            className="form-control otp-input-wrapper fade-in"
+                            key="otp-field"
+                        >
+                            <label htmlFor="otp">Enter OTP</label>
+                            <input
+                                id="otp"
+                                type="text"
+                                value={otp}
+                                onChange={(e) => setOtp(e.target.value)}
+                                required
+                                placeholder="6-digit OTP"
+                                inputMode="numeric"
+                                pattern="\d*"
+                                maxLength={6}
+                            />
+                        </div>
+                    )}
 
-                    <button type="submit" className="submit-btn">
-                        {isLoading ? 'Signing in...' : 'Sign in'}
+                    <button
+                        type="submit"
+                        className="login-btn"
+                        disabled={loading}
+                        aria-busy={loading}
+                    >
+                        {loading
+                            ? 'Processing...'
+                            : mode === 'password'
+                                ? 'Login'
+                                : otpSent
+                                    ? 'Verify OTP'
+                                    : 'Send OTP'}
                     </button>
                 </form>
-            </div>
 
-            <footer className="login-footer">
-                © Hotel Roomsstay {new Date().getFullYear()}
-            </footer>
+                {mode === 'otp' && otpSent && (
+                    <div className="resend-otp">
+                        {resendTimer > 0 ? (
+                            <span>Resend OTP in {resendTimer}s</span>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={requestOtp}
+                                disabled={loading}
+                                className="resend-btn"
+                            >
+                                Resend OTP
+                            </button>
+                        )}
+                    </div>
+                )}
+
+
+
+                <div className="footer-note">
+                    <p>
+                        Don’t have an account?{' '}
+                        <a href="/register" className="register-link">
+                            Register here
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
     );
 }

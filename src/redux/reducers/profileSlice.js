@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
-import { token, userEmail } from "../../utils/Unauthorized";
+import { token, userEmail,userId } from "../../utils/Unauthorized";
 import alert from "../../utils/custom_alert/custom_alert";
 
 export const fetchProfileData = createAsyncThunk(
+  
   "profile/fetchProfileData",
   async (userId, { rejectWithValue }) => {
     try {

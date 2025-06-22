@@ -74,8 +74,7 @@ const Google = () => {
     };
     return (
         <div className="google-container" onClick={handleGoogleLogin}>
-            <Googles />
-            Continue with google
+            <Googles />{" "} Continue with google
         </div>
     );
 };
