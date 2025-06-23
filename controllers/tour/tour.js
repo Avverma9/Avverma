@@ -115,7 +115,7 @@ exports.getTravelList = async function (_, res) {
 exports.getTravelById = async (req, res) => {
     try {
         const { id } = req.params;
-        const findData = await Tour.findOne({ _id: id, isAccepted: true });
+        const findData = await Tour.findOne({ _id: id});
         return res.status(200).json(findData);
     } catch (error) {
         console.error(error);
