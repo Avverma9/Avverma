@@ -1,3 +1,5 @@
+const Tour = require('../../models/tour/tour');
+
 exports.createTravel = async (req, res) => {
     try {
         const { termsAndConditions, ...body } = req.body;
