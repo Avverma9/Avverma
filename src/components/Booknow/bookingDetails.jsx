@@ -1,7 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import useBookingMail from "./bookingMailConfirmation";
 import "react-datepicker/dist/react-datepicker.css";
-import { userEmail, userId, userMobile, userName } from "../../utils/Unauthorized";
+import {
+  userEmail,
+  userId,
+  userMobile,
+  userName,
+} from "../../utils/Unauthorized";
 import { applyCouponCode } from "../../redux/reducers/bookingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoader } from "../../utils/loader";
@@ -38,7 +43,7 @@ const BookingDetails = ({
   const [openModal, setOpenModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const gstData = useSelector((state) => state.gst.gst);
-  const sendMail = useBookingMail()
+  const sendMail = useBookingMail();
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
@@ -101,32 +106,44 @@ const BookingDetails = ({
   }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
 
   const calculateTotalWithGST = () => {
-    const singleRoom = selectedRooms[0];
-    if (!singleRoom) return 0;
+    if (!selectedRooms || selectedRooms.length === 0 || !selectedRooms[0]) {
+      return { total: 0, gstAmount: 0 };
+    }
 
-    const roomPricePerNight = singleRoom.price || 0;
+    const singleRoomPrice = selectedRooms[0].price || 0;
     const gstPercent = parseFloat(gstData?.gstPrice || 0);
 
     const daysDifference = Math.ceil(
-      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
     );
 
-    if (daysDifference < 1) return 0;
+    if (daysDifference < 1) {
+      return { total: 0, gstAmount: 0 };
+    }
 
-    const baseRoomPrice = roomPricePerNight * daysDifference;
+    const baseRoomPriceForAllRooms =
+      singleRoomPrice * daysDifference * roomsCount;
 
-    // GST is applied ONLY on one room per night × number of nights
-    const gstAmount = (roomPricePerNight * daysDifference * gstPercent) / 100;
+    const gstAmount = (singleRoomPrice * daysDifference * gstPercent) / 100;
 
-
-    const totalWithGST = baseRoomPrice + gstAmount;
+    const totalWithGST = baseRoomPriceForAllRooms + gstAmount;
 
     const discountedTotal = totalWithGST - (discountPrice || 0);
 
-    return Math.round(discountedTotal > 0 ? discountedTotal : 0);
+    console.log("Discounted Total (after GST and discount):", discountedTotal);
+
+    return {
+      total: Math.round(discountedTotal > 0 ? discountedTotal : 0),
+      gstAmount: Math.round(gstAmount),
+    };
   };
 
+  const bookingDetails = calculateTotalWithGST();
+  const finalTotal = bookingDetails.total;
+  const calculatedGST = bookingDetails.gstAmount;
 
+  // console.log("Your final booking total is:", finalTotal);
+  // console.log("The GST amount included is:", calculatedGST);
   const calculateBasePrice = () => {
     let totalPrice = 0;
 
@@ -163,7 +180,6 @@ const BookingDetails = ({
     return totalPrice;
   };
 
-
   const getFinalPrice = () => {
     const roomPrice = selectedRooms.reduce(
       (total, room) => total + room.price * roomsCount,
@@ -195,7 +211,7 @@ const BookingDetails = ({
           price: food.price,
           quantity: food.quantity,
         })),
-        price: calculateTotalWithGST(),
+        price: finalTotal,
         pm: "Offline",
         couponCode,
         gstPrice: gstData?.gstPrice,
@@ -208,23 +224,32 @@ const BookingDetails = ({
       };
 
       if (toBeCheckRoomNumber > 0) {
-        const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(bookingData),
-        });
+        const response = await fetch(
+          `${baseURL}/booking/${userId}/${hotelId}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bookingData),
+          },
+        );
 
         const bookedDetails = await response.json();
 
         if (response.status === 201) {
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails.data.bookingId}\n` +
-            `📅 Check in Date: ${format(new Date(bookedDetails.data.checkInDate), "dd MMM yyyy")}\n` +
-            `📅 Check out Date: ${format(new Date(bookedDetails.data.checkOutDate), "dd MMM yyyy")}`,
+              `📅 Check in Date: ${format(
+                new Date(bookedDetails.data.checkInDate),
+                "dd MMM yyyy",
+              )}\n` +
+              `📅 Check out Date: ${format(
+                new Date(bookedDetails.data.checkOutDate),
+                "dd MMM yyyy",
+              )}`,
             () => {
               window.location.href = "/bookings";
             },
-            6
+            6,
           );
           sendMail(bookedDetails.data); // ✅ using the hook
 
@@ -245,11 +270,10 @@ const BookingDetails = ({
     }
   };
 
-
   const loadRazorpayScript = () => {
     return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
       script.onload = () => {
         resolve(true);
       };
@@ -269,7 +293,7 @@ const BookingDetails = ({
         return;
       }
 
-      const totalAmount = calculateTotalWithGST();
+      const totalAmount = finalTotal;
 
       // Prepare bookingData but don't send yet
       const bookingData = {
@@ -339,11 +363,14 @@ const BookingDetails = ({
             // Payment succeeded — continue with booking
             bookingData.paymentId = response.razorpay_payment_id;
 
-            const bookingRes = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(bookingData),
-            });
+            const bookingRes = await fetch(
+              `${baseURL}/booking/${userId}/${hotelId}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookingData),
+              },
+            );
 
             if (!bookingRes.ok) {
               const errorText = await bookingRes.text();
@@ -356,10 +383,16 @@ const BookingDetails = ({
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookingRespData.data.bookingId}\n` +
-              `📅 Check-in: ${format(new Date(bookingRespData.data.checkInDate), "dd MMM yyyy")}\n` +
-              `📅 Check-out: ${format(new Date(bookingRespData.data.checkOutDate), "dd MMM yyyy")}`,
-              () => window.location.href = "/bookings",
-              6
+                `📅 Check-in: ${format(
+                  new Date(bookingRespData.data.checkInDate),
+                  "dd MMM yyyy",
+                )}\n` +
+                `📅 Check-out: ${format(
+                  new Date(bookingRespData.data.checkOutDate),
+                  "dd MMM yyyy",
+                )}`,
+              () => (window.location.href = "/bookings"),
+              6,
             );
 
             sendMail(bookingRespData.data);
@@ -394,7 +427,6 @@ const BookingDetails = ({
     }
   };
 
-
   const handlePartialPayment = async () => {
     try {
       showLoader();
@@ -404,7 +436,7 @@ const BookingDetails = ({
         return;
       }
 
-      const totalAmount = calculateTotalWithGST();
+      const totalAmount = finalTotal;
       const partialAmount = Math.round(totalAmount * 0.5); // 50% in ₹
       const partialAmountPaise = partialAmount * 100; // Convert to paise
 
@@ -479,11 +511,14 @@ const BookingDetails = ({
             bookingData.paymentId = paymentResponse.razorpay_payment_id;
 
             // Now confirm the booking (AFTER successful payment)
-            const response = await fetch(`${baseURL}/booking/${userId}/${hotelId}`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(bookingData),
-            });
+            const response = await fetch(
+              `${baseURL}/booking/${userId}/${hotelId}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(bookingData),
+              },
+            );
 
             if (!response.ok) {
               const errText = await response.text();
@@ -498,11 +533,17 @@ const BookingDetails = ({
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
-              `📅 Check-in: ${format(new Date(data?.data?.checkInDate), "dd MMM yyyy")}\n` +
-              `📅 Check-out: ${format(new Date(data?.data?.checkOutDate), "dd MMM yyyy")}`,
+                `📅 Check-in: ${format(
+                  new Date(data?.data?.checkInDate),
+                  "dd MMM yyyy",
+                )}\n` +
+                `📅 Check-out: ${format(
+                  new Date(data?.data?.checkOutDate),
+                  "dd MMM yyyy",
+                )}`,
               () => {
                 window.location.href = "/bookings";
-              }
+              },
             );
 
             // Clean up UI
@@ -510,7 +551,6 @@ const BookingDetails = ({
             setSelectedFood([]);
             setIsCouponApplied(false);
             setDiscountPrice(0);
-
           } catch (bookingError) {
             console.error("Booking failed after payment:", bookingError);
             alert("Something went wrong while finalizing your booking.");
@@ -535,8 +575,6 @@ const BookingDetails = ({
       hideLoader();
     }
   };
-
-
 
   return (
     <>
@@ -564,12 +602,12 @@ const BookingDetails = ({
         discountPrice={discountPrice}
         getFinalPrice={getFinalPrice}
         calculateBasePrice={calculateBasePrice}
-        calculateTotalWithGST={calculateTotalWithGST}
+        finalTotal={finalTotal}
+        gstAmount={calculatedGST}
         gstData={gstData}
         handleOpenModal={handleOpenModal}
         openModal={openModal}
         handleCloseModal={handleCloseModal}
-
         selectedFood={selectedFood}
         hotelData={hotelData}
         handleRemoveFood={handleRemoveFood}

@@ -141,7 +141,6 @@ const BookNow = () => {
   const gstAmount = lowestPrice * gstPercent / 100;
   const finalPrice = Math.round(lowestPrice + gstAmount);
 
-
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     selectedRooms?.forEach((room) => {
@@ -548,7 +547,7 @@ const BookNow = () => {
                 </>
               ) : (
                 <p>
-                  <strong>₹{finalPrice}</strong>{" "}
+                  <strong>₹{lowestPrice}</strong>{" "}
                   <span
                     style={{
                       color: "red",
@@ -556,7 +555,7 @@ const BookNow = () => {
                       marginRight: "5px",
                     }}
                   >
-                    Starting price with ₹{gstAmount.toFixed(0)} GST included
+                    Starting price (gst excluded)
                   </span>
                 </p>
               )}
