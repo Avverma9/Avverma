@@ -5,6 +5,7 @@ const { addBed, addBedBulk, getBed, deleteBedById } = require('../../controllers
 const { addRoom, getRooms, addRoomBulk, deleteRoomById } = require('../../controllers/addtionalSettings/roomList');
 const { addAmenities, addBulkAmenities, getAmenities, deleteAmenityById } = require('../../controllers/addtionalSettings/hotelAmenities');
 const { addRole, getRole, deleteRoleById } = require('../../controllers/addtionalSettings/role');
+const { getTourThemes, createTourTheme, deleteTourThemeById } = require('../../controllers/addtionalSettings/tourTheme');
 const router = express.Router();
 
 //==================================amenities=============================
@@ -35,6 +36,11 @@ router.delete("/delete-amenity/:id",deleteAmenityById)
 router.post('/roles', addRole);
 router.get('/roles', getRole);
 router.delete('/roles/:id', deleteRoleById);
+
+//==================================Tour themes=========================
+router.post('/add-tour-theme',createTourTheme );
+router.get('/get-tour-themes', getTourThemes);
+router.delete('/delete-tour-theme/:id', deleteTourThemeById);
 module.exports = router
 
 

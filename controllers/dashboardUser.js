@@ -187,11 +187,11 @@ const getPartners = async function (req, res) {
           },
         },
       },
-      {
-        $project: {
-          password: 0,
-        },
-      },
+    //   {
+    //     $project: {
+    //       password: 0,
+    //     },
+    //   },
     ];
 
     const partners = await Dashboard.aggregate(aggregationPipeline);

@@ -51,18 +51,58 @@ exports.updateTour = async function (req, res) {
   }
 };
 exports.changeTourImage = async function (req, res) {
-  const { id } = req.params;
-  try {
-    const images = req.files ? req.files.map((file) => file.location) : [];
-    const updated = await Tour.findByIdAndUpdate(id, { images }, { new: true });
-    res.status(200).json({ success: true, data: updated });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to update travel images" });
-  }
-};
+    const { id } = req.params;
+    try {
+      const newImages = req.files ? req.files.map(file => file.location) : [];
+  
+      const tour = await Tour.findById(id);
+      if (!tour) {
+        return res.status(404).json({ success: false, message: "Tour not found" });
+      }
+  
+      // Combine old and new images
+      const updatedImages = [...tour.images, ...newImages];
+  
+      tour.images = updatedImages;
+      await tour.save();
+  
+      res.status(200).json({ success: true, data: tour });
+    } catch (error) {
+      console.error("Image update error:", error);
+      res.status(500).json({ success: false, message: "Failed to update travel images" });
+    }
+  };
+  
+exports.deleteTourImage = async (req, res) => {
+    const { id } = req.params;
+    const { index } = req.body; // Accept index to delete (e.g., 1 for second image)
+  
+    try {
+      const tour = await Tour.findById(id);
+      if (!tour) {
+        return res.status(404).json({ message: "Tour not found" });
+      }
+  
+      if (!Array.isArray(tour.images) || tour.images.length === 0) {
+        return res.status(400).json({ message: "No images to delete" });
+      }
+  
+      if (index < 0 || index >= tour.images.length) {
+        return res.status(400).json({ message: "Invalid image index" });
+      }
+  
+      // Remove the image at the given index
+      const removedImage = tour.images.splice(index, 1); // modifies array in place
+  
+      await tour.save();
+  
+      res.status(200).json({ message: "Image deleted", removed: removedImage[0], remaining: tour.images });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server error while deleting image" });
+    }
+  };
+  
 
 exports.sortByOrder = async function (req, res) {
   try {

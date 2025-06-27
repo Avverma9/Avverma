@@ -11,6 +11,7 @@ const {
   getRequestedTour,
   getTourByOwner,
   changeTourImage,
+  deleteTourImage,
 } = require("../../controllers/tour/tour");
 const { upload } = require("../../aws/upload");
 const {
@@ -35,6 +36,8 @@ router.get("/get-requests", getRequestedTour);
 router.get("/get-tour/by-owner/query", getTourByOwner);
 router.patch("/update-tour/data/:id", updateTour);
 router.patch("/update-tour-image/:id", upload, changeTourImage);
+router.delete("/delete-tour-image/:id",  deleteTourImage);
+
 
 //==========================================Booking Routes==========================================
 router.post("/tour-booking/create-tour-booking", createBooking);
