@@ -1,93 +1,21 @@
 const Dashboard = require('../models/dashboardUser');
+const Hotel = require("../models/hotel/basicDetails")
 const jwt = require('jsonwebtoken'); // Import the JWT library
 require('dotenv').config(); // Load environment variables
 
 // Register ===========================
 const registerUser = async (req, res) => {
     try {
-        const { name, email, mobile, password, role, address } = req.body;
+        const { name, email, mobile, password, role, city, state, pinCode, address, menuItems } = req.body;
         const emailExist = await Dashboard.findOne({ email: email });
         const mobileExist = await Dashboard.findOne({ mobile: mobile });
-
-        if (!['Admin', 'Developer', 'PMS', 'TMS', 'CA', "Rider"].includes(role)) {
-            return res.status(400).json({ message: 'Invalid role selection' });
-        }
-
         if (emailExist) {
             return res.status(400).json({ message: 'Email already existed' });
         }
-
         if (mobileExist) {
             return res.status(400).json({ message: 'Mobile already existed' });
         }
-
         const images = req.files.map((file) => file.location);
-
-        let menuItems = [];
-
-        if (role === 'Admin') {
-            menuItems = [
-                "Dashboard",
-                "Your Bookings",
-                "Your Complaints",
-                "Bookings",
-                "Hotels",
-                "Your Hotel",
-                "Set Monthly Price",
-                "PMS Manage Coupons",
-                "Admin Complaints",
-                "Bulk Operation",
-                "Add travel location",
-                "Availability",
-                "Set Month",
-                "Change banner",
-                "Admin Manage Coupons",
-                "Push notification",
-                "Messenger",
-                "Partners",
-                "Complaints",
-                "Reviews",
-                "Manage Coupons",
-                "Create Booking",
-                "Apply Coupons",
-                "Cars",
-                "Car Owner"
-            ];
-        } else if (role === 'PMS') {
-            menuItems = [
-                "Dashboard",
-                "Your Bookings",
-                "Your Complaints",
-                "Create Booking",
-                "Bookings",
-                "Messenger",
-                "Your Hotel",
-                "Set Monthly Price",
-                "PMS Manage Coupons"
-            ];
-        }
-        else if (role === 'Rider') {
-            menuItems = [
-                "Messenger",
-                "My Bookings",
-                "Add Car",
-                "My Ride",
-            ]
-        }
-        else if (role === 'TMS') {
-            menuItems = [
-                "Messenger",
-                "My Bookings",
-                "Add Car",
-                "Cars",
-                "My Ride",
-                "Add Owner",
-                "Tour List",
-                "Add Tour",
-                "Car Owner",
-            ]
-        }
-
         const created = await Dashboard.create({
             images,
             name,
@@ -95,6 +23,9 @@ const registerUser = async (req, res) => {
             role,
             address,
             mobile,
+            city,
+            state,
+            pinCode,
             password,
             menuItems
         });
@@ -176,17 +107,115 @@ const updateStatus = async (req, res) => {
 
 //get all users
 const getPartners = async function (req, res) {
-    const fetchUser = await Dashboard.find();
-    res.json(fetchUser);
+    try {
+        const aggregationPipeline = [
+            {
+                $lookup: {
+                    from: "hotels",
+                    localField: "email",
+                    foreignField: "hotelEmail",
+                    as: "hotelInfo"
+                }
+            },
+            {
+                $addFields: {
+                    hotelCount: { $size: "$hotelInfo" },
+                    hotelInfo: {
+                        $map: {
+                            input: "$hotelInfo",
+                            as: "hotel",
+                            in: {
+                                name: "$$hotel.name",
+                                role: "$$hotel.role",
+                                email: "$$hotel.hotelEmail",
+                                hotelName: "$$hotel.hotelName",
+                                menuItems: "$$hotel.menuItems",
+                                fullAddress: {
+                                    $let: {
+                                        vars: {
+                                            parts: {
+                                                $filter: {
+                                                    input: [
+                                                        "$$hotel.address",
+                                                        "$$hotel.city",
+                                                        "$$hotel.state",
+                                                        { $toString: "$$hotel.pinCode" }
+                                                    ],
+                                                    as: "part",
+                                                    cond: { $and: [{ $ne: ["$$part", null] }, { $ne: ["$$part", ""] }] }
+                                                }
+                                            }
+                                        },
+                                        in: {
+                                            $reduce: {
+                                                input: "$$parts",
+                                                initialValue: "",
+                                                in: {
+                                                    $cond: {
+                                                        if: { $eq: ["$$value", ""] },
+                                                        then: "$$this",
+                                                        else: { $concat: ["$$value", ", ", "$$this"] }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    password: 0
+                }
+            }
+        ];
+
+        const partners = await Dashboard.aggregate(aggregationPipeline);
+
+        res.status(200).json(
+            partners
+        );
+
+    } catch (error) {
+        console.error("Error fetching partners:", error);
+        res.status(500).json({ message: "Internal server error", error: error.message });
+    }
 };
 //delete
 const getPartnersById = async (req, res) => {
     try {
         const { userId } = req.params;
-        const fetchUser = await Dashboard.findById(userId);
-        res.status(200).json(fetchUser);
+
+        const user = await Dashboard.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // const foundHotels = await Hotel.find({ email: user.email });
+
+        // const hotelDetails = foundHotels.map(hotel => ({
+        //     hotelId: hotel.hotelId,
+        //     name: hotel.hotelName,
+        //     address: hotel.address,
+        //     city: hotel.city,
+        //     state: hotel.state
+        // }));
+
+        // const responsePayload = {
+        //     user,
+        //     hotelCount: foundHotels.length,
+        //     hotels: hotelDetails
+        // };
+
+        res.status(200).json(user);
+
     } catch (error) {
-        return res.status(500).json({ message: "It seeem's an error !" });
+        console.error('Error fetching partner by ID:', error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
 const deletePartner = async function (req, res) {
