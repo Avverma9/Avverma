@@ -80,6 +80,7 @@ const getUserById = async function (req, res) {
         return res.status(500).send({ status: false, msg: err.message });
     }
 };
+
 //=====================================Google Sign in=================================
 
 const GoogleSignIn = async function (req, res) {

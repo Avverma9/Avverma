@@ -13,5 +13,8 @@ router.delete('/delete/dashboard/delete/partner/:id', DashboardUser.deletePartne
 router.patch('/update/dashboard/updated/partner/:id', upload, DashboardUser.updatePartner);
 router.post('/api/users/:id/menu-items', DashboardUser.addMenu);
 router.patch('/api/users/:id/menu-items', DashboardUser.deleteMenu);
+router.patch('/api/users/delete-all-menu-items/:id', DashboardUser.deleteAllMenus);
+router.get('/api/users-get-user/by/query', DashboardUser.filterPartner);
+
 
 module.exports = router;
