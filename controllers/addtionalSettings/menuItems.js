@@ -42,3 +42,27 @@ exports.deleteMenuById = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+
+exports.changeStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const menuItem = await MenuItem.findById(id);
+      if (!menuItem) {
+        return res.status(404).json({ message: "Menu item not found" });
+      }
+      // Toggle the isActive field
+      menuItem.isActive = !menuItem.isActive;
+  
+      await menuItem.save();
+  
+      return res.status(200).json({
+        message: `Status changed to ${menuItem.isActive ? 'active' : 'inactive'}`,
+        data: menuItem
+      });
+  
+    } catch (error) {
+      console.error("Error changing status:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  };
+  
