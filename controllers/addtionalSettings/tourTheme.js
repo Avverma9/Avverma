@@ -30,7 +30,7 @@ exports.getTourThemes = async (req, res) => {
 
 exports.deleteTourThemeById = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!id) {
       return res.status(400).json({ message: "ID is required" });

@@ -2,6 +2,7 @@
 const TravelBooking = require("../../models/travel/travelBooking");
 const carOwner = require("../../models/travel/carOwner");
 const Car = require("../../models/travel/cars");
+const { default: mongoose } = require("mongoose");
 
 exports.bookCar = async (req, res) => {
     try {
@@ -48,43 +49,51 @@ exports.bookCar = async (req, res) => {
     }
 };
 
-
 exports.getTravelBookings = async (req, res) => {
     try {
-        const bookings = await TravelBooking.find();
-
-        const enrichedBookings = await Promise.all(
-            bookings.map(async (booking) => {
-                const car = await Car.findById(booking.carId).lean();
-
-                if (!car || !Array.isArray(car.seatConfig)) {
-                    return {
-                        ...booking.toObject(),
-                        availableSeatsOnCar: [],
-                    };
-                }
-
-                return {
-                    ...booking.toObject(),
-                    availableSeatsOnCar: car.seatConfig,
-                };
-            })
-        );
-
-        res.status(200).json(enrichedBookings);
+      const bookings = await TravelBooking.find();
+  
+      const enrichedBookings = await Promise.all(
+        bookings.map(async (booking) => {
+          const car = await Car.findById(booking.carId).lean();
+  
+          let seatDetails = [];
+  
+          if (car && Array.isArray(car.seatConfig)) {
+            seatDetails = car.seatConfig.filter((seat) =>
+              booking.seats.includes(seat._id.toString())
+            );
+          }
+  
+          // Calculate total price from seat prices
+          const totalSeatPrice = seatDetails.reduce(
+            (sum, seat) => sum + (seat.seatPrice || 0),
+            0
+          );
+  
+          return {
+            ...booking.toObject(),
+            seats: seatDetails,         // enriched seat info
+            totalSeatPrice: totalSeatPrice,  // added field
+          };
+        })
+      );
+  
+      res.status(200).json(enrichedBookings);
     } catch (error) {
-        console.error("Error in getTravelBookings:", error);
-        res.status(500).json({
-            message: 'Something went wrong',
-            error: error.message,
-        });
+      console.error("Error in getTravelBookings:", error);
+      res.status(500).json({
+        message: 'Something went wrong',
+        error: error.message,
+      });
     }
-};
+  };
+  
 
 exports.updateBooking = async function (req, res) {
     try {
         const { id, data } = req.body;
-
+console.log("Update Booking Data:", req.body); // Debugging line
         if (!id) {
             return res.status(400).json({ message: "Booking ID is required" });
         }
