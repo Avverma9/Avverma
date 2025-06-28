@@ -6,7 +6,7 @@ import { token, userId } from '../../utils/Unauthorized';
 
 export const createTravel = createAsyncThunk('travel/createTravel', async (formDataToSend, { rejectWithValue }) => {
     try {
-        const response = await axios.post(`${baseURL}/create-travel`, formDataToSend, {
+        const response = await axios.post(`${baseURL}/create-tour`, formDataToSend, {
             headers: {
                 Authorization: token,
             },
@@ -22,7 +22,7 @@ export const createTravel = createAsyncThunk('travel/createTravel', async (formD
 
 export const getTravelList = createAsyncThunk('travel/getTravelList', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/get-travel-list`, {
+        const response = await axios.get(`${baseURL}/get-tour-list`, {
             headers: {
                 Authorization: token,
             },
@@ -35,7 +35,7 @@ export const getTravelList = createAsyncThunk('travel/getTravelList', async (_, 
 
 export const getTravelByPrice = createAsyncThunk('travel/getTravelByPrice', async ({ minPrice, maxPrice }, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/sort-travel/by-price?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
+        const response = await axios.get(`${baseURL}/sort-tour/by-price?minPrice=${minPrice}&maxPrice=${maxPrice}`, {
             headers: {
                 Authorization: token,
             },
@@ -47,7 +47,7 @@ export const getTravelByPrice = createAsyncThunk('travel/getTravelByPrice', asyn
 });
 export const getTravelByDuration = createAsyncThunk('travel/getTravelByDuration', async ({ minNights, maxNights }, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/sort-travel/by-duration?minNights=${minNights}&maxNights=${maxNights}`, {
+        const response = await axios.get(`${baseURL}/sort-tour/by-duration?minNights=${minNights}&maxNights=${maxNights}`, {
             headers: {
                 Authorization: token,
             },
@@ -60,7 +60,7 @@ export const getTravelByDuration = createAsyncThunk('travel/getTravelByDuration'
 
 export const getTravelByThemes = createAsyncThunk('travel/getTravelByThemes', async (themes, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/sort-travel/by-themes?themes=${themes}`, {
+        const response = await axios.get(`${baseURL}/sort-tour/by-themes?themes=${themes}`, {
             headers: {
                 Authorization: token,
             },
@@ -72,7 +72,7 @@ export const getTravelByThemes = createAsyncThunk('travel/getTravelByThemes', as
 });
 export const getTravelByOrder = createAsyncThunk('travel/getTravelByOrder', async (sort, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/sort-travel/by-order?sort=${sort}`, {
+        const response = await axios.get(`${baseURL}/sort-tour/by-order?sort=${sort}`, {
             headers: {
                 Authorization: token,
             },
@@ -85,7 +85,7 @@ export const getTravelByOrder = createAsyncThunk('travel/getTravelByOrder', asyn
 
 export const getTravelById = createAsyncThunk('travel/getTravelById', async (id, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${baseURL}/get-travel/${id}`, {
+        const response = await axios.get(`${baseURL}/get-tour/${id}`, {
             headers: {
                 Authorization: token,
             },

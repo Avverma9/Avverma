@@ -1,85 +1,102 @@
 import React from 'react';
-import { Box, Typography, Stack, useMediaQuery, useTheme } from '@mui/material';
-import { FaInfoCircle } from 'react-icons/fa'; // Import FaInfo icon
+import { Box, Typography, Accordion, AccordionSummary, AccordionDetails, Stack } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import GavelIcon from '@mui/icons-material/Gavel';
+import PaymentIcon from '@mui/icons-material/Payment';
+import CancelIcon from '@mui/icons-material/Cancel';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+
+// Helper function to format the object keys into readable titles
+const formatTermKey = (key) => {
+    const spaced = key.replace(/([A-Z])/g, ' $1');
+    return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+};
+
+// Helper function to assign a relevant icon to each policy type
+const getTermIcon = (key) => {
+    const lowerCaseKey = key.toLowerCase();
+    if (lowerCaseKey.includes('cancellation')) {
+        return <CancelIcon color="primary" />;
+    }
+    if (lowerCaseKey.includes('payment') || lowerCaseKey.includes('refund')) {
+        return <PaymentIcon color="primary" />;
+    }
+    if (lowerCaseKey.includes('policy')) {
+        return <GavelIcon color="primary" />;
+    }
+    return <InfoOutlinedIcon color="primary" />;
+};
 
 const TermsAndCondition = ({ data }) => {
-    // Check if data is loaded correctly
-    if (!data || !data.termsAndConditions) {
+    if (!data?.termsAndConditions || Object.keys(data.termsAndConditions).length === 0) {
         return (
-            <Box sx={{ padding: 2, maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-                <Typography variant="h6">Terms & Conditions Not Available</Typography>
+            <Box sx={{ p: 2, textAlign: 'center', border: 1, borderColor: 'grey.300', borderRadius: 2 }}>
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>Terms & Conditions</Typography>
+                <Typography color="text.secondary">Details are not currently available.</Typography>
             </Box>
         );
     }
 
-
-    // Iterate over the termsAndConditions keys
-    const terms = data?.termsAndConditions;
-    const termKeys = Object.keys(terms); // Get keys (e.g., cancellation, refund, bookingPolicy)
-
-    // Use MUI's useTheme and useMediaQuery to detect mobile devices
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Check if the screen size is mobile
+    const terms = data.termsAndConditions;
+    const termKeys = Object.keys(terms);
 
     return (
-        <Box sx={{ padding: 2, maxWidth: '1000px', margin: '0 auto' }}>
+        <Box sx={{ maxWidth: 900, mx: 'auto', p: { xs: 1, sm: 2 } }}>
             <Typography
-                className="itinerary-title"
+                variant="h6"
                 sx={{
                     textAlign: 'center',
-                    color: '#333',
-                    padding: '8px 12px',
-                    marginBottom: '20px',
-                    fontWeight: 'bold',
-                    fontSize: '1.2rem', // Reduced font size
+                    mb: 2,
+                    color: 'text.primary',
                 }}
             >
                 Terms & Conditions
             </Typography>
-            <Stack spacing={2}>
-                {termKeys.map((key) => (
-                    <Box
+
+            <Box>
+                {termKeys.map((key, index) => (
+                    <Accordion
                         key={key}
+                        defaultExpanded={index === 0} // Expand the first item by default
                         sx={{
-                            padding: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: isMobile ? '100%' : 'auto', // Full width on mobile, auto on larger screens
-                            backgroundColor: '#fff', // Clean white background
-                            borderRadius: '8px', // Soft rounded corners
-                            marginBottom: 2, // Spacing between the terms
-                            border: '1px solid #ddd', // Light grey border around each term
+                            // Use variant outlined for clean borders
+                            border: 1,
+                            borderColor: 'divider',
+                            boxShadow: 'none',
+                            '&:not(:last-child)': {
+                                borderBottom: 0,
+                            },
+                            '&:before': {
+                                display: 'none', // Remove default top border
+                            },
+                            '&.Mui-expanded': {
+                                margin: '0 0',
+                            },
                         }}
                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: 1 }}>
-                            <FaInfoCircle size={22} color="#0277BD" /> {/* Smaller icon size */}
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={`${key}-content`}
+                            id={`${key}-header`}
+                        >
+                            <Stack direction="row" alignItems="center" spacing={1.5}>
+                                {getTermIcon(key)}
+                                <Typography sx={{ fontWeight: 500 }}>
+                                    {formatTermKey(key)}
+                                </Typography>
+                            </Stack>
+                        </AccordionSummary>
+                        <AccordionDetails sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
                             <Typography
                                 variant="body2"
-                                sx={{
-                                    color: '#0277BD',
-                                    marginLeft: 1,
-                                    fontWeight: 'bold',
-                                    textTransform: 'capitalize', // Ensure key names are capitalized
-                                    fontSize: '1rem', // Reduced font size
-                                }}
+                                sx={{ color: 'text.secondary', lineHeight: 1.6, overflowWrap: 'break-word' }}
                             >
-                                {key}
+                                {terms[key] || `Details for ${formatTermKey(key)} are not available.`}
                             </Typography>
-                        </Box>
-                        <Typography
-                            variant="body2"
-                            sx={{
-                                color: '#555',
-                                lineHeight: '1.4',
-                                fontSize: '0.9rem', // Reduced font size for body text
-                                marginBottom: 1,
-                            }}
-                        >
-                            {terms[key] || `${key.charAt(0).toUpperCase() + key.slice(1)} details are not available.`}
-                        </Typography>
-                    </Box>
+                        </AccordionDetails>
+                    </Accordion>
                 ))}
-            </Stack>
+            </Box>
         </Box>
     );
 };

@@ -1,97 +1,119 @@
 import React from 'react';
-import { Box, Grid, Typography, Paper, Stack } from '@mui/material';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
+import { Box, Grid, Typography, Paper, Stack, Divider } from '@mui/material';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const InclusionExclusion = ({ data }) => {
+    const hasInclusions = data?.inclusion && data.inclusion.length > 0;
+    const hasExclusions = data?.exclusion && data.exclusion.length > 0;
 
     return (
-        <Box className="booking-container" sx={{ padding: 1, maxWidth: 1200, margin: '0 auto' }}>
+        <Box sx={{ maxWidth: 1100, mx: 'auto', p: { xs: 1, sm: 2 } }}>
             <Typography
+                variant="h6"
                 sx={{
                     textAlign: 'center',
-                    fontSize: '16px',
-                    fontWeight: 600,
-                    color: '#333',
-                    padding: '8px 20px',
-                    marginBottom: '16px',
+                    mb: 4,
+                    color: 'text.primary',
                 }}
             >
-                Inclusion & Exclusion
+                Inclusions & Exclusions
             </Typography>
-            <Grid container spacing={2}>
+            <Grid container spacing={{ xs: 2, md: 3 }}>
                 {/* Inclusions Section */}
                 <Grid item xs={12} md={6}>
-                    <Box
+                    <Paper
+                        variant="outlined"
                         sx={{
-                            padding: 2,
-                            backgroundColor: '#E8F5E9',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: '250px', // Fixed height for Inclusions
-                            border: '1px solid #ddd', // Light grey border around inclusions
-                            borderRadius: '8px', // Rounded corners
-                            boxShadow: 'none', // Remove shadow to match Paper component appearance
-                            transition: 'transform 0.3s ease',
-                            '&:hover': { transform: 'scale(1.02)' },
+                            height: '100%',
+                            borderRadius: 2,
+                            overflow: 'hidden', // Ensures inner content respects border radius
+                            transition: 'box-shadow 0.3s',
+                            '&:hover': {
+                                boxShadow: (theme) => theme.shadows[2],
+                            },
                         }}
                     >
-                        <Typography
-                            variant="h6"
-                            fontWeight="600"
-                            color="green"
-                            sx={{ mb: 1, textAlign: 'center', backgroundColor: '#E8F5E9' }}
+                        <Box
+                            sx={{
+                                p: 1.5,
+                                bgcolor: 'success.lighter',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}
                         >
-                            Inclusions
-                        </Typography>
-                        <Stack spacing={1} sx={{ overflowY: 'auto', maxHeight: 'calc(250px - 40px)' }}>
-                            {data?.inclusion?.map((item, index) => (
-                                <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <CheckCircleIcon sx={{ color: 'green', fontSize: 20, mr: 1 }} />
-                                    <Typography variant="body2" sx={{ fontSize: 14 }}>
-                                        {item}
-                                    </Typography>
-                                </Box>
-                            ))}
+                            <CheckCircleOutlineIcon sx={{ color: 'success.main' }} />
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.darker' }}>
+                                Inclusions
+                            </Typography>
+                        </Box>
+                        <Divider />
+                        <Stack spacing={1.5} sx={{ p: 2 }}>
+                            {hasInclusions ? (
+                                data.inclusion.map((item, index) => (
+                                    <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+                                        <CheckCircleOutlineIcon sx={{ color: 'success.main', mt: '3px', fontSize: '1.1rem' }} />
+                                        <Typography variant="body2" sx={{ color: 'text.secondary', overflowWrap: 'break-word' }}>
+                                            {item}
+                                        </Typography>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Typography variant="body2" sx={{ color: 'text.disabled', fontStyle: 'italic' }}>
+                                    No specific inclusions listed.
+                                </Typography>
+                            )}
                         </Stack>
-                    </Box>
+                    </Paper>
                 </Grid>
 
                 {/* Exclusions Section */}
                 <Grid item xs={12} md={6}>
-                    <Box
+                    <Paper
+                        variant="outlined"
                         sx={{
-                            padding: 2,
-                            backgroundColor: '#FFEBEE',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: '250px', // Fixed height for Exclusions
-                            border: '1px solid #ddd', // Light grey border around exclusions
-                            borderRadius: '8px', // Rounded corners
-                            boxShadow: 'none', // Remove shadow to match Paper component appearance
-                            transition: 'transform 0.3s ease',
-                            '&:hover': { transform: 'scale(1.02)' },
+                            height: '100%',
+                            borderRadius: 2,
+                            overflow: 'hidden',
+                            transition: 'box-shadow 0.3s',
+                            '&:hover': {
+                                boxShadow: (theme) => theme.shadows[2],
+                            },
                         }}
                     >
-                        <Typography
-                            variant="h6"
-                            fontWeight="600"
-                            color="red"
-                            sx={{ mb: 1, textAlign: 'center', backgroundColor: '#FFEBEE' }}
+                        <Box
+                            sx={{
+                                p: 1.5,
+                                bgcolor: 'error.lighter',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1,
+                            }}
                         >
-                            Exclusions
-                        </Typography>
-                        <Stack spacing={1} sx={{ overflowY: 'auto', maxHeight: 'calc(250px - 40px)' }}>
-                            {data?.exclusion?.map((item, index) => (
-                                <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <CancelIcon sx={{ color: 'red', fontSize: 20, mr: 1 }} />
-                                    <Typography variant="body2" sx={{ fontSize: 14 }}>
-                                        {item}
-                                    </Typography>
-                                </Box>
-                            ))}
+                            <HighlightOffIcon sx={{ color: 'error.main' }} />
+                            <Typography variant="h6" sx={{ fontWeight: 600, color: 'error.darker' }}>
+                                Exclusions
+                            </Typography>
+                        </Box>
+                        <Divider />
+                        <Stack spacing={1.5} sx={{ p: 2 }}>
+                            {hasExclusions ? (
+                                data.exclusion.map((item, index) => (
+                                    <Box key={index} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+                                        <HighlightOffIcon sx={{ color: 'error.main', mt: '3px', fontSize: '1.1rem' }} />
+                                        <Typography variant="body2" sx={{ color: 'text.secondary', overflowWrap: 'break-word' }}>
+                                            {item}
+                                        </Typography>
+                                    </Box>
+                                ))
+                            ) : (
+                                <Typography variant="body2" sx={{ color: 'text.disabled', fontStyle: 'italic' }}>
+                                    No specific exclusions listed.
+                                </Typography>
+                            )}
                         </Stack>
-                    </Box>
+                    </Paper>
                 </Grid>
             </Grid>
         </Box>

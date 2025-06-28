@@ -4,7 +4,6 @@ import { getBookings } from "../../../redux/reducers/travelSlice";
 import "./tour-booking.css";
 import BookingModal from "./booking-modal";
 import { formatDate } from "../../../utils/convertDate";
-import BookingSkeleton from "./skeleton-loading";
 
 export default function TourBooking() {
     const dispatch = useDispatch();
