@@ -26,6 +26,7 @@ const dashboardUser = new mongoose.Schema(
     address: String,
     pinCode: Number,
     city: String,
+    state:String,
     isOnline: { type: Boolean, default: false }, // Track online status
     lastSeen: {
       type: Date,
