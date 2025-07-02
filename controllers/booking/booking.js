@@ -1,6 +1,7 @@
 const bookingModel = require("../../models/booking/booking");
 const hotelModel = require("../../models/hotel/basicDetails");
 const userModel = require("../../models/user");
+const { sendBookingMail } = require("../../nodemailer/nodemailer");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
@@ -90,6 +91,14 @@ const createBooking = async (req, res) => {
     });
     // Save the booking
     const savedBooking = await booking.save();
+
+    await sendBookingMail({
+      email: booking?.user?.email,
+      subject: "Booking Confirmation",
+      bookingData: booking,
+      link: process.env.FRONTEND_URL,
+    });
+
     for (const bookedRoom of roomDetails) {
       const { roomId } = bookedRoom;
       await hotelModel.updateOne(
@@ -137,35 +146,51 @@ const updateBooking = async (req, res) => {
 
   try {
     const updatedData = await bookingModel.findOneAndUpdate(
-      { bookingId: bookingId },
+      { bookingId },
       { $set: data },
-      { new: true },
+      { new: true }
     );
-    if (updatedData && updatedData.bookingStatus === "Cancelled") {
-      const roomId = updatedData?.roomDetails[0]?.roomId; // Extract roomId from the booking
+
+    if (!updatedData) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
+    if (updatedData.bookingStatus === "Cancelled") {
+      const roomId = updatedData?.roomDetails[0]?.roomId;
 
       const findHotel = await hotelModel.findOne({
         hotelId: updatedData.hotelDetails.hotelId,
       });
+
       if (findHotel) {
         const roomIndex = findHotel.rooms.findIndex(
-          (room) => room.roomId === roomId,
+          (room) => room.roomId === roomId
         );
 
         if (roomIndex !== -1) {
           findHotel.rooms[roomIndex].countRooms += 1;
-          findHotel.markModified(`rooms.${roomIndex}.countRooms`); // 👈 tell Mongoose this field was changed
+          findHotel.markModified(`rooms.${roomIndex}.countRooms`);
           await findHotel.save();
         }
-
       }
     }
+
+    if (updatedData.bookingStatus === "Checked-Out") {
+      await sendBookingMail({
+        email: updatedData?.user?.email,
+        subject: "Booking Checked Out",
+        bookingData: updatedData,
+        link: process.env.FRONTEND_URL,
+      });
+    }
+
     res.json(updatedData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 //==========================================================getallBookingByID main site bookings list=======================
 const getAllFilterBookings = async (req, res) => {
