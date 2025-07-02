@@ -239,7 +239,7 @@ const sendThankYouForVisitMail = async ({ email, subject, bookingData, reviewLin
  * @param {string} message - The main body of the email (can be plain text).
  * @param {string} [link] - An optional URL for a call-to-action button.
  */
-const sendCustomEmail = async (email, subject, message, link) => {
+const sendCustomEmail = async ({email, subject, message, link}) => {
     const currentYear = new Date().getFullYear();
     const linkHtml = link
         ? `<p style="text-align:center; margin: 30px 0;"><a href="${link}" style="background: #3182ce; color: white; padding: 12px 28px; border-radius: 6px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; box-shadow: 0 4px 12px rgba(49, 130, 206, 0.5);">Click Here</a></p>`

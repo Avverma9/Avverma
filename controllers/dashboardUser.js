@@ -1,6 +1,7 @@
 const Dashboard = require("../models/dashboardUser");
 const Hotel = require("../models/hotel/basicDetails");
 const jwt = require("jsonwebtoken"); // Import the JWT library
+const { sendCustomEmail, generateOtp, sendOtpEmail } = require("../nodemailer/nodemailer");
 require("dotenv").config(); // Load environment variables
 
 // Register ===========================
@@ -40,14 +41,83 @@ const registerUser = async (req, res) => {
       password,
       menuItems,
     });
-
+    const subject = `Congratulations! You are now a ${role} partner of HotelRoomsstay`;
+    const message = `Hello,
+Welcome to HotelRoomsstay! We are excited to have you as a ${role} partner.
+You can now log in to your dashboard using the following credentials:
+Email: ${email}
+Password: ${password}
+Please log in and change your password at your earliest convenience. You can access the partner portal by clicking the button below.`;
+    const link = process.env.ADMIN_PANEL;
+    await sendCustomEmail(email, subject, message, link);
     res.status(201).json({ message: "Registration Done", created });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-//Login ====
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+    const findAcc = await Dashboard.findOne({ email: email });
+    if (findAcc) {
+      const otp = generateOtp();
+      findAcc.resetOtp = otp;
+      findAcc.otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 min expiry
+      await findAcc.save();
+      await sendOtpEmail(email, otp);
+    }
+    return res.status(200).json({ message: "If the email is registered, an OTP has been sent." });
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+    return res.status(500).json({ message: "Something went wrong. Please try again later." });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+      return res.status(400).json({ message: "Email, OTP, and new password are required." });
+    }
+
+    const user = await Dashboard.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "Account not found." });
+    }
+
+    // Check if OTP is correct and not expired
+    if (
+      user.resetOtp !== otp ||
+      !user.otpExpiry ||
+      new Date() > new Date(user.otpExpiry)
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP." });
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Save the new password and clear OTP
+    user.password = hashedPassword;
+    user.resetOtp = undefined;
+    user.otpExpiry = undefined;
+
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully." });
+
+  } catch (error) {
+    console.error("Change Password Error:", error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
 const loginUser = async function (req, res) {
   const { email, password } = req.body;
@@ -187,11 +257,11 @@ const getPartners = async function (req, res) {
           },
         },
       },
-    //   {
-    //     $project: {
-    //       password: 0,
-    //     },
-    //   },
+      //   {
+      //     $project: {
+      //       password: 0,
+      //     },
+      //   },
     ];
 
     const partners = await Dashboard.aggregate(aggregationPipeline);
@@ -524,4 +594,6 @@ module.exports = {
   deleteAllMenus,
   getPartnersById,
   filterPartner,
+  forgotPassword,
+  changePassword
 };
