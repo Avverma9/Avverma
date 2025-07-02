@@ -1,7 +1,7 @@
 const bookingModel = require("../../models/booking/booking");
 const hotelModel = require("../../models/hotel/basicDetails");
 const userModel = require("../../models/user");
-const { sendBookingMail } = require("../../nodemailer/nodemailer");
+const { sendBookingConfirmationMail } = require("../../nodemailer/nodemailer");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
@@ -91,8 +91,7 @@ const createBooking = async (req, res) => {
     });
     // Save the booking
     const savedBooking = await booking.save();
-
-    await sendBookingMail({
+    await sendBookingConfirmationMail({
       email: booking?.user?.email,
       subject: "Booking Confirmation",
       bookingData: booking,
@@ -176,9 +175,9 @@ const updateBooking = async (req, res) => {
     }
 
     if (updatedData.bookingStatus === "Checked-Out") {
-      await sendBookingMail({
+      await sendThankYouForVisitMail({
         email: updatedData?.user?.email,
-        subject: "Booking Checked Out",
+        subject: "Thank you for visiting",
         bookingData: updatedData,
         link: process.env.FRONTEND_URL,
       });
