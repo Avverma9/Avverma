@@ -43,7 +43,6 @@ const BookingDetails = ({
   const [openModal, setOpenModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const gstData = useSelector((state) => state.gst.gst);
-  const sendMail = useBookingMail();
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
@@ -142,8 +141,6 @@ const BookingDetails = ({
   const finalTotal = bookingDetails.total;
   const calculatedGST = bookingDetails.gstAmount;
 
-  // console.log("Your final booking total is:", finalTotal);
-  // console.log("The GST amount included is:", calculatedGST);
   const calculateBasePrice = () => {
     let totalPrice = 0;
 
@@ -251,7 +248,6 @@ const BookingDetails = ({
             },
             6,
           );
-          sendMail(bookedDetails.data); // ✅ using the hook
 
           sessionStorage.removeItem("discountPrice");
           setSelectedFood([]);
@@ -395,7 +391,6 @@ const BookingDetails = ({
               6,
             );
 
-            sendMail(bookingRespData.data);
 
             // Cleanup
             sessionStorage.removeItem("discountPrice");
@@ -529,7 +524,6 @@ const BookingDetails = ({
 
             const data = await response.json();
 
-            sendMail(data.data);
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
