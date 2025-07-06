@@ -49,7 +49,7 @@ Email: ${email}
 Password: ${password}
 Please log in and change your password at your earliest convenience. You can access the partner portal by clicking the button below.`;
     const link = process.env.ADMIN_PANEL;
-    await sendCustomEmail(email, subject, message, link);
+    await sendCustomEmail({ email, subject, message, link });
     res.status(201).json({ message: "Registration Done", created });
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
