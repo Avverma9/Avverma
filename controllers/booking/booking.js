@@ -174,7 +174,7 @@ const updateBooking = async (req, res) => {
       }
     }
 
-    if (updatedData.bookingStatus === "Checked-Out") {
+    if (updatedData.bookingStatus === "Checked-out") {
       await sendThankYouForVisitMail({
         email: updatedData?.user?.email,
         subject: "Thank you for visiting",
