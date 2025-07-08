@@ -1,7 +1,7 @@
 const bookingModel = require("../../models/booking/booking");
 const hotelModel = require("../../models/hotel/basicDetails");
 const userModel = require("../../models/user");
-const { sendBookingConfirmationMail } = require("../../nodemailer/nodemailer");
+const { sendBookingConfirmationMail, sendThankYouForVisitMail, sendBookingCancellationMail } = require("../../nodemailer/nodemailer");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
@@ -178,6 +178,15 @@ const updateBooking = async (req, res) => {
       await sendThankYouForVisitMail({
         email: updatedData?.user?.email,
         subject: "Thank you for visiting",
+        bookingData: updatedData,
+        link: process.env.FRONTEND_URL,
+      });
+    }
+
+    if (updatedData.bookingStatus === "Cancelled") {
+      await sendBookingCancellationMail({
+        email: updatedData?.user?.email,
+        subject: "Booking Cancelled !",
         bookingData: updatedData,
         link: process.env.FRONTEND_URL,
       });

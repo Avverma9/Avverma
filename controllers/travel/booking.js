@@ -93,7 +93,6 @@ exports.getTravelBookings = async (req, res) => {
 exports.updateBooking = async function (req, res) {
     try {
         const { id, data } = req.body;
-console.log("Update Booking Data:", req.body); // Debugging line
         if (!id) {
             return res.status(400).json({ message: "Booking ID is required" });
         }
@@ -134,31 +133,53 @@ console.log("Update Booking Data:", req.body); // Debugging line
 
 exports.getBookingsOfOwner = async (req, res) => {
     try {
-        const { ownerId } = req.params;
-        const ownerCars = await Car.find({ ownerId: ownerId });
-        const carIds = ownerCars.map((car) => car._id);
-        const bookings = await TravelBooking.find({ carId: { $in: carIds } });
-        const enrichedBookings = await Promise.all(
-            bookings.map(async (booking) => {
-                const car = await Car.findById(booking.carId).lean();
-
-                if (!car || !Array.isArray(car.seatConfig)) {
-                    return {
-                        ...booking.toObject(),
-                        availableSeatsOnCar: [],
-                    };
-                }
-
-                return {
-                    ...booking.toObject(),
-                    availableSeatsOnCar: car.seatConfig,
-                };
-            })
-        );
-
-        res.status(200).json(enrichedBookings);
+      const { ownerId } = req.params;
+  
+      const ownerCars = await Car.find({ ownerId: ownerId });
+      const carIds = ownerCars.map((car) => car._id);
+  
+      const bookings = await TravelBooking.find({ carId: { $in: carIds } });
+  
+      const enrichedBookings = await Promise.all(
+        bookings.map(async (booking) => {
+          const car = await Car.findById(booking.carId).lean();
+  
+          if (!car || !Array.isArray(car.seatConfig)) {
+            return {
+              ...booking.toObject(),
+              availableSeatsOnCar: [],
+            };
+          }
+  
+          const bookingObj = booking.toObject();
+  
+          // Match booked seat IDs with seat objects (including price)
+          const fullSeatDetails = bookingObj.seats.map(seatId =>
+            car.seatConfig.find(seat =>
+              String(seat._id) === String(seatId)
+            )
+          ).filter(Boolean);
+  
+          // Optional: Total price of booked seats
+          const totalSeatPrice = fullSeatDetails.reduce((sum, seat) => {
+            return sum + (seat?.seatPrice || 0);
+          }, 0);
+  
+          return {
+            ...bookingObj,
+            availableSeatsOnCar: car.seatConfig,
+            seats: fullSeatDetails,           // full seat objects with price
+            totalSeatPrice                    // optional: sum of booked seat prices
+          };
+        })
+      );
+  
+      res.status(200).json(enrichedBookings);
+      console.log("enrichedBookings", enrichedBookings);
+  
     } catch (error) {
-        console.error('Error fetching booking count:', error);
-        res.status(500).json({ message: 'Server error' });
+      console.error('Error fetching booking data:', error);
+      res.status(500).json({ message: 'Server error' });
     }
-};
+  };
+  
