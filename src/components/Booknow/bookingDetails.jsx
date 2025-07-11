@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from "react";
-import useBookingMail from "./bookingMailConfirmation";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   userEmail,
