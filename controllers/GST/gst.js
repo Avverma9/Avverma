@@ -18,7 +18,7 @@ exports.createGST = async (req, res) => {
   }
 };
 
-exports.getGST = async ({ type, gstThreshold }) => {
+exports.getGSTData = async ({ type, gstThreshold }) => {
   let filter = {};
 
   if (type) {
@@ -40,6 +40,39 @@ exports.getGST = async ({ type, gstThreshold }) => {
     throw new Error("Error fetching GST"); // Throw an error to be caught by the calling function
   }
 };
+
+exports.getGST = async (req, res) => {
+  try {
+    const { type, gstThreshold } = req.query;
+    let filter = {};
+
+    if (type) {
+      filter.type = type;
+    }
+
+    if (gstThreshold) {
+      const gstThresholdValue = parseFloat(gstThreshold);
+      if (!isNaN(gstThresholdValue)) {
+        filter.gstMinThreshold = { $lte: gstThresholdValue };
+        filter.gstMaxThreshold = { $gte: gstThresholdValue };
+      } else {
+        return res.status(400).json({ message: "Invalid gstThreshold value" });
+      }
+    }
+
+    const gst = await GST.findOne(filter);
+
+    if (!gst) {
+      return res.status(404).json({ message: "GST entry not found" });
+    }
+
+    return res.status(200).json(gst);
+  } catch (error) {
+    console.error("Error fetching GST:", error);
+    return res.status(500).json({ message: "Server error fetching GST", error: error.message });
+  }
+};
+
 
 exports.getAllGST = async (req, res) => {
   try {

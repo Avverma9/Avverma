@@ -18,6 +18,7 @@ const travelBookingSchema = new mongoose.Schema({
     required: true,
   },
   price:Number,
+  gstPrice:Number,
   vehicleNumber: {
     type: String,
     required: true,

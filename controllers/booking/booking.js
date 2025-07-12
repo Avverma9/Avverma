@@ -2,12 +2,12 @@ const bookingModel = require("../../models/booking/booking");
 const hotelModel = require("../../models/hotel/basicDetails");
 const userModel = require("../../models/user");
 const { sendBookingConfirmationMail, sendThankYouForVisitMail, sendBookingCancellationMail } = require("../../nodemailer/nodemailer");
-const { getGST } = require("../GST/gst");
+const { getGSTData } = require("../GST/gst");
 //==========================================creating booking========================================================================================================
 const createBooking = async (req, res) => {
   try {
     const { userId, hotelId } = req.params;
-    const {
+    let {
       checkInDate,
       checkOutDate,
       guests,
@@ -43,10 +43,10 @@ const createBooking = async (req, res) => {
       })
       .join('');
     const roomPrice = roomDetails.reduce((sum, room) => sum + room.price, 0)
-    const getGstData = await getGST({ type: "Hotel", gstThreshold: price })
+    const getGstData = await getGSTData({ type: "Hotel", gstThreshold: price })
     const calculatedGst = getGstData.gstPrice
     const gstAmount = (roomPrice * calculatedGst) / 100;
-    const finalPrice = roomPrice + gstAmount;
+    const finalPrice = price + gstAmount;
     const booking = new bookingModel({
       bookingId,
       user: {
