@@ -12,8 +12,8 @@ import { useLoader } from "../../utils/loader";
 import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
-import { getGst } from "../../redux/reducers/gstSlice";
 import BookingPage from "./bookingPage";
+import { getGst } from "../../redux/reducers/gstSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -40,8 +40,9 @@ const BookingDetails = ({
   const [discountPrice, setDiscountPrice] = useState(0);
   const [selectedFood, setSelectedFood] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const gstData = useSelector((state) => state.gst.gst);
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const toBeCheckRoomNumber =
     parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
@@ -102,43 +103,42 @@ const BookingDetails = ({
       dispatch(getGst(payload));
     }
   }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
+  const gstAmount = gstData?.gstPrice;
 
-  const calculateTotalWithGST = () => {
+  const calculateTotal = () => {
     if (!selectedRooms || selectedRooms.length === 0 || !selectedRooms[0]) {
-      return { total: 0, gstAmount: 0 };
+      return { total: 0 };
     }
 
     const singleRoomPrice = selectedRooms[0].price || 0;
-    const gstPercent = parseFloat(gstData?.gstPrice || 0);
 
     const daysDifference = Math.ceil(
       (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
     );
 
     if (daysDifference < 1) {
-      return { total: 0, gstAmount: 0 };
+      return { total: 0 };
     }
 
     const baseRoomPriceForAllRooms =
       singleRoomPrice * daysDifference * roomsCount;
 
-    const gstAmount = (singleRoomPrice * daysDifference * gstPercent) / 100;
+    const foodPrice = selectedFood.reduce(
+      (total, food) => total + food.price * (food.quantity || 1),
+      0,
+    );
 
-    const totalWithGST = baseRoomPriceForAllRooms + gstAmount;
+    const total = baseRoomPriceForAllRooms + foodPrice;
 
-    const discountedTotal = totalWithGST - (discountPrice || 0);
-
-    console.log("Discounted Total (after GST and discount):", discountedTotal);
+    const discountedTotal = total - (discountPrice || 0);
 
     return {
       total: Math.round(discountedTotal > 0 ? discountedTotal : 0),
-      gstAmount: Math.round(gstAmount),
     };
   };
 
-  const bookingDetails = calculateTotalWithGST();
+  const bookingDetails = calculateTotal();
   const finalTotal = bookingDetails.total;
-  const calculatedGST = bookingDetails.gstAmount;
 
   const calculateBasePrice = () => {
     let totalPrice = 0;
@@ -210,7 +210,6 @@ const BookingDetails = ({
         price: finalTotal,
         pm: "Offline",
         couponCode,
-        gstPrice: gstData?.gstPrice,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
@@ -290,7 +289,6 @@ const BookingDetails = ({
 
       const totalAmount = finalTotal;
 
-      // Prepare bookingData but don't send yet
       const bookingData = {
         hotelId,
         user: userId,
@@ -313,7 +311,6 @@ const BookingDetails = ({
         price: totalAmount,
         pm: "Online",
         couponCode,
-        gstPrice: gstData?.gstPrice,
         discountPrice: sessionStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
@@ -322,14 +319,12 @@ const BookingDetails = ({
         hotelEmail: hotelData.hotelEmail,
       };
 
-      // Load Razorpay script
       const razorpayLoaded = await loadRazorpayScript();
       if (!razorpayLoaded) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
 
-      // Create Razorpay order on backend
       const orderRes = await fetch(`${baseURL}/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -345,9 +340,8 @@ const BookingDetails = ({
 
       const orderData = await orderRes.json();
 
-      // Set up Razorpay options
       const options = {
-        key: "rzp_test_0UMxKeTqqehh1o", // Replace with LIVE key in production
+        key: "rzp_test_0UMxKeTqqehh1o",
         amount: totalAmount * 100,
         currency: "INR",
         name: "Hotel Booking",
@@ -355,7 +349,6 @@ const BookingDetails = ({
         order_id: orderData.orderId,
         handler: async function (response) {
           try {
-            // Payment succeeded — continue with booking
             bookingData.paymentId = response.razorpay_payment_id;
 
             const bookingRes = await fetch(
@@ -390,8 +383,6 @@ const BookingDetails = ({
               6,
             );
 
-
-            // Cleanup
             sessionStorage.removeItem("discountPrice");
             setSelectedFood([]);
             setIsCouponApplied(false);
@@ -431,8 +422,8 @@ const BookingDetails = ({
       }
 
       const totalAmount = finalTotal;
-      const partialAmount = Math.round(totalAmount * 0.5); // 50% in ₹
-      const partialAmountPaise = partialAmount * 100; // Convert to paise
+      const partialAmount = Math.round(totalAmount * 0.5);
+      const partialAmountPaise = partialAmount * 100;
 
       const bookingData = {
         hotelId,
@@ -456,7 +447,6 @@ const BookingDetails = ({
         price: totalAmount,
         pm: "Online",
         couponCode,
-        gstPrice: gstData?.gstPrice,
         isPartialBooking: true,
         bookingStatus: "Pending",
         partialAmount,
@@ -468,18 +458,16 @@ const BookingDetails = ({
         hotelEmail: hotelData.hotelEmail,
       };
 
-      // Load Razorpay
       const res = await loadRazorpayScript();
       if (!res) {
         alert("Razorpay SDK failed to load. Are you online?");
         return;
       }
 
-      // Create Razorpay order from backend
       const orderRes = await fetch(`${baseURL}/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: partialAmountPaise }), // sending amount in paise
+        body: JSON.stringify({ amount: partialAmountPaise }),
       });
 
       if (!orderRes.ok) {
@@ -491,20 +479,17 @@ const BookingDetails = ({
 
       const orderData = await orderRes.json();
 
-      // Set up Razorpay options
       const options = {
-        key: "rzp_test_7xbcyn4tIZfQPE", // ✅ Replace with live key in prod
+        key: "rzp_test_7xbcyn4tIZfQPE",
         amount: partialAmountPaise,
         currency: "INR",
         name: "Hotel Booking",
         description: "50% Advance Payment - Room + Food",
-        order_id: orderData.orderId, // ✅ use Razorpay order ID
+        order_id: orderData.orderId,
         handler: async function (paymentResponse) {
           try {
-            // Add Razorpay payment ID to booking data
             bookingData.paymentId = paymentResponse.razorpay_payment_id;
 
-            // Now confirm the booking (AFTER successful payment)
             const response = await fetch(
               `${baseURL}/booking/${userId}/${hotelId}`,
               {
@@ -523,7 +508,6 @@ const BookingDetails = ({
 
             const data = await response.json();
 
-
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
                 `📅 Check-in: ${format(
@@ -539,7 +523,6 @@ const BookingDetails = ({
               },
             );
 
-            // Clean up UI
             sessionStorage.removeItem("discountPrice");
             setSelectedFood([]);
             setIsCouponApplied(false);
@@ -595,9 +578,8 @@ const BookingDetails = ({
         discountPrice={discountPrice}
         getFinalPrice={getFinalPrice}
         calculateBasePrice={calculateBasePrice}
+        gstAmount={gstAmount}
         finalTotal={finalTotal}
-        gstAmount={calculatedGST}
-        gstData={gstData}
         handleOpenModal={handleOpenModal}
         openModal={openModal}
         handleCloseModal={handleCloseModal}

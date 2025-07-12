@@ -593,12 +593,8 @@ export const ConfirmBooking = () => {
                         (acc, room) => acc + (Number(room?.price) || 0),
                         0
                       );
-                      const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-                        const price = Number(food.price) || 0;
-                        const quantity = Number(food.quantity) || 1;
-                        return acc + price * quantity;
-                      }, 0);
-                      const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
+             
+                      const gst = (roomTotal * (Number(modalData?.gstPrice) || 0)) / 100;
                       return gst.toFixed(2); // keep decimal precision
                     })()}
                   </p>
