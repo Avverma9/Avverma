@@ -17,6 +17,7 @@ const travelBookingSchema = new mongoose.Schema({
     ref: "Car",
     required: true,
   },
+  price:Number,
   vehicleNumber: {
     type: String,
     required: true,

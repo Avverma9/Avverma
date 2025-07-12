@@ -17,7 +17,11 @@ exports.bookCar = async (req, res) => {
             const seatToBook = car.seatConfig.find(s => s._id.toString() === seatId);
             if (!seatToBook) return res.status(404).json({ message: `Seat ${seatId} not found` });
             if (seatToBook.isBooked) return res.status(400).json({ message: `Seat ${seatId} is already booked` });
+  const getGstData = await getGST({ type: "Travel", gstThreshold: totalSeatsPrice });
+        const calculatedGst = getGstData.gstPrice;
 
+        const gstAmount = (totalSeatsPrice * calculatedGst) / 100;
+        const finalPrice = totalSeatsPrice + gstAmount;
             seatToBook.isBooked = true;
             seatToBook.bookedBy = bookedBy;
             bookedSeatIds.push(seatToBook._id);

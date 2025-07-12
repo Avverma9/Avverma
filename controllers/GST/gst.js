@@ -18,9 +18,7 @@ exports.createGST = async (req, res) => {
   }
 };
 
-exports.getGST = async (req, res) => {
-  const { type, gstThreshold } = req.query;
-
+exports.getGST = async ({ type, gstThreshold }) => {
   let filter = {};
 
   if (type) {
@@ -36,14 +34,10 @@ exports.getGST = async (req, res) => {
 
   try {
     const gst = await GST.findOne(filter);
-
-    if (!gst) {
-      return res.status(404).json({ message: "GST document not found" });
-    }
-
-    res.status(200).json(gst);
+    return gst; // Directly return the found document or null
   } catch (error) {
-    res.status(500).json({ message: "Error fetching GST", error });
+    console.error("Error fetching GST:", error); // Log the error for debugging
+    throw new Error("Error fetching GST"); // Throw an error to be caught by the calling function
   }
 };
 
