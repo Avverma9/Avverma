@@ -360,7 +360,7 @@ const BookingPage = ({
 
           <Typography fontWeight="bold" fontSize={14}>
             Room Price: ₹
-            {(getFinalPrice() + (getFinalPrice() * gstAmount) / 100).toFixed(2)}
+            {getFinalPrice()}
           </Typography>
           {gstAmount > 0 && (
             <Typography fontWeight="bold" fontSize={14}>
@@ -469,12 +469,16 @@ const BookingPage = ({
               Total Room Price:{" "}
               <strong>
                 ₹
-                {(
-                  getFinalPrice() +
-                  (getFinalPrice() * gstAmount) / 100
-                ).toFixed(2)}
+                {
+                  getFinalPrice() 
+                 }
               </strong>
             </Typography>
+              {gstAmount > 0 && (
+            <Typography fontWeight="bold" fontSize={14}>
+              GST {gstAmount}% Applied
+            </Typography>
+          )}
           </Box>
 
           {/* Meal Selection */}
@@ -542,7 +546,7 @@ const BookingPage = ({
               </Typography>
             )}
             <Typography variant="body2">
-              Room Price: ₹
+              Room Price after GST: ₹
               {(getFinalPrice() + (getFinalPrice() * gstAmount) / 100).toFixed(
                 2,
               )}
