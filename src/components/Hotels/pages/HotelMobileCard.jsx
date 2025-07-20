@@ -36,11 +36,8 @@ const HotelMobileCard = ({ hotelData }) => {
             const maxRoomPrice = Math.max(...allRoomPrices);
 
             if (maxRoomPrice) {
-                const payload = {
-                    type: 'Hotel',
-                    gstThreshold: maxRoomPrice,
-                };
-                dispatch(getGst(payload));
+               
+                dispatch(getGst({type: "Hotel", gstThreshold: maxRoomPrice})); // Dispatching GST with type and threshold
             }
         }
     }, [hotelData, dispatch]);

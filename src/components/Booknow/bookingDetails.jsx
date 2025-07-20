@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
 import BookingPage from "./bookingPage";
-import { getGst } from "../../redux/reducers/gstSlice";
+import {  getGstForHotelData } from "../../redux/reducers/gstSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -40,7 +40,7 @@ const BookingDetails = ({
   const [discountPrice, setDiscountPrice] = useState(0);
   const [selectedFood, setSelectedFood] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const gstData = useSelector((state) => state.gst.gst);
+  const gstData = useSelector((state) => state.gst.gstData);
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const toBeCheckRoomNumber =
@@ -93,18 +93,27 @@ const BookingDetails = ({
     [dispatch],
   );
 
-  useEffect(() => {
-    const gstThreshold = calculateBasePrice();
-    if (gstThreshold > 0) {
-      const payload = {
-        type: "Hotel",
-        gstThreshold,
-      };
-      dispatch(getGst(payload));
-    }
-  }, [checkInDate, checkOutDate, selectedRooms, roomsCount, selectedFood]);
-  const gstAmount = gstData?.gstPrice;
+// Prices se ek unique string banayein
+const roomPrices = selectedRooms.map((room) => room.price).join(',');
 
+useEffect(() => {
+    const daysDifference = Math.max(1, Math.ceil(
+        (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
+    ));
+
+    if (
+        daysDifference > 0 &&
+        selectedRooms &&
+        selectedRooms.length > 0 &&
+        roomsCount > 0
+    ) {
+        const basePrice = selectedRooms[0].price || 0;
+        const totalBookingPriceForGst = basePrice * daysDifference * roomsCount;
+        const gstThreshold = [totalBookingPriceForGst];
+        dispatch(getGstForHotelData({ type: "Hotel", gstThreshold }));
+    }
+}, [dispatch, roomPrices, roomsCount, checkInDate, checkOutDate]);
+  const gstAmount = gstData?.gstPrice || 0;
   const calculateTotal = () => {
     if (!selectedRooms || selectedRooms.length === 0 || !selectedRooms[0]) {
       return { total: 0 };

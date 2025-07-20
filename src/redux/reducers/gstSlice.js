@@ -1,18 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { toast } from "react-toastify";
 import baseURL from "../../utils/baseURL";
-import { token } from "../../utils/Unauthorized";
-
-
-
 export const getGst = createAsyncThunk(
     "gst/getGst",
-    async (payload, { rejectWithValue }) => {
+    async ({type,gstThreshold}, { rejectWithValue }) => {
+      
         const token = localStorage.getItem("token");
         try {
             const response = await axios.get(
-                `${baseURL}/gst/get-single-gst?type=${payload?.type}&gstThreshold=${payload?.gstThreshold}`,
+                `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
                 {
                     headers: { Authorization: token },
                 }
@@ -24,12 +20,32 @@ export const getGst = createAsyncThunk(
         }
     }
 );
+// We only need one thunk as both were identical.
+export const getGstForHotelData = createAsyncThunk(
+    "gst/getGstForHotelData",
+    async ({ type, gstThreshold }, { rejectWithValue }) => {
+        const token = localStorage.getItem("token");
+        try {
+            const response = await axios.get(
+                `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
+                {
+                    headers: { Authorization: token },
+                }
+            );
+            // Return the actual data payload, which might be null if no GST applies.
+            return response.data?.data || response.data;
+        } catch (error) {
+            console.error("Error fetching GST:", error.response?.data || error.message);
+            return rejectWithValue(error.response?.data || error.message);
+        }
+    }
+);
 
-
-// Initial state
+// Simplified and more robust initial state
 const initialState = {
-    gst: null,
-    gstList: [],
+    gstData: null, // This will hold the single GST object like { gstPrice, ... }
+    loading: false,
+    error: null,
 };
 
 // Slice
@@ -37,19 +53,37 @@ const gstSlice = createSlice({
     name: "gst",
     initialState,
     reducers: {
-        resetGst: (state) => {
-            state.gst = null;
+        // This is the new reducer to clear the GST data from the component.
+        clearGstData: (state) => {
+            state.gstData = null;
+            state.error = null;
         },
     },
     extraReducers: (builder) => {
         builder
-
-            .addCase(getGst.fulfilled, (state, action) => {
-                state.gst = action.payload;
+            // Handle loading state when the API call is in progress
+            .addCase(getGstForHotelData.pending, (state) => {
+                state.loading = true;
+                state.error = null;
             })
-
+              .addCase(getGst.fulfilled, (state, action) => {
+                state.gst = action.payload;
+            }) 
+            // Handle successful API call
+            .addCase(getGstForHotelData.fulfilled, (state, action) => {
+                state.loading = false;
+                state.gstData = action.payload;
+            })
+            // Handle failed API call
+            .addCase(getGstForHotelData.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+                state.gstData = null; // Also clear data on error
+            });
     },
 });
 
-export const { resetGst } = gstSlice.actions;
+// Export the new action so you can use it in your component
+export const { clearGstData } = gstSlice.actions;
+
 export default gstSlice.reducer;

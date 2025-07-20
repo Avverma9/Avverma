@@ -60,11 +60,8 @@ const Hotel = () => {
                 );
                 const maxRoomPrice = Math.max(...allRoomPrices);
                 if (maxRoomPrice) {
-                    const payload = {
-                        type: 'Hotel',
-                        gstThreshold: maxRoomPrice,
-                    };
-                    dispatch(getGst(payload));
+                 
+                    dispatch(getGst({type:"Hotel", gstThreshold: maxRoomPrice}));
                 }
             }
         } catch (error) {
