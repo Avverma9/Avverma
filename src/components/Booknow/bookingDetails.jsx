@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import baseURL from "../../utils/baseURL";
 import { popup } from "../../utils/custom_alert/pop";
 import BookingPage from "./bookingPage";
-import {  getGstForHotelData } from "../../redux/reducers/gstSlice";
+import { getGstForHotelData } from "../../redux/reducers/gstSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -93,27 +93,63 @@ const BookingDetails = ({
     [dispatch],
   );
 
-// Prices se ek unique string banayein
-const roomPrices = selectedRooms.map((room) => room.price).join(',');
 
 useEffect(() => {
-    const daysDifference = Math.max(1, Math.ceil(
-        (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
-    ));
+  const fetchGst = async () => {
+    // Step 1: Create price string
+    const roomPrices = selectedRooms.map((room) => room.price).join(',');
 
-    if (
-        daysDifference > 0 &&
+    // Step 2: First GST call based on roomPrices
+    const response = await dispatch(
+      getGstForHotelData({ type: "Hotel", gstThreshold: [roomPrices] })
+    );
+
+    const gstData = response?.payload;
+    const gstPrice = gstData?.gstPrice;
+    const gstMinThreshold = gstData?.gstMinThreshold;
+
+    if (gstPrice && gstMinThreshold) {
+      // Step 3: Now calculate total price for booking
+      const daysDifference = Math.max(
+        1,
+        Math.ceil(
+          (new Date(checkOutDate) - new Date(checkInDate)) /
+            (1000 * 60 * 60 * 24)
+        )
+      );
+
+      if (
         selectedRooms &&
         selectedRooms.length > 0 &&
         roomsCount > 0
-    ) {
+      ) {
         const basePrice = selectedRooms[0].price || 0;
-        const totalBookingPriceForGst = basePrice * daysDifference * roomsCount;
-        const gstThreshold = [totalBookingPriceForGst];
-        dispatch(getGstForHotelData({ type: "Hotel", gstThreshold }));
+        const totalBookingPrice = basePrice * daysDifference * roomsCount;
+
+        // Step 4: Call GST API again with totalBookingPrice
+        const secondResponse = await dispatch(
+          getGstForHotelData({
+            type: "Hotel",
+            gstThreshold: [totalBookingPrice],
+          })
+        );
+
+        const secondGstData = secondResponse?.payload;
+        const secondGstPrice = secondGstData?.gstPrice;
+        const secondGstMinThreshold = secondGstData?.gstMinThreshold;
+
+        if (secondGstPrice && secondGstMinThreshold) {
+          const gstRate = secondGstPrice / secondGstMinThreshold;
+          const calculatedGstAmount = totalBookingPrice * gstRate;
+          setGstAmount(calculatedGstAmount);
+        }
+      }
     }
-}, [dispatch, roomPrices, roomsCount, checkInDate, checkOutDate]);
-  const gstAmount = gstData?.gstPrice || 0;
+  };
+
+  fetchGst();
+}, [dispatch, selectedRooms, roomsCount, checkInDate, checkOutDate]);
+const gstAmount = gstData?.gstPrice || 0;
   const calculateTotal = () => {
     if (!selectedRooms || selectedRooms.length === 0 || !selectedRooms[0]) {
       return { total: 0 };
@@ -242,14 +278,14 @@ useEffect(() => {
         if (response.status === 201) {
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails.data.bookingId}\n` +
-              `📅 Check in Date: ${format(
-                new Date(bookedDetails.data.checkInDate),
-                "dd MMM yyyy",
-              )}\n` +
-              `📅 Check out Date: ${format(
-                new Date(bookedDetails.data.checkOutDate),
-                "dd MMM yyyy",
-              )}`,
+            `📅 Check in Date: ${format(
+              new Date(bookedDetails.data.checkInDate),
+              "dd MMM yyyy",
+            )}\n` +
+            `📅 Check out Date: ${format(
+              new Date(bookedDetails.data.checkOutDate),
+              "dd MMM yyyy",
+            )}`,
             () => {
               window.location.href = "/bookings";
             },
@@ -380,14 +416,14 @@ useEffect(() => {
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookingRespData.data.bookingId}\n` +
-                `📅 Check-in: ${format(
-                  new Date(bookingRespData.data.checkInDate),
-                  "dd MMM yyyy",
-                )}\n` +
-                `📅 Check-out: ${format(
-                  new Date(bookingRespData.data.checkOutDate),
-                  "dd MMM yyyy",
-                )}`,
+              `📅 Check-in: ${format(
+                new Date(bookingRespData.data.checkInDate),
+                "dd MMM yyyy",
+              )}\n` +
+              `📅 Check-out: ${format(
+                new Date(bookingRespData.data.checkOutDate),
+                "dd MMM yyyy",
+              )}`,
               () => (window.location.href = "/bookings"),
               6,
             );
@@ -519,14 +555,14 @@ useEffect(() => {
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
-                `📅 Check-in: ${format(
-                  new Date(data?.data?.checkInDate),
-                  "dd MMM yyyy",
-                )}\n` +
-                `📅 Check-out: ${format(
-                  new Date(data?.data?.checkOutDate),
-                  "dd MMM yyyy",
-                )}`,
+              `📅 Check-in: ${format(
+                new Date(data?.data?.checkInDate),
+                "dd MMM yyyy",
+              )}\n` +
+              `📅 Check-out: ${format(
+                new Date(data?.data?.checkOutDate),
+                "dd MMM yyyy",
+              )}`,
               () => {
                 window.location.href = "/bookings";
               },

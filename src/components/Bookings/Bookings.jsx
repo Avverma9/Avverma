@@ -542,129 +542,156 @@ export const ConfirmBooking = () => {
             </section>
 
             {/* Price Summary */}
-            <section className={styles.section}>
-              <h5>Price Summary</h5>
-              <div className={styles.grid}>
-                {/* Room Total */}
-                <div>
-                  <label>Room Total</label>
-                  <p>
-                    ₹
-                    {(() => {
-                      const checkIn = new Date(modalData?.checkInDate);
-                      const checkOut = new Date(modalData?.checkOutDate);
+      <section className={styles.section}>
+  <h5>Price Summary</h5>
+  <div className={styles.grid}>
+    {/* Room Total */}
+    <div>
+      <label>Room Total</label>
+      <p>
+        ₹
+        {(() => {
+          const checkIn = new Date(modalData?.checkInDate);
+          const checkOut = new Date(modalData?.checkOutDate);
 
-                      const timeDiff = checkOut.getTime() - checkIn.getTime();
-                      const dayDiff = Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24))); // Ensure at least 1 day
+          const timeDiff = checkOut.getTime() - checkIn.getTime();
+          const dayDiff = Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
 
-                      const total = modalData?.roomDetails?.reduce((acc, room) => {
-                        const pricePerDay = Number(room?.price) || 0;
-                        return acc + pricePerDay * dayDiff;
-                      }, 0);
+          // Total price for all rooms considering number of rooms and days
+          const totalRoomPrice = modalData?.roomDetails?.reduce((acc, room) => {
+            const pricePerDay = Number(room?.price) || 0;
+            return acc + pricePerDay * dayDiff;
+          }, 0) || 0;
 
-                      return total;
-                    })()}
-                  </p>
-                </div>
+          // Multiply by number of rooms booked
+          const numRooms = Number(modalData?.numRooms) || 1;
 
+          return totalRoomPrice * numRooms;
+        })()}
+      </p>
+    </div>
 
-                {/* Food Total */}
-                <div>
-                  <label>Food Total</label>
-                  <p>
-                    ₹
-                    {(() => {
-                      return modalData?.foodDetails?.reduce((acc, food) => {
-                        const price = Number(food.price) || 0;
-                        const quantity = Number(food.quantity) || 1;
-                        return acc + price * quantity;
-                      }, 0);
-                    })()}
-                  </p>
-                </div>
+    {/* Rooms */}
+    <div>
+      <label>Rooms</label>
+      <p>{modalData?.numRooms || 1}</p>
+    </div>
 
-                {/* GST */}
-                <div>
-                  <label>GST ({modalData?.gstPrice || 0}%)</label>
-                  <p>
-                    ₹
-                    {(() => {
-                      const roomTotal = modalData?.roomDetails?.reduce(
-                        (acc, room) => acc + (Number(room?.price) || 0),
-                        0
-                      );
-             
-                      const gst = (roomTotal * (Number(modalData?.gstPrice) || 0)) / 100;
-                      return gst.toFixed(2); // keep decimal precision
-                    })()}
-                  </p>
-                </div>
+    {/* Food Total */}
+    <div>
+      <label>Food Total</label>
+      <p>
+        ₹
+        {(() => {
+          return modalData?.foodDetails?.reduce((acc, food) => {
+            const price = Number(food.price) || 0;
+            const quantity = Number(food.quantity) || 1;
+            return acc + price * quantity;
+          }, 0) || 0;
+        })()}
+      </p>
+    </div>
 
-                {/* Discount */}
-                <div>
-                  <label>Discount</label>
-                  <p>
-                    {Number(modalData?.discountPrice) > 0
-                      ? `- ₹${modalData?.discountPrice}`
-                      : "No Discount"}
-                  </p>
-                </div>
+    {/* GST */}
+    <div>
+      <label>GST ({modalData?.gstPrice || 0}%)</label>
+      <p>
+        ₹
+        {(() => {
+          const checkIn = new Date(modalData?.checkInDate);
+          const checkOut = new Date(modalData?.checkOutDate);
+          const dayDiff = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
 
-                {/* Final Total */}
-                <div className={styles.totalWrap}>
-                  <label className={styles.totalLabel}>Final Total</label>
-                  <p className={styles.total}>
-                    ₹
-                    {/* {(() => {
-                      const roomTotal = modalData?.roomDetails?.reduce(
-                        (acc, room) => acc + (Number(room?.price) || 0),
-                        0
-                      );
-                      const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-                        const price = Number(food.price) || 0;
-                        const quantity = Number(food.quantity) || 1;
-                        return acc + price * quantity;
-                      }, 0);
-                      const gst = ((roomTotal + foodTotal) * (Number(modalData?.gstPrice) || 0)) / 100;
-                      const discount = Number(modalData?.discountPrice) || 0;
+          const roomTotal = (modalData?.roomDetails?.reduce((acc, room) => {
+            const pricePerDay = Number(room?.price) || 0;
+            return acc + pricePerDay * dayDiff;
+          }, 0) || 0) * (Number(modalData?.numRooms) || 1);
 
-                      return Math.round(roomTotal + foodTotal + gst - discount);
-                    })()} */}
+          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
+            const price = Number(food.price) || 0;
+            const quantity = Number(food.quantity) || 1;
+            return acc + price * quantity;
+          }, 0) || 0;
 
-                    {modalData?.price}
-                  </p>
-                </div>
-                {modalData?.isPartialBooking && (
-                  <>
-                    <div>
-                      <label>Partial Booking</label>
-                      {modalData.isPartialBooking ? <p>Yes</p> : <p>No</p>}
-                    </div>
-                    <div>
-                      <label
-                        style={{
-                          backgroundColor: "red",
-                          color: "white",
-                          border: "1px solid darkred",
-                          padding: "4px 8px",
-                          borderRadius: "4px",
-                          display: "inline-block"
-                        }}
-                      >
-                        Partially Paid Amount
-                      </label>
+          const totalBeforeGST = roomTotal + foodTotal;
+          const gstPercent = Number(modalData?.gstPrice) || 0;
 
-                      {modalData?.partialAmount ? (
-                        <p>₹{modalData.partialAmount}</p>
-                      ) : (
-                        <p>₹0</p>
-                      )}
-                    </div>
-                  </>
-                )}
+          const gstAmount = (totalBeforeGST * gstPercent) / 100;
+          return gstAmount.toFixed(2);
+        })()}
+      </p>
+    </div>
 
-              </div>
-            </section>
+    {/* Discount */}
+    <div>
+      <label>Discount</label>
+      <p>
+        {Number(modalData?.discountPrice) > 0
+          ? `- ₹${modalData.discountPrice}`
+          : "No Discount"}
+      </p>
+    </div>
+
+    {/* Final Total */}
+    <div className={styles.totalWrap}>
+      <label className={styles.totalLabel}>Final Total</label>
+      <p className={styles.total}>
+        ₹
+        {(() => {
+          const checkIn = new Date(modalData?.checkInDate);
+          const checkOut = new Date(modalData?.checkOutDate);
+          const dayDiff = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
+
+          const roomTotal = (modalData?.roomDetails?.reduce((acc, room) => {
+            const pricePerDay = Number(room?.price) || 0;
+            return acc + pricePerDay * dayDiff;
+          }, 0) || 0) * (Number(modalData?.numRooms) || 1);
+
+          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
+            const price = Number(food.price) || 0;
+            const quantity = Number(food.quantity) || 1;
+            return acc + price * quantity;
+          }, 0) || 0;
+
+          const gstPercent = Number(modalData?.gstPrice) || 0;
+          const discount = Number(modalData?.discountPrice) || 0;
+
+          const gstAmount = ((roomTotal + foodTotal) * gstPercent) / 100;
+
+          const finalAmount = roomTotal + foodTotal + gstAmount - discount;
+
+          return Math.round(finalAmount);
+        })()}
+      </p>
+    </div>
+
+    {modalData?.isPartialBooking && (
+      <>
+        <div>
+          <label>Partial Booking</label>
+          <p>{modalData.isPartialBooking ? "Yes" : "No"}</p>
+        </div>
+        <div>
+          <label
+            style={{
+              backgroundColor: "red",
+              color: "white",
+              border: "1px solid darkred",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              display: "inline-block"
+            }}
+          >
+            Partially Paid Amount
+          </label>
+
+          <p>₹{modalData?.partialAmount || 0}</p>
+        </div>
+      </>
+    )}
+  </div>
+</section>
+
           </div>
         </div>
       </BootstrapModal>
