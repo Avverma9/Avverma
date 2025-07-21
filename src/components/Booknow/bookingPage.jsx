@@ -546,7 +546,7 @@ const BookingPage = ({
               </Typography>
             )}
             <Typography variant="body2">
-              Room Price after GST: ₹
+              Room Price with all taxes: ₹
               {(getFinalPrice() + (getFinalPrice() * gstAmount) / 100).toFixed(
                 2,
               )}

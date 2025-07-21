@@ -607,13 +607,9 @@ export const ConfirmBooking = () => {
             return acc + pricePerDay * dayDiff;
           }, 0) || 0) * (Number(modalData?.numRooms) || 1);
 
-          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0) || 0;
+         
 
-          const totalBeforeGST = roomTotal + foodTotal;
+          const totalBeforeGST = roomTotal ;
           const gstPercent = Number(modalData?.gstPrice) || 0;
 
           const gstAmount = (totalBeforeGST * gstPercent) / 100;
@@ -637,31 +633,7 @@ export const ConfirmBooking = () => {
       <label className={styles.totalLabel}>Final Total</label>
       <p className={styles.total}>
         ₹
-        {(() => {
-          const checkIn = new Date(modalData?.checkInDate);
-          const checkOut = new Date(modalData?.checkOutDate);
-          const dayDiff = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
-
-          const roomTotal = (modalData?.roomDetails?.reduce((acc, room) => {
-            const pricePerDay = Number(room?.price) || 0;
-            return acc + pricePerDay * dayDiff;
-          }, 0) || 0) * (Number(modalData?.numRooms) || 1);
-
-          const foodTotal = modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0) || 0;
-
-          const gstPercent = Number(modalData?.gstPrice) || 0;
-          const discount = Number(modalData?.discountPrice) || 0;
-
-          const gstAmount = ((roomTotal + foodTotal) * gstPercent) / 100;
-
-          const finalAmount = roomTotal + foodTotal + gstAmount - discount;
-
-          return Math.round(finalAmount);
-        })()}
+      {modalData?.price || 0}
       </p>
     </div>
 

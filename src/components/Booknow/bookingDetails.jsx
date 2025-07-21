@@ -94,62 +94,60 @@ const BookingDetails = ({
   );
 
 
-useEffect(() => {
-  const fetchGst = async () => {
-    // Step 1: Create price string
-    const roomPrices = selectedRooms.map((room) => room.price).join(',');
-
-    // Step 2: First GST call based on roomPrices
-    const response = await dispatch(
-      getGstForHotelData({ type: "Hotel", gstThreshold: [roomPrices] })
-    );
-
-    const gstData = response?.payload;
-    const gstPrice = gstData?.gstPrice;
-    const gstMinThreshold = gstData?.gstMinThreshold;
-
-    if (gstPrice && gstMinThreshold) {
-      // Step 3: Now calculate total price for booking
-      const daysDifference = Math.max(
-        1,
-        Math.ceil(
-          (new Date(checkOutDate) - new Date(checkInDate)) /
-            (1000 * 60 * 60 * 24)
-        )
+  useEffect(() => {
+    const fetchGst = async () => {
+      // Step 1: Create price string
+      let roomPrices = selectedRooms.map((room) => room.price).join(',');
+      if (discountPrice > 0) {
+        roomPrices = roomPrices - discountPrice
+      }
+      // Step 2: First GST call based on roomPrices
+      const response = await dispatch(
+        getGstForHotelData({ type: "Hotel", gstThreshold: [roomPrices] })
       );
 
-      if (
-        selectedRooms &&
-        selectedRooms.length > 0 &&
-        roomsCount > 0
-      ) {
-        const basePrice = selectedRooms[0].price || 0;
-        const totalBookingPrice = basePrice * daysDifference * roomsCount;
+      const gstData = response?.payload;
+      const gstPrice = gstData?.gstPrice;
+      const gstMinThreshold = gstData?.gstMinThreshold;
 
-        // Step 4: Call GST API again with totalBookingPrice
-        const secondResponse = await dispatch(
-          getGstForHotelData({
-            type: "Hotel",
-            gstThreshold: [totalBookingPrice],
-          })
+      if (gstPrice && gstMinThreshold) {
+        const daysDifference = Math.max(
+          1,
+          Math.ceil(
+            (new Date(checkOutDate) - new Date(checkInDate)) /
+            (1000 * 60 * 60 * 24)
+          )
         );
 
-        const secondGstData = secondResponse?.payload;
-        const secondGstPrice = secondGstData?.gstPrice;
-        const secondGstMinThreshold = secondGstData?.gstMinThreshold;
-
-        if (secondGstPrice && secondGstMinThreshold) {
-          const gstRate = secondGstPrice / secondGstMinThreshold;
-          const calculatedGstAmount = totalBookingPrice * gstRate;
-          setGstAmount(calculatedGstAmount);
+        if (
+          selectedRooms &&
+          selectedRooms.length > 0 &&
+          roomsCount > 0
+        ) {
+          const basePrice = selectedRooms[0].price || 0;
+          const totalBookingPrice = basePrice * daysDifference * roomsCount;
+          const secondResponse = await dispatch(
+            getGstForHotelData({
+              type: "Hotel",
+              gstThreshold: [totalBookingPrice],
+            })
+          );
+          const secondGstData = secondResponse?.payload;
+          const secondGstPrice = secondGstData?.gstPrice;
+          const secondGstMinThreshold = secondGstData?.gstMinThreshold;
+          if (secondGstPrice && secondGstMinThreshold) {
+            const gstRate = secondGstPrice / secondGstMinThreshold;
+            const calculatedGstAmount = totalBookingPrice * gstRate;
+            setGstAmount(calculatedGstAmount);
+          }
         }
       }
-    }
-  };
+    };
 
-  fetchGst();
-}, [dispatch, selectedRooms, roomsCount, checkInDate, checkOutDate]);
-const gstAmount = gstData?.gstPrice || 0;
+    fetchGst();
+  }, [dispatch, selectedRooms, roomsCount, checkInDate, checkOutDate,discountPrice]);
+
+  const gstAmount = gstData?.gstPrice || 0;
   const calculateTotal = () => {
     if (!selectedRooms || selectedRooms.length === 0 || !selectedRooms[0]) {
       return { total: 0 };
