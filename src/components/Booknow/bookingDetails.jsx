@@ -465,7 +465,7 @@ const BookingDetails = ({
       }
 
       const totalAmount = finalTotal;
-      const partialAmount = Math.round(totalAmount * 0.5);
+      const partialAmount = Math.round(totalAmount * 0.25);
       const partialAmountPaise = partialAmount * 100;
 
       const bookingData = {

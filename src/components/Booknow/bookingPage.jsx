@@ -359,8 +359,7 @@ const BookingPage = ({
           )}
 
           <Typography fontWeight="bold" fontSize={14}>
-            Room Price: ₹
-            {getFinalPrice()}
+            Room Price: ₹{getFinalPrice()}
           </Typography>
           {gstAmount > 0 && (
             <Typography fontWeight="bold" fontSize={14}>
@@ -466,19 +465,13 @@ const BookingPage = ({
               Room Pricing
             </Typography>
             <Typography variant="body2">
-              Total Room Price:{" "}
-              <strong>
-                ₹
-                {
-                  getFinalPrice() 
-                 }
-              </strong>
+              Total Room Price: <strong>₹{getFinalPrice()}</strong>
             </Typography>
-              {gstAmount > 0 && (
-            <Typography fontWeight="bold" fontSize={14}>
-              GST {gstAmount}% Applied
-            </Typography>
-          )}
+            {gstAmount > 0 && (
+              <Typography fontWeight="bold" fontSize={14}>
+                GST {gstAmount}% Applied
+              </Typography>
+            )}
           </Box>
 
           {/* Meal Selection */}
@@ -585,20 +578,22 @@ const BookingPage = ({
                   color="primary"
                   onClick={handlePartialPayment}
                 >
-                  Pay 50% Now & Rest Later
+                  Pay 25% Now & Rest Later
                 </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  onClick={handleBookNow}
-                  sx={{
-                    bgcolor: "black",
-                    color: "white",
-                    "&:hover": { bgcolor: "#f2deff2" },
-                  }}
-                >
-                  Pay at Hotel
-                </Button>
+                {roomsCount <= 3 && (
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={handleBookNow}
+                    sx={{
+                      bgcolor: "black",
+                      color: "white",
+                      "&:hover": { bgcolor: "#f2deff2" },
+                    }}
+                  >
+                    Pay at Hotel
+                  </Button>
+                )}
               </>
             ) : (
               <>
@@ -610,18 +605,20 @@ const BookingPage = ({
                 >
                   Pay Now
                 </Button>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  onClick={handleBookNow}
-                  sx={{
-                    bgcolor: "black",
-                    color: "white",
-                    "&:hover": { bgcolor: "#f2deff2" },
-                  }}
-                >
-                  Pay at Hotel
-                </Button>
+                {roomsCount <= 3 && (
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                    onClick={handleBookNow}
+                    sx={{
+                      bgcolor: "black",
+                      color: "white",
+                      "&:hover": { bgcolor: "#f2deff2" },
+                    }}
+                  >
+                    Pay at Hotel
+                  </Button>
+                )}
               </>
             )}
           </Stack>
