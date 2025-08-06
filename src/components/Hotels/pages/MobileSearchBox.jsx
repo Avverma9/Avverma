@@ -1,12 +1,62 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Paper, Button, Grid, TextField, IconButton } from '@mui/material';
+import { Paper, Grid, TextField, IconButton } from '@mui/material';
 import { CiLocationArrow1, CiSearch } from 'react-icons/ci';
+import { styled } from '@mui/material/styles';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: '12px 16px',
+    margin: '16px',
+    borderRadius: '24px',
+    position: 'sticky',
+    top: '80px',
+    zIndex: 100,
+    backgroundColor: '#ffffff',
+    boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)',
+    transition: 'transform 0.3s ease-in-out',
+    '&:hover': {
+        transform: 'translateY(2px)',
+    },
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+    '& .MuiOutlinedInput-root': {
+        borderRadius: '20px',
+        '& fieldset': {
+            borderColor: '#e0e0e0',
+            transition: 'border-color 0.3s ease-in-out',
+        },
+        '&:hover fieldset': {
+            borderColor: '#9e9e9e',
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: '#3f51b5',
+            borderWidth: '2px',
+        },
+    },
+    '& .MuiInputBase-input': {
+        padding: '12px 16px',
+        fontSize: '16px',
+    },
+}));
+
+const StyledIconButton = styled(IconButton)(({ theme }) => ({
+    backgroundColor: '#3f51b5',
+    color: '#ffffff',
+    borderRadius: '50%',
+    padding: '12px',
+    '&:hover': {
+        backgroundColor: '#303f9f',
+        transform: 'scale(1.05)',
+    },
+    '& .MuiSvgIcon-root': {
+        fontSize: '28px',
+    },
+}));
 
 const MobileSearchBox = () => {
     const navigate = useNavigate();
     const location = useLocation();
-
     const currentDate = new Date().toISOString().split('T')[0];
     const [searchData, setSearchData] = useState({
         search: '',
@@ -19,12 +69,10 @@ const MobileSearchBox = () => {
     });
 
     const handleInputChange = (e) => {
-        const { name, type, checked, value } = e.target;
-        const inputValue = type === 'checkbox' ? (checked ? 'Accepted' : '') : value;
-
+        const { name, value } = e.target;
         setSearchData((prevSearchData) => ({
             ...prevSearchData,
-            [name]: inputValue,
+            [name]: value,
         }));
     };
 
@@ -34,9 +82,7 @@ const MobileSearchBox = () => {
             latitude: '',
             longitude: '',
         })
-            .filter(([key, value]) => {
-                return value || key === 'countRooms' || key === 'guests';
-            })
+            .filter(([key, value]) => value || key === 'countRooms' || key === 'guests')
             .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
             .join('&');
 
@@ -76,75 +122,39 @@ const MobileSearchBox = () => {
     }
 
     return (
-        <div>
-            <Paper
-                style={{
-                    padding: '8px',
-                    maxWidth: '100%',
-                    margin: 'auto',
-                    position: 'sticky',
-                    bottom: '20px', // Position 20px from the bottom of the screen
-                    zIndex: 100, // Ensures it's above other content
-                }}
-                onKeyDown={handleKeyPress}
-            >
-                <Grid container spacing={2} direction="row" alignItems="center">
-                    <Grid item xs={9} sm={8}>
-                        <TextField
-                            fullWidth
-                            label="Search"
-                            variant="outlined"
-                            name="search"
-                            value={searchData.search}
-                            onChange={handleInputChange}
-                            style={{
-                                fontSize: '14px',
-                                borderRadius: '8px',
-                            }}
-                            inputProps={{ maxLength: 50 }}
-                            InputProps={{
-                                endAdornment: (
-                                    <IconButton
-                                        onClick={getLocation}
-                                        style={{
-                                            marginLeft: '8px',
-                                            color: '#3f51b5', // Blue color
-                                            fontSize: '24px',
-                                            transition: 'all 0.3s ease',
-                                        }}
-                                    >
-                                        <CiLocationArrow1 />
-                                    </IconButton>
-                                ),
-                            }}
-                        />
-                    </Grid>
-
-                    <Grid item xs={2} sm={4}>
-                        <Button
-                            variant="contained"
-                            onClick={handleSearch}
-                            style={{
-                                fontSize: '14px',
-                                padding: '12px 16px',
-                                backgroundColor: '#3f51b5', // Primary Blue
-                                color: 'white',
-                                textTransform: 'none',
-                                borderRadius: '8px',
-                                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                                '&:hover': {
-                                    backgroundColor: '#303f9f',
-                                    boxShadow: '0px 6px 8px rgba(0, 0, 0, 0.15)',
-                                },
-                            }}
-                            fullWidth
-                        >
-                            Search
-                        </Button>
-                    </Grid>
+        <StyledPaper onKeyDown={handleKeyPress}>
+            <Grid container spacing={2} alignItems="center">
+                <Grid item xs>
+                    <StyledTextField
+                        fullWidth
+                        placeholder="Search for a city or hotel..."
+                        variant="outlined"
+                        name="search"
+                        value={searchData.search}
+                        onChange={handleInputChange}
+                        inputProps={{ maxLength: 50 }}
+                        InputProps={{
+                            startAdornment: (
+                                <CiSearch style={{ color: '#9e9e9e', fontSize: '20px', marginRight: '8px' }} />
+                            ),
+                            endAdornment: (
+                                <IconButton
+                                    onClick={getLocation}
+                                    style={{ color: '#3f51b5', fontSize: '20px' }}
+                                >
+                                    <CiLocationArrow1 />
+                                </IconButton>
+                            ),
+                        }}
+                    />
                 </Grid>
-            </Paper>
-        </div>
+                <Grid item>
+                    <StyledIconButton onClick={handleSearch}>
+                        <CiSearch />
+                    </StyledIconButton>
+                </Grid>
+            </Grid>
+        </StyledPaper>
     );
 };
 
