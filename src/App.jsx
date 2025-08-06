@@ -34,6 +34,7 @@ import Coupon from './components/Profile/coupon.jsx';
 import Policies from './components/Booknow/policies.jsx';
 import TourBooking from './components/Profile/tour-booking/tour-booking.jsx';
 import ScrollToTopButton from './utils/scrollToTop.jsx';
+import Careers from './components/careers/Careers.jsx';
 
 function App() {
     return (
@@ -64,6 +65,7 @@ function App() {
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />
+                        <Route path='/careers' element={<Careers/>}/>
                         <Route path="/partner/last-step" element={<PartnerRooms />} />
                     </Routes>
 

@@ -14,6 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import GroupIcon from '@mui/icons-material/Group';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 
 const SearchForm = () => {
     const navigate = useNavigate();
@@ -100,13 +101,15 @@ const SearchForm = () => {
                 borderRadius: '24px',
                 boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
                 border: '1px solid rgba(255, 255, 255, 0.18)',
-                mt: 4, // Changed from negative margin to positive
-                width: { xs: '90%', md: '80%' },
+                position: 'relative',
+                mt: 4, // Added positive margin to move it down
+                zIndex: 10,
+                width: { xs: '90%', md: '85%', lg: '80%' },
                 mx: 'auto'
             }}
         >
             <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} md={5}>
+                <Grid item xs={12} md={3.5}>
                     <TextField
                         fullWidth
                         variant="outlined"
@@ -172,7 +175,27 @@ const SearchForm = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={6} sm={3} md={1}>
+                <Grid item xs={6} sm={3} md={1.25}>
+                    <TextField
+                        fullWidth
+                        type="number"
+                        name="countRooms"
+                        label="Rooms"
+                        value={searchData.countRooms}
+                        onChange={handleInputChange}
+                        InputLabelProps={{ shrink: true }}
+                        InputProps={{
+                             inputProps: { min: 1 },
+                             startAdornment: (
+                                <InputAdornment position="start">
+                                    <MeetingRoomIcon sx={{ color: 'text.secondary' }} />
+                                </InputAdornment>
+                            ),
+                            sx: { borderRadius: '16px', bgcolor: 'background.paper' }
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={3} md={1.25}>
                     <TextField
                         fullWidth
                         type="number"
@@ -192,7 +215,7 @@ const SearchForm = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={6} sm={3} md={2}>
+                <Grid item xs={12} sm={12} md={2}>
                     <Button
                         fullWidth
                         variant="contained"

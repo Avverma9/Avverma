@@ -4,8 +4,6 @@ import { Box, Typography, Button, Skeleton, Fade, Slide, LinearProgress } from '
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { bannerImage } from '../../utils/extrasList';
 
-// Assuming bannerImage is exported from this path, like in your TravelBanner example
-
 const Hero = () => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -13,7 +11,6 @@ const Hero = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // The animated text content will be cycled through for each dynamic image
     const animatedTexts = [
         { mainText: 'Hotel', subText: 'Luxury & Comfort' },
         { mainText: 'Travel', subText: 'Explore & Discover' },
@@ -21,7 +18,6 @@ const Hero = () => {
         { mainText: 'Stay', subText: 'Relax & Unwind' },
     ];
 
-    // Create the slides dynamically using the imported bannerImage array
     const slides = bannerImage.map((imageSrc, index) => ({
         src: imageSrc,
         mainText: animatedTexts[index % animatedTexts.length].mainText,
@@ -41,7 +37,7 @@ const Hero = () => {
         Promise.all(preloadImages).then(() => {
             setTimeout(() => setLoading(false), 500);
         });
-    }, []); // This effect runs only once on mount
+    }, []);
 
     useEffect(() => {
         if (!loading) {
@@ -84,14 +80,14 @@ const Hero = () => {
     if (loading) {
         return (
             <Box sx={{ p: { xs: 2, md: 4 } }}>
-                 <Skeleton variant="rectangular" sx={{ height: '85vh', width: '100%', borderRadius: '24px' }} />
+                 <Skeleton variant="rectangular" sx={{ height: { xs: '65vh', md: '85vh' }, width: '100%', borderRadius: '24px' }} />
             </Box>
         );
     }
 
     return (
         <Box sx={{ p: { xs: 1, sm: 2, md: 4 } }}>
-            <Box sx={{ position: 'relative', height: { xs: '88vh', md: '85vh' }, width: '100%', overflow: 'hidden', borderRadius: '24px' }}>
+            <Box sx={{ position: 'relative', height: { xs: '65vh', md: '85vh' }, width: '100%', overflow: 'hidden', borderRadius: '24px' }}>
                 {/* Background Images Container */}
                 {slides.map((slide, index) => (
                     <Fade in={currentImageIndex === index} timeout={1500} key={slide.src}>
@@ -129,7 +125,7 @@ const Hero = () => {
                         variant="h1"
                         sx={{
                             fontWeight: 'bold',
-                            fontSize: { xs: '3rem', sm: '4.5rem', md: '6rem' },
+                            fontSize: { xs: '2.5rem', sm: '4rem', md: '5rem' },
                             textShadow: '3px 3px 15px rgba(0,0,0,0.5)',
                             animation: `slide-in-elliptic-top-fwd 1.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both`,
                         }}
@@ -144,6 +140,7 @@ const Hero = () => {
                             textTransform: 'uppercase',
                             letterSpacing: '3px',
                             fontWeight: 300,
+                            fontSize: { xs: '0.9rem', sm: '1rem' },
                             animation: `slide-in-elliptic-top-fwd 1.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.2s both`,
                         }}
                     >
@@ -161,7 +158,7 @@ const Hero = () => {
                     <Slide direction="up" in={!loading} timeout={1000} mountOnEnter unmountOnExit>
                         <Typography
                             variant="h6" component="p"
-                            sx={{ mb: 3, maxWidth: '700px', fontWeight: 400, fontSize: { xs: '1rem', md: '1.1rem' }, textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}
+                            sx={{ mb: 3, maxWidth: '700px', fontWeight: 400, fontSize: { xs: '0.9rem', md: '1.1rem' }, textShadow: '1px 1px 4px rgba(0,0,0,0.8)' }}
                         >
                             Discover and book unique places to stay and enjoy an unforgettable holiday experience.
                         </Typography>
@@ -171,7 +168,7 @@ const Hero = () => {
                             variant="contained" size="large" onClick={() => navigate('/travellers')}
                             endIcon={<ArrowForwardIcon />}
                             sx={{
-                                borderRadius: '50px', px: 5, py: 1.5, fontSize: '1rem', fontWeight: 'bold',
+                                borderRadius: '50px', px: {xs: 4, md: 5}, py: 1.5, fontSize: {xs: '0.9rem', md: '1rem'}, fontWeight: 'bold',
                                 background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
                                 boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
                                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
