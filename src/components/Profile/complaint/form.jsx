@@ -218,7 +218,7 @@ const Complaint = () => {
                 value={bookingId}
                 onChange={(e) => setBookingId(e.target.value)}
                 size="small"
-                type="number"
+                type="text"
               />
             </Grid>
 
