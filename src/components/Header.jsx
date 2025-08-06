@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   IconButton,
   Typography,
-  Collapse,
   Box,
   Avatar,
   Menu,
@@ -13,174 +12,269 @@ import {
   useMediaQuery,
   Tooltip,
   Button,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  Divider,
+  Chip,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PersonIcon from "@mui/icons-material/Person";
 import BusinessIcon from "@mui/icons-material/Business";
 import PhoneIcon from "@mui/icons-material/Phone";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import LoginIcon from '@mui/icons-material/Login';
 import { useTheme } from "@mui/material/styles";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LocalOffer, OfflineShareRounded } from "@mui/icons-material";
 
 const Header = () => {
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const open = Boolean(menuAnchor);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("lg")); // Adjusted for better responsiveness
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isLoggedIn = localStorage.getItem("isSignedIn");
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setHeaderScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleMenuOpen = (e) => setMenuAnchor(e.currentTarget);
   const handleMenuClose = () => setMenuAnchor(null);
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   const handleRedirect = (path) => {
-    window.location.href = path;
+    if (path.startsWith("tel:")) {
+      window.location.href = path;
+    } else {
+      navigate(path);
+    }
     handleMenuClose();
-    setMobileMenuOpen(false);
+    if (isMobile) {
+      setMobileMenuOpen(false);
+    }
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = "/login";
+    navigate("/login");
     handleMenuClose();
   };
 
-  if (["/login", "/register"].includes(location.pathname)) return null;
+  if (["/login", "/register"].includes(location.pathname)) {
+    return null;
+  }
 
   const navLinks = [
     { text: "Holidays", icon: <TravelExploreIcon />, path: "/travellers" },
     { text: "List Property", icon: <BusinessIcon />, path: "/partner" },
     { text: "Travel Partner", icon: <BusinessIcon />, path: "/travel-partner" },
-    { text: "Call: 9917991758", icon: <PhoneIcon />, path: null },
   ];
+
+  const contactLink = {
+    text: "Call Us",
+    number: "9917991758",
+    icon: <PhoneIcon sx={{ mr: 1 }} />,
+    path: "tel:9917991758",
+  };
+
+  const userMenuItems = [
+    { text: "Profile", icon: <PersonIcon fontSize="small" />, path: "/profile" },
+    { text: "Bookings", icon: <LocalOffer fontSize="small" />, path: "/bookings" },
+    { text: "Coupons", icon: <OfflineShareRounded fontSize="small" />, path: "/coupons" },
+  ];
+
+  const renderDesktopNav = () => (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {navLinks.map((link) => (
+        <Button
+          key={link.text}
+          onClick={() => handleRedirect(link.path)}
+          sx={{
+            color: "text.primary",
+            fontWeight: 500,
+            textTransform: "capitalize",
+            fontSize: "1rem",
+            py: 2,
+            px: 2,
+            borderRadius: '8px',
+            transition: 'background-color 0.3s',
+            '&:hover': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)'
+            }
+          }}
+        >
+          {link.text}
+        </Button>
+      ))}
+    </Box>
+  );
+
+  const renderMobileDrawer = () => (
+    <Drawer anchor="right" open={mobileMenuOpen} onClose={toggleMobileMenu} PaperProps={{ sx: { width: 280, borderTopLeftRadius: 20, borderBottomLeftRadius: 20 } }}>
+      <Box role="presentation">
+        <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: 35 }} />
+            <IconButton onClick={toggleMobileMenu}>
+                <MenuIcon />
+            </IconButton>
+        </Box>
+        <Divider />
+        <List>
+          {[...navLinks, { ...contactLink, text: `${contactLink.text}: ${contactLink.number}` }].map((link) => (
+            <ListItem key={link.text} disablePadding>
+              <ListItemButton onClick={() => { handleRedirect(link.path); toggleMobileMenu(); }}>
+                <ListItemIcon sx={{ color: 'text.secondary' }}>{link.icon}</ListItemIcon>
+                <Typography variant="body1" fontWeight={500}>{link.text}</Typography>
+              </ListItemButton>
+            </ListItem>
+          ))}
+           <Divider sx={{ my: 1 }} />
+           {isLoggedIn ? (
+             <>
+              {userMenuItems.map((item) => (
+                <ListItem key={item.text} disablePadding>
+                    <ListItemButton onClick={() => { handleRedirect(item.path); toggleMobileMenu(); }}>
+                        <ListItemIcon sx={{ color: 'text.secondary' }}>{item.icon}</ListItemIcon>
+                        <Typography variant="body1" fontWeight={500}>{item.text}</Typography>
+                    </ListItemButton>
+                </ListItem>
+              ))}
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleLogout}>
+                    <ListItemIcon sx={{ color: 'error.main' }}><LogoutIcon/></ListItemIcon>
+                    <Typography variant="body1" fontWeight={500} sx={{ color: 'error.main' }}>Logout</Typography>
+                </ListItemButton>
+              </ListItem>
+             </>
+           ) : (
+            <ListItem disablePadding>
+                <ListItemButton onClick={() => handleRedirect('/login')}>
+                    <ListItemIcon sx={{ color: 'primary.main' }}><LoginIcon/></ListItemIcon>
+                    <Typography variant="body1" fontWeight={500} sx={{ color: 'primary.main' }}>Login / Sign Up</Typography>
+                </ListItemButton>
+            </ListItem>
+           )}
+        </List>
+      </Box>
+    </Drawer>
+  );
 
   return (
     <>
-      <AppBar position="static" color="default" elevation={1}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          {/* Logo */}
-          <Box onClick={() => handleRedirect("/")} sx={{ cursor: "pointer" }}>
-            <img src="/logo.png" alt="Logo" height={40} />
+      <AppBar 
+        position="sticky" 
+        elevation={0}
+        sx={{ 
+          transition: 'all 0.4s ease-in-out',
+          bgcolor: headerScrolled ? 'rgba(255, 255, 255, 0.85)' : 'transparent',
+          backdropFilter: headerScrolled ? 'blur(16px)' : 'none',
+          boxShadow: headerScrolled ? '0px 4px 30px rgba(0,0,0,0.08)' : 'none',
+          color: 'text.primary',
+          borderBottomLeftRadius: headerScrolled ? '20px' : '0px',
+          borderBottomRightRadius: headerScrolled ? '20px' : '0px',
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between", height: 80 }}>
+          <Box onClick={() => handleRedirect("/")} sx={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            <img src="/logo.png" alt="Logo" style={{ height: 45, verticalAlign: 'middle' }} />
           </Box>
 
-          {/* Right Side */}
-          <Box display="flex" alignItems="center">
-            {isMobile ? (
-              <IconButton onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-                <MenuIcon />
-              </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            {!isMobile && renderDesktopNav()}
+            
+            <Divider orientation="vertical" flexItem sx={{ mx: 1, display: { xs: 'none', md: 'block' } }} />
+
+            {!isMobile && (
+              <Button
+                variant="text"
+                onClick={() => handleRedirect(contactLink.path)}
+                startIcon={contactLink.icon}
+                sx={{ textTransform: 'none', color: 'text.secondary' }}
+              >
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                  <Typography variant="caption" sx={{ lineHeight: 1.2 }}>{contactLink.text}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'text.primary' }}>{contactLink.number}</Typography>
+                </Box>
+              </Button>
+            )}
+            
+            {isLoggedIn ? (
+                <Tooltip title="Account Settings">
+                  <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 1 }}>
+                    <Avatar sx={{ width: 42, height: 42, bgcolor: 'primary.main', transition: 'transform 0.2s ease-in-out', '&:hover': { transform: 'scale(1.1)' } }}>
+                      <PersonIcon />
+                    </Avatar>
+                  </IconButton>
+                </Tooltip>
             ) : (
-              navLinks.map((link, idx) => (
-                <Button
-                  key={idx}
-                  onClick={() => link.path && handleRedirect(link.path)}
-                  startIcon={link.icon}
-                  sx={{
-                    color: "black",
-                    fontWeight: "bold",
-                    textTransform: "none",
-                    mx: 1,
-                  }}
-                >
-                  {link.text}
-                </Button>
-              ))
+                !isMobile && (
+                    <Button 
+                        variant="contained" 
+                        onClick={() => handleRedirect('/login')} 
+                        startIcon={<LoginIcon/>}
+                        sx={{ borderRadius: '20px', textTransform: 'none', boxShadow: 'none', ml: 1 }}
+                    >
+                        Login
+                    </Button>
+                )
             )}
 
-            {/* Avatar Menu */}
-            <Tooltip title="Account Settings">
-              <IconButton onClick={handleMenuOpen}>
-                <Avatar>
-                  <PersonIcon />
-                </Avatar>
-              </IconButton>
-            </Tooltip>
             <Menu
               anchorEl={menuAnchor}
-              open={open}
+              open={Boolean(menuAnchor)}
               onClose={handleMenuClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-              transformOrigin={{ vertical: "top", horizontal: "right" }}
               PaperProps={{
-                elevation: 3,
+                elevation: 0,
                 sx: {
-                  border: "1px solid #e0e0e0",
-                  borderRadius: 7,
-                  backgroundColor: "#ffffff",
-                  minWidth: 120,
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 4px 12px rgba(0,0,0,0.1))',
                   mt: 1.5,
-                  boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-                  "& .MuiMenuItem-root": {
-                    fontWeight: 500,
-                    color: "#333",
-                    "&:hover": {
-                      backgroundColor: "#f5f5f5",
-                      color: "#1976d2",
-                    },
-                  },
-                  "& .MuiListItemIcon-root": {
-                    color: "#1976d2",
-                    minWidth: "36px",
+                  borderRadius: '12px',
+                  minWidth: 200,
+                  '& .MuiMenuItem-root': { padding: '12px 16px' },
+                  '&:before': {
+                    content: '""', display: 'block', position: 'absolute', top: 0, right: 14,
+                    width: 10, height: 10, bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)', zIndex: 0,
                   },
                 },
               }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <MenuItem onClick={() => handleRedirect("/profile")}>
-                <ListItemIcon>
-                  <PersonIcon fontSize="small" />
-                </ListItemIcon>
-                Profile
-              </MenuItem>
-              <MenuItem onClick={() => handleRedirect("/bookings")}>
-                <ListItemIcon>
-                  <LocalOffer fontSize="small" />
-                </ListItemIcon>
-                Bookings
-              </MenuItem>
-              <MenuItem onClick={() => handleRedirect("/coupons")}>
-                <ListItemIcon>
-                  <OfflineShareRounded fontSize="small" />
-                </ListItemIcon>
-                Coupons
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
+              {userMenuItems.map((item) => (
+                 <MenuItem key={item.text} onClick={() => handleRedirect(item.path)}>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {item.text}
+                 </MenuItem>
+              ))}
+              <Divider sx={{ my: 0.5 }} />
+              <MenuItem onClick={handleLogout} sx={{ color: 'error.main' }}>
+                <ListItemIcon sx={{ color: 'error.main' }}><LogoutIcon fontSize="small" /></ListItemIcon>
                 {isLoggedIn ? "Logout" : "Login"}
               </MenuItem>
             </Menu>
+            
+            {isMobile && (
+              <IconButton onClick={toggleMobileMenu} edge="end">
+                <MenuIcon />
+              </IconButton>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
-
-      {/* Slide-down mobile menu */}
-      {isMobile && (
-        <Collapse in={mobileMenuOpen} timeout="auto" unmountOnExit>
-          <Box sx={{ bgcolor: "#f5f5f5", px: 2, py: 1 }}>
-            {navLinks.map((link, idx) => (
-              <Box
-                key={idx}
-                onClick={() => link.path && handleRedirect(link.path)}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  py: 1,
-                  cursor: "pointer",
-                }}
-              >
-                {link.icon}
-                <Typography sx={{ ml: 1 }}>{link.text}</Typography>
-              </Box>
-            ))}
-          </Box>
-        </Collapse>
-      )}
+      {renderMobileDrawer()}
     </>
   );
 };

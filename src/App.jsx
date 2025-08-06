@@ -33,6 +33,7 @@ import Hero from './components/landingPage/Hero';
 import Coupon from './components/Profile/coupon.jsx';
 import Policies from './components/Booknow/policies.jsx';
 import TourBooking from './components/Profile/tour-booking/tour-booking.jsx';
+import ScrollToTopButton from './utils/scrollToTop.jsx';
 
 function App() {
     return (
@@ -69,6 +70,7 @@ function App() {
                     <Footer />
                     <Bottom />
                     <ToastContainer /> {/* Add ToastContainer here */}
+                    <ScrollToTopButton />
                 </Router>
             </div>
         </LoaderProvider>

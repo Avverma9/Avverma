@@ -32,12 +32,12 @@
 }
 
 .header-travel::-webkit-scrollbar-thumb {
-  background-color: #00b3ff; /* Adjust the scrollbar thumb color */
+  background-color: #4849492e; /* Adjust the scrollbar thumb color */
   border-radius: 6px;
 }
 
 .header-travel::-webkit-scrollbar-track {
-  background-color: #fff;
+  background-color: #ffffff9e;
   border-radius: 6px;
 }
 

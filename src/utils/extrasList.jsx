@@ -315,8 +315,8 @@ export const categories = [
 ];
 
 export const bannerImage = [
-    'https://img.freepik.com/premium-vector/travel-web-banner-design_710679-28.jpg',
-    'https://img.freepik.com/free-vector/flat-design-travel-twitter-header_23-2149058244.jpg',
-    'https://img.freepik.com/free-vector/flat-design-travel-twitter-header_23-2149054512.jpg?t=st=1728620210~exp=1728623810~hmac=24cf016d8d0e850fde35d9f02e9c6819136a34e8a40564b72861ab1b11a063f6',
-    'https://as2.ftcdn.net/v2/jpg/01/90/17/33/1000_F_190173326_RLQl1POQNFeRDzEDHnkEFMYWGDp6tnGB.jpg',
+    'https://images.unsplash.com/photo-1561501900-3701fa6a0864?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bHV4dXJ5JTIwaG90ZWx8ZW58MHx8MHx8fDA%3D',
+    'https://kundutirthoovraman.com/wp-content/uploads/2019/03/europe_banner.jpg',
+    'https://images.pexels.com/photos/2664046/pexels-photo-2664046.jpeg',
+    'https://ic.c4assets.com/vps/grand-indian-hotel/f445ca4c-66d4-4884-ae39-7b8460e0172e.jpg',
 ];
