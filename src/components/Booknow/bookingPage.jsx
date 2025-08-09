@@ -79,7 +79,7 @@ const BookingPage = ({
         sx={{
           position: "sticky",
           top: 0,
-          width: 370,
+          width: 360,
           p: 3,
           boxShadow: 4,
           backgroundColor: "#ffffff",
@@ -95,7 +95,7 @@ const BookingPage = ({
               backgroundColor: "#f44336", // Light red (Material UI red[500])
               color: "white",
               px: 2,
-              py: 1,
+              py: 0.5,
               borderRadius: 1,
               display: "inline-block", // Keeps the background tight around the text
             }}
