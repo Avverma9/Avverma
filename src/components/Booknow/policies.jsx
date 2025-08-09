@@ -91,11 +91,11 @@ const Policies = () => {
     <Box sx={{ bgcolor: "#f5f7fa", py: 5, minHeight: "100vh" }}>
       <Container maxWidth="md">
         <Typography
-          variant="h4"
-          component="h1"
+          variant="p4"
+          component="h5"
           align="center"
           gutterBottom
-          fontWeight={700}
+          fontWeight={400}
           sx={{ mb: 4, color: "#1a237e" }}
         >
           Our Hotel Policies

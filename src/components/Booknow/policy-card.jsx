@@ -55,7 +55,7 @@ const HotelPolicyCard = ({ hotelData }) => {
     sx={{
       fontWeight: 700,
       color: "black",
-      backgroundColor: "#ff8c00",
+      backgroundColor: "#e4ded8",
       borderRadius: 1,
       px: 1.5,
       py: 0.5,

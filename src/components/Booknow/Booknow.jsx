@@ -350,7 +350,7 @@ const BookNow = () => {
               spacing={1}
               sx={{ mb: { xs: 1, md: 2 } }}
             >
-              <Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>
+              <Typography variant="p4" component="h4" sx={{ fontWeight: 400 }}>
                 {hotelData?.hotelName}
               </Typography>
               <Chip
@@ -468,23 +468,24 @@ const BookNow = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-            <Box sx={{ textAlign: "center" }}>
-  <Typography
-    component="h6"
-    sx={{
-      fontWeight: 600,
-      color: "black",
-      backgroundColor: "#ff8c00",
-      borderRadius: 1,
-      px: 1.5,
-      py: 0.5,
-      display: "inline-block",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-    }}
-  >
-    Pricing and Details
-  </Typography>
-</Box>
+              <Box >
+                <Typography
+                  component="h6"
+                  sx={{
+                    fontWeight: 600,
+                    color: "black",
+                    backgroundColor: "#e4ded8",
+                    borderRadius: 1,
+                    px: 1.5,
+                    py: 0.5,
+                    display: "inline-block",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                  }}
+                >
+                  Pricing and Details
+                </Typography>
+                <hr />
+              </Box>
 
               {currentRoom?.offerPriceLess > 0 ? (
                 <Box>
@@ -550,143 +551,120 @@ const BookNow = () => {
               </Typography>
             </Box>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  mb: 2,
-                  border: 1,
-                  borderColor: "grey.300",
-                  borderRadius: 1,
-                  backgroundColor: "transparent",
-                }}
-              >
-              <Box sx={{ textAlign: "center", mb: 2 }}>
-  <Typography
-    component="h5"
-    sx={{
-      fontWeight: 600,
-      color: "black",
-      backgroundColor: "#ff8c00",
-      borderRadius: 1,
-      px: 1.5,
-      py: 0.5,
-      display: "inline-block",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-    }}
-  >
-   Amenities
-  </Typography>
-</Box>
-
-                <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
-                  {visibleAmenities.map((amenity, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <IconContext.Provider
-                          value={{ size: "1.2em", style: { color: "#666" } }}
-                        >
-                          {amenityIcons[amenity] || defaultIcon}
-                        </IconContext.Provider>
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                          {amenity}
-                        </Typography>
-                      </Stack>
-                    </Grid>
-                  ))}
-                </Grid>
-                {remainingAmenitiesCount > 0 && (
-                  <Accordion
-                    expanded={expanded}
-                    onChange={handleExpansion}
-                    sx={{
-                      mt: 2,
-                      boxShadow: "none",
-                      "&:before": { display: "none" },
-                    }}
-                  >
-                    <AccordionSummary
-                      expandIcon={<ExpandMoreIcon />}
-                      sx={{
-                        minHeight: "38px",
-                        "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
-                      }}
-                    >
-                      <Typography variant="body2" color="primary">
-                        Show all {amenities.length} amenities
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
-                      <Grid container spacing={1}>
-                        {amenities.slice(10).map((amenity, index) => (
-                          <Grid item xs={12} sm={6} md={4} key={index}>
-                            <Stack
-                              direction="row"
-                              alignItems="center"
-                              spacing={1}
-                            >
-                              <IconContext.Provider
-                                value={{
-                                  size: "1.2em",
-                                  style: { color: "#666" },
-                                }}
-                              >
-                                {amenityIcons[amenity] || defaultIcon}
-                              </IconContext.Provider>
-                              <Typography
-                                variant="body2"
-                                sx={{ fontWeight: 500 }}
-                              >
-                                {amenity}
-                              </Typography>
-                            </Stack>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </AccordionDetails>
-                  </Accordion>
-                )}
-              </Paper>
-            </Box>
-
-            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Paper
-                elevation={0}
-                sx={{
-                  p: 2,
-                  border: 1,
-                  borderColor: "grey.300",
-                  borderRadius: 1,
-                  backgroundColor: "transparent",
-                }}
-              >
+              <Box sx={{  mb: 2 }}>
                 <Typography
-                  variant="p6"
-                  component="h6"
-                  ref={roomsRef}
+                  component="h5"
                   sx={{
                     fontWeight: 600,
                     color: "black",
-                    backgroundColor: "#ff8c00",
-                    borderRadius: 1, // 16px (MUI spacing)
-                    px: 1, // horizontal padding
-                    py: 0.5, // vertical padding
-                    display: "inline-block", // keeps background tight around text
+                    backgroundColor: "#e4ded8",
+                    borderRadius: 1,
+                    px: 1.5,
+                    py: 0.5,
+                    display: "inline-block",
                     boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
                   }}
                 >
-                  Select our special rooms
+                  Amenities
                 </Typography>
+              </Box>
 
-                <Box sx={{ mt: 2 }}>
-                  <Rooms
-                    hotelData={hotelData}
-                    selectedRooms={selectedRooms}
-                    handleAddRoom={handleAddRoom}
-                    handleRemoveRoom={handleRemoveRoom}
-                  />
-                </Box>
-              </Paper>
+              <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
+                {visibleAmenities.map((amenity, index) => (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <IconContext.Provider
+                        value={{ size: "1.2em", style: { color: "#666" } }}
+                      >
+                        {amenityIcons[amenity] || defaultIcon}
+                      </IconContext.Provider>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {amenity}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                ))}
+              </Grid>
+              {remainingAmenitiesCount > 0 && (
+                <Accordion
+                  expanded={expanded}
+                  onChange={handleExpansion}
+                  sx={{
+                    mt: 2,
+                    boxShadow: "none",
+                    "&:before": { display: "none" },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    sx={{
+                      minHeight: "38px",
+                      "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
+                    }}
+                  >
+                    <Typography variant="body2" color="primary">
+                      Show all {amenities.length} amenities
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
+                    <Grid container spacing={1}>
+                      {amenities.slice(10).map((amenity, index) => (
+                        <Grid item xs={12} sm={6} md={4} key={index}>
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <IconContext.Provider
+                              value={{
+                                size: "1.2em",
+                                style: { color: "#666" },
+                              }}
+                            >
+                              {amenityIcons[amenity] || defaultIcon}
+                            </IconContext.Provider>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {amenity}
+                            </Typography>
+                          </Stack>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </AccordionDetails>
+                </Accordion>
+              )}
+            </Box>
+
+            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
+              <Typography
+                variant="p6"
+                component="h6"
+                ref={roomsRef}
+                sx={{
+                  fontWeight: 600,
+                  color: "black",
+                  backgroundColor: "#ff8c00",
+                  borderRadius: 1, // 16px (MUI spacing)
+                  px: 1, // horizontal padding
+                  py: 0.5, // vertical padding
+                  display: "inline-block", // keeps background tight around text
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                }}
+              >
+                Select our special rooms
+              </Typography>
+
+              <Box sx={{ mt: 2 }}>
+                <Rooms
+                  hotelData={hotelData}
+                  selectedRooms={selectedRooms}
+                  handleAddRoom={handleAddRoom}
+                  handleRemoveRoom={handleRemoveRoom}
+                />
+              </Box>
             </Box>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
               <HotelPolicyCard hotelData={hotelData} />

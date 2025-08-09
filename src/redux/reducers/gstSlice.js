@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
+import { token } from "../../utils/Unauthorized";
 export const getGst = createAsyncThunk(
     "gst/getGst",
     async ({type,gstThreshold}, { rejectWithValue }) => {
-      
-        const token = localStorage.getItem("token");
         try {
             const response = await axios.get(
                 `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
@@ -24,7 +23,6 @@ export const getGst = createAsyncThunk(
 export const getGstForHotelData = createAsyncThunk(
     "gst/getGstForHotelData",
     async ({ type, gstThreshold }, { rejectWithValue }) => {
-        const token = localStorage.getItem("token");
         try {
             const response = await axios.get(
                 `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
