@@ -26,7 +26,7 @@ import {
 import amenityIcons from "../../utils/extrasList";
 import BookingReview from "./BookingReview";
 import { Modal } from "@mui/material";
-import alert from "../../utils/custom_alert/custom_alert";
+
 import { StarHalfSharp } from "@mui/icons-material";
 import HotelPolicyCard from "./policy-card";
 import BookNowSkeleton from "./BookNowSkeleton";
@@ -35,6 +35,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
+import { toast } from "react-toastify";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const BookNow = () => {
     } else {
       setSelectedFood([...selectedFood, { ...food, quantity: 1 }]);
     }
-    alert(`${food.name} is added`);
+    toast.info(`${food.name} is added`);
   };
 
   const handleRemoveFood = (food) => {
@@ -112,13 +113,13 @@ const BookNow = () => {
     setSelectedRooms([room]);
     localStorage.setItem("toBeUpdatedRoomId", room.roomId);
     localStorage.setItem("toBeCheckRoomNumber", room.countRooms);
-    alert(`${room.type} is selected`);
+    toast.info(`${room.type} is selected`);
   };
 
   const handleRemoveRoom = (room) => {
     setSelectedRooms((prevSelectedRooms) => {
       if (prevSelectedRooms.length === 1) {
-        alert("You must have at least one room selected.");
+        toast.info("You must have at least one room selected.");
         return prevSelectedRooms;
       }
       return prevSelectedRooms.filter(
@@ -210,10 +211,7 @@ const BookNow = () => {
         if (initialRoom) {
           setSelectedRooms([initialRoom]);
           localStorage.setItem("toBeUpdatedRoomId", initialRoom.roomId);
-          localStorage.setItem(
-            "toBeCheckRoomNumber",
-            initialRoom.countRooms,
-          );
+          localStorage.setItem("toBeCheckRoomNumber", initialRoom.countRooms);
         }
       }
     }
@@ -302,7 +300,7 @@ const BookNow = () => {
   }
 
   const handlePay = () => {
-    alert("Currently we are accepting only Pay at Hotel method");
+    toast.info("Currently we are accepting only Pay at Hotel method");
   };
 
   const defaultIcon = <FaBed />;
@@ -318,7 +316,7 @@ const BookNow = () => {
 
   const handleCheckOutDateChange = (date) => {
     if (date <= checkInDate) {
-      alert("Checkout date must be after the check-in date.");
+      toast.info("Checkout date must be after the check-inp date.");
       return;
     }
     setCheckOutDate(date);
@@ -346,7 +344,12 @@ const BookNow = () => {
       ) : (
         <Grid container spacing={{ xs: 2, md: 4 }}>
           <Grid item xs={12}>
-            <Stack direction={{ xs: "column", sm: "row" }} alignItems={{ xs: "flex-start", sm: "center" }} spacing={1} sx={{ mb: { xs: 1, md: 2 } }}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              alignItems={{ xs: "flex-start", sm: "center" }}
+              spacing={1}
+              sx={{ mb: { xs: 1, md: 2 } }}
+            >
               <Typography variant="h4" component="h1" sx={{ fontWeight: 600 }}>
                 {hotelData?.hotelName}
               </Typography>
@@ -358,7 +361,12 @@ const BookNow = () => {
                 sx={{ fontSize: "0.85rem", fontWeight: 500 }}
               />
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={0.5} sx={{ color: "text.secondary", mb: { xs: 2, md: 3 } }}>
+            <Stack
+              direction="row"
+              alignItems="center"
+              spacing={0.5}
+              sx={{ color: "text.secondary", mb: { xs: 2, md: 3 } }}
+            >
               <PlaceIcon fontSize="small" />
               <Typography variant="body2">
                 {hotelData?.landmark}, {hotelData?.city}, {hotelData?.state},{" "}
@@ -392,16 +400,27 @@ const BookNow = () => {
               <Modal open={isOpen} onClose={() => setIsOpen(false)}>
                 <Box
                   sx={{
-                    position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh",
-                    bgcolor: "rgba(0,0,0,0.95)", display: "flex", alignItems: "center",
-                    justifyContent: "center", zIndex: 1300,
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100vw",
+                    height: "100vh",
+                    bgcolor: "rgba(0,0,0,0.95)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    zIndex: 1300,
                   }}
                 >
                   <IconButton
                     onClick={() => setIsOpen(false)}
                     sx={{
-                      position: "absolute", top: 8, right: 8, color: "white",
-                      bgcolor: "rgba(0,0,0,0.5)", "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      color: "white",
+                      bgcolor: "rgba(0,0,0,0.5)",
+                      "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
                     }}
                   >
                     <CloseIcon />
@@ -420,13 +439,22 @@ const BookNow = () => {
                   {hotelData.images.length > 1 && (
                     <>
                       <IconButton
-                        onClick={() => setCurrentImageIndex((currentImageIndex + hotelData.images.length - 1) % hotelData.images.length)}
+                        onClick={() =>
+                          setCurrentImageIndex(
+                            (currentImageIndex + hotelData.images.length - 1) %
+                              hotelData.images.length,
+                          )
+                        }
                         sx={navButtonStyle("left")}
                       >
                         {"<"}
                       </IconButton>
                       <IconButton
-                        onClick={() => setCurrentImageIndex((currentImageIndex + 1) % hotelData.images.length)}
+                        onClick={() =>
+                          setCurrentImageIndex(
+                            (currentImageIndex + 1) % hotelData.images.length,
+                          )
+                        }
                         sx={navButtonStyle("right")}
                       >
                         {">"}
@@ -440,31 +468,73 @@ const BookNow = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Typography variant="h5" component="h2" sx={{ fontWeight: 600, mb: 1, textAlign: "center" }}>
-                Pricing and Details
-              </Typography>
+            <Box sx={{ textAlign: "center" }}>
+  <Typography
+    component="h6"
+    sx={{
+      fontWeight: 600,
+      color: "black",
+      backgroundColor: "#ff8c00",
+      borderRadius: 1,
+      px: 1.5,
+      py: 0.5,
+      display: "inline-block",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    }}
+  >
+    Pricing and Details
+  </Typography>
+</Box>
+
               {currentRoom?.offerPriceLess > 0 ? (
                 <Box>
                   <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography variant="body1" color="error" sx={{ textDecoration: "line-through" }}>
+                    <Typography
+                      variant="body1"
+                      color="error"
+                      sx={{ textDecoration: "line-through" }}
+                    >
                       ₹{currentRoom.price + currentRoom.offerPriceLess}
                     </Typography>
-                    <Typography variant="h5" component="span" sx={{ fontWeight: 600 }}>
+                    <Typography
+                      variant="h5"
+                      component="span"
+                      sx={{ fontWeight: 600 }}
+                    >
                       ₹{currentRoom.price}
                     </Typography>
-                    <Chip label={`₹${currentRoom.offerPriceLess} Discount`} color="warning" size="small" />
+                    <Chip
+                      label={`₹${currentRoom.offerPriceLess} Discount`}
+                      color="warning"
+                      size="small"
+                    />
                   </Stack>
                   <Typography variant="body2" color="error" sx={{ mt: 0.5 }}>
                     Offer price on {currentRoom.type}
                   </Typography>
-                  <Box sx={{ p: 0.5, mt: 1, display: "flex", alignItems:"center", gap: 1, width: "fit-content", bgcolor: "grey.100", borderRadius: 1 }}>
+                  <Box
+                    sx={{
+                      p: 0.5,
+                      mt: 1,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      width: "fit-content",
+                      bgcolor: "grey.100",
+                      borderRadius: 1,
+                    }}
+                  >
                     <BsClockHistory />
                     <Typography variant="caption">{timeLeft}</Typography>
                   </Box>
                 </Box>
               ) : (
                 <Stack direction="row" alignItems="baseline" spacing={0.5}>
-                  <Typography variant="h5" component="span" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="h5"
+                    component="span"
+                    sx={{ fontWeight: 600 }}
+                  >
                     ₹{currentRoom?.price}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
@@ -472,46 +542,103 @@ const BookNow = () => {
                   </Typography>
                 </Stack>
               )}
-              <Typography variant="body2" sx={{ mt: 2, color: "text.secondary" }}>
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, color: "text.secondary" }}
+              >
                 {hotelData?.description}
               </Typography>
             </Box>
-
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <HotelPolicyCard hotelData={hotelData} />
-            </Box>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 2,
+                  mb: 2,
+                  border: 1,
+                  borderColor: "grey.300",
+                  borderRadius: 1,
+                  backgroundColor: "transparent",
+                }}
+              >
+              <Box sx={{ textAlign: "center", mb: 2 }}>
+  <Typography
+    component="h5"
+    sx={{
+      fontWeight: 600,
+      color: "black",
+      backgroundColor: "#ff8c00",
+      borderRadius: 1,
+      px: 1.5,
+      py: 0.5,
+      display: "inline-block",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    }}
+  >
+   Amenities
+  </Typography>
+</Box>
 
-            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Paper elevation={0} sx={{ p: 2, mb: 2, border: 1, borderColor: "grey.300", borderRadius: 1, backgroundColor: "transparent" }}>
-                <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 2 }}>
-                  What this place offers
-                </Typography>
                 <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
                   {visibleAmenities.map((amenity, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                       <Stack direction="row" alignItems="center" spacing={1}>
-                        <IconContext.Provider value={{ size: "1.2em", style: { color: "#666" } }}>
+                        <IconContext.Provider
+                          value={{ size: "1.2em", style: { color: "#666" } }}
+                        >
                           {amenityIcons[amenity] || defaultIcon}
                         </IconContext.Provider>
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{amenity}</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          {amenity}
+                        </Typography>
                       </Stack>
                     </Grid>
                   ))}
                 </Grid>
                 {remainingAmenitiesCount > 0 && (
-                  <Accordion expanded={expanded} onChange={handleExpansion} sx={{ mt: 2, boxShadow: "none", "&:before": { display: "none" } }}>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ minHeight: "38px", "& .MuiAccordionSummary-content": { my: 1, ml: -2 } }}>
-                      <Typography variant="body2" color="primary">Show all {amenities.length} amenities</Typography>
+                  <Accordion
+                    expanded={expanded}
+                    onChange={handleExpansion}
+                    sx={{
+                      mt: 2,
+                      boxShadow: "none",
+                      "&:before": { display: "none" },
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      sx={{
+                        minHeight: "38px",
+                        "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
+                      }}
+                    >
+                      <Typography variant="body2" color="primary">
+                        Show all {amenities.length} amenities
+                      </Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
                       <Grid container spacing={1}>
                         {amenities.slice(10).map((amenity, index) => (
                           <Grid item xs={12} sm={6} md={4} key={index}>
-                            <Stack direction="row" alignItems="center" spacing={1}>
-                              <IconContext.Provider value={{ size: "1.2em", style: { color: "#666" } }}>
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              spacing={1}
+                            >
+                              <IconContext.Provider
+                                value={{
+                                  size: "1.2em",
+                                  style: { color: "#666" },
+                                }}
+                              >
                                 {amenityIcons[amenity] || defaultIcon}
                               </IconContext.Provider>
-                              <Typography variant="body2" sx={{ fontWeight: 500 }}>{amenity}</Typography>
+                              <Typography
+                                variant="body2"
+                                sx={{ fontWeight: 500 }}
+                              >
+                                {amenity}
+                              </Typography>
                             </Stack>
                           </Grid>
                         ))}
@@ -523,14 +650,46 @@ const BookNow = () => {
             </Box>
 
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Paper elevation={0} sx={{ p: 2, border: 1, borderColor: "grey.300", borderRadius: 1, backgroundColor: "transparent" }}>
-                <Typography variant="h6" component="h3" sx={{ fontWeight: 600, color: "#ff8c00" }} ref={roomsRef}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 2,
+                  border: 1,
+                  borderColor: "grey.300",
+                  borderRadius: 1,
+                  backgroundColor: "transparent",
+                }}
+              >
+                <Typography
+                  variant="p6"
+                  component="h6"
+                  ref={roomsRef}
+                  sx={{
+                    fontWeight: 600,
+                    color: "black",
+                    backgroundColor: "#ff8c00",
+                    borderRadius: 1, // 16px (MUI spacing)
+                    px: 1, // horizontal padding
+                    py: 0.5, // vertical padding
+                    display: "inline-block", // keeps background tight around text
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                  }}
+                >
                   Select our special rooms
                 </Typography>
+
                 <Box sx={{ mt: 2 }}>
-                  <Rooms hotelData={hotelData} selectedRooms={selectedRooms} handleAddRoom={handleAddRoom} handleRemoveRoom={handleRemoveRoom} />
+                  <Rooms
+                    hotelData={hotelData}
+                    selectedRooms={selectedRooms}
+                    handleAddRoom={handleAddRoom}
+                    handleRemoveRoom={handleRemoveRoom}
+                  />
                 </Box>
               </Paper>
+            </Box>
+            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
+              <HotelPolicyCard hotelData={hotelData} />
             </Box>
             <Box sx={{ mt: { xs: 2, md: 3 } }}>
               <BookingReview hotelId={hotelData?.hotelId} />
@@ -539,31 +698,31 @@ const BookNow = () => {
 
           <Grid item xs={12} md={4}>
             <Box sx={{ position: "sticky", top: { xs: 0, md: 16 } }}>
-                <BookingDetails
-                  hotelId={newhotelId}
-                  monthlyData={monthlyData}
-                  selectedFood={selectedFood}
-                  selectedRooms={selectedRooms}
-                  roomsCount={roomsCount}
-                  guestsCount={guestsCount}
-                  checkInDate={checkInDate}
-                  checkOutDate={checkOutDate}
-                  handleAddFood={handleAddFood}
-                  handleRemoveFood={handleRemoveFood}
-                  handleAddRoom={handleAddRoom}
-                  handleRemoveRoom={handleRemoveRoom}
-                  handleIncrementRooms={handleIncrementRooms}
-                  handleDecrementRooms={handleDecrementRooms}
-                  handleIncrementGuests={handleIncrementGuests}
-                  handleDecrementGuests={handleDecrementGuests}
-                  handleCheckInDateChange={handleCheckInDateChange}
-                  handleCheckOutDateChange={handleCheckOutDateChange}
-                  scrollToFood={scrollToFood}
-                  scrollToRooms={scrollToRooms}
-                  calculateTotalPrice={calculateTotalPrice}
-                  handlePay={handlePay}
-                  hotelData={hotelData}
-                />
+              <BookingDetails
+                hotelId={newhotelId}
+                monthlyData={monthlyData}
+                selectedFood={selectedFood}
+                selectedRooms={selectedRooms}
+                roomsCount={roomsCount}
+                guestsCount={guestsCount}
+                checkInDate={checkInDate}
+                checkOutDate={checkOutDate}
+                handleAddFood={handleAddFood}
+                handleRemoveFood={handleRemoveFood}
+                handleAddRoom={handleAddRoom}
+                handleRemoveRoom={handleRemoveRoom}
+                handleIncrementRooms={handleIncrementRooms}
+                handleDecrementRooms={handleDecrementRooms}
+                handleIncrementGuests={handleIncrementGuests}
+                handleDecrementGuests={handleDecrementGuests}
+                handleCheckInDateChange={handleCheckInDateChange}
+                handleCheckOutDateChange={handleCheckOutDateChange}
+                scrollToFood={scrollToFood}
+                scrollToRooms={scrollToRooms}
+                calculateTotalPrice={calculateTotalPrice}
+                handlePay={handlePay}
+                hotelData={hotelData}
+              />
             </Box>
           </Grid>
         </Grid>

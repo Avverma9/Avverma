@@ -6,13 +6,11 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import CancelIcon from '@mui/icons-material/Cancel';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-// Helper function to format the object keys into readable titles
 const formatTermKey = (key) => {
     const spaced = key.replace(/([A-Z])/g, ' $1');
     return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 };
 
-// Helper function to assign a relevant icon to each policy type
 const getTermIcon = (key) => {
     const lowerCaseKey = key.toLowerCase();
     if (lowerCaseKey.includes('cancellation')) {
@@ -25,6 +23,38 @@ const getTermIcon = (key) => {
         return <GavelIcon color="primary" />;
     }
     return <InfoOutlinedIcon color="primary" />;
+};
+
+// New helper function to format a single policy text into a bulleted list
+const formatPolicyText = (policyText) => {
+    if (!policyText) return null;
+    const sentences = policyText
+        .split('.')
+        .map(sentence => sentence.trim())
+        .filter(sentence => sentence.length > 0)
+        .map(sentence => `${sentence}.`);
+
+    return (
+        <Stack spacing={1}>
+            {sentences.map((sentence, index) => (
+                <Stack key={index} direction="row" spacing={1.5} alignItems="flex-start">
+                    <Box
+                        sx={{
+                            width: 6,
+                            height: 6,
+                            bgcolor: 'text.secondary',
+                            borderRadius: '50%',
+                            flexShrink: 0,
+                            mt: '6px',
+                        }}
+                    />
+                    <Typography variant="body2" color="text.secondary" sx={{ overflowWrap: 'break-word' }}>
+                        {sentence}
+                    </Typography>
+                </Stack>
+            ))}
+        </Stack>
+    );
 };
 
 const TermsAndCondition = ({ data }) => {
@@ -57,9 +87,8 @@ const TermsAndCondition = ({ data }) => {
                 {termKeys.map((key, index) => (
                     <Accordion
                         key={key}
-                        defaultExpanded={index === 0} // Expand the first item by default
+                        defaultExpanded={index === 0}
                         sx={{
-                            // Use variant outlined for clean borders
                             border: 1,
                             borderColor: 'divider',
                             boxShadow: 'none',
@@ -67,7 +96,7 @@ const TermsAndCondition = ({ data }) => {
                                 borderBottom: 0,
                             },
                             '&:before': {
-                                display: 'none', // Remove default top border
+                                display: 'none',
                             },
                             '&.Mui-expanded': {
                                 margin: '0 0',
@@ -87,12 +116,7 @@ const TermsAndCondition = ({ data }) => {
                             </Stack>
                         </AccordionSummary>
                         <AccordionDetails sx={{ borderTop: '1px solid', borderColor: 'divider' }}>
-                            <Typography
-                                variant="body2"
-                                sx={{ color: 'text.secondary', lineHeight: 1.6, overflowWrap: 'break-word' }}
-                            >
-                                {terms[key] || `Details for ${formatTermKey(key)} are not available.`}
-                            </Typography>
+                            {formatPolicyText(terms[key])}
                         </AccordionDetails>
                     </Accordion>
                 ))}

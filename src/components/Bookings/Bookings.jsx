@@ -36,6 +36,7 @@ import { Stack } from "@mui/system";
 import { TuneRounded } from "@mui/icons-material";
 import NotFoundPage from "../../utils/Not-found";
 import BookingSkeleton from "./bookingSkeleton";
+import { useLoader } from "../../utils/loader";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ export const ConfirmBooking = () => {
   const [modalData, setModalData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { showLoader, hideLoader } = useLoader();
   const location = useLocation();
   const [show, setShow] = useState(false);
   const bookingsPerPage = 3;
@@ -56,7 +58,7 @@ export const ConfirmBooking = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true); // Start loading
+       showLoader()
         const userId = localStorage.getItem("rsUserId");
         if (!userId) throw new Error("You are not logged in!");
         setBookingDetails([]);
@@ -70,7 +72,7 @@ export const ConfirmBooking = () => {
           "Error fetching data",
         );
       } finally {
-        setLoading(false); // Stop loading no matter success or failure
+        hideLoader(); // Stop loading no matter success or failure
       }
     };
 

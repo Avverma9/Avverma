@@ -15,84 +15,130 @@ import {
   HighlightOff,
   Policy,
   Groups,
+  InfoOutlined,
+  ArrowForward,
 } from "@mui/icons-material";
+
 const HotelPolicyCard = ({ hotelData }) => {
   const navigate = useNavigate();
+
   const handleViewFullPolicies = () => {
     navigate("/policies", {
       state: { hotelData, policies: hotelData.policies },
     });
   };
+
+  const cardSx = {
+    p: { xs: 1.5, sm: 2 },
+    borderRadius: 2,
+    mb: 2,
+    bgcolor: "#fff",
+    border: "1px solid #e5e7eb",
+    transition: "all 0.2s ease",
+    "&:hover": {
+      boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+      borderColor: "transparent",
+    },
+  };
+
+  const titleIconSx = { fontSize: 20, mr: 1, color: "primary.main" };
+  const subTitleSx = { fontWeight: 700, fontSize: "1rem" };
+  const detailIconSx = { fontSize: 18, color: "text.secondary" };
+  const textPrimarySx = { fontWeight: 600, fontSize: "0.85rem" };
+  const textSecondarySx = { fontSize: "0.8rem", color: "text.secondary" };
+
   return (
     <Box>
-      <Typography variant="h6" fontWeight={700} gutterBottom>
-        Hotel Policies
-      </Typography>
+     <Box sx={{ textAlign: "center", mb: 2 }}>
+  <Typography
+    component="h3"
+    sx={{
+      fontWeight: 700,
+      color: "black",
+      backgroundColor: "#ff8c00",
+      borderRadius: 1,
+      px: 1.5,
+      py: 0.5,
+      display: "inline-block",
+      fontSize: { xs: "1.05rem", sm: "1.15rem" },
+      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+    }}
+  >
+    Hotel Policies
+  </Typography>
+</Box>
+
       {hotelData?.policies?.map((policy, index) => (
-        <Paper
-          key={index}
-          elevation={3}
-          sx={{
-            p: 3,
-            borderRadius: 3,
-            maxWidth: 460,
-            mb: 3,
-            bgcolor: "#ffffff",
-            border: "1px solid #e0e0e0",
-            transition: "all 0.3s ease-in-out",
-            "&:hover": {
-              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
-            },
-          }}
-        >
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            mb={2}
-            sx={{ color: "primary.main" }}
-          >
-            <Policy fontSize="small" />
-            <Typography variant="subtitle1" fontWeight={700}>
-              Guest Policies
-            </Typography>
+        <Paper key={index} elevation={0} sx={cardSx}>
+          {/* Title */}
+          <Stack direction="row" alignItems="center" mb={1}>
+            <Policy sx={titleIconSx} />
+            <Typography sx={subTitleSx}>Guest Policies</Typography>
           </Stack>
-          <Divider sx={{ mb: 2 }} />
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <AccessTime color="action" fontSize="small" />
+          <Divider sx={{ mb: 1.5 }} />
+
+          {/* Check-in / Check-out */}
+          <Grid container spacing={1.5}>
+            <Grid item xs={12} sm={6}>
+              <Stack direction="row" spacing={1}>
+                <AccessTime sx={detailIconSx} />
                 <Box>
-                  <Typography variant="body2" fontWeight={600}>
-                    Check-in
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {policy?.checkInPolicy?.substring(0, 60)}...
+                  <Typography sx={textPrimarySx}>Check-in</Typography>
+                  <Typography sx={textSecondarySx} noWrap>
+                    {policy?.checkInPolicy}
                   </Typography>
                 </Box>
               </Stack>
             </Grid>
-            <Grid item xs={6}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <AccessTime color="action" fontSize="small" />
+            <Grid item xs={12} sm={6}>
+              <Stack direction="row" spacing={1}>
+                <AccessTime sx={detailIconSx} />
                 <Box>
-                  <Typography variant="body2" fontWeight={600}>
-                    Check-out
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {policy?.checkOutPolicy?.substring(0, 60)}...
+                  <Typography sx={textPrimarySx}>Check-out</Typography>
+                  <Typography sx={textSecondarySx} noWrap>
+                    {policy?.checkOutPolicy}
                   </Typography>
                 </Box>
               </Stack>
             </Grid>
           </Grid>
-          {policy?.hotelsPolicy && (
-            <Box mt={2}>
-              <Stack direction="row" spacing={1} alignItems="center" mb={1}>
-                <Groups color="action" fontSize="small" />
-                <Typography variant="body2" fontWeight={600}>
-                  Hotel Rules
+
+          {/* Couples Allowed / Local ID */}
+          <Grid container spacing={1.5} mt={0.5}>
+            <Grid item xs={12} sm={6}>
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                {policy.unmarriedCouplesAllowed ? (
+                  <CheckCircleOutline color="success" sx={detailIconSx} />
+                ) : (
+                  <HighlightOff color="error" sx={detailIconSx} />
+                )}
+                <Typography sx={textPrimarySx}>Couples Allowed:</Typography>
+                <Typography sx={textSecondarySx}>
+                  {policy.unmarriedCouplesAllowed ? "Yes" : "No"}
                 </Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                {hotelData?.localId ? (
+                  <CheckCircleOutline color="success" sx={detailIconSx} />
+                ) : (
+                  <HighlightOff color="error" sx={detailIconSx} />
+                )}
+                <Typography sx={textPrimarySx}>Local ID:</Typography>
+                <Typography sx={textSecondarySx}>
+                  {hotelData?.localId ? "Accepted" : "Not Accepted"}
+                </Typography>
+              </Stack>
+            </Grid>
+          </Grid>
+
+          {/* Hotel Rules */}
+          {policy?.hotelsPolicy && (
+            <Box mt={1.5}>
+              <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+                <Groups sx={detailIconSx} />
+                <Typography sx={textPrimarySx}>Hotel Rules</Typography>
               </Stack>
               <Box component="ul" sx={{ pl: 2, m: 0 }}>
                 {policy.hotelsPolicy
@@ -102,55 +148,47 @@ const HotelPolicyCard = ({ hotelData }) => {
                       <Typography
                         key={idx}
                         component="li"
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ ml: 1, my: 0.5 }}
+                        sx={{
+                          ...textSecondarySx,
+                          ml: 1,
+                          lineHeight: 1.4,
+                        }}
                       >
                         {item.trim()}
                       </Typography>
-                    ) : null,
+                    ) : null
                   )}
               </Box>
             </Box>
           )}
-          <Stack spacing={1} mt={2}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {policy.unmarriedCouplesAllowed ? (
-                <CheckCircleOutline color="success" fontSize="small" />
-              ) : (
-                <HighlightOff color="error" fontSize="small" />
-              )}
-              <Typography variant="body2">
-                <strong>Couples Allowed:</strong>{" "}
-                {policy.unmarriedCouplesAllowed ? "Yes" : "No"}
-              </Typography>
+
+          {/* Cancellation */}
+          <Box mt={1.5}>
+            <Stack direction="row" spacing={1} alignItems="flex-start">
+              <InfoOutlined sx={detailIconSx} />
+              <Box>
+                <Typography sx={textPrimarySx}>Cancellation:</Typography>
+                <Typography sx={textSecondarySx} noWrap>
+                  {policy?.cancellationPolicy}
+                </Typography>
+              </Box>
             </Stack>
-            <Stack direction="row" spacing={1} alignItems="center">
-              {hotelData?.localId ? (
-                <CheckCircleOutline color="success" fontSize="small" />
-              ) : (
-                <HighlightOff color="error" fontSize="small" />
-              )}
-              <Typography variant="body2">
-                <strong>Local ID:</strong>{" "}
-                {hotelData?.localId ? "Accepted" : "Not Accepted"}
-              </Typography>
-            </Stack>
-          </Stack>
-          <Box mt={2}>
-            <Typography variant="body2" color="text.secondary">
-              <strong>Cancellation:</strong>{" "}
-              {policy?.cancellationPolicy?.substring(0, 70)}...
-            </Typography>
           </Box>
-          <Box mt={2} textAlign="left">
+
+          {/* View Full Policies */}
+          <Box mt={1.5} display="flex" justifyContent="flex-end">
             <Button
-              variant="text"
+              variant="outlined"
+              size="small"
               onClick={handleViewFullPolicies}
+              endIcon={<ArrowForward />}
               sx={{
-                fontWeight: 600,
                 textTransform: "none",
-                fontSize: "0.875rem",
+                borderRadius: 2,
+                fontWeight: 600,
+                fontSize: "0.8rem",
+                px: 1.5,
+                py: 0.5,
               }}
             >
               View Full Policies
@@ -161,4 +199,5 @@ const HotelPolicyCard = ({ hotelData }) => {
     </Box>
   );
 };
+
 export default HotelPolicyCard;

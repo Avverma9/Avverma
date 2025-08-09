@@ -44,7 +44,6 @@ function App() {
                     <Header />
 
                     <Settings />
-                    <Coupon />
                     <BookNow />
                     <HeaderImage />
                     <Hotel />
@@ -64,6 +63,7 @@ function App() {
                         <Route path="/travel-partner" element={<TravelForm />} />
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
+                        <Route path="/coupons" element={<Coupon />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />
                         <Route path='/careers' element={<Careers/>}/>
                         <Route path="/partner/last-step" element={<PartnerRooms />} />

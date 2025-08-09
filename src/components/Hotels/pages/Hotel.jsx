@@ -22,13 +22,15 @@ import { getGst } from '../../../redux/reducers/gstSlice';
 import { useBedTypes } from '../../../utils/additional-fields/bedTypes';
 import { useRoomTypes } from '../../../utils/additional-fields/roomTypes';
 import MobileSearchBox from './MobileSearchBox';
+import DesktopSearchBox from './DesktopSearch';
 
 const HotelPageContent = () => {
     const [hotelData, setHotelData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);   
+const {showLoader, hideLoader} = useLoader();
     const [isFetchingMore, setIsFetchingMore] = useState(false);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
     
@@ -192,7 +194,9 @@ const HotelPageContent = () => {
 
     return (
         <Container maxWidth="xl" sx={{ py: 2 }}> 
-{isMobile && <MobileSearchBox />}
+{isMobile ? <MobileSearchBox /> : <DesktopSearchBox/>}
+
+
             {isMobile && <Fab color="dark" sx={{ position: 'fixed', bottom: 65, left: 16, zIndex: 1000 }} onClick={() => setMobileFiltersOpen(true)}><FilterListIcon /></Fab>}
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
                 {!isMobile && <Box sx={{ width: '300px', flexShrink: 0, position: 'sticky', top: 80, height: 'calc(100vh - 100px)' }}>{renderFilters()}</Box>}
@@ -200,45 +204,209 @@ const HotelPageContent = () => {
                     <Box sx={{ width: '300px', overflowY: 'auto' }}>{renderFilters()}</Box>
                 </Drawer>
 
-                <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-                    {isLoading ? <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}><CircularProgress size={50} /></Box>
-                     : hotelData.length > 0 ? (
-                        <Stack spacing={3}>
-                            {hotelData.map((hotel, index) => {
-                                const minPriceRoom = hotel.rooms?.length > 0 ? hotel.rooms.reduce((min, room) => parseFloat(room.price) < parseFloat(min.price) ? room : min) : null;
-                                const minPrice = minPriceRoom ? parseFloat(minPriceRoom.price) : 0;
-                                const gstAmount = calculateGstAmount(minPrice);
-                                const allAmenities = hotel.amenities?.flatMap(a => a.amenities) || [];
-                                const cardRef = hotelData.length === index + 1 ? lastHotelElementRef : null;
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+  {isLoading ? (
+    <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
+      {showLoader()}
+    </Box>
+  ) : (
+    <>
+      {hideLoader()}
+      {hotelData.length > 0 ? (
+        <Stack spacing={3}>
+          {hotelData.map((hotel, index) => {
+            const minPriceRoom =
+              hotel.rooms?.length > 0
+                ? hotel.rooms.reduce((min, room) =>
+                    parseFloat(room.price) < parseFloat(min.price) ? room : min
+                  )
+                : null;
+            const minPrice = minPriceRoom
+              ? parseFloat(minPriceRoom.price)
+              : 0;
+            const gstAmount = calculateGstAmount(minPrice);
+            const allAmenities =
+              hotel.amenities?.flatMap(a => a.amenities) || [];
+            const cardRef =
+              hotelData.length === index + 1 ? lastHotelElementRef : null;
 
-                                return (
-                                    <Paper ref={cardRef} elevation={4} key={`${hotel.hotelId}-${index}`} sx={{ borderRadius: 4, overflow: 'hidden' }}>
-                                        <Grid container>
-                                            <Grid item xs={12} sm={4}><Box sx={{ position: 'relative', width: '100%', height: { xs: 220, sm: 280 } }}>
-                                                <Box component="img" sx={{ width: '100%', height: '100%', objectFit: 'cover' }} src={hotel?.images?.[0] || 'https://via.placeholder.com/400x280'} alt={hotel.hotelName} />
-                                                {minPriceRoom?.isOffer && (<Box sx={{ position: 'absolute', top: 12, left: 12, bgcolor: 'error.main', color: 'white', px: 1.5, py: 0.5, borderRadius: 2, fontSize: '0.8rem', fontWeight: 'bold' }}><BiSolidOffer style={{ verticalAlign: 'middle', marginRight: 4 }} />{minPriceRoom.offerName}</Box>)}
-                                            </Box></Grid>
-                                            <Grid item xs={12} sm={5} sx={{ p: { xs: 2, sm: 3 } }}><Stack spacing={1.5}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Typography variant="h5" component="div" fontWeight="bold">{hotel.hotelName}</Typography>
-                                                    <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 0.5, bgcolor: 'success.main', color: 'white', px: 1, borderRadius: 1 }}>{hotel.starRating || 'N/A'} <FaStar size="0.8em"/></Box>
-                                                </Box>
-                                                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}><MdRoom /> {`${hotel.landmark}, ${hotel.city}`}</Typography>
-                                                <Divider />
-                                                <Grid container spacing={1}>{allAmenities.slice(0, 4).map((amenity, i) => (<Grid item xs={12} sm={6} key={i}><Typography variant="body2" sx={{display:'flex', alignItems: 'center', gap: 1}}><FaCheckCircle color={theme.palette.success.main} /> {amenity}</Typography></Grid>))}</Grid>
-                                            </Stack></Grid>
-                                            <Grid item xs={12} sm={3} sx={{ p: { xs: 2, sm: 3 }, textAlign: { xs: 'left', sm: 'right' }, display: 'flex', flexDirection: { xs: 'row', sm: 'column' }, justifyContent: 'space-between', alignItems: 'center', borderTop: { xs: '1px solid #f0f0f0', sm: 'none' }, borderLeft: { xs: 'none', sm: '1px solid #f0f0f0' }, bgcolor: { sm: '#fafafa' } }}>
-                                                <Box><Typography variant="h5" fontWeight="bold">₹{(minPrice + gstAmount).toFixed(0)}</Typography><Typography variant="caption" color="text.secondary">per night (incl. GST)</Typography></Box>
-                                                <Button variant="contained" onClick={() => handleBuy(hotel.hotelId)} sx={{ mt: { sm: 1.5 }, py: { sm: 1.5 }, minWidth: '120px' }}>View Details</Button>
-                                            </Grid>
-                                        </Grid>
-                                    </Paper>
-                                );
-                            })}
-                        </Stack>
-                    ) : <NotFoundPage />}
-                    {isFetchingMore && <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}><CircularProgress /></Box>}
-                </Box>
+            return (
+              <Paper
+                ref={cardRef}
+                elevation={4}
+                key={`${hotel.hotelId}-${index}`}
+                sx={{ borderRadius: 4, overflow: 'hidden' }}
+              >
+                <Grid container>
+                  {/* Hotel Image */}
+                  <Grid item xs={12} sm={4}>
+                    <Box
+                      sx={{
+                        position: 'relative',
+                        width: '100%',
+                        height: { xs: 220, sm: 280 }
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                        src={
+                          hotel?.images?.[0] ||
+                          'https://via.placeholder.com/400x280'
+                        }
+                        alt={hotel.hotelName}
+                      />
+                      {minPriceRoom?.isOffer && (
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            top: 12,
+                            left: 12,
+                            bgcolor: 'error.main',
+                            color: 'white',
+                            px: 1.5,
+                            py: 0.5,
+                            borderRadius: 2,
+                            fontSize: '0.8rem',
+                            fontWeight: 'bold'
+                          }}
+                        >
+                          <BiSolidOffer
+                            style={{
+                              verticalAlign: 'middle',
+                              marginRight: 4
+                            }}
+                          />
+                          {minPriceRoom.offerName}
+                        </Box>
+                      )}
+                    </Box>
+                  </Grid>
+
+                  {/* Hotel Info */}
+                  <Grid item xs={12} sm={5} sx={{ p: { xs: 2, sm: 3 } }}>
+                    <Stack spacing={1.5}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Typography
+                          variant="h5"
+                          component="div"
+                          fontWeight="bold"
+                        >
+                          {hotel.hotelName}
+                        </Typography>
+                        <Box
+                          sx={{
+                            display: { xs: 'none', sm: 'flex' },
+                            alignItems: 'center',
+                            gap: 0.5,
+                            bgcolor: 'success.main',
+                            color: 'white',
+                            px: 1,
+                            borderRadius: 1
+                          }}
+                        >
+                          {hotel.starRating || 'N/A'}{' '}
+                          <FaStar size="0.8em" />
+                        </Box>
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 0.5
+                        }}
+                      >
+                        <MdRoom /> {`${hotel.landmark}, ${hotel.city}`}
+                      </Typography>
+                      <Divider />
+                      <Grid container spacing={1}>
+                        {allAmenities.slice(0, 4).map((amenity, i) => (
+                          <Grid item xs={12} sm={6} key={i}>
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: 1
+                              }}
+                            >
+                              <FaCheckCircle
+                                color={theme.palette.success.main}
+                              />{' '}
+                              {amenity}
+                            </Typography>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Stack>
+                  </Grid>
+
+                  {/* Price + Action */}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={3}
+                    sx={{
+                      p: { xs: 2, sm: 3 },
+                      textAlign: { xs: 'left', sm: 'right' },
+                      display: 'flex',
+                      flexDirection: { xs: 'row', sm: 'column' },
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      borderTop: { xs: '1px solid #f0f0f0', sm: 'none' },
+                      borderLeft: { xs: 'none', sm: '1px solid #f0f0f0' },
+                      bgcolor: { sm: '#fafafa' }
+                    }}
+                  >
+                    <Box>
+                      <Typography variant="h5" fontWeight="bold">
+                        ₹{(minPrice + gstAmount).toFixed(0)}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        per night (incl. GST)
+                      </Typography>
+                    </Box>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleBuy(hotel.hotelId)}
+                      sx={{
+                        mt: { sm: 1.5 },
+                        py: { sm: 1.5 },
+                        minWidth: '120px'
+                      }}
+                    >
+                      View Details
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Paper>
+            );
+          })}
+        </Stack>
+      ) : (
+        <NotFoundPage />
+      )}
+      {isFetchingMore && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+          <CircularProgress />
+        </Box>
+      )}
+    </>
+  )}
+</Box>
+
             </Box>
         </Container>
     );

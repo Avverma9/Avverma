@@ -17,10 +17,16 @@ const Footer = () => {
     };
     
     const handleHotelClick = (hotelName) => {
-        const searchPath = hotelName.replace(/\s+/g, '+');
+        // Split hotelName into words and take the last word
+        const lastWord = hotelName.trim().split(" ").pop();
+        
+        // Encode for URL (in case it has spaces or special chars)
+        const searchPath = encodeURIComponent(lastWord);
+    
         navigate(`/search?search=${searchPath}`);
         handleCloseModal(); // Close modal after navigation
     };
+    
 
     const companyLinks = [
         { name: 'About Us', path: '/about' },

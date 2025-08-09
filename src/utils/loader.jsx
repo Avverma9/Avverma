@@ -1,7 +1,19 @@
 import React, { createContext, useContext, useState } from "react";
 import Box from "@mui/material/Box";
+import { keyframes } from "@mui/system";
 
 const LoaderContext = createContext();
+
+const spin = keyframes`
+  0% { transform: rotate(0deg) rotateY(0deg); }
+  100% { transform: rotate(360deg) rotateY(360deg); }
+`;
+
+const pulsate = keyframes`
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+`;
 
 export const LoaderProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
@@ -23,77 +35,78 @@ export const LoaderProvider = ({ children }) => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
             zIndex: 9999,
           }}
         >
-          {/* Outer spinning ring */}
           <Box
             sx={{
               position: "relative",
-              width: 130,
-              height: 130,
-              borderRadius: "50%",
-              padding: "6px",
-              boxSizing: "border-box",
-              zIndex: 0,
+              width: 150,
+              height: 150,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              perspective: "800px",
             }}
           >
-            {/* Spinning ring */}
+            {/* Spinning 3D Ring */}
             <Box
               sx={{
                 position: "absolute",
-                top: 0,
-                left: 0,
                 width: "100%",
                 height: "100%",
                 borderRadius: "50%",
-                background:
-                  "conic-gradient(from 0deg, #007bff, #00c6ff, #007bff, #00c6ff)",
-                animation: "spin 1.8s linear infinite",
-                filter: "drop-shadow(0 0 6px #00c6ff)",
-                zIndex: 1,
+                border: "4px solid transparent",
+                borderTopColor: "rgba(0, 123, 255, 0.8)",
+                borderBottomColor: "rgba(0, 200, 255, 0.8)",
+                animation: `${spin} 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite`,
+                boxShadow:
+                  "0 0 15px rgba(0, 123, 255, 0.7), inset 0 0 15px rgba(0, 123, 255, 0.5)",
               }}
             />
-
-            {/* Inner white circle */}
+            {/* Inner Circle with Pulsating Glow */}
             <Box
               sx={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
+                width: 110,
+                height: 110,
                 borderRadius: "50%",
-                backgroundColor: "white",
+                backgroundColor: "#ffffff",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                zIndex: 2,
-                padding: "10px", // padding so logo doesn’t touch edges
-                boxSizing: "border-box",
+                position: "relative",
+                zIndex: 10000,
+                boxShadow: "0 0 20px rgba(0, 123, 255, 0.6)",
+                animation: `${pulsate} 1.5s ease-in-out infinite`,
+                overflow: "hidden",
+                "&::before": {
+                  content: '""',
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff",
+                  transform: "scale(1.2)",
+                  filter: "blur(20px)",
+                  opacity: 0,
+                  transition: "opacity 0.5s ease",
+                },
               }}
             >
-              {/* Logo image (non-spinning) */}
+              {/* Logo */}
               <img
                 src="/logo.png"
                 alt="Loading..."
                 style={{
-                  width: "110px",
-                  height: "110px",
-                  borderRadius: "50%",
+                  width: "90%",
+                  height: "90%",
                   objectFit: "contain",
-                  boxShadow: "0 0 12px rgba(0,123,255,0.6)",
                   userSelect: "none",
                 }}
               />
             </Box>
           </Box>
-
-          <style>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
         </Box>
       )}
     </LoaderContext.Provider>
