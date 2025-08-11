@@ -550,93 +550,109 @@ const BookNow = () => {
                 {hotelData?.description}
               </Typography>
             </Box>
-            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Box sx={{  mb: 2 }}>
-                <Typography
-                  component="h5"
-                  sx={{
-                    fontWeight: 600,
-                    color: "black",
-                    backgroundColor: "#e4ded8",
-                    borderRadius: 1,
-                    px: 1.5,
-                    py: 0.5,
-                    display: "inline-block",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                  }}
-                >
-                  Amenities
-                </Typography>
-              </Box>
+       <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
+    {/* Heading Section */}
+    <Box sx={{ mb: 2 }}>
+        <Typography
+            component="h5"
+            sx={{
+                fontWeight: 600,
+                color: "black",
+                backgroundColor: "#e4ded8",
+                borderRadius: 1,
+                px: 1.5,
+                py: 0.5,
+                display: "inline-block",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                fontSize: { xs: "1rem", sm: "1.25rem" }, // Responsive font size
+            }}
+        >
+            Amenities
+        </Typography>
+    </Box>
 
-              <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
-                {visibleAmenities.map((amenity, index) => (
-                  <Grid item xs={12} sm={6} md={4} key={index}>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <IconContext.Provider
+    {/* Visible Amenities Grid */}
+    <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
+        {visibleAmenities.map((amenity, index) => (
+            // Adjusted grid for mobile to show 2 items per row
+            <Grid item xs={6} sm={6} md={4} key={index}>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                    <IconContext.Provider
                         value={{ size: "1.2em", style: { color: "#666" } }}
-                      >
+                    >
                         {amenityIcons[amenity] || defaultIcon}
-                      </IconContext.Provider>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                    </IconContext.Provider>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {amenity}
-                      </Typography>
-                    </Stack>
-                  </Grid>
-                ))}
-              </Grid>
-              {remainingAmenitiesCount > 0 && (
-                <Accordion
-                  expanded={expanded}
-                  onChange={handleExpansion}
-                  sx={{
-                    mt: 2,
-                    boxShadow: "none",
-                    "&:before": { display: "none" },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    sx={{
-                      minHeight: "38px",
-                      "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
-                    }}
-                  >
-                    <Typography variant="body2" color="primary">
-                      Show all {amenities.length} amenities
                     </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
-                    <Grid container spacing={1}>
-                      {amenities.slice(10).map((amenity, index) => (
-                        <Grid item xs={12} sm={6} md={4} key={index}>
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            spacing={1}
-                          >
-                            <IconContext.Provider
-                              value={{
-                                size: "1.2em",
-                                style: { color: "#666" },
-                              }}
+                </Stack>
+            </Grid>
+        ))}
+    </Grid>
+
+    {/* Accordion for remaining amenities */}
+    {remainingAmenitiesCount > 0 && (
+        <Accordion
+            expanded={expanded}
+            onChange={handleExpansion}
+            sx={{
+                mt: 2,
+                boxShadow: "none",
+                "&:before": { display: "none" },
+            }}
+        >
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{
+                    minHeight: "38px",
+                    "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
+                }}
+            >
+                {/* Centered button for mobile */}
+                <Box
+                    sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: { xs: "center", sm: "flex-start" },
+                    }}
+                >
+                    <Typography variant="body2" color="primary">
+                        Show all {amenities.length} amenities
+                    </Typography>
+                </Box>
+            </AccordionSummary>
+            <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
+                <Grid container spacing={1}>
+                    {amenities.slice(10).map((amenity, index) => (
+                        // Adjusted grid for mobile to show 2 items per row
+                        <Grid item xs={6} sm={6} md={4} key={index}>
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={1}
                             >
-                              {amenityIcons[amenity] || defaultIcon}
-                            </IconContext.Provider>
-                            <Typography
-                              variant="body2"
-                              sx={{ fontWeight: 500 }}
-                            >
-                              {amenity}
-                            </Typography>
-                          </Stack>
+                                <IconContext.Provider
+                                    value={{
+                                        size: "1.2em",
+                                        style: { color: "#666" },
+                                    }}
+                                >
+                                    {amenityIcons[amenity] || defaultIcon}
+                                </IconContext.Provider>
+                                <Typography
+                                    variant="body2"
+                                    sx={{ fontWeight: 500 }}
+                                >
+                                    {amenity}
+                                </Typography>
+                            </Stack>
                         </Grid>
-                      ))}
-                    </Grid>
-                  </AccordionDetails>
-                </Accordion>
-              )}
-            </Box>
+                    ))}
+                </Grid>
+            </AccordionDetails>
+        </Accordion>
+    )}
+</Box>
 
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
               <Typography

@@ -84,7 +84,7 @@ const HotelPolicyCard = ({ hotelData }) => {
                 <AccessTime sx={detailIconSx} />
                 <Box>
                   <Typography sx={textPrimarySx}>Check-in</Typography>
-                  <Typography sx={textSecondarySx} noWrap>
+                  <Typography sx={textSecondarySx} >
                     {policy?.checkInPolicy}
                   </Typography>
                 </Box>
@@ -95,7 +95,7 @@ const HotelPolicyCard = ({ hotelData }) => {
                 <AccessTime sx={detailIconSx} />
                 <Box>
                   <Typography sx={textPrimarySx}>Check-out</Typography>
-                  <Typography sx={textSecondarySx} noWrap>
+                  <Typography sx={textSecondarySx} >
                     {policy?.checkOutPolicy}
                   </Typography>
                 </Box>

@@ -4,6 +4,8 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import baseURL from '../../utils/baseURL';
 import Googles from '@mui/icons-material/Google';
+import { useLoader } from '../../utils/loader';
+
 const firebaseConfig = {
     apiKey: 'AIzaSyB8g--z3j8NrWrJrOUMyvXf4AAuxgdOKSI',
     authDomain: 'hotelroomsstay-2bb96.firebaseapp.com',
@@ -13,6 +15,7 @@ const firebaseConfig = {
     appId: '1:847078471253:web:ea331e86bdbd9bf78906dc',
     measurementId: 'G-FJ3K5REZEK',
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -20,6 +23,7 @@ const db = getFirestore(app);
 const Google = () => {
     const provider = new GoogleAuthProvider();
     const [showErrorImage, setShowErrorImage] = useState(false);
+    const { showLoader, hideLoader } = useLoader();
 
     const handleGoogleLogin = async (e) => {
         e.preventDefault();
@@ -27,7 +31,6 @@ const Google = () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            const email = user.email;
 
             localStorage.setItem('isSignedIn', 'true');
             localStorage.setItem('loggedUser', JSON.stringify(user));
@@ -38,6 +41,7 @@ const Google = () => {
             const images = originalData[0].photoURL;
             const GoogleEmail = originalData[0].email;
             const userName = originalData[0].displayName;
+
             const response = await fetch(`${baseURL}/signIn/google`, {
                 method: 'POST',
                 headers: {
@@ -50,14 +54,23 @@ const Google = () => {
                     userName: userName,
                 }),
             });
+
+            if (!response.ok) {
+                showLoader();
+            }
+
             if (response.ok) {
+                hideLoader();
+                // Navigate back and then reload the page
                 window.history.back();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100); // Add a slight delay to ensure history navigation completes
             } else {
                 setShowErrorImage(true);
             }
 
             const data = await response.json();
-
             const { userId, rsToken, mobile } = data;
 
             localStorage.setItem('rsUserId', userId);
@@ -66,15 +79,16 @@ const Google = () => {
             localStorage.setItem('roomsstayUserEmail', GoogleEmail);
             localStorage.setItem('roomsstayUserImage', images);
             const userDocRef = doc(db, 'users', userId);
-            await setDoc(userDocRef, { email /* other user data */ });
+            await setDoc(userDocRef, { email: GoogleEmail }); // Changed to use GoogleEmail
         } catch (error) {
             console.error('Google login error:', error);
             setShowErrorImage(true);
         }
     };
+
     return (
         <div className="google-container" onClick={handleGoogleLogin}>
-            <Googles />{" "} Continue with google
+            <Googles /> Continue with Google
         </div>
     );
 };

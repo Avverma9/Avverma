@@ -48,20 +48,21 @@ const Footer = () => {
         { name: 'YouTube', icon: <YouTube />, href: '#' },
     ];
 
-    const modalStyle = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: { xs: '90%', md: '60%' },
-        maxHeight: '80vh',
-        overflowY: 'auto',
-        bgcolor: 'background.paper',
-        borderRadius: '16px',
-        boxShadow: 24,
-        p: 4,
-    };
-
+const modalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: { xs: '90%', sm: '80%', md: '700px' },
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  borderRadius: 2,
+  maxHeight: '90vh',
+  overflowY: 'auto',
+  outline: 'none',
+  padding: { xs: 2, md: 3 },
+  fontFamily: 'Roboto, sans-serif',
+};
     return (
         <Box
             component="footer"
@@ -189,45 +190,80 @@ const Footer = () => {
                     },
                 }}
             >
-                <Fade in={modalOpen}>
-                    <Box sx={modalStyle}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                            <Typography variant="h5" component="h2" fontWeight="bold">
-                                All Destinations
-                            </Typography>
-                            <IconButton onClick={handleCloseModal}>
-                                <CloseIcon />
-                            </IconButton>
-                        </Box>
-                        <Divider sx={{ mb: 3 }} />
-                        <Grid container spacing={2}>
-                            {hotelList.map((hotel) => (
-                                <Grid item xs={6} sm={4} md={3} key={hotel.hotel}>
-                                    <Link 
-                                        href="#" 
-                                        onClick={(e) => { e.preventDefault(); handleHotelClick(hotel.hotel); }}
-                                        sx={{ 
-                                            display: 'block',
-                                            p: 1.5,
-                                            borderRadius: '8px',
-                                            textAlign: 'center',
-                                            textDecoration: 'none',
-                                            color: 'text.primary',
-                                            fontWeight: 500,
-                                            transition: 'background-color 0.3s, transform 0.2s',
-                                            '&:hover': {
-                                                bgcolor: 'action.hover',
-                                                transform: 'translateY(-2px)'
-                                            }
-                                        }}
-                                    >
-                                        {hotel.hotel}
-                                    </Link>
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-                </Fade>
+                  <Fade in={modalOpen}>
+        <Box sx={modalStyle}>
+          {/* Header Section */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 3,
+            }}
+          >
+            <Typography variant="h5" component="h2" fontWeight="bold" sx={{ color: '#333' }}>
+              All Destinations
+            </Typography>
+            <IconButton onClick={handleCloseModal}>
+              <CloseIcon sx={{ color: '#757575' }} />
+            </IconButton>
+          </Box>
+
+          {/* Intro Text Section */}
+          <Box
+            sx={{
+              mb: 3,
+              backgroundColor: '#f5f7fa',
+              borderRadius: '8px',
+              p: 2,
+              borderLeft: '4px solid #3f51b5',
+            }}
+          >
+            <Typography variant="body1" color="text.secondary" sx={{ color: '#555' }}>
+              Explore our wide range of hotel destinations. Click on any city to
+              find the perfect stay for your trip!
+            </Typography>
+          </Box>
+
+          {/* Destinations Grid */}
+          <Grid container spacing={1.5}>
+            {hotelList.map((hotel, index) => (
+              <Grid item xs={6} sm={4} md={3} key={index}>
+                <Link
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleHotelClick(hotel.hotel);
+                  }}
+                  sx={{
+                    display: 'block',
+                    py: 1.5,
+                    px: 1,
+                    borderRadius: '8px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    color: '#333',
+                    fontWeight: 500,
+                    transition: 'background-color 0.3s, transform 0.2s, box-shadow 0.2s',
+                    '&:hover': {
+                      bgcolor: '#e8eaf6',
+                      color: '#3f51b5',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+                    },
+                    '&:active': {
+                      transform: 'translateY(0)',
+                      boxShadow: 'none',
+                    },
+                  }}
+                >
+                  {hotel.hotel}
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Fade>
             </Modal>
         </Box>
     );

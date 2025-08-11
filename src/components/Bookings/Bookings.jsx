@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
-import alert from "../../utils/custom_alert/custom_alert";
+
 import baseURL from "../../utils/baseURL";
 import styles from "./bookings.module.css";
 import { Stack } from "@mui/system";
@@ -37,6 +37,7 @@ import { TuneRounded } from "@mui/icons-material";
 import NotFoundPage from "../../utils/Not-found";
 import BookingSkeleton from "./bookingSkeleton";
 import { useLoader } from "../../utils/loader";
+import { toast } from "react-toastify";
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -66,11 +67,7 @@ export const ConfirmBooking = () => {
         setUserData(userResponse.data.data);
         dispatch(fetchFilteredBooking({ selectedStatus, userId }));
       } catch (error) {
-        alert(
-          error.response?.data?.message ||
-          error.message ||
-          "Error fetching data",
-        );
+      console.error("Error fetching booking data:", error);
       } finally {
         hideLoader(); // Stop loading no matter success or failure
       }
@@ -119,11 +116,11 @@ export const ConfirmBooking = () => {
       if (response.status === 201) {
         setComment("");
         setRating(0);
-        alert("Your review has been added");
+        toast.info("Your review has been added");
         setShowReviewForm(false);
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Error posting review");
+      toast.info(error.response?.data?.message || "Error posting review");
     }
   };
 
