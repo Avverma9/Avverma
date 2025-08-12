@@ -17,34 +17,49 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+
+const textPrimarySx = { fontWeight: 600, fontSize: "0.85rem" };
+const textSecondarySx = { fontSize: "0.8rem", color: "text.secondary" };
+
 const Policies = () => {
   const location = useLocation();
   const { hotelData, policies } = location.state || {};
   const navigate = useNavigate();
-  const formatPolicy = (policy) => {
-    return policy?.split("•").map((item, index) => (
+
+ const formatPolicy = (policy) => {
+  if (!policy) return null;
+  return policy
+    .split(/•|\*|\./) // split on bullet, asterisk, or dot
+    .map(item => item.trim()) // remove spaces
+    .filter(item => item.length > 0) // remove empties
+    .map((item, index) => (
       <React.Fragment key={index}>
-        <Box component="span" sx={{ display: "inline-block" }}>
-          {index > 0 && (
-            <Box
-              component="span"
-              sx={{
-                width: 6,
-                height: 6,
-                bgcolor: "text.primary",
-                borderRadius: "50%",
-                display: "inline-block",
-                mr: 1,
-                mb: 0.5,
-              }}
-            />
-          )}{" "}
-          {item.trim()}
+        <Box
+          component="span"
+          sx={{
+            display: "inline-block",
+            mb: 0.5
+          }}
+        >
+          <Box
+            component="span"
+            sx={{
+              width: 6,
+              height: 6,
+              bgcolor: "text.primary",
+              borderRadius: "50%",
+              display: "inline-block",
+              mr: 1
+            }}
+          />
+          {item}
         </Box>
-        {index < policy.split("•").length - 1 && <br />}
+        <br />
       </React.Fragment>
     ));
-  };
+};
+
+
   if (!hotelData || !policies) {
     return (
       <Container maxWidth="sm" sx={{ mt: 5 }}>
@@ -59,9 +74,9 @@ const Policies = () => {
       </Container>
     );
   }
-  const goBack = () => {
-    navigate(-1);
-  };
+
+  const goBack = () => navigate(-1);
+
   const getIcon = (item) => {
     switch (item) {
       case "cancellationPolicy":
@@ -74,24 +89,24 @@ const Policies = () => {
         return <FaInfoCircle color="#1976d2" />;
     }
   };
-  const getStatusIcon = (status) => {
-    return status === "Allowed" ? (
+
+  const getStatusIcon = (status) =>
+    status === "Allowed" ? (
       <FaCheckCircle color="#2e7d32" />
     ) : (
       <FaTimesCircle color="#d32f2f" />
     );
-  };
-  const formatTitle = (text) => {
-    return text
+
+  const formatTitle = (text) =>
+    text
       .replace(/([A-Z])/g, " $1")
       .replace(/^./, (str) => str.toUpperCase())
       .trim();
-  };
+
   return (
     <Box sx={{ bgcolor: "#f5f7fa", py: 5, minHeight: "100vh" }}>
       <Container maxWidth="md">
         <Typography
-          variant="p4"
           component="h5"
           align="center"
           gutterBottom
@@ -125,6 +140,7 @@ const Policies = () => {
               </Stack>
             </Card>
           </Grid>
+
           {policies.map((policy, index) => (
             <Grid item xs={12} key={index}>
               <Card sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
@@ -153,6 +169,7 @@ const Policies = () => {
                       </Typography>
                     </Stack>
                   </Grid>
+
                   <Grid item xs={12}>
                     <Typography
                       variant="subtitle1"
@@ -165,37 +182,60 @@ const Policies = () => {
                       <Grid item xs={12} sm={6}>
                         <Stack direction="row" spacing={2} alignItems="center">
                           <FaCheckCircle size={20} color="#2e7d32" />
-                          <Box>
-                            <Typography variant="body1" fontWeight={600}>
-                              Check-In Policy
+                          <Box component="ul" sx={{ pl: 2, m: 0 }}>
+                            <Typography sx={textPrimarySx}>
+                              Check-In-Policy
                             </Typography>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                            >
-                              {policy.checkInPolicy}
-                            </Typography>
+                            {policy.checkInPolicy
+                              .split(/•|\*|\./)
+                              .map((item, idx) =>
+                                item.trim() ? (
+                                  <Typography
+                                    key={idx}
+                                    component="li"
+                                    sx={{
+                                      ...textSecondarySx,
+                                      ml: 1,
+                                      lineHeight: 1.4,
+                                    }}
+                                  >
+                                    {item.trim()}
+                                  </Typography>
+                                ) : null
+                              )}
                           </Box>
                         </Stack>
                       </Grid>
                       <Grid item xs={12} sm={6}>
                         <Stack direction="row" spacing={2} alignItems="center">
                           <FaCheckCircle size={20} color="#2e7d32" />
-                          <Box>
-                            <Typography variant="body1" fontWeight={600}>
-                              Check-Out Policy
+                          <Box component="ul" sx={{ pl: 2, m: 0 }}>
+                            <Typography sx={textPrimarySx}>
+                              Check-Out-Policy
                             </Typography>
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                            >
-                              {policy.checkOutPolicy}
-                            </Typography>
+                            {policy.checkOutPolicy
+                              .split(/•|\*|\./)
+                              .map((item, idx) =>
+                                item.trim() ? (
+                                  <Typography
+                                    key={idx}
+                                    component="li"
+                                    sx={{
+                                      ...textSecondarySx,
+                                      ml: 1,
+                                      lineHeight: 1.4,
+                                    }}
+                                  >
+                                    {item.trim()}
+                                  </Typography>
+                                ) : null
+                              )}
                           </Box>
                         </Stack>
                       </Grid>
                     </Grid>
                   </Grid>
+
                   <Grid item xs={12}>
                     <Typography
                       variant="subtitle1"
@@ -217,9 +257,7 @@ const Policies = () => {
                             spacing={2}
                             alignItems="center"
                           >
-                            <Box sx={{ width: 20 }}>
-                              {getIcon(item)}
-                            </Box>
+                            <Box sx={{ width: 20 }}>{getIcon(item)}</Box>
                             <Box>
                               <Typography variant="body1" fontWeight={600}>
                                 {formatTitle(item)}
@@ -236,6 +274,7 @@ const Policies = () => {
                       ))}
                     </Grid>
                   </Grid>
+
                   <Grid item xs={12}>
                     <Typography
                       variant="subtitle1"
@@ -277,6 +316,7 @@ const Policies = () => {
                       ))}
                     </Grid>
                   </Grid>
+
                   <Grid item xs={12}>
                     <Typography
                       variant="subtitle1"
@@ -306,4 +346,5 @@ const Policies = () => {
     </Box>
   );
 };
+
 export default Policies;

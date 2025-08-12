@@ -82,23 +82,51 @@ const HotelPolicyCard = ({ hotelData }) => {
             <Grid item xs={12} sm={6}>
               <Stack direction="row" spacing={1}>
                 <AccessTime sx={detailIconSx} />
-                <Box>
-                  <Typography sx={textPrimarySx}>Check-in</Typography>
-                  <Typography sx={textSecondarySx} >
-                    {policy?.checkInPolicy}
-                  </Typography>
-                </Box>
+                <Box component="ul" sx={{ pl: 2, m: 0 }}>
+                    <Typography sx={textPrimarySx}>Check-Out</Typography>
+                {policy.checkInPolicy
+                  .split("•")
+                  .map((item, idx) =>
+                    item.trim() ? (
+                      <Typography
+                        key={idx}
+                        component="li"
+                        sx={{
+                          ...textSecondarySx,
+                          ml: 1,
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {item.trim()}
+                      </Typography>
+                    ) : null
+                  )}
+              </Box>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack direction="row" spacing={1}>
                 <AccessTime sx={detailIconSx} />
-                <Box>
-                  <Typography sx={textPrimarySx}>Check-out</Typography>
-                  <Typography sx={textSecondarySx} >
-                    {policy?.checkOutPolicy}
-                  </Typography>
-                </Box>
+                <Box component="ul" sx={{ pl: 2, m: 0 }}>
+                    <Typography sx={textPrimarySx}>Check-Out</Typography>
+                {policy.checkOutPolicy
+                  .split("•")
+                  .map((item, idx) =>
+                    item.trim() ? (
+                      <Typography
+                        key={idx}
+                        component="li"
+                        sx={{
+                          ...textSecondarySx,
+                          ml: 1,
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {item.trim()}
+                      </Typography>
+                    ) : null
+                  )}
+              </Box>
               </Stack>
             </Grid>
           </Grid>
