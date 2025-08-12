@@ -196,6 +196,33 @@ export default function PolicyForm() {
                             onBlur={handleBlur}
                         />
                     </div>
+                       <div className="col-md-4 mb-3">
+                        <label htmlFor="lastName" className="form-label">
+                            Cancellation Policy*
+                        </label>
+                        <select
+                            className="form-control"
+                            label="Cancellation"
+                            variant="outlined"
+                            value={cancellationPolicy}
+                            onChange={(e) => setCancellationPolicy(e.target.value)}
+                        >
+                            <option value="Free Cancellation">Free Cancellation</option>
+                            <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
+                        </select>
+                    </div>
+                     <div className="col-md-4 mb-3">
+                        <label htmlFor="designation" className="form-label">
+                            Refund policy
+                        </label>
+                        <textarea
+                            className="form-control"
+                            label="Return Policy"
+                            variant="outlined"
+                            value={returnPolicy}
+                            onChange={(e) => setReturnPolicy(e.target.value)}
+                        />
+                    </div>
                     <div className="col-md-4 mb-3">
                         <label htmlFor="lastName" className="form-label">
                             Outside foods*
@@ -211,21 +238,7 @@ export default function PolicyForm() {
                             <option value="Accepted">Accepted</option>
                         </select>
                     </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Cancellation Policy*
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Cancellation"
-                            variant="outlined"
-                            value={cancellationPolicy}
-                            onChange={(e) => setCancellationPolicy(e.target.value)}
-                        >
-                            <option value="Free Cancellation">Free Cancellation</option>
-                            <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
-                        </select>
-                    </div>
+                 
                     <div className="col-md-4 mb-3">
                         <label htmlFor="lastName" className="form-label">
                             Payment mode*
@@ -357,18 +370,7 @@ export default function PolicyForm() {
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Return policy
-                        </label>
-                        <textarea
-                            className="form-control"
-                            label="Return Policy"
-                            variant="outlined"
-                            value={returnPolicy}
-                            onChange={(e) => setReturnPolicy(e.target.value)}
-                        />
-                    </div>
+                   
                     <h5>On Season Tarrif & Policy </h5>
                     <hr />
                     <div className="col-md-4 mb-4">
