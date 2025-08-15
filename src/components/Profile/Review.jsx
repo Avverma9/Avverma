@@ -1,153 +1,176 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import baseURL from '../../utils/baseURL';
-import { Star } from '@mui/icons-material';
-import { styled, IconButton } from '@mui/material';
-import Pagination from '@mui/material/Pagination';
+import { Star, Delete as DeleteIcon } from '@mui/icons-material';
+import { Container, Box, Typography, Grid, Paper, Divider, Pagination, IconButton, styled, Button } from '@mui/material';
 import axios from 'axios';
-import '../Booknow/BookingReview.css';
 import { formatDateWithOrdinal } from '../../utils/_dateFunctions';
-import './reviews.css';
 import { Unauthorized, userId } from '../../utils/Unauthorized';
-import DeleteIcon from '@mui/icons-material/Delete';
 import ReviewSkeleton from './reviewSkeleton';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const StyledReviewCard = styled(Paper)(({ theme }) => ({
+  position: 'relative',
+  padding: theme.spacing(2),
+  borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[1],
+  transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: theme.shadows[3],
+  },
+}));
+
+const getStarRating = (rating) => {
+  return [...Array(5)].map((_, index) => (
+    <Star
+      key={index}
+      sx={{
+        color: index < rating ? '#ffbb33' : '#e0e0e0',
+        fontSize: '1rem',
+      }}
+    />
+  ));
+};
+
+const ReviewCard = ({ reviewData, handleDelete }) => {
+  return (
+    <StyledReviewCard>
+      <Box display="flex" alignItems="center" mb={1.5}>
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          alt="User"
+          loading="lazy"
+          style={{ width: 48, height: 48, borderRadius: '50%', marginRight: 16 }}
+        />
+        <Box>
+          <Typography variant="body1" fontWeight="bold">
+            {reviewData?.userName}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {formatDateWithOrdinal(reviewData?.createdAt)}
+          </Typography>
+        </Box>
+      </Box>
+      <Divider sx={{ my: 1.5 }} />
+      <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 1.5 }}>
+        "{reviewData.comment}"
+      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+        {getStarRating(reviewData.rating)}
+      </Box>
+      <IconButton
+        aria-label="delete review"
+        color="error"
+        onClick={() => handleDelete(reviewData._id)}
+        sx={{ position: 'absolute', top: 8, right: 8, p: 0.5 }}
+      >
+        <DeleteIcon fontSize="small" />
+      </IconButton>
+    </StyledReviewCard>
+  );
+};
 
 export default function Reviews() {
-    const location = useLocation();
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [currentPage, setCurrentPage] = useState(1);
-    const reviewsPerPage = 6; // Number of reviews per page
+  const location = useLocation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 6;
 
-    useEffect(() => {
-        const fetchReviews = async () => {
-            setLoading(true);
-            try {
-                const userId = localStorage.getItem('rsUserId');
-                if (!userId) {
-                    setError('Unauthorized');
-                    setLoading(false);
-                    return;
-                }
-
-                const response = await fetch(`${baseURL}/reviewDatas/userId?userId=${userId}`);
-                if (!response.ok) {
-                    throw new Error('Error fetching reviews');
-                }
-                const result = await response.json();
-                setData(result);
-            } catch (error) {
-                console.error('Error fetching reviews:', error);
-                setError('Error fetching reviews');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchReviews();
-    }, []);
-
-    const getStarRating = (rating) => {
-        return [...Array(5)].map((_, index) => (
-            <Star
-                key={index}
-                style={{
-                    color: index < rating ? '#ffbb33' : '#e0e0e0',
-                    fontSize: '0.75rem', // Smaller star size
-                }}
-            />
-        ));
-    };
-
-    const handleDelete = async (reviewId) => {
-        try {
-            const response = await axios.delete(`${baseURL}/delete/${reviewId}`);
-            if (response.status === 200) {
-                alert('You have deleted a review');
-                setData((prevData) => prevData.filter((item) => item._id !== reviewId));
-            }
-        } catch (error) {
-            console.error('Error deleting review:', error);
-            alert('Error deleting review');
+  useEffect(() => {
+    const fetchReviews = async () => {
+      setLoading(true);
+      try {
+        const userId = localStorage.getItem('rsUserId');
+        if (!userId) {
+          setError('Unauthorized');
+          setLoading(false);
+          return;
         }
+
+        const response = await fetch(`${baseURL}/reviewDatas/userId?userId=${userId}`);
+        if (!response.ok) {
+          throw new Error('Error fetching reviews');
+        }
+        const result = await response.json();
+        setData(result);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        setError('Error fetching reviews');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    // Pagination logic
-    const indexOfLastReview = currentPage * reviewsPerPage;
-    const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-    const currentReviews = data.slice(indexOfFirstReview, indexOfLastReview);
+    fetchReviews();
+  }, []);
 
-    const totalPages = Math.ceil(data.length / reviewsPerPage);
-
-    const handlePageChange = (event, value) => {
-        setCurrentPage(value);
-    };
-
-    if (location.pathname !== '/reviews') {
-        return null;
+  const handleDelete = async (reviewId) => {
+    try {
+      const response = await axios.delete(`${baseURL}/delete/${reviewId}`);
+      if (response.status === 200) {
+        toast.success('Review deleted successfully!');
+        setData((prevData) => prevData.filter((item) => item._id !== reviewId));
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      toast.error('Error deleting review.');
     }
+  };
 
-    if (!userId) {
-        return (
-            <div>
-                <Unauthorized />
-            </div>
-        );
-    }
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = data.slice(indexOfFirstReview, indexOfLastReview);
 
-    const DeleteButton = styled(IconButton)(({ theme }) => ({
-        position: 'absolute',
-        right: theme.spacing(1),
-        bottom: theme.spacing(1),
-    }));
+  const totalPages = Math.ceil(data.length / reviewsPerPage);
 
-    return (
-        <div className="review-container" style={{ background: '#f5f5f5', padding: '20px' }}>
-            {loading ? (
-                <ReviewSkeleton />
-            ) : currentReviews.length > 0 ? (
-                currentReviews.map((reviewData, index) => (
-                    <div key={index} className="review-card">
-                        <div className="userImage-container">
-                            <img
-                                src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                                alt="User"
-                                loading="lazy"
-                            />
-                        </div>
-                        <div className="review-content">
-                            <div className="user-info">
-                                <p className="user-name">{reviewData?.userName}</p>
-                                <p className="review-date">{formatDateWithOrdinal(reviewData?.createdAt)}</p>
-                            </div>
-                            <p className="review-comment">{reviewData.comment}</p>
-                            <div className="star-rating">{getStarRating(reviewData.rating)}</div>
-                        </div>
-                        <DeleteButton
-                            variant="outlined"
-                            color="error"
-                            onClick={() => handleDelete(reviewData._id)}
-                            className="delete-button"
-                        >
-                            <DeleteIcon />
-                        </DeleteButton>
-                    </div>
-                ))
-            ) : (
-                <p className="no-reviews">No reviews available.</p>
-            )}
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
-            <div className="pagination">
-                <Pagination
-                    count={totalPages}
-                    page={currentPage}
-                    onChange={handlePageChange}
-                    color="primary"
-                    siblingCount={1}
-                    boundaryCount={1}
-                />
-            </div>
-        </div>
-    );
+  if (location.pathname !== '/reviews') {
+    return null;
+  }
+
+  if (!userId) {
+    return <Unauthorized />;
+  }
+
+  return (
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Typography variant="h6" component="h3" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
+        My Reviews
+      </Typography>
+      {loading ? (
+        <ReviewSkeleton />
+      ) : currentReviews.length > 0 ? (
+        <Grid container spacing={2}>
+          {currentReviews.map((reviewData) => (
+            <Grid item xs={12} key={reviewData._id}>
+              <ReviewCard reviewData={reviewData} handleDelete={handleDelete} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Box sx={{ p: 4, textAlign: 'center', color: 'text.secondary' }}>
+          <Typography variant="h6">You haven't left any reviews yet.</Typography>
+        </Box>
+      )}
+      {totalPages > 1 && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            siblingCount={1}
+            boundaryCount={1}
+          />
+        </Box>
+      )}
+    </Container>
+  );
 }

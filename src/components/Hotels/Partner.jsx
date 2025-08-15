@@ -182,8 +182,9 @@ export default function PartnerForm() {
     }
     return (
         <>
-            <div className="container mt-4" style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '20px' }}>
+            <div className="container mt-4" style={{  borderRadius: '8px', padding: '20px' }}>
                 <h5 className="mb-3">Welcome to our team</h5>
+                <Typography>Please fill out this form and make sure to fill every mandatory field</Typography>
                 <Disclaimer />
                 <form onSubmit={handleSubmit}>
                     <div className="row">

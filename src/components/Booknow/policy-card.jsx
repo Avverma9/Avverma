@@ -83,7 +83,7 @@ const HotelPolicyCard = ({ hotelData }) => {
               <Stack direction="row" spacing={1}>
                 <AccessTime sx={detailIconSx} />
                 <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                    <Typography sx={textPrimarySx}>Check-Out</Typography>
+                    <Typography sx={textPrimarySx}>Check-In</Typography>
                 {policy.checkInPolicy
                   .split("•")
                   .map((item, idx) =>

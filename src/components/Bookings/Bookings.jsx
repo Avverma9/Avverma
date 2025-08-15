@@ -101,6 +101,7 @@ export const ConfirmBooking = () => {
   };
 
   const handleReview = (hotelId) => {
+    console.log("Hotel ID for review:", hotelId);
     localStorage.setItem("hotelId_review", hotelId);
     setShowReviewForm(true);
   };
@@ -227,9 +228,7 @@ export const ConfirmBooking = () => {
           </FormControl>
         </Box>
 
-        {loading ? (
-          <BookingSkeleton />
-        ) : currentBooking.length > 0 ? (
+        { currentBooking.length > 0 && (
           <>
             <BootstrapModal
               show={showReviewForm}
@@ -369,7 +368,7 @@ export const ConfirmBooking = () => {
                             size="small"
                             fullWidth
                             variant="contained"
-                            onClick={() => handleReview(bookingDetail.hotelId)}
+                            onClick={() => handleReview(bookingDetail?.hotelDetails?.hotelId)}
                           >
                             Review
                           </Button>
@@ -381,14 +380,6 @@ export const ConfirmBooking = () => {
               ))}
             </div>
           </>
-        ) : (
-          // This is the fallback when there are no bookings
-          setTimeout(()=>{
-              <Typography variant="body1" align="center" sx={{ mt: 4 }}>
-            You have no current bookings.
-          </Typography>
-          },0)
-        
         )}
         <Pagination
           count={totalPages}

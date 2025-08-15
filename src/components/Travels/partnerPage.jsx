@@ -235,7 +235,7 @@ const TravelForm = () => {
         e.target.showPicker();
     };
     return (
-        <div className="form-container">
+        <div className="container">
             <Disclaimer />
             <h2>Travel Package Form</h2>
             <form onSubmit={handleSubmit}>

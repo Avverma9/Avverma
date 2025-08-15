@@ -68,6 +68,7 @@ const SearchForm = () => {
         setFetchingLocation(true);
         navigator.geolocation.getCurrentPosition(
             async (position) => {
+                console.log("Current position:", position);
                 const { latitude, longitude } = position.coords;
                 try {
                     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
@@ -75,8 +76,8 @@ const SearchForm = () => {
                     const locationName = data.address?.city || data.address?.town || data.address?.village || "Current Location";
                     setSearchData((prev) => ({
                         ...prev,
-                        latitude,
-                        longitude,
+                        // latitude,
+                        // longitude,
                         search: locationName,
                     }));
                 } catch (error) {

@@ -177,7 +177,7 @@ export default function PolicyForm() {
     return (
         <div
             className="container mt-4"
-            style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '20px', backgroundColor: '#ececec' }}
+            style={{  borderRadius: '8px', padding: '20px'}}
         >
             <h5 className="mb-3">Now fill your policy details carefully</h5>
             <hr />
