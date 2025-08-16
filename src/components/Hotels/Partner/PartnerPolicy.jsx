@@ -35,6 +35,10 @@ export default function PolicyForm() {
     const navigate = useNavigate();
     const classes = useStyles();
     const [hotelsPolicy, setHotelsPolicy] = useState('• ');
+    const [showCustomHotelPolicy, setShowCustomHotelPolicy] = useState(false);
+    const [showCustomCancellationPolicy, setShowCustomCancellationPolicy] = useState(false);
+    const [refundPolicy, setRefundPolicy] = useState('');
+    const [showCustomRefundPolicy, setShowCustomRefundPolicy] = useState(false);
     const [outsideFoodPolicy, setOutsideFoodPolicy] = useState('');
     const [cancellationPolicy, setCancellationPolicy] = useState('');
     const [paymentMode, setPaymentMode] = useState('');
@@ -173,7 +177,16 @@ export default function PolicyForm() {
             setHotelsPolicy(lines.join('\n'));
         }
     };
-    
+      const handlePolicyChange = (e, setPolicy, setShowCustom) => {
+        const value = e.target.value;
+        if (value === 'custom') {
+            setShowCustom(true);
+            setPolicy('');
+        } else {
+            setShowCustom(false);
+            setPolicy(value);
+        }
+    };
     return (
         <div
             className="container mt-4"
@@ -184,45 +197,87 @@ export default function PolicyForm() {
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="hotelsPolicy" className="form-label">
-                            Hotel Policy* (Write few words about your policy)
-                        </label>
-                        <textarea
-                            id="hotelsPolicy"
-                            className="form-control"
-                            rows="4" // You can adjust the number of visible rows
-                            value={hotelsPolicy}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    </div>
-                       <div className="col-md-4 mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Cancellation Policy*
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Cancellation"
-                            variant="outlined"
-                            value={cancellationPolicy}
-                            onChange={(e) => setCancellationPolicy(e.target.value)}
-                        >
-                            <option value="Free Cancellation">Free Cancellation</option>
-                            <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
-                        </select>
-                    </div>
-                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Refund policy
-                        </label>
-                        <textarea
-                            className="form-control"
-                            label="Return Policy"
-                            variant="outlined"
-                            value={returnPolicy}
-                            onChange={(e) => setReturnPolicy(e.target.value)}
-                        />
-                    </div>
+                <label htmlFor="hotelsPolicy" className="form-label">
+                    Hotel Policy*
+                </label>
+                <select
+                    id="hotelsPolicySelect"
+                    className="form-control mb-2"
+                    value={showCustomHotelPolicy ? 'custom' : hotelsPolicy}
+                    onChange={(e) => handlePolicyChange(e, setHotelsPolicy, setShowCustomHotelPolicy)}
+                >
+                    <option value="">-- Select a Policy --</option>
+                    <option value="No outside food allowed.">No outside food allowed.</option>
+                    <option value="Pets are not permitted.">Pets are not permitted.</option>
+                    <option value="custom">Write your own</option>
+                </select>
+                {showCustomHotelPolicy && (
+                    <textarea
+                        id="hotelsPolicy"
+                        className="form-control"
+                        rows="4"
+                        value={hotelsPolicy}
+                        onChange={(e) => setHotelsPolicy(e.target.value)}
+                        placeholder="Write Your Own ..."
+                    />
+                )}
+            </div>
+
+            {/* Cancellation Policy Section */}
+            <div className="col-md-4 mb-3">
+                <label htmlFor="cancellationPolicy" className="form-label">
+                    Cancellation Policy*
+                </label>
+                <select
+                    id="cancellationPolicySelect"
+                    className="form-control mb-2"
+                    value={showCustomCancellationPolicy ? 'custom' : cancellationPolicy}
+                    onChange={(e) => handlePolicyChange(e, setCancellationPolicy, setShowCustomCancellationPolicy)}
+                >
+                    <option value="">-- Select a Policy --</option>
+                    <option value="Free Cancellation">Free Cancellation</option>
+                    <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
+                    <option value="custom">Write your own</option>
+                </select>
+                {showCustomCancellationPolicy && (
+                    <textarea
+                        id="cancellationPolicy"
+                        className="form-control"
+                        rows="4"
+                        value={cancellationPolicy}
+                        onChange={(e) => setCancellationPolicy(e.target.value)}
+                        placeholder="Write Your Own ..."
+                    />
+                )}
+            </div>
+
+            {/* Refund Policy Section */}
+            <div className="col-md-4 mb-3">
+                <label htmlFor="refundPolicy" className="form-label">
+                    Refund policy
+                </label>
+                <select
+                    id="refundPolicySelect"
+                    className="form-control mb-2"
+                    value={showCustomRefundPolicy ? 'custom' : refundPolicy}
+                    onChange={(e) => handlePolicyChange(e, setRefundPolicy, setShowCustomRefundPolicy)}
+                >
+                    <option value="">-- Select a Policy --</option>
+                    <option value="100% Refund">100% Refund</option>
+                    <option value="50% Refund">50% Refund</option>
+                    <option value="custom">Write your own</option>
+                </select>
+                {showCustomRefundPolicy && (
+                    <textarea
+                        id="refundPolicy"
+                        className="form-control"
+                        rows="4"
+                        value={refundPolicy}
+                        onChange={(e) => setRefundPolicy(e.target.value)}
+                        placeholder="Write Your Own ..."
+                    />
+                )}
+            </div>
                     <div className="col-md-4 mb-3">
                         <label htmlFor="lastName" className="form-label">
                             Outside foods*

@@ -1,35 +1,74 @@
 import React, { useState } from 'react';
-import baseURL from '../../../utils/baseURL';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import baseURL from '../../../utils/baseURL';
 import { amenitiesList } from '../../../utils/extrasList';
+import {
+    Box,
+    Typography,
+    Container,
+    Button,
+    Chip,
+    CircularProgress,
+    ThemeProvider,
+    createTheme,
+    Snackbar,
+    Alert,
+    ToggleButton,
+    ToggleButtonGroup,
+    Stack,
+    TextField
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: '#3f51b5',
+        },
+        secondary: {
+            main: '#ff9800',
+        },
+        background: {
+            default: '#f4f6f8',
+        },
+    },
+    typography: {
+        fontFamily: 'Roboto, sans-serif',
+        h5: {
+            fontWeight: 600,
+            color: '#333',
+        },
+    },
+});
+
 const AmenitiesPage = () => {
     const [selectedAmenities, setSelectedAmenities] = useState([]);
-    const [existingAmenities, setExistingAmenities] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
     const hotelId = localStorage.getItem('hotelId');
-    const handleCheckboxChange = (amenity) => {
-        if (selectedAmenities.includes(amenity)) {
-            setSelectedAmenities(selectedAmenities.filter((item) => item !== amenity));
-        } else {
-            setSelectedAmenities([...selectedAmenities, amenity]);
-        }
+
+    const handleToggleButtonGroup = (event, newAmenities) => {
+        setSelectedAmenities(newAmenities);
     };
 
     const sendAmenitiesToAPI = async () => {
-        // Check if there are selected amenities
         if (selectedAmenities.length === 0) {
-            window.alert('Please select at least one amenity before submitting.');
+            setSnackbar({ open: true, message: 'Please select at least one amenity.', severity: 'warning' });
             return;
         }
 
-        // Display a confirmation dialog before submitting
         const isConfirmed = window.confirm('Before submitting, have you checked all details? Do you want to submit?');
 
         if (!isConfirmed) {
             return;
         }
 
+        setIsLoading(true);
         const apiEndpoint = `${baseURL}/create-a-amenities/to-your-hotel`;
 
         try {
@@ -38,76 +77,131 @@ const AmenitiesPage = () => {
                 amenities: selectedAmenities,
             });
 
-            // Handle the API response if needed
-
-            // Check if the submission was successful
             if (response.status === 201) {
-                // Show an alert if the submission was successful
-                window.alert('Amenities submitted successfully!');
-                window.location.href = '/partner/fourth-step';
+                setSnackbar({ open: true, message: 'Amenities submitted successfully!', severity: 'success' });
+                setTimeout(() => {
+                    window.location.href = '/partner/fourth-step';
+                }, 1500);
             } else {
-                // Handle other cases if needed
+                throw new Error('Submission failed');
             }
         } catch (error) {
-            // Handle errors during the API request
             console.error('Error sending amenities to API:', error);
+            setSnackbar({ open: true, message: 'Submission failed. Please try again.', severity: 'error' });
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    return (
-        <div
-            className="container mt-5"
-            style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '20px', backgroundColor: '#ececec' }}
-        >
-            <h5>You came so far, fill amenities details carefully !</h5>
-            <hr />
-            <div className="row">
-                {amenitiesList.map((amenity) => (
-                    <div key={amenity.id} className="col-md-2 mb-4">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="form-check">
-                                    <input
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        id={amenity.id}
-                                        value={amenity.name}
-                                        checked={selectedAmenities.includes(amenity.name)}
-                                        onChange={() => handleCheckboxChange(amenity.name)}
-                                    />
-                                    <label className="form-check-label" htmlFor={amenity.id}>
-                                        {amenity.name}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar({ ...snackbar, open: false });
+    };
 
-            <div className="row">
-                <div className="col-md-12">
-                    {' '}
-                    {/* Full-width column */}
-                    <div className="card">
-                        <div className="card-body">
-                            <div className="row">
+    const filteredAmenities = amenitiesList.filter((amenity) =>
+        amenity.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    return (
+        <ThemeProvider theme={theme}>
+            <Container component={Box} maxWidth="lg" sx={{ mt: 5, py: 4, bgcolor: 'background.default', borderRadius: 2, boxShadow: 3 }}>
+                <Stack spacing={4} alignItems="center">
+                    <Typography variant="h5" component="h2" align="center" gutterBottom>
+                        You came so far, fill amenities details carefully!
+                    </Typography>
+                    <Box sx={{ width: '100%', maxWidth: '500px' }}>
+                        <TextField
+                            fullWidth
+                            label="Search amenities"
+                            variant="outlined"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            InputProps={{
+                                startAdornment: (
+                                    <Box sx={{ mr: 1, display: 'flex', alignItems: 'center' }}>
+                                        <SearchIcon color="action" />
+                                    </Box>
+                                ),
+                            }}
+                        />
+                    </Box>
+                    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                        <ToggleButtonGroup
+                            value={selectedAmenities}
+                            onChange={handleToggleButtonGroup}
+                            aria-label="Amenities"
+                            sx={{
+                                flexWrap: 'wrap',
+                                gap: 2,
+                                '& .MuiToggleButton-root': {
+                                    borderRadius: 2,
+                                    border: '1px solid',
+                                    borderColor: 'grey.400',
+                                    '&.Mui-selected': {
+                                        backgroundColor: 'primary.main',
+                                        color: 'white',
+                                        '&:hover': {
+                                            backgroundColor: 'primary.dark',
+                                        },
+                                    },
+                                }
+                            }}
+                        >
+                            {filteredAmenities.map((amenity) => (
+                                <ToggleButton key={amenity.id} value={amenity.name} aria-label={amenity.name}>
+                                    <Stack direction="row" alignItems="center" spacing={1}>
+                                        <Box sx={{ fontSize: 24 }}>{amenity.icon}</Box>
+                                        <Typography variant="body1">{amenity.name}</Typography>
+                                    </Stack>
+                                </ToggleButton>
+                            ))}
+                        </ToggleButtonGroup>
+                    </Box>
+                    {selectedAmenities.length > 0 && (
+                        <Box sx={{ width: '100%', textAlign: 'center' }}>
+                            <Typography variant="h6" gutterBottom>
+                                Selected Amenities:
+                            </Typography>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center">
                                 {selectedAmenities.map((amenity) => (
-                                    <div key={amenity} className="col-md-2 mb-2">
-                                        {' '}
-                                        {/* Adjust column width as needed */}
-                                        <div className="list-group-item">{amenity}</div>
-                                    </div>
+                                    <Chip
+                                        key={amenity}
+                                        label={amenity}
+                                        onDelete={() => handleToggleButtonGroup(null, selectedAmenities.filter(item => item !== amenity))}
+                                        color="primary"
+                                        variant="outlined"
+                                        icon={<CheckIcon />}
+                                    />
                                 ))}
-                            </div>
-                            <button className="btn btn-primary mt-3" onClick={sendAmenitiesToAPI}>
-                                Next
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            </Stack>
+                        </Box>
+                    )}
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={sendAmenitiesToAPI}
+                            disabled={isLoading}
+                            startIcon={isLoading ? <CircularProgress size={24} color="inherit" /> : null}
+                        >
+                            {isLoading ? 'Submitting...' : 'Next'}
+                        </Button>
+                    </Box>
+                </Stack>
+                <Snackbar
+                    open={snackbar.open}
+                    autoHideDuration={6000}
+                    onClose={handleSnackbarClose}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                >
+                    <Alert onClose={handleSnackbarClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
+            </Container>
+        </ThemeProvider>
     );
 };
 

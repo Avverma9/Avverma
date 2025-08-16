@@ -1,43 +1,315 @@
 import React, { useState, useEffect } from "react";
-import { MDBTextArea } from "mdb-react-ui-kit";
 import axios from "axios";
-import CloseIcon from "@mui/icons-material/Close";
-import { Modal as BootstrapModal } from "react-bootstrap";
-import { AiOutlineClose } from "react-icons/ai";
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Button,
-  Rating,
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Paper,
-  Divider,
-  Pagination,
-} from "@mui/material";
-import SendIcon from "@mui/icons-material/Send";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilteredBooking } from "../../../redux/reducers/bookingSlice";
 import { formatDateWithOrdinal } from "../../../utils/_dateFunctions";
 import { Unauthorized, userId } from "../../../utils/Unauthorized";
-
 import baseURL from "../../../utils/baseURL";
-import styles from "./bookings.module.css";
-import { Stack } from "@mui/system";
-import { TuneRounded } from "@mui/icons-material";
-import NotFoundPage from "../../../utils/Not-found";
-import BookingSkeleton from "./bookingSkeleton";
 import { useLoader } from "../../../utils/loader";
 import { toast } from "react-toastify";
+import BookingSkeleton from "./bookingSkeleton";
+import NotFoundPage from "../../../utils/Not-found";
+
+import {
+  Modal,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Divider,
+  Pagination,
+  Grid,
+  Stack,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Rating,
+  TextField,
+  Paper,
+} from "@mui/material";
+
+import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import CloseIcon from "@mui/icons-material/Close";
+import SendIcon from "@mui/icons-material/Send";
+import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
+
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: { xs: "95%", sm: 600, md: 800 },
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  borderRadius: 2,
+};
+
+const paperCardStyle = {
+  p: 0,
+  borderRadius: 4,
+  boxShadow: 3,
+  mb: 3,
+  overflow: "hidden",
+  maxWidth: 720,
+  width: "100%",
+  mx: "auto"
+};
+
+const bookingHeaderStyle = {
+  backgroundColor: "#e53e3e",
+  color: "white",
+  py: 2,
+  px: 3,
+  borderTopLeftRadius: 4,
+  borderTopRightRadius: 4,
+};
+
+const sectionTitleStyle = {
+  fontSize: "1.2rem",
+  fontWeight: "bold",
+  color: "text.primary",
+  mb: 2,
+  pb: 1,
+};
+
+const detailItemStyle = {
+  mb: 2,
+  "& .MuiTypography-body2": {
+    color: "text.secondary",
+    fontSize: "0.85rem",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+  },
+  "& .MuiTypography-h6": {
+    fontSize: "1rem",
+    fontWeight: "regular",
+    color: "text.primary",
+  },
+};
+
+const PriceDetail = ({ label, value, isTotal = false }) => (
+  <Box sx={detailItemStyle}>
+    <Typography variant="body2">{label}</Typography>
+    <Typography variant="h6" color={isTotal ? "primary.main" : "text.primary"}>
+      ₹{value}
+    </Typography>
+  </Box>
+);
+
+const BookingModal = ({ show, handleClose, modalData }) => {
+  const handlePrint = () => window.print();
+
+  const calculateTotal = (items, key) => (items || []).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
+  const roomTotal = calculateTotal(modalData?.roomDetails, "price") * (Number(modalData?.numRooms) || 1);
+  const foodTotal = calculateTotal(modalData?.foodDetails, "price");
+  const gstAmount = (roomTotal * (Number(modalData?.gstPrice) || 0)) / 100;
+  const discountAmount = Number(modalData?.discountPrice) || 0;
+  const partialAmount = Number(modalData?.partialAmount) || 0;
+
+  return (
+    <Modal open={show} onClose={handleClose}>
+      <Paper sx={modalStyle}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+          <Typography variant="h5" color="primary">
+            Booking Details
+          </Typography>
+          <Stack direction="row" spacing={2}>
+            <Button onClick={handlePrint} variant="outlined" size="small">
+              Print
+            </Button>
+            <Button onClick={handleClose} variant="text" color="inherit" sx={{ minWidth: "auto", p: 0 }}>
+              <CloseIcon />
+            </Button>
+          </Stack>
+        </Stack>
+        <Box sx={{ maxHeight: "70vh", overflowY: "auto", pr: 2 }}>
+          {/* Booking Summary */}
+          <Box mb={4}>
+            <Typography variant="h6" sx={sectionTitleStyle}>Booking Summary</Typography>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant="body2">Booking ID</Typography>
+                <Typography variant="h6">{modalData?.bookingId}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant="body2">Booked By</Typography>
+                <Typography variant="h6">{modalData?.user?.name}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant="body2">Booking Date</Typography>
+                <Typography variant="h6">{moment(modalData?.createdAt).format("Do MMM YYYY")}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6} md={3}>
+                <Typography variant="body2">Status</Typography>
+                <Typography variant="h6">{modalData?.bookingStatus}</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+
+          {/* Hotel Info */}
+          <Box mb={4}>
+            <Typography variant="h6" sx={sectionTitleStyle}>Hotel Information</Typography>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2">Hotel</Typography>
+                <Typography variant="h6">{modalData?.hotelDetails?.hotelName}</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography variant="body2">Location</Typography>
+                <Typography variant="h6">{modalData?.destination}</Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+
+          {/* Room Details */}
+          {modalData?.roomDetails?.length > 0 && (
+            <Box mb={4}>
+              <Typography variant="h6" sx={sectionTitleStyle}>Room Details</Typography>
+              {(modalData.roomDetails || []).map((room, index) => (
+                <Grid container spacing={4} key={index} sx={{ mb: 2 }}>
+                  <Grid item xs={12} sm={4}>
+                    <Typography variant="body2">Room Type</Typography>
+                    <Typography variant="h6">{room?.type}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Typography variant="body2">Bed Type</Typography>
+                    <Typography variant="h6">{room?.bedTypes}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Typography variant="body2">Price</Typography>
+                    <Typography variant="h6">₹{room?.price}</Typography>
+                  </Grid>
+                </Grid>
+              ))}
+            </Box>
+          )}
+          <Divider sx={{ my: 2 }} />
+
+          {/* Price Summary */}
+          <Box>
+            <Typography variant="h6" sx={sectionTitleStyle}>Price Summary</Typography>
+            <Grid container spacing={4}>
+              <Grid item xs={12} sm={6} md={4}>
+                <PriceDetail label="Room Total" value={roomTotal.toFixed(2)} />
+                <PriceDetail label="Food Total" value={foodTotal.toFixed(2)} />
+                <PriceDetail label={`GST (${modalData?.gstPrice || 0}%)`} value={gstAmount.toFixed(2)} />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <PriceDetail label="Discount" value={discountAmount > 0 ? `- ₹${discountAmount}` : "No Discount"} />
+                {modalData?.isPartialBooking && (
+                  <PriceDetail label="Partially Paid" value={partialAmount.toFixed(2)} />
+                )}
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <PriceDetail label="Final Total" value={modalData?.price || 0} isTotal={true} />
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Paper>
+    </Modal>
+  );
+};
+
+const ReviewModal = ({ show, handleClose, handlePostReview, comment, setComment, rating, setRating }) => (
+  <Modal open={show} onClose={handleClose}>
+    <Paper sx={modalStyle}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={3}>
+        <Typography variant="h6" color="primary">Write a Review</Typography>
+        <Button onClick={handleClose} variant="text" color="inherit" sx={{ minWidth: "auto", p: 0 }}>
+          <CloseIcon />
+        </Button>
+      </Stack>
+      <TextField
+        label="Comment"
+        fullWidth
+        multiline
+        rows={4}
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        variant="outlined"
+        sx={{ mb: 2 }}
+      />
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <Typography component="legend" mr={1}>Rating:</Typography>
+        <Rating name="simple-controlled" value={rating} onChange={(event, newValue) => setRating(newValue)} />
+      </Box>
+      <Button variant="contained" onClick={handlePostReview} fullWidth startIcon={<SendIcon />}>
+        Send Review
+      </Button>
+    </Paper>
+  </Modal>
+);
+
+const BookingCard = ({ bookingDetail, onShowDetails, onReview }) => (
+  <Paper sx={paperCardStyle}>
+    <Box sx={bookingHeaderStyle}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h6" fontWeight="bold">My Bookings</Typography>
+        <Typography variant="body2">{moment(bookingDetail?.createdAt).format("MMMM DD, YYYY")}</Typography>
+      </Stack>
+    </Box>
+
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h5" fontWeight="bold" color="text.primary" mb={1}>{bookingDetail?.hotelDetails?.hotelName}</Typography>
+      <Divider sx={{ mb: 2 }} />
+
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} md={6}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <CalendarMonthIcon color="action" />
+            <Typography variant="body1" fontWeight="bold">{formatDateWithOrdinal(bookingDetail.checkInDate)}</Typography>
+            <Typography variant="body2" color="text.secondary">-</Typography>
+            <Typography variant="body1" fontWeight="bold">{formatDateWithOrdinal(bookingDetail.checkOutDate)}</Typography>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <StickyNote2Icon color="action" />
+            <Typography variant="body2" color="text.secondary">Booking ID:</Typography>
+            <Typography variant="body1" fontWeight="bold">{bookingDetail.bookingId}</Typography>
+          </Stack>
+        </Grid>
+      </Grid>
+      <Divider sx={{ my: 2 }} />
+      
+      <Grid container spacing={2}>
+        <Grid item xs={6} md={6}>
+          <Typography variant="subtitle2" color="text.secondary" textTransform="uppercase">Guests</Typography>
+          <Typography variant="body1" fontWeight="bold">{bookingDetail.guests} {bookingDetail.guests > 1 ? "Adults" : "Adult"}</Typography>
+        </Grid>
+        <Grid item xs={6} md={6}>
+          <Typography variant="subtitle2" color="text.secondary" textTransform="uppercase">Rooms</Typography>
+          <Typography variant="body1" fontWeight="bold">{bookingDetail.numRooms}</Typography>
+        </Grid>
+      </Grid>
+      <Divider sx={{ my: 2 }} />
+
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h6" fontWeight="bold" sx={{ display: "flex", alignItems: "center", gap: 1, color: "success.main" }}>
+          <CurrencyRupeeIcon /> {bookingDetail.price}
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Button size="small" variant="outlined" onClick={() => onShowDetails(bookingDetail)}>
+            View Details
+          </Button>
+          <Button size="small" variant="contained" onClick={() => onReview(bookingDetail?.hotelDetails?.hotelId)}>
+            Review
+          </Button>
+        </Stack>
+      </Stack>
+    </Box>
+  </Paper>
+);
 
 export const ConfirmBooking = () => {
   const dispatch = useDispatch();
@@ -47,73 +319,60 @@ export const ConfirmBooking = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [bookingDetails, setBookingDetails] = useState([]);
   const [modalData, setModalData] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const { showLoader, hideLoader } = useLoader();
   const location = useLocation();
-  const [show, setShow] = useState(false);
   const bookingsPerPage = 3;
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
-  const { data } = useSelector((state) => state.booking);
+  const { data, loading } = useSelector((state) => state.booking);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-       showLoader()
+        showLoader();
         const userId = localStorage.getItem("rsUserId");
         if (!userId) throw new Error("You are not logged in!");
         setBookingDetails([]);
-        const userResponse = await axios.get(`${baseURL}/get/${userId}`);
-        setUserData(userResponse.data.data);
         dispatch(fetchFilteredBooking({ selectedStatus, userId }));
       } catch (error) {
-      console.error("Error fetching booking data:", error);
+        toast.error(error.message);
       } finally {
-        hideLoader(); // Stop loading no matter success or failure
+        hideLoader();
       }
     };
-
     if (location.pathname === "/bookings") fetchData();
-  }, [dispatch, location.pathname, selectedStatus]);
+  }, [dispatch, location.pathname, selectedStatus, showLoader, hideLoader]);
 
   useEffect(() => {
     if (data) setBookingDetails(data);
   }, [data]);
 
-  const handleShow = (value) => {
+  const handleShowDetails = (value) => {
     setModalData(value);
-    setShow(true);
+    setShowModal(true);
   };
 
-  const handleClose = () => {
+  const handleCloseDetails = () => {
     setModalData(null);
-    setShow(false);
-  };
-
-  const handlePrint = () => {
-    const printStylesheet = document.createElement("link");
-    printStylesheet.rel = "stylesheet";
-    printStylesheet.type = "text/css";
-    printStylesheet.href = "path-to-your-print-stylesheet.css";
-    document.head.appendChild(printStylesheet);
-    window.print();
-    document.head.removeChild(printStylesheet);
+    setShowModal(false);
   };
 
   const handleReview = (hotelId) => {
-    console.log("Hotel ID for review:", hotelId);
     localStorage.setItem("hotelId_review", hotelId);
     setShowReviewForm(true);
+  };
+
+  const handleCloseReview = () => {
+    setComment("");
+    setRating(0);
+    setShowReviewForm(false);
   };
 
   const postReview = async () => {
     const userId = localStorage.getItem("rsUserId");
     const hotelId = localStorage.getItem("hotelId_review");
     try {
-      const response = await axios.post(
-        `${baseURL}/reviews/${userId}/${hotelId}`,
-        { comment, rating },
-      );
+      const response = await axios.post(`${baseURL}/reviews/${userId}/${hotelId}`, { comment, rating });
       if (response.status === 201) {
         setComment("");
         setRating(0);
@@ -127,11 +386,7 @@ export const ConfirmBooking = () => {
 
   const indexOfLastBooking = currentPage * bookingsPerPage;
   const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
-  const currentBooking = bookingDetails.slice(
-    indexOfFirstBooking,
-    indexOfLastBooking,
-  );
-
+  const currentBookings = bookingDetails.slice(indexOfFirstBooking, indexOfLastBooking);
   const totalPages = Math.ceil(bookingDetails.length / bookingsPerPage);
 
   const handlePageChange = (event, value) => {
@@ -139,524 +394,121 @@ export const ConfirmBooking = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleCloseReview = () => {
-    setComment("");
-    setRating(0);
-    setShowReviewForm(false);
-  };
+  if (!userId) return <Unauthorized />;
+  if (loading) return <BookingSkeleton />;
 
-  if (!userId) {
-    return <Unauthorized />;
-  }
-  // Calculate food total
-  const foodTotal = Array.isArray(modalData?.foodDetails)
-    ? modalData.foodDetails.reduce((acc, f) => acc + (Number(f.price) || 0), 0)
-    : 0;
-
-  // Calculate room total (raw)
-  const rawRoomTotal = Array.isArray(modalData?.roomDetails)
-    ? modalData.roomDetails.reduce((acc, r) => acc + (Number(r.price) || 0), 0)
-    : 0;
-
-  // Final total
-  const finalTotal = Number(modalData?.price) || 0;
-
-  // Adjusted room total
-  const adjustedRoomTotal =
-    rawRoomTotal > finalTotal - foodTotal
-      ? finalTotal - foodTotal
-      : rawRoomTotal;
   return (
-    <div style={{ overflowY: "auto", maxWidth: "100%", marginLeft: "10px" }}>
-      <div className={styles.bookingHeader}></div>
-      <div>
-        <Box
+    <Box  sx={{ border: 'none', outline: 'none', boxShadow: 'none' }}>
+      <Paper  sx={{ border: 'none', outline: 'none', boxShadow: 'none' }}>
+<Stack
+  direction="row"
+  justifyContent="flex-end"
+  alignItems="center"
+  sx={{ mb: 3, width: "100%" }}
+>
+  <FormControl
+    size="small"
+    sx={{
+      minWidth: 180,
+      backgroundColor: "#fff",
+      borderRadius: "10px",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+      "& .MuiOutlinedInput-notchedOutline": { border: "none" },
+      "& .MuiSelect-select": {
+        py: 1,
+        px: 2,
+        fontWeight: 500,
+        fontSize: "0.9rem",
+        display: "flex",
+        alignItems: "center",
+        gap: "6px",
+      },
+    }}
+  >
+    <InputLabel
+      id="status-select-label"
+      sx={{
+        fontWeight: 600,
+        fontSize: "0.8rem",
+        color: "text.secondary",
+      }}
+    >
+      Status
+    </InputLabel>
+    <Select
+      labelId="status-select-label"
+      value={selectedStatus}
+      onChange={(e) => setSelectedStatus(e.target.value)}
+      startAdornment={
+        <TuneRoundedIcon
           sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            mb: 2,
-            px: 1,
+            mr: 1,
+            color: "primary.main",
+            fontSize: 20,
           }}
-        >
-          <FormControl
-            size="small"
-            variant="outlined"
-            sx={{
-              minWidth: 160,
-              backgroundColor: "#ffffff",
-              border: "1px solid #ddd",
-              borderRadius: "30px",
-              px: 1.5,
-              py: 0.5,
-              boxShadow: "0 2px 5px rgba(0,0,0,0.06)",
-              "& .MuiOutlinedInput-notchedOutline": { border: "none" },
-              "&:hover": {
-                boxShadow: "0 3px 6px rgba(0,0,0,0.1)",
-              },
-            }}
-          >
-            <InputLabel
-              id="status-select-label"
-              sx={{
-                fontSize: "0.85rem",
-                pl: 1,
-                color: "#555",
-              }}
-            >
-              <TuneRounded sx={{ mt: 4, fontSize: 18 }} />
-            </InputLabel>
-
-            <Select
-              labelId="status-select-label"
-              id="status-select"
-              value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
-              label="Filter"
-              sx={{
-                fontSize: "0.9rem",
-                pl: 3.5,
-              }}
-            >
-              <MenuItem value="Confirmed">Confirmed</MenuItem>
-              <MenuItem value="Pending">Pending</MenuItem>
-              <MenuItem value="Failed">Failed</MenuItem>
-              <MenuItem value="Checked-in">Checked In</MenuItem>
-              <MenuItem value="Checked-out">Checked Out</MenuItem>
-              <MenuItem value="Cancelled">Cancelled</MenuItem>
-              <MenuItem value="No-show">No Show</MenuItem>
-            </Select>
-          </FormControl>
-        </Box>
-
-        { currentBooking.length > 0 && (
-          <>
-            <BootstrapModal
-              show={showReviewForm}
-              onHide={handleCloseReview}
-              centered
-              size="lg"
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  p: 2,
-                  width: "100%",
-                  bgcolor: "background.paper",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 2,
-                  }}
-                >
-                  <Typography variant="h6">Write about your experience</Typography>
-                  <CloseIcon
-                    onClick={handleCloseReview}
-                    style={{ cursor: "pointer" }}
-                  />
-                </Box>
-                <MDBTextArea
-                  label="Comment"
-                  id="formControlLg"
-                  size="lg"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  style={{ marginBottom: "10px" }}
-                />
-                <Rating
-                  name="simple-controlled"
-                  value={rating}
-                  onChange={(event, newValue) => setRating(newValue)}
-                />
-                <Button
-                  variant="contained"
-                  onClick={postReview}
-                  style={{ marginTop: "10px", width: "100%" }}
-                >
-                  <SendIcon style={{ marginRight: "5px" }} /> Send Review
-                </Button>
-              </Box>
-            </BootstrapModal>
-
-            <div className={styles.bookingsContainer}>
-              {currentBooking.map((bookingDetail) => (
-                <Paper
-                  key={bookingDetail.bookingId}
-                  sx={{
-                    width: "100%",
-                    mb: 2,
-                    p: 1.5,
-                    borderRadius: 2,
-                    boxShadow: 2,
-                  }}
-                >
-                  <Card
-                    elevation={0}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      bgcolor: "transparent",
-                    }}
-                  >
-                    <CardContent sx={{ p: 1.5 }}>
-                      <Stack spacing={1}>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                          {bookingDetail?.hotelDetails?.hotelName}
-                        </Typography>
-
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 0.5,
-                          }}
-                        >
-                          <CalendarMonthIcon fontSize="small" />
-                          {formatDateWithOrdinal(bookingDetail.checkInDate)} —{" "}
-                          {formatDateWithOrdinal(bookingDetail.checkOutDate)}
-                        </Typography>
-
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 0.5,
-                          }}
-                        >
-                          <StickyNote2Icon fontSize="small" />
-                          Booking ID: {bookingDetail.bookingId}
-                        </Typography>
-
-                        <Typography variant="body2">
-                          {bookingDetail.guests}{" "}
-                          {bookingDetail.guests > 1 ? "Guests" : "Guest"} |{" "}
-                          {bookingDetail.rooms}{" "}
-                          {bookingDetail.rooms > 1 ? "Rooms" : "Room"}
-                        </Typography>
-
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 0.5,
-                          }}
-                        >
-                          <CurrencyRupeeIcon fontSize="small" />
-                          {bookingDetail.price}
-                        </Typography>
-
-                        <Divider sx={{ my: 1 }} />
-
-                        <Stack direction="row" spacing={1}>
-                          <Button
-                            size="small"
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => handleShow(bookingDetail)}
-                          >
-                            View
-                          </Button>
-                          <Button
-                            size="small"
-                            fullWidth
-                            variant="contained"
-                            onClick={() => handleReview(bookingDetail?.hotelDetails?.hotelId)}
-                          >
-                            Review
-                          </Button>
-                        </Stack>
-                      </Stack>
-                    </CardContent>
-                  </Card>
-                </Paper>
-              ))}
-            </div>
-          </>
-        )}
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-          siblingCount={1}
-          boundaryCount={1}
-          sx={{ marginTop: 8 }}
         />
-      </div>
-
-      <BootstrapModal show={show} onHide={handleClose} centered size="lg">
-        <div className={styles.modalContainer}>
-          <div className={styles.modalHeader}>
-            <button
-              onClick={handlePrint}
-              style={{
-                backgroundColor: "blue",
-                color: "white",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
-            >
-              Print
-            </button>
-
-            <button onClick={handleClose} className={styles.closeBtn}>
-              <AiOutlineClose />
-            </button>
-          </div>
-
-          <div className={styles.modalBody}>
-            {/* Booking Summary */}
-            <section className={styles.section}>
-              <h5>Booking Summary</h5>
-              <div className={styles.grid}>
-                <div>
-                  <label>Booking ID</label>
-                  <p>{modalData?.bookingId}</p>
-                </div>
-                <div>
-                  <label>Booked By</label>
-                  <p>{modalData?.user?.name}</p>
-                </div>
-                <div>
-                  <label>Booking Date</label>
-                  <p>{moment(modalData?.createdAt).format("Do MMM YYYY")}</p>
-                </div>
-                <div>
-                  <label>Status</label>
-                  <p>{modalData?.bookingStatus}</p>
-                </div>
-              </div>
-            </section>
-
-            <section className={styles.section}>
-              <h5>Hotel Info</h5>
-              <div className={styles.grid}>
-                <div>
-                  <label>Hotel</label>
-                  <p>{modalData?.hotelDetails?.hotelName}</p>
-                </div>
-                <div>
-                  <label>Location</label>
-                  <p>{modalData?.destination}</p>
-                </div>
-              </div>
-            </section>
-
-            {/* Room Info */}
-            <section className={styles.section}>
-              <h5>Room Details</h5>
-              {modalData?.roomDetails?.map((room, index) => (
-                <div key={index} className={styles.grid}>
-                  <div>
-                    <label>Room Type</label>
-                    <p>{room?.type}</p>
-                  </div>
-                  <div>
-                    <label>Bed Type</label>
-                    <p>{room?.bedTypes}</p>
-                  </div>
-                  <div>
-                    <label>Room Price</label>
-                    <p>₹{room?.price}</p>
-                  </div>
+      }
+      MenuProps={{
+        PaperProps: {
+          sx: {
+            borderRadius: "8px",
+            boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
+            "& .MuiMenuItem-root": {
+              px: 2,
+              py: 1,
+              fontSize: "0.9rem",
+              fontWeight: 500,
+              "&:hover": {
+                backgroundColor: "action.hover",
+              },
+            },
+          },
+        },
+      }}
+    >
+      <MenuItem value="Confirmed">Confirmed</MenuItem>
+      <MenuItem value="Pending">Pending</MenuItem>
+      <MenuItem value="Failed">Failed</MenuItem>
+      <MenuItem value="Checked-in">Checked In</MenuItem>
+      <MenuItem value="Checked-out">Checked Out</MenuItem>
+      <MenuItem value="Cancelled">Cancelled</MenuItem>
+      <MenuItem value="No-show">No Show</MenuItem>
+    </Select>
+  </FormControl>
+</Stack>
 
 
+        <Grid container spacing={4}>
+          {currentBookings.length > 0 ? (
+            currentBookings.map((booking) => (
+              <Grid item xs={12} key={booking.bookingId} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <BookingCard bookingDetail={booking} onShowDetails={handleShowDetails} onReview={handleReview} />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} textAlign="center">
+              <NotFoundPage />
+            </Grid>
+          )}
+        </Grid>
 
-                </div>
-              ))}
-            </section>
+        {totalPages > 1 && (
+          <Stack spacing={2} sx={{ mt: 4, alignItems: "center" }}>
+            <Pagination count={totalPages} page={currentPage} onChange={handlePageChange} color="primary" />
+          </Stack>
+        )}
+      </Paper>
 
-
-            {/* Food Details */}
-            {modalData?.foodDetails?.length > 0 && (
-              <>
-                <section className={styles.section}>
-                  <h5>Food Ordered</h5>
-                  {modalData?.foodDetails?.map((food, index) => (
-                    <div key={index} className={styles.grid}>
-                      <div>
-                        <label>Food</label>
-                        <p>{food?.type ? food?.type : "Breakfast"}</p>
-                      </div>
-                      <div>
-                        <label>Price</label>
-                        <p>₹{food.price}</p>
-                      </div>
-                    </div>
-                  ))}
-                </section>
-              </>
-            )}
-
-            {/* Guest Info */}
-            <section className={styles.section}>
-              <h5>Guest Info</h5>
-              <div className={styles.grid}>
-                <div>
-                  <label>Name</label>
-                  <p>{modalData?.user?.name}</p>
-                </div>
-                <div>
-                  <label>Mobile</label>
-                  <p>{modalData?.user?.mobile}</p>
-                </div>
-                <div>
-                  <label>Guests</label>
-                  <p>{modalData?.guests}</p>
-                </div>
-                <div>
-                  <label>Rooms</label>
-                  <p>{modalData?.numRooms}</p>
-                </div>
-              </div>
-              <div className={styles.grid}>
-                <div>
-                  <label>Check-In</label>
-                  <p>{modalData?.checkInDate}</p>
-                </div>
-                <div>
-                  <label>Check-Out</label>
-                  <p>{modalData?.checkOutDate}</p>
-                </div>
-              </div>
-            </section>
-
-            {/* Price Summary */}
-      <section className={styles.section}>
-  <h5>Price Summary</h5>
-  <div className={styles.grid}>
-    {/* Room Total */}
-    <div>
-      <label>Room Total</label>
-      <p>
-        ₹
-        {(() => {
-          const checkIn = new Date(modalData?.checkInDate);
-          const checkOut = new Date(modalData?.checkOutDate);
-
-          const timeDiff = checkOut.getTime() - checkIn.getTime();
-          const dayDiff = Math.max(1, Math.ceil(timeDiff / (1000 * 60 * 60 * 24)));
-
-          // Total price for all rooms considering number of rooms and days
-          const totalRoomPrice = modalData?.roomDetails?.reduce((acc, room) => {
-            const pricePerDay = Number(room?.price) || 0;
-            return acc + pricePerDay * dayDiff;
-          }, 0) || 0;
-
-          // Multiply by number of rooms booked
-          const numRooms = Number(modalData?.numRooms) || 1;
-
-          return totalRoomPrice * numRooms;
-        })()}
-      </p>
-    </div>
-
-    {/* Rooms */}
-    <div>
-      <label>Rooms</label>
-      <p>{modalData?.numRooms || 1}</p>
-    </div>
-
-    {/* Food Total */}
-    <div>
-      <label>Food Total</label>
-      <p>
-        ₹
-        {(() => {
-          return modalData?.foodDetails?.reduce((acc, food) => {
-            const price = Number(food.price) || 0;
-            const quantity = Number(food.quantity) || 1;
-            return acc + price * quantity;
-          }, 0) || 0;
-        })()}
-      </p>
-    </div>
-
-    {/* GST */}
-    <div>
-      <label>GST ({modalData?.gstPrice || 0}%)</label>
-      <p>
-        ₹
-        {(() => {
-          const checkIn = new Date(modalData?.checkInDate);
-          const checkOut = new Date(modalData?.checkOutDate);
-          const dayDiff = Math.max(1, Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
-
-          const roomTotal = (modalData?.roomDetails?.reduce((acc, room) => {
-            const pricePerDay = Number(room?.price) || 0;
-            return acc + pricePerDay * dayDiff;
-          }, 0) || 0) * (Number(modalData?.numRooms) || 1);
-
-         
-
-          const totalBeforeGST = roomTotal ;
-          const gstPercent = Number(modalData?.gstPrice) || 0;
-
-          const gstAmount = (totalBeforeGST * gstPercent) / 100;
-          return gstAmount.toFixed(2);
-        })()}
-      </p>
-    </div>
-
-    {/* Discount */}
-    <div>
-      <label>Discount</label>
-      <p>
-        {Number(modalData?.discountPrice) > 0
-          ? `- ₹${modalData.discountPrice}`
-          : "No Discount"}
-      </p>
-    </div>
-
-    {/* Final Total */}
-    <div className={styles.totalWrap}>
-      <label className={styles.totalLabel}>Final Total</label>
-      <p className={styles.total}>
-        ₹
-      {modalData?.price || 0}
-      </p>
-    </div>
-
-    {modalData?.isPartialBooking && (
-      <>
-        <div>
-          <label>Partial Booking</label>
-          <p>{modalData.isPartialBooking ? "Yes" : "No"}</p>
-        </div>
-        <div>
-          <label
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              border: "1px solid darkred",
-              padding: "4px 8px",
-              borderRadius: "4px",
-              display: "inline-block"
-            }}
-          >
-            Partially Paid Amount
-          </label>
-
-          <p>₹{modalData?.partialAmount || 0}</p>
-        </div>
-      </>
-    )}
-  </div>
-</section>
-
-          </div>
-        </div>
-      </BootstrapModal>
-    </div>
+      <BookingModal show={showModal} handleClose={handleCloseDetails} modalData={modalData} />
+      <ReviewModal
+        show={showReviewForm}
+        handleClose={handleCloseReview}
+        handlePostReview={postReview}
+        comment={comment}
+        setComment={setComment}
+        rating={rating}
+        setRating={setRating}
+      />
+    </Box>
   );
 };

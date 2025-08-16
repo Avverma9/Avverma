@@ -74,6 +74,7 @@ const Google = () => {
       localStorage.setItem("rsUserMobile", mobile);
       localStorage.setItem("roomsstayUserEmail", GoogleEmail);
       localStorage.setItem("roomsstayUserImage", images);
+      localStorage.setItem("roomsstayUserName", userName);
       const userDocRef = doc(db, "users", userId);
       await setDoc(userDocRef, { email: GoogleEmail }); // Changed to use GoogleEmail
     } catch (error) {

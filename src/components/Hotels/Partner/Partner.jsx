@@ -430,7 +430,7 @@ export default function PartnerForm() {
 
                         <div className="col-md-4 mb-3">
                             <label htmlFor="buyingRole" className="form-label">
-                                Property type ( Whether which property type you have )
+                                Property type
                             </label>
                             <select
                                 id="propertyType"
