@@ -162,33 +162,34 @@ const HotelPolicyCard = ({ hotelData }) => {
           </Grid>
 
           {/* Hotel Rules */}
-          {policy?.hotelsPolicy && (
-            <Box mt={1.5}>
-              <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
-                <Groups sx={detailIconSx} />
-                <Typography sx={textPrimarySx}>Hotel Rules</Typography>
-              </Stack>
-              <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                {policy.hotelsPolicy
-                  .split("•")
-                  .map((item, idx) =>
-                    item.trim() ? (
-                      <Typography
-                        key={idx}
-                        component="li"
-                        sx={{
-                          ...textSecondarySx,
-                          ml: 1,
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {item.trim()}
-                      </Typography>
-                    ) : null
-                  )}
-              </Box>
-            </Box>
-          )}
+        {policy?.hotelsPolicy && (
+  <Box mt={1.5}>
+    <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+      <Groups sx={detailIconSx} />
+      <Typography sx={textPrimarySx}>Hotel Rules</Typography>
+    </Stack>
+    <Box component="ul" sx={{ pl: 2, m: 0 }}>
+      {policy.hotelsPolicy
+        .split("•")
+        .filter(item => item.trim()) // remove empty
+        .slice(0, 2) // only take first 2
+        .map((item, idx) => (
+          <Typography
+            key={idx}
+            component="li"
+            sx={{
+              ...textSecondarySx,
+              ml: 1,
+              lineHeight: 1.4,
+            }}
+          >
+            {item.trim()}
+          </Typography>
+        ))}
+    </Box>
+  </Box>
+)}
+
 
           {/* Cancellation */}
           <Box mt={1.5}>

@@ -75,17 +75,18 @@ const BookingPage = ({
 }) => {
   return (
     <>
-      <Card
-        sx={{
-          position: "sticky",
-          top: 0,
-          width: 345,
-          p: 3,
-          boxShadow: 4,
-          backgroundColor: "#ffffff",
-          overflow: "visible",
-        }}
-      >
+     <Card
+  sx={{
+    position: "sticky",
+    top: 0,
+    width: { xs: "100%", sm: "80%", md: 345 },
+    p: { xs: 2, sm: 3 },
+    boxShadow: 4,
+    backgroundColor: "#ffffff",
+    overflow: "visible",
+  }}
+>
+
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <BiSolidOffer size={22} color="#f44336" />
           <Typography
@@ -107,7 +108,7 @@ const BookingPage = ({
         <Divider sx={{ mb: 2 }} />
 
         {/* Room Details */}
-        <Box mb={2}>
+        <Box mb={2} >
           <Typography variant="subtitle2" fontWeight="bold" color="primary">
             Room Details
           </Typography>
@@ -155,6 +156,8 @@ const BookingPage = ({
                 Rooms
               </InputLabel>
               <OutlinedInput
+               size="small"
+  sx={{ width: { xs: "100%", sm: 140 } }}
                 label="Rooms"
                 value={roomsCount}
                 readOnly
@@ -189,6 +192,8 @@ const BookingPage = ({
                 Guests
               </InputLabel>
               <OutlinedInput
+               size="small"
+  sx={{ width: { xs: "100%", sm: 140 } }}
                 label="Guests"
                 value={guestsCount}
                 readOnly
@@ -234,9 +239,7 @@ const BookingPage = ({
                     size="small"
                     sx={{ width: "140px" }} // Adjust the width here
                     startAdornment={
-                      <InputAdornment position="start">
-                      
-                      </InputAdornment>
+                      <InputAdornment position="start"></InputAdornment>
                     }
                   />
                 }
@@ -262,9 +265,7 @@ const BookingPage = ({
                     size="small"
                     sx={{ width: "140px" }} // Adjust the width here
                     startAdornment={
-                      <InputAdornment position="start">
-            
-                      </InputAdornment>
+                      <InputAdornment position="start"></InputAdornment>
                     }
                   />
                 }
