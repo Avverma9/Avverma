@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { useState } from 'react';
-import baseURL from '../../utils/baseURL';
+import baseURL from '../../../utils/baseURL';
 import axios from 'axios';
 // import { Button, makeStyles, TextareaAutosize } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';

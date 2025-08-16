@@ -7,7 +7,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { PiTicketThin } from 'react-icons/pi';
 import { CgProfile } from 'react-icons/cg';
 import { MdOutlineRateReview } from 'react-icons/md';
-import { ConfirmBooking } from '../Bookings/Bookings';
+import { ConfirmBooking } from './Bookings/Bookings';
 import Reviews from './Review';
 import UpdatePage from './UpdatePage';
 import Complaint from './complaint/form';

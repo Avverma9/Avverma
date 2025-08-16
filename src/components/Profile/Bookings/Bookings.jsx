@@ -26,17 +26,17 @@ import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
-import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import { Unauthorized, userId } from "../../utils/Unauthorized";
+import { fetchFilteredBooking } from "../../../redux/reducers/bookingSlice";
+import { formatDateWithOrdinal } from "../../../utils/_dateFunctions";
+import { Unauthorized, userId } from "../../../utils/Unauthorized";
 
-import baseURL from "../../utils/baseURL";
+import baseURL from "../../../utils/baseURL";
 import styles from "./bookings.module.css";
 import { Stack } from "@mui/system";
 import { TuneRounded } from "@mui/icons-material";
-import NotFoundPage from "../../utils/Not-found";
+import NotFoundPage from "../../../utils/Not-found";
 import BookingSkeleton from "./bookingSkeleton";
-import { useLoader } from "../../utils/loader";
+import { useLoader } from "../../../utils/loader";
 import { toast } from "react-toastify";
 
 export const ConfirmBooking = () => {

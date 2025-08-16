@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import baseURL from '../../utils/baseURL';
+import baseURL from '../../../utils/baseURL';
 import { useNavigate } from 'react-router-dom';
-import alert from '../../utils/custom_alert/custom_alert';
+import alert from '../../../utils/custom_alert/custom_alert';
 
 export default function PartnerFoods() {
     const navigate = useNavigate();

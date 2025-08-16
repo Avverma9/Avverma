@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { postRooms, sendNotification } from '../../redux/reducers/partnerSlice'; // Adjust the import path as needed
-import alert from '../../utils/custom_alert/custom_alert';
-import { useBedTypes } from '../../utils/additional-fields/bedTypes';
-import { useRoomTypes } from '../../utils/additional-fields/roomTypes';
+import { postRooms, sendNotification } from '../../../redux/reducers/partnerSlice'; // Adjust the import path as needed
+import alert from '../../../utils/custom_alert/custom_alert';
+import { useBedTypes } from '../../../utils/additional-fields/bedTypes';
+import { useRoomTypes } from '../../../utils/additional-fields/roomTypes';
 
 export default function PartnerRooms() {
     const dispatch = useDispatch();

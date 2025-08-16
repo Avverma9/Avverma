@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import baseURL from '../../utils/baseURL';
+import baseURL from '../../../utils/baseURL';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { amenitiesList } from '../../utils/extrasList';
+import { amenitiesList } from '../../../utils/extrasList';
 const AmenitiesPage = () => {
     const [selectedAmenities, setSelectedAmenities] = useState([]);
     const [existingAmenities, setExistingAmenities] = useState([]);

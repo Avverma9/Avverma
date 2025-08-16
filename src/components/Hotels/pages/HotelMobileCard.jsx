@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './HotelMobileCard.css';
-import MobileSearchBox from './MobileSearchBox';
+import MobileSearchBox from '../Searchbox/MobileSearchBox';
 import NotFoundPage from '../../../utils/Not-found';
 import { userId } from '../../../utils/Unauthorized';
 import { Button, Skeleton, Stack } from '@mui/material';

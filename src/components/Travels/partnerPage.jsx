@@ -21,7 +21,7 @@ import {
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
 import { FaLocationArrow } from 'react-icons/fa6';
-import Disclaimer from '../Hotels/Disclaimer';
+import Disclaimer from '../Hotels/Partner/Disclaimer';
 const TravelForm = () => {
     const [formData, setFormData] = useState({
         city: '',

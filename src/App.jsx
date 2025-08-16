@@ -5,7 +5,7 @@ import Header from './components/Header';
 import CarouselPage from './components/CarouselBanner';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SearchForm from './components/Search';
+import SearchForm from './components/Hotels/Searchbox/Search';
 import Offered from './components/Offered';
 import Footer from './components/Footer';
 import HeaderImage from './components/HeaderLocation';
@@ -15,12 +15,12 @@ import RegisterPage from './components/Authentication/Register.jsx';
 
 import BookNow from './components/Booknow/Booknow.jsx';
 
-import PartnerForm from './components/Hotels/Partner.jsx';
-import PolicyForm from './components/Hotels/PartnerPolicy.jsx';
+import PartnerForm from './components/Hotels/Partner/Partner.jsx';
+import PolicyForm from './components/Hotels/Partner/PartnerPolicy.jsx';
 import Bottom from './components/Bottom.jsx';
-import AmenitiesPage from './components/Hotels/PartnerAmenities.jsx';
-import PartnerFoods from './components/Hotels/PartnerFoods.jsx';
-import PartnerRooms from './components/Hotels/PartnerRooms.jsx';
+import AmenitiesPage from './components/Hotels/Partner/PartnerAmenities.jsx';
+import PartnerFoods from './components/Hotels/Partner/PartnerFoods.jsx';
+import PartnerRooms from './components/Hotels/Partner/PartnerRooms.jsx';
 
 import { LoaderProvider } from './utils/loader'; // Import the LoaderProvider
 import ScrollToTop from './utils/scrollToTop';

@@ -21,8 +21,8 @@ import NotFoundPage from '../../../utils/Not-found';
 import { getGst } from '../../../redux/reducers/gstSlice';
 import { useBedTypes } from '../../../utils/additional-fields/bedTypes';
 import { useRoomTypes } from '../../../utils/additional-fields/roomTypes';
-import MobileSearchBox from './MobileSearchBox';
-import DesktopSearchBox from './DesktopSearch';
+import MobileSearchBox from '../Searchbox/MobileSearchBox';
+import DesktopSearchBox from '../Searchbox/DesktopSearch';
 
 const HotelPageContent = () => {
     const [hotelData, setHotelData] = useState([]);
