@@ -79,7 +79,7 @@ const BookingPage = ({
         sx={{
           position: "sticky",
           top: 0,
-          width: 360,
+          width: 345,
           p: 3,
           boxShadow: 4,
           backgroundColor: "#ffffff",
@@ -213,7 +213,7 @@ const BookingPage = ({
 
         {/* Dates */}
         <Box mt={3}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid item xs={6}>
               <Typography fontSize={14} mb={0.5}>
                 <InventoryTwoToneIcon fontSize="small" sx={{ mr: 0.5 }} />
@@ -232,10 +232,10 @@ const BookingPage = ({
                 customInput={
                   <OutlinedInput
                     size="small"
-                    sx={{ width: "155px" }} // Adjust the width here
+                    sx={{ width: "140px" }} // Adjust the width here
                     startAdornment={
                       <InputAdornment position="start">
-                        <CalendarMonthIcon fontSize="small" />
+                      
                       </InputAdornment>
                     }
                   />
@@ -260,10 +260,10 @@ const BookingPage = ({
                 customInput={
                   <OutlinedInput
                     size="small"
-                    sx={{ width: "155px" }} // Adjust the width here
+                    sx={{ width: "140px" }} // Adjust the width here
                     startAdornment={
                       <InputAdornment position="start">
-                        <CalendarMonthIcon fontSize="small" />
+            
                       </InputAdornment>
                     }
                   />
