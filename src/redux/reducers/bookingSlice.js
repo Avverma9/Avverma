@@ -107,7 +107,7 @@ const bookingSlice = createSlice({
             .addCase(fetchFilteredBooking.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-               toast.info('There are no such bookings');
+              
             })
             // Fetch monthly data
             .addCase(fetchMonthlyData.pending, (state) => {
