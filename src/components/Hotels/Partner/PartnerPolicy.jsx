@@ -2,61 +2,59 @@
 import React, { useState } from 'react';
 import baseURL from '../../../utils/baseURL';
 import axios from 'axios';
-// import { Button, makeStyles, TextareaAutosize } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
-import { Button,TextareaAutosize} from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Button } from '@mui/material';
 
-const useStyles = makeStyles((theme) => ({
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: '1200px',
-        margin: 'auto',
-        border: '5px solid blue', // Add border style here
-
-        padding: theme.spacing(3),
-        marginTop: theme.spacing(4),
-    },
-    textarea: {
-        width: '100%', // Set the width as per your design
-        minHeight: '100px', // Set the height as per your design
-        padding: theme.spacing(1),
-        resize: 'vertical', // Allow vertical resizing
-    },
-    input: {
-        marginBottom: theme.spacing(2),
-    },
-}));
-
-const hotelId = localStorage.getItem('hotelId');
+// Function to generate time slots
+const generateTimeSlots = () => {
+    const slots = [];
+    for (let i = 0; i < 24; i++) {
+        for (let j = 0; j < 60; j += 30) {
+            const hour = i;
+            const minute = j;
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+            const formattedMinute = minute.toString().padStart(2, '0');
+            slots.push(`${formattedHour}:${formattedMinute} ${period}`);
+        }
+    }
+    return slots;
+};
 
 export default function PolicyForm() {
     const navigate = useNavigate();
-    const classes = useStyles();
-    const [hotelsPolicy, setHotelsPolicy] = useState('• ');
+    const timeSlots = generateTimeSlots();
+
+    // State Initializations
+    const [hotelsPolicy, setHotelsPolicy] = useState('');
     const [showCustomHotelPolicy, setShowCustomHotelPolicy] = useState(false);
+
+    const [cancellationPolicy, setCancellationPolicy] = useState('');
     const [showCustomCancellationPolicy, setShowCustomCancellationPolicy] = useState(false);
+
     const [refundPolicy, setRefundPolicy] = useState('');
     const [showCustomRefundPolicy, setShowCustomRefundPolicy] = useState(false);
-    const [outsideFoodPolicy, setOutsideFoodPolicy] = useState('');
-    const [cancellationPolicy, setCancellationPolicy] = useState('');
-    const [paymentMode, setPaymentMode] = useState('');
-    const [petsAllowed, setPetsAllowed] = useState('');
-    const [bachelorAllowed, setBachelorAllowed] = useState('');
-    const [smokingAllowed, setSmokingAllowed] = useState('');
-    const [alcoholAllowed, setAlcoholAllowed] = useState('');
-    const [unmarriedCouplesAllowed, setUnmarriedCouplesAllowed] = useState('');
-    const [internationalGuestAllowed, setInternationalGuestAllowed] = useState('');
-    const [returnPolicy, setReturnPolicy] = useState('');
+
+    const [outsideFoodPolicy, setOutsideFoodPolicy] = useState('Not Accepted');
+    const [paymentMode, setPaymentMode] = useState('Online');
+    const [petsAllowed, setPetsAllowed] = useState('Not Allowed');
+    const [bachelorAllowed, setBachelorAllowed] = useState('Not Allowed');
+    const [smokingAllowed, setSmokingAllowed] = useState('Not Allowed');
+    const [alcoholAllowed, setAlcoholAllowed] = useState('Not Allowed');
+    const [unmarriedCouplesAllowed, setUnmarriedCouplesAllowed] = useState('Not Allowed');
+    const [internationalGuestAllowed, setInternationalGuestAllowed] = useState('Not Allowed');
+
+    // FIX: Changed to dropdown. Set initial state to a default time.
+    const [checkInPolicy, setCheckInPolicy] = useState('14:00'); // Default to 2:00 PM
+    const [checkOutPolicy, setCheckOutPolicy] = useState('11:00'); // Default to 11:00 AM
+
+    // ... (rest of the state initializations for tariffs)
     const [onDoubleSharing, setOnDoubleSharing] = useState('');
     const [onQuadSharing, setOnQuadSharing] = useState('');
     const [onBulkBooking, setOnBulkBooking] = useState('');
     const [onTrippleSharing, setOnTrippleSharing] = useState('');
     const [onMoreThanFour, setOnMoreThanFour] = useState('');
     const [offDoubleSharing, setOffDoubleSharing] = useState('');
-    const [checkInPolicy, setCheckInPolicy] = useState('');
-    const [checkOutPolicy, setCheckOutPolicy] = useState('');
     const [offQuadSharing, setOffQuadSharing] = useState('');
     const [offBulkBooking, setOffBulkBooking] = useState('');
     const [offTrippleSharing, setOffTrippleSharing] = useState('');
@@ -66,13 +64,11 @@ export default function PolicyForm() {
     const [onBulkBookingAp, setOnBulkBookingAp] = useState('');
     const [onTrippleSharingAp, setOnTrippleSharingAp] = useState('');
     const [onMoreThanFourAp, setOnMoreThanFourAp] = useState('');
-
     const [onDoubleSharingMAp, setOnDoubleSharingMAp] = useState('');
     const [onQuadSharingMAp, setOnQuadSharingMAp] = useState('');
     const [onBulkBookingMAp, setOnBulkBookingMAp] = useState('');
     const [onTrippleSharingMAp, setOnTrippleSharingMAp] = useState('');
     const [onMoreThanFourMAp, setOnMoreThanFourMAp] = useState('');
-
     const [offDoubleSharingAp, setOffDoubleSharingAp] = useState('');
     const [offQuadSharingAp, setOffQuadSharingAp] = useState('');
     const [offBulkBookingAp, setOffBulkBookingAp] = useState('');
@@ -83,654 +79,213 @@ export default function PolicyForm() {
     const [offBulkBookingMAp, setOffBulkBookingMAp] = useState('');
     const [offTrippleSharingMAp, setOffTrippleSharingMAp] = useState('');
     const [offMoreThanFourMAp, setOffMoreThanFourMAp] = useState('');
+
+  const hotelId = localStorage.getItem('hotelId');
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const isConfirmed = window.confirm('Before submitting, have you checked all details? Do you want to submit?');
 
-        if (!isConfirmed) {
-            return;
-        }
+        if (!isConfirmed) return;
 
         try {
-            const response = await axios.post(`${baseURL}/add-a-new/policy-to-your/hotel`, {
-                hotelId: hotelId,
-                hotelsPolicy,
-                outsideFoodPolicy,
-                cancellationPolicy,
-                paymentMode,
-                petsAllowed,
-                checkInPolicy,
-                checkOutPolicy,
-                bachelorAllowed,
-                smokingAllowed,
-                alcoholAllowed,
-                unmarriedCouplesAllowed,
-                internationalGuestAllowed,
-                returnPolicy,
-                onDoubleSharing,
-                onQuadSharing,
-                onBulkBooking,
-                onTrippleSharing,
-                onMoreThanFour,
-                offDoubleSharing,
-                offQuadSharing,
-                offBulkBooking,
-                offTrippleSharing,
-                offMoreThanFour,
-                onDoubleSharingAp,
-                onQuadSharingAp,
-                onBulkBookingAp,
-                onTrippleSharingAp,
-                onMoreThanFourAp,
-                onDoubleSharingMAp,
-                onQuadSharingMAp,
-                onBulkBookingMAp,
-                onTrippleSharingMAp,
-                onMoreThanFourMAp,
-                offDoubleSharingAp,
-                offQuadSharingAp,
-                offBulkBookingAp,
-                offTrippleSharingAp,
-                offMoreThanFourAp,
-                offDoubleSharingMAp,
-                offQuadSharingMAp,
-                offBulkBookingMAp,
-                offTrippleSharingMAp,
-                offMoreThanFourMAp,
-            });
-
+            const payload = { hotelId:hotelId, hotelsPolicy, outsideFoodPolicy, cancellationPolicy, refundPolicy, paymentMode, petsAllowed, checkInPolicy, checkOutPolicy, bachelorAllowed, smokingAllowed, alcoholAllowed, unmarriedCouplesAllowed, internationalGuestAllowed, onDoubleSharing, onQuadSharing, onBulkBooking, onTrippleSharing, onMoreThanFour, offDoubleSharing, offQuadSharing, offBulkBooking, offTrippleSharing, offMoreThanFour, onDoubleSharingAp, onQuadSharingAp, onBulkBookingAp, onTrippleSharingAp, onMoreThanFourAp, onDoubleSharingMAp, onQuadSharingMAp, onBulkBookingMAp, onTrippleSharingMAp, onMoreThanFourMAp, offDoubleSharingAp, offQuadSharingAp, offBulkBookingAp, offTrippleSharingAp, offMoreThanFourAp, offDoubleSharingMAp, offQuadSharingMAp, offBulkBookingMAp, offTrippleSharingMAp, offMoreThanFourMAp };
+            const response = await axios.post(`${baseURL}/add-a-new/policy-to-your/hotel`, payload);
             if (response.status === 201) {
-                alert('Your response has been recorder, Moving for amenities section');
-                window.location.href = '/partner/third-step';
+                alert('Your response has been recorded, Moving for amenities section');
+                navigate('/partner/third-step');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-            // Handle error appropriately, show user-friendly message
-        }
-    };
-    const handleChange = (e) => {
-        const value = e.target.value;
-
-        // Handle backspace key event
-        if (e.nativeEvent.inputType === 'deleteContentBackward') {
-            if (value === '') {
-                setHotelsPolicy('• ');
-            } else {
-                setHotelsPolicy(value);
-            }
-        } else {
-            // Ensure the last character is not a newline and add a bullet point if necessary
-            if (value.endsWith('\n')) {
-                setHotelsPolicy((prev) => `${prev.trim()}\n• `);
-            } else {
-                setHotelsPolicy(value);
-            }
+            alert('There was an error submitting the form. Please try again.');
         }
     };
 
-    const handleBlur = () => {
-        // Append a dot to the last line when the textarea loses focus
-        const lines = hotelsPolicy.split('\n');
-        if (lines.length > 0) {
-            const lastLineIndex = lines.length - 1;
-            lines[lastLineIndex] = lines[lastLineIndex].trim() + '.';
-            setHotelsPolicy(lines.join('\n'));
-        }
-    };
-      const handlePolicyChange = (e, setPolicy, setShowCustom) => {
+    const handlePolicyChange = (e, setPolicy, setShowCustom) => {
         const value = e.target.value;
         if (value === 'custom') {
             setShowCustom(true);
-            setPolicy('');
         } else {
             setShowCustom(false);
             setPolicy(value);
         }
     };
+
     return (
-        <div
-            className="container mt-4"
-            style={{  borderRadius: '8px', padding: '20px'}}
-        >
+        <div className="container mt-4" style={{ borderRadius: '8px', padding: '20px' }}>
             <h5 className="mb-3">Now fill your policy details carefully</h5>
             <hr />
             <form onSubmit={handleSubmit}>
                 <div className="row">
+                    {/* Hotel Policy */}
                     <div className="col-md-4 mb-3">
-                <label htmlFor="hotelsPolicy" className="form-label">
-                    Hotel Policy*
-                </label>
-                <select
-                    id="hotelsPolicySelect"
-                    className="form-control mb-2"
-                    value={showCustomHotelPolicy ? 'custom' : hotelsPolicy}
-                    onChange={(e) => handlePolicyChange(e, setHotelsPolicy, setShowCustomHotelPolicy)}
-                >
-                    <option value="">-- Select a Policy --</option>
-                    <option value="No outside food allowed.">No outside food allowed.</option>
-                    <option value="Pets are not permitted.">Pets are not permitted.</option>
-                    <option value="custom">Write your own</option>
-                </select>
-                {showCustomHotelPolicy && (
-                    <textarea
-                        id="hotelsPolicy"
-                        className="form-control"
-                        rows="4"
-                        value={hotelsPolicy}
-                        onChange={(e) => setHotelsPolicy(e.target.value)}
-                        placeholder="Write Your Own ..."
-                    />
-                )}
-            </div>
+                        <label htmlFor="hotelsPolicySelect" className="form-label">Hotel Policy*</label>
+                        <select id="hotelsPolicySelect" className="form-control mb-2" value={showCustomHotelPolicy ? 'custom' : hotelsPolicy} onChange={(e) => handlePolicyChange(e, setHotelsPolicy, setShowCustomHotelPolicy)}>
+                            <option value="">-- Select a Policy --</option>
+                            <option value="No outside food allowed.">No outside food allowed.</option>
+                            <option value="Pets are not permitted.">Pets are not permitted.</option>
+                            <option value="custom">Write your own</option>
+                        </select>
+                        {showCustomHotelPolicy && (<textarea id="hotelsPolicy" className="form-control" rows="4" value={hotelsPolicy} onChange={(e) => setHotelsPolicy(e.target.value)} placeholder="Write Your Own ..." />)}
+                    </div>
 
-            {/* Cancellation Policy Section */}
-            <div className="col-md-4 mb-3">
-                <label htmlFor="cancellationPolicy" className="form-label">
-                    Cancellation Policy*
-                </label>
-                <select
-                    id="cancellationPolicySelect"
-                    className="form-control mb-2"
-                    value={showCustomCancellationPolicy ? 'custom' : cancellationPolicy}
-                    onChange={(e) => handlePolicyChange(e, setCancellationPolicy, setShowCustomCancellationPolicy)}
-                >
-                    <option value="">-- Select a Policy --</option>
-                    <option value="Free Cancellation">Free Cancellation</option>
-                    <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
-                    <option value="custom">Write your own</option>
-                </select>
-                {showCustomCancellationPolicy && (
-                    <textarea
-                        id="cancellationPolicy"
-                        className="form-control"
-                        rows="4"
-                        value={cancellationPolicy}
-                        onChange={(e) => setCancellationPolicy(e.target.value)}
-                        placeholder="Write Your Own ..."
-                    />
-                )}
-            </div>
-
-            {/* Refund Policy Section */}
-            <div className="col-md-4 mb-3">
-                <label htmlFor="refundPolicy" className="form-label">
-                    Refund policy
-                </label>
-                <select
-                    id="refundPolicySelect"
-                    className="form-control mb-2"
-                    value={showCustomRefundPolicy ? 'custom' : refundPolicy}
-                    onChange={(e) => handlePolicyChange(e, setRefundPolicy, setShowCustomRefundPolicy)}
-                >
-                    <option value="">-- Select a Policy --</option>
-                    <option value="100% Refund">100% Refund</option>
-                    <option value="50% Refund">50% Refund</option>
-                    <option value="custom">Write your own</option>
-                </select>
-                {showCustomRefundPolicy && (
-                    <textarea
-                        id="refundPolicy"
-                        className="form-control"
-                        rows="4"
-                        value={refundPolicy}
-                        onChange={(e) => setRefundPolicy(e.target.value)}
-                        placeholder="Write Your Own ..."
-                    />
-                )}
-            </div>
+                    {/* Cancellation Policy */}
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Outside foods*
-                        </label>
-                        <select
-                            id="outsideFoodPolicy"
-                            className="form-control"
-                            required
-                            value={outsideFoodPolicy}
-                            onChange={(e) => setOutsideFoodPolicy(e.target.value)}
-                        >
+                        <label htmlFor="cancellationPolicySelect" className="form-label">Cancellation Policy*</label>
+                        <select id="cancellationPolicySelect" className="form-control mb-2" value={showCustomCancellationPolicy ? 'custom' : cancellationPolicy} onChange={(e) => handlePolicyChange(e, setCancellationPolicy, setShowCustomCancellationPolicy)}>
+                            <option value="">-- Select a Policy --</option>
+                            <option value="Free Cancellation">Free Cancellation</option>
+                            <option value="50% Refund on Cancellation">50% Refund on Cancellation</option>
+                            <option value="custom">Write your own</option>
+                        </select>
+                        {showCustomCancellationPolicy && (<textarea id="cancellationPolicy" className="form-control" rows="4" value={cancellationPolicy} onChange={(e) => setCancellationPolicy(e.target.value)} placeholder="Write Your Own ..." />)}
+                    </div>
+
+                    {/* Refund Policy */}
+                    <div className="col-md-4 mb-3">
+                        <label htmlFor="refundPolicySelect" className="form-label">Refund policy</label>
+                        <select id="refundPolicySelect" className="form-control mb-2" value={showCustomRefundPolicy ? 'custom' : refundPolicy} onChange={(e) => handlePolicyChange(e, setRefundPolicy, setShowCustomRefundPolicy)}>
+                            <option value="">-- Select a Policy --</option>
+                            <option value="100% Refund">100% Refund</option>
+                            <option value="50% Refund">50% Refund</option>
+                            <option value="custom">Write your own</option>
+                        </select>
+                        {showCustomRefundPolicy && (<textarea id="refundPolicy" className="form-control" rows="4" value={refundPolicy} onChange={(e) => setRefundPolicy(e.target.value)} placeholder="Write Your Own ..." />)}
+                    </div>
+
+                    {/* --- Other General Policies --- */}
+                    <div className="col-md-4 mb-3">
+                        <label htmlFor="outsideFoodPolicy" className="form-label">Outside foods*</label>
+                        <select id="outsideFoodPolicy" className="form-control" required value={outsideFoodPolicy} onChange={(e) => setOutsideFoodPolicy(e.target.value)}>
                             <option value="Not Accepted">Not Accepted</option>
                             <option value="Accepted">Accepted</option>
                         </select>
                     </div>
-                 
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="lastName" className="form-label">
-                            Payment mode*
-                        </label>
-                        <select
-                            className="form-control"
-                            placeholder="Payment Mode" // Add placeholder here
-                            variant="outlined"
-                            value={paymentMode}
-                            onChange={(e) => setPaymentMode(e.target.value)}
-                        >
+                        <label htmlFor="paymentMode" className="form-label">Payment mode*</label>
+                        <select id="paymentMode" className="form-control" value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)}>
                             <option value="Online">Online</option>
                             <option value="Offline">Offline</option>
                             <option value="Both">Both</option>
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Pets allowed ?
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Pets Allowed"
-                            variant="outlined"
-                            value={petsAllowed}
-                            onChange={(e) => setPetsAllowed(e.target.value)}
-                        >
+                        <label htmlFor="petsAllowed" className="form-label">Pets allowed?</label>
+                        <select id="petsAllowed" className="form-control" value={petsAllowed} onChange={(e) => setPetsAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
+
+                    {/* FIX: Replaced textarea with select for Check-in Time */}
+                    {/* Replaced dropdown with <input type="time"> for Check-in */}
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="email" className="form-label">
-                            Check in Time (Only enter timing of your hotel check in)*
-                        </label>
-                        <textarea
+                        <label htmlFor="checkInPolicy" className="form-label">Check in Time*</label>
+                        <input
+                            type="time"
+                            id="checkInPolicy"
                             className="form-control"
-                            label="Check In"
-                            variant="outlined"
                             value={checkInPolicy}
                             onChange={(e) => setCheckInPolicy(e.target.value)}
+                            required
                         />
                     </div>
+
+                    {/* Replaced dropdown with <input type="time"> for Check-out */}
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="email" className="form-label">
-                            Check Out Time (Only enter timing of your hotel check out)*
-                        </label>
-                        <textarea
+                        <label htmlFor="checkOutPolicy" className="form-label">Check Out Time*</label>
+                        <input
+                            type="time"
+                            id="checkOutPolicy"
                             className="form-control"
-                            label="Check In"
-                            variant="outlined"
                             value={checkOutPolicy}
                             onChange={(e) => setCheckOutPolicy(e.target.value)}
+                            required
                         />
                     </div>
+
+
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Bachelors allowed ?
-                        </label>
-                        <select
-                            id="Bachelors"
-                            className="form-control"
-                            label="Bachelors Allowed"
-                            variant="outlined"
-                            value={bachelorAllowed}
-                            onChange={(e) => setBachelorAllowed(e.target.value)}
-                        >
+                        <label htmlFor="bachelorAllowed" className="form-label">Bachelors allowed?</label>
+                        <select id="bachelorAllowed" className="form-control" value={bachelorAllowed} onChange={(e) => setBachelorAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Smoking allowed ?
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Smoking Allowed"
-                            variant="outlined"
-                            value={smokingAllowed}
-                            onChange={(e) => setSmokingAllowed(e.target.value)}
-                        >
+                        <label htmlFor="smokingAllowed" className="form-label">Smoking allowed?</label>
+                        <select id="smokingAllowed" className="form-control" value={smokingAllowed} onChange={(e) => setSmokingAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Alcohal allowed ?
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Alcohal Allowed"
-                            variant="outlined"
-                            value={alcoholAllowed}
-                            onChange={(e) => setAlcoholAllowed(e.target.value)}
-                        >
+                        <label htmlFor="alcoholAllowed" className="form-label">Alcohol allowed?</label>
+                        <select id="alcoholAllowed" className="form-control" value={alcoholAllowed} onChange={(e) => setAlcoholAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            Unmarried couples allowed ?
-                        </label>
-                        <select
-                            className="form-control"
-                            label="Unmarried couples Allowed"
-                            variant="outlined"
-                            value={unmarriedCouplesAllowed}
-                            onChange={(e) => setUnmarriedCouplesAllowed(e.target.value)}
-                        >
+                        <label htmlFor="unmarriedCouplesAllowed" className="form-label">Unmarried couples allowed?</label>
+                        <select id="unmarriedCouplesAllowed" className="form-control" value={unmarriedCouplesAllowed} onChange={(e) => setUnmarriedCouplesAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
                     <div className="col-md-4 mb-3">
-                        <label htmlFor="designation" className="form-label">
-                            International Guests allowed ?
-                        </label>
-                        <select
-                            className="form-control"
-                            label="International Guests allowed"
-                            variant="outlined"
-                            value={internationalGuestAllowed}
-                            onChange={(e) => setInternationalGuestAllowed(e.target.value)}
-                        >
+                        <label htmlFor="internationalGuestAllowed" className="form-label">International Guests allowed?</label>
+                        <select id="internationalGuestAllowed" className="form-control" value={internationalGuestAllowed} onChange={(e) => setInternationalGuestAllowed(e.target.value)}>
                             <option value="Allowed">Allowed</option>
                             <option value="Not Allowed">Not Allowed</option>
                         </select>
                     </div>
-                   
-                    <h5>On Season Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Double Sharing</label>
-                        <textarea
-                            className="form-control"
-                            label="On Double Sharing"
-                            variant="outlined"
-                            value={onDoubleSharing}
-                            onChange={(e) => setOnDoubleSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Tripple Sharing</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onTrippleSharing}
-                            onChange={(e) => setOnTrippleSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Quad Sharing</label>
-                        <textarea
-                            className="form-control"
-                            label="On Quad Sharing"
-                            variant="outlined"
-                            value={onQuadSharing}
-                            onChange={(e) => setOnQuadSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Bulk Booking</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="On Bulk Booking"
-                            variant="outlined"
-                            value={onBulkBooking}
-                            onChange={(e) => setOnBulkBooking(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On more than four Sharing</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="On More than Four"
-                            variant="outlined"
-                            value={onMoreThanFour}
-                            onChange={(e) => setOnMoreThanFour(e.target.value)}
-                        />
-                    </div>
-                    <h5>On Season A.P plan Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Double Sharing AP</label>
-                        <textarea
-                            className="form-control"
-                            label="On Double Sharing AP"
-                            variant="outlined"
-                            value={onDoubleSharingAp}
-                            onChange={(e) => setOnDoubleSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Tripple Sharing AP</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onTrippleSharingAp}
-                            onChange={(e) => setOnTrippleSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Quad Sharing AP</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onQuadSharingAp}
-                            onChange={(e) => setOnQuadSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Bulk Booking AP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onBulkBookingAp}
-                            onChange={(e) => setOnBulkBookingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On more than four Sharing AP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="On More than Four AP"
-                            variant="outlined"
-                            value={onMoreThanFourAp}
-                            onChange={(e) => setOnMoreThanFourAp(e.target.value)}
-                        />
-                    </div>
-                    <h5>On Season M.A.P plan Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Double Sharing MAP</label>
-                        <textarea
-                            className="form-control"
-                            label="On Double Sharing AP"
-                            variant="outlined"
-                            value={onDoubleSharingMAp}
-                            onChange={(e) => setOnDoubleSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">On Tripple Sharing MAP</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onTrippleSharingMAp}
-                            onChange={(e) => setOnTrippleSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Quad Sharing MAP</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onQuadSharingMAp}
-                            onChange={(e) => setOnQuadSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On Bulk Booking MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onBulkBookingMAp}
-                            onChange={(e) => setOnBulkBookingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">On more than four Sharing MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={onMoreThanFourMAp}
-                            onChange={(e) => setOnMoreThanFourMAp(e.target.value)}
-                        />
-                    </div>
-                    <h5>Off Season Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">off Double Sharing</label>
-                        <textarea
-                            className="form-control"
-                            label="off Double Sharing"
-                            variant="outlined"
-                            value={offDoubleSharing}
-                            offChange={(e) => setOffDoubleSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-4">
-                        <label htmlFor="">Off Tripple Sharing</label>
-                        <textarea
-                            className="form-control"
-                            variant="outlined"
-                            value={offTrippleSharing}
-                            onChange={(e) => setOffTrippleSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Quad Sharing</label>
-                        <textarea
-                            className="form-control"
-                            label="Off Quad Sharing"
-                            variant="outlined"
-                            value={offQuadSharing}
-                            onChange={(e) => setOffQuadSharing(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Bulk Booking</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Bulk Booking"
-                            variant="outlined"
-                            value={offBulkBooking}
-                            onChange={(e) => setOffBulkBooking(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off more than four Sharing</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off More than Four"
-                            variant="outlined"
-                            value={offMoreThanFour}
-                            onChange={(e) => setOffMoreThanFour(e.target.value)}
-                        />
-                    </div>
-                    <h5>Off Season AP Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Double Sharing Ap</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Double Sharing Ap"
-                            variant="outlined"
-                            value={offDoubleSharingAp}
-                            onChange={(e) => setOffDoubleSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Tripple Sharing Ap</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Tripple Sharing Ap"
-                            variant="outlined"
-                            value={offTrippleSharingAp}
-                            onChange={(e) => setOffTrippleSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Quad Sharing Ap</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Quad Sharing Ap"
-                            variant="outlined"
-                            value={offQuadSharingAp}
-                            onChange={(e) => setOffQuadSharingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Bulk Booking Ap</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Bulk Booking Ap"
-                            variant="outlined"
-                            value={offBulkBookingAp}
-                            onChange={(e) => setOffBulkBookingAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off More than four Sharing Ap</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off More than four Sharing Ap"
-                            variant="outlined"
-                            value={offMoreThanFourAp}
-                            onChange={(e) => setOffMoreThanFourAp(e.target.value)}
-                        />
-                    </div>
-                    <h5>Off Season MAP Tarrif & Policy </h5>
-                    <hr />
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Double Sharing MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Double Sharing MAP"
-                            variant="outlined"
-                            value={offDoubleSharingMAp}
-                            onChange={(e) => setOffDoubleSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Tripple Sharing MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Tripple Sharing MAP"
-                            variant="outlined"
-                            value={offTrippleSharingMAp}
-                            onChange={(e) => setOffTrippleSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Quad Sharing MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Quad Sharing MAP"
-                            variant="outlined"
-                            value={offQuadSharingMAp}
-                            onChange={(e) => setOffQuadSharingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off Bulk Booking MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off Bulk Booking MAP"
-                            variant="outlined"
-                            value={offBulkBookingMAp}
-                            onChange={(e) => setOffBulkBookingMAp(e.target.value)}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-3">
-                        <label htmlFor="">Off More than four Sharing MAP</label>{' '}
-                        <textarea
-                            className="form-control"
-                            label="Off More than four Sharing MAP"
-                            variant="outlined"
-                            value={offMoreThanFourMAp}
-                            onChange={(e) => setOffMoreThanFourMAp(e.target.value)}
-                        />
-                    </div>
+
+                    {/* --- All Tarrif Sections --- */}
+                    <div className="col-12"><h5 className="mt-4">On Season Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-3"><label>On Double Sharing</label><textarea className="form-control" value={onDoubleSharing} onChange={(e) => setOnDoubleSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Triple Sharing</label><textarea className="form-control" value={onTrippleSharing} onChange={(e) => setOnTrippleSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Quad Sharing</label><textarea className="form-control" value={onQuadSharing} onChange={(e) => setOnQuadSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Bulk Booking</label><textarea className="form-control" value={onBulkBooking} onChange={(e) => setOnBulkBooking(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On More than Four Sharing</label><textarea className="form-control" value={onMoreThanFour} onChange={(e) => setOnMoreThanFour(e.target.value)} /></div>
+
+                    <div className="col-12"><h5 className="mt-4">On Season A.P plan Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-3"><label>On Double Sharing AP</label><textarea className="form-control" value={onDoubleSharingAp} onChange={(e) => setOnDoubleSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Triple Sharing AP</label><textarea className="form-control" value={onTrippleSharingAp} onChange={(e) => setOnTrippleSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Quad Sharing AP</label><textarea className="form-control" value={onQuadSharingAp} onChange={(e) => setOnQuadSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Bulk Booking AP</label><textarea className="form-control" value={onBulkBookingAp} onChange={(e) => setOnBulkBookingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On More than Four Sharing AP</label><textarea className="form-control" value={onMoreThanFourAp} onChange={(e) => setOnMoreThanFourAp(e.target.value)} /></div>
+
+                    <div className="col-12"><h5 className="mt-4">On Season M.A.P plan Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-3"><label>On Double Sharing MAP</label><textarea className="form-control" value={onDoubleSharingMAp} onChange={(e) => setOnDoubleSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Triple Sharing MAP</label><textarea className="form-control" value={onTrippleSharingMAp} onChange={(e) => setOnTrippleSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Quad Sharing MAP</label><textarea className="form-control" value={onQuadSharingMAp} onChange={(e) => setOnQuadSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On Bulk Booking MAP</label><textarea className="form-control" value={onBulkBookingMAp} onChange={(e) => setOnBulkBookingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>On More than Four Sharing MAP</label><textarea className="form-control" value={onMoreThanFourMAp} onChange={(e) => setOnMoreThanFourMAp(e.target.value)} /></div>
+
+                    <div className="col-12"><h5 className="mt-4">Off Season Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-4"><label>Off Double Sharing</label><textarea className="form-control" value={offDoubleSharing} onChange={(e) => setOffDoubleSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-4"><label>Off Triple Sharing</label><textarea className="form-control" value={offTrippleSharing} onChange={(e) => setOffTrippleSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Quad Sharing</label><textarea className="form-control" value={offQuadSharing} onChange={(e) => setOffQuadSharing(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Bulk Booking</label><textarea className="form-control" value={offBulkBooking} onChange={(e) => setOffBulkBooking(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off More than Four Sharing</label><textarea className="form-control" value={offMoreThanFour} onChange={(e) => setOffMoreThanFour(e.target.value)} /></div>
+
+                    <div className="col-12"><h5 className="mt-4">Off Season AP Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-3"><label>Off Double Sharing AP</label><textarea className="form-control" value={offDoubleSharingAp} onChange={(e) => setOffDoubleSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Triple Sharing AP</label><textarea className="form-control" value={offTrippleSharingAp} onChange={(e) => setOffTrippleSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Quad Sharing AP</label><textarea className="form-control" value={offQuadSharingAp} onChange={(e) => setOffQuadSharingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Bulk Booking AP</label><textarea className="form-control" value={offBulkBookingAp} onChange={(e) => setOffBulkBookingAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off More than Four Sharing AP</label><textarea className="form-control" value={offMoreThanFourAp} onChange={(e) => setOffMoreThanFourAp(e.target.value)} /></div>
+
+                    <div className="col-12"><h5 className="mt-4">Off Season MAP Tarrif & Policy</h5><hr /></div>
+                    <div className="col-md-4 mb-3"><label>Off Double Sharing MAP</label><textarea className="form-control" value={offDoubleSharingMAp} onChange={(e) => setOffDoubleSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Triple Sharing MAP</label><textarea className="form-control" value={offTrippleSharingMAp} onChange={(e) => setOffTrippleSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Quad Sharing MAP</label><textarea className="form-control" value={offQuadSharingMAp} onChange={(e) => setOffQuadSharingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off Bulk Booking MAP</label><textarea className="form-control" value={offBulkBookingMAp} onChange={(e) => setOffBulkBookingMAp(e.target.value)} /></div>
+                    <div className="col-md-4 mb-3"><label>Off More than Four Sharing MAP</label><textarea className="form-control" value={offMoreThanFourMAp} onChange={(e) => setOffMoreThanFourMAp(e.target.value)} /></div>
+
                 </div>
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="primary" className="mt-3">
                     Next
                 </Button>
             </form>

@@ -233,7 +233,7 @@ export default function PartnerRooms() {
                                             size="small"
                                         >
                                             {imagePreview ? 'Change Image' : 'Upload Image'}
-                                            <input type="file" hidden onChange={handleFileChange} required />
+                                            <input type="file" hidden onChange={handleFileChange}  />
                                         </Button>
                                     </Box>
                                     <Button
