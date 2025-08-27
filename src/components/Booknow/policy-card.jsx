@@ -45,28 +45,62 @@ const HotelPolicyCard = ({ hotelData }) => {
   const subTitleSx = { fontWeight: 700, fontSize: "1rem" };
   const detailIconSx = { fontSize: 18, color: "text.secondary" };
   const textPrimarySx = { fontWeight: 600, fontSize: "0.85rem" };
-  const textSecondarySx = { fontSize: "0.8rem", color: "text.secondary" };
+  const textSecondarySx = {
+    fontSize: "0.8rem",
+    color: "text.secondary",
+    ml: 1,
+    lineHeight: 1.4,
+    wordBreak: "break-word",
+    overflowWrap: "anywhere",
+    whiteSpace: "normal",
+  };
+
+  const renderPolicyList = (label, icon, value, limit) => {
+    if (!value) return null;
+    const items = value
+      .split("•")
+      .filter((item) => item.trim())
+      .slice(0, limit || undefined);
+
+    if (items.length === 0) return null;
+
+    return (
+      <Box mt={1.5}>
+        <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+          {icon}
+          <Typography sx={textPrimarySx}>{label}</Typography>
+        </Stack>
+        <Box component="ul" sx={{ pl: 2, m: 0 }}>
+          {items.map((item, idx) => (
+            <Typography key={idx} component="li" sx={textSecondarySx}>
+              {item.trim()}
+            </Typography>
+          ))}
+        </Box>
+      </Box>
+    );
+  };
 
   return (
     <Box>
-     <Box sx={{ textAlign: "center", mb: 2 }}>
-  <Typography
-    component="h3"
-    sx={{
-      fontWeight: 700,
-      color: "black",
-      backgroundColor: "#e4ded8",
-      borderRadius: 1,
-      px: 1.5,
-      py: 0.5,
-      display: "inline-block",
-      fontSize: { xs: "1.05rem", sm: "1.15rem" },
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-    }}
-  >
-    Hotel Policies
-  </Typography>
-</Box>
+      <Box sx={{ textAlign: "center", mb: 2 }}>
+        <Typography
+          component="h3"
+          sx={{
+            fontWeight: 700,
+            color: "black",
+            backgroundColor: "#e4ded8",
+            borderRadius: 1,
+            px: 1.5,
+            py: 0.5,
+            display: "inline-block",
+            fontSize: { xs: "1.05rem", sm: "1.15rem" },
+            boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+          }}
+        >
+          Hotel Policies
+        </Typography>
+      </Box>
 
       {hotelData?.policies?.map((policy, index) => (
         <Paper key={index} elevation={0} sx={cardSx}>
@@ -80,54 +114,18 @@ const HotelPolicyCard = ({ hotelData }) => {
           {/* Check-in / Check-out */}
           <Grid container spacing={1.5}>
             <Grid item xs={12} sm={6}>
-              <Stack direction="row" spacing={1}>
-                <AccessTime sx={detailIconSx} />
-                <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                    <Typography sx={textPrimarySx}>Check-In</Typography>
-                {policy.checkInPolicy
-                  .split("•")
-                  .map((item, idx) =>
-                    item.trim() ? (
-                      <Typography
-                        key={idx}
-                        component="li"
-                        sx={{
-                          ...textSecondarySx,
-                          ml: 1,
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {item.trim()}
-                      </Typography>
-                    ) : null
-                  )}
-              </Box>
-              </Stack>
+              {renderPolicyList(
+                "Check-In",
+                <AccessTime sx={detailIconSx} />,
+                policy.checkInPolicy
+              )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Stack direction="row" spacing={1}>
-                <AccessTime sx={detailIconSx} />
-                <Box component="ul" sx={{ pl: 2, m: 0 }}>
-                    <Typography sx={textPrimarySx}>Check-Out</Typography>
-                {policy.checkOutPolicy
-                  .split("•")
-                  .map((item, idx) =>
-                    item.trim() ? (
-                      <Typography
-                        key={idx}
-                        component="li"
-                        sx={{
-                          ...textSecondarySx,
-                          ml: 1,
-                          lineHeight: 1.4,
-                        }}
-                      >
-                        {item.trim()}
-                      </Typography>
-                    ) : null
-                  )}
-              </Box>
-              </Stack>
+              {renderPolicyList(
+                "Check-Out",
+                <AccessTime sx={detailIconSx} />,
+                policy.checkOutPolicy
+              )}
             </Grid>
           </Grid>
 
@@ -162,47 +160,19 @@ const HotelPolicyCard = ({ hotelData }) => {
           </Grid>
 
           {/* Hotel Rules */}
-        {policy?.hotelsPolicy && (
-  <Box mt={1.5}>
-    <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
-      <Groups sx={detailIconSx} />
-      <Typography sx={textPrimarySx}>Hotel Rules</Typography>
-    </Stack>
-    <Box component="ul" sx={{ pl: 2, m: 0 }}>
-      {policy.hotelsPolicy
-        .split("•")
-        .filter(item => item.trim()) // remove empty
-        .slice(0, 2) // only take first 2
-        .map((item, idx) => (
-          <Typography
-            key={idx}
-            component="li"
-            sx={{
-              ...textSecondarySx,
-              ml: 1,
-              lineHeight: 1.4,
-            }}
-          >
-            {item.trim()}
-          </Typography>
-        ))}
-    </Box>
-  </Box>
-)}
-
+          {renderPolicyList(
+            "Hotel Rules",
+            <Groups sx={detailIconSx} />,
+            policy.hotelsPolicy,
+            2 // limit like before
+          )}
 
           {/* Cancellation */}
-          <Box mt={1.5}>
-            <Stack direction="row" spacing={1} alignItems="flex-start">
-              <InfoOutlined sx={detailIconSx} />
-              <Box>
-                <Typography sx={textPrimarySx}>Cancellation:</Typography>
-                <Typography sx={textSecondarySx} noWrap>
-                  {policy?.cancellationPolicy}
-                </Typography>
-              </Box>
-            </Stack>
-          </Box>
+          {renderPolicyList(
+            "Cancellation",
+            <InfoOutlined sx={detailIconSx} />,
+            policy.cancellationPolicy
+          )}
 
           {/* View Full Policies */}
           <Box mt={1.5} display="flex" justifyContent="flex-end">
