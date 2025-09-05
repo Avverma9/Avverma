@@ -3,13 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Google from './GoogleSignIn';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import './Login.css';
 import baseURL from '../../utils/baseURL';
 
 export default function LoginPage() {
     const navigate = useNavigate();
-
-    const [mode, setMode] = useState('password'); // 'password' or 'otp'
+    const [mode, setMode] = useState('password');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [otp, setOtp] = useState('');
@@ -91,7 +89,6 @@ export default function LoginPage() {
                 localStorage.setItem('roomsstayUserEmail', response.data.email);
                 localStorage.setItem('rsUserMobile', response.data.mobile);
             }
-
             navigate('/');
         } catch (error) {
             if (error.response?.status === 400) {
@@ -106,26 +103,35 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="login-wrapper">
-            <div className="login-box" role="main" aria-label="Login form">
-                <h2 className="login-title">Welcome Back</h2>
-                <p className="login-subtitle">Sign in to manage your bookings</p>
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+            <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg md:p-10" role="main" aria-label="Login form">
+                <h2 className="mb-2 text-center text-3xl font-bold text-gray-800">Welcome Back</h2>
+                <p className="mb-6 text-center text-gray-500">Sign in to manage your bookings</p>
 
-                <button type="button" className="google-button" aria-label="Sign in with Google">
+                <button
+                    type="button"
+                    className="google-button flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
+                    aria-label="Sign in with Google"
+                >
                     <Google />
                 </button>
-                <div className="toggle-mode">
+
+                <div className="flex items-center justify-center pt-4">
                     <button
                         type="button"
                         onClick={toggleMode}
-                        className="toggle-btn"
-                        aria-label={`Switch to ${mode === 'password' ? 'OTP' : 'Password'
-                            } login`}
+                        className="text-sm font-medium text-indigo-600 transition hover:text-indigo-500"
+                        aria-label={`Switch to ${mode === 'password' ? 'OTP' : 'Password'} login`}
                     >
                         {mode === 'password' ? 'Login with OTP' : 'Login with Password'}
                     </button>
                 </div>
-                <div className="divider" aria-hidden="true">or</div>
+
+                <div className="relative my-6 flex items-center">
+                    <div className="flex-grow border-t border-gray-300"></div>
+                    <span className="mx-4 text-sm text-gray-500">or</span>
+                    <div className="flex-grow border-t border-gray-300"></div>
+                </div>
 
                 <form
                     onSubmit={
@@ -136,10 +142,10 @@ export default function LoginPage() {
                                 : handleSendOtpSubmit
                     }
                     noValidate
-                    className="login-form"
+                    className="space-y-6"
                 >
                     <div className="form-control">
-                        <label htmlFor="email">Email Address</label>
+                        <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700">Email Address</label>
                         <input
                             id="email"
                             type="email"
@@ -149,12 +155,13 @@ export default function LoginPage() {
                             disabled={mode === 'otp' && otpSent}
                             autoComplete="email"
                             placeholder="you@example.com"
+                            className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:bg-gray-100"
                         />
                     </div>
 
                     {mode === 'password' && (
                         <div className="form-control">
-                            <label htmlFor="password">Password</label>
+                            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">Password</label>
                             <input
                                 id="password"
                                 type="password"
@@ -163,16 +170,14 @@ export default function LoginPage() {
                                 required
                                 autoComplete="current-password"
                                 placeholder="Enter your password"
+                                className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                             />
                         </div>
                     )}
 
                     {mode === 'otp' && otpSent && (
-                        <div
-                            className="form-control otp-input-wrapper fade-in"
-                            key="otp-field"
-                        >
-                            <label htmlFor="otp">Enter OTP</label>
+                        <div className="form-control animate-fade-in" key="otp-field">
+                            <label htmlFor="otp" className="mb-1 block text-sm font-medium text-gray-700">Enter OTP</label>
                             <input
                                 id="otp"
                                 type="text"
@@ -183,13 +188,14 @@ export default function LoginPage() {
                                 inputMode="numeric"
                                 pattern="\d*"
                                 maxLength={6}
+                                className="w-full rounded-lg border border-gray-300 p-3 text-center tracking-wider transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                             />
                         </div>
                     )}
 
                     <button
                         type="submit"
-                        className="login-btn"
+                        className={`w-full rounded-lg py-3 font-semibold text-white shadow-sm transition-colors ${loading ? 'cursor-not-allowed bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'}`}
                         disabled={loading}
                         aria-busy={loading}
                     >
@@ -204,15 +210,15 @@ export default function LoginPage() {
                 </form>
 
                 {mode === 'otp' && otpSent && (
-                    <div className="resend-otp">
+                    <div className="mt-4 text-center">
                         {resendTimer > 0 ? (
-                            <span>Resend OTP in {resendTimer}s</span>
+                            <span className="text-sm text-gray-500">Resend OTP in {resendTimer}s</span>
                         ) : (
                             <button
                                 type="button"
                                 onClick={requestOtp}
                                 disabled={loading}
-                                className="resend-btn"
+                                className="text-sm font-medium text-indigo-600 transition hover:text-indigo-500 disabled:cursor-not-allowed disabled:text-gray-400"
                             >
                                 Resend OTP
                             </button>
@@ -220,12 +226,10 @@ export default function LoginPage() {
                     </div>
                 )}
 
-
-
-                <div className="footer-note">
+                <div className="mt-6 text-center text-sm text-gray-500">
                     <p>
                         Don’t have an account?{' '}
-                        <a href="/register" className="register-link">
+                        <a href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
                             Register here
                         </a>
                     </p>
