@@ -7,6 +7,7 @@ import baseURL from '../../utils/baseURL';
 
 export default function LoginPage() {
     const navigate = useNavigate();
+
     const [mode, setMode] = useState('password');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -103,14 +104,14 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+        <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4 font-sans">
             <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg md:p-10" role="main" aria-label="Login form">
                 <h2 className="mb-2 text-center text-3xl font-bold text-gray-800">Welcome Back</h2>
                 <p className="mb-6 text-center text-gray-500">Sign in to manage your bookings</p>
 
                 <button
                     type="button"
-                    className="google-button flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
+                    className="flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white py-3 font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50"
                     aria-label="Sign in with Google"
                 >
                     <Google />
@@ -155,7 +156,7 @@ export default function LoginPage() {
                             disabled={mode === 'otp' && otpSent}
                             autoComplete="email"
                             placeholder="you@example.com"
-                            className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 disabled:bg-gray-100"
+                            className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:bg-gray-100"
                         />
                     </div>
 
@@ -170,7 +171,7 @@ export default function LoginPage() {
                                 required
                                 autoComplete="current-password"
                                 placeholder="Enter your password"
-                                className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-gray-300 p-3 transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             />
                         </div>
                     )}
@@ -188,7 +189,7 @@ export default function LoginPage() {
                                 inputMode="numeric"
                                 pattern="\d*"
                                 maxLength={6}
-                                className="w-full rounded-lg border border-gray-300 p-3 text-center tracking-wider transition focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                                className="w-full rounded-lg border border-gray-300 p-3 text-center tracking-wider transition focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                             />
                         </div>
                     )}
@@ -238,3 +239,4 @@ export default function LoginPage() {
         </div>
     );
 }
+
