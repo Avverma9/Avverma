@@ -1,272 +1,322 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Container, Grid, Typography, Link, IconButton, Divider, Stack, Button, Modal, Fade, Backdrop } from '@mui/material';
-import { Facebook, Instagram, Twitter, YouTube } from '@mui/icons-material';
-import CloseIcon from '@mui/icons-material/Close';
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Link,
+  IconButton,
+  Divider,
+  Stack,
+  Button,
+  Modal,
+  Fade,
+  Backdrop
+} from '@mui/material';
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  YouTube,
+  Close as CloseIcon
+} from '@mui/icons-material';
 import { hotelList } from '../utils/extrasList';
-
-const Footer = () => {
-    const navigate = useNavigate();
-    const [modalOpen, setModalOpen] = useState(false);
-
-    const handleOpenModal = () => setModalOpen(true);
-    const handleCloseModal = () => setModalOpen(false);
-
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
-    
-    const handleHotelClick = (hotelName) => {
-        // Split hotelName into words and take the last word
-        const lastWord = hotelName.trim().split(" ").pop();
-        
-        // Encode for URL (in case it has spaces or special chars)
-        const searchPath = encodeURIComponent(lastWord);
-    
-        navigate(`/search?search=${searchPath}`);
-        handleCloseModal(); // Close modal after navigation
-    };
-    
-
-    const companyLinks = [
-        { name: 'About Us', path: '/about' },
-        { name: 'Contact Us', path: '/contact' },
-        { name: 'Careers', path: '/careers' },
-        { name: 'List your property', path: '/partner' },
-    ];
-
-    const legalLinks = [
-        { name: 'Privacy Policy', path: '/privacy' },
-        { name: 'Terms & Conditions', path: '/terms' },
-        { name: 'Cookie Policy', path: '/cookies' },
-    ];
-
-    const socialLinks = [
-        { name: 'Facebook', icon: <Facebook />, href: '#' },
-        { name: 'Instagram', icon: <Instagram />, href: '#' },
-        { name: 'Twitter', icon: <Twitter />, href: '#' },
-        { name: 'YouTube', icon: <YouTube />, href: '#' },
-    ];
 
 const modalStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: { xs: '90%', sm: '80%', md: '700px' },
+  transform: 'translate(-50%,-50%)',
+  width: { xs: '90%', sm: '70%', md: '600px' },
   bgcolor: 'background.paper',
-  boxShadow: 24,
   borderRadius: 2,
-  maxHeight: '90vh',
-  overflowY: 'auto',
-  outline: 'none',
-  padding: { xs: 2, md: 3 },
-  fontFamily: 'Roboto, sans-serif',
+  boxShadow: 24,
+  p: 2,
+  maxHeight: '85vh',
+  overflowY: 'auto'
 };
-    return (
-        <Box
-            component="footer"
-            sx={{
-                bgcolor: '#141414',
-                color: 'grey.500',
-                py: { xs: 5, md: 8 },
-                mt: 8,
-                borderTopLeftRadius: '24px',
-                borderTopRightRadius: '24px',
-            }}
-        >
-            <Container maxWidth="lg">
-                <Grid container spacing={5}>
-                    {/* Brand and Social Section */}
-                    <Grid item xs={12} md={4}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                            <Box sx={{ mb: 2 }}>
-                                <img src="/logo.png" alt="Roomsstay Logo" style={{ height: '45px', filter: 'brightness(0) invert(1)' }} />
-                            </Box>
-                            <Typography variant="body2" sx={{ mb: 3, maxWidth: '300px' }}>
-                                Your one-stop destination for finding the perfect stay. Explore, book, and enjoy your holidays with us.
-                            </Typography>
-                            <Box sx={{ mt: 'auto' }}>
-                                <Typography variant="h6" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>
-                                    Follow Us
-                                </Typography>
-                                <Stack direction="row" spacing={1}>
-                                    {socialLinks.map((social) => (
-                                        <IconButton
-                                            key={social.name}
-                                            href={social.href}
-                                            aria-label={`Follow us on ${social.name}`}
-                                            sx={{ color: 'grey.500', '&:hover': { color: 'white', bgcolor: 'rgba(255,255,255,0.1)' } }}
-                                        >
-                                            {social.icon}
-                                        </IconButton>
-                                    ))}
-                                </Stack>
-                            </Box>
-                        </Box>
-                    </Grid>
 
-                    {/* Links Sections */}
-                    <Grid item xs={12} md={8}>
-                        <Grid container spacing={5}>
-                            <Grid item xs={6} sm={4}>
-                                <Typography variant="h6" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>Company</Typography>
-                                <Stack spacing={1.5}>
-                                    {companyLinks.map((link) => (
-                                        <Link key={link.name} href="#" onClick={(e) => { e.preventDefault(); handleNavigation(link.path); }} sx={{ color: 'grey.500', textDecoration: 'none', '&:hover': { color: 'white' } }}>
-                                            {link.name}
-                                        </Link>
-                                    ))}
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={6} sm={4}>
-                                <Typography variant="h6" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>Top Destinations</Typography>
-                                <Stack spacing={1.5}>
-                                    {hotelList.slice(0, 4).map((hotel) => (
-                                        <Link key={hotel.hotel} href="#" onClick={(e) => { e.preventDefault(); handleHotelClick(hotel.hotel); }} sx={{ color: 'grey.500', textDecoration: 'none', '&:hover': { color: 'white' } }}>
-                                            {hotel.hotel}
-                                        </Link>
-                                    ))}
-                                </Stack>
-                                <Box sx={{ mt: 2, p: '2px', borderRadius: '16px', background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)', display: 'inline-block', animation: 'pulse-glow 2s infinite alternate', '@keyframes pulse-glow': { '0%': { boxShadow: '0 0 5px #FF8E53' }, '100%': { boxShadow: '0 0 20px #FE6B8B' } } }}>
-                                    <Button
-                                        onClick={handleOpenModal}
-                                        sx={{
-                                            background: '#141414',
-                                            borderRadius: '15px',
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            px: 2,
-                                            py: 1,
-                                            textTransform: 'none',
-                                            '&:hover': {
-                                                background: '#2a2a2a'
-                                            }
-                                        }}
-                                    >
-                                        See All Locations
-                                    </Button>
-                                </Box>
-                            </Grid>
-                             <Grid item xs={6} sm={4}>
-                                <Typography variant="h6" gutterBottom sx={{ color: 'white', fontWeight: 'bold' }}>Legal</Typography>
-                                <Stack spacing={1.5}>
-                                    {legalLinks.map((link) => (
-                                        <Link key={link.name} href="#" onClick={(e) => { e.preventDefault(); handleNavigation(link.path); }} sx={{ color: 'grey.500', textDecoration: 'none', '&:hover': { color: 'white' } }}>
-                                            {link.name}
-                                        </Link>
-                                    ))}
-                                </Stack>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
+export default function Footer() {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-                <Divider sx={{ my: 4, borderColor: 'grey.800' }} />
+  const navigateTo = (path) => {
+    navigate(path);
+    setOpen(false);
+  };
 
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
-                    <Typography variant="body2" sx={{ color: 'grey.600', textAlign: 'center' }}>
-                        © {new Date().getFullYear()} Hotel-roomsstay Pvt Limited. All Rights Reserved.
-                    </Typography>
-                    <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center' }}>
-                        <Link href="#" aria-label="Download on the App Store">
-                            <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" style={{ height: 40 }} />
-                        </Link>
-                        <Link href="#" aria-label="Get it on Google Play">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" style={{ height: 40 }} />
-                        </Link>
-                    </Box>
-                </Box>
-            </Container>
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
 
-            <Modal
-                open={modalOpen}
-                onClose={handleCloseModal}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                    backdrop: {
-                        timeout: 500,
-                    },
-                }}
-            >
-                  <Fade in={modalOpen}>
-        <Box sx={modalStyle}>
-          {/* Header Section */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 3,
-            }}
-          >
-            <Typography variant="h5" component="h2" fontWeight="bold" sx={{ color: '#333' }}>
-              All Destinations
-            </Typography>
-            <IconButton onClick={handleCloseModal}>
-              <CloseIcon sx={{ color: '#757575' }} />
-            </IconButton>
-          </Box>
+  const onHotelClick = (name) => {
+    const last = encodeURIComponent(name.trim().split(' ').pop());
+    navigate(`/search?search=${last}`);
+    closeModal();
+  };
 
-          {/* Intro Text Section */}
-          <Box
-            sx={{
-              mb: 3,
-              backgroundColor: '#f5f7fa',
-              borderRadius: '8px',
-              p: 2,
-              borderLeft: '4px solid #3f51b5',
-            }}
-          >
-            <Typography variant="body1" color="text.secondary" sx={{ color: '#555' }}>
-              Explore our wide range of hotel destinations. Click on any city to
-              find the perfect stay for your trip!
-            </Typography>
-          </Box>
+  const company = [
+    ['About Us', '/about'],
+    ['Contact', '/contact'],
+    ['Careers', '/careers'],
+    ['Partner', '/partner']
+  ];
+  const legal = [
+    ['Privacy Policy', '/privacy'],
+    ['Terms', '/terms'],
+    ['Cookies', '/cookies']
+  ];
+  const social = [
+    [<Facebook />, '#'],
+    [<Instagram />, '#'],
+    [<Twitter />, '#'],
+    [<YouTube />, '#']
+  ];
 
-          {/* Destinations Grid */}
-          <Grid container spacing={1.5}>
-            {hotelList.map((hotel, index) => (
-              <Grid item xs={6} sm={4} md={3} key={index}>
-                <Link
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleHotelClick(hotel.hotel);
-                  }}
-                  sx={{
-                    display: 'block',
-                    py: 1.5,
-                    px: 1,
-                    borderRadius: '8px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    color: '#333',
-                    fontWeight: 500,
-                    transition: 'background-color 0.3s, transform 0.2s, box-shadow 0.2s',
-                    '&:hover': {
-                      bgcolor: '#e8eaf6',
-                      color: '#3f51b5',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-                    },
-                    '&:active': {
-                      transform: 'translateY(0)',
-                      boxShadow: 'none',
-                    },
-                  }}
-                >
-                  {hotel.hotel}
-                </Link>
-              </Grid>
-            ))}
+  return (
+    <Box
+      component="footer"
+      sx={{
+        bgcolor: '#111',
+        color: 'grey.500',
+        pt: { xs: 4, md: 6 },
+        pb: { xs: 2, md: 4 },
+        mt: 8,
+        borderTopLeftRadius: 3,
+        borderTopRightRadius: 3
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container spacing={4}>
+          {/* Brand & Social */}
+          <Grid item xs={12} md={4}>
+            <Box display="flex" flexDirection="column" height="100%">
+              <Box mb={2}>
+                <img
+                  src="/logo.png"
+                  alt="Logo"
+                  style={{ height: 40, filter: 'invert(1)' }}
+                />
+              </Box>
+              <Typography variant="body2" mb={3} sx={{ maxWidth: 260 }}>
+                Your one-stop site to find and book perfect stays worldwide.
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                color="grey.300"
+                fontWeight="600"
+                mb={1}
+              >
+                Follow Us
+              </Typography>
+              <Stack direction="row" spacing={1}>
+                {social.map(([icon, href], i) => (
+                  <IconButton
+                    key={i}
+                    href={href}
+                    size="small"
+                    sx={{
+                      color: 'grey.500',
+                      '&:hover': { color: 'white', bgcolor: 'rgba(255,255,255,0.1)' }
+                    }}
+                  >
+                    {icon}
+                  </IconButton>
+                ))}
+              </Stack>
+            </Box>
           </Grid>
-        </Box>
-      </Fade>
-            </Modal>
-        </Box>
-    );
-};
 
-export default Footer;
+          {/* Links */}
+          <Grid item xs={12} md={8}>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sm={4}>
+                <Box display="flex" flexDirection="column" alignItems="flex-start">
+                  <Typography
+                    variant="subtitle1"
+                    color="white"
+                    mb={1}
+                    fontWeight="600"
+                  >
+                    Company
+                  </Typography>
+                  <Stack spacing={1} alignItems="flex-start">
+                    {company.map(([n, p], i) => (
+                      <Link
+                        key={i}
+                        component="button"
+                        onClick={() => navigateTo(p)}
+                        sx={{
+                          color: 'grey.500',
+                          textTransform: 'none',
+                          fontSize: 14,
+                          '&:hover': { color: 'white' }
+                        }}
+                      >
+                        {n}
+                      </Link>
+                    ))}
+                  </Stack>
+                </Box>
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <Box display="flex" flexDirection="column" alignItems="flex-start">
+                  <Typography
+                    variant="subtitle1"
+                    color="white"
+                    mb={1}
+                    fontWeight="600"
+                  >
+                    Destinations
+                  </Typography>
+                  <Stack spacing={1} alignItems="flex-start">
+                    {hotelList.slice(0, 4).map((h, i) => (
+                      <Link
+                        key={i}
+                        component="button"
+                        onClick={() => onHotelClick(h.hotel)}
+                        sx={{
+                          color: 'grey.500',
+                          textTransform: 'none',
+                          fontSize: 14,
+                          '&:hover': { color: 'white' }
+                        }}
+                      >
+                        {h.hotel}
+                      </Link>
+                    ))}
+                  </Stack>
+                  {/* Centered & highlighted More Locations */}
+                  <Box mt={2} width="100%" display="flex" justifyContent="center">
+                    <Button
+                      variant="text"
+                      onClick={openModal}
+                      sx={{
+                        p: 0,
+                        textTransform: 'none',
+                        fontSize: 14,
+                        color: '#FE6B8B',
+                        fontWeight: 'bold',
+                        '&:hover': { bgcolor: 'transparent', textDecoration: 'underline' }
+                      }}
+                    >
+                      More Locations
+                    </Button>
+                  </Box>
+                </Box>
+              </Grid>
+
+              <Grid item xs={6} sm={4}>
+                <Box display="flex" flexDirection="column" alignItems="flex-start">
+                  <Typography
+                    variant="subtitle1"
+                    color="white"
+                    mb={1}
+                    fontWeight="600"
+                  >
+                    Legal
+                  </Typography>
+                  <Stack spacing={1} alignItems="flex-start">
+                    {legal.map(([n, p], i) => (
+                      <Link
+                        key={i}
+                        component="button"
+                        onClick={() => navigateTo(p)}
+                        sx={{
+                          color: 'grey.500',
+                          textTransform: 'none',
+                          fontSize: 14,
+                          '&:hover': { color: 'white' }
+                        }}
+                      >
+                        {n}
+                      </Link>
+                    ))}
+                  </Stack>
+                </Box>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Divider sx={{ my: 3, borderColor: 'grey.800' }} />
+
+        <Box
+          display="flex"
+          flexDirection={{ xs: 'column', md: 'row' }}
+          alignItems="center"
+          justifyContent="space-between"
+          gap={1}
+          fontSize={13}
+        >
+          <Typography color="grey.600" textAlign="center">
+            © {new Date().getFullYear()} RoomsStay Pvt Ltd. All rights reserved.
+          </Typography>
+          <Stack direction="row" spacing={1} justifyContent="center">
+            <Link href="#" sx={{ display: 'inline-block' }}>
+              <img
+                src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                alt="App Store"
+                height={32}
+              />
+            </Link>
+            <Link href="#" sx={{ display: 'inline-block' }}>
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                alt="Google Play"
+                height={32}
+              />
+            </Link>
+          </Stack>
+        </Box>
+      </Container>
+
+      <Modal
+        open={open}
+        onClose={closeModal}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{ backdrop: { timeout: 300 } }}
+      >
+        <Fade in={open}>
+          <Box sx={modalStyle}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+              <Typography variant="h6" fontWeight="600">
+                All Destinations
+              </Typography>
+              <IconButton onClick={closeModal} size="small">
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Box>
+            <Grid container spacing={1}>
+              {hotelList.map((h, i) => (
+                <Grid item xs={6} sm={4} key={i}>
+                  <Link
+                    component="button"
+                    onClick={() => onHotelClick(h.hotel)}
+                    sx={{
+                      display: 'block',
+                      p: 1,
+                      borderRadius: 1,
+                      textAlign: 'center',
+                      color: '#333',
+                      fontSize: 14,
+                      fontWeight: 500,
+                      '&:hover': {
+                        bgcolor: 'grey.100',
+                        color: 'primary.main'
+                      }
+                    }}
+                  >
+                    {h.hotel}
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Fade>
+      </Modal>
+    </Box>
+  );
+}
