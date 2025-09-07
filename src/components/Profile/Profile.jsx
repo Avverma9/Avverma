@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  Box,
-  Typography,
+  Edit as EditIcon,
+  Email as EmailIcon,
+  Home as HomeIcon,
+  Lock as LockIcon,
+  Logout as LogoutIcon,
+  Phone as PhoneIcon,
+} from "@mui/icons-material";
+import {
   Avatar,
+  Box,
   Button,
-  Stack,
   Card,
   Divider,
   List,
@@ -14,27 +17,34 @@ import {
   ListItemIcon,
   ListItemText,
   Skeleton,
-} from '@mui/material';
-import {
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  Home as HomeIcon,
-  Edit as EditIcon,
-  Logout as LogoutIcon,
-  Lock as LockIcon,
-} from '@mui/icons-material';
-import { fetchProfileData } from '../../redux/reducers/profileSlice';
-import { userId } from '../../utils/Unauthorized';
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchProfileData } from "../../redux/reducers/profileSlice";
+import { userId } from "../../utils/Unauthorized";
 
 function InfoItem({ icon, label, value, onActionClick }) {
   return (
     <ListItem sx={{ py: 0.75 }}>
-      <ListItemIcon sx={{ minWidth: 36, color: 'primary.dark' }}>{icon}</ListItemIcon>
+      <ListItemIcon sx={{ minWidth: 36, color: "primary.dark" }}>
+        {icon}
+      </ListItemIcon>
       <ListItemText
-        primary={<Typography variant="caption" color="text.secondary">{label}</Typography>}
+        primary={
+          <Typography variant="caption" color="text.secondary">
+            {label}
+          </Typography>
+        }
         secondary={
           value ? (
-            <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+            <Typography
+              variant="body2"
+              color="text.primary"
+              sx={{ fontWeight: 500 }}
+            >
               {value}
             </Typography>
           ) : (
@@ -43,9 +53,9 @@ function InfoItem({ icon, label, value, onActionClick }) {
               onClick={onActionClick}
               sx={{
                 fontWeight: 500,
-                color: 'warning.main',
-                cursor: 'pointer',
-                '&:hover': { textDecoration: 'underline' }
+                color: "warning.main",
+                cursor: "pointer",
+                "&:hover": { textDecoration: "underline" },
               }}
             >
               Please Update
@@ -60,15 +70,26 @@ function InfoItem({ icon, label, value, onActionClick }) {
 function PasswordItem({ onActionClick }) {
   return (
     <ListItem sx={{ py: 0.75 }}>
-      <ListItemIcon sx={{ minWidth: 36, color: 'primary.dark' }}><LockIcon fontSize="small" /></ListItemIcon>
+      <ListItemIcon sx={{ minWidth: 36, color: "primary.dark" }}>
+        <LockIcon fontSize="small" />
+      </ListItemIcon>
       <ListItemText
-        primary={<Typography variant="caption" color="text.secondary">Password</Typography>}
+        primary={
+          <Typography variant="caption" color="text.secondary">
+            Password
+          </Typography>
+        }
         secondary={
           <Button
             size="small"
             variant="text"
             onClick={onActionClick}
-            sx={{ p: 0, justifyContent: 'flex-start', textTransform: 'none', height: '22px' }}
+            sx={{
+              p: 0,
+              justifyContent: "flex-start",
+              textTransform: "none",
+              height: "22px",
+            }}
           >
             Change Password
           </Button>
@@ -79,21 +100,29 @@ function PasswordItem({ onActionClick }) {
 }
 
 const ProfileSkeleton = () => (
-  <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-    <Card sx={{ maxWidth: 380, width: '100%', borderRadius: 3.5 }}>
-      <Box sx={{ height: 80, bgcolor: 'grey.200' }} />
+  <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
+    <Card sx={{ maxWidth: 380, width: "100%", borderRadius: 3.5 }}>
+      <Box sx={{ height: 80, bgcolor: "grey.200" }} />
       <Stack sx={{ p: 2, mt: -6 }} alignItems="center">
-        <Skeleton variant="circular" sx={{ width: 90, height: 90, border: '4px solid white' }} />
-        <Skeleton variant="text" sx={{ fontSize: '1.25rem', width: '60%', mt: 1 }} />
+        <Skeleton
+          variant="circular"
+          sx={{ width: 90, height: 90, border: "4px solid white" }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: "1.25rem", width: "60%", mt: 1 }}
+        />
       </Stack>
       <Divider sx={{ mt: -1.5 }} />
       <List dense sx={{ p: 1.5, py: 0.5 }}>
         {Array.from(new Array(4)).map((_, index) => (
           <ListItem key={index} sx={{ py: 0.75 }}>
-            <ListItemIcon><Skeleton variant="circular" width={24} height={24} /></ListItemIcon>
-            <ListItemText 
-              primary={<Skeleton variant="text" width="40%" />} 
-              secondary={<Skeleton variant="text" width="80%" />} 
+            <ListItemIcon>
+              <Skeleton variant="circular" width={24} height={24} />
+            </ListItemIcon>
+            <ListItemText
+              primary={<Skeleton variant="text" width="40%" />}
+              secondary={<Skeleton variant="text" width="80%" />}
             />
           </ListItem>
         ))}
@@ -109,7 +138,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (!userId) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
       return;
     }
     dispatch(fetchProfileData(userId));
@@ -132,43 +161,52 @@ export default function Profile() {
   }
 
   const handleEdit = () => {
-    navigate('/profile-update/user-data/page');
+    navigate("/profile-update/user-data/page");
   };
 
   const handleLogOut = () => {
-    localStorage.clear();
-    navigate('/login', { replace: true });
+    sessionStorage.clear();
+    navigate("/login", { replace: true });
   };
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        minHeight: '100vh',
-       
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        minHeight: "100vh",
       }}
     >
-      <Card sx={{ maxWidth: 380, width: '100%', borderRadius: 3.5, boxShadow: '0 10px 30px -5px rgba(0,0,0,0.1)' }}>
-        <Box sx={{
-          height: 80,
-          background: (theme) => `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-        }} />
+      <Card
+        sx={{
+          maxWidth: 380,
+          width: "100%",
+          borderRadius: 3.5,
+          boxShadow: "0 10px 30px -5px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Box
+          sx={{
+            height: 80,
+            background: (theme) =>
+              `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+          }}
+        />
         <Stack sx={{ p: 1, mt: -2 }} alignItems="center" spacing={1}>
           <Avatar
             src={data?.images?.[0]}
-            alt={data?.name || 'User Avatar'}
+            alt={data?.name || "User Avatar"}
             sx={{
               width: 90,
               height: 90,
-              border: '4px solid',
-              borderColor: 'background.paper',
+              border: "4px solid",
+              borderColor: "background.paper",
               boxShadow: 3,
             }}
           />
           <Typography variant="h6" fontWeight="bold">
-            {data?.userName || 'User Name'}
+            {data?.userName || "User Name"}
           </Typography>
         </Stack>
         <Divider sx={{ mt: -1 }} />
@@ -194,11 +232,26 @@ export default function Profile() {
           <PasswordItem onActionClick={handleEdit} />
         </List>
         <Divider />
-        <Stack spacing={1.5} direction="row" sx={{ p: 1.5, justifyContent: 'center' }}>
-          <Button size="small" onClick={handleLogOut} variant="outlined" color="error" startIcon={<LogoutIcon />}>
+        <Stack
+          spacing={1.5}
+          direction="row"
+          sx={{ p: 1.5, justifyContent: "center" }}
+        >
+          <Button
+            size="small"
+            onClick={handleLogOut}
+            variant="outlined"
+            color="error"
+            startIcon={<LogoutIcon />}
+          >
             Log Out
           </Button>
-          <Button size="small" onClick={handleEdit} variant="contained" startIcon={<EditIcon />}>
+          <Button
+            size="small"
+            onClick={handleEdit}
+            variant="contained"
+            startIcon={<EditIcon />}
+          >
             Update Profile
           </Button>
         </Stack>

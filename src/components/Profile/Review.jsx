@@ -1,23 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import baseURL from '../../utils/baseURL';
-import { Star, Delete as DeleteIcon } from '@mui/icons-material';
-import { Container, Box, Typography, Grid, Paper, Divider, Pagination, IconButton, styled, Button } from '@mui/material';
-import axios from 'axios';
-import { formatDateWithOrdinal } from '../../utils/_dateFunctions';
-import { Unauthorized, userId } from '../../utils/Unauthorized';
-import ReviewSkeleton from './reviewSkeleton';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Delete as DeleteIcon, Star } from "@mui/icons-material";
+import {
+  Box,
+  Container,
+  Divider,
+  Grid,
+  IconButton,
+  Pagination,
+  Paper,
+  styled,
+  Typography,
+} from "@mui/material";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
+import baseURL from "../../utils/baseURL";
+import { Unauthorized, userId } from "../../utils/Unauthorized";
+import ReviewSkeleton from "./reviewSkeleton";
 
 const StyledReviewCard = styled(Paper)(({ theme }) => ({
-  position: 'relative',
+  position: "relative",
   padding: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[1],
-  transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
-  '&:hover': {
-    transform: 'translateY(-2px)',
+  transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+  "&:hover": {
+    transform: "translateY(-2px)",
     boxShadow: theme.shadows[3],
   },
 }));
@@ -27,8 +37,8 @@ const getStarRating = (rating) => {
     <Star
       key={index}
       sx={{
-        color: index < rating ? '#ffbb33' : '#e0e0e0',
-        fontSize: '1rem',
+        color: index < rating ? "#ffbb33" : "#e0e0e0",
+        fontSize: "1rem",
       }}
     />
   ));
@@ -42,7 +52,12 @@ const ReviewCard = ({ reviewData, handleDelete }) => {
           src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
           alt="User"
           loading="lazy"
-          style={{ width: 48, height: 48, borderRadius: '50%', marginRight: 16 }}
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: "50%",
+            marginRight: 16,
+          }}
         />
         <Box>
           <Typography variant="body1" fontWeight="bold">
@@ -54,17 +69,17 @@ const ReviewCard = ({ reviewData, handleDelete }) => {
         </Box>
       </Box>
       <Divider sx={{ my: 1.5 }} />
-      <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 1.5 }}>
+      <Typography variant="body2" sx={{ fontStyle: "italic", mb: 1.5 }}>
         "{reviewData.comment}"
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 1.5 }}>
         {getStarRating(reviewData.rating)}
       </Box>
       <IconButton
         aria-label="delete review"
         color="error"
         onClick={() => handleDelete(reviewData._id)}
-        sx={{ position: 'absolute', top: 8, right: 8, p: 0.5 }}
+        sx={{ position: "absolute", top: 8, right: 8, p: 0.5 }}
       >
         <DeleteIcon fontSize="small" />
       </IconButton>
@@ -84,22 +99,24 @@ export default function Reviews() {
     const fetchReviews = async () => {
       setLoading(true);
       try {
-        const userId = localStorage.getItem('rsUserId');
+        const userId = sessionStorage.getItem("rsUserId");
         if (!userId) {
-          setError('Unauthorized');
+          setError("Unauthorized");
           setLoading(false);
           return;
         }
 
-        const response = await fetch(`${baseURL}/reviewDatas/userId?userId=${userId}`);
+        const response = await fetch(
+          `${baseURL}/reviewDatas/userId?userId=${userId}`
+        );
         if (!response.ok) {
-          throw new Error('Error fetching reviews');
+          throw new Error("Error fetching reviews");
         }
         const result = await response.json();
         setData(result);
       } catch (error) {
-        console.error('Error fetching reviews:', error);
-        setError('Error fetching reviews');
+        console.error("Error fetching reviews:", error);
+        setError("Error fetching reviews");
       } finally {
         setLoading(false);
       }
@@ -112,12 +129,12 @@ export default function Reviews() {
     try {
       const response = await axios.delete(`${baseURL}/delete/${reviewId}`);
       if (response.status === 200) {
-        toast.success('Review deleted successfully!');
+        toast.success("Review deleted successfully!");
         setData((prevData) => prevData.filter((item) => item._id !== reviewId));
       }
     } catch (error) {
-      console.error('Error deleting review:', error);
-      toast.error('Error deleting review.');
+      console.error("Error deleting review:", error);
+      toast.error("Error deleting review.");
     }
   };
 
@@ -131,7 +148,7 @@ export default function Reviews() {
     setCurrentPage(value);
   };
 
-  if (location.pathname !== '/reviews') {
+  if (location.pathname !== "/reviews") {
     return null;
   }
 
@@ -141,7 +158,13 @@ export default function Reviews() {
 
   return (
     <Container maxWidth="sm" sx={{ py: 4 }}>
-      <Typography variant="h6" component="h3" gutterBottom align="center" sx={{ mb: 4, fontWeight: 'bold' }}>
+      <Typography
+        variant="h6"
+        component="h3"
+        gutterBottom
+        align="center"
+        sx={{ mb: 4, fontWeight: "bold" }}
+      >
         My Reviews
       </Typography>
       {loading ? (
@@ -155,12 +178,14 @@ export default function Reviews() {
           ))}
         </Grid>
       ) : (
-        <Box sx={{ p: 4, textAlign: 'center', color: 'text.secondary' }}>
-          <Typography variant="h6">You haven't left any reviews yet.</Typography>
+        <Box sx={{ p: 4, textAlign: "center", color: "text.secondary" }}>
+          <Typography variant="h6">
+            You haven't left any reviews yet.
+          </Typography>
         </Box>
       )}
       {totalPages > 1 && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
           <Pagination
             count={totalPages}
             page={currentPage}

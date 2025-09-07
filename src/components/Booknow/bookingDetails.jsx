@@ -1,19 +1,19 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { format } from "date-fns";
+import { useCallback, useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { useDispatch, useSelector } from "react-redux";
+import { applyCouponCode } from "../../redux/reducers/bookingSlice";
+import { getGstForHotelData } from "../../redux/reducers/gstSlice";
+import baseURL from "../../utils/baseURL";
+import { popup } from "../../utils/custom_alert/pop";
+import { useLoader } from "../../utils/loader";
 import {
   userEmail,
   userId,
   userMobile,
   userName,
 } from "../../utils/Unauthorized";
-import { applyCouponCode } from "../../redux/reducers/bookingSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useLoader } from "../../utils/loader";
-import { format } from "date-fns";
-import baseURL from "../../utils/baseURL";
-import { popup } from "../../utils/custom_alert/pop";
 import BookingPage from "./bookingPage";
-import { getGstForHotelData } from "../../redux/reducers/gstSlice";
 
 const BookingDetails = ({
   hotelId,
@@ -44,7 +44,7 @@ const BookingDetails = ({
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const toBeCheckRoomNumber =
-    parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
+    parseInt(sessionStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
 
   const handleOpenModal = () => setOpenModal(true);
@@ -54,7 +54,7 @@ const BookingDetails = ({
 
   const handleSelectFood = (foodItem) => {
     const isAlreadySelected = selectedFood.some(
-      (item) => item.foodId === foodItem.foodId,
+      (item) => item.foodId === foodItem.foodId
     );
     if (!isAlreadySelected) {
       setSelectedFood((prev) => [...prev, { ...foodItem, quantity: 1 }]);
@@ -63,7 +63,7 @@ const BookingDetails = ({
 
   const handleRemoveFood = (foodItem) => {
     setSelectedFood((prev) =>
-      prev.filter((item) => item.foodId !== foodItem.foodId),
+      prev.filter((item) => item.foodId !== foodItem.foodId)
     );
   };
 
@@ -82,7 +82,7 @@ const BookingDetails = ({
         setDiscountPrice(response.payload.discountPrice || 0);
         sessionStorage.setItem(
           "discountPrice",
-          response.payload.discountPrice || 0,
+          response.payload.discountPrice || 0
         );
         setIsCouponApplied(true);
       } catch (error) {
@@ -90,16 +90,15 @@ const BookingDetails = ({
         alert("Error applying coupon");
       }
     },
-    [dispatch],
+    [dispatch]
   );
-
 
   useEffect(() => {
     const fetchGst = async () => {
       // Step 1: Create price string
-      let roomPrices = selectedRooms.map((room) => room.price).join(',');
+      let roomPrices = selectedRooms.map((room) => room.price).join(",");
       if (discountPrice > 0) {
-        roomPrices = roomPrices - discountPrice
+        roomPrices = roomPrices - discountPrice;
       }
       // Step 2: First GST call based on roomPrices
       const response = await dispatch(
@@ -115,15 +114,11 @@ const BookingDetails = ({
           1,
           Math.ceil(
             (new Date(checkOutDate) - new Date(checkInDate)) /
-            (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24)
           )
         );
 
-        if (
-          selectedRooms &&
-          selectedRooms.length > 0 &&
-          roomsCount > 0
-        ) {
+        if (selectedRooms && selectedRooms.length > 0 && roomsCount > 0) {
           const basePrice = selectedRooms[0].price || 0;
           const totalBookingPrice = basePrice * daysDifference * roomsCount;
           const secondResponse = await dispatch(
@@ -145,7 +140,14 @@ const BookingDetails = ({
     };
 
     fetchGst();
-  }, [dispatch, selectedRooms, roomsCount, checkInDate, checkOutDate,discountPrice]);
+  }, [
+    dispatch,
+    selectedRooms,
+    roomsCount,
+    checkInDate,
+    checkOutDate,
+    discountPrice,
+  ]);
 
   const gstAmount = gstData?.gstPrice || 0;
   const calculateTotal = () => {
@@ -156,7 +158,7 @@ const BookingDetails = ({
     const singleRoomPrice = selectedRooms[0].price || 0;
 
     const daysDifference = Math.ceil(
-      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
 
     if (daysDifference < 1) {
@@ -168,7 +170,7 @@ const BookingDetails = ({
 
     const foodPrice = selectedFood.reduce(
       (total, food) => total + food.price * (food.quantity || 1),
-      0,
+      0
     );
 
     const total = baseRoomPriceForAllRooms + foodPrice;
@@ -187,7 +189,7 @@ const BookingDetails = ({
     let totalPrice = 0;
 
     const daysDifference = Math.ceil(
-      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
     if (daysDifference < 1) return 0;
 
@@ -212,7 +214,7 @@ const BookingDetails = ({
 
     const foodPrice = selectedFood.reduce(
       (total, food) => total + food.price * (food.quantity || 1),
-      0,
+      0
     );
 
     totalPrice += foodPrice;
@@ -222,7 +224,7 @@ const BookingDetails = ({
   const getFinalPrice = () => {
     const roomPrice = selectedRooms.reduce(
       (total, room) => total + room.price * roomsCount,
-      0,
+      0
     );
     return roomPrice - discountPrice;
   };
@@ -268,7 +270,7 @@ const BookingDetails = ({
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(bookingData),
-          },
+          }
         );
 
         const bookedDetails = await response.json();
@@ -276,18 +278,18 @@ const BookingDetails = ({
         if (response.status === 201) {
           popup(
             `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookedDetails.data.bookingId}\n` +
-            `📅 Check in Date: ${format(
-              new Date(bookedDetails.data.checkInDate),
-              "dd MMM yyyy",
-            )}\n` +
-            `📅 Check out Date: ${format(
-              new Date(bookedDetails.data.checkOutDate),
-              "dd MMM yyyy",
-            )}`,
+              `📅 Check in Date: ${format(
+                new Date(bookedDetails.data.checkInDate),
+                "dd MMM yyyy"
+              )}\n` +
+              `📅 Check out Date: ${format(
+                new Date(bookedDetails.data.checkOutDate),
+                "dd MMM yyyy"
+              )}`,
             () => {
               window.location.href = "/bookings";
             },
-            6,
+            6
           );
 
           sessionStorage.removeItem("discountPrice");
@@ -400,7 +402,7 @@ const BookingDetails = ({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(bookingData),
-              },
+              }
             );
 
             if (!bookingRes.ok) {
@@ -414,16 +416,16 @@ const BookingDetails = ({
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${bookingRespData.data.bookingId}\n` +
-              `📅 Check-in: ${format(
-                new Date(bookingRespData.data.checkInDate),
-                "dd MMM yyyy",
-              )}\n` +
-              `📅 Check-out: ${format(
-                new Date(bookingRespData.data.checkOutDate),
-                "dd MMM yyyy",
-              )}`,
+                `📅 Check-in: ${format(
+                  new Date(bookingRespData.data.checkInDate),
+                  "dd MMM yyyy"
+                )}\n` +
+                `📅 Check-out: ${format(
+                  new Date(bookingRespData.data.checkOutDate),
+                  "dd MMM yyyy"
+                )}`,
               () => (window.location.href = "/bookings"),
-              6,
+              6
             );
 
             sessionStorage.removeItem("discountPrice");
@@ -539,7 +541,7 @@ const BookingDetails = ({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(bookingData),
-              },
+              }
             );
 
             if (!response.ok) {
@@ -553,17 +555,17 @@ const BookingDetails = ({
 
             popup(
               `🎉 Booking Confirmed!\n\n📌 Booking ID: ${data?.data?.bookingId}\n` +
-              `📅 Check-in: ${format(
-                new Date(data?.data?.checkInDate),
-                "dd MMM yyyy",
-              )}\n` +
-              `📅 Check-out: ${format(
-                new Date(data?.data?.checkOutDate),
-                "dd MMM yyyy",
-              )}`,
+                `📅 Check-in: ${format(
+                  new Date(data?.data?.checkInDate),
+                  "dd MMM yyyy"
+                )}\n` +
+                `📅 Check-out: ${format(
+                  new Date(data?.data?.checkOutDate),
+                  "dd MMM yyyy"
+                )}`,
               () => {
                 window.location.href = "/bookings";
-              },
+              }
             );
 
             sessionStorage.removeItem("discountPrice");

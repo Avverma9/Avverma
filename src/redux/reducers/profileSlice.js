@@ -1,11 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
-import { token, userEmail,userId } from "../../utils/Unauthorized";
 import alert from "../../utils/custom_alert/custom_alert";
+import { token, userEmail } from "../../utils/Unauthorized";
 
 export const fetchProfileData = createAsyncThunk(
-  
   "profile/fetchProfileData",
   async (userId, { rejectWithValue }) => {
     try {
@@ -54,7 +53,7 @@ export const fetchDefaultCoupon = createAsyncThunk(
           },
         }
       );
-    
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -90,7 +89,7 @@ const profileSlice = createSlice({
         state.loading = false;
         if (action.payload.userImage?.length > 0) {
           const firstImageUrl = action.payload.userImage[0];
-          localStorage.setItem("userImage", firstImageUrl);
+          sessionStorage.setItem("userImage", firstImageUrl);
         }
       })
       .addCase(fetchProfileData.rejected, (state, action) => {

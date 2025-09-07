@@ -1,18 +1,18 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMonthlyData } from "../../redux/reducers/bookingSlice";
 import { useLocation } from "react-router-dom";
-import { Box, Stack } from "@mui/material";
+import { fetchMonthlyData } from "../../redux/reducers/bookingSlice";
 const Rooms = ({
   hotelData,
   selectedRooms,
@@ -24,8 +24,8 @@ const Rooms = ({
   const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const dispatch = useDispatch();
   const { monthlyData } = useSelector((state) => state.booking);
-  const checkInDate = localStorage.getItem("selectedCheckInDate");
-  const checkOutDate = localStorage.getItem("selectedCheckOutDate");
+  const checkInDate = sessionStorage.getItem("selectedCheckInDate");
+  const checkOutDate = sessionStorage.getItem("selectedCheckOutDate");
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toISOString().split("T")[0];
@@ -80,7 +80,12 @@ const Rooms = ({
                   },
                 }}
               >
-                <Box sx={{ position: "relative", width: { xs: "120px", sm: "100%" } }}>
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: { xs: "120px", sm: "100%" },
+                  }}
+                >
                   <CardMedia
                     component="img"
                     src={
@@ -93,7 +98,10 @@ const Rooms = ({
                       width: "100%",
                       height: { xs: "100%", sm: "150px" },
                       objectFit: "cover",
-                      borderRadius: { xs: "12px 0 0 12px", sm: "12px 12px 0 0" },
+                      borderRadius: {
+                        xs: "12px 0 0 12px",
+                        sm: "12px 12px 0 0",
+                      },
                     }}
                   />
                   {isSoldOut && (
@@ -124,15 +132,34 @@ const Rooms = ({
                   }}
                 >
                   <Box>
-                    <Typography gutterBottom variant="subtitle1" fontWeight={600}>
+                    <Typography
+                      gutterBottom
+                      variant="subtitle1"
+                      fontWeight={600}
+                    >
                       {room.type}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ display: "flex", alignItems: "center" }}
+                    >
                       <BedOutlinedIcon sx={{ fontSize: "small", mr: 0.5 }} />
                       {room.bedTypes}
                     </Typography>
-                    <Typography variant="body1" fontWeight={700} color="primary.main" sx={{ mt: 1 }}>
-                      <CurrencyRupeeIcon sx={{ fontSize: "small", verticalAlign: "text-bottom", mr: 0.5 }} />
+                    <Typography
+                      variant="body1"
+                      fontWeight={700}
+                      color="primary.main"
+                      sx={{ mt: 1 }}
+                    >
+                      <CurrencyRupeeIcon
+                        sx={{
+                          fontSize: "small",
+                          verticalAlign: "text-bottom",
+                          mr: 0.5,
+                        }}
+                      />
                       {lowestPrice}
                     </Typography>
                   </Box>
@@ -142,7 +169,9 @@ const Rooms = ({
                       size="small"
                       color={isSelected ? "error" : "primary"}
                       onClick={() =>
-                        isSelected ? handleRemoveRoom(room) : handleAddRoom(room)
+                        isSelected
+                          ? handleRemoveRoom(room)
+                          : handleAddRoom(room)
                       }
                       disabled={isSoldOut}
                       sx={{
@@ -162,7 +191,7 @@ const Rooms = ({
         })}
       </Grid>
       {overallLowestPrice !== Infinity &&
-        localStorage.setItem("lowestPrice", overallLowestPrice)}
+        sessionStorage.setItem("lowestPrice", overallLowestPrice)}
     </Box>
   );
 };

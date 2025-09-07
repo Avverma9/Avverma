@@ -1,41 +1,40 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import PlaceIcon from "@mui/icons-material/Place";
-import Carousel from "react-bootstrap/Carousel";
-import Accordion from "@mui/material/Accordion";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { addDays } from "date-fns";
-import { BsClockHistory } from "react-icons/bs";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import { IconContext } from "react-icons";
-import { FaBed, FaWifi } from "react-icons/fa";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PlaceIcon from "@mui/icons-material/Place";
+import { Modal } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import Box from "@mui/material/Box";
-import BookingDetails from "./bookingDetails";
-import Rooms from "./rooms";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { addDays } from "date-fns";
+import { useEffect, useRef, useState } from "react";
+import Carousel from "react-bootstrap/Carousel";
+import { IconContext } from "react-icons";
+import { BsClockHistory } from "react-icons/bs";
+import { FaBed } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   fetchBookingData,
   fetchMonthlyData,
 } from "../../redux/reducers/bookingSlice";
 import amenityIcons from "../../utils/extrasList";
+import BookingDetails from "./bookingDetails";
 import BookingReview from "./BookingReview";
-import { Modal } from "@mui/material";
+import Rooms from "./rooms";
 
 import { StarHalfSharp } from "@mui/icons-material";
-import HotelPolicyCard from "./policy-card";
-import BookNowSkeleton from "./BookNowSkeleton";
+import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import Chip from "@mui/material/Chip";
 import { toast } from "react-toastify";
+import BookNowSkeleton from "./BookNowSkeleton";
+import HotelPolicyCard from "./policy-card";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -65,7 +64,7 @@ const BookNow = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { bookingData, monthlyData } = useSelector((state) => state.booking);
-  const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
+  const compareRoomId = sessionStorage.getItem("toBeUpdatedRoomId");
 
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
@@ -84,11 +83,11 @@ const BookNow = () => {
 
   const handleAddFood = (food) => {
     const existingFoodIndex = selectedFood.findIndex(
-      (selected) => selected._id === food._id,
+      (selected) => selected._id === food._id
     );
     if (existingFoodIndex !== -1) {
       const updatedFood = selectedFood.map((item, index) =>
-        index === existingFoodIndex ? { ...food, quantity: 1 } : item,
+        index === existingFoodIndex ? { ...food, quantity: 1 } : item
       );
       setSelectedFood(updatedFood);
     } else {
@@ -102,7 +101,7 @@ const BookNow = () => {
       ?.map((selected) =>
         selected._id === food._id
           ? { ...selected, quantity: selected.quantity - 1 }
-          : selected,
+          : selected
       )
       .filter((selected) => selected.quantity > 0);
 
@@ -111,8 +110,8 @@ const BookNow = () => {
 
   const handleAddRoom = (room) => {
     setSelectedRooms([room]);
-    localStorage.setItem("toBeUpdatedRoomId", room.roomId);
-    localStorage.setItem("toBeCheckRoomNumber", room.countRooms);
+    sessionStorage.setItem("toBeUpdatedRoomId", room.roomId);
+    sessionStorage.setItem("toBeCheckRoomNumber", room.countRooms);
     toast.info(`${room.type} is selected`);
   };
 
@@ -123,7 +122,7 @@ const BookNow = () => {
         return prevSelectedRooms;
       }
       return prevSelectedRooms.filter(
-        (selectedRoom) => selectedRoom.roomId !== room.roomId,
+        (selectedRoom) => selectedRoom.roomId !== room.roomId
       );
     });
   };
@@ -137,7 +136,7 @@ const BookNow = () => {
     });
 
     const daysDifference = Math.ceil(
-      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24),
+      (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24)
     );
 
     if (daysDifference < 1) {
@@ -180,8 +179,8 @@ const BookNow = () => {
     return localDate.toISOString().split("T")[0];
   };
 
-  localStorage.setItem("selectedCheckInDate", formatDate(checkInDate));
-  localStorage.setItem("selectedCheckOutDate", formatDate(checkOutDate));
+  sessionStorage.setItem("selectedCheckInDate", formatDate(checkInDate));
+  sessionStorage.setItem("selectedCheckOutDate", formatDate(checkOutDate));
 
   useEffect(() => {
     if (newhotelId) {
@@ -196,7 +195,7 @@ const BookNow = () => {
 
       if (selectedRooms.length === 0 && bookingData.rooms?.length > 0) {
         const eligibleRooms = bookingData.rooms.filter(
-          (item) => item.offerPriceLess > 0,
+          (item) => item.offerPriceLess > 0
         );
         let initialRoom;
 
@@ -210,8 +209,8 @@ const BookNow = () => {
 
         if (initialRoom) {
           setSelectedRooms([initialRoom]);
-          localStorage.setItem("toBeUpdatedRoomId", initialRoom.roomId);
-          localStorage.setItem("toBeCheckRoomNumber", initialRoom.countRooms);
+          sessionStorage.setItem("toBeUpdatedRoomId", initialRoom.roomId);
+          sessionStorage.setItem("toBeCheckRoomNumber", initialRoom.countRooms);
         }
       }
     }
@@ -239,7 +238,7 @@ const BookNow = () => {
         const distance = countdownDate - now;
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
         const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
         const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -442,7 +441,7 @@ const BookNow = () => {
                         onClick={() =>
                           setCurrentImageIndex(
                             (currentImageIndex + hotelData.images.length - 1) %
-                              hotelData.images.length,
+                              hotelData.images.length
                           )
                         }
                         sx={navButtonStyle("left")}
@@ -452,7 +451,7 @@ const BookNow = () => {
                       <IconButton
                         onClick={() =>
                           setCurrentImageIndex(
-                            (currentImageIndex + 1) % hotelData.images.length,
+                            (currentImageIndex + 1) % hotelData.images.length
                           )
                         }
                         sx={navButtonStyle("right")}
@@ -468,7 +467,7 @@ const BookNow = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Box >
+              <Box>
                 <Typography
                   component="h6"
                   sx={{
@@ -550,109 +549,109 @@ const BookNow = () => {
                 {hotelData?.description}
               </Typography>
             </Box>
-       <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-    {/* Heading Section */}
-    <Box sx={{ mb: 2 }}>
-        <Typography
-            component="h5"
-            sx={{
-                fontWeight: 600,
-                color: "black",
-                backgroundColor: "#e4ded8",
-                borderRadius: 1,
-                px: 1.5,
-                py: 0.5,
-                display: "inline-block",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                fontSize: { xs: "1rem", sm: "1.25rem" }, // Responsive font size
-            }}
-        >
-            Amenities
-        </Typography>
-    </Box>
+            <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
+              {/* Heading Section */}
+              <Box sx={{ mb: 2 }}>
+                <Typography
+                  component="h5"
+                  sx={{
+                    fontWeight: 600,
+                    color: "black",
+                    backgroundColor: "#e4ded8",
+                    borderRadius: 1,
+                    px: 1.5,
+                    py: 0.5,
+                    display: "inline-block",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                    fontSize: { xs: "1rem", sm: "1.25rem" }, // Responsive font size
+                  }}
+                >
+                  Amenities
+                </Typography>
+              </Box>
 
-    {/* Visible Amenities Grid */}
-    <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
-        {visibleAmenities.map((amenity, index) => (
-            // Adjusted grid for mobile to show 2 items per row
-            <Grid item xs={6} sm={6} md={4} key={index}>
-                <Stack direction="row" alignItems="center" spacing={1}>
-                    <IconContext.Provider
+              {/* Visible Amenities Grid */}
+              <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ mb: 1 }}>
+                {visibleAmenities.map((amenity, index) => (
+                  // Adjusted grid for mobile to show 2 items per row
+                  <Grid item xs={6} sm={6} md={4} key={index}>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                      <IconContext.Provider
                         value={{ size: "1.2em", style: { color: "#666" } }}
-                    >
+                      >
                         {amenityIcons[amenity] || defaultIcon}
-                    </IconContext.Provider>
-                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      </IconContext.Provider>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {amenity}
-                    </Typography>
-                </Stack>
-            </Grid>
-        ))}
-    </Grid>
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                ))}
+              </Grid>
 
-    {/* Accordion for remaining amenities */}
-    {remainingAmenitiesCount > 0 && (
-        <Accordion
-            expanded={expanded}
-            onChange={handleExpansion}
-            sx={{
-                mt: 2,
-                boxShadow: "none",
-                "&:before": { display: "none" },
-            }}
-        >
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                sx={{
-                    minHeight: "38px",
-                    "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
-                }}
-            >
-                {/* Centered button for mobile */}
-                <Box
+              {/* Accordion for remaining amenities */}
+              {remainingAmenitiesCount > 0 && (
+                <Accordion
+                  expanded={expanded}
+                  onChange={handleExpansion}
+                  sx={{
+                    mt: 2,
+                    boxShadow: "none",
+                    "&:before": { display: "none" },
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
                     sx={{
+                      minHeight: "38px",
+                      "& .MuiAccordionSummary-content": { my: 1, ml: -2 },
+                    }}
+                  >
+                    {/* Centered button for mobile */}
+                    <Box
+                      sx={{
                         width: "100%",
                         display: "flex",
                         justifyContent: { xs: "center", sm: "flex-start" },
-                    }}
-                >
-                    <Typography variant="body2" color="primary">
+                      }}
+                    >
+                      <Typography variant="body2" color="primary">
                         Show all {amenities.length} amenities
-                    </Typography>
-                </Box>
-            </AccordionSummary>
-            <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
-                <Grid container spacing={1}>
-                    {amenities.slice(10).map((amenity, index) => (
+                      </Typography>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails sx={{ p: 1, pt: 0, ml: -2 }}>
+                    <Grid container spacing={1}>
+                      {amenities.slice(10).map((amenity, index) => (
                         // Adjusted grid for mobile to show 2 items per row
                         <Grid item xs={6} sm={6} md={4} key={index}>
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={1}
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <IconContext.Provider
+                              value={{
+                                size: "1.2em",
+                                style: { color: "#666" },
+                              }}
                             >
-                                <IconContext.Provider
-                                    value={{
-                                        size: "1.2em",
-                                        style: { color: "#666" },
-                                    }}
-                                >
-                                    {amenityIcons[amenity] || defaultIcon}
-                                </IconContext.Provider>
-                                <Typography
-                                    variant="body2"
-                                    sx={{ fontWeight: 500 }}
-                                >
-                                    {amenity}
-                                </Typography>
-                            </Stack>
+                              {amenityIcons[amenity] || defaultIcon}
+                            </IconContext.Provider>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {amenity}
+                            </Typography>
+                          </Stack>
                         </Grid>
-                    ))}
-                </Grid>
-            </AccordionDetails>
-        </Accordion>
-    )}
-</Box>
+                      ))}
+                    </Grid>
+                  </AccordionDetails>
+                </Accordion>
+              )}
+            </Box>
 
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
               <Typography
