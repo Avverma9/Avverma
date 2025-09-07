@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -40,7 +40,7 @@ const modalStyle = {
 export default function Footer() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
+const location = useLocation()
   const navigateTo = (path) => {
     navigate(path);
     setOpen(false);
@@ -72,7 +72,7 @@ export default function Footer() {
     [<Twitter />, '#'],
     [<YouTube />, '#']
   ];
-
+if(location.pathname === "/login" || location.pathname.includes('/register')) return null;
   return (
     <Box
       component="footer"

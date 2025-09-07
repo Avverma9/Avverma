@@ -353,14 +353,14 @@ const BookNow = () => {
             >
               <Typography variant="p4" component="h4" sx={{ fontWeight: 400 }}>
                 {hotelData?.hotelName}
-              </Typography>
-              <Chip
+               <Chip
                 icon={<StarHalfSharp />}
                 label={hotelData?.starRating}
                 color="success"
                 size="small"
                 sx={{ fontSize: "0.85rem", fontWeight: 500 }}
-              />
+              /> </Typography>
+            
             </Stack>
             <Stack
               direction="row"
@@ -469,25 +469,7 @@ const BookNow = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-              <Box>
-                <Typography
-                  component="h6"
-                  sx={{
-                    fontWeight: 600,
-                    color: "black",
-                    backgroundColor: "#e4ded8",
-                    borderRadius: 1,
-                    px: 1.5,
-                    py: 0.5,
-                    display: "inline-block",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                  }}
-                >
-                  Pricing and Details
-                </Typography>
-                <hr />
-              </Box>
-
+          
               {currentRoom?.offerPriceLess > 0 ? (
                 <Box>
                   <Stack direction="row" alignItems="center" spacing={1}>
@@ -560,7 +542,7 @@ const BookNow = () => {
                     fontWeight: 600,
                     color: "black",
                     backgroundColor: "#e4ded8",
-                    borderRadius: 1,
+                    
                     px: 1.5,
                     py: 0.5,
                     display: "inline-block",

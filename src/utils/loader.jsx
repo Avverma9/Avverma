@@ -35,15 +35,15 @@ export const LoaderProvider = ({ children }) => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backgroundColor: "rgba(107, 107, 107, 0.6)",
             zIndex: 9999,
           }}
         >
           <Box
             sx={{
               position: "relative",
-              width: 150,
-              height: 150,
+              width: 100,
+              height: 100,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
@@ -59,7 +59,7 @@ export const LoaderProvider = ({ children }) => {
                 borderRadius: "50%",
                 border: "4px solid transparent",
                 borderTopColor: "rgba(0, 123, 255, 0.8)",
-                borderBottomColor: "rgba(0, 200, 255, 0.8)",
+                borderBottomColor: "rgba(255, 60, 0, 0.8)",
                 animation: `${spin} 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite`,
                 boxShadow:
                   "0 0 15px rgba(0, 123, 255, 0.7), inset 0 0 15px rgba(0, 123, 255, 0.5)",
@@ -68,8 +68,8 @@ export const LoaderProvider = ({ children }) => {
             {/* Inner Circle with Pulsating Glow */}
             <Box
               sx={{
-                width: 110,
-                height: 110,
+                width: 70,
+                height: 70,
                 borderRadius: "50%",
                 backgroundColor: "#ffffff",
                 display: "flex",
@@ -99,8 +99,8 @@ export const LoaderProvider = ({ children }) => {
                 src="/logo.png"
                 alt="Loading..."
                 style={{
-                  width: "90%",
-                  height: "90%",
+                  width: "100%",
+                  height: "100%",
                   objectFit: "contain",
                   userSelect: "none",
                 }}
