@@ -3,7 +3,6 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 import { fetchFilteredBooking } from "../../../redux/reducers/bookingSlice";
 import { formatDateWithOrdinal } from "../../../utils/_dateFunctions";
 import baseURL from "../../../utils/baseURL";
@@ -36,6 +35,7 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import SendIcon from "@mui/icons-material/Send";
 import StickyNote2Icon from "@mui/icons-material/StickyNote2";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
+import { useToast } from "../../../utils/toast";
 
 const modalStyle = {
   position: "absolute",
@@ -103,7 +103,7 @@ const PriceDetail = ({ label, value, isTotal = false }) => (
 
 const BookingModal = ({ show, handleClose, modalData }) => {
   const handlePrint = () => window.print();
-
+const toast = useToast();
   const calculateTotal = (items, key) =>
     (items || []).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
   const roomTotal =

@@ -29,11 +29,13 @@ import {
 import { updateProfileData, fetchProfileData } from '../../redux/reducers/profileSlice';
 import { userId } from '../../utils/Unauthorized';
 import { useLoader } from '../../utils/loader';
-import { toast } from 'react-toastify';
+import { useToast } from '../../utils/toast';
+
 
 
 const UpdatePage = () => {
   const dispatch = useDispatch();
+  const toast = useToast()
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
   const { data, error } = useSelector((state) => state.profile);

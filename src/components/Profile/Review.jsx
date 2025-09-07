@@ -13,12 +13,12 @@ import {
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import baseURL from "../../utils/baseURL";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
 import ReviewSkeleton from "./reviewSkeleton";
+import { useToast } from "../../utils/toast";
 
 const StyledReviewCard = styled(Paper)(({ theme }) => ({
   position: "relative",
@@ -45,6 +45,7 @@ const getStarRating = (rating) => {
 };
 
 const ReviewCard = ({ reviewData, handleDelete }) => {
+  
   return (
     <StyledReviewCard>
       <Box display="flex" alignItems="center" mb={1.5}>
@@ -88,6 +89,7 @@ const ReviewCard = ({ reviewData, handleDelete }) => {
 };
 
 export default function Reviews() {
+  const toast = useToast()
   const location = useLocation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);

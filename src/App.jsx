@@ -35,10 +35,12 @@ import Policies from './components/Booknow/policies.jsx';
 import TourBooking from './components/Profile/tour-booking/tour-booking.jsx';
 import ScrollToTopButton from './utils/scrollToTop.jsx';
 import Careers from './components/careers/Careers.jsx';
+import { ToastProvider } from './utils/toast';
 
 function App() {
     return (
         <LoaderProvider>
+            <ToastProvider>
             <div className="App">
                 <Router>
                     <Header />
@@ -75,6 +77,7 @@ function App() {
                     <ScrollToTopButton />
                 </Router>
             </div>
+            </ToastProvider>
         </LoaderProvider>
     );
 }

@@ -32,12 +32,14 @@ import Chip from "@mui/material/Chip";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
-import { toast } from "react-toastify";
+
 import BookNowSkeleton from "./BookNowSkeleton";
 import HotelPolicyCard from "./policy-card";
+import { useToast } from "../../utils/toast";
 
 const BookNow = () => {
   const dispatch = useDispatch();
+  const toast = useToast()
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);

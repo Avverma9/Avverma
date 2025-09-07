@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { useToast } from "../../utils/toast";
 import baseURL from "../../utils/baseURL";
 
 // Replace with your actual API endpoint
@@ -111,6 +111,7 @@ const AuthPageStyles = () => (
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     userName: "",
