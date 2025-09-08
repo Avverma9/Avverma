@@ -272,7 +272,7 @@ export default function LoginPage() {
       sessionStorage.setItem("rsToken", res.data.rsToken);
       sessionStorage.setItem("roomsstayUserEmail", res.data.email);
       sessionStorage.setItem("rsUserMobile", res.data.mobile);
-      navigate("/");
+      window.location.href = "/";
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed.");
     } finally {
