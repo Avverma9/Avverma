@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"; // Import the useNavigate hook
 
 export const Unauthorized = () => {
-  const token = sessionStorage.getItem("rsToken");
+  const token = localStorage.getItem("rsToken");
   const navigate = useNavigate(); // Initialize the navigate function
 
   if (!userId) {
@@ -55,8 +55,8 @@ export const Unauthorized = () => {
 
   return null; // Return null if the userId exists
 };
-export const userId = sessionStorage.getItem("rsUserId");
-export const token = sessionStorage.getItem("rsToken");
-export const userMobile = sessionStorage.getItem("rsUserMobile");
-export const userEmail = sessionStorage.getItem("roomsstayUserEmail");
-export const userName = sessionStorage.getItem("loggedUser");
+export const userId = localStorage.getItem("rsUserId");
+export const token = localStorage.getItem("rsToken");
+export const userMobile = localStorage.getItem("rsUserMobile");
+export const userEmail = localStorage.getItem("roomsstayUserEmail");
+export const userName = localStorage.getItem("loggedUser");

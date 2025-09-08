@@ -83,7 +83,7 @@ export default function PolicyForm() {
   const [offTrippleSharingMAp, setOffTrippleSharingMAp] = useState("");
   const [offMoreThanFourMAp, setOffMoreThanFourMAp] = useState("");
 
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
 
   const handleSubmit = async (e) => {
     e.preventDefault();

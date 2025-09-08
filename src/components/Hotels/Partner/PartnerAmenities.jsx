@@ -53,7 +53,7 @@ const AmenitiesPage = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
 
   const handleToggleButtonGroup = (event, newAmenities) => {
     setSelectedAmenities(newAmenities);

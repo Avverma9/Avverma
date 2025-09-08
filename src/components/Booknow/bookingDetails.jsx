@@ -44,7 +44,7 @@ const BookingDetails = ({
 
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const toBeCheckRoomNumber =
-    parseInt(sessionStorage.getItem("toBeCheckRoomNumber")) || 0;
+    parseInt(localStorage.getItem("toBeCheckRoomNumber")) || 0;
   const compareRoomId = selectedRooms?.[0]?.roomId;
 
   const handleOpenModal = () => setOpenModal(true);
@@ -80,7 +80,7 @@ const BookingDetails = ({
       try {
         const response = await dispatch(applyCouponCode(payload));
         setDiscountPrice(response.payload.discountPrice || 0);
-        sessionStorage.setItem(
+        localStorage.setItem(
           "discountPrice",
           response.payload.discountPrice || 0
         );
@@ -255,7 +255,7 @@ const BookingDetails = ({
         price: finalTotal,
         pm: "Offline",
         couponCode,
-        discountPrice: sessionStorage.getItem("discountPrice"),
+        discountPrice: localStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
         hotelName: hotelData.hotelName,
@@ -292,7 +292,7 @@ const BookingDetails = ({
             6
           );
 
-          sessionStorage.removeItem("discountPrice");
+          localStorage.removeItem("discountPrice");
           setSelectedFood([]);
           setIsCouponApplied(false);
           setDiscountPrice(0);
@@ -356,7 +356,7 @@ const BookingDetails = ({
         price: totalAmount,
         pm: "Online",
         couponCode,
-        discountPrice: sessionStorage.getItem("discountPrice"),
+        discountPrice: localStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
         hotelName: hotelData.hotelName,
@@ -428,7 +428,7 @@ const BookingDetails = ({
               6
             );
 
-            sessionStorage.removeItem("discountPrice");
+            localStorage.removeItem("discountPrice");
             setSelectedFood([]);
             setIsCouponApplied(false);
             setDiscountPrice(0);
@@ -495,7 +495,7 @@ const BookingDetails = ({
         isPartialBooking: true,
         bookingStatus: "Pending",
         partialAmount,
-        discountPrice: sessionStorage.getItem("discountPrice"),
+        discountPrice: localStorage.getItem("discountPrice"),
         bookingSource: "Site",
         destination: hotelData.city,
         hotelName: hotelData.hotelName,
@@ -568,7 +568,7 @@ const BookingDetails = ({
               }
             );
 
-            sessionStorage.removeItem("discountPrice");
+            localStorage.removeItem("discountPrice");
             setSelectedFood([]);
             setIsCouponApplied(false);
             setDiscountPrice(0);

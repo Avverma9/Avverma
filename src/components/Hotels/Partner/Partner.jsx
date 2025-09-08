@@ -119,7 +119,7 @@ export default function PartnerForm() {
         const alertMessage = `${response.data.message}. Now you will be redirected to our next step.`;
         alert(alertMessage);
 
-        sessionStorage.setItem("hotelId", response.data.data.hotelId);
+        localStorage.setItem("hotelId", response.data.data.hotelId);
         window.location.href = "/partner/second-step";
       } else if (response.status === 500) {
         // Handle other status codes

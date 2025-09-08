@@ -74,7 +74,7 @@ export default function PartnerRooms() {
     message: "",
     severity: "info",
   });
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
   const availableBedTypes = useBedTypes();
   const roomTypes = useRoomTypes();
   const { loading, error } = useSelector((state) => state.partner);
@@ -114,7 +114,7 @@ export default function PartnerRooms() {
           "Thank you, one of our representatives will contact you shortly.",
         severity: "success",
       });
-      sessionStorage.removeItem("hotelId");
+      localStorage.removeItem("hotelId");
       setTimeout(() => {
         navigate("/");
       }, 1500);

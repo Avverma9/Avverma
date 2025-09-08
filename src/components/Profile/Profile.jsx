@@ -165,7 +165,7 @@ export default function Profile() {
   };
 
   const handleLogOut = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/login", { replace: true });
   };
 

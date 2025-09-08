@@ -64,7 +64,7 @@ export default function PartnerFoods() {
     message: "",
     severity: "info",
   });
-  const hotelId = sessionStorage.getItem("hotelId");
+  const hotelId = localStorage.getItem("hotelId");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];

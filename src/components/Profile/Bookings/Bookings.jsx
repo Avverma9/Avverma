@@ -103,7 +103,7 @@ const PriceDetail = ({ label, value, isTotal = false }) => (
 
 const BookingModal = ({ show, handleClose, modalData }) => {
   const handlePrint = () => window.print();
-const toast = useToast();
+  const toast = useToast();
   const calculateTotal = (items, key) =>
     (items || []).reduce((acc, item) => acc + (Number(item[key]) || 0), 0);
   const roomTotal =
@@ -449,7 +449,7 @@ export const ConfirmBooking = () => {
     const fetchData = async () => {
       try {
         showLoader();
-        const userId = sessionStorage.getItem("rsUserId");
+        const userId = localStorage.getItem("rsUserId");
         if (!userId) throw new Error("You are not logged in!");
         setBookingDetails([]);
         dispatch(fetchFilteredBooking({ selectedStatus, userId }));
@@ -477,7 +477,7 @@ export const ConfirmBooking = () => {
   };
 
   const handleReview = (hotelId) => {
-    sessionStorage.setItem("hotelId_review", hotelId);
+    localStorage.setItem("hotelId_review", hotelId);
     setShowReviewForm(true);
   };
 
@@ -488,8 +488,8 @@ export const ConfirmBooking = () => {
   };
 
   const postReview = async () => {
-    const userId = sessionStorage.getItem("rsUserId");
-    const hotelId = sessionStorage.getItem("hotelId_review");
+    const userId = localStorage.getItem("rsUserId");
+    const hotelId = localStorage.getItem("hotelId_review");
     try {
       const response = await axios.post(
         `${baseURL}/reviews/${userId}/${hotelId}`,

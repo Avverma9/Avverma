@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import "./Login.css";
 import baseURL from "../../utils/baseURL";
-import Google from "./GoogleSignIn";
 import { useToast } from "../../utils/toast";
+import "./Login.css";
 
 // Country codes data
-
 
 const countryCodes = [
   { code: "+1", country: "US", flag: "🇺🇸", name: "United States" },
@@ -267,11 +265,11 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await axios.post(`${baseURL}/signIn`, { email, password });
-      sessionStorage.setItem("isSignedIn", "true");
-      sessionStorage.setItem("rsUserId", res.data.userId);
-      sessionStorage.setItem("rsToken", res.data.rsToken);
-      sessionStorage.setItem("roomsstayUserEmail", res.data.email);
-      sessionStorage.setItem("rsUserMobile", res.data.mobile);
+      localStorage.setItem("isSignedIn", "true");
+      localStorage.setItem("rsUserId", res.data.userId);
+      localStorage.setItem("rsToken", res.data.rsToken);
+      localStorage.setItem("roomsstayUserEmail", res.data.email);
+      localStorage.setItem("rsUserMobile", res.data.mobile);
       window.location.href = "/";
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed.");
@@ -331,11 +329,11 @@ export default function LoginPage() {
         });
       }
 
-      sessionStorage.setItem("isSignedIn", "true");
-      sessionStorage.setItem("rsUserId", response.data.userId);
-      sessionStorage.setItem("rsToken", response.data.rsToken);
-      sessionStorage.setItem("roomsstayUserEmail", response.data.email);
-      sessionStorage.setItem("rsUserMobile", response.data.mobile);
+      localStorage.setItem("isSignedIn", "true");
+      localStorage.setItem("rsUserId", response.data.userId);
+      localStorage.setItem("rsToken", response.data.rsToken);
+      localStorage.setItem("roomsstayUserEmail", response.data.email);
+      localStorage.setItem("rsUserMobile", response.data.mobile);
       navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid OTP.");

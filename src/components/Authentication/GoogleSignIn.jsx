@@ -32,9 +32,9 @@ const Google = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      sessionStorage.setItem("isSignedIn", "true");
-      sessionStorage.setItem("loggedUser", JSON.stringify(user));
-      const storedLoggedUser = sessionStorage.getItem("loggedUser");
+      localStorage.setItem("isSignedIn", "true");
+      localStorage.setItem("loggedUser", JSON.stringify(user));
+      const storedLoggedUser = localStorage.getItem("loggedUser");
       const loggedUserObj = JSON.parse(storedLoggedUser);
       const originalData = loggedUserObj.providerData;
       const uid = originalData[0].uid;
@@ -69,12 +69,12 @@ const Google = () => {
       const data = await response.json();
       const { userId, rsToken, mobile } = data;
 
-      sessionStorage.setItem("rsUserId", userId);
-      sessionStorage.setItem("rsToken", rsToken);
-      sessionStorage.setItem("rsUserMobile", mobile);
-      sessionStorage.setItem("roomsstayUserEmail", GoogleEmail);
-      sessionStorage.setItem("roomsstayUserImage", images);
-      sessionStorage.setItem("roomsstayUserName", userName);
+      localStorage.setItem("rsUserId", userId);
+      localStorage.setItem("rsToken", rsToken);
+      localStorage.setItem("rsUserMobile", mobile);
+      localStorage.setItem("roomsstayUserEmail", GoogleEmail);
+      localStorage.setItem("roomsstayUserImage", images);
+      localStorage.setItem("roomsstayUserName", userName);
       const userDocRef = doc(db, "users", userId);
       await setDoc(userDocRef, { email: GoogleEmail }); // Changed to use GoogleEmail
     } catch (error) {

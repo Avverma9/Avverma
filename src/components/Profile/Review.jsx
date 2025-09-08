@@ -16,9 +16,9 @@ import { useLocation } from "react-router-dom";
 
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import baseURL from "../../utils/baseURL";
+import { useToast } from "../../utils/toast";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
 import ReviewSkeleton from "./reviewSkeleton";
-import { useToast } from "../../utils/toast";
 
 const StyledReviewCard = styled(Paper)(({ theme }) => ({
   position: "relative",
@@ -45,7 +45,6 @@ const getStarRating = (rating) => {
 };
 
 const ReviewCard = ({ reviewData, handleDelete }) => {
-  
   return (
     <StyledReviewCard>
       <Box display="flex" alignItems="center" mb={1.5}>
@@ -89,7 +88,7 @@ const ReviewCard = ({ reviewData, handleDelete }) => {
 };
 
 export default function Reviews() {
-  const toast = useToast()
+  const toast = useToast();
   const location = useLocation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +100,7 @@ export default function Reviews() {
     const fetchReviews = async () => {
       setLoading(true);
       try {
-        const userId = sessionStorage.getItem("rsUserId");
+        const userId = localStorage.getItem("rsUserId");
         if (!userId) {
           setError("Unauthorized");
           setLoading(false);

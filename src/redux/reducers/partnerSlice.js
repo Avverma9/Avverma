@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import baseURL from "../../utils/baseURL";
 
-const hotelId = sessionStorage.getItem("hotelId");
+const hotelId = localStorage.getItem("hotelId");
 // Define the async thunk for posting rooms
 export const postRooms = createAsyncThunk(
   "partner/postRooms",
@@ -25,7 +25,7 @@ export const sendNotification = createAsyncThunk(
   "partner/sendNotification",
   async (_, { rejectWithValue }) => {
     try {
-      const userName = sessionStorage.getItem("roomsstayUserName");
+      const userName = localStorage.getItem("roomsstayUserName");
       await axios.post(
         `${baseURL}/push-a-new-notification-to-the-panel/dashboard/user`,
         {

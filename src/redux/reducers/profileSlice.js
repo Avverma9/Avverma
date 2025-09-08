@@ -89,7 +89,7 @@ const profileSlice = createSlice({
         state.loading = false;
         if (action.payload.userImage?.length > 0) {
           const firstImageUrl = action.payload.userImage[0];
-          sessionStorage.setItem("userImage", firstImageUrl);
+          localStorage.setItem("userImage", firstImageUrl);
         }
       })
       .addCase(fetchProfileData.rejected, (state, action) => {

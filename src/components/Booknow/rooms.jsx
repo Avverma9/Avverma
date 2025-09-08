@@ -24,8 +24,8 @@ const Rooms = ({
   const newhotelId = path.substring(path.lastIndexOf("/") + 1);
   const dispatch = useDispatch();
   const { monthlyData } = useSelector((state) => state.booking);
-  const checkInDate = sessionStorage.getItem("selectedCheckInDate");
-  const checkOutDate = sessionStorage.getItem("selectedCheckOutDate");
+  const checkInDate = localStorage.getItem("selectedCheckInDate");
+  const checkOutDate = localStorage.getItem("selectedCheckOutDate");
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     return date.toISOString().split("T")[0];
@@ -191,7 +191,7 @@ const Rooms = ({
         })}
       </Grid>
       {overallLowestPrice !== Infinity &&
-        sessionStorage.setItem("lowestPrice", overallLowestPrice)}
+        localStorage.setItem("lowestPrice", overallLowestPrice)}
     </Box>
   );
 };

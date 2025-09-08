@@ -33,13 +33,13 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 
+import { useToast } from "../../utils/toast";
 import BookNowSkeleton from "./BookNowSkeleton";
 import HotelPolicyCard from "./policy-card";
-import { useToast } from "../../utils/toast";
 
 const BookNow = () => {
   const dispatch = useDispatch();
-  const toast = useToast()
+  const toast = useToast();
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
@@ -66,7 +66,7 @@ const BookNow = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { bookingData, monthlyData } = useSelector((state) => state.booking);
-  const compareRoomId = sessionStorage.getItem("toBeUpdatedRoomId");
+  const compareRoomId = localStorage.getItem("toBeUpdatedRoomId");
 
   const openLightbox = (index) => {
     setCurrentImageIndex(index);
@@ -112,8 +112,8 @@ const BookNow = () => {
 
   const handleAddRoom = (room) => {
     setSelectedRooms([room]);
-    sessionStorage.setItem("toBeUpdatedRoomId", room.roomId);
-    sessionStorage.setItem("toBeCheckRoomNumber", room.countRooms);
+    localStorage.setItem("toBeUpdatedRoomId", room.roomId);
+    localStorage.setItem("toBeCheckRoomNumber", room.countRooms);
     toast.info(`${room.type} is selected`);
   };
 
@@ -181,8 +181,8 @@ const BookNow = () => {
     return localDate.toISOString().split("T")[0];
   };
 
-  sessionStorage.setItem("selectedCheckInDate", formatDate(checkInDate));
-  sessionStorage.setItem("selectedCheckOutDate", formatDate(checkOutDate));
+  localStorage.setItem("selectedCheckInDate", formatDate(checkInDate));
+  localStorage.setItem("selectedCheckOutDate", formatDate(checkOutDate));
 
   useEffect(() => {
     if (newhotelId) {
@@ -211,8 +211,8 @@ const BookNow = () => {
 
         if (initialRoom) {
           setSelectedRooms([initialRoom]);
-          sessionStorage.setItem("toBeUpdatedRoomId", initialRoom.roomId);
-          sessionStorage.setItem("toBeCheckRoomNumber", initialRoom.countRooms);
+          localStorage.setItem("toBeUpdatedRoomId", initialRoom.roomId);
+          localStorage.setItem("toBeCheckRoomNumber", initialRoom.countRooms);
         }
       }
     }
@@ -353,14 +353,14 @@ const BookNow = () => {
             >
               <Typography variant="p4" component="h4" sx={{ fontWeight: 400 }}>
                 {hotelData?.hotelName}
-               <Chip
-                icon={<StarHalfSharp />}
-                label={hotelData?.starRating}
-                color="success"
-                size="small"
-                sx={{ fontSize: "0.85rem", fontWeight: 500 }}
-              /> </Typography>
-            
+                <Chip
+                  icon={<StarHalfSharp />}
+                  label={hotelData?.starRating}
+                  color="success"
+                  size="small"
+                  sx={{ fontSize: "0.85rem", fontWeight: 500 }}
+                />{" "}
+              </Typography>
             </Stack>
             <Stack
               direction="row"
@@ -469,7 +469,6 @@ const BookNow = () => {
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
-          
               {currentRoom?.offerPriceLess > 0 ? (
                 <Box>
                   <Stack direction="row" alignItems="center" spacing={1}>
@@ -542,7 +541,7 @@ const BookNow = () => {
                     fontWeight: 600,
                     color: "black",
                     backgroundColor: "#e4ded8",
-                    
+
                     px: 1.5,
                     py: 0.5,
                     display: "inline-block",
