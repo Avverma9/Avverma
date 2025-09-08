@@ -72,7 +72,7 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isLoggedIn = localStorage.getItem("isSignedIn");
+  const isLoggedIn = sessionStorage.getItem("isSignedIn");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -99,7 +99,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate("/login");
     handleMenuClose();
   };
