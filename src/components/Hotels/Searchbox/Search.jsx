@@ -216,11 +216,15 @@ const SearchForm = () => {
                     height: { xs: 44, md: 48 },
                     borderRadius: 2,
                     bgcolor: 'rgba(255,255,255,0.8)',
+                    // Added a default border
+                    border: '1px solid #d1d5db',
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     },
                     '&.Mui-focused': {
                       bgcolor: 'rgba(255,255,255,1)',
+                      // Improved border on focus
+                      border: '1px solid #667eea',
                       boxShadow: '0 0 0 2px rgba(102, 126, 234, 0.2)'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -259,11 +263,15 @@ const SearchForm = () => {
                     height: { xs: 44, md: 48 },
                     borderRadius: 2,
                     bgcolor: 'rgba(255,255,255,0.8)',
+                    // Added a default border
+                    border: '1px solid #d1d5db',
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     },
                     '&.Mui-focused': {
                       bgcolor: 'rgba(255,255,255,1)',
+                      // Improved border on focus with icon color
+                      border: '1px solid #10b981',
                       boxShadow: '0 0 0 2px rgba(16, 185, 129, 0.2)'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -306,11 +314,15 @@ const SearchForm = () => {
                     height: { xs: 44, md: 48 },
                     borderRadius: 2,
                     bgcolor: 'rgba(255,255,255,0.8)',
+                    // Added a default border
+                    border: '1px solid #d1d5db',
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     },
                     '&.Mui-focused': {
                       bgcolor: 'rgba(255,255,255,1)',
+                      // Improved border on focus with icon color
+                      border: '1px solid #f59e0b',
                       boxShadow: '0 0 0 2px rgba(245, 158, 11, 0.2)'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -356,11 +368,15 @@ const SearchForm = () => {
                     height: { xs: 44, md: 48 },
                     borderRadius: 2,
                     bgcolor: 'rgba(255,255,255,0.8)',
+                    // Added a default border
+                    border: '1px solid #d1d5db',
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     },
                     '&.Mui-focused': {
                       bgcolor: 'rgba(255,255,255,1)',
+                      // Improved border on focus with icon color
+                      border: '1px solid #8b5cf6',
                       boxShadow: '0 0 0 2px rgba(139, 92, 246, 0.2)'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -406,11 +422,15 @@ const SearchForm = () => {
                     height: { xs: 44, md: 48 },
                     borderRadius: 2,
                     bgcolor: 'rgba(255,255,255,0.8)',
+                    // Added a default border
+                    border: '1px solid #d1d5db',
                     '&:hover': {
                       bgcolor: 'rgba(255,255,255,0.95)',
                     },
                     '&.Mui-focused': {
                       bgcolor: 'rgba(255,255,255,1)',
+                      // Improved border on focus with icon color
+                      border: '1px solid #ef4444',
                       boxShadow: '0 0 0 2px rgba(239, 68, 68, 0.2)'
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -479,7 +499,7 @@ const SearchForm = () => {
               display: 'block'
             }}
           >
-           🔥 Popular destinations:
+            🔥 Popular destinations:
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 0.5, md: 0.75 } }}>
             {['Mumbai', 'Delhi', 'Goa', 'Jaipur'].map((city) => (
