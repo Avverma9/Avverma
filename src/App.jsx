@@ -32,11 +32,12 @@ import Hotel from './components/Hotels/pages/Hotel';
 import Hero from './components/landingPage/Hero';
 import Coupon from './components/Profile/coupon.jsx';
 import Policies from './components/Booknow/policies.jsx';
-import TourBooking from './components/Profile/tour-booking/tour-booking.jsx';
+
 import ScrollToTopButton from './utils/scrollToTop.jsx';
 import Careers from './components/careers/Careers.jsx';
 import { ToastProvider } from './utils/toast';
 import Cars from './components/Cabs/Cabs';
+import TourBookingPage from './components/Travels/tour-booking';
 
 function App() {
     return (
@@ -62,7 +63,7 @@ function App() {
                         {/* <Route path="/about" element={<NewComponent />} /> */}
                         <Route path='/policies' element={<Policies />} />
                         <Route path="/travellers" element={<Travel />} />
-                        <Route path="/travellers/booking/:id" element={<TravelBooking />} />
+                        <Route path="/travellers/booking/:id" element={<TourBookingPage />} />
                         <Route path="/partner" element={<PartnerForm />} />
                         <Route path="/travel-partner" element={<TravelForm />} />
                         <Route path="/partner/second-step" element={<PolicyForm />} />

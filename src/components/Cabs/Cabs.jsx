@@ -125,7 +125,7 @@ const CarCardSkeleton = () => (<Paper sx={{ display: 'flex', flexDirection: { xs
 const NoResults = () => (<Paper sx={{ textAlign: 'center', p: { xs: 4, sm: 8 }, borderRadius: 5, bgcolor: '#fff' }}><ErrorOutline sx={{ fontSize: 60, color: 'text.secondary' }} /><Typography variant="h6" mt={2}>No Rides Found</Typography><Typography color="text.secondary">Try adjusting your search to find your perfect ride.</Typography></Paper>);
 
 const SearchFields = ({ searchCriteria, handleCriteriaChange, handleSwapLocations }) => (
-    <Grid container spacing={2} alignItems="center">
+    <Grid container  alignItems="center">
         <Grid item xs={12} md={5.5}>
             <InputLabel sx={{ mb: 1, fontWeight: 500, color: 'text.primary' }}>Locations</InputLabel>
             <Stack direction="row" alignItems="center" spacing={1}>
@@ -137,7 +137,7 @@ const SearchFields = ({ searchCriteria, handleCriteriaChange, handleSwapLocation
         <Grid item xs={12} md={6.5}>
             <InputLabel sx={{ mb: 1, fontWeight: 500, color: 'text.primary' }}>Dates</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                     <Grid item xs={6}><DatePicker sx={{width: '100%'}} label="Pickup" value={searchCriteria.fromDate} onChange={(d) => handleCriteriaChange('fromDate', d)} /></Grid>
                     <Grid item xs={6}><DatePicker sx={{width: '100%'}} label="Dropoff" value={searchCriteria.toDate} onChange={(d) => handleCriteriaChange('toDate', d)} /></Grid>
                 </Grid>

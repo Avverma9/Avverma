@@ -271,7 +271,7 @@ const Header = () => {
             {isLoggedIn ? (
               <Tooltip title="Account Settings">
                 <IconButton onClick={handleMenuOpen} size="small">
-                  <Avatar sx={{ width: 42, height: 42, bgcolor: 'primary.main', color: 'white', transition: "transform 0.2s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
+                  <Avatar sx={{ width: 42, height: 42, bgcolor: 'grey', color: 'white', transition: "transform 0.2s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
                     <PersonIcon />
                   </Avatar>
                 </IconButton>

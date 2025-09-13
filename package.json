@@ -68,7 +68,7 @@
     "redux-thunk": "^3.1.0",
     "reduxjs-toolkit-persist": "^7.2.1",
     "slick-carousel": "^1.8.1",
-    "swiper": "^11.1.14",
+    "swiper": "^11.2.10",
     "web-vitals": "^4.2.3",
     "yet-another-react-lightbox": "^3.23.1"
   },
