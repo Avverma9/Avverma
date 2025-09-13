@@ -7,6 +7,7 @@ import locationReducer from './reducers/locationSlice';
 import partnerReducer from './reducers/partnerSlice';
 import complaintReducer from './reducers/complaintSlice';
 import travelReducer from './reducers/travelSlice';
+import carReducer from './reducers/car';
 import gstReducer from './reducers/gstSlice';
 import mailReducer from './reducers/mailSlice'; // Import the mail reducer
 // Combine reducers into a rootReducer
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
     travel: travelReducer,
     gst: gstReducer,
     mail:mailReducer, // Add the mail reducer
+    car:carReducer
 });
 
 export default rootReducer;

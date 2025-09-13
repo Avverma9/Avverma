@@ -36,6 +36,7 @@ import TourBooking from './components/Profile/tour-booking/tour-booking.jsx';
 import ScrollToTopButton from './utils/scrollToTop.jsx';
 import Careers from './components/careers/Careers.jsx';
 import { ToastProvider } from './utils/toast';
+import Cars from './components/Cabs/Cabs';
 
 function App() {
     return (
@@ -67,6 +68,7 @@ function App() {
                         <Route path="/partner/second-step" element={<PolicyForm />} />
                         <Route path="/partner/third-step" element={<AmenitiesPage />} />
                         <Route path="/coupons" element={<Coupon />} />
+                        <Route path='/cabs' element={<Cars />} />
                         <Route path="/partner/fourth-step" element={<PartnerFoods />} />
                         <Route path='/careers' element={<Careers/>}/>
                         <Route path="/partner/last-step" element={<PartnerRooms />} />

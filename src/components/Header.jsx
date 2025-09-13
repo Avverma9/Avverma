@@ -1,4 +1,8 @@
-import { LocalOffer, OfflineShareRounded } from "@mui/icons-material";
+import {
+  LocalOffer,
+  OfflineShareRounded,
+  LocalTaxi as LocalTaxiIcon,
+} from "@mui/icons-material";
 import BusinessIcon from "@mui/icons-material/Business";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -6,6 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+
 import {
   AppBar,
   Avatar,
@@ -29,37 +34,15 @@ import { styled, useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const AnimatedButton = styled(Button)(({ theme }) => ({
-  color: "black",
+const NavButton = styled(Button)(({ theme }) => ({
+  color: theme.palette.text.primary,
   fontWeight: 500,
   textTransform: "capitalize",
   fontSize: "1rem",
-  padding: "10px 20px",
-  borderRadius: "25px",
-  backgroundColor: "transparent",
-  border: `2px solid ${theme.palette.grey[800]}`,
-  position: "relative",
-  overflow: "hidden",
-  transition: "transform 0.3s ease-in-out",
+  padding: "8px 16px",
+  borderRadius: "12px",
   "&:hover": {
-    transform: "scale(1.05)",
-  },
-  "&::after": {
-    content: '""',
-    position: "absolute",
-    width: "10px",
-    height: "10px",
-    borderRadius: "50%",
-    backgroundColor: "#2196f3",
-    boxShadow: "0 0 5px #2196f3",
-    animation: "moveAlongBorder 4s linear infinite",
-  },
-  "@keyframes moveAlongBorder": {
-    "0%": { top: "5px", left: "-5px" },
-    "25%": { top: "-5px", left: "calc(100% - 5px)" },
-    "50%": { top: "calc(100% - 5px)", left: "calc(100% - 5px)" },
-    "75%": { top: "calc(100% - 5px)", left: "-5px" },
-    "100%": { top: "5px", left: "-5px" },
+    backgroundColor: theme.palette.action.hover,
   },
 }));
 
@@ -109,6 +92,7 @@ const Header = () => {
   }
 
   const navLinks = [
+    { text: "Cabs", icon: <LocalTaxiIcon />, path: "/cabs" },
     { text: "Holidays", icon: <TravelExploreIcon />, path: "/travellers" },
     { text: "List Property", icon: <BusinessIcon />, path: "/partner" },
     { text: "Travel Partner", icon: <BusinessIcon />, path: "/travel-partner" },
@@ -117,7 +101,7 @@ const Header = () => {
   const contactLink = {
     text: "Call Us",
     number: "9917991758",
-    icon: <PhoneIcon sx={{ mr: 1 }} />,
+    icon: <PhoneIcon />,
     path: "tel:9917991758",
   };
 
@@ -142,116 +126,106 @@ const Header = () => {
   const renderDesktopNav = () => (
     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
       {navLinks.map((link) => (
-        <AnimatedButton
+        <NavButton
           key={link.text}
           onClick={() => handleRedirect(link.path)}
+          startIcon={link.icon}
+          variant={location.pathname === link.path ? "contained" : "text"}
+          color="inherit"
+          sx={{
+            bgcolor: location.pathname === link.path ? 'action.selected' : 'transparent',
+          }}
         >
           {link.text}
-        </AnimatedButton>
+        </NavButton>
       ))}
     </Box>
   );
 
   const renderMobileDrawer = () => (
     <Drawer
-      anchor="right"
+      anchor="left"
       open={mobileMenuOpen}
       onClose={toggleMobileMenu}
       PaperProps={{
-        sx: { width: 280, borderTopLeftRadius: 20, borderBottomLeftRadius: 20 },
+        sx: {
+          width: 280,
+          borderTopRightRadius: 24,
+          borderBottomRightRadius: 24,
+          borderLeft: 0,
+          boxShadow: '0px 8px 40px -12px rgba(0,0,0,0.3)',
+          // Glassmorphism UI
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          backdropFilter: "blur(20px)",
+        },
       }}
     >
-      <Box role="presentation">
-        <Box
-          sx={{
-            p: 2,
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <img src="/logo.png" alt="Logo" style={{ height: 35 }} />
-          <IconButton onClick={toggleMobileMenu}>
-            <MenuIcon />
-          </IconButton>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        {/* Profile Header */}
+        <Box sx={{ p: 2, display: "flex", alignItems: "center" }}>
+           {isLoggedIn ? (
+             <Box sx={{display: 'flex', alignItems: 'center'}}>
+               
+                <Box onClick={() => handleRedirect("/")} sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+              <img src="/logo.png" alt="Logo" style={{ height: 45, verticalAlign: "middle" }}/>
+            </Box>
+             </Box>
+           ) : (
+             <Box sx={{flex: 1}}>
+                <Button fullWidth variant="contained" startIcon={<LoginIcon />} onClick={() => handleRedirect('/login')}>
+                    Login / Sign Up
+                </Button>
+             </Box>
+           )}
         </Box>
         <Divider />
-        <List>
-          {[
-            ...navLinks,
-            {
-              ...contactLink,
-              text: `${contactLink.text}: ${contactLink.number}`,
-            },
-          ].map((link) => (
+
+        {/* Navigation List */}
+        <List sx={{ flexGrow: 1, p: 1 }}>
+          {navLinks.map((link) => (
             <ListItem key={link.text} disablePadding>
               <ListItemButton
-                onClick={() => {
-                  handleRedirect(link.path);
-                  toggleMobileMenu();
+                onClick={() => handleRedirect(link.path)}
+                selected={location.pathname === link.path}
+                sx={{
+                  borderRadius: 3,
+                  mb: 0.5,
+                  '&.Mui-selected': {
+                    backgroundColor: 'primary.main',
+                    color: 'primary.contrastText',
+                    '& .MuiListItemIcon-root': {
+                      color: 'primary.contrastText',
+                    }
+                  }
                 }}
               >
-                <ListItemIcon sx={{ color: "text.secondary" }}>
-                  {link.icon}
-                </ListItemIcon>
-                <Typography variant="body1" fontWeight={500}>
-                  {link.text}
-                </Typography>
+                <ListItemIcon>{link.icon}</ListItemIcon>
+                <Typography fontWeight={500}>{link.text}</Typography>
               </ListItemButton>
             </ListItem>
           ))}
-          <Divider sx={{ my: 1 }} />
-          {isLoggedIn ? (
-            <>
-              {userMenuItems.map((item) => (
-                <ListItem key={item.text} disablePadding>
-                  <ListItemButton
-                    onClick={() => {
-                      handleRedirect(item.path);
-                      toggleMobileMenu();
-                    }}
-                  >
-                    <ListItemIcon sx={{ color: "text.secondary" }}>
-                      {item.icon}
-                    </ListItemIcon>
-                    <Typography variant="body1" fontWeight={500}>
-                      {item.text}
-                    </Typography>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-              <ListItem disablePadding>
-                <ListItemButton onClick={handleLogout}>
-                  <ListItemIcon sx={{ color: "error.main" }}>
-                    <LogoutIcon />
-                  </ListItemIcon>
-                  <Typography
-                    variant="body1"
-                    fontWeight={500}
-                    sx={{ color: "error.main" }}
-                  >
-                    Logout
-                  </Typography>
-                </ListItemButton>
-              </ListItem>
-            </>
-          ) : (
+        </List>
+        
+        {/* Footer with Logout */}
+        <Box>
+            <Divider />
+            <List sx={{p: 1}}>
             <ListItem disablePadding>
-              <ListItemButton onClick={() => handleRedirect("/login")}>
-                <ListItemIcon sx={{ color: "primary.main" }}>
-                  <LoginIcon />
-                </ListItemIcon>
-                <Typography
-                  variant="body1"
-                  fontWeight={500}
-                  sx={{ color: "primary.main" }}
-                >
-                  Login / Sign Up
-                </Typography>
+              <ListItemButton onClick={() => handleRedirect(contactLink.path)} sx={{borderRadius: 3}}>
+                <ListItemIcon>{contactLink.icon}</ListItemIcon>
+                <Typography fontWeight={500}>{contactLink.text}</Typography>
               </ListItemButton>
             </ListItem>
-          )}
-        </List>
+            {isLoggedIn && (
+                <ListItem disablePadding>
+                  <ListItemButton onClick={handleLogout} sx={{borderRadius: 3}}>
+                    <ListItemIcon sx={{ color: "error.main" }}><LogoutIcon /></ListItemIcon>
+                    <Typography fontWeight={500} sx={{ color: "error.main" }}>Logout</Typography>
+                  </ListItemButton>
+                </ListItem>
+            )}
+            </List>
+        </Box>
       </Box>
     </Drawer>
   );
@@ -267,96 +241,46 @@ const Header = () => {
           backdropFilter: headerScrolled ? "blur(16px)" : "none",
           boxShadow: headerScrolled ? "0px 4px 30px rgba(0,0,0,0.08)" : "none",
           color: "text.primary",
-          borderBottomLeftRadius: headerScrolled ? "20px" : "0px",
-          borderBottomRightRadius: headerScrolled ? "20px" : "0px",
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between", height: 80 }}>
-          <Box
-            onClick={() => handleRedirect("/")}
-            sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
-          >
-            <img
-              src="/logo.png"
-              alt="Logo"
-              style={{ height: 45, verticalAlign: "middle" }}
-            />
+        <Toolbar sx={{ height: 80 }}>
+          <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+            {isMobile && (
+              <IconButton onClick={toggleMobileMenu} edge="start" sx={{ mr: 1 }}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Box onClick={() => handleRedirect("/")} sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}>
+              <img src="/logo.png" alt="Logo" style={{ height: 45, verticalAlign: "middle" }}/>
+            </Box>
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            {!isMobile && renderDesktopNav()}
+          <Box sx={{ display: { xs: "none", lg: "flex" }, position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
+            {renderDesktopNav()}
+          </Box>
 
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ mx: 1, display: { xs: "none", md: "block" } }}
-            />
-
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             {!isMobile && (
-              <Button
-                variant="text"
-                onClick={() => handleRedirect(contactLink.path)}
-                startIcon={contactLink.icon}
-                sx={{ textTransform: "none", color: "text.secondary" }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <Typography variant="caption" sx={{ lineHeight: 1.2 }}>
-                    {contactLink.text}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ fontWeight: "bold", color: "text.primary" }}
-                  >
-                    {contactLink.number}
-                  </Typography>
+              <Button variant="text" onClick={() => handleRedirect(contactLink.path)} startIcon={contactLink.icon} sx={{ textTransform: "none", color: "text.secondary", mr: 1 }}>
+                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                  <Typography variant="caption" sx={{ lineHeight: 1.2 }}>{contactLink.text}</Typography>
+                  <Typography variant="body2" sx={{ fontWeight: "bold", color: "text.primary" }}>{contactLink.number}</Typography>
                 </Box>
               </Button>
             )}
-
             {isLoggedIn ? (
               <Tooltip title="Account Settings">
-                <IconButton
-                  onClick={handleMenuOpen}
-                  size="small"
-                  sx={{ ml: 1 }}
-                >
-                  <Avatar
-                    sx={{
-                      width: 42,
-                      height: 42,
-                      bgcolor: "black.main",
-                      transition: "transform 0.2s ease-in-out",
-                      "&:hover": { transform: "scale(1.1)" },
-                    }}
-                  >
+                <IconButton onClick={handleMenuOpen} size="small">
+                  <Avatar sx={{ width: 42, height: 42, bgcolor: 'primary.main', color: 'white', transition: "transform 0.2s ease-in-out", "&:hover": { transform: "scale(1.1)" } }}>
                     <PersonIcon />
                   </Avatar>
                 </IconButton>
               </Tooltip>
             ) : (
               !isMobile && (
-                <Button
-                  variant="contained"
-                  onClick={() => handleRedirect("/login")}
-                  startIcon={<LoginIcon />}
-                  sx={{
-                    borderRadius: "20px",
-                    textTransform: "none",
-                    boxShadow: "none",
-                    ml: 1,
-                  }}
-                >
-                  Login
-                </Button>
+                <Button variant="contained" onClick={() => handleRedirect("/login")} startIcon={<LoginIcon />} sx={{ borderRadius: "20px", textTransform: "none", boxShadow: "none" }}>Login</Button>
               )
             )}
-
             <Menu
               anchorEl={menuAnchor}
               open={Boolean(menuAnchor)}
@@ -370,46 +294,23 @@ const Header = () => {
                   borderRadius: "12px",
                   minWidth: 200,
                   "& .MuiMenuItem-root": { padding: "12px 16px" },
-                  "&:before": {
-                    content: '""',
-                    display: "block",
-                    position: "absolute",
-                    top: 0,
-                    right: 14,
-                    width: 10,
-                    height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
-                    zIndex: 0,
-                  },
+                  "&:before": { content: '""', display: "block", position: "absolute", top: 0, right: 14, width: 10, height: 10, bgcolor: "background.paper", transform: "translateY(-50%) rotate(45deg)", zIndex: 0 },
                 },
               }}
               transformOrigin={{ horizontal: "right", vertical: "top" }}
               anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
               {userMenuItems.map((item) => (
-                <MenuItem
-                  key={item.text}
-                  onClick={() => handleRedirect(item.path)}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  {item.text}
+                <MenuItem key={item.text} onClick={() => handleRedirect(item.path)}>
+                  <ListItemIcon>{item.icon}</ListItemIcon>{item.text}
                 </MenuItem>
               ))}
               <Divider sx={{ my: 0.5 }} />
               <MenuItem onClick={handleLogout} sx={{ color: "error.main" }}>
-                <ListItemIcon sx={{ color: "error.main" }}>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
+                <ListItemIcon sx={{ color: "error.main" }}><LogoutIcon fontSize="small" /></ListItemIcon>
                 {isLoggedIn ? "Logout" : "Login"}
               </MenuItem>
             </Menu>
-
-            {isMobile && (
-              <IconButton onClick={toggleMobileMenu} edge="end">
-                <MenuIcon />
-              </IconButton>
-            )}
           </Box>
         </Toolbar>
       </AppBar>

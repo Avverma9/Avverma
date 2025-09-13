@@ -1,52 +1,105 @@
 import * as React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
+// MUI Core Components
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
+import Paper from "@mui/material/Paper";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
-import HomeWorkTwoToneIcon from "@mui/icons-material/HomeWorkTwoTone";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
-import Paper from "@mui/material/Paper";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { MdOutlineTravelExplore } from "react-icons/md";
-import { useLocation } from "react-router-dom";
 
-export default function Bottom() {
-  const isSmallScreen = useMediaQuery("(max-width:600px)"); // Adjust the breakpoint as needed
-  const [value, setValue] = React.useState(2);
+// MUI Icons
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
+import LandscapeRoundedIcon from '@mui/icons-material/LandscapeRounded';
+
+
+export default function ModernBottomNavigation() {
+  const isSmallScreen = useMediaQuery("(max-width:768px)"); // Show on tablets as well
   const location = useLocation();
-  if (location.pathname === "/login" || location.pathname.includes("/register"))
+  const navigate = useNavigate();
+  const [value, setValue] = React.useState(0);
+
+  // Map routes to navigation values
+  const routeMap = {
+    "/travellers": 0,
+    "/": 1,
+    "/cabs": 2, // New route for Cabs
+    "/profile": 3,
+  };
+
+  // Sync active state with the current URL
+  React.useEffect(() => {
+    const currentPath = location.pathname;
+    const correspondingValue = routeMap[currentPath];
+    if (correspondingValue !== undefined) {
+      setValue(correspondingValue);
+    }
+  }, [location.pathname]);
+
+  // Hide navigation on login/register pages
+  if (location.pathname === "/login" || location.pathname.includes("/register")) {
     return null;
+  }
+  
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   if (isSmallScreen) {
     return (
-      <Box sx={{ pb: 7 }}>
-        <CssBaseline />
+      <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}>
         <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1000 }}
+          sx={{
+            margin: "0 16px 16px", // Creates the floating effect
+            borderRadius: "24px",   // Modern rounded corners
+            backdropFilter: "blur(10px)",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            boxShadow: '0px 4px 20px rgba(0,0,0,0.15)',
+          }}
           elevation={3}
         >
           <BottomNavigation
             showLabels
             value={value}
             onChange={(event, newValue) => {
-              setValue(newValue);
+              setValue(newValue); // Update state for immediate visual feedback
+            }}
+            sx={{
+              borderRadius: "24px",
+              backgroundColor: "transparent",
+              "& .MuiBottomNavigationAction-root": {
+                color: "#888",
+                transition: 'all 0.3s ease',
+              },
+              "& .Mui-selected": {
+                color: "primary.main",
+                "& .MuiSvgIcon-root, .MuiBottomNavigationAction-label": {
+                  color: "primary.main",
+                },
+              },
             }}
           >
             <BottomNavigationAction
-              href="/travellers"
               label="Holidays"
-              icon={<MdOutlineTravelExplore size={24} />}
+              icon={<LandscapeRoundedIcon />}
+              onClick={() => handleNavigation("/travellers")}
             />
             <BottomNavigationAction
-              href="/"
               label="Home"
-              icon={<HomeWorkTwoToneIcon />}
+              icon={<HomeRoundedIcon />}
+              onClick={() => handleNavigation("/")}
             />
             <BottomNavigationAction
-              href="/profile"
+              label="Cabs"
+              icon={<DirectionsCarFilledRoundedIcon />}
+              onClick={() => handleNavigation("/cabs")}
+            />
+            <BottomNavigationAction
               label="Profile"
-              icon={<AccountCircleIcon />}
+              icon={<AccountCircleRoundedIcon />}
+              onClick={() => handleNavigation("/profile")}
             />
           </BottomNavigation>
         </Paper>
