@@ -183,7 +183,7 @@ const ModernHeader = styled(Paper)(({ theme }) => ({
   overflow: "hidden",
   backgroundSize: "cover",
   backgroundPosition: "center",
-  backgroundImage: `url(https://avverma.s3.ap-south-1.amazonaws.com/pngtree-cartoon-creative-weekend-parent-child-tour-poster-background-material-picture-image_1075254.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARRSTFGSV74HCL27W%2F20250913%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T161353Z&X-Amz-Expires=3600&X-Amz-Signature=95ab7d147488e0b862872995fccb355ffbe72a4b9e8d5d90a3f6c6d6c9692419&X-Amz-SignedHeaders=host)`, // A nice travel background
+  backgroundImage: `url(https://avverma.s3.ap-south-1.amazonaws.com/pngtree-cartoon-creative-weekend-parent-child-tour-poster-background-material-picture-image_1075254.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARRSTFGSV74HCL27W%2F20250914%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Date=20250914T065406Z&X-Amz-Expires=3600&X-Amz-Signature=a4e202efe4caa585838aa9b37d785c291b1404aa5348d6481b0f4706c57d451d&X-Amz-SignedHeaders=host)`, // A nice travel background
 }));
 
 const HeaderOverlay = styled(Box)({
