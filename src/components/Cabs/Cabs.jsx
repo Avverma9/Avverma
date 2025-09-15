@@ -90,7 +90,7 @@ const CarCard = ({ car, onBookNow }) => {
                             </Stack>
                         </Box>
                         <Box textAlign="right">
-                            <Typography variant="h5" fontWeight={700} color="primary">₹{car.price.toLocaleString('en-IN')}</Typography>
+                            <Typography variant="h5" fontWeight={700} color="primary">₹{car?.price?.toLocaleString('en-IN')}</Typography>
                             <Typography variant="caption" color="text.secondary">Total price</Typography>
                         </Box>
                     </Stack>
