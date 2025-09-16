@@ -5,29 +5,31 @@ import Typography from "@mui/material/Typography";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { City, State } from "country-state-city";
 import baseURL from "../../../utils/baseURL";
 import alert from "../../../utils/custom_alert/custom_alert";
 import { fetchLocation } from "../../../utils/fetchLocation";
 import { useLoader } from "../../../utils/loader";
 import { Unauthorized, userId } from "../../../utils/Unauthorized";
 import Disclaimer from "./Disclaimer";
+
 const useStyles = makeStyles((theme) => ({
   form: {
     display: "flex",
     flexDirection: "column",
     maxWidth: "1400px",
     margin: "auto",
-    border: "5px solid blue", // Add border style here
+    border: "5px solid blue",
     padding: theme?.spacing(3),
     marginTop: theme?.spacing(4),
   },
   textarea: {
-    width: "100%", // Set the width as per your design
-    minHeight: "100px", // Set the height as per your design
+    width: "100%",
+    minHeight: "100px",
     padding: theme?.spacing(1),
-    resize: "vertical", // Allow vertical resizing
+    resize: "vertical",
   },
   input: {
     marginBottom: theme?.spacing(2),
@@ -48,14 +50,11 @@ export default function PartnerForm() {
   const [customerWelcomeNote, setCustomerWelcomeNote] = useState("");
   const [destination, setDestination] = useState("");
   const [startDate, setStartDate] = useState("");
-  const [contactError, setContactError] = useState(""); // State for contact validation error
-  const [generalManagerContactError, setGeneralManagerContactError] =
-    useState("");
+  const [contactError, setContactError] = useState("");
+  const [generalManagerContactError, setGeneralManagerContactError] = useState("");
   const [salesManagerContactError, setSalesManagerContactError] = useState("");
-  const [salesManagerContact, setSalesManagerContact] = useState(""); // State for generalManagerContact validation error
+  const [salesManagerContact, setSalesManagerContact] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
   const [landmark, setLandMark] = useState("");
   const [pinCode, setPinCode] = useState("");
   const [starRating, setStarRating] = useState("2");
@@ -64,6 +63,24 @@ export default function PartnerForm() {
   const [localId, setLocalId] = useState("");
   const [generalManagerContact, setGeneralManagerContact] = useState("");
   const [hotelEmail, setHotelEmail] = useState("");
+
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [selectedStateIsoCode, setSelectedStateIsoCode] = useState("");
+
+  const indianStates = useMemo(() => State.getStatesOfCountry('IN'), []);
+  const availableCities = useMemo(() =>
+    selectedStateIsoCode ? City.getCitiesOfState('IN', selectedStateIsoCode) : [],
+    [selectedStateIsoCode]
+  );
+
+  const handleStateChange = (e) => {
+    const isoCode = e.target.value;
+    setSelectedStateIsoCode(isoCode);
+    const selectedStateObject = indianStates.find(s => s.isoCode === isoCode);
+    setState(selectedStateObject ? selectedStateObject.name : "");
+    setCity("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -92,7 +109,6 @@ export default function PartnerForm() {
       formData.append("city", city);
       formData.append("landmark", landmark);
       formData.append("pinCode", pinCode);
-
       formData.append("starRating", starRating);
       formData.append("contact", contact);
       formData.append("propertyType", propertyType);
@@ -118,14 +134,10 @@ export default function PartnerForm() {
       if (response.status === 201) {
         const alertMessage = `${response.data.message}. Now you will be redirected to our next step.`;
         alert(alertMessage);
-
         localStorage.setItem("hotelId", response.data.data.hotelId);
         window.location.href = "/partner/second-step";
       } else if (response.status === 500) {
-        // Handle other status codes
-        alert(
-          "Not able to submit your request right now. Please try again later."
-        );
+        alert("Not able to submit your request right now. Please try again later.");
       }
     } catch (error) {
       alert("An error occurred. Please try again later.");
@@ -138,11 +150,6 @@ export default function PartnerForm() {
     setImages((prevImages) => [...prevImages, file]);
   };
 
-  //=====================terms & conditions=======================//
-  const sampleText =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget.";
-
-  const textArray = sampleText.split(". ");
   const propertyTypeOptions = [
     "Apartment",
     "Guest House",
@@ -186,6 +193,7 @@ export default function PartnerForm() {
       </div>
     );
   }
+
   return (
     <>
       <div
@@ -252,13 +260,11 @@ export default function PartnerForm() {
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   setContact(inputValue);
-
-                  // Validation: Check if the input is a valid number
                   const regex = /^[0-9]+$/;
                   if (!regex.test(inputValue)) {
                     setContactError("Please enter a valid contact.");
                   } else {
-                    setContactError(""); // Clear the error if input is valid
+                    setContactError("");
                   }
                 }}
                 error={Boolean(contactError)}
@@ -278,15 +284,13 @@ export default function PartnerForm() {
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   setGeneralManagerContact(inputValue);
-
-                  // Validation: Check if the input is a valid number
                   const regex = /^[0-9]+$/;
                   if (!regex.test(inputValue)) {
                     setGeneralManagerContactError(
-                      "Please enter a valid  General Manager Contact."
+                      "Please enter a valid General Manager Contact."
                     );
                   } else {
-                    setGeneralManagerContactError(""); // Clear the error if input is valid
+                    setGeneralManagerContactError("");
                   }
                 }}
                 error={Boolean(generalManagerContactError)}
@@ -306,15 +310,13 @@ export default function PartnerForm() {
                 onChange={(e) => {
                   const inputValue = e.target.value;
                   setSalesManagerContact(inputValue);
-
-                  // Validation: Check if the input is a valid number
                   const regex = /^[0-9]+$/;
                   if (!regex.test(inputValue)) {
                     setSalesManagerContactError(
-                      "Please enter a valid  Sales Manager Contact."
+                      "Please enter a valid Sales Manager Contact."
                     );
                   } else {
-                    setSalesManagerContactError(""); // Clear the error if input is valid
+                    setSalesManagerContactError("");
                   }
                 }}
                 error={Boolean(setSalesManagerContactError)}
@@ -356,22 +358,22 @@ export default function PartnerForm() {
                 value={starRating}
                 required
                 onChange={(e) => {
-                  const value = e.target.value; // Get the current input value as a string
+                  const value = e.target.value;
                   if (value === "") {
-                    setStarRating(""); // Allow empty value to clear the input
+                    setStarRating("");
                   } else {
-                    const newValue = parseInt(value, 10); // Convert to integer
+                    const newValue = parseInt(value, 10);
                     if (newValue <= 5 && newValue >= 0) {
-                      setStarRating(newValue); // Set the value if within range
+                      setStarRating(newValue);
                     } else if (newValue > 5) {
-                      setStarRating(5); // Limit to maximum 5
+                      setStarRating(5);
                     } else if (newValue < 0) {
-                      setStarRating(0); // Prevent negative values
+                      setStarRating(0);
                     }
                   }
                 }}
-                max="5" // HTML attribute to limit input via UI
-                min="0" // HTML attribute to prevent negative numbers
+                max="5"
+                min="0"
               />
             </div>
             <div className="col-md-4 mb-3">
@@ -388,30 +390,45 @@ export default function PartnerForm() {
               />
             </div>
             <div className="col-md-4 mb-3">
-              <label htmlFor="department" className="form-label">
-                City of Your hotel
-              </label>
-              <input
-                type="text"
-                id="landmark2"
-                required
-                className="form-control"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-            </div>
-            <div className="col-md-4 mb-3">
-              <label htmlFor="annualRevenue" className="form-label">
+              <label htmlFor="state" className="form-label">
                 State (In which state your hotel is)
               </label>
-              <input
-                type="text"
-                id="landmark2"
-                className="form-control"
-                value={state}
+              <select
+                id="state"
                 required
-                onChange={(e) => setState(e.target.value)}
-              />
+                className="form-select"
+                value={selectedStateIsoCode}
+                onChange={handleStateChange}
+              >
+                <option value="" disabled>Select a State</option>
+                {indianStates.map((state) => (
+                  <option key={state.isoCode} value={state.isoCode}>
+                    {state.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-md-4 mb-3">
+              <label htmlFor="city" className="form-label">
+                City of Your hotel
+              </label>
+              <select
+                id="city"
+                required
+                className="form-select"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                disabled={!selectedStateIsoCode}
+              >
+                <option value="" disabled>
+                  {selectedStateIsoCode ? 'Select a City' : 'Select a state first'}
+                </option>
+                {availableCities.map((city) => (
+                  <option key={city.name} value={city.name}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="col-md-4 mb-3">
               <label htmlFor="buyingRole" className="form-label">
@@ -517,7 +534,6 @@ export default function PartnerForm() {
                     <label htmlFor="" style={{ flex: "0 0 300px" }}>
                       {input.label}
                     </label>{" "}
-                    {/* Adjust width as needed */}
                     <input
                       className="form-control"
                       type="file"
@@ -529,7 +545,7 @@ export default function PartnerForm() {
                         border: "2px dashed #007bff",
                         padding: "10px",
                         borderRadius: "0.5rem",
-                        flexGrow: 1, // Allow the input to take available space
+                        flexGrow: 1,
                       }}
                     />
                     <Button
@@ -568,7 +584,7 @@ export default function PartnerForm() {
           <Button type="submit" variant="contained" color="primary">
             Next
           </Button>
-          <hr />
+
         </form>
       </div>
     </>

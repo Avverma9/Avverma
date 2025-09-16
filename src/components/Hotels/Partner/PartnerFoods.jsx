@@ -140,6 +140,7 @@ export default function PartnerFoods() {
 
   return (
     <ThemeProvider theme={theme}>
+      
       <Box
         sx={{
           minHeight: { xs: "auto", sm: "100vh" },
@@ -160,7 +161,9 @@ export default function PartnerFoods() {
               borderRadius: 4,
               border: "1px solid rgba(255, 255, 255, 0.4)",
             }}
-          >
+          ><Typography variant="h4" component="h1" align="center" gutterBottom>
+        Add Food Items
+      </Typography>
             <Stack spacing={2}>
               <Typography variant="p4" component="h6" align="center">
                 Manage food items for your hotel Add food items to your hotel to

@@ -9,7 +9,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
   FormControl,
   Grid,
   IconButton,
@@ -104,9 +103,6 @@ const BookingPage = ({
             Booking Summary
           </Typography>
         </Stack>
-
-        <Divider sx={{ mb: 2 }} />
-
         {/* Room Details */}
         <Box mb={2} >
           <Typography variant="subtitle2" fontWeight="bold" color="primary">
@@ -139,7 +135,7 @@ const BookingPage = ({
         <Typography fontSize={12} color="text.secondary" mb={1}>
           * Max: 3 guests per 1 room booking
         </Typography>
-        <Divider />
+      
         <br />
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -532,7 +528,6 @@ const BookingPage = ({
           </Box>
 
           {/* Price Summary */}
-          <Divider sx={{ my: 3 }} />
           <Box textAlign="right">
             {discountPrice > 0 && (
               <Typography color="error" fontSize={14}>

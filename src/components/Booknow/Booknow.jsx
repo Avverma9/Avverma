@@ -36,6 +36,7 @@ import Stack from "@mui/material/Stack";
 import { useToast } from "../../utils/toast";
 import BookNowSkeleton from "./BookNowSkeleton";
 import HotelPolicyCard from "./policy-card";
+import AdvancedImageGallery from "./ImageGallery";
 
 const BookNow = () => {
   const dispatch = useDispatch();
@@ -375,8 +376,8 @@ const BookNow = () => {
               </Typography>
             </Stack>
           </Grid>
-
-          {hotelData?.images?.length > 0 && (
+          <AdvancedImageGallery hotelData={hotelData} />
+          {/* {hotelData?.images?.length > 0 && (
             <Grid item xs={12}>
               <Carousel>
                 {hotelData.images.map((image, index) => (
@@ -443,7 +444,7 @@ const BookNow = () => {
                         onClick={() =>
                           setCurrentImageIndex(
                             (currentImageIndex + hotelData.images.length - 1) %
-                              hotelData.images.length
+                            hotelData.images.length
                           )
                         }
                         sx={navButtonStyle("left")}
@@ -465,7 +466,7 @@ const BookNow = () => {
                 </Box>
               </Modal>
             </Grid>
-          )}
+          )} */}
 
           <Grid item xs={12} md={8}>
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
@@ -667,9 +668,7 @@ const BookNow = () => {
             <Box sx={{ py: 3, borderBottom: 1, borderColor: "divider" }}>
               <HotelPolicyCard hotelData={hotelData} />
             </Box>
-            <Box sx={{ mt: { xs: 2, md: 3 } }}>
-              <BookingReview hotelId={hotelData?.hotelId} />
-            </Box>
+
           </Grid>
 
           <Grid item xs={12} md={4}>
@@ -701,6 +700,12 @@ const BookNow = () => {
               />
             </Box>
           </Grid>
+          <Grid item xs={12}>
+            <Box sx={{ mt: { xs: 2, md: 3 } }}>
+              <BookingReview hotelId={hotelData?.hotelId} />
+            </Box>
+          </Grid>
+
         </Grid>
       )}
     </Container>

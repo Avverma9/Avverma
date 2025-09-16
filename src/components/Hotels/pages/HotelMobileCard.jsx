@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './HotelMobileCard.css';
 import MobileSearchBox from '../Searchbox/MobileSearchBox';
-import NotFoundPage from '../../../utils/Not-found';
+// NotFoundPage import is no longer needed if not used elsewhere
+// import NotFoundPage from '../../../utils/Not-found'; 
 import { userId } from '../../../utils/Unauthorized';
 import { Button, Skeleton, Stack } from '@mui/material';
 import { useLocation } from 'react-router-dom';
@@ -27,17 +28,15 @@ const HotelMobileCard = ({ hotelData }) => {
         window.location.href = `/book-hotels/${userId}/${hotelID}`;
     };
 
-    const loading = !hotelData || hotelData.length === 0;
+    const loading = hotelData === null || hotelData === undefined;
 
-    // Dispatch GST based on max room price from all hotels
     useEffect(() => {
         if (hotelData && hotelData.length > 0) {
             const allRoomPrices = hotelData.flatMap(hotel => hotel.rooms?.map(room => room.price) || []);
             const maxRoomPrice = Math.max(...allRoomPrices);
 
             if (maxRoomPrice) {
-               
-                dispatch(getGst({type: "Hotel", gstThreshold: maxRoomPrice})); // Dispatching GST with type and threshold
+                dispatch(getGst({ type: "Hotel", gstThreshold: maxRoomPrice }));
             }
         }
     }, [hotelData, dispatch]);
@@ -86,7 +85,8 @@ const HotelMobileCard = ({ hotelData }) => {
                     ))}
                 </Stack>
             ) : hotelData.length === 0 ? (
-                <NotFoundPage />
+                // When no data is found, render nothing
+                null
             ) : (
                 hotelData.map((hotel, index) => {
                     const mainRoomPrice = hotel?.rooms?.[0]?.price || 0;
@@ -121,7 +121,6 @@ const HotelMobileCard = ({ hotelData }) => {
                                 {
                                     mainRoomGst.toFixed(0) > 0 && <p className="tax-info">({mainRoomGst.toFixed(0)} included as taxes & fees)</p>
                                 }
-
                                 <Button
                                     className="toggle-button"
                                     onClick={(e) => {
