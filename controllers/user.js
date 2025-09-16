@@ -86,8 +86,9 @@ const getUserById = async function (req, res) {
 const GoogleSignIn = async function (req, res) {
     try {
         const { email, uid, userName, images } = req.body;
-        if (email) {
-            const existingCoupon = await UserCoupon.find({ assignedTo: email });
+        const emailRegex = new RegExp(`^${email}$`, 'i');
+        if (emailRegex) {
+            const existingCoupon = await UserCoupon.find({ assignedTo: emailRegex });
 
             if (!existingCoupon) {
                 const currentDate = new Date();
@@ -98,12 +99,12 @@ const GoogleSignIn = async function (req, res) {
                     discountPrice: 50,
                     validity,
                     quantity: 1,
-                    assignedTo: email,
+                    assignedTo: emailRegex,
                 });
             }
         }
         // Check if the user already exists based on email or UID
-        const existingUser = await userModel.findOne({ $or: [{ email }, { uid }] });
+        const existingUser = await userModel.findOne({ $or: [{ email: emailRegex }, { uid }] });
 
         if (existingUser) {
             // If user already exists, generate a JWT token
@@ -131,31 +132,18 @@ const GoogleSignIn = async function (req, res) {
 
 const signIn = async function (req, res) {
     const { email, password } = req.body;
-
-    try {
-        // Find user by email
-        const user = await userModel.findOne({ email });
-
-        // If user does not exist
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
-
-        // Check if the provided password matches the stored password
-        if (user.password !== password) {
-            return res.status(401).json({ message: 'Invalid email or password' });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
-
-        // Return success response with token
-        res.status(200).json({ message: 'Sign-in successful', userId: user.userId, mobile:user.mobile,email:user.email, rsToken: token });
-    } catch (error) {
-        console.error('Sign-in error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+    const emailRegex = new RegExp(`^${email}$`, 'i');
+    const user = await userModel.findOne({ email: { $regex: emailRegex } });
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid email or password' });
     }
+    if (user.password !== password) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
+    const token = jwt.sign({ id: user.userId }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    res.status(200).json({ message: 'Sign-in successful', userId: user.userId, mobile: user.mobile, email: user.email, rsToken: token });
 };
+
 
 //==========================get count of users===========================//
 const totalUser = async function (req, res) {
