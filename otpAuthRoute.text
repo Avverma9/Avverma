@@ -1,0 +1,57 @@
+const express = require("express");
+const router = express.Router();
+const { parsePhoneNumberWithError } = require('libphonenumber-js');
+const user = require("../models/user");
+const { sendOtp, verifyOtp } = require("../smsAndMail/otpAuth");
+
+
+router.post("/send-otp", async (req, res) => {
+  const { phoneNumber } = req.body;
+  if (!phoneNumber) {
+    return res.status(400).json({ success: false, error: "Phone number is required" });
+  }
+
+  let parsed;
+  try {
+    parsed = parsePhoneNumberWithError(phoneNumber);
+  } catch (e) {
+    return res.status(400).json({ success: false, error: "Invalid phone number format" });
+  }
+
+  const nationalNumber = parsed.nationalNumber;
+
+  try {
+    const checkExisting = await user.findOne({ mobile: { $regex: `${nationalNumber}$` } });
+    if (!checkExisting) {
+      return res.status(404).json({ success: false, error: 'Phone number not registered' });
+    }
+  } catch (err) {
+    console.error("Database error:", err);
+    return res.status(500).json({ success: false, error: "Database error" });
+  }
+
+  try {
+    const response = await sendOtp(phoneNumber);
+    res.json(response);
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    res.status(500).json({ success: false, error: "Failed to send OTP" });
+  }
+});
+
+router.post("/verify-otp", async (req, res) => {
+  const { phoneNumber, code } = req.body;
+  if (!phoneNumber || !code) {
+    return res.status(400).json({ success: false, error: "Phone number and code are required" });
+  }
+
+  try {
+    const response = await verifyOtp(phoneNumber, code);
+    res.json(response);
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    res.status(500).json({ success: false, error: "Failed to verify OTP" });
+  }
+});
+
+module.exports = router;
