@@ -52,19 +52,17 @@ const HotelPolicyCard = ({ hotelData }) => {
     lineHeight: 1.4,
     wordBreak: "break-word",
     overflowWrap: "anywhere",
+    whiteSpace: "normal",
   };
 
-  // UPDATED FUNCTION to format text as a bulleted list and remove blank lines
   const renderPolicyList = (label, icon, value, limit) => {
-    if (!value || !value.trim()) return null;
+    if (!value) return null;
+    const items = value
+      .split("•")
+      .filter((item) => item.trim())
+      .slice(0, limit || undefined);
 
-    // Step 1: Text ko newline se split karein aur extra blank lines hata dein
-    const lines = value.split("\n").filter((line) => line.trim() !== "");
-
-    if (lines.length === 0) return null;
-
-    // Step 2: Agar limit hai to utni hi lines lein
-    const limitedLines = limit ? lines.slice(0, limit) : lines;
+    if (items.length === 0) return null;
 
     return (
       <Box mt={1.5}>
@@ -72,43 +70,33 @@ const HotelPolicyCard = ({ hotelData }) => {
           {icon}
           <Typography sx={textPrimarySx}>{label}</Typography>
         </Stack>
-        {/* Step 3: ul aur li ka istemal karke list banayein */}
         <Box component="ul" sx={{ pl: 2, m: 0 }}>
-          {limitedLines.map((line, idx) => (
+          {items.map((item, idx) => (
             <Typography key={idx} component="li" sx={textSecondarySx}>
-              {/* Step 4: Har line ke aage bullet point (•) lagayein */}
-              {line.trim()}
+              {item.trim()}
             </Typography>
           ))}
-          {/* Agar lines limit se zyada hain, to '...' dikhayein */}
-          {limit && lines.length > limit && (
-            <Typography component="li" sx={textSecondarySx}>
-              ...
-            </Typography>
-          )}
         </Box>
       </Box>
     );
   };
 
-  // Simple text render karne ke liye (Check-in/Check-out time ke liye)
-  const renderSimpleText = (label, icon, value) => {
-    if (!value || !value.trim()) return null;
-    return (
-      <Box mt={1.5}>
-        <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
-          {icon}
-          <Typography sx={textPrimarySx}>{label}</Typography>
-        </Stack>
-        <Typography sx={{ ...textSecondarySx, ml: 0.5 }}>
-          {value.trim()}
-        </Typography>
-      </Box>
-    );
-  };
+  // ✅ Deduplicate policies by stringified content
+  const uniquePolicies = React.useMemo(() => {
+    if (!Array.isArray(hotelData?.policies)) return [];
+
+    const seen = new Set();
+    return hotelData.policies.filter((policy) => {
+      const str = JSON.stringify(policy);
+      if (seen.has(str)) return false;
+      seen.add(str);
+      return true;
+    });
+  }, [hotelData]);
 
   return (
     <Box>
+      {/* Header */}
       <Box sx={{ textAlign: "center", mb: 2 }}>
         <Typography
           component="h3"
@@ -128,24 +116,27 @@ const HotelPolicyCard = ({ hotelData }) => {
         </Typography>
       </Box>
 
-      {hotelData?.policies?.map((policy, index) => (
+      {/* Policy Cards */}
+      {uniquePolicies.map((policy, index) => (
         <Paper key={index} elevation={0} sx={cardSx}>
+          {/* Title */}
           <Stack direction="row" alignItems="center" mb={1}>
             <Policy sx={titleIconSx} />
             <Typography sx={subTitleSx}>Guest Policies</Typography>
           </Stack>
           <Divider sx={{ mb: 1.5 }} />
 
+          {/* Check-in / Check-out */}
           <Grid container spacing={1.5}>
             <Grid item xs={12} sm={6}>
-              {renderSimpleText(
+              {renderPolicyList(
                 "Check-In",
                 <AccessTime sx={detailIconSx} />,
                 policy.checkInPolicy
               )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              {renderSimpleText(
+              {renderPolicyList(
                 "Check-Out",
                 <AccessTime sx={detailIconSx} />,
                 policy.checkOutPolicy
@@ -153,6 +144,7 @@ const HotelPolicyCard = ({ hotelData }) => {
             </Grid>
           </Grid>
 
+          {/* Couples Allowed / Local ID */}
           <Grid container spacing={1.5} mt={0.5}>
             <Grid item xs={12} sm={6}>
               <Stack direction="row" spacing={0.5} alignItems="center">
@@ -176,27 +168,28 @@ const HotelPolicyCard = ({ hotelData }) => {
                 )}
                 <Typography sx={textPrimarySx}>Local ID:</Typography>
                 <Typography sx={textSecondarySx}>
-                  {hotelData?.localId === "Accepted"
-                    ? "Accepted"
-                    : "Not Accepted"}
+                  {hotelData?.localId === "Accepted" ? "Accepted" : "Not Accepted"}
                 </Typography>
               </Stack>
             </Grid>
           </Grid>
 
+          {/* Hotel Rules */}
           {renderPolicyList(
             "Hotel Rules",
             <Groups sx={detailIconSx} />,
             policy.hotelsPolicy,
-            2 // limit
+            2
           )}
 
+          {/* Cancellation */}
           {renderPolicyList(
             "Cancellation",
             <InfoOutlined sx={detailIconSx} />,
             policy.cancellationPolicy
           )}
 
+          {/* View Full Policies Button */}
           <Box mt={1.5} display="flex" justifyContent="flex-end">
             <Button
               variant="outlined"

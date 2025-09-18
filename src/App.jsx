@@ -34,10 +34,12 @@ import Coupon from './components/Profile/coupon.jsx';
 import Policies from './components/Booknow/policies.jsx';
 
 import ScrollToTopButton from './utils/scrollToTop.jsx';
-import Careers from './components/careers/Careers.jsx';
+import Careers from './components/extras/Careers.jsx';
 import { ToastProvider } from './utils/toast';
 import Cars from './components/Cabs/Cabs';
 import TourBookingPage from './components/Travels/tour-booking';
+import AboutPage from './components/extras/About';
+import ContactPage from './components/extras/Contact';
 
 function App() {
     return (
@@ -62,6 +64,9 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         {/* <Route path="/about" element={<NewComponent />} /> */}
                         <Route path='/policies' element={<Policies />} />
+                        <Route path='/about' element={<AboutPage/>}/>
+                        <Route path='/contact' element={<ContactPage/>}/>
+
                         <Route path="/travellers" element={<Travel />} />
                         <Route path="/travellers/booking/:id" element={<TourBookingPage />} />
                         <Route path="/partner" element={<PartnerForm />} />
