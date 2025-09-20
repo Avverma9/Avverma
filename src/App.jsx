@@ -40,6 +40,7 @@ import Cars from './components/Cabs/Cabs';
 import TourBookingPage from './components/Travels/tour-booking';
 import AboutPage from './components/extras/About';
 import ContactPage from './components/extras/Contact';
+import CabsBooking from './components/Cabs/CabBooking';
 
 function App() {
     return (
@@ -69,6 +70,7 @@ function App() {
 
                         <Route path="/travellers" element={<Travel />} />
                         <Route path="/travellers/booking/:id" element={<TourBookingPage />} />
+                        <Route path="/cab-booking/:id" element={<CabsBooking />} />
                         <Route path="/partner" element={<PartnerForm />} />
                         <Route path="/travel-partner" element={<TravelForm />} />
                         <Route path="/partner/second-step" element={<PolicyForm />} />

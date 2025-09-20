@@ -1,137 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { styles } from './styles';
+import { useDispatch } from 'react-redux';
+import { getAllCars } from '../../redux/reducers/car';
+import { useNavigate } from 'react-router-dom';
 
-// --- Data ---
-// Cab data in JSON format.
-const initialCabData = [
-    {
-        "_id": "6820303682dbb7a994ef97e8",
-        "make": "Plymouth",
-        "model": "Sundance/Duster",
-        "vehicleNumber": "BR-201421F",
-        "images": [],
-        "year": 2020,
-        "pickupP": "Patna",
-        "dropP": "Gaya",
-        "seater": 5,
-        "runningStatus": "Available",
-        "seatConfig": [
-            { "seatType": "AC", "seatNumber": 1, "isBooked": true, "seatPrice": 1800, "bookedBy": "Ankit ", "_id": "68594b9bdced8e1bd79a0e99" },
-            { "seatType": "Non-AC", "seatNumber": 2, "isBooked": true, "seatPrice": 2500, "bookedBy": "ss", "_id": "685ad1be7a9e70b2e765a1db" },
-            { "seatType": "AC", "seatNumber": 3, "isBooked": true, "seatPrice": 3000, "bookedBy": "Ankit verma", "_id": "685ae2e17a9e70b2e765b7fc" },
-            { "seatType": "AC", "seatNumber": 4, "isBooked": true, "seatPrice": 3000, "bookedBy": "Ankit", "_id": "685ae3237a9e70b2e765b889" },
-            { "seatType": "AC", "seatNumber": 5, "isBooked": true, "seatPrice": 3000, "bookedBy": "Normal", "_id": "685ae3897a9e70b2e765b92f" }
-        ],
-        "extraKm": 50,
-        "perPersonCost": 597,
-        "pickupD": "2025-06-23T21:00:00.000Z",
-        "dropD": "2025-06-26T10:02:00.000Z",
-        "price": 1200,
-        "color": "Red",
-        "mileage": 100,
-        "fuelType": "Petrol",
-        "transmission": "Automatic",
-        "ownerId": "66751804def0b0b1d2f0d672",
-        "isAvailable": true,
-        "dateAdded": "2025-05-11T05:05:58.554Z",
-        "__v": 0
-    },
-    {
-        "_id": "6820307f82dbb7a994ef97f5",
-        "make": "Hyundai",
-        "model": "Accent",
-        "vehicleNumber": "BR414514E",
-        "images": ["https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"],
-        "year": 2021,
-        "pickupP": "Patna",
-        "dropP": "Delhi",
-        "seater": 1,
-        "runningStatus": "Available",
-        "seatConfig": [],
-        "extraKm": 25,
-        "perPersonCost": 1200,
-        "pickupD": "2025-05-11T13:36:00.000Z",
-        "dropD": "2025-05-12T10:36:00.000Z",
-        "price": 2700,
-        "color": "Red",
-        "mileage": 100,
-        "fuelType": "Petrol",
-        "transmission": "Automatic",
-        "ownerId": "66751804def0b0b1d2f0d672",
-        "isAvailable": true,
-        "dateAdded": "2025-05-11T05:07:11.026Z",
-        "__v": 0
-    },
-    {
-        "_id": "6820557682dbb7a994ef9bc2",
-        "make": "Ford",
-        "model": "LTD Crown Victoria",
-        "vehicleNumber": "HR82-2154S",
-        "images": [
-            "https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-        ],
-        "year": 2021,
-        "pickupP": "Lucknow",
-        "dropP": "Jaipur",
-        "seater": 9,
-        "runningStatus": "Available",
-        "seatConfig": [
-            { "seatType": "AC", "seatNumber": 1, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc3" },
-            { "seatType": "AC", "seatNumber": 2, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc4" },
-            { "seatType": "AC", "seatNumber": 3, "isBooked": false, "seatPrice": 530, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc5" },
-            { "seatType": "AC", "seatNumber": 4, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc6" },
-            { "seatType": "AC", "seatNumber": 5, "isBooked": false, "seatPrice": 530, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc7" },
-            { "seatType": "", "seatNumber": 6, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc8" },
-            { "seatType": "AC", "seatNumber": 7, "isBooked": true, "seatPrice": 500, "bookedBy": "Praveen Gupta ", "_id": "6820557682dbb7a994ef9bc9" },
-            { "seatType": "AC", "seatNumber": 8, "isBooked": true, "seatPrice": 500, "bookedBy": "Ankit verma", "_id": "6820557682dbb7a994ef9bca" },
-            { "seatType": "AC", "seatNumber": 9, "isBooked": true, "seatPrice": 501, "bookedBy": "Praveen ", "_id": "6820557682dbb7a994ef9bcb" }
-        ],
-        "extraKm": 15,
-        "perPersonCost": 300,
-        "pickupD": "2025-09-23T13:30:00.000Z",
-        "dropD": "2025-09-24T07:30:00.000Z",
-        "price": 850,
-        "color": "Black",
-        "mileage": 10,
-        "fuelType": "Diesel",
-        "transmission": "Manual",
-        "ownerId": "66b5f475d19a3dcaaad081eb",
-        "isAvailable": true,
-        "dateAdded": "2025-05-11T07:44:54.083Z",
-        "__v": 0
-    },
-    {
-        "_id": "685ae6017a9e70b2e765baf2",
-        "make": "Ford",
-        "model": "Escape FWD",
-        "vehicleNumber": "BR-1424ER",
-        "images": [],
-        "year": 2025,
-        "pickupP": "Delhi",
-        "dropP": "Ahmedabad",
-        "seater": 4,
-        "runningStatus": "Available",
-        "seatConfig": [
-            { "seatType": "AC", "seatNumber": 1, "isBooked": true, "seatPrice": 1000, "bookedBy": "Raja", "_id": "685ae6017a9e70b2e765baf3" },
-            { "seatType": "AC", "seatNumber": 2, "isBooked": true, "seatPrice": 1060, "bookedBy": "ds", "_id": "685ae6017a9e70b2e765baf4" },
-            { "seatType": "Non-AC", "seatNumber": 3, "isBooked": true, "seatPrice": 800, "bookedBy": "Ankit Kumar Verma", "_id": "685ae6017a9e70b2e765baf5" },
-            { "seatType": "Non-AC", "seatNumber": 4, "isBooked": true, "seatPrice": 800, "bookedBy": "Ajay", "_id": "685ae6017a9e70b2e765baf6" }
-        ],
-        "extraKm": 50,
-        "perPersonCost": 800,
-        "pickupD": "2025-06-24T23:22:00.000Z",
-        "dropD": "2025-06-26T23:22:00.000Z",
-        "price": 2000,
-        "color": "Red",
-        "mileage": 47,
-        "fuelType": "Electric",
-        "transmission": "Automatic",
-        "ownerId": "66751804def0b0b1d2f0d672",
-        "isAvailable": true,
-        "dateAdded": "2025-06-24T17:53:05.625Z",
-        "__v": 0
-    }
-];
 
 // --- SVG Icons ---
 const FilterIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
@@ -153,8 +25,12 @@ const formatDateForInput = (dateString) => {
 
 // --- Sub-Components ---
 const CabCard = ({ cab }) => {
+    const navigate =useNavigate()
     const availableSeats = cab.seater - cab.seatConfig.filter(s => s.isBooked).length;
     const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(" ", "+")}`;
+const viewDetails = (id)=>{
+    navigate(`/cab-booking/${id}`);
+}
 
     return (
         <div className="cab-card">
@@ -170,7 +46,7 @@ const CabCard = ({ cab }) => {
                     <div><span className="detail-icon">📅</span><strong>Drop:</strong> {formatDate(cab.dropD)}</div>
                 </div>
                 <div className="cab-card-tags"><span><span className="tag-icon">⛽</span>{cab.fuelType}</span><span><span className="tag-icon">👤</span>{cab.seater} Seater</span></div>
-                <div className="cab-card-footer"><p className="cab-card-price">₹{cab.perPersonCost}<span>/person</span></p><button className="cab-card-button" disabled={availableSeats <= 0}>View Details</button></div>
+                <div onClick={() => viewDetails(cab._id)} className="cab-card-footer"><p className="cab-card-price">₹{cab.perPersonCost}<span>/person</span></p><button className="cab-card-button" disabled={availableSeats <= 0}>View Details</button></div>
             </div>
         </div>
     );
@@ -238,13 +114,14 @@ const SkeletonCard = () => (<div className="cab-card skeleton"><div className="c
 
 // --- Main CarsPage Component ---
 export default function CarsPage() {
-    const [cabs] = useState(initialCabData);
+    const [cabs,setCabs] = useState([]);
+    
     const [filteredCabs, setFilteredCabs] = useState([]);
     const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
     const [isSearchModalOpen, setSearchModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [sortBy, setSortBy] = useState('price-asc');
-    
+    const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useState({ from: '', to: '', pickupDate: '', dropDate: '' });
     const [tempSearchParams, setTempSearchParams] = useState(searchParams);
 
@@ -309,7 +186,21 @@ export default function CarsPage() {
         if (pickupDate) parts.push(formatDate(pickupDate));
         return parts.join(' ');
     }
-
+    useEffect(() => {
+        const fetchInitialData = async () => {
+     
+            try {
+                const response = await dispatch(getAllCars());
+                const allCars = response.payload || [];
+                setCabs(allCars);
+                setUniqueMakes(Array.from(new Set(allCars.map(c => c.make))));
+                setUniqueFuelTypes(Array.from(new Set(allCars.map(c => c.fuelType))));
+            } catch (error) { console.error("Initial fetch failed:", error); } 
+           
+        };
+        fetchInitialData();
+    }, [dispatch]);
+console.log("hey",cabs)
     return (
         <>
          <style>{styles}</style>
