@@ -1,347 +1,488 @@
-import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { format, isValid } from 'date-fns';
-import axios from 'axios';
+import React, { useState, useEffect, useMemo } from 'react';
 
-import {
-    AppBar, Box, Button, Container, Paper, Typography, Grid, TextField,
-    Divider, Card, CardContent, CardMedia, CardActions, Chip, Skeleton, Stack, Drawer,
-    IconButton, Collapse, Grow, InputLabel, Accordion, AccordionSummary, AccordionDetails,
-    ToggleButtonGroup, ToggleButton
-} from '@mui/material';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
-import {
-    Search, FilterList, Close, ArrowForward, AcUnit, Luggage,
-    LocationOn, Map, ErrorOutline, EventSeat, LocalGasStation, ExpandMore,
-    SwapVert, ArrowUpward, ArrowDownward
-} from '@mui/icons-material';
-
-import SeatData from './Seats';
-import baseURL from '../../utils/baseURL';
-import { getAllCars } from '../../redux/reducers/car';
-import { useLoader } from '../../utils/loader';
-
-const theme = createTheme({
-    palette: {
-        primary: { main: '#6C63FF' },
-        secondary: { main: '#FF6584' },
-        background: { default: '#F4F7FC', paper: '#FFFFFF' },
+// --- Data ---
+// Cab data in JSON format.
+const initialCabData = [
+    {
+        "_id": "6820303682dbb7a994ef97e8",
+        "make": "Plymouth",
+        "model": "Sundance/Duster",
+        "vehicleNumber": "BR-201421F",
+        "images": [],
+        "year": 2020,
+        "pickupP": "Patna",
+        "dropP": "Gaya",
+        "seater": 5,
+        "runningStatus": "Available",
+        "seatConfig": [
+            { "seatType": "AC", "seatNumber": 1, "isBooked": true, "seatPrice": 1800, "bookedBy": "Ankit ", "_id": "68594b9bdced8e1bd79a0e99" },
+            { "seatType": "Non-AC", "seatNumber": 2, "isBooked": true, "seatPrice": 2500, "bookedBy": "ss", "_id": "685ad1be7a9e70b2e765a1db" },
+            { "seatType": "AC", "seatNumber": 3, "isBooked": true, "seatPrice": 3000, "bookedBy": "Ankit verma", "_id": "685ae2e17a9e70b2e765b7fc" },
+            { "seatType": "AC", "seatNumber": 4, "isBooked": true, "seatPrice": 3000, "bookedBy": "Ankit", "_id": "685ae3237a9e70b2e765b889" },
+            { "seatType": "AC", "seatNumber": 5, "isBooked": true, "seatPrice": 3000, "bookedBy": "Normal", "_id": "685ae3897a9e70b2e765b92f" }
+        ],
+        "extraKm": 50,
+        "perPersonCost": 597,
+        "pickupD": "2025-06-23T21:00:00.000Z",
+        "dropD": "2025-06-26T10:02:00.000Z",
+        "price": 1200,
+        "color": "Red",
+        "mileage": 100,
+        "fuelType": "Petrol",
+        "transmission": "Automatic",
+        "ownerId": "66751804def0b0b1d2f0d672",
+        "isAvailable": true,
+        "dateAdded": "2025-05-11T05:05:58.554Z",
+        "__v": 0
     },
-    typography: {
-        fontFamily: "'Poppins', sans-serif",
-        h3: { fontWeight: 700 },
-        h6: { fontWeight: 600 },
+    {
+        "_id": "6820307f82dbb7a994ef97f5",
+        "make": "Hyundai",
+        "model": "Accent",
+        "vehicleNumber": "BR414514E",
+        "images": ["[https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"],
+        "year": 2021,
+        "pickupP": "Patna",
+        "dropP": "Delhi",
+        "seater": 1,
+        "runningStatus": "Available",
+        "seatConfig": [],
+        "extraKm": 25,
+        "perPersonCost": 1200,
+        "pickupD": "2025-05-11T13:36:00.000Z",
+        "dropD": "2025-05-12T10:36:00.000Z",
+        "price": 2700,
+        "color": "Red",
+        "mileage": 100,
+        "fuelType": "Petrol",
+        "transmission": "Automatic",
+        "ownerId": "66751804def0b0b1d2f0d672",
+        "isAvailable": true,
+        "dateAdded": "2025-05-11T05:07:11.026Z",
+        "__v": 0
     },
-    components: {
-        MuiButton: {
-            styleOverrides: {
-                root: { borderRadius: '12px', textTransform: 'none', fontWeight: 600 },
-                contained: { boxShadow: 'none', '&:hover': { boxShadow: 'none' } },
-            },
-        },
-        MuiPaper: {
-            styleOverrides: { root: { boxShadow: '0px 8px 32px rgba(140, 149, 159, 0.15)' } }
-        },
-        MuiAccordion: {
-            styleOverrides: {
-                root: {
-                    boxShadow: 'none',
-                    '&:before': { display: 'none' },
-                    '&.Mui-expanded': { margin: 0 },
-                }
-            }
-        }
+    {
+        "_id": "6820557682dbb7a994ef9bc2",
+        "make": "Ford",
+        "model": "LTD Crown Victoria",
+        "vehicleNumber": "HR82-2154S",
+        "images": [
+            "[https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1](https://images.pexels.com/photos/112460/pexels-photo-112460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)"
+        ],
+        "year": 2021,
+        "pickupP": "Lucknow",
+        "dropP": "Jaipur",
+        "seater": 9,
+        "runningStatus": "Available",
+        "seatConfig": [
+            { "seatType": "AC", "seatNumber": 1, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc3" },
+            { "seatType": "AC", "seatNumber": 2, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc4" },
+            { "seatType": "AC", "seatNumber": 3, "isBooked": false, "seatPrice": 530, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc5" },
+            { "seatType": "AC", "seatNumber": 4, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc6" },
+            { "seatType": "AC", "seatNumber": 5, "isBooked": false, "seatPrice": 530, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc7" },
+            { "seatType": "", "seatNumber": 6, "isBooked": false, "seatPrice": 500, "bookedBy": "", "_id": "6820557682dbb7a994ef9bc8" },
+            { "seatType": "AC", "seatNumber": 7, "isBooked": true, "seatPrice": 500, "bookedBy": "Praveen Gupta ", "_id": "6820557682dbb7a994ef9bc9" },
+            { "seatType": "AC", "seatNumber": 8, "isBooked": true, "seatPrice": 500, "bookedBy": "Ankit verma", "_id": "6820557682dbb7a994ef9bca" },
+            { "seatType": "AC", "seatNumber": 9, "isBooked": true, "seatPrice": 501, "bookedBy": "Praveen ", "_id": "6820557682dbb7a994ef9bcb" }
+        ],
+        "extraKm": 15,
+        "perPersonCost": 300,
+        "pickupD": "2025-09-23T13:30:00.000Z",
+        "dropD": "2025-09-24T07:30:00.000Z",
+        "price": 850,
+        "color": "Black",
+        "mileage": 10,
+        "fuelType": "Diesel",
+        "transmission": "Manual",
+        "ownerId": "66b5f475d19a3dcaaad081eb",
+        "isAvailable": true,
+        "dateAdded": "2025-05-11T07:44:54.083Z",
+        "__v": 0
     },
-});
+    {
+        "_id": "685ae6017a9e70b2e765baf2",
+        "make": "Ford",
+        "model": "Escape FWD",
+        "vehicleNumber": "BR-1424ER",
+        "images": [],
+        "year": 2025,
+        "pickupP": "Delhi",
+        "dropP": "Ahmedabad",
+        "seater": 4,
+        "runningStatus": "Available",
+        "seatConfig": [
+            { "seatType": "AC", "seatNumber": 1, "isBooked": true, "seatPrice": 1000, "bookedBy": "Raja", "_id": "685ae6017a9e70b2e765baf3" },
+            { "seatType": "AC", "seatNumber": 2, "isBooked": true, "seatPrice": 1060, "bookedBy": "ds", "_id": "685ae6017a9e70b2e765baf4" },
+            { "seatType": "Non-AC", "seatNumber": 3, "isBooked": true, "seatPrice": 800, "bookedBy": "Ankit Kumar Verma", "_id": "685ae6017a9e70b2e765baf5" },
+            { "seatType": "Non-AC", "seatNumber": 4, "isBooked": true, "seatPrice": 800, "bookedBy": "Ajay", "_id": "685ae6017a9e70b2e765baf6" }
+        ],
+        "extraKm": 50,
+        "perPersonCost": 800,
+        "pickupD": "2025-06-24T23:22:00.000Z",
+        "dropD": "2025-06-26T23:22:00.000Z",
+        "price": 2000,
+        "color": "Red",
+        "mileage": 47,
+        "fuelType": "Electric",
+        "transmission": "Automatic",
+        "ownerId": "66751804def0b0b1d2f0d672",
+        "isAvailable": true,
+        "dateAdded": "2025-06-24T17:53:05.625Z",
+        "__v": 0
+    }
+];
 
-const ExpandMoreIcon = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', { duration: theme.transitions.duration.shortest }),
-}));
+// --- SVG Icons ---
+const FilterIcon = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
+const CloseIcon = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
+const CarIcon = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="no-results-icon"><path d="M14 16.5V15a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v1.5"></path><path d="M2 10h20"></path><path d="M6 11v-1.5a1.5 1.5 0 0 1 3 0V11"></path><path d="M15 11v-1.5a1.5 1.5 0 0 1 3 0V11"></path><path d="M4 19h16"></path><path d="M5 19.5V11a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8.5"></path></svg>;
+const LogoIcon = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>;
+const SearchIcon = () => <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
 
-const CarCard = ({ car, onBookNow }) => {
-    const [expanded, setExpanded] = useState(false);
-    const handleExpandClick = () => setExpanded(!expanded);
-    const handleCarImage = (carData) => carData?.images?.[0] || "https://placehold.co/600x400/e0e0e0/757575?text=Car";
+
+// --- Helper Functions ---
+const formatDate = (dateString) => {
+    if (!dateString) return 'N/A';
+    return new Date(dateString).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+};
+const formatDateForInput = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toISOString().split('T')[0];
+};
+
+// --- Sub-Components ---
+const CabCard = ({ cab }) => {
+    const availableSeats = cab.seater - cab.seatConfig.filter(s => s.isBooked).length;
+    const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(" ", "+")}`;
 
     return (
-        <Card sx={{
-            bgcolor: 'background.paper', borderRadius: 5, p: 1, mb: 3, border: '1px solid rgba(0, 0, 0, 0.05)',
-            boxShadow: '8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff',
-            transition: 'all 0.3s ease-in-out', '&:hover': { transform: 'translateY(-5px)', boxShadow: '12px 12px 24px #d1d9e6, -12px -12px 24px #ffffff' },
-        }}>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <CardMedia component="img" sx={{ width: { xs: '100%', sm: 200 }, height: 180, borderRadius: 4, objectFit: 'cover' }} image={handleCarImage(car)} alt={`${car.make} ${car.model}`} />
-                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, py: 1, pr: 1 }}>
-                    <Stack direction="row" justifyContent="space-between">
-                        <Box>
-                            <Typography variant="h6" component="div">{car.make} {car.model}</Typography>
-                            <Stack direction="row" spacing={1} mt={0.5}>
-                                <Chip icon={<EventSeat sx={{fontSize: '1rem'}} />} label={`${car.seater} Seater`} size="small" variant="outlined" />
-                                <Chip icon={<LocalGasStation sx={{fontSize: '1rem'}} />} label={car.fuelType} size="small" variant="outlined" />
-                            </Stack>
-                        </Box>
-                        <Box textAlign="right">
-                            <Typography variant="h5" fontWeight={700} color="primary">₹{car?.price?.toLocaleString('en-IN')}</Typography>
-                            <Typography variant="caption" color="text.secondary">Total price</Typography>
-                        </Box>
-                    </Stack>
-                     <Divider sx={{ my: 1.5 }} />
-                     <Stack direction="row" alignItems="center" spacing={1} color="text.secondary">
-                        <LocationOn fontSize="small"/>
-                        <Typography variant="body2" fontWeight={500}>{car.pickupP}</Typography>
-                        <ArrowForward sx={{ fontSize: '1rem' }} />
-                        <Typography variant="body2" fontWeight={500}>{car.dropP}</Typography>
-                    </Stack>
-                    <CardActions sx={{ p: 0, mt: 'auto', pt: 1}}>
-                        <Typography variant="caption" color="success.main" fontWeight={500}>{car.seatConfig?.filter(s => !s.bookedBy).length} seats left</Typography>
-                        <ExpandMoreIcon expand={expanded} onClick={handleExpandClick}><ExpandMore /></ExpandMoreIcon>
-                        <Button variant="contained" size="medium" onClick={onBookNow}>View Deal</Button>
-                    </CardActions>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <Box sx={{ pt: 2 }}>
-                            <Grid container spacing={1.5} color="text.secondary">
-                                <Grid item xs={6}><Stack direction="row" spacing={1} alignItems="center"><AcUnit fontSize="small" /><Typography variant="body2">Air Conditioning</Typography></Stack></Grid>
-                                <Grid item xs={6}><Stack direction="row" spacing={1} alignItems="center"><Luggage fontSize="small" /><Typography variant="body2">{car.luggage} Luggage</Typography></Stack></Grid>
-                            </Grid>
-                        </Box>
-                    </Collapse>
-                </Box>
-            </Stack>
-        </Card>
+        <div className="cab-card">
+            <div className="cab-card-image-wrapper">
+                <img src={cab.images[0] || placeholderImage} alt={`${cab.make} ${cab.model}`} className="cab-card-image" onError={(e) => { e.target.onerror = null; e.target.src=placeholderImage; }} />
+                <span className={`cab-card-status ${availableSeats > 0 ? 'available' : 'full'}`}>{availableSeats > 0 ? `${availableSeats} Seats Available` : 'Fully Booked'}</span>
+            </div>
+            <div className="cab-card-content">
+                <div className="cab-card-header"><h3 className="cab-card-title">{cab.make} {cab.model}</h3><p className="cab-card-year">{cab.year}</p></div>
+                <p className="cab-card-route">{cab.pickupP} → {cab.dropP}</p>
+                <div className="cab-card-details">
+                    <div><span className="detail-icon">📅</span><strong>Pickup:</strong> {formatDate(cab.pickupD)}</div>
+                    <div><span className="detail-icon">📅</span><strong>Drop:</strong> {formatDate(cab.dropD)}</div>
+                </div>
+                <div className="cab-card-tags"><span><span className="tag-icon">⛽</span>{cab.fuelType}</span><span><span className="tag-icon">👤</span>{cab.seater} Seater</span></div>
+                <div className="cab-card-footer"><p className="cab-card-price">₹{cab.perPersonCost}<span>/person</span></p><button className="cab-card-button" disabled={availableSeats <= 0}>View Details</button></div>
+            </div>
+        </div>
     );
 };
-CarCard.propTypes = { car: PropTypes.object.isRequired, onBookNow: PropTypes.func.isRequired };
 
-const CarCardSkeleton = () => (<Paper sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, mb: 3, borderRadius: 5, p: 2, bgcolor: '#fff' }}><Skeleton variant="rectangular" animation="wave" sx={{ width: { xs: '100%', sm: 200 }, height: 180, borderRadius: 4 }} /><Box sx={{ flex: 1, ml: { sm: 2 }, mt: { xs: 2, sm: 0 } }}><Skeleton animation="wave" height={30} width="50%" /><Skeleton animation="wave" height={20} width="70%" /><Divider sx={{ my: 2 }} /><Stack direction="row" justifyContent="space-between" alignItems="center"><Skeleton animation="wave" height={40} width="30%" /><Skeleton variant="rounded" animation="wave" width={100} height={40} sx={{borderRadius: 3}} /></Stack></Box></Paper>);
-const NoResults = () => (<Paper sx={{ textAlign: 'center', p: { xs: 4, sm: 8 }, borderRadius: 5, bgcolor: '#fff' }}><ErrorOutline sx={{ fontSize: 60, color: 'text.secondary' }} /><Typography variant="h6" mt={2}>No Rides Found</Typography><Typography color="text.secondary">Try adjusting your search to find your perfect ride.</Typography></Paper>);
+const FilterComponent = ({ filters, setFilters, makes, fuelTypes, isOpen, onClose, priceRange, maxPrice }) => {
+    const handleFilterChange = (e) => {
+        const { name, value, type } = e.target;
+        setFilters(prev => ({ ...prev, [name]: type === 'number' ? parseInt(value) : value }));
+    };
+    const resetFilters = () => setFilters({ make: 'All', fuelType: 'All', seats: 1, price: maxPrice });
 
-const SearchFields = ({ searchCriteria, handleCriteriaChange, handleSwapLocations }) => (
-    <Grid container  alignItems="center">
-        <Grid item xs={12} md={5.5}>
-            <InputLabel sx={{ mb: 1, fontWeight: 500, color: 'text.primary' }}>Locations</InputLabel>
-            <Stack direction="row" alignItems="center" spacing={1}>
-                <TextField fullWidth placeholder="Leaving from..." value={searchCriteria.pickupP} onChange={(e) => handleCriteriaChange('pickupP', e.target.value)} />
-                <IconButton onClick={handleSwapLocations} sx={{ border: '1px solid', borderColor: 'divider' }}><SwapVert /></IconButton>
-                <TextField fullWidth placeholder="Going to..." value={searchCriteria.dropP} onChange={(e) => handleCriteriaChange('dropP', e.target.value)} />
-            </Stack>
-        </Grid>
-        <Grid item xs={12} md={6.5}>
-            <InputLabel sx={{ mb: 1, fontWeight: 500, color: 'text.primary' }}>Dates</InputLabel>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <Grid container spacing={1}>
-                    <Grid item xs={6}><DatePicker sx={{width: '100%'}} label="Pickup" value={searchCriteria.fromDate} onChange={(d) => handleCriteriaChange('fromDate', d)} /></Grid>
-                    <Grid item xs={6}><DatePicker sx={{width: '100%'}} label="Dropoff" value={searchCriteria.toDate} onChange={(d) => handleCriteriaChange('toDate', d)} /></Grid>
-                </Grid>
-            </LocalizationProvider>
-        </Grid>
-    </Grid>
-);
-SearchFields.propTypes = { searchCriteria: PropTypes.object.isRequired, handleCriteriaChange: PropTypes.func.isRequired, handleSwapLocations: PropTypes.func.isRequired };
-
-const FilterContent = ({ inDrawer = false, searchCriteria, uniqueMakes, uniqueFuelTypes, handleCheckboxChange, handleClearFilters, setFilterDrawerOpen }) => {
-    const noFiltersApplied = searchCriteria.make.length === 0 && searchCriteria.fuelType.length === 0;
     return (
-        <Box sx={{ p: inDrawer ? 2 : 0, width: inDrawer ? 280 : 'auto' }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: inDrawer ? 1 : 0, px: inDrawer ? 0 : 2, pt: inDrawer ? 0 : 2 }}>
-                <Typography variant="h6">Filters</Typography>
-                <Box>
-                    <Button variant="text" size="small" onClick={handleClearFilters} disabled={noFiltersApplied}>Clear All</Button>
-                    {inDrawer && <IconButton onClick={() => setFilterDrawerOpen(false)}><Close /></IconButton>}
-                </Box>
-            </Stack>
-            <Accordion defaultExpanded>
-                <AccordionSummary expandIcon={<ExpandMore />}><Typography fontWeight={600}>Car Make</Typography></AccordionSummary>
-                <AccordionDetails>
-                    <Stack direction="row" useFlexGap flexWrap="wrap" spacing={1}>
-                        {uniqueMakes.map(m => <Chip key={m} label={m} onClick={() => handleCheckboxChange('make', m)} variant={searchCriteria.make.includes(m) ? 'filled' : 'outlined'} color={searchCriteria.make.includes(m) ? 'primary' : 'default'} />)}
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-                <AccordionSummary expandIcon={<ExpandMore />}><Typography fontWeight={600}>Fuel Type</Typography></AccordionSummary>
-                <AccordionDetails>
-                    <Stack direction="row" useFlexGap flexWrap="wrap" spacing={1}>
-                        {uniqueFuelTypes.map(f => <Chip key={f} label={f} onClick={() => handleCheckboxChange('fuelType', f)} variant={searchCriteria.fuelType.includes(f) ? 'filled' : 'outlined'} color={searchCriteria.fuelType.includes(f) ? 'primary' : 'default'} />)}
-                    </Stack>
-                </AccordionDetails>
-            </Accordion>
-        </Box>
-    )
+        <aside className={`filter-container ${isOpen ? 'open' : ''}`}>
+            <div className="filter-wrapper">
+                <div className="filter-header"><h2>Filters</h2><button className="filter-close-btn" onClick={onClose}><CloseIcon /></button></div>
+                <div className="filter-group"><div className="price-label"><label htmlFor="price-filter">Max Price</label><span>₹{filters.price}</span></div><input type="range" id="price-filter" name="price" min={priceRange.min} max={priceRange.max} value={filters.price} onChange={handleFilterChange} className="price-slider" /></div>
+                <div className="filter-group"><label htmlFor="seats-filter">Seats Required</label><input type="number" id="seats-filter" name="seats" min="1" max="10" value={filters.seats} onChange={handleFilterChange} className="seats-input" /></div>
+                <div className="filter-group"><label htmlFor="make-filter">Car Brand</label><select id="make-filter" name="make" value={filters.make} onChange={handleFilterChange}><option value="All">All Brands</option>{makes.map(make => <option key={make} value={make}>{make}</option>)}</select></div>
+                <div className="filter-group"><label>Fuel Type</label><div className="radio-group"><label><input type="radio" name="fuelType" value="All" checked={filters.fuelType === 'All'} onChange={handleFilterChange} />All</label>{fuelTypes.map(fuel => (<label key={fuel}><input type="radio" name="fuelType" value={fuel} checked={filters.fuelType === fuel} onChange={handleFilterChange} />{fuel}</label>))}</div></div>
+                <div className="filter-footer"><button className="filter-reset-btn" onClick={resetFilters}>Reset All Filters</button></div>
+            </div>
+        </aside>
+    );
+}
+
+const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handleSearchSubmit }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div className="search-modal-overlay" onClick={onClose}>
+            <div className="search-modal" onClick={e => e.stopPropagation()}>
+                <div className="search-modal-header">
+                    <h3>Search for Your Ride</h3>
+                    <button onClick={onClose}><CloseIcon/></button>
+                </div>
+                <div className="search-modal-content">
+                    <div className="search-form-group">
+                        <label htmlFor="from">From</label>
+                        <input type="text" id="from" name="from" placeholder="e.g., Patna" value={searchParams.from} onChange={handleSearchChange}/>
+                    </div>
+                     <div className="search-form-group">
+                        <label htmlFor="to">To</label>
+                        <input type="text" id="to" name="to" placeholder="e.g., Delhi" value={searchParams.to} onChange={handleSearchChange}/>
+                    </div>
+                     <div className="search-form-group">
+                        <label htmlFor="pickupDate">Pickup Date</label>
+                        <input type="date" id="pickupDate" name="pickupDate" value={searchParams.pickupDate} onChange={handleSearchChange}/>
+                    </div>
+                    <div className="search-form-group">
+                        <label htmlFor="dropDate">Drop Date</label>
+                        <input type="date" id="dropDate" name="dropDate" value={searchParams.dropDate} onChange={handleSearchChange}/>
+                    </div>
+                </div>
+                 <div className="search-modal-footer">
+                    <button className="search-submit-btn" onClick={handleSearchSubmit}>Search Rides</button>
+                </div>
+            </div>
+        </div>
+    );
 };
-FilterContent.propTypes = {
-    inDrawer: PropTypes.bool, searchCriteria: PropTypes.object.isRequired, uniqueMakes: PropTypes.array.isRequired,
-    uniqueFuelTypes: PropTypes.array.isRequired, handleCheckboxChange: PropTypes.func.isRequired,
-    handleClearFilters: PropTypes.func.isRequired, setFilterDrawerOpen: PropTypes.func
-};
 
-const CarsPage = () => (<ThemeProvider theme={theme}><Cars /></ThemeProvider>);
+const NoResults = () => (<div className="no-results-container"><CarIcon /><h2>No Cabs Found</h2><p>Try adjusting your search or filter criteria.</p></div>);
+const SkeletonCard = () => (<div className="cab-card skeleton"><div className="cab-card-image-wrapper skeleton-box"></div><div className="cab-card-content"><div className="skeleton-box skeleton-title"></div><div className="skeleton-box skeleton-text"></div><div className="skeleton-box skeleton-text"></div><div className="skeleton-box skeleton-footer"></div></div></div>);
 
-const Cars = () => {
-    const dispatch = useDispatch();
-    const { showLoader, hideLoader, isLoading } = useLoader();
-    const [carData, setCarData] = useState([]);
-    const [uniqueMakes, setUniqueMakes] = useState([]);
-    const [uniqueFuelTypes, setUniqueFuelTypes] = useState([]);
-    const [initialSearchState] = useState({ pickupP: '', dropP: '', fromDate: null, toDate: null, make: [], fuelType: [] });
-    const [searchCriteria, setSearchCriteria] = useState(initialSearchState);
-    const [openSeatData, setOpenSeatData] = useState(false);
-    const [selectedCar, setSelectedCar] = useState(null);
-    const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
-    const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-    const [sortBy, setSortBy] = useState('price_asc');
-    const isInitialMount = useRef(true);
+// --- Main CarsPage Component ---
+export default function CarsPage() {
+    const [cabs] = useState(initialCabData);
+    const [filteredCabs, setFilteredCabs] = useState([]);
+    const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
+    const [isSearchModalOpen, setSearchModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [sortBy, setSortBy] = useState('price-asc');
+    
+    const [searchParams, setSearchParams] = useState({ from: '', to: '', pickupDate: '', dropDate: '' });
+    const [tempSearchParams, setTempSearchParams] = useState(searchParams);
 
-    const handleSearch = useCallback(async (criteria) => {
-        showLoader();
-        setIsSearchExpanded(false);
-        try {
-            const params = new URLSearchParams();
-            Object.entries(criteria).forEach(([key, value]) => {
-                if(value) {
-                    if (Array.isArray(value) && value.length > 0) value.forEach(v => params.append(key, v));
-                    else if (key.includes('Date') && isValid(value)) params.append(key, format(value, 'yyyy-MM-dd'));
-                    else if (typeof value === 'string' && value.trim() !== '' && !key.includes('Date')) params.append(key, value);
-                }
-            });
-            const response = await axios.get(`${baseURL}/travel/filter-car/by-query?${params.toString()}`);
-            setCarData(response.data);
-        } catch (error) { console.error('Search failed:', error); setCarData([]); } 
-        finally { hideLoader(); }
-    }, [dispatch]);
-
-    useEffect(() => {
-        const fetchInitialData = async () => {
-            showLoader();
-            try {
-                const response = await dispatch(getAllCars());
-                const allCars = response.payload || [];
-                setCarData(allCars);
-                setUniqueMakes(Array.from(new Set(allCars.map(c => c.make))));
-                setUniqueFuelTypes(Array.from(new Set(allCars.map(c => c.fuelType))));
-            } catch (error) { console.error("Initial fetch failed:", error); } 
-            finally { hideLoader(); }
+    const { makes, fuelTypes, priceRange } = useMemo(() => {
+        const prices = cabs.map(c => c.perPersonCost).filter(p => p != null);
+        return {
+            makes: [...new Set(cabs.map(cab => cab.make))],
+            fuelTypes: [...new Set(cabs.map(cab => cab.fuelType))],
+            priceRange: { min: Math.min(...prices, 0), max: Math.max(...prices, 3000) }
         };
-        fetchInitialData();
-    }, [dispatch]);
+    }, [cabs]);
+
+    const [filters, setFilters] = useState({ make: 'All', fuelType: 'All', seats: 1, price: priceRange.max });
     
     useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            return;
-        }
-        const handler = setTimeout(() => {
-            handleSearch(searchCriteria);
-        }, 500);
-        return () => clearTimeout(handler);
-    }, [searchCriteria.make, searchCriteria.fuelType]);
-
-    const sortedCarData = useMemo(() => {
-        return [...carData].sort((a, b) => {
-            if (sortBy === 'price_asc') return a.price - b.price;
-            if (sortBy === 'price_desc') return b.price - a.price;
-            return 0;
+      setIsLoading(true);
+      const timer = setTimeout(() => {
+        let result = [...cabs];
+        if (searchParams.from) result = result.filter(cab => cab.pickupP.toLowerCase().includes(searchParams.from.toLowerCase()));
+        if (searchParams.to) result = result.filter(cab => cab.dropP.toLowerCase().includes(searchParams.to.toLowerCase()));
+        if (searchParams.pickupDate) result = result.filter(cab => formatDateForInput(cab.pickupD) >= searchParams.pickupDate);
+        if (searchParams.dropDate) result = result.filter(cab => formatDateForInput(cab.dropD) <= searchParams.dropDate);
+        if (filters.make !== 'All') result = result.filter(cab => cab.make === filters.make);
+        if (filters.fuelType !== 'All') result = result.filter(cab => cab.fuelType === filters.fuelType);
+        result = result.filter(cab => (cab.seater - cab.seatConfig.filter(s => s.isBooked).length) >= filters.seats);
+        result = result.filter(cab => cab.perPersonCost <= filters.price);
+        result.sort((a, b) => {
+            switch (sortBy) {
+                case 'price-asc': return a.perPersonCost - b.perPersonCost;
+                case 'price-desc': return b.perPersonCost - a.perPersonCost;
+                case 'year-desc': return b.year - a.year;
+                default: return 0;
+            }
         });
-    }, [carData, sortBy]);
+        setFilteredCabs(result);
+        setIsLoading(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }, [searchParams, filters, cabs, sortBy]);
     
-    const handleCriteriaChange = (field, value) => setSearchCriteria(prev => ({ ...prev, [field]: value }));
-    const handleCheckboxChange = (key, value) => {
-        setSearchCriteria(prev => {
-            const currentValues = prev[key];
-            const newValues = currentValues.includes(value) ? currentValues.filter((item) => item !== value) : [...currentValues, value];
-            return { ...prev, [key]: newValues };
-        });
+    const handleTempSearchChange = (e) => {
+        const { name, value } = e.target;
+        setTempSearchParams(prev => ({ ...prev, [name]: value }));
     };
     
-    const handleClearFilters = useCallback(async () => {
-        showLoader();
-        isInitialMount.current = true; // Prevent debounced search from firing
-        try {
-            setSearchCriteria(initialSearchState);
-            const response = await dispatch(getAllCars());
-            setCarData(response.payload || []);
-        } catch (error) {
-            console.error("Failed to clear filters and re-fetch all cars:", error);
-        } finally {
-            hideLoader();
-            setTimeout(() => { isInitialMount.current = false; }, 100); // Re-enable after a short delay
-        }
-    }, [dispatch, initialSearchState]);
+    const handleSearchSubmit = () => {
+        setSearchParams(tempSearchParams);
+        setSearchModalOpen(false);
+    };
     
-    const handleSwapLocations = () => setSearchCriteria(prev => ({...prev, pickupP: prev.dropP, dropP: prev.pickupP}));
-    const handleSeatDataOpen = (car) => { setSelectedCar(car); setOpenSeatData(true); };
-    const handleSeatDataClose = () => { setOpenSeatData(false); setSelectedCar(null); };
-    const handleSortChange = (event, newSortBy) => { if(newSortBy !== null) setSortBy(newSortBy); };
+    const openSearchModal = () => {
+        setTempSearchParams(searchParams);
+        setSearchModalOpen(true);
+    }
+    
+    const getSearchSummary = () => {
+        const { from, to, pickupDate } = searchParams;
+        if (!from && !to && !pickupDate) return "Find your next ride...";
+        const parts = [];
+        if (from) parts.push(from);
+        if (to) parts.push(`→ ${to}`);
+        if (pickupDate) parts.push(formatDate(pickupDate));
+        return parts.join(' ');
+    }
 
     return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-        <AppBar position="static" color="transparent" elevation={0} sx={{ background: 'linear-gradient(135deg, #7F72FF 0%, #6C63FF 100%)', pt: { xs: 4, md: 6 }, pb: { xs: 4, md: 6 }, borderRadius: '0 0 40px 40px', transition: 'padding-bottom 0.3s ease-in-out' }}>
-            <Container maxWidth="lg">
-                <Typography variant="h3" component="h1" color="white" textAlign="center" sx={{ fontSize: { xs: '2.5rem', sm: '3.5rem' } }}>Find Your Perfect Ride</Typography>
-                <Typography variant="h6" component="p" color="white" fontWeight={300} textAlign="center" mt={1} mb={4} sx={{ opacity: 0.8 }}>Seamless travel, unbeatable prices.</Typography>
-                <Paper sx={{ p: 2, borderRadius: 4, display: { xs: 'none', md: 'block' }, mt: 4 }}>
-                    <Stack direction="row" spacing={1} alignItems="flex-end">
-                        <Box flexGrow={1}><SearchFields searchCriteria={searchCriteria} handleCriteriaChange={handleCriteriaChange} handleSwapLocations={handleSwapLocations} /></Box>
-                        <Button variant="contained" onClick={() => handleSearch(searchCriteria)} sx={{ height: 56, px: 3, borderRadius: 3 }}><Search /></Button>
-                    </Stack>
-                </Paper>
-                <Box sx={{ display: { xs: 'block', md: 'none' }, mt: 2 }}>
-                    <Paper onClick={() => setIsSearchExpanded(!isSearchExpanded)} sx={{ display: 'flex', alignItems: 'center', p: 2, borderRadius: 4, cursor: 'pointer', bgcolor: 'background.paper', color: 'text.secondary' }}>
-                        <Search sx={{ mr: 1.5 }} /><Typography fontWeight={500} noWrap>{searchCriteria.pickupP ? `${searchCriteria.pickupP} → ${searchCriteria.dropP}` : 'Search for a ride...'}</Typography>
-                    </Paper>
-                    <Collapse in={isSearchExpanded}>
-                        <Paper sx={{ p: 2, mt: 1, borderRadius: 4 }}>
-                           <Stack spacing={2}>
-                             <SearchFields searchCriteria={searchCriteria} handleCriteriaChange={handleCriteriaChange} handleSwapLocations={handleSwapLocations}/>
-                             <Button fullWidth variant="contained" size="large" onClick={() => handleSearch(searchCriteria)} startIcon={<Search />}>Search Cars</Button>
-                           </Stack>
-                        </Paper>
-                    </Collapse>
-                </Box>
-            </Container>
-        </AppBar>
-        
-        <Container maxWidth="xl" sx={{ py: 4 }}>
-            <Grid container spacing={{ xs: 2, md: 4 }}>
-                <Grid item md={3} sx={{ display: { xs: 'none', md: 'block' } }}>
-                    <Paper sx={{ borderRadius: 5, position: 'sticky', top: 20 }}>
-                        <FilterContent searchCriteria={searchCriteria} uniqueMakes={uniqueMakes} uniqueFuelTypes={uniqueFuelTypes} handleCheckboxChange={handleCheckboxChange} handleClearFilters={handleClearFilters} />
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} md={9}>
-                    <Stack direction={{xs: 'column', sm: 'row'}} justifyContent="space-between" alignItems="center" spacing={2} sx={{ mb: 2, px: 2, py: 1, bgcolor: 'background.paper', borderRadius: 4 }}>
-                        <Typography variant="h6" fontWeight={600}>{isLoading ? 'Searching...' : `${sortedCarData.length} Rides Available`}</Typography>
-                        <ToggleButtonGroup value={sortBy} exclusive onChange={handleSortChange} aria-label="sort by price">
-                            <ToggleButton value="price_asc" aria-label="price low to high">Price <ArrowUpward fontSize="small" sx={{ml: 0.5}} /></ToggleButton>
-                            <ToggleButton value="price_desc" aria-label="price high to low">Price <ArrowDownward fontSize="small" sx={{ml: 0.5}} /></ToggleButton>
-                        </ToggleButtonGroup>
-                    </Stack>
-                    {isLoading ? ([...Array(3)].map((_, i) => <CarCardSkeleton key={i} />)
-                    ) : sortedCarData.length > 0 ? (
-                        sortedCarData.map((car, index) => (
-                            <Grow in={true} key={car._id} timeout={index * 200 + 300}>
-                                <div><CarCard car={car} onBookNow={() => handleSeatDataOpen(car)} /></div>
-                            </Grow>
-                        ))
-                    ) : ( <NoResults /> )}
-                </Grid>
-            </Grid>
-        </Container>
-        
-        <Drawer anchor="left" open={filterDrawerOpen} onClose={() => setFilterDrawerOpen(false)} PaperProps={{ sx: { borderTopRightRadius: 20, borderBottomRightRadius: 20 } }}>
-            <FilterContent inDrawer={true} setFilterDrawerOpen={setFilterDrawerOpen} searchCriteria={searchCriteria} uniqueMakes={uniqueMakes} uniqueFuelTypes={uniqueFuelTypes} handleCheckboxChange={handleCheckboxChange} handleClearFilters={handleClearFilters} />
-        </Drawer>
-        {selectedCar && <SeatData open={openSeatData} onClose={handleSeatDataClose} id={selectedCar._id} carData={selectedCar} />}
-    </Box>
-    );
-};
+        <>
+            <style>{`
+                :root {
+                    --primary-color: #4f46e5; --primary-hover: #4338ca; --text-dark: #111827;
+                    --text-light: #4b5563; --bg-light: #f9fafb; --bg-white: #ffffff;
+                    --border-color: #e5e7eb; --card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
+                    --card-hover-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+                }
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+                body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: var(--bg-light); color: var(--text-dark); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+                
+                #app-container { display: flex; flex-direction: column; min-height: 100vh; }
+                .app-header { background-color: var(--bg-white); border-bottom: 1px solid var(--border-color); padding: 1rem 1.5rem; display:flex; align-items:center; justify-content: space-between; gap: 1.5rem; }
+                
+                .logo-container { display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 1.25rem; color: var(--primary-color); }
 
-export default CarsPage;
+                .desktop-search-trigger { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background-color: var(--bg-light); padding: 0.75rem 1rem; border-radius: 999px; cursor: pointer; border: 1px solid var(--border-color); width: 100%; max-width: 400px; transition: box-shadow 0.2s; }
+                .desktop-search-trigger:hover { box-shadow: var(--card-shadow); }
+                .desktop-search-trigger span { color: var(--text-light); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; font-size: 0.9rem; font-weight: 500; flex-grow: 1; }
+
+                .cabs-page-container { display: grid; max-width: 1400px; margin: 0 auto; padding: 1.5rem; gap: 2rem; width: 100%; grid-template-columns: 300px 1fr; align-items: flex-start; }
+                .main-content { flex-grow: 1; width: 100%; }
+                
+                .mobile-search-trigger { display: none; }
+
+                .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding: 0 0.5rem; }
+                .results-count { font-weight: 500; color: var(--text-light); }
+                .sort-select { padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.9rem; background-color: var(--bg-white); }
+                
+                .cab-list { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+                .cab-card { background-color: var(--bg-white); border-radius: 16px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; }
+                .cab-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover-shadow); }
+                .cab-card-image-wrapper { position: relative; }
+                .cab-card-image { width: 100%; height: 180px; object-fit: cover; background-color: var(--bg-light); }
+                .cab-card-status { position: absolute; top: 1rem; right: 1rem; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px; }
+                .cab-card-status.available { background-color: #10b981; color: white; }
+                .cab-card-status.full { background-color: #ef4444; color: white; }
+                .cab-card-content { padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1; }
+                .cab-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; }
+                .cab-card-title { font-size: 1.25rem; font-weight: 700; }
+                .cab-card-year { font-size: 1rem; color: var(--text-light); font-weight: 500; }
+                .cab-card-route { font-size: 1rem; color: var(--text-light); margin-bottom: 1rem; font-weight: 500; }
+                .cab-card-details { display: grid; gap: 0.5rem; margin-bottom: 1rem; color: var(--text-light); font-size: 0.875rem; }
+                .cab-card-details div { display: flex; align-items: center; gap: 0.5rem; }
+                .cab-card-tags { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.875rem; color: var(--text-light); margin-bottom: 1.25rem; }
+                .cab-card-tags span { background-color: #f3f4f6; padding: 0.25rem 0.75rem; border-radius: 8px; display:flex; align-items:center; gap: 0.4rem; }
+                .cab-card-footer { margin-top: auto; padding-top: 1.25rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+                .cab-card-price { font-size: 1.5rem; font-weight: 700; color: var(--primary-color); }
+                .cab-card-price span { font-size: 0.875rem; font-weight: 500; color: var(--text-light); margin-left: 0.25rem; }
+                .cab-card-button { background-color: var(--primary-color); color: var(--bg-white); border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+                .cab-card-button:hover { background-color: var(--primary-hover); }
+                .cab-card-button:disabled { background-color: #9ca3af; cursor: not-allowed; }
+
+                .filter-container { width: 300px; flex-shrink: 0; }
+                .filter-wrapper { background-color: var(--bg-white); padding: 1.5rem; border-radius: 12px; height: fit-content; position: sticky; top: 1.5rem; box-shadow: var(--card-shadow); }
+                .filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+                .filter-header h2 { font-size: 1.25rem; }
+                .filter-close-btn { display: none; background: none; border: none; cursor: pointer; }
+                .filter-group { margin-bottom: 1.5rem; }
+                .filter-group > label { font-weight: 600; display: block; margin-bottom: 0.75rem; }
+                .filter-group select, .seats-input { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border-color); font-size: 1rem; background-color: var(--bg-white); }
+                .price-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; font-weight: 600; }
+                .price-label span { font-weight: 500; color: var(--primary-color); }
+                .price-slider { width: 100%; cursor: pointer; accent-color: var(--primary-color); }
+                .radio-group { display: flex; flex-direction: column; gap: 0.5rem; }
+                .radio-group label { font-weight: 400; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+                .filter-footer { padding-top: 1rem; border-top: 1px solid var(--border-color); }
+                .filter-reset-btn { background: none; border: none; width: 100%; text-align: center; color: var(--primary-color); cursor: pointer; font-weight: 500; padding: 0.5rem; border-radius: 8px; transition: background-color 0.2s; }
+                .filter-reset-btn:hover { background-color: #eef2ff; }
+                
+                .mobile-filter-trigger { display: none; }
+                .no-results-container { text-align: center; padding: 4rem 2rem; background-color: var(--bg-white); border-radius: 12px; box-shadow: var(--card-shadow); }
+                .no-results-icon { color: var(--primary-color); margin-bottom: 1rem; }
+                .no-results-container h2 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+                .no-results-container p { color: var(--text-light); max-width: 300px; margin: auto; }
+                .skeleton { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+                .skeleton-box { background-color: #e5e7eb; border-radius: 8px; }
+                .skeleton-title { height: 2rem; width: 60%; margin-bottom: 0.75rem; }
+                .skeleton-text { height: 1rem; width: 80%; margin-bottom: 0.5rem; }
+                .skeleton-footer { height: 2.5rem; width: 40%; margin-top: auto; margin-left: auto; }
+                @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+                
+                .search-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 200; display: flex; justify-content: center; align-items: flex-start; padding-top: 15vh; animation: fadeIn 0.3s ease; }
+                .search-modal { background-color: var(--bg-white); border-radius: 16px; width: 90%; max-width: 500px; animation: slideDown 0.4s ease-out; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+                .search-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; }
+                .search-modal-header h3 { font-size: 1.1rem; font-weight: 600; }
+                .search-modal-header button { background: none; border: none; cursor: pointer; color: var(--text-light); padding: 0.25rem; }
+                
+                .search-modal-content { padding: 0 1.5rem 1.5rem; display: grid; grid-template-columns: 1fr; gap: 1rem; }
+                .search-modal-content .search-form-group { display: flex; flex-direction: column; }
+                .search-modal-content .search-form-group.full-width { grid-column: 1 / -1; }
+                .search-modal-content .search-form-group label { font-weight: 500; font-size: 0.875rem; margin-bottom: 0.5rem; color: var(--text-dark); }
+                .search-modal-content input { width: 100%; padding: 0.8rem 1rem; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 8px; transition: border-color 0.2s, box-shadow 0.2s; }
+                .search-modal-content input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2); }
+                .search-modal-content input[type="date"] { color: var(--text-light); }
+                .search-modal-content input[type="date"]:focus, .search-modal-content input[type="date"]:valid { color: var(--text-dark); }
+                .search-modal-content input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+                
+                .search-modal-footer { padding: 1.25rem 1.5rem; }
+                .search-submit-btn { width: 100%; background-color: var(--primary-color); color: white; border: none; padding: 0.9rem; font-size: 1.1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; }
+                .search-submit-btn:hover { background-color: var(--primary-hover); }
+
+                @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+                @media (max-width: 1024px) {
+                    .desktop-search-trigger { display: none; }
+                    .cabs-page-container { grid-template-columns: 1fr; padding-top: 0.5rem; }
+                    .filter-container { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 100; justify-content: flex-end; }
+                    .filter-container.open { display: flex; }
+                    .filter-wrapper { width: 320px; height: 100%; animation: slideIn 0.3s forwards; position: static; top: 0; border-radius: 12px 0 0 12px; display: flex; flex-direction: column; box-shadow: none; }
+                    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+                    .filter-close-btn { display: block; }
+                    .mobile-filter-trigger { display: flex; align-items: center; gap: 0.5rem; position: fixed; bottom: 1.5rem; right: 1.5rem; background-color: var(--primary-color); color: white; padding: 0.75rem 1.25rem; border-radius: 999px; border: none; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 50; cursor: pointer; }
+                
+                    .mobile-search-trigger { display: flex; align-items: center; gap: 1rem; background-color: var(--bg-white); padding: 0.75rem 1rem; margin: 0 1rem 1.5rem 1rem; border-radius: 12px; box-shadow: var(--card-shadow); cursor: pointer; border: 1px solid var(--border-color); }
+                    .mobile-search-trigger span { color: var(--text-light); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+                }
+
+                @media (min-width: 500px) {
+                    .search-modal-content { grid-template-columns: 1fr 1fr; }
+                }
+
+                @media (min-width: 768px) { .cab-list { grid-template-columns: repeat(2, 1fr); } }
+                @media (min-width: 1280px) { .cab-list { grid-template-columns: repeat(3, 1fr); } }
+            `}</style>
+
+            <div id="app-container">
+                <header className="app-header">
+                    <div className="logo-container">
+                        <LogoIcon/> RideFinder
+                    </div>
+                    <div className="desktop-search-trigger" onClick={openSearchModal}>
+                        <span>{getSearchSummary()}</span>
+                        <SearchIcon/> 
+                    </div>
+                </header>
+
+                <div className="cabs-page-container">
+                    <FilterComponent filters={filters} setFilters={setFilters} makes={makes} fuelTypes={fuelTypes} isOpen={isMobileFilterOpen} onClose={() => setMobileFilterOpen(false)} priceRange={priceRange} maxPrice={priceRange.max} />
+                    
+                    <main className="main-content">
+                        <div className="mobile-search-trigger" onClick={openSearchModal}>
+                            <SearchIcon/> 
+                            <span>{getSearchSummary()}</span>
+                        </div>
+                        
+                        <div className="results-header">
+                            <div className="results-count">{isLoading ? 'Searching...' : `${filteredCabs.length} Rides Found`}</div>
+                            <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                                <option value="price-asc">Price: Low to High</option>
+                                <option value="price-desc">Price: High to Low</option>
+                                <option value="year-desc">Newest First</option>
+                            </select>
+                        </div>
+
+                        <div className="cab-list">
+                           {isLoading ? (
+                               Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)
+                           ) : filteredCabs.length > 0 ? (
+                               filteredCabs.map(cab => <CabCard key={cab._id} cab={cab} />)
+                           ) : (
+                               <NoResults />
+                           )}
+                        </div>
+                    </main>
+                </div>
+                
+                <button className="mobile-filter-trigger" onClick={() => setMobileFilterOpen(true)}><FilterIcon /> Filters</button>
+                
+                <SearchModal isOpen={isSearchModalOpen} onClose={() => setSearchModalOpen(false)} searchParams={tempSearchParams} handleSearchChange={handleTempSearchChange} handleSearchSubmit={handleSearchSubmit}/>
+            </div>
+        </>
+    );
+}
+
