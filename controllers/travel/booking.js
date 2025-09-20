@@ -77,6 +77,24 @@ exports.bookCar = async (req, res) => {
   }
 };
 
+
+exports.getCarById = async (req,res)=>{
+  try {
+    const {carId} = req.params;
+    const car = await Car.findById(carId);
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+    return res.status(200).json(car);
+  } catch (error) {
+    console.error("Error in getCarById:", error);
+    return res.status(500).json({
+      message: "Something went wrong",
+      error: error.message,
+    });
+  }
+}
+
 exports.getTravelBookings = async (req, res) => {
   try {
     const bookings = await TravelBooking.find();
