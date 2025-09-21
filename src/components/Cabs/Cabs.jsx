@@ -3,6 +3,7 @@ import { styles } from './styles';
 import { useDispatch } from 'react-redux';
 import { getAllCars } from '../../redux/reducers/car';
 import { useNavigate } from 'react-router-dom';
+import { useLoader } from '../../utils/loader';
 
 const FilterIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>;
 const CloseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
@@ -42,7 +43,7 @@ const CabCard = ({ cab }) => {
           <div><span className="detail-icon">📅</span><strong>Drop:</strong> {formatDate(cab.dropD)}</div>
         </div>
         <div className="cab-card-tags"><span><span className="tag-icon">⛽</span>{cab.fuelType}</span><span><span className="tag-icon">👤</span>{cab.seater} Seater</span></div>
-        <div onClick={() => viewDetails(cab._id)} className="cab-card-footer"><p className="cab-card-price">₹{cab.perPersonCost}<span>/person</span></p><button className="cab-card-button" disabled={availableSeats <= 0}>View Details</button></div>
+        <div onClick={() => viewDetails(cab._id)} className="cab-card-footer"><p className="cab-card-price">₹{cab.perPersonCost}<span>/person</span></p><button className="cab-card-button" disabled={availableSeats <= 0}>View</button></div>
       </div>
     </div>
   );
@@ -286,6 +287,7 @@ export default function CarsPage() {
   const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [isSearchModalOpen, setSearchModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const {showLoader, hideLoader} =useLoader()
   const [sortBy, setSortBy] = useState('price-asc');
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useState({ from: '', to: '', pickupDate: '', dropDate: '' });
@@ -310,6 +312,7 @@ export default function CarsPage() {
 
   useEffect(() => {
     setIsLoading(true);
+    showLoader()
     const timer = setTimeout(() => {
       let result = [...cabs];
       if (searchParams.from) result = result.filter(cab => cab.pickupP.toLowerCase().includes(searchParams.from.toLowerCase()));
@@ -332,6 +335,7 @@ export default function CarsPage() {
       });
       setFilteredCabs(result);
       setIsLoading(false);
+      hideLoader()
     }, 500);
     return () => clearTimeout(timer);
   }, [searchParams, filters, cabs, sortBy]);
@@ -396,7 +400,6 @@ export default function CarsPage() {
             </div>
 
             <div className="results-header">
-              <div className="results-count">{isLoading ? 'Searching...' : `${filteredCabs.length} Rides Found`}</div>
               <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>

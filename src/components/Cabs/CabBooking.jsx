@@ -4,6 +4,7 @@ import { bookSeat, getCarById } from "../../redux/reducers/car";
 import { useDispatch } from 'react-redux';
 import { styles } from './styles';
 import { useParams } from 'react-router-dom';
+import { useLoader } from '../../utils/loader';
 
 // --- SVG Icons ---
 const LogoIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>;
@@ -117,6 +118,7 @@ export default function CabsBooking() {
     const dispatch = useDispatch();
     const [selectedCab, setSelectedCab] = useState(null); 
     const [isLoadingCab, setIsLoadingCab] = useState(true);
+    const {showLoader, hideLoader} = useLoader();
     const [locationInfo, setLocationInfo] = useState({});
     const [isLocationLoading, setIsLocationLoading] = useState(false);
     const [isBooking, setIsBooking] = useState(false);
@@ -126,16 +128,19 @@ export default function CabsBooking() {
     useEffect(() => {
         if (id) {
             setIsLoadingCab(true);
+            showLoader();
             dispatch(getCarById(id))
                 .unwrap()
                 .then((data) => {
                     setSelectedCab(data);
                     setIsLoadingCab(false);
+                    hideLoader();
                 })
                 .catch((error) => {
                     console.error('Error fetching car data:', error);
                     showToast('Failed to load car details');
                     setIsLoadingCab(false);
+                    hideLoader();
                 });
         }
     }, [id, dispatch]);
@@ -211,27 +216,6 @@ export default function CabsBooking() {
             setIsBooking(false);
         }
     };
-
-    if (isLoadingCab) {
-        return (
-            <>
-                <style>{styles}</style>
-                <div id="app-container">
-                    <header className="app-header">
-                        <div className="logo-container">
-                            <LogoIcon/> Loading Ride Details...
-                        </div>
-                    </header>
-                    <main className="booking-page-container">
-                        <div className="loading-container">
-                            <div>Loading cab details...</div>
-                        </div>
-                    </main>
-                </div>
-            </>
-        );
-    }
-
     if (!selectedCab) {
         return (
             <>
