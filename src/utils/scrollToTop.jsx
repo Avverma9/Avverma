@@ -28,7 +28,7 @@ const ScrollToTopButton = () => {
 
     const buttonStyle = {
         position: 'fixed',
-        bottom: '70px',
+        bottom: '77px',
         right: '40px',
         zIndex: 1050,
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', // Modern gradient

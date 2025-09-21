@@ -121,7 +121,7 @@ export const styles =`
                     }
                     @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
                     .filter-close-btn { display: block; }
-                    .mobile-filter-trigger { display: flex; align-items: center; gap: 0.5rem; position: fixed; bottom: 120px; left: 1.5rem; background-color: var(--primary-color); color: white; padding: 0.75rem 1.25rem; border-radius: 999px; border: none; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 50; cursor: pointer; }
+                    .mobile-filter-trigger { display: flex; align-items: center; gap: 0.5rem; position: fixed; bottom: 80px; left: 1.5rem; background-color: var(--primary-color); color: white; padding: 0.75rem 1.25rem; border-radius: 999px; border: none; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 50; cursor: pointer; }
                 
                     .mobile-search-trigger { display: flex; align-items: center; gap: 1rem; background-color: var(--bg-white); padding: 0.75rem 1rem; margin: 0 0.5rem 1rem 0.5rem; border-radius: 12px; box-shadow: var(--card-shadow); cursor: pointer; border: 1px solid var(--border-color); }
                     .mobile-search-trigger span { color: var(--text-light); text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }

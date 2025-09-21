@@ -212,6 +212,8 @@ export default function SeatData({ open, onClose, id, carData }) {
           seats: seatIds,
           carId: id,
           bookedBy: customerName,
+          sharingType: carData.sharingType,
+          vehicleType: carData.vehicleType,
           vehicleNumber: carData?.vehicleNumber,
           customerMobile: customerMobile,
           customerEmail: customerEmail,

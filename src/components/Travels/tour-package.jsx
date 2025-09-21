@@ -460,9 +460,9 @@ const TravelPackages = () => {
 
         {/* Main Content Area */}
         <Grid item xs={12} md={9}>
-          <ModernHeader elevation={4}>
+          <ModernHeader elevation={4} sx={{ backgroundImage: 'url(https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop)' }}>
             <HeaderOverlay />
-            <Box sx={{ position: "relative", zIndex: 2 }}>
+            <Box sx={{ position: "relative", zIndex: 2 }} >
               <Typography
                 variant="h4"
                 component="h1"

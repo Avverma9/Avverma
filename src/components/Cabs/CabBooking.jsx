@@ -196,14 +196,17 @@ export default function CabsBooking() {
         setIsBooking(true);
         try {
             const seatIds = selectedSeats.map((seat) => seat._id);
-            await dispatch(bookSeat({
+            const data = {
                 seats: seatIds,
                 carId: id,
-                bookedBy: passengerDetails.fullName,
+                bookedBy: passengerDetails.fullName, 
+                sharingType: selectedCab.sharingType,
+                vehicleType: selectedCab.vehicleType,
                 vehicleNumber: selectedCab?.vehicleNumber,
                 customerMobile: passengerDetails.phone,
                 customerEmail: passengerDetails.email,
-            })).unwrap();
+            }
+            await dispatch(bookSeat(data)).unwrap();
             
             showToast('Booking Confirmed Successfully!', 'success');
             // Reset form after successful booking
@@ -228,7 +231,7 @@ export default function CabsBooking() {
                     </header>
                     <main className="booking-page-container">
                         <div className="error-container">
-                            <div>Cab details not found. Please try again.</div>
+                          
                         </div>
                     </main>
                 </div>

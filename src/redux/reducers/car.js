@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import baseURL from '../../utils/baseURL';
 import { token } from '../../utils/Unauthorized';
+import alert from '../../utils/custom_alert/custom_alert';
 
 export const addCar = createAsyncThunk('car/addCar', async (data, { rejectWithValue }) => {
     try {
@@ -90,7 +91,7 @@ export const bookSeat = createAsyncThunk('car/bookSeat', async (data, { rejectWi
                 Authorization: token,
             },
         });
-        
+        alert('Success', 'Seat booked successfully', 'success');
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
