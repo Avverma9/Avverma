@@ -134,7 +134,7 @@ export default function CarsPage() {
         };
     }, [cabs]);
 
-    const [filters, setFilters] = useState({ make: 'All', fuelType: 'All', seats: 1, price: priceRange.max });
+    const [filters, setFilters] = useState({ make: 'All', fuelType: 'All', seats: 0, price: priceRange.max });
     
     useEffect(() => {
       setIsLoading(true);
@@ -146,7 +146,8 @@ export default function CarsPage() {
         if (searchParams.dropDate) result = result.filter(cab => formatDateForInput(cab.dropD) <= searchParams.dropDate);
         if (filters.make !== 'All') result = result.filter(cab => cab.make === filters.make);
         if (filters.fuelType !== 'All') result = result.filter(cab => cab.fuelType === filters.fuelType);
-        result = result.filter(cab => (cab.seater - cab.seatConfig.filter(s => s.isBooked).length) >= filters.seats);
+result = result.filter(cab => cab.seatConfig.filter(s => !s.isBooked).length >= filters.seats);
+
         result = result.filter(cab => cab.perPersonCost <= filters.price);
         result.sort((a, b) => {
             switch (sortBy) {
