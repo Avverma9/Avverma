@@ -86,12 +86,18 @@ const FilterComponent = ({ filters, setFilters, makes, fuelTypes, isOpen, onClos
     else unlock();
     return () => unlock();
   }, [isMobile, isOpen]);
+
   const handleFilterChange = (e) => {
     const { name, value, type } = e.target;
     let val = value;
     if (type === 'number' || type === 'range') val = Number(value);
     setFilters(prev => ({ ...prev, [name]: val }));
   };
+
+  const handleSeatsChange = (increment) => {
+    setFilters(prev => ({ ...prev, seats: Math.max(1, (prev.seats || 1) + increment) }));
+  };
+
   const resetFilters = () => setFilters({ make: 'All', fuelType: 'All', seats: 1, price: maxPrice, sharingType: 'All', vehicleType: 'All' });
   if (!isMobile) {
     return (
@@ -99,7 +105,14 @@ const FilterComponent = ({ filters, setFilters, makes, fuelTypes, isOpen, onClos
         <div className="filter-wrapper">
           <div className="filter-header"><h2>Filters</h2><button className="filter-close-btn" onClick={onClose}><CloseIcon /></button></div>
           <div className="filter-group"><div className="price-label"><label htmlFor="price-filter">Max Price</label><span>₹{filters.price}</span></div><input type="range" id="price-filter" name="price" min={priceRange.min} max={priceRange.max} value={filters.price} onChange={handleFilterChange} className="price-slider" /></div>
-          <div className="filter-group"><label htmlFor="seats-filter">Seats Required</label><input type="number" id="seats-filter" name="seats" min="1" max="10" value={filters.seats} onChange={handleFilterChange} className="seats-input" /></div>
+          <div className="filter-group">
+            <label>Seats Required</label>
+            <div className="stepper-input">
+              <button type="button" onClick={() => handleSeatsChange(-1)} disabled={filters.seats <= 1}>-</button>
+              <span>{filters.seats}</span>
+              <button type="button" onClick={() => handleSeatsChange(1)}>+</button>
+            </div>
+          </div>
           <div className="filter-group"><label htmlFor="make-filter">Car Brand</label><select id="make-filter" name="make" value={filters.make} onChange={handleFilterChange}><option value="All">All Brands</option>{makes.map(make => <option key={make} value={make}>{make}</option>)}</select></div>
           <div className="filter-group"><label>Fuel Type</label><div className="radio-group"><label><input type="radio" name="fuelType" value="All" checked={filters.fuelType === 'All'} onChange={handleFilterChange} />All</label>{fuelTypes.map(fuel => (<label key={fuel}><input type="radio" name="fuelType" value={fuel} checked={filters.fuelType === fuel} onChange={handleFilterChange} />{fuel}</label>))}</div></div>
           <div className="filter-group"><label>Sharing Type</label><div className="radio-group"><label><input type="radio" name="sharingType" value="All" checked={filters.sharingType === 'All'} onChange={handleFilterChange} />All</label>{sharingTypes.map(type => (<label key={type}><input type="radio" name="sharingType" value={type} checked={filters.sharingType === type} onChange={handleFilterChange} />{type}</label>))}</div></div>
@@ -152,6 +165,23 @@ const FilterComponent = ({ filters, setFilters, makes, fuelTypes, isOpen, onClos
   const footerStyle = { position: 'absolute', left: 0, right: 0, bottom: 0, padding: '10px 12px', borderTop: '1px solid var(--border-color)', display: 'flex', gap: 8, justifyContent: 'space-between', alignItems: 'center', background: 'linear-gradient(to top, rgba(255,255,255,0.92), rgba(255,255,255,0.70))', flexShrink: 0 };
   const resetBtnStyle = { background: 'transparent', border: 'none', color: 'var(--primary-color)', padding: '8px 12px', borderRadius: 8, cursor: 'pointer', fontWeight: 600 };
   const applyBtnStyle = { background: 'linear-gradient(to right, #4f46e5, #6366f1)', color: '#fff', border: 'none', padding: '10px 14px', borderRadius: 8, cursor: 'pointer', fontWeight: 700 };
+  const stepperContainerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    ...inputStyle,
+    padding: '0',
+  };
+  const stepperBtnStyle = {
+    background: 'transparent',
+    border: 'none',
+    padding: '8px 16px',
+    cursor: 'pointer',
+    fontSize: '1.2rem',
+    color: 'var(--primary-color)',
+    fontWeight: 'bold',
+    lineHeight: 1,
+  };
   const stop = (e) => e.stopPropagation();
   const handleApply = () => {
     onClose();
@@ -175,8 +205,12 @@ const FilterComponent = ({ filters, setFilters, makes, fuelTypes, isOpen, onClos
             <input id="price-filter" name="price" type="range" min={priceRange.min} max={priceRange.max} value={filters.price} onChange={handleFilterChange} style={rangeStyle} />
           </div>
           <div style={groupStyle}>
-            <label style={labelStyle} htmlFor="seats-filter">Seats Required</label>
-            <input id="seats-filter" name="seats" type="number" min="1" max="10" value={filters.seats} onChange={handleFilterChange} style={inputStyle} />
+            <label style={labelStyle}>Seats Required</label>
+            <div style={stepperContainerStyle}>
+              <button type="button" style={{...stepperBtnStyle, borderRight: '1px solid var(--border-color)'}} onClick={() => handleSeatsChange(-1)} disabled={filters.seats <= 1}>-</button>
+              <span style={{ fontWeight: 600, color: 'var(--text-dark)' }}>{filters.seats}</span>
+              <button type="button" style={{...stepperBtnStyle, borderLeft: '1px solid var(--border-color)'}} onClick={() => handleSeatsChange(1)}>+</button>
+            </div>
           </div>
           <div style={groupStyle}>
             <label style={labelStyle} htmlFor="make-filter">Car Brand</label>

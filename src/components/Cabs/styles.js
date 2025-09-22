@@ -1,4 +1,4 @@
-export const styles =`
+export const styles = `
                 :root {
                     --primary-color: #4f46e5; --primary-hover: #4338ca; --text-dark: #111827;
                     --text-light: #4b5563; --bg-light: #f9fafb; --bg-white: #ffffff;
@@ -142,7 +142,62 @@ export const styles =`
                 .skeleton { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
                 .skeleton-box { background-color: #e5e7eb; border-radius: 12px; }
                 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-                
+                .stepper-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 8px;
+  background-color: #fff;
+  width: 100%;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.stepper-input:focus-within {
+  border-color: var(--primary-color, #4f46e5);
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+}
+
+.stepper-input span {
+  font-weight: 600;
+  color: var(--text-dark, #1f2937);
+  text-align: center;
+  flex-grow: 1;
+  padding: 0 8px;
+}
+
+.stepper-input button {
+  background: transparent;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--primary-color, #4f46e5);
+  font-weight: bold;
+  line-height: 1;
+  transition: background-color 0.2s;
+}
+
+.stepper-input button:hover:not(:disabled) {
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.stepper-input button:disabled {
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.stepper-input button:first-of-type {
+  border-right: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 7px 0 0 7px;
+}
+
+.stepper-input button:last-of-type {
+  border-left: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 0 7px 7px 0;
+}
+
                 .booking-page-container { max-width: 1200px; width: 100%; margin: 0 auto; padding: clamp(1rem, 5vw, 1.5rem); display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: start; }
                 .booking-card { background-color: var(--bg-white); border-radius: 16px; padding: clamp(1rem, 5vw, 1.5rem); box-shadow: var(--card-shadow); border: 1px solid var(--border-color); }
                 .booking-card h3 { font-size: clamp(1.1rem, 4vw, 1.25rem); font-weight: 600; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }

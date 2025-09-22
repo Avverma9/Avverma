@@ -14,13 +14,7 @@
 }
 
 /* Initial Card Section */
-.card-content {
-    display: flex;
-    flex-wrap: wrap;
-    border-radius: 2px;
-    border: 1px solid #f3f3f3; /* Add border here */
-    padding: 9px;
-}
+
 
 .image-container {
     display: flex;
