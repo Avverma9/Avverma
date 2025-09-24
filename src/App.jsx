@@ -1,96 +1,75 @@
-import React from 'react';
-import './index.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import CarouselPage from './components/CarouselBanner';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import SearchForm from './components/Hotels/Searchbox/Search';
-import Offered from './components/Offered';
-import Footer from './components/Footer';
-import HeaderImage from './components/HeaderLocation';
+import "./App.css";
+import LoginPage from "./components/auth/login";
+import RegisterPage from "./components/auth/Register";
+import TourBooking from "./pages/tour/tour-booking";
+import { Routes, Route } from "react-router-dom";
+import { LoaderProvider } from "./utils/loader";
+import { ToastProvider } from "./utils/toast";
+import Header from "./components/Header";
+import HeaderTravel from "./components/TravelLocations";
+import ModernBottomNavigation from "./components/BottomNavigation";
+import Footer from "./components/Footer";
+import PoliciesPage from "./pages/PolicyPage";
+import AboutPage from "./pages/about";
+import ContactPage from "./pages/Contact";
+import Careers from "./pages/Careers";
+import SearchForm from "./components/Search";
+import Locations from "./pages/home-section/locations";
+import Banner from "./pages/home-section/banner";
+import Offered from "./pages/home-section/Offered";
+import Sidebar from "./components/profile/sidebar";
+import Hotel from "./pages/hotel/hotel";
+import ScrollToTopButton from "./utils/scrollToTop";
+import BookNow from "./pages/booking/Booknow";
+import Policies from "./pages/booking/policies";
+import TourPackages from './pages/tour/tour-package'
+import HotelPartnerForm from "./pages/partner/hotel-partner";
+import CabsBooking from "./pages/cabs/CabBooking";
+import Cabs from "./pages/cabs/Cabs";
+import PolicyForm from "./pages/partner/hotel-policy";
+import AmenitiesPage from "./pages/partner/hotel-amenities";
+import PartnerFoods from "./pages/partner/hotel-foods";
+import PartnerRooms from "./pages/partner/hotel-rooms";
 
-import LoginPage from './components/Authentication/Login.jsx';
-import RegisterPage from './components/Authentication/Register.jsx';
+export default function App() {
+  return (
+    <div className="App">
+      <LoaderProvider>
+        <ToastProvider>
+          <Header />
+          <BookNow />
+          <Sidebar />
+          <HeaderTravel />
+          <Hotel />
+          <SearchForm />
+          <Banner />
+          <Offered />
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<Locations />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/holidays" element={<TourPackages />} />
+            <Route path="/travellers/booking/:id" element={<TourBooking />} />
+            <Route path="/partner" element={<HotelPartnerForm />} />
+            <Route path="/partner/second-step" element={<PolicyForm />} />
+            <Route path="/partner/third-step" element={<AmenitiesPage />} />
+            <Route path="/partner/fourth-step" element={<PartnerFoods />} />
+              <Route path="/partner/last-step" element={<PartnerRooms />} />
+            <Route path="/cab-booking/:id" element={<CabsBooking />} />
+            <Route path="/cabs" element={<Cabs />} />
 
-import BookNow from './components/Booknow/Booknow.jsx';
+            {/* <Route path='/policies' element={<PoliciesPage />} /> */}
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/contact' element={<ContactPage />} />
+            <Route path='/careers' element={<Careers />} />
+            <Route path='/policies' element={<Policies />} />
+          </Routes>
+          <ScrollToTopButton />
+          <Footer />
+          <ModernBottomNavigation />
+        </ToastProvider>
 
-import PartnerForm from './components/Hotels/Partner/Partner.jsx';
-import PolicyForm from './components/Hotels/Partner/PartnerPolicy.jsx';
-import Bottom from './components/Bottom.jsx';
-import AmenitiesPage from './components/Hotels/Partner/PartnerAmenities.jsx';
-import PartnerFoods from './components/Hotels/Partner/PartnerFoods.jsx';
-import PartnerRooms from './components/Hotels/Partner/PartnerRooms.jsx';
-
-import { LoaderProvider } from './utils/loader'; // Import the LoaderProvider
-import ScrollToTop from './utils/scrollToTop';
-import Settings from './components/Profile/Settings';
-import Travel from './components/Travels/tour-package';
-import TravelForm from './components/Travels/partnerPage';
-import TravelBooking from './components/Travels/tour-booking';
-import Hotel from './components/Hotels/pages/Hotel';
-import Hero from './components/landingPage/Hero';
-import Coupon from './components/Profile/coupon.jsx';
-import Policies from './components/Booknow/policies.jsx';
-
-import ScrollToTopButton from './utils/scrollToTop.jsx';
-import Careers from './components/extras/Careers.jsx';
-import { ToastProvider } from './utils/toast';
-import Cars from './components/Cabs/Cabs';
-import TourBookingPage from './components/Travels/tour-booking';
-import AboutPage from './components/extras/About';
-import ContactPage from './components/extras/Contact';
-import CabsBooking from './components/Cabs/CabBooking';
-
-function App() {
-    return (
-        <LoaderProvider>
-            <ToastProvider>
-            <div className="App">
-                <Router>
-                    <Header />
-
-                    <Settings />
-                    <BookNow />
-                    <HeaderImage />
-                    <Hotel /> 
-                    <SearchForm />
-                    <Hero />
-                   
-                    {/* <CarouselPage /> */}
-                    <Offered />
-                    <ScrollToTop /> {/* Add ScrollToTop component */}
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        {/* <Route path="/about" element={<NewComponent />} /> */}
-                        <Route path='/policies' element={<Policies />} />
-                        <Route path='/about' element={<AboutPage/>}/>
-                        <Route path='/contact' element={<ContactPage/>}/>
-
-                        <Route path="/travellers" element={<Travel />} />
-                        <Route path="/travellers/booking/:id" element={<TourBookingPage />} />
-                        <Route path="/cab-booking/:id" element={<CabsBooking />} />
-                        <Route path="/partner" element={<PartnerForm />} />
-                        <Route path="/travel-partner" element={<TravelForm />} />
-                        <Route path="/partner/second-step" element={<PolicyForm />} />
-                        <Route path="/partner/third-step" element={<AmenitiesPage />} />
-                        <Route path="/coupons" element={<Coupon />} />
-                        <Route path='/cabs' element={<Cars />} />
-                        <Route path="/partner/fourth-step" element={<PartnerFoods />} />
-                        <Route path='/careers' element={<Careers/>}/>
-                        <Route path="/partner/last-step" element={<PartnerRooms />} />
-                    </Routes>
-
-                    <Footer />
-                    <Bottom />
-                    <ToastContainer /> {/* Add ToastContainer here */}
-                    <ScrollToTopButton />
-                </Router>
-            </div>
-            </ToastProvider>
-        </LoaderProvider>
-    );
+      </LoaderProvider>
+    </div>
+  );
 }
-
-export default App;

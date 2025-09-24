@@ -1,26 +1,17 @@
-import React, { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import store from "./redux/store";
+import App from "./App.jsx";
+import "./index.css";
 
-import App from './App.jsx';
-import store from './redux/store';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-
-// Create MUI theme (optional to customize)
-const theme = createTheme();
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <BrowserRouter>
         <App />
-      </ThemeProvider>
+      </BrowserRouter>
     </Provider>
   </StrictMode>
 );
-
-// Optional: Measure performance
-reportWebVitals();
