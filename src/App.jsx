@@ -28,8 +28,8 @@ import AmenitiesPage from "./pages/partner/hotel-amenities";
 import PartnerFoods from "./pages/partner/hotel-foods";
 import PartnerRooms from "./pages/partner/hotel-rooms";
 import TourBookPage from "./pages/tour/tour-booking";
-import ProfileSidebar from "./components/profile/profile-sidebar";
 import Coupon from "./components/profile/coupons";
+import ProfileSidebar from "./components/profile/profile-sidebar";
 
 export default function App() {
   return (
@@ -39,7 +39,7 @@ export default function App() {
           <Header />
           <BookNow />
           <HeaderTravel />
-  <ProfileSidebar/>
+          <ProfileSidebar />
           <Hotel />
           <SearchForm />
           <Banner />
