@@ -177,11 +177,11 @@ const CabCardMobile = ({ cab }) => {
 const CabCardDesktop = ({ cab }) => {
   const navigate = useNavigate();
   const availableSeats = cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
-  const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(" ", "+")}`;
+  const placeholderImage = `https://placehold.co/600x400/e2e8f0/4a5568?text=${cab.make.replace(" ", "+")}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
-      <div className="flex h-64">
+      <div className="flex h-72">
         {/* Image Section */}
         <div className="relative w-80 flex-shrink-0">
           <img 
@@ -304,10 +304,14 @@ const FilterComponent = ({
     });
 
   return (
-    <aside className={`fixed inset-0 z-50 lg:static bg-black/50 lg:bg-transparent transition-all duration-300 ${
-      isOpen ? "block" : "hidden lg:block"
-    }`} onClick={onClose}>
-      <div className="bg-white w-full max-w-sm lg:max-w-md lg:sticky lg:top-6 rounded-t-3xl lg:rounded-2xl shadow-2xl lg:shadow-lg overflow-y-auto h-[90vh] lg:h-auto ml-auto lg:ml-0 p-4 sm:p-6 lg:border lg:border-gray-100" 
+    <aside className={`fixed inset-0 z-50 flex flex-col justify-end lg:static lg:block lg:justify-start lg:h-full transition-opacity duration-300 ${
+      isOpen ? "bg-black/50 opacity-100" : "opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto"
+    }`} onClick={onClose} >
+      <div className={`bg-white w-full lg:w-72 xl:w-80 lg:sticky lg:top-6 rounded-t-3xl lg:rounded-2xl shadow-2xl lg:shadow-lg 
+        flex flex-col
+        max-h-[85vh] lg:h-full lg:max-h-[calc(100vh-3rem)] p-4 sm:p-6 lg:border lg:border-gray-100 transition-transform duration-300 ease-in-out ${
+        isOpen ? 'translate-y-0' : 'translate-y-full lg:translate-y-0'
+      }`}
            onClick={(e) => e.stopPropagation()}>
         
         {/* Header */}
@@ -315,13 +319,13 @@ const FilterComponent = ({
           <h2 className="text-lg sm:text-xl font-bold text-gray-900">Filters</h2>
           <button 
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors lg:hidden"
+            className="p-2 -mr-2 hover:bg-gray-100 rounded-full transition-colors lg:hidden"
           >
             <CloseIcon />
           </button>
         </div>
         
-        <div className="space-y-4 sm:space-y-6">
+        <div className="space-y-4 sm:space-y-6 overflow-y-auto flex-grow pr-2 -mr-2">
           {/* Price Range */}
           <div className="space-y-2 sm:space-y-3">
             <label className="block text-sm font-semibold text-gray-700">Maximum Price</label>
@@ -461,7 +465,7 @@ const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handle
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-3 sm:p-4" onClick={onClose}>
       <div className="bg-white rounded-2xl w-full max-w-lg p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center">
           <h3 className="text-lg sm:text-xl font-bold text-gray-900">Search Your Ride</h3>
@@ -475,38 +479,38 @@ const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handle
         
         <div className="space-y-3 sm:space-y-4">
           <div className="relative">
-            <LocationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <LocationIcon className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input 
               type="text" 
               name="from" 
               placeholder="Pick-up location" 
               value={searchParams.from} 
               onChange={handleSearchChange} 
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
             />
           </div>
           
           <div className="relative">
-            <LocationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <LocationIcon className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input 
               type="text" 
               name="to" 
               placeholder="Drop-off location" 
               value={searchParams.to} 
               onChange={handleSearchChange} 
-              className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
             />
           </div>
           
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <div className="relative">
-              <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <CalendarIcon className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input 
                 type="date" 
                 name="pickupDate" 
                 value={searchParams.pickupDate} 
                 onChange={handleSearchChange} 
-                className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
               />
             </div>
             
@@ -517,7 +521,7 @@ const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handle
                 name="dropDate" 
                 value={searchParams.dropDate} 
                 onChange={handleSearchChange} 
-                className="w-full pl-10 pr-4 py-2 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm sm:text-base"
               />
             </div>
           </div>
@@ -525,7 +529,7 @@ const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handle
         
         <button 
           onClick={handleSearchSubmit} 
-          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg text-sm"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg text-base"
         >
           Search Rides
         </button>
@@ -756,20 +760,22 @@ export default function CarsPage() {
         </div>
       </header>
 
-      <div className="w-full flex">
-        {/* Filter Sidebar */}
-        <FilterComponent 
-          filters={filters} 
-          setFilters={setFilters} 
-          makes={makes} 
-          fuelTypes={fuelTypes} 
-          isOpen={isMobileFilterOpen} 
-          onClose={() => setMobileFilterOpen(false)} 
-          priceRange={priceRange} 
-          sharingTypes={sharingTypes} 
-          vehicleTypes={vehicleTypes} 
-        />
-
+      <div className="w-full max-w-7xl mx-auto flex">
+        <div className="hidden lg:block w-72 xl:w-80 flex-shrink-0 p-6 pl-4">
+          {/* Filter Sidebar */}
+          <FilterComponent 
+            filters={filters} 
+            setFilters={setFilters} 
+            makes={makes} 
+            fuelTypes={fuelTypes} 
+            isOpen={isMobileFilterOpen} 
+            onClose={() => setMobileFilterOpen(false)} 
+            priceRange={priceRange} 
+            sharingTypes={sharingTypes} 
+            vehicleTypes={vehicleTypes} 
+          />
+        </div>
+        
         {/* Main Content */}
         <main className="flex-1 min-w-0 p-3 sm:p-4 lg:p-6">
           {/* Mobile Search & Controls */}
@@ -829,7 +835,22 @@ export default function CarsPage() {
         </main>
       </div>
 
-      {/* Mobile Filter Button - Positioned as requested */}
+      {/* Mobile Filter Drawer */}
+      <div className="lg:hidden">
+        <FilterComponent 
+            filters={filters} 
+            setFilters={setFilters} 
+            makes={makes} 
+            fuelTypes={fuelTypes} 
+            isOpen={isMobileFilterOpen} 
+            onClose={() => setMobileFilterOpen(false)} 
+            priceRange={priceRange} 
+            sharingTypes={sharingTypes} 
+            vehicleTypes={vehicleTypes} 
+          />
+      </div>
+
+      {/* Mobile Filter Button */}
       <button 
         onClick={() => setMobileFilterOpen(true)} 
         className="fixed left-3 sm:left-4 lg:hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-full shadow-xl flex items-center space-x-2 hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 z-40 text-sm"
