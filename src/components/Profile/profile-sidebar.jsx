@@ -72,7 +72,7 @@ const BottomNavLink = ({ to, icon, label }) => (
   </NavLink>
 );
 
-export default function Sidebar () {
+export default function ProfileSidebar () {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
