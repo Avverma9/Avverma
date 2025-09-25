@@ -43,10 +43,9 @@ export default function App() {
           <Hotel />
           <SearchForm />
           <Banner />
-          <Offered />
+         <Locations />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<Locations />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/holidays" element={<TourPackages />} />
             <Route path="/travellers/booking/:id" element={<TourBooking />} />
@@ -57,6 +56,7 @@ export default function App() {
               <Route path="/partner/last-step" element={<PartnerRooms />} />
             <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<Cabs />} />
+            <Route path="/" element={<Offered />} />
 
             {/* <Route path='/policies' element={<PoliciesPage />} /> */}
             <Route path='/about' element={<AboutPage />} />

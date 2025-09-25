@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 
 // --- SVG ICON FOR THE BUTTON ---
 const ArrowRightIcon = (props) => (
@@ -70,7 +71,10 @@ const LocationCard = ({ name, description, imageUrl, link, className = "" }) => 
 const Locations = () => {
     const mainLocation = locationsData[0];
     const otherLocations = locationsData.slice(1);
-
+const location = useLocation()
+if(location.pathname !== '/'){
+    return null
+}
     return (
         <section className="py-16 md:py-24 bg-gray-50">
             <div className="container mx-auto px-4">
