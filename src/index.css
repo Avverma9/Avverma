@@ -1,6 +1,8 @@
 @import "tailwindcss";
 body {
   margin: 0;
+  /* Horizontal overflow को रोकें */
+  overflow-x: hidden;
   background-color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -9,7 +11,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#root {
-  padding: 5px 10px;
+/* सभी elements पर box-sizing लागू करें */
+*, *::before, *::after {
   box-sizing: border-box;
+}
+
+#root {
+  width: 100%;
+  max-width: 1440px; /* कंटेंट को बहुत बड़ी स्क्रीन पर फैलने से रोकता है */
+  margin: 0 auto; /* कंटेंट को center में रखता है */
+  padding: 1rem; /* Responsive padding के लिए rem unit का उपयोग करें */
 }

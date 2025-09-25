@@ -27,7 +27,7 @@ import PolicyForm from "./pages/partner/hotel-policy";
 import AmenitiesPage from "./pages/partner/hotel-amenities";
 import PartnerFoods from "./pages/partner/hotel-foods";
 import PartnerRooms from "./pages/partner/hotel-rooms";
-import Sidebar from "./components/profile/sidebar";
+import Sidebar from "./components/profile/sidebar.jsx";
 import Coupon from "./components/profile/coupons";
 import TourBookPage from "./pages/tour/tour-booking";
 
