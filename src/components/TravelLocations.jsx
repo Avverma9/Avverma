@@ -84,21 +84,30 @@ const HeaderTravel = () => {
     }
 
     return (
-        <Box sx={{ position: 'relative', py: { xs: 1.5, sm: 2 }, my: 1 }}>
+        <Box sx={{ position: 'relative', py: { xs: 1.5, sm: 2 }, my: 1, px: { xs: 2, sm: 3 } }}>
             {/* Left Navigation Arrow */}
             {showNav.left && (
                 <IconButton
                     onClick={() => scroll('left')}
                     size="small"
                     sx={{
-                        position: 'absolute',
-                        left: { xs: -8, sm: -12 },
+                        position: 'absolute', // Positioned relative to the parent Box
+                        left: 0,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         zIndex: 2,
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                        boxShadow: 1,
-                        '&:hover': { backgroundColor: 'white' }
+                        background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 80%)',
+                        color: 'text.secondary',
+                        '&:hover': { 
+                            backgroundColor: 'rgba(255,255,255,0.5)',
+                            color: 'text.primary'
+                        },
+                        // Adding a small circle for better visibility on complex backgrounds
+                        '&::before': {
+                          content: '""', position: 'absolute', width: 32, height: 32,
+                          borderRadius: '50%', bgcolor: 'background.paper', zIndex: -1,
+                          boxShadow: 1,
+                        }
                     }}
                 >
                     <ChevronLeft sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
@@ -121,7 +130,7 @@ const HeaderTravel = () => {
                     direction="row"
                     spacing={{ xs: 2.5, sm: 4 }}
                     sx={{ px: { xs: 1, sm: 2 } }}
-                >
+                > 
                     {loading
                         ? Array.from({ length: 12 }).map((_, index) => (
                               <Stack key={index} spacing={1} alignItems="center">
@@ -166,15 +175,23 @@ const HeaderTravel = () => {
                 <IconButton
                     onClick={() => scroll('right')}
                     size="small"
-                    sx={{
-                        position: 'absolute',
-                        right: { xs: -8, sm: -12 },
+                    sx={{ 
+                        position: 'absolute', // Positioned relative to the parent Box
+                        right: 0,
                         top: '50%',
                         transform: 'translateY(-50%)',
                         zIndex: 2,
-                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                        boxShadow: 1,
-                        '&:hover': { backgroundColor: 'white' }
+                        background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 80%)',
+                        color: 'text.secondary',
+                        '&:hover': { 
+                            backgroundColor: 'rgba(255,255,255,0.5)',
+                            color: 'text.primary'
+                        },
+                        '&::before': {
+                          content: '""', position: 'absolute', width: 32, height: 32,
+                          borderRadius: '50%', bgcolor: 'background.paper', zIndex: -1,
+                          boxShadow: 1,
+                        }
                     }}
                 >
                     <ChevronRight sx={{ fontSize: { xs: '1.2rem', sm: '1.5rem' } }} />
