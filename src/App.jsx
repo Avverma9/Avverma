@@ -27,9 +27,9 @@ import PolicyForm from "./pages/partner/hotel-policy";
 import AmenitiesPage from "./pages/partner/hotel-amenities";
 import PartnerFoods from "./pages/partner/hotel-foods";
 import PartnerRooms from "./pages/partner/hotel-rooms";
-import Coupon from "./components/profile/coupons";
 import TourBookPage from "./pages/tour/tour-booking";
 import ProfileSidebar from "./components/profile/profile-sidebar";
+import Coupon from "./components/profile/coupons";
 
 export default function App() {
   return (
