@@ -28,8 +28,8 @@ import AmenitiesPage from "./pages/partner/hotel-amenities";
 import PartnerFoods from "./pages/partner/hotel-foods";
 import PartnerRooms from "./pages/partner/hotel-rooms";
 import TourBookPage from "./pages/tour/tour-booking";
-import Coupon from "./components/profile/coupons";
 import ProfileSidebar from "./components/profile/profile-sidebar";
+import Coupon from "./components/profile/coupons";
 
 export default function App() {
   return (
@@ -62,7 +62,7 @@ export default function App() {
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/careers' element={<Careers />} />
-            <Route path='/coupons' element={<Coupon />} />
+            <Route path='/coupons' element={< Coupon/>} />
             <Route path='/policies' element={<Policies />} />
           </Routes>
           <ScrollToTopButton />
