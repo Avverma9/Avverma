@@ -17,7 +17,6 @@ import SearchForm from "./components/Search";
 import Locations from "./pages/home-section/locations";
 import Banner from "./pages/home-section/banner";
 import Offered from "./pages/home-section/Offered";
-import Sidebar from "./components/profile/sidebar";
 import Hotel from "./pages/hotel/hotel";
 import ScrollToTopButton from "./utils/scrollToTop";
 import BookNow from "./pages/booking/Booknow";
@@ -38,14 +37,14 @@ export default function App() {
         <ToastProvider>
           <Header />
           <BookNow />
-          <Sidebar />
           <HeaderTravel />
           <Hotel />
           <SearchForm />
           <Banner />
-         <Locations />
+          <Offered />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<Locations />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/holidays" element={<TourPackages />} />
             <Route path="/travellers/booking/:id" element={<TourBooking />} />
