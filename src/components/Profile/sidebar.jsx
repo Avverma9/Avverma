@@ -9,6 +9,10 @@ import { MdOutlineRateReview, MdOutlineAccountCircle } from "react-icons/md";
 import { IoWarningOutline } from "react-icons/io5";
 import { RiHomeLine, RiBriefcaseLine, RiCarLine } from "react-icons/ri";
 import UpdatePage from "./update-profile";
+import { ConfirmBooking } from "./my-bookings";
+import TourBooking from "./tour-booking";
+import Reviews from "./my-reviews";
+import Complaint from "./complaints";
 
 // --- Sidebar NavLink ---
 const SidenavLink = ({ to, icon, label, onClick }) => (
@@ -105,6 +109,7 @@ const Sidebar = () => {
   const paths = [
     "/bookings",
     "/reviews",
+    "/tour-bookings",
     "/complaints",
     "/profile",
     "/profile-update/user-data/page",
@@ -156,23 +161,6 @@ const Sidebar = () => {
             <SidenavLink to="/complaints" icon={<IoWarningOutline />} label="Complaint" onClick={closeMobileMenu} />
             <SidenavLink to="/reviews" icon={<MdOutlineRateReview />} label="Reviews" onClick={closeMobileMenu} />
           </nav>
-
-          {/* Footer */}
-          <div className="p-4 border-t border-white/30">
-            <a href="/profile" className="flex items-center gap-4 no-underline" style={{ textDecoration: "none" }}>
-              <img
-                className="h-11 w-11 rounded-full object-cover ring-2 ring-white/40"
-                src="https://i.pravatar.cc/100"
-                alt="User Avatar"
-              />
-              <div className="truncate">
-                <p className="text-sm font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                  John Doe
-                </p>
-                <p className="text-xs text-slate-700">john.doe@example.com</p>
-              </div>
-            </a>
-          </div>
         </div>
       </aside>
 
@@ -200,6 +188,12 @@ const Sidebar = () => {
           <Routes>
             <Route path="/profile" element={<Profile />} />
               <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
+                 <Route path="/bookings" element={<ConfirmBooking />} />
+                 <Route path="/tour-bookings" element={<TourBooking />} />
+                 <Route path="/complaints" element={<Complaint />} />
+                 <Route path="/reviews" element={<Reviews />} />
+
+
           </Routes>
         </main>
       </div>
