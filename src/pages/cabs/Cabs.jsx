@@ -538,7 +538,7 @@ const NoResults = () => (
     <p className="text-gray-500 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
       We couldn't find any rides matching your criteria. Try adjusting your search or filters to see more options.
     </p>
-    <button className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm">
+    <button className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm" onClick={() => window.location.reload()}>
       Clear Filters
     </button>
   </div>
@@ -732,7 +732,7 @@ export default function CarsPage() {
               <LogoIcon />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg sm:text-xl font-bold truncate">RideShare</h1>
+              <h1 className="text-lg sm:text-xl font-bold truncate">HRS Cabs</h1>
               <p className="text-blue-100 text-xs sm:text-sm truncate">Find your perfect ride</p>
             </div>
           </div>
