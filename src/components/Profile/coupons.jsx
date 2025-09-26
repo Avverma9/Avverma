@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { fetchDefaultCoupon } from '../../redux/reducers/profileSlice';
 import { useLoader } from '../../utils/loader';
 
-export default function Coupons() {
+export default function CouponPage() {
   const dispatch = useDispatch();
-  const location = window.location;
+  const location = useLocation();
   const coupon = useSelector((state) => state.profile.coupon);
   const [daysRemaining, setDaysRemaining] = useState([]);
   const [copiedCode, setCopiedCode] = useState(null);
   const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
-    if (location.pathname === '/coupons') {
-      showLoader();
-      dispatch(fetchDefaultCoupon())
-        .unwrap()
-        .finally(() => {
-          hideLoader();
-        });
-    }
-  }, [dispatch, location.pathname]);
+    showLoader();
+    dispatch(fetchDefaultCoupon())
+      .unwrap()
+      .finally(() => {
+        hideLoader();
+      });
+  }, [dispatch, showLoader, hideLoader]);
 
   useEffect(() => {
     if (coupon?.length) {
@@ -40,8 +39,6 @@ export default function Coupons() {
     setCopiedCode(code);
     setTimeout(() => setCopiedCode(null), 1500);
   };
-
-  if (location.pathname !== '/coupons') return null;
 
   if (!coupon || coupon.length === 0) {
     return (
