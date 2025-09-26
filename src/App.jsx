@@ -9,7 +9,7 @@ import HeaderTravel from "./components/TravelLocations";
 // import ProfileSidebar from "./components/profile/ProfileSidebar";
 import Hotel from "./pages/hotel/hotel";
 import SearchForm from "./components/Search";
-import Banner from "./pages/home-section/Banner";
+// import Banner from "./pages/home-section/Banner";
 import Offered from "./pages/home-section/Offered";
 import LoginPage from "./components/auth/login";
 import Locations from "./pages/home-section/Locations";
@@ -48,7 +48,7 @@ export default function App() {
           {/* <ProfileSidebar /> */}
           <Hotel />
           <SearchForm />
-          <Banner />
+          {/* <Banner /> */}
           <Offered />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
