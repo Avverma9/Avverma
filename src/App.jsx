@@ -1,6 +1,6 @@
 import "./App.css";
 import LoginPage from "./components/auth/login";
-import RegisterPage from "./components/auth/Register";
+import RegisterPage from "./components/auth/register";
 import { Routes, Route } from "react-router-dom";
 import { LoaderProvider } from "./utils/loader";
 import { ToastProvider } from "./utils/toast";
