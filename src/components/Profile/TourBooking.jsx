@@ -80,10 +80,6 @@ export default function TourBooking() {
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto">
-      <h4 className="text-2xl font-bold text-gray-800 mb-6">
-        Your Tour Bookings
-      </h4>
-
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <SkeletonCard />

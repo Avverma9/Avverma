@@ -99,7 +99,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 pb-24 md:pb-4">
       <div className="w-full max-w-4xl mx-auto pt-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1 flex flex-col items-center text-center bg-white rounded-2xl shadow-lg p-6 border border-slate-200/75">

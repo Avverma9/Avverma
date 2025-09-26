@@ -64,7 +64,7 @@ export default function Footer() {
   if (location.pathname === "/login" || location.pathname.includes('/register')) return null;
 
   return (
-    <footer className="bg-gray-900 text-gray-400 pt-8 md:pt-12 pb-4 md:pb-8 mt-16 rounded-t-2xl">
+    <footer className="bg-gray-900 text-gray-400 pt-8 md:pt-12 pb-4 md:pb-8 mt-20 rounded-t-2xl">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="grid grid-cols-12 gap-8">
           {/* Brand & Social */}
