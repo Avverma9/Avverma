@@ -12,6 +12,10 @@ import StarIcon from "@mui/icons-material/Star";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import SortIcon from '@mui/icons-material/Sort';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
+import CategoryIcon from '@mui/icons-material/Category';
+
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { FaRupeeSign } from "react-icons/fa";
 
@@ -110,11 +114,11 @@ export default function TourPackages ()  {
 
   // Enhanced filter content with better styling
   const filterContent = (
-    <div className="flex flex-col space-y-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
       {/* Sort & Order */}
-      <div className="bg-gray-50 p-4 rounded-xl border border-gray-100">
+      <div className="p-1 sm:col-span-2">
         <label htmlFor="sort-by" className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <LocalOfferIcon className="w-4 h-4 mr-2 text-blue-600" />
+          <SortIcon className="w-5 h-5 mr-2 text-gray-500" />
           Sort & Order
         </label>
         <div className="relative">
@@ -132,10 +136,10 @@ export default function TourPackages ()  {
       </div>
 
       {/* Price Range */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-100">
+      <div className="p-1 sm:col-span-2">
         <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <AttachMoneyIcon className="w-4 h-4 mr-2 text-blue-600" />
-          Price Range
+          <FaRupeeSign className="w-4 h-4 mr-2 text-gray-500" />
+          Price
         </p>
         <div className="bg-white p-3 rounded-lg mb-4">
           <p className="text-center font-bold text-blue-700 text-lg">
@@ -157,10 +161,10 @@ export default function TourPackages ()  {
       </div>
 
       {/* Duration */}
-      <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
+      <div className="p-1 sm:col-span-2">
         <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <CalendarTodayIcon className="w-4 h-4 mr-2 text-green-600" />
-          Duration (Nights)
+          <NightsStayIcon className="w-5 h-5 mr-2 text-gray-500" />
+          Duration
         </p>
         <div className="bg-white p-3 rounded-lg mb-4">
           <p className="text-center font-bold text-green-700 text-lg">
@@ -182,30 +186,30 @@ export default function TourPackages ()  {
       </div>
 
       {/* Trip Category */}
-      <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
-        <p className="block text-sm font-semibold text-gray-800 mb-4">🎯 Trip Category</p>
+      <div className="p-1 sm:col-span-2">
+        <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center"><CategoryIcon className="w-5 h-5 mr-2 text-gray-500" /> Category</p>
         <div className="grid grid-cols-2 gap-3">
           {[
-            { value: "Winter", label: "❄️ Winter", color: "blue" },
-            { value: "Summer", label: "☀️ Summer", color: "orange" },
-            { value: "Honeymoon", label: "💕 Honeymoon", color: "pink" },
-            { value: "Romantic", label: "💖 Romantic", color: "red" },
-            { value: "Adventure", label: "🏔️ Adventure", color: "green" },
-            { value: "Beach", label: "🏖️ Beach", color: "teal" },
+            { value: "Winter", label: "Winter" },
+            { value: "Summer", label: "Summer" },
+            { value: "Honeymoon", label: "Honeymoon" },
+            { value: "Romantic", label: "Romantic" },
+            { value: "Adventure", label: "Adventure" },
+            { value: "Beach", label: "Beach" },
           ].map((theme) => (
-            <label key={theme.value} className={`flex cursor-pointer items-center p-2 rounded-lg border-2 transition-all duration-200 ${
+            <label key={theme.value} className={`flex cursor-pointer items-center space-x-2 p-2.5 rounded-lg border-2 transition-all duration-200 ${
               selectedThemes.includes(theme.value) 
-                ? `bg-${theme.color}-100 border-${theme.color}-300 shadow-md` 
-                : 'bg-white border-gray-200 hover:border-gray-300'
+                ? 'bg-blue-50 border-blue-500 shadow-sm' 
+                : 'bg-white border-gray-200 hover:bg-gray-50'
             }`}>
               <input
                 type="checkbox"
                 checked={selectedThemes.includes(theme.value)}
                 onChange={handleThemeChange}
                 value={theme.value}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mr-2"
+                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
               />
-              <span className="text-xs font-medium text-gray-700">{theme.label}</span>
+              <span className="text-sm font-medium text-gray-800">{theme.label}</span>
             </label>
           ))}
         </div>
@@ -228,7 +232,7 @@ export default function TourPackages ()  {
                   <h2 className="text-xl font-bold text-gray-800">Smart Filters</h2>
                 </div>
                 {filterContent}
-                <div className="mt-6 flex items-center space-x-3">
+                <div className="mt-8 flex items-center space-x-3">
                   <button
                     onClick={handleClearFilters}
                     className="flex-1 rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all duration-200"
@@ -405,8 +409,7 @@ export default function TourPackages ()  {
             <div 
               className="relative flex w-full flex-col bg-white shadow-2xl rounded-t-3xl transform transition-transform duration-300 ease-out"
               style={{ 
-                height: 'calc(100vh - 80px)', // Account for bottom app bar
-                marginBottom: '80px' // Space for bottom app bar
+                height: 'calc(100vh - 80px)' // Account for top safe area
               }}
             >
               {/* Drawer Handle */}
@@ -431,12 +434,12 @@ export default function TourPackages ()  {
               </div>
               
               {/* Filter Content */}
-              <div className="flex-grow overflow-y-auto p-4 pb-6 custom-scrollbar">
+              <div className="flex-grow overflow-y-auto p-4 pb-[100px] custom-scrollbar">
                 {filterContent}
               </div>
               
               {/* Bottom Action Buttons */}
-              <div className="flex-shrink-0 border-t bg-white p-4">
+              <div className="absolute bottom-[70px] left-0 right-0 flex-shrink-0 border-t bg-white p-4">
                 <div className="flex items-center space-x-3">
                   <button
                     onClick={handleClearFilters}
@@ -456,6 +459,6 @@ export default function TourPackages ()  {
           </div>
         )}
       </div>
-    </div>
+    </div>  
   );
 };

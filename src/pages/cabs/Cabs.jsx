@@ -85,7 +85,6 @@ const formatDate = (dateString) =>
 const formatDateForInput = (dateString) =>
   dateString ? new Date(dateString).toISOString().split("T") : "";
 
-// Mobile Card Component (Vertical Layout)
 const CabCardMobile = ({ cab }) => {
   const navigate = useNavigate();
   const availableSeats = cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
@@ -99,15 +98,12 @@ const CabCardMobile = ({ cab }) => {
           alt={`${cab.make} ${cab.model}`}
           className="h-40 w-full object-cover"
         />
-
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-
         <div className="absolute top-2 left-2">
           <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-medium px-2 py-1 rounded-full shadow-lg">
             {cab.vehicleType}
           </span>
         </div>
-
         <div className="absolute bottom-2 left-2">
           <span className={`text-xs font-medium px-2 py-1 rounded-full shadow-lg ${availableSeats > 0
               ? "bg-green-500 text-white"
@@ -171,7 +167,6 @@ const CabCardMobile = ({ cab }) => {
   );
 };
 
-// Desktop Card Component (Horizontal Layout)
 const CabCardDesktop = ({ cab }) => {
   const navigate = useNavigate();
   const availableSeats = cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
@@ -180,22 +175,18 @@ const CabCardDesktop = ({ cab }) => {
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
       <div className="flex h-64">
-        {/* Image Section */}
         <div className="relative w-80 flex-shrink-0">
           <img
             src={cab.images || placeholderImage}
             alt={`${cab.make} ${cab.model}`}
             className="h-full w-full object-cover"
           />
-
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/10"></div>
-
           <div className="absolute top-3 left-3">
             <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-medium px-3 py-1 rounded-full shadow-lg">
               {cab.vehicleType}
             </span>
           </div>
-
           <div className="absolute bottom-3 left-3">
             <span className={`text-xs font-medium px-3 py-1 rounded-full shadow-lg ${availableSeats > 0
                 ? "bg-green-500 text-white"
@@ -206,16 +197,13 @@ const CabCardDesktop = ({ cab }) => {
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="flex-1 p-6 flex flex-col justify-between">
           <div className="space-y-4">
-            {/* Header */}
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-xl text-gray-900">{cab.make} {cab.model}</h3>
               <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">{cab.year}</span>
             </div>
 
-            {/* Route */}
             <div className="flex items-center space-x-3 text-gray-600">
               <LocationIcon />
               <span className="text-base font-medium">{cab.pickupP}</span>
@@ -223,7 +211,6 @@ const CabCardDesktop = ({ cab }) => {
               <span className="text-base font-medium">{cab.dropP}</span>
             </div>
 
-            {/* Details Grid */}
             <div className="grid grid-cols-4 gap-4 text-sm text-gray-600">
               <div className="flex flex-col items-center space-y-1 p-2 bg-gray-50 rounded-lg">
                 <UsersIcon />
@@ -244,7 +231,6 @@ const CabCardDesktop = ({ cab }) => {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
             <div className="flex flex-col">
               <span className="text-3xl font-bold text-blue-600">₹{cab.perPersonCost}</span>
@@ -300,177 +286,162 @@ const FilterComponent = ({
     });
 
   return (
-<aside
-  className={`fixed inset-0 z-50 lg:static bg-black/50 lg:bg-transparent transition-all duration-300 
-  ${isOpen ? "flex" : "hidden lg:block"} justify-center lg:justify-start`}
-  onClick={onClose}
->
-  <div
-    className="bg-white w-full max-w-md lg:max-w-2xl lg:sticky lg:top-[120px] 
-    rounded-t-3xl lg:rounded-2xl shadow-2xl lg:shadow-lg 
-    h-[85vh] lg:h-auto mt-auto lg:mt-0 p-0 
-    border-t border-gray-200 lg:border lg:border-gray-100 
-    flex flex-col relative"
-    onClick={(e) => e.stopPropagation()}
-  >
-    {/* Header */}
-    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
-      <h2 className="text-lg sm:text-xl font-bold text-gray-900">Filters</h2>
-      <button
-        onClick={onClose}
-        className="p-2 hover:bg-gray-100 rounded-full transition-colors lg:hidden"
+    <aside
+      className={`fixed inset-0 z-50 lg:static lg:bg-transparent transition-all duration-300 
+      ${isOpen ? "flex" : "hidden lg:block"} justify-end flex-col lg:justify-start lg:flex-row`}
+      onClick={onClose}
+    >
+      <div // Mobile Drawer Container
+        className={`
+          bg-white w-full max-w-md lg:max-w-2xl lg:sticky lg:top-[120px] 
+          rounded-t-3xl lg:rounded-2xl shadow-2xl lg:shadow-lg
+          ${isOpen ? 'h-[85vh] lg:h-auto' : 'h-auto'}
+          mt-auto lg:mt-0 p-0 
+          border-t border-gray-200 lg:border lg:border-gray-100 
+          flex flex-col relative overflow-hidden
+        `}
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        <CloseIcon />
-      </button>
-    </div>
-
-    {/* Scrollable Content */}
-    <div className="flex-1 overflow-y-auto px-4 sm:px-6 space-y-5 sm:space-y-6 pb-[140px]">
-      {/* Price Range */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Maximum Price</label>
-        <input
-          type="range"
-          name="price"
-          min={priceRange.min}
-          max={priceRange.max}
-          value={filters.price}
-          onChange={handleFilterChange}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
-        />
-        <div className="flex justify-between text-xs sm:text-sm text-gray-500">
-          <span>₹{priceRange.min}</span>
-          <span className="font-bold text-blue-600">₹{filters.price}</span>
-          <span>₹{priceRange.max}</span>
-        </div>
-      </div>
-
-      {/* Seats Required */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Seats Required</label>
-        <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
+          <h2 className="text-xl font-bold text-gray-900">Filters</h2>
           <button
-            onClick={() => handleSeatsChange(-1)}
-            disabled={filters.seats <= 1}
-            className="px-3 sm:px-4 py-2 sm:py-3 text-blue-600 hover:bg-blue-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors text-lg"
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors lg:hidden"
           >
-            −
-          </button>
-          <span className="flex-1 text-center py-2 sm:py-3 font-semibold">{filters.seats}</span>
-          <button
-            onClick={() => handleSeatsChange(1)}
-            className="px-3 sm:px-4 py-2 sm:py-3 text-blue-600 hover:bg-blue-50 transition-colors text-lg"
-          >
-            +
+            <CloseIcon />
           </button>
         </div>
-      </div>
 
-      {/* Car Brand */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Car Brand</label>
-        <select
-          name="make"
-          value={filters.make}
-          onChange={handleFilterChange}
-          className="w-full border border-gray-300 rounded-xl p-2 sm:p-3 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-sm"
-        >
-          <option value="All">All Brands</option>
-          {makes.map((m) => <option key={m} value={m}>{m}</option>)}
-        </select>
-      </div>
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6">
+          <div className="space-y-3 p-2">
+            <label className="block text-sm font-semibold text-gray-700">Maximum Price</label>
+            <input
+              type="range"
+              name="price"
+              min={priceRange.min}
+              max={priceRange.max}
+              value={filters.price}
+              onChange={handleFilterChange}
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+            />
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>₹{priceRange.min}</span>
+              <span className="font-bold text-blue-600">₹{filters.price}</span>
+              <span>₹{priceRange.max}</span>
+            </div>
+          </div>
 
-      {/* Fuel Type */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Fuel Type</label>
-        <div className="space-y-2">
-          {["All", ...fuelTypes].map((fuel) => (
-            <label key={fuel} className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="radio"
-                name="fuelType"
-                value={fuel}
-                checked={filters.fuelType === fuel}
+          <div className="space-y-3 p-2">
+            <label className="block text-sm font-semibold text-gray-700">Seats Required</label>
+            <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+              <button
+                onClick={() => handleSeatsChange(-1)}
+                disabled={filters.seats <= 1}
+                className="px-4 py-3 text-blue-600 hover:bg-blue-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+              >
+                −
+              </button>
+              <span className="flex-1 text-center py-3 font-semibold text-lg">{filters.seats}</span>
+              <button
+                onClick={() => handleSeatsChange(1)}
+                className="px-4 py-3 text-blue-600 hover:bg-blue-50 transition-colors text-lg font-semibold"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
+            <div className="space-y-3 p-2">
+              <label className="block text-sm font-semibold text-gray-700">Car Brand</label>
+              <select
+                name="make"
+                value={filters.make}
                 onChange={handleFilterChange}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">{fuel}</span>
-            </label>
-          ))}
+                className="w-full border border-gray-300 rounded-xl p-3 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              >
+                <option value="All">All Brands</option>
+                {makes.map((m) => <option key={m} value={m}>{m}</option>)}
+              </select>
+            </div>
+
+            <div className="space-y-3 p-2">
+              <label className="block text-sm font-semibold text-gray-700">Fuel Type</label>
+              <div className="flex flex-wrap gap-2">
+                {["All", ...fuelTypes].slice(0, 3).map((fuel) => (
+                  <label key={fuel} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.fuelType === fuel ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
+                    <input
+                      type="radio"
+                      name="fuelType"
+                      value={fuel}
+                      checked={filters.fuelType === fuel}
+                      onChange={handleFilterChange}
+                      className="sr-only"
+                    />
+                    <span className="text-xs font-medium text-gray-800">{fuel}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 p-2">
+              <label className="block text-sm font-semibold text-gray-700">Sharing Type</label>
+              <div className="flex flex-wrap gap-2">
+                {["All", ...sharingTypes].map((type) => (
+                  <label key={type} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.sharingType === type ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
+                    <input
+                      type="radio"
+                      name="sharingType"
+                      value={type}
+                      checked={filters.sharingType === type}
+                      onChange={handleFilterChange}
+                      className="sr-only"
+                    />
+                    <span className="text-xs font-medium text-gray-800">{type}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3 p-2">
+              <label className="block text-sm font-semibold text-gray-700">Vehicle Type</label>
+              <div className="flex flex-wrap gap-2">
+                {["All", ...vehicleTypes].map((type) => (
+                  <label key={type} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.vehicleType === type ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
+                    <input
+                      type="radio"
+                      name="vehicleType"
+                      value={type}
+                      checked={filters.vehicleType === type}
+                      onChange={handleFilterChange}
+                      className="sr-only"
+                    />
+                    <span className="text-xs font-medium text-gray-800">{type}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="h-20 lg:hidden"></div>
+        </div>
+
+        <div className="absolute bottom-[70px] left-0 right-0 bg-white p-4 flex space-x-3 lg:static lg:bottom-auto lg:p-6 lg:border-t-0">
+          <button
+            onClick={resetFilters}
+            className="flex-1 py-3 text-blue-600 font-semibold border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-colors"
+          >
+            Reset
+          </button>
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+          >
+            Apply Filters
+          </button>
         </div>
       </div>
-
-      {/* Sharing Type */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Sharing Type</label>
-        <div className="space-y-2">
-          {["All", ...sharingTypes].map((type) => (
-            <label key={type} className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="radio"
-                name="sharingType"
-                value={type}
-                checked={filters.sharingType === type}
-                onChange={handleFilterChange}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">{type}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Vehicle Type */}
-      <div className="space-y-2 sm:space-y-3">
-        <label className="block text-sm font-semibold text-gray-700">Vehicle Type</label>
-        <div className="space-y-2">
-          {["All", ...vehicleTypes].map((type) => (
-            <label key={type} className="flex items-center space-x-3 cursor-pointer">
-              <input
-                type="radio"
-                name="vehicleType"
-                value={type}
-                checked={filters.vehicleType === type}
-                onChange={handleFilterChange}
-                className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">{type}</span>
-            </label>
-          ))}
-        </div>
-      </div>
-    </div>
-
-    {/* Footer - Safe Above Bottom Nav */}
-  <div
-  className={`
-    sticky 
-    left-0 right-0 
-    bg-white border-t border-gray-200 p-4 sm:p-6 
-    flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0 sm:space-x-3
-  `}
-  style={{
-    bottom: window.innerWidth < 1024 ? "80px" : "0px", // mobile me 80px gap
-    paddingBottom: "calc(env(safe-area-inset-bottom) + 10px)"
-  }}
->
-  <button
-    onClick={resetFilters}
-    className="flex-1 py-2 sm:py-3 text-blue-600 font-semibold border border-blue-600 rounded-xl hover:bg-blue-50 transition-colors text-sm"
-  >
-    Reset
-  </button>
-  <button
-    onClick={onClose}
-    className="flex-1 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg text-sm"
-  >
-    Apply Filters
-  </button>
-</div>
-
-  </div>
-</aside>
-
+    </aside>
   );
 };
 
@@ -567,8 +538,7 @@ const NoResults = () => (
 );
 
 const SkeletonCard = ({ isDesktop = false }) => (
-  <div className={`animate-pulse bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${isDesktop ? 'flex h-64' : ''
-    }`}>
+  <div className={`animate-pulse bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${isDesktop ? 'flex h-64' : ''}`}>
     {isDesktop ? (
       <>
         <div className="w-80 bg-gray-200 flex-shrink-0"></div>
@@ -663,7 +633,6 @@ export default function CarsPage() {
     const timer = setTimeout(() => {
       let result = [...cabs];
 
-      // Apply search filters
       if (searchParams.from)
         result = result.filter((c) =>
           c.pickupP.toLowerCase().includes(searchParams.from.toLowerCase())
@@ -681,7 +650,6 @@ export default function CarsPage() {
           formatDateForInput(c.dropD) <= searchParams.dropDate
         );
 
-      // Apply filters
       if (filters.make !== "All")
         result = result.filter((c) => c.make === filters.make);
       if (filters.fuelType !== "All")
@@ -696,7 +664,6 @@ export default function CarsPage() {
       );
       result = result.filter((c) => c.perPersonCost <= filters.price);
 
-      // Apply sorting
       result.sort((a, b) =>
         sortBy === "price-asc" ? a.perPersonCost - b.perPersonCost :
           sortBy === "price-desc" ? b.perPersonCost - a.perPersonCost :
@@ -746,7 +713,6 @@ export default function CarsPage() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      {/* Header */}
       <header className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-3 sm:px-4 py-3 sm:py-4 shadow-lg">
         <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-shrink">
@@ -759,7 +725,6 @@ export default function CarsPage() {
             </div>
           </div>
 
-          {/* Desktop Search */}
           <div
             onClick={openSearchModal}
             className="hidden lg:flex items-center space-x-3 cursor-pointer bg-white/10 backdrop-blur-md px-3 sm:px-4 py-2 rounded-xl hover:bg-white/20 transition-all border border-white/20 max-w-sm"
@@ -774,15 +739,14 @@ export default function CarsPage() {
 
       <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-          {/* Filter Sidebar */}
           <div className="hidden lg:block lg:col-span-3">
             <FilterComponent
               filters={filters}
               setFilters={setFilters}
               makes={makes}
               fuelTypes={fuelTypes}
-              isOpen={true}        // always visible on desktop
-              onClose={() => { }}   // desktop me close nahi hota
+              isOpen={true}
+              onClose={() => { }}
               priceRange={priceRange}
               sharingTypes={sharingTypes}
               vehicleTypes={vehicleTypes}
@@ -801,11 +765,9 @@ export default function CarsPage() {
               vehicleTypes={vehicleTypes}
             />
           )}
-          {/* Main Content */}
+
           <main className="lg:col-span-9 min-w-0 p-3 sm:p-4 lg:p-6">
-            {/* Mobile Search & Controls */}
             <div className="flex items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-              {/* Mobile Search Button */}
               <button
                 onClick={openSearchModal}
                 className="flex lg:hidden items-center space-x-2 px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-xl cursor-pointer hover:border-blue-300 transition-colors bg-white shadow-sm flex-1 min-w-0"
@@ -816,7 +778,6 @@ export default function CarsPage() {
                 </span>
               </button>
 
-              {/* Sort Dropdown */}
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
@@ -828,27 +789,21 @@ export default function CarsPage() {
               </select>
             </div>
 
-            {/* Results */}
             <div className="space-y-4 lg:space-y-6">
               {isLoading ? (
-                // Loading skeletons
                 <>
-                  {/* Mobile skeletons */}
                   <div className="lg:hidden grid grid-cols-1 gap-4">
                     {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
                   </div>
-                  {/* Desktop skeletons */}
                   <div className="hidden lg:block space-y-6">
                     {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} isDesktop={true} />)}
                   </div>
                 </>
               ) : filteredCabs.length ? (
                 <>
-                  {/* Mobile: Vertical Cards */}
                   <div className="lg:hidden grid grid-cols-1 gap-4">
                     {filteredCabs.map((cab) => <CabCardMobile key={cab._id} cab={cab} />)}
                   </div>
-                  {/* Desktop: Horizontal Cards */}
                   <div className="hidden lg:block space-y-6">
                     {filteredCabs.map((cab) => <CabCardDesktop key={cab._id} cab={cab} />)}
                   </div>
@@ -861,17 +816,15 @@ export default function CarsPage() {
         </div>
       </div>
 
-      {/* Mobile Filter Button - Positioned as requested */}
       <button
         onClick={() => setMobileFilterOpen(true)}
         className="fixed left-3 sm:left-4 lg:hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-full shadow-xl flex items-center space-x-2 hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 z-40 text-sm"
-        style={{ bottom: '80px' }}
+        style={{ bottom: '90px' }}
       >
         <FilterIcon />
         <span className="font-medium">Filters</span>
       </button>
 
-      {/* Search Modal */}
       <SearchModal
         isOpen={isSearchModalOpen}
         onClose={() => setSearchModalOpen(false)}
@@ -880,7 +833,6 @@ export default function CarsPage() {
         handleSearchSubmit={handleSearchSubmit}
       />
 
-      {/* Custom CSS for slider */}
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
