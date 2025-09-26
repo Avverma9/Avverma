@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 
-const HotelPolicyCard = ({ hotelData }) => {
+export default function  HotelPolicyCard  ({ hotelData }) {
   const navigate = useNavigate();
 
   const handleViewFullPolicies = () => {
@@ -160,5 +160,3 @@ const HotelPolicyCard = ({ hotelData }) => {
     </div>
   );
 };
-
-export default HotelPolicyCard;

@@ -15,7 +15,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { FaRupeeSign } from "react-icons/fa";
 
-const TravelPackages = () => {
+export default function TourPackages ()  {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data } = useSelector((state) => state.travel);
@@ -459,5 +459,3 @@ const TravelPackages = () => {
     </div>
   );
 };
-
-export default TravelPackages;

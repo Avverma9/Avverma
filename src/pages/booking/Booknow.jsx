@@ -24,20 +24,26 @@ import { StarHalfSharp } from "@mui/icons-material";
 
 import { useToast } from "../../utils/toast";
 import BookNowSkeleton from "./BookNowSkeleton";
-import HotelPolicyCard from "./policy-card";
-import AdvancedImageGallery from "./ImageGallery";
 
-const BookNow = () => {
+import AdvancedImageGallery from "./ImageGallery";
+import HotelPolicyCard from "./PolicyCard";
+
+export default function BookNow () {
+  const location = useLocation();
+  const path = location.pathname;
+
+  if (!path.startsWith("/book-hotels/")) {
+    return null;
+  }
+
   const dispatch = useDispatch();
   const toast = useToast();
   const [hotelData, setHotelData] = useState(null);
   const [expanded, setExpanded] = useState(false);
   const [selectedRooms, setSelectedRooms] = useState([]);
-  const location = useLocation();
   const [selectedFood, setSelectedFood] = useState([]);
   const [roomsCount, setRoomsCount] = useState(1);
   const [timeLeft, setTimeLeft] = useState(null);
-  const path = location.pathname;
   const parts = path.split("/");
   const newhotelId = parts[parts.length - 1];
   const userId = parts[parts.length - 2];
@@ -277,10 +283,6 @@ const BookNow = () => {
     foodsRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
-  if (!path.includes("/book-hotels/")) {
-    return null;
-  }
-
   const handlePay = () => {
     toast.info("Currently we are accepting only Pay at Hotel method");
   };
@@ -495,14 +497,14 @@ const BookNow = () => {
                 />
               </div>
             </div>
-             
-          </div><div className="mt-6">
-                <BookingReview hotelId={hotelData?.hotelId} />
-              </div>
+
+            {/* Booking Review - moved to be part of the main content flow */}
+            <div className="lg:col-span-2 mt-6">
+              <BookingReview hotelId={hotelData?.hotelId} />
+            </div>
+          </div>
         </>
       )}
     </div>
   );
-};
-
-export default BookNow;
+}

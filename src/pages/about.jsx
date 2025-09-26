@@ -21,7 +21,7 @@ const TeamMember = ({ imgSrc, name, title }) => (
     </div>
 );
 
-const AboutPage = () => {
+export default function AboutPage  ()  {
     return (
         <>
             <style>{`
@@ -165,5 +165,5 @@ const AboutPage = () => {
     );
 };
 
-export default AboutPage;
+
 

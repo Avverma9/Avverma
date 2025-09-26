@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { getGst } from '../../redux/reducers/gstSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-import MobileSearchBox from '../home-section/MobileSearchBox';
+import MobileSearchBox from './MobileSearchBox';
 import { userId } from '../../utils/Unauthorized';
 
 const CardSkeleton = () => (

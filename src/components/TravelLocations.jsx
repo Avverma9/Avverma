@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import { useLoader } from '../utils/loader';
 
-const HeaderTravel = () => {
+export default function HeaderTravel ()  {
     const location = useLocation();
     const dispatch = useDispatch();
     const { data: locations, loading, error } = useSelector((state) => state.location);
@@ -201,4 +201,3 @@ const HeaderTravel = () => {
     );
 };
 
-export default HeaderTravel;

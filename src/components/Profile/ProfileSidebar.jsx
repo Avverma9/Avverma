@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, NavLink } from "react-router-dom";
+import Profile from "./profile";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { PiTicketThin } from "react-icons/pi";
@@ -7,7 +8,13 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineRateReview, MdOutlineAccountCircle } from "react-icons/md";
 import { IoWarningOutline } from "react-icons/io5";
 import { RiHomeLine, RiBriefcaseLine, RiCarLine } from "react-icons/ri";
-import { Bookings, Complaints, Profile, Reviews, TourBooking, UpdateProfile } from ".";
+import ProfilePage from "./profile";
+import ProfileUpdatePage from "./UpdateProfile";
+import ConfirmBooking from "./MyBookings";
+import TourBooking from "./TourBooking";
+import ComplaintsPage from "./complaints";
+import Reviews from "./MyReviews";
+
 
 // --- Sidebar NavLink ---
 const SidenavLink = ({ to, icon, label, onClick }) => (
@@ -17,8 +24,8 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
     className={({ isActive }) =>
       `group flex items-center rounded-lg px-4 py-3 transition-all duration-300 ease-in-out no-underline
        ${isActive
-        ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
-        : "hover:bg-white/30 text-slate-800"}`
+         ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
+         : "hover:bg-white/30 text-slate-800"}`
     }
     style={{ textDecoration: "none" }}
   >
@@ -31,8 +38,9 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
           {icon}
         </div>
         <span
-          className={`ml-4 text-sm font-medium ${isActive ? "text-white" : "text-slate-800"
-            }`}
+          className={`ml-4 text-sm font-medium ${
+            isActive ? "text-white" : "text-slate-800"
+          }`}
         >
           {label}
         </span>
@@ -54,8 +62,9 @@ const BottomNavLink = ({ to, icon, label }) => (
     {({ isActive }) => (
       <>
         <div
-          className={`text-2xl transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"
-            }`}
+          className={`text-2xl transition-transform duration-300 ${
+            isActive ? "scale-110" : "group-hover:scale-110"
+          }`}
         >
           {icon}
         </div>
@@ -65,7 +74,7 @@ const BottomNavLink = ({ to, icon, label }) => (
   </NavLink>
 );
 
-export default function ProfileSidebar() {
+export default function ProfileSidebar () {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -98,6 +107,16 @@ export default function ProfileSidebar() {
   const closeMobileMenu = () => {
     if (window.innerWidth <= 768) setMenuOpen(false);
   };
+
+  const paths = [
+    "/bookings",
+    "/reviews",
+    "/tour-bookings",
+    "/complaints",
+    "/profile",
+    "/profile-update/user-data/page",
+  ];
+  if (!paths.some((path) => location.pathname.startsWith(path))) return null;
 
   return (
     <div className="relative min-h-screen md:flex bg-transparent">
@@ -169,12 +188,14 @@ export default function ProfileSidebar() {
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
           <Routes>
-            <Route path="/profile" element={<Profile />} /> {/* Matches /profile */}
-            <Route path="/profile/update/user-data/page" element={<UpdateProfile />} /> {/* Matches /profile/update... */}
-            <Route path="/bookings" element={<Bookings />} /> {/* Matches /bookings */}
-            <Route path="/tour-bookings" element={<TourBooking />} /> {/* Matches /tour-bookings */}
-            <Route path="/complaints" element={<Complaints />} /> {/* Matches /complaints */}
-            <Route path="/reviews" element={<Reviews />} /> {/* Matches /reviews */}
+            <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/profile-update/user-data/page" element={<ProfileUpdatePage />} />
+                 <Route path="/bookings" element={<ConfirmBooking />} />
+                 <Route path="/tour-bookings" element={<TourBooking />} />
+                 <Route path="/complaints" element={<ComplaintsPage />} />
+                 <Route path="/reviews" element={<Reviews />} />
+
+
           </Routes>
         </main>
       </div>
@@ -189,3 +210,4 @@ export default function ProfileSidebar() {
     </div>
   );
 };
+

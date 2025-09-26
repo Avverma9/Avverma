@@ -868,7 +868,7 @@ const HotelPageContent = () => {
     );
 };
 
-const Hotel = () => {
+export default function  Hotel ()  {
     const location = useLocation();
     const validPaths = ["/search/hotels", "/search"];
     if (!validPaths.includes(location.pathname)) {
@@ -877,4 +877,4 @@ const Hotel = () => {
     return <HotelPageContent />;
 };
 
-export default Hotel;
+

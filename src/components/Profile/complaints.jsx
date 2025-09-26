@@ -17,7 +17,7 @@ import {
   IoAddCircleOutline,
 } from "react-icons/io5";
 
-export default function Complaint() {
+export default function ComplaintsPage() {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.complaint);
 

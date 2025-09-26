@@ -40,7 +40,7 @@ const InfoCard = ({ icon, title, value }) => (
 
 // --- Main Page Component ---
 
-export default function TourBookPage() {
+export default function TourBookNowPage() {
     const { id } = useParams();
     const { travelById, loading } = useSelector((state) => state.travel);
     const gstData = useSelector((state) => state.gst.gst);

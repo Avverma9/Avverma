@@ -15,7 +15,7 @@ const ArrowBackIcon = (props) => (
     </svg>
 );
 
-const Careers = () => {
+export default function Careers () {
     const navigate = useNavigate();
 
     return (
@@ -58,4 +58,4 @@ const Careers = () => {
     );
 };
 
-export default Careers;
+

@@ -33,7 +33,7 @@ const InputField = ({ icon, name, value, onChange, type = 'text', placeholder })
   </div>
 );
 
-const UpdatePage = () => {
+export  default function ProfileUpdatePage () {
   const dispatch = useDispatch();
   const toast = useToast();
   const navigate = useNavigate();
@@ -180,5 +180,3 @@ const UpdatePage = () => {
     </div>
   );
 };
-
-export default UpdatePage;

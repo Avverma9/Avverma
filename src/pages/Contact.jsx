@@ -43,7 +43,7 @@ const LinkedinIcon = (props) => (
 
 
 // --- MAIN COMPONENT ---
-const ContactPage = () => {
+export default function ContactPage  () {
     const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', message: '' });
     const [formStatus, setFormStatus] = useState({ submitting: false, message: '', type: '' });
 
@@ -189,5 +189,5 @@ const ContactPage = () => {
     );
 };
 
-export default ContactPage;
+
 

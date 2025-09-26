@@ -13,7 +13,7 @@ import {
   userMobile,
   userName,
 } from "../../utils/Unauthorized";
-import BookingPage from "./bookingPage";
+import BookingPage from "./BookingPage";
 
 const BookingDetails = ({
   hotelId,

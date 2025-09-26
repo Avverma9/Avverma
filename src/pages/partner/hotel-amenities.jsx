@@ -4,7 +4,7 @@ import axios from "axios";
 import baseURL from "../../utils/baseURL";
 import { amenitiesList } from "../../utils/extrasList";
 
-const AmenitiesPage = () => {
+export default function AmenitiesPage () {
   const [selectedAmenities, setSelectedAmenities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -357,4 +357,3 @@ const AmenitiesPage = () => {
   );
 };
 
-export default AmenitiesPage;

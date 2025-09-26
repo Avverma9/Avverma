@@ -44,18 +44,18 @@ const locationsData = [
 // --- MODERN LOCATION CARD COMPONENT ---
 const LocationCard = ({ name, description, imageUrl, link, className = "" }) => (
     <div className={`group relative flex flex-col bg-white rounded-2xl shadow-lg hover:shadow-purple-200/50 transition-all duration-300 ease-in-out overflow-hidden transform hover:-translate-y-1 ${className}`}>
-        <img 
-            src={imageUrl} 
+        <img
+            src={imageUrl}
             alt={`View of ${name}`}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-        
+
         <div className="relative p-5 flex flex-col flex-grow justify-end h-full">
             <div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-white mb-2" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>{name}</h3>
                 <p className="text-sm sm:text-base text-gray-200 mb-4">{description}</p>
-                <a 
+                <a
                     href={link}
                     className="inline-flex self-start items-center gap-2 font-semibold text-purple-600 bg-white px-5 py-2.5 rounded-full transition-all duration-300 ease-in-out hover:bg-purple-600 hover:text-white hover:shadow-lg group-hover:scale-105 group-hover:shadow-purple-600/30 text-sm sm:text-base"
                 >
@@ -68,13 +68,14 @@ const LocationCard = ({ name, description, imageUrl, link, className = "" }) => 
 );
 
 // --- MAIN LOCATIONS COMPONENT WITH BENTO GRID ---
-const Locations = () => {
+export default
+    function Locations() {
     const mainLocation = locationsData[0];
     const otherLocations = locationsData.slice(1);
-const location = useLocation()
-if(location.pathname !== '/'){
-    return null
-}
+    const location = useLocation()
+    if (location.pathname !== '/') {
+        return null
+    }
     return (
         <section className="py-16 md:py-24 bg-gray-50">
             <div className="container mx-auto px-4">
@@ -90,11 +91,11 @@ if(location.pathname !== '/'){
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {/* Main Card */}
-                    <LocationCard 
-                        {...mainLocation} 
+                    <LocationCard
+                        {...mainLocation}
                         className="md:col-span-2 lg:col-span-2 lg:row-span-2 h-80 md:h-auto"
                     />
-                    
+
                     {/* Other Cards */}
                     {otherLocations.map((location) => (
                         <LocationCard key={location.id} {...location} className="h-80 md:h-auto" />
@@ -105,5 +106,4 @@ if(location.pathname !== '/'){
     );
 };
 
-export default Locations;
 

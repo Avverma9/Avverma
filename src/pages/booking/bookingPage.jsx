@@ -35,81 +35,98 @@ import { format, formatISO } from "date-fns";
 import { formatDate } from "../../utils/convertDate";
 
 // Make sure to pass all required props from parent
-const BookingPage = ({
-  selectedRooms,
-  scrollToRooms,
-  roomsCount,
-  guestsCount,
-  handleDecrementRooms,
-  handleIncrementRooms,
-  handleDecrementGuests,
-  handleIncrementGuests,
-  checkInDate,
-  checkOutDate,
-  handleCheckInDateChange,
-  handleCheckOutDateChange,
-  isCouponApplied,
-  showCouponField,
-  handleToggleCoupon,
-  couponCode,
-  setCouponCode,
-  showConfirmModal,
-  setShowConfirmModal,
-  handleCouponSubmit,
-  discountPrice,
-  getFinalPrice,
-  calculateBasePrice,
-  finalTotal,
-  handleOpenModal,
-  gstAmount,
-  openModal,
-  handleCloseModal,
-  selectedFood,
-  hotelData,
-  handleRemoveFood,
-  handleSelectFood,
-  handlePayment,
-  handlePartialPayment,
-  handleBookNow,
-}) => {
+export default function BookingPage({
+  selectedRooms = [],
+  scrollToRooms = () => {},
+  roomsCount = 1,
+  guestsCount = 1,
+  handleDecrementRooms = () => {},
+  handleIncrementRooms = () => {},
+  handleDecrementGuests = () => {},
+  handleIncrementGuests = () => {},
+  checkInDate = new Date(),
+  checkOutDate = new Date(),
+  handleCheckInDateChange = () => {},
+  handleCheckOutDateChange = () => {},
+  isCouponApplied = false,
+  showCouponField = false,
+  handleToggleCoupon = () => {},
+  couponCode = "",
+  setCouponCode = () => {},
+  showConfirmModal = false,
+  setShowConfirmModal = () => {},
+  handleCouponSubmit = () => {},
+  discountPrice = 0,
+  getFinalPrice = () => 0,
+  calculateBasePrice = () => 0,
+  finalTotal = 0,
+  handleOpenModal = () => {},
+  gstAmount = 0,
+  openModal = false,
+  handleCloseModal = () => {},
+  selectedFood = [],
+  hotelData = { foods: [] },
+  handleRemoveFood = () => {},
+  handleSelectFood = () => {},
+  handlePayment = () => {},
+  handlePartialPayment = () => {},
+  handleBookNow = () => {},
+}) {
+  // Helper function to safely get final price
+  const getSafePrice = () => {
+    if (typeof getFinalPrice === 'function') {
+      const price = getFinalPrice();
+      return typeof price === 'number' ? price : 0;
+    }
+    return finalTotal || 0;
+  };
+
+  // Helper function to calculate total amount
+  const calculateTotalAmount = () => {
+    const basePrice = getSafePrice();
+    const gstPrice = (basePrice * gstAmount) / 100;
+    const foodPrice = selectedFood.reduce((sum, item) => sum + (item.price || 0), 0);
+    return basePrice + gstPrice + foodPrice;
+  };
+
   return (
     <>
-     <Card
-  sx={{
-    position: "sticky",
-    top: 0,
-    width: { xs: "100%", sm: "80%", md: 345 },
-    p: { xs: 2, sm: 3 },
-    boxShadow: 4,
-    backgroundColor: "#ffffff",
-    overflow: "visible",
-  }}
->
-
+      <Card
+        sx={{
+          position: "sticky",
+          top: 0,
+          width: { xs: "100%", sm: "80%", md: 345 },
+          p: { xs: 2, sm: 3 },
+          boxShadow: 4,
+          backgroundColor: "#ffffff",
+          overflow: "visible",
+        }}
+      >
         <Stack direction="row" alignItems="center" spacing={1} mb={2}>
           <BiSolidOffer size={22} color="#f44336" />
           <Typography
             variant="p6"
             fontWeight="bold"
             sx={{
-              backgroundColor: "#f44336", // Light red (Material UI red[500])
+              backgroundColor: "#f44336",
               color: "white",
               px: 2,
               py: 0.5,
               borderRadius: 1,
-              display: "inline-block", // Keeps the background tight around the text
+              display: "inline-block",
             }}
           >
             Booking Summary
           </Typography>
         </Stack>
+
         {/* Room Details */}
-        <Box mb={2} >
+        <Box mb={2}>
           <Typography variant="subtitle2" fontWeight="bold" color="primary">
             Room Details
           </Typography>
           <Stack spacing={1} mt={1}>
-            {selectedRooms.map((room, index) => (
+            {selectedRooms?.map((room, index) => (
               <Typography key={index} fontSize={14}>
                 {room.type} – {room.bedTypes}{" "}
                 <BedOutlinedIcon fontSize="small" />
@@ -124,7 +141,7 @@ const BookingPage = ({
               mt: 1,
               backgroundColor: "black",
               color: "white",
-              "&:hover": { backgroundColor: "#f2deff2" },
+              "&:hover": { backgroundColor: "#333" },
             }}
           >
             Change
@@ -135,7 +152,7 @@ const BookingPage = ({
         <Typography fontSize={12} color="text.secondary" mb={1}>
           * Max: 3 guests per 1 room booking
         </Typography>
-      
+
         <br />
         <Grid container spacing={2}>
           <Grid item xs={6}>
@@ -143,7 +160,7 @@ const BookingPage = ({
               <InputLabel
                 sx={{
                   color: "black",
-                  fontSize: "1.1rem", // Increase this value for larger text
+                  fontSize: "1.1rem",
                   "&.Mui-focused": {
                     color: "black",
                   },
@@ -152,8 +169,8 @@ const BookingPage = ({
                 Rooms
               </InputLabel>
               <OutlinedInput
-               size="small"
-  sx={{ width: { xs: "100%", sm: 140 } }}
+                size="small"
+                sx={{ width: { xs: "100%", sm: 140 } }}
                 label="Rooms"
                 value={roomsCount}
                 readOnly
@@ -179,7 +196,7 @@ const BookingPage = ({
               <InputLabel
                 sx={{
                   color: "black",
-                  fontSize: "1.1rem", // Increase this value for larger text
+                  fontSize: "1.1rem",
                   "&.Mui-focused": {
                     color: "black",
                   },
@@ -188,8 +205,8 @@ const BookingPage = ({
                 Guests
               </InputLabel>
               <OutlinedInput
-               size="small"
-  sx={{ width: { xs: "100%", sm: 140 } }}
+                size="small"
+                sx={{ width: { xs: "100%", sm: 140 } }}
                 label="Guests"
                 value={guestsCount}
                 readOnly
@@ -233,7 +250,7 @@ const BookingPage = ({
                 customInput={
                   <OutlinedInput
                     size="small"
-                    sx={{ width: "140px" }} // Adjust the width here
+                    sx={{ width: "140px" }}
                     startAdornment={
                       <InputAdornment position="start"></InputAdornment>
                     }
@@ -259,7 +276,7 @@ const BookingPage = ({
                 customInput={
                   <OutlinedInput
                     size="small"
-                    sx={{ width: "140px" }} // Adjust the width here
+                    sx={{ width: "140px" }}
                     startAdornment={
                       <InputAdornment position="start"></InputAdornment>
                     }
@@ -314,21 +331,21 @@ const BookingPage = ({
             </Stack>
           </Collapse>
 
-          {/* Confirm Apply Coupon Modal */}
+          {/* Confirm Apply Coupon Modal - Fixed the open prop issue */}
           <Dialog
-            open={showConfirmModal}
+            open={showConfirmModal || false}
             onClose={() => setShowConfirmModal(false)}
           >
             <DialogTitle>Apply Coupon?</DialogTitle>
             <DialogContent>
               <Typography variant="body2">
                 Once this coupon is applied, it cannot be used again—even if you
-                don’t book.
+                don't book.
               </Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={() => setShowConfirmModal(false)} color="error">
-                Don’t Apply
+                Don't Apply
               </Button>
               <Button
                 onClick={() => {
@@ -356,7 +373,7 @@ const BookingPage = ({
           )}
 
           <Typography fontWeight="bold" fontSize={14}>
-            Room Price: ₹{getFinalPrice()}
+            Room Price: ₹{getSafePrice()}
           </Typography>
           {gstAmount > 0 && (
             <Typography fontWeight="bold" fontSize={14}>
@@ -365,14 +382,10 @@ const BookingPage = ({
           )}
 
           <Typography fontWeight="bold" fontSize={14}>
-            Total Payable Amount: ₹
-            {(
-              getFinalPrice() +
-              (getFinalPrice() * gstAmount) / 100 +
-              selectedFood.reduce((sum, item) => sum + item.price, 0)
-            ).toFixed(2)}
+            Total Payable Amount: ₹{calculateTotalAmount().toFixed(2)}
           </Typography>
         </Box>
+
         {/* Final Booking Button */}
         <Stack mt={3}>
           <Button
@@ -391,9 +404,10 @@ const BookingPage = ({
           </Button>
         </Stack>
       </Card>
+
       {/* Final Confirmation Modal */}
       <Modal
-        open={openModal}
+        open={openModal || false}
         onClose={handleCloseModal}
         sx={{
           display: "flex",
@@ -435,8 +449,8 @@ const BookingPage = ({
             </Typography>
             <Grid container spacing={1}>
               {[
-                { label: "Check in", value: formatDate(checkInDate) },
-                { label: "Check out", value: formatDate(checkOutDate) },
+                { label: "Check in", value: formatDate ? formatDate(checkInDate) : checkInDate?.toDateString?.() || 'N/A' },
+                { label: "Check out", value: formatDate ? formatDate(checkOutDate) : checkOutDate?.toDateString?.() || 'N/A' },
                 { label: "Guests", value: guestsCount },
                 { label: "Rooms", value: roomsCount },
               ].map(({ label, value }, i) => (
@@ -462,7 +476,7 @@ const BookingPage = ({
               Room Pricing
             </Typography>
             <Typography variant="body2">
-              Total Room Price: <strong>₹{getFinalPrice()}</strong>
+              Total Room Price: <strong>₹{getSafePrice()}</strong>
             </Typography>
             {gstAmount > 0 && (
               <Typography fontWeight="bold" fontSize={14}>
@@ -510,7 +524,7 @@ const BookingPage = ({
                           mt: 1,
                           bgcolor: "black",
                           color: "white",
-                          "&:hover": { bgcolor: "#f2deff2" },
+                          "&:hover": { bgcolor: "#333" },
                         }}
                         onClick={() =>
                           isSelected
@@ -536,24 +550,17 @@ const BookingPage = ({
             )}
             <Typography variant="body2">
               Room Price with all taxes: ₹
-              {(getFinalPrice() + (getFinalPrice() * gstAmount) / 100).toFixed(
-                2,
-              )}
+              {(getSafePrice() + (getSafePrice() * gstAmount) / 100).toFixed(2)}
             </Typography>
             {selectedFood.length > 0 && (
               <Typography variant="body2">
                 Meal Price: + ₹
-                {selectedFood.reduce((sum, item) => sum + item.price, 0)}
+                {selectedFood.reduce((sum, item) => sum + (item.price || 0), 0)}
               </Typography>
             )}
 
             <Typography variant="body1" fontWeight={600} mt={1} mb={3}>
-              Total Amount: ₹
-              {(
-                getFinalPrice() +
-                (getFinalPrice() * gstAmount) / 100 +
-                selectedFood.reduce((sum, item) => sum + item.price, 0)
-              ).toFixed(2)}
+              Total Amount: ₹{calculateTotalAmount().toFixed(2)}
             </Typography>
           </Box>
 
@@ -584,7 +591,7 @@ const BookingPage = ({
                     sx={{
                       bgcolor: "black",
                       color: "white",
-                      "&:hover": { bgcolor: "#f2deff2" },
+                      "&:hover": { bgcolor: "#333" },
                     }}
                   >
                     Pay at Hotel
@@ -609,7 +616,7 @@ const BookingPage = ({
                     sx={{
                       bgcolor: "black",
                       color: "white",
-                      "&:hover": { bgcolor: "#f2deff2" },
+                      "&:hover": { bgcolor: "#333" },
                     }}
                   >
                     Pay at Hotel
@@ -622,6 +629,4 @@ const BookingPage = ({
       </Modal>
     </>
   );
-};
-
-export default BookingPage;
+}

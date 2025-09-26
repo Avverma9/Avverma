@@ -62,7 +62,7 @@ const ProfileSkeleton = () => (
   </div>
 );
 
-export default function Profile() {
+export default function ProfilePage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector((state) => state.profile);

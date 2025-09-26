@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import { userId } from "../../utils/Unauthorized";
-import HotelMobileCard from "./hotel";
-const Offered = () => {
+import HotelMobileCard from "./Hotel";
+export default function  Offered  ()  {
   const [hotelData, setHotelData] = useState([]);
   const location = useLocation();
   const [page, setPage] = useState(1);
@@ -41,4 +41,3 @@ const Offered = () => {
   );
 };
 
-export default Offered;
