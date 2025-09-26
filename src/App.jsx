@@ -12,7 +12,7 @@ import SearchForm from "./components/Search";
 // import Banner from "./pages/home-section/Banner";
 import Offered from "./pages/home-section/Offered";
 import LoginPage from "./components/auth/login";
-import Locations from "./pages/home-section/Locations";
+// import Locations from "./pages/home-section/Locations";
 import RegisterPage from "./components/auth/Register";
 import TourPackages from "./pages/tour/tour-package";
 import TourBookNowPage from "./pages/tour/tour-booking";
@@ -52,7 +52,7 @@ export default function App() {
           <Offered />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<Locations />} />
+            {/* <Route path="/" element={<Locations />} /> */}
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/holidays" element={<TourPackages />} />
             <Route path="/travellers/booking/:id" element={<TourBookNowPage />} />
