@@ -12,7 +12,7 @@ import UpdatePage from "./update-profile";
 import { ConfirmBooking } from "./my-bookings";
 import TourBooking from "./tour-booking";
 import Reviews from "./my-reviews";
-import Complaint from "./complaints";
+import Complaint from "./Complaints";
 
 // --- Sidebar NavLink ---
 const SidenavLink = ({ to, icon, label, onClick }) => (

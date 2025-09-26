@@ -28,8 +28,8 @@ import AmenitiesPage from "./pages/partner/hotel-amenities";
 import PartnerFoods from "./pages/partner/hotel-foods";
 import PartnerRooms from "./pages/partner/hotel-rooms";
 import TourBookPage from "./pages/tour/tour-booking";
-import Coupon from "./components/profile/coupons";
-import ProfileSidebar from "./components/profile/profile-sidebar";
+import Coupon from "./components/profile/Coupons";
+import ProfileSidebar from "./components/profile/ProfileSidebar";
 
 export default function App() {
   return (

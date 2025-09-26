@@ -155,22 +155,13 @@ export default function Header() {
                 >
                   <UserCircleIcon />
                 </button>
-                {profileMenuOpen && (
-                  <div 
-                    ref={refs.setFloating} 
-                    {...getFloatingProps()} 
-                    style={floatingStyles} // floatingStyles must be applied for positioning
-                    className="w-48 bg-white/10 backdrop-blur-2xl rounded-xl shadow-2xl py-2 z-10 border border-white/20"
-                  >
+              {profileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200/80">
                     {profileLinks.map((link) => (
                       <button
                         key={link.text}
                         onClick={() => handleRedirect(link.path)}
-                        className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm transition-all duration-200 ${
-                          link.text === 'Logout' 
-                            ? 'text-red-500 hover:bg-red-500/10' 
-                            : 'text-gray-700 hover:bg-white/10'
-                        }`}
+                        className={`flex items-center gap-3 w-full text-left px-4 py-2 text-sm ${link.text === 'Logout' ? 'text-red-500' : 'text-gray-700'} hover:bg-gray-100`}
                       >
                         {link.icon}
                         <span>{link.text}</span>
