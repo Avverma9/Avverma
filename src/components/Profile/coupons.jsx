@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDefaultCoupon } from '../../redux/reducers/profileSlice';
 import { useLoader } from '../../utils/loader';
 
-export default function Coupon() {
+export default function Coupons() {
   const dispatch = useDispatch();
   const location = window.location;
   const coupon = useSelector((state) => state.profile.coupon);
