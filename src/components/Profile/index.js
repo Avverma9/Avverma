@@ -1,8 +1,7 @@
-import ProfileSidebar from "./ProfileSidebar";
-import CouponPage from "./Coupons";
 
-export { ProfileSidebar as Sidebar };
-export { CouponPage as Coupons }
+
+export { default as Sidebar } from './ProfileSidebar'
+export { default as CouponPage } from "./Coupons";
 export { default as Profile } from "./profile";
 export { default as Reviews } from "./my-reviews";
 export { default as Bookings } from "./my-bookings";
