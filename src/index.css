@@ -5,7 +5,6 @@
   के हिलने (jittering) की समस्या को ठीक करने में मदद करते हैं।
 */
 html,
-body,
 #root,
 .App {
   height: 100%;

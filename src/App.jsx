@@ -70,8 +70,8 @@ export default function App() {
             <Route path='/policies' element={<PoliciesPage />} />
           </Routes>
           <ScrollToTop />
-          <Footer />
-          <ModernBottomNavigation />
+          
+          <ModernBottomNavigation /><Footer />
         </ToastProvider>
 
       </LoaderProvider>

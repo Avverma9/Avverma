@@ -64,7 +64,7 @@ export default function Footer() {
   if (location.pathname === "/login" || location.pathname.includes('/register')) return null;
 
   return (
-    <footer className="bg-gray-900 text-gray-400 pt-8 md:pt-12 pb-4 md:pb-8 mt-20 rounded-t-2xl">
+    <footer className="bg-gray-900 text-gray-400 pt-8 md:pt-12 pb-4 md:pb-8 rounded-t-2xl">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="grid grid-cols-12 gap-8">
           {/* Brand & Social */}
@@ -92,10 +92,10 @@ export default function Footer() {
               <div className="flex flex-col items-start">
                 <h3 className="text-white text-lg font-semibold mb-2">Company</h3>
                 <div className="flex flex-col items-start gap-1">
-                  {company.map(([n, p], i) => (
-                    <button key={i} onClick={() => navigateTo(p)} className="text-sm text-gray-400 hover:text-white transition-colors">
-                      {n}
-                    </button>
+                  {company.map(([name, path], i) => (
+                    <a key={i} href={path} onClick={(e) => { e.preventDefault(); navigateTo(path); }} className="text-sm text-gray-400 hover:text-white transition-colors">
+                      {name}
+                    </a>
                   ))}
                 </div>
               </div>
@@ -105,13 +105,13 @@ export default function Footer() {
                 <h3 className="text-white text-lg font-semibold mb-2">Destinations</h3>
                 <div className="flex flex-col items-start gap-1">
                   {hotelList.slice(0, 4).map((h, i) => (
-                    <button key={i} onClick={() => onHotelClick(h.hotel)} className="text-sm text-gray-400 hover:text-white transition-colors">
+                    <a key={i} href="#" onClick={(e) => { e.preventDefault(); onHotelClick(h.hotel); }} className="text-sm text-gray-400 hover:text-white transition-colors">
                       {h.hotel}
-                    </button>
+                    </a>
                   ))}
                 </div>
                 <div className="mt-3 w-full flex">
-                  <button onClick={openModal} className="text-sm font-bold text-pink-500 hover:underline">
+                  <button type="button" onClick={openModal} className="text-sm font-bold text-pink-500 hover:underline">
                     More Locations
                   </button>
                 </div>
@@ -121,10 +121,10 @@ export default function Footer() {
               <div className="flex flex-col items-start">
                 <h3 className="text-white text-lg font-semibold mb-2">Legal</h3>
                 <div className="flex flex-col items-start gap-1">
-                  {legal.map(([n, p], i) => (
-                    <button key={i} onClick={() => navigateTo(p)} className="text-sm text-gray-400 hover:text-white transition-colors">
-                      {n}
-                    </button>
+                  {legal.map(([name, path], i) => (
+                    <a key={i} href={path} onClick={(e) => { e.preventDefault(); navigateTo(path); }} className="text-sm text-gray-400 hover:text-white transition-colors">
+                      {name}
+                    </a>
                   ))}
                 </div>
               </div>
