@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, NavLink } from "react-router-dom";
-import Profile from "./profile";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { PiTicketThin } from "react-icons/pi";
@@ -8,11 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineRateReview, MdOutlineAccountCircle } from "react-icons/md";
 import { IoWarningOutline } from "react-icons/io5";
 import { RiHomeLine, RiBriefcaseLine, RiCarLine } from "react-icons/ri";
-import UpdatePage from "./update-profile";
-import { ConfirmBooking } from "./my-bookings";
-import TourBooking from "./tour-booking";
-import Reviews from "./my-reviews";
-import Complaint from "./Complaints";
+import { Bookings, Complaints, Profile, Reviews, TourBooking, UpdateProfile } from ".";
 
 // --- Sidebar NavLink ---
 const SidenavLink = ({ to, icon, label, onClick }) => (
@@ -22,8 +17,8 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
     className={({ isActive }) =>
       `group flex items-center rounded-lg px-4 py-3 transition-all duration-300 ease-in-out no-underline
        ${isActive
-         ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
-         : "hover:bg-white/30 text-slate-800"}`
+        ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
+        : "hover:bg-white/30 text-slate-800"}`
     }
     style={{ textDecoration: "none" }}
   >
@@ -36,9 +31,8 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
           {icon}
         </div>
         <span
-          className={`ml-4 text-sm font-medium ${
-            isActive ? "text-white" : "text-slate-800"
-          }`}
+          className={`ml-4 text-sm font-medium ${isActive ? "text-white" : "text-slate-800"
+            }`}
         >
           {label}
         </span>
@@ -60,9 +54,8 @@ const BottomNavLink = ({ to, icon, label }) => (
     {({ isActive }) => (
       <>
         <div
-          className={`text-2xl transition-transform duration-300 ${
-            isActive ? "scale-110" : "group-hover:scale-110"
-          }`}
+          className={`text-2xl transition-transform duration-300 ${isActive ? "scale-110" : "group-hover:scale-110"
+            }`}
         >
           {icon}
         </div>
@@ -72,7 +65,7 @@ const BottomNavLink = ({ to, icon, label }) => (
   </NavLink>
 );
 
-export default function ProfileSidebar () {
+export default function ProfileSidebar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -187,11 +180,11 @@ export default function ProfileSidebar () {
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
           <Routes>
             <Route path="/profile" element={<Profile />} />
-              <Route path="/profile-update/user-data/page" element={<UpdatePage />} />
-                 <Route path="/bookings" element={<ConfirmBooking />} />
-                 <Route path="/tour-bookings" element={<TourBooking />} />
-                 <Route path="/complaints" element={<Complaint />} />
-                 <Route path="/reviews" element={<Reviews />} />
+            <Route path="/profile-update/user-data/page" element={<UpdateProfile />} />
+            <Route path="/bookings" element={<Bookings />} />
+            <Route path="/tour-bookings" element={<TourBooking />} />
+            <Route path="/complaints" element={<Complaints />} />
+            <Route path="/reviews" element={<Reviews />} />
 
 
           </Routes>
