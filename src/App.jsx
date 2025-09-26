@@ -1,6 +1,6 @@
 import "./App.css";
 import LoginPage from "./components/auth/login";
-import RegisterPage from "./components/auth/register";
+import RegisterPage from "./components/auth/Register";
 import { Routes, Route } from "react-router-dom";
 import { LoaderProvider } from "./utils/loader";
 import { ToastProvider } from "./utils/toast";
@@ -9,8 +9,8 @@ import HeaderTravel from "./components/TravelLocations";
 import ModernBottomNavigation from "./components/BottomNavigation";
 import Footer from "./components/Footer";
 import AboutPage from "./pages/about";
-import ContactPage from "./pages/Contact";
-import Careers from "./pages/Careers";
+import ContactPage from "./pages/contact";
+import Careers from "./pages/careers";
 import SearchForm from "./components/Search";
 import Locations from "./pages/home-section/locations";
 import Banner from "./pages/home-section/banner";

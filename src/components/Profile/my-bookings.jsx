@@ -6,8 +6,8 @@ import { useLocation } from "react-router-dom";
 import { fetchFilteredBooking } from "../../redux/reducers/bookingSlice";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import baseURL from "../../utils/baseURL";
-import { useLoader } from "../../utils/loader";
-import NotFoundPage from "../../utils/Not-found";
+import { useLoader } from "../../utils/loader"; // Corrected casing
+import NotFoundPage from "../../utils/Not-found"; // Corrected casing
 import { Unauthorized, userId } from "../../utils/Unauthorized";
 import { useToast } from "../../utils/toast";
 import { IoCalendarOutline, IoCloseSharp, IoReceiptOutline } from "react-icons/io5";
