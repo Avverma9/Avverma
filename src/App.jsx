@@ -6,30 +6,20 @@ import { LoaderProvider } from "./utils/loader";
 import { ToastProvider } from "./utils/toast";
 import Header from "./components/Header";
 import HeaderTravel from "./components/TravelLocations";
-import ModernBottomNavigation from "./components/BottomNavigation";
 import Footer from "./components/Footer";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/Contact";
 import Careers from "./pages/Careers";
-import SearchForm from "./components/Search";
-import Locations from "./pages/home-section/locations";
-import Banner from "./pages/home-section/banner";
-import Offered from "./pages/home-section/Offered";
-import Hotel from "./pages/hotel/hotel";
+import HomePage from "./components/profile/home";
 import ScrollToTopButton from "./utils/scrollToTop";
-import BookNow from "./pages/booking/Booknow";
 import Policies from "./pages/booking/policies";
 import TourPackages from './pages/tour/tour-package'
 import HotelPartnerForm from "./pages/partner/hotel-partner";
 import CabsBooking from "./pages/cabs/CabBooking";
 import Cabs from "./pages/cabs/Cabs";
-import PolicyForm from "./pages/partner/hotel-policy";
-import AmenitiesPage from "./pages/partner/hotel-amenities";
-import PartnerFoods from "./pages/partner/hotel-foods";
-import PartnerRooms from "./pages/partner/hotel-rooms";
 import TourBookPage from "./pages/tour/tour-booking";
-import { CouponPage, Sidebar } from "./components/profile";
-
+import { CouponPage, ProfileLayout } from "./components/profile";
+import ModernBottomNavigation from "./components/BottomNavigation";
 
 export default function App() {
   return (
@@ -37,33 +27,32 @@ export default function App() {
       <LoaderProvider>
         <ToastProvider>
           <Header />
-          <BookNow />
           <HeaderTravel />
-          <Sidebar />
-          <Hotel />
-          <SearchForm />
-          <Banner />
-          <Offered />
           <Routes>
+            {/* Main Pages */}
+            <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<Locations />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/holidays" element={<TourPackages />} />
-            <Route path="/travellers/booking/:id" element={<TourBookPage />} />
-            <Route path="/partner" element={<HotelPartnerForm />} />
-            <Route path="/partner/second-step" element={<PolicyForm />} />
-            <Route path="/partner/third-step" element={<AmenitiesPage />} />
-            <Route path="/partner/fourth-step" element={<PartnerFoods />} />
-            <Route path="/partner/last-step" element={<PartnerRooms />} />
-            <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<Cabs />} />
-            <Route path="/" element={<Offered />} />
-            {/* <Route path='/policies' element={<PoliciesPage />} /> */}
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/careers' element={<Careers />} />
-            <Route path='/coupons' element={<CouponPage />} />
             <Route path='/policies' element={<Policies />} />
+
+            {/* Dynamic/Booking Pages */}
+            <Route path="/travellers/booking/:id" element={<TourBookPage />} />
+            <Route path="/cab-booking/:id" element={<CabsBooking />} />
+            <Route path="/partner" element={<HotelPartnerForm />} />
+
+            {/* Profile Section */}
+            <Route path="/profile/*" element={<ProfileLayout />} />
+            <Route path="/bookings/*" element={<ProfileLayout />} />
+            <Route path="/tour-bookings/*" element={<ProfileLayout />} />
+            <Route path="/complaints/*" element={<ProfileLayout />} />
+            <Route path="/reviews/*" element={<ProfileLayout />} />
+
+            <Route path='/coupons' element={<CouponPage />} />
           </Routes>
           <ScrollToTopButton />
           <Footer />

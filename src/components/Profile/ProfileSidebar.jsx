@@ -99,16 +99,6 @@ export default function ProfileSidebar() {
     if (window.innerWidth <= 768) setMenuOpen(false);
   };
 
-  const paths = [
-    "/bookings",
-    "/reviews",
-    "/tour-bookings",
-    "/complaints",
-    "/profile",
-    "/profile-update/user-data/page",
-  ];
-  if (!paths.some((path) => location.pathname.startsWith(path))) return null;
-
   return (
     <div className="relative min-h-screen md:flex bg-transparent">
       {/* Overlay */}
@@ -179,14 +169,12 @@ export default function ProfileSidebar() {
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-24 md:pb-8">
           <Routes>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile-update/user-data/page" element={<UpdateProfile />} />
-            <Route path="/bookings" element={<Bookings />} />
-            <Route path="/tour-bookings" element={<TourBooking />} />
-            <Route path="/complaints" element={<Complaints />} />
-            <Route path="/reviews" element={<Reviews />} />
-
-
+            <Route path="/profile" element={<Profile />} /> {/* Matches /profile */}
+            <Route path="/profile/update/user-data/page" element={<UpdateProfile />} /> {/* Matches /profile/update... */}
+            <Route path="/bookings" element={<Bookings />} /> {/* Matches /bookings */}
+            <Route path="/tour-bookings" element={<TourBooking />} /> {/* Matches /tour-bookings */}
+            <Route path="/complaints" element={<Complaints />} /> {/* Matches /complaints */}
+            <Route path="/reviews" element={<Reviews />} /> {/* Matches /reviews */}
           </Routes>
         </main>
       </div>
@@ -201,4 +189,3 @@ export default function ProfileSidebar() {
     </div>
   );
 };
-
