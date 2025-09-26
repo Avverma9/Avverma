@@ -26,7 +26,7 @@ import CabsBooking from "./pages/cabs/CabBooking";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/Contact";
 import Careers from "./pages/Careers";
-import CouponPage from "./components/profile/coupons";
+// import CouponPage from "./components/profile/coupons";
 import PoliciesPage from "./pages/PolicyPage";
 import Footer from "./components/Footer";
 import ModernBottomNavigation from "./components/BottomNavigation";
@@ -73,7 +73,7 @@ export default function App() {
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/careers' element={<Careers />} />
-            <Route path='/coupons' element={< CouponPage/>} />
+            {/* <Route path='/coupons' element={< CouponPage/>} /> */}
             <Route path='/policies' element={<PoliciesPage />} />
           </Routes>
           <ScrollToTop />
