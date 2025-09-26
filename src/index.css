@@ -1,24 +1,18 @@
 @import "tailwindcss";
-body {
-  margin: 0;
-  /* Horizontal overflow को रोकें */
-  overflow-x: hidden;
-  background-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
-/* सभी elements पर box-sizing लागू करें */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-#root {
+/*
+  ये स्टाइल मोबाइल डिवाइस पर स्क्रॉल करते समय फिक्स्ड एलिमेंट्स (जैसे हेडर और बॉटम नेविगेशन)
+  के हिलने (jittering) की समस्या को ठीक करने में मदद करते हैं।
+*/
+html,
+body,
+#root,
+.App {
+  height: 100%;
   width: 100%;
-  max-width: 1440px; /* कंटेंट को बहुत बड़ी स्क्रीन पर फैलने से रोकता है */
-  margin: 0 auto; /* कंटेंट को center में रखता है */
-  padding: 1rem; /* Responsive padding के लिए rem unit का उपयोग करें */
+  overflow-x: hidden;
+}
+
+body {
+  overscroll-behavior-y: contain; /* वर्टिकल 'पुल-टू-रीफ्रेश' एक्शन को रोकता है */
 }

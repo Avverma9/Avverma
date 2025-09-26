@@ -28,19 +28,15 @@ import PoliciesPage from "./pages/PolicyPage";
 import Footer from "./components/Footer";
 import ModernBottomNavigation from "./components/BottomNavigation";
 import ScrollToTop from "./utils/scrollToTop";
-import ProfilePage from "./components/Profile/Profile";
-import TourBooking from "./components/Profile/TourBooking";
-import Reviews from "./components/Profile/MyReviews";
-import ComplaintsPage from "./components/Profile/complaints";
+
 import ProfileSideBar from "./components/Profile/ProfileSidebar";
 import Banner from "./pages/home-section/banner";
 import Locations from "./pages/home-section/locations";
 import CouponPage from "./components/Profile/coupons";
-import MyBookings from "./components/Profile/MyBookings";
 
 export default function App() {
   return (
-    <div className="App">
+    <div className="App flex flex-col">
       <LoaderProvider>
         <ToastProvider>
           <Header />
@@ -64,11 +60,7 @@ export default function App() {
             <Route path="/partner/last-step" element={<PartnerRooms />} />
             <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<CarsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/bookings" element={<MyBookings />} />
-            <Route path="/tour-bookings" element={<TourBooking />} />
-            <Route path="/reviews" element={<Reviews />} />
-            <Route path="/complaints" element={<ComplaintsPage />} />
+         
             <Route path="/" element={<Offered />} />
             <Route path='/policies' element={<PoliciesPage />} />
             <Route path='/about' element={<AboutPage />} />
