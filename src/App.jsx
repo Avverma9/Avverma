@@ -31,7 +31,7 @@ import PoliciesPage from "./pages/PolicyPage";
 import Footer from "./components/Footer";
 import ModernBottomNavigation from "./components/BottomNavigation";
 import ScrollToTop from "./utils/scrollToTop";
-import ProfilePage from "./components/profile/profile";
+// import ProfilePage from "./components/profile/profile";
 import BookingPage from "./pages/booking/BookingPage";
 import TourBooking from "./components/profile/TourBooking";
 import Reviews from "./components/profile/MyReviews";
@@ -63,7 +63,7 @@ export default function App() {
             <Route path="/partner/last-step" element={<PartnerRooms />} />
             <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<CarsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            {/* <Route path="/profile" element={<ProfilePage />} /> */}
             <Route path="/bookings" element={<BookingPage />} />
             <Route path="/tour-bookings" element={<TourBooking />} />
             <Route path="/reviews" element={<Reviews />} />
