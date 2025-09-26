@@ -7,13 +7,10 @@ import {
   PhoneIcon,
   UserCircleIcon,
   ArrowPathIcon,
-  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-
 import baseURL from "../../utils/baseURL";
 import { useToast } from "../../utils/toast";
 
-// ---------------- Country Codes ----------------
 const countryCodes = [
   { code: "+91", country: "IN", flag: "🇮🇳", name: "India" },
   { code: "+1", country: "US", flag: "🇺🇸", name: "United States" },
@@ -26,20 +23,16 @@ const countryCodes = [
   { code: "+55", country: "BR", flag: "🇧🇷", name: "Brazil" },
 ];
 
-// ---------------- Country Code Dropdown ----------------
 function CountryCodeDropdown({ selectedCode, onSelect, disabled }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
-
   const selectedCountry = countryCodes.find((c) => c.code === selectedCode);
-
   const filtered = countryCodes.filter(
     (c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.code.includes(searchTerm)
   );
-
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -50,13 +43,12 @@ function CountryCodeDropdown({ selectedCode, onSelect, disabled }) {
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
-
   return (
-    <div className="relative w-28" ref={dropdownRef}>
+    <div className="relative w-24 sm:w-28" ref={dropdownRef}>
       <button
         type="button"
         disabled={disabled}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((v) => !v)}
         className="flex items-center justify-between px-3 py-2 border rounded-lg bg-white shadow-sm text-sm w-full focus:ring-2 focus:ring-blue-500"
       >
         <span>{selectedCountry?.flag}</span>
@@ -111,16 +103,13 @@ function CountryCodeDropdown({ selectedCode, onSelect, disabled }) {
   );
 }
 
-// ---------------- OTP Input ----------------
 function SixDigitOTP({ disabled, onComplete, value = "" }) {
   const [vals, setVals] = useState(Array(6).fill(""));
   const inputsRef = useRef([]);
-
   useEffect(() => {
     if (value.length === 6) setVals(value.split(""));
     else if (value === "") setVals(Array(6).fill(""));
   }, [value]);
-
   const handleChange = (i, v) => {
     if (!/^\d?$/.test(v)) return;
     const next = [...vals];
@@ -129,7 +118,6 @@ function SixDigitOTP({ disabled, onComplete, value = "" }) {
     if (v && i < 5) inputsRef.current[i + 1]?.focus();
     onComplete(next.every((d) => d) ? next.join("") : "");
   };
-
   return (
     <div className="flex gap-2">
       {vals.map((val, i) => (
@@ -138,7 +126,7 @@ function SixDigitOTP({ disabled, onComplete, value = "" }) {
           type="text"
           inputMode="numeric"
           maxLength={1}
-          className="w-12 h-12 border rounded-lg text-center text-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+          className="w-10 h-10 md:w-12 md:h-12 border rounded-lg text-center text-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
           value={val}
           onChange={(e) => handleChange(i, e.target.value)}
           ref={(el) => (inputsRef.current[i] = el)}
@@ -149,11 +137,9 @@ function SixDigitOTP({ disabled, onComplete, value = "" }) {
   );
 }
 
-// ---------------- Login Page ----------------
 export default function LoginPage() {
   const navigate = useNavigate();
   const toast = useToast();
-
   const [mode, setMode] = useState("password");
   const [authMethod, setAuthMethod] = useState("email");
   const [email, setEmail] = useState("");
@@ -161,7 +147,6 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [countryCode, setCountryCode] = useState("+91");
   const [otp, setOtp] = useState("");
-
   const [otpSent, setOtpSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
@@ -268,24 +253,19 @@ export default function LoginPage() {
         };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 space-y-6">
-        {/* Header */}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-3 sm:p-4">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-5 sm:p-8 space-y-6 mx-auto">
         <div className="text-center">
           <UserCircleIcon className="mx-auto h-14 w-14 text-blue-600" />
-          <h1 className="mt-4 text-2xl font-bold text-gray-800">
-            Welcome Back!
-          </h1>
+          <h1 className="mt-4 text-2xl font-bold text-gray-800">Welcome Back!</h1>
           <p className="text-gray-500">Sign in to continue</p>
         </div>
-
-        {/* Toggle Email/Mobile for OTP */}
         {mode === "otp" && (
           <div className="flex justify-center gap-3">
             <button
               type="button"
               onClick={() => setAuthMethod("email")}
-              className={`px-3 py-1 rounded-full border ${
+              className={`px-3 py-1 rounded-full border transition ${
                 authMethod === "email"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-100 text-gray-700"
@@ -296,7 +276,7 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setAuthMethod("mobile")}
-              className={`px-3 py-1 rounded-full border ${
+              className={`px-3 py-1 rounded-full border transition ${
                 authMethod === "mobile"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-100 text-gray-700"
@@ -306,8 +286,6 @@ export default function LoginPage() {
             </button>
           </div>
         )}
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "password" || authMethod === "email" ? (
             <div className="relative">
@@ -319,6 +297,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={mode === "otp" && otpSent}
                 className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                autoComplete="email"
               />
             </div>
           ) : (
@@ -334,16 +313,14 @@ export default function LoginPage() {
                   type="tel"
                   placeholder="Mobile number"
                   value={phone}
-                  onChange={(e) =>
-                    setPhone(e.target.value.replace(/[^\d]/g, ""))
-                  }
+                  onChange={(e) => setPhone(e.target.value.replace(/[^\d]/g, ""))}
                   disabled={otpSent}
                   className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  autoComplete="tel"
                 />
               </div>
             </div>
           )}
-
           {mode === "password" && (
             <div className="relative">
               <LockClosedIcon className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -353,31 +330,26 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                autoComplete="current-password"
               />
             </div>
           )}
-
           {mode === "otp" && otpSent && (
             <div>
-              <label className="text-sm text-gray-600 mb-2 block">
-                Enter verification code
-              </label>
+              <label className="text-sm text-gray-600 mb-2 block">Enter verification code</label>
               <SixDigitOTP
                 disabled={loading}
-                onComplete={(code) => setOtp(code)}
+                onComplete={setOtp}
                 value={otp}
               />
             </div>
           )}
-
           <button
             type="submit"
             disabled={loading || (mode === "otp" && otpSent && otp.length !== 6)}
-            className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 disabled:opacity-50"
+            className="w-full flex justify-center items-center gap-2 bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 disabled:opacity-50 transition"
           >
-            {loading && (
-              <ArrowPathIcon className="w-5 h-5 animate-spin" />
-            )}
+            {loading && <ArrowPathIcon className="w-5 h-5 animate-spin" />}
             <span>
               {loading
                 ? "Processing..."
@@ -389,8 +361,6 @@ export default function LoginPage() {
             </span>
           </button>
         </form>
-
-        {/* Footer */}
         {mode === "otp" && otpSent && (
           <div className="text-center text-sm">
             {resendTimer > 0 ? (
@@ -410,7 +380,6 @@ export default function LoginPage() {
             )}
           </div>
         )}
-
         <div className="text-center">
           <button
             onClick={toggleMode}
@@ -421,7 +390,6 @@ export default function LoginPage() {
               : "Use password instead"}
           </button>
         </div>
-
         <div className="text-center text-sm text-gray-600">
           Don’t have an account?{" "}
           <a
