@@ -85,7 +85,7 @@ const BookingCard = ({ bookingDetail, onShowDetails, onReview }) => (
   </article>
 );
 
-export const ConfirmBooking = () => {
+export default function MyBookings  () {
   const dispatch = useDispatch();
   const location = useLocation();
   const { showLoader, hideLoader } = useLoader();
@@ -378,4 +378,4 @@ currentPage === i + 1
   );
 };
 
-export default ConfirmBooking;
+

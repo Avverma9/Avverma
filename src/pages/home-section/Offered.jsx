@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import { userId } from "../../utils/Unauthorized";
-import HotelMobileCard from "./Hotel";
+import HotelMobileCard from "./hotel";
 export default function  Offered  ()  {
   const [hotelData, setHotelData] = useState([]);
   const location = useLocation();

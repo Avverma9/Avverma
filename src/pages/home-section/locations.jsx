@@ -68,8 +68,7 @@ const LocationCard = ({ name, description, imageUrl, link, className = "" }) => 
 );
 
 // --- MAIN LOCATIONS COMPONENT WITH BENTO GRID ---
-export default
-    function Locations() {
+export default function Locations() {
     const mainLocation = locationsData[0];
     const otherLocations = locationsData.slice(1);
     const location = useLocation()

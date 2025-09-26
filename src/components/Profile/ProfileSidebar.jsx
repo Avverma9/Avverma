@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Route, Routes, useLocation, NavLink } from "react-router-dom";
-import Profile from "./profile";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { PiTicketThin } from "react-icons/pi";
@@ -8,7 +7,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdOutlineRateReview, MdOutlineAccountCircle } from "react-icons/md";
 import { IoWarningOutline } from "react-icons/io5";
 import { RiHomeLine, RiBriefcaseLine, RiCarLine } from "react-icons/ri";
-import ProfilePage from "./profile";
+import ProfilePage from "./Profile";
 import ProfileUpdatePage from "./UpdateProfile";
 import ConfirmBooking from "./MyBookings";
 import TourBooking from "./TourBooking";
@@ -74,7 +73,7 @@ const BottomNavLink = ({ to, icon, label }) => (
   </NavLink>
 );
 
-export default function ProfileSidebar () {
+export default function ProfileSideBar () {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
