@@ -6,7 +6,7 @@ import { ToastProvider } from "./utils/toast";
 import Header from "./components/Header";
 import BookNow from "./pages/booking/Booknow";
 import HeaderTravel from "./components/TravelLocations";
-import ProfileSidebar from "./components/profile/ProfileSidebar";
+// import ProfileSidebar from "./components/profile/ProfileSidebar";
 import Hotel from "./pages/hotel/hotel";
 import SearchForm from "./components/Search";
 import Banner from "./pages/home-section/Banner";
@@ -45,7 +45,7 @@ export default function App() {
           <Header />
           <BookNow />
           <HeaderTravel />
-          <ProfileSidebar />
+          {/* <ProfileSidebar /> */}
           <Hotel />
           <SearchForm />
           <Banner />
