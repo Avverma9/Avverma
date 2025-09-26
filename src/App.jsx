@@ -10,7 +10,7 @@ import Footer from "./components/Footer";
 import AboutPage from "./pages/about";
 import ContactPage from "./pages/Contact";
 import Careers from "./pages/Careers";
-import HomePage from "./components/profile/home";
+import HomePage from "./pages/HomePage";
 import ScrollToTopButton from "./utils/scrollToTop";
 import Policies from "./pages/booking/policies";
 import TourPackages from './pages/tour/tour-package'
