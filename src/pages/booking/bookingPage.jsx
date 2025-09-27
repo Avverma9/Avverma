@@ -31,7 +31,6 @@ import {
 } from "@mui/icons-material";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { format, formatISO } from "date-fns";
 import { formatDate } from "../../utils/convertDate";
 
 // Make sure to pass all required props from parent
@@ -58,7 +57,6 @@ export default function BookingPage({
   handleCouponSubmit = () => {},
   discountPrice = 0,
   getFinalPrice = () => 0,
-  calculateBasePrice = () => 0,
   finalTotal = 0,
   handleOpenModal = () => {},
   gstAmount = 0,
