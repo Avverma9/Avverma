@@ -33,6 +33,7 @@ import ProfileSideBar from "./components/Profile/ProfileSidebar";
 import Banner from "./pages/home-section/banner";
 import Locations from "./pages/home-section/locations";
 import CouponPage from "./components/Profile/coupons";
+import TravelForm from "./pages/tour/partnerPage";
 
 export default function App() {
   return (
@@ -60,6 +61,7 @@ export default function App() {
             <Route path="/partner/last-step" element={<PartnerRooms />} />
             <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<CarsPage />} />
+            <Route path="/travel-partner" element={<TravelForm />} />
          
             <Route path="/" element={<Offered />} />
             <Route path='/policies' element={<PoliciesPage />} />

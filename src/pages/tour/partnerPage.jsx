@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { MdLabelImportant } from 'react-icons/md';
-import './css/partnerPage.css';
 import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
 import { createTravel } from '../../redux/reducers/travelSlice';
@@ -21,7 +20,9 @@ import {
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
 import { FaLocationArrow } from 'react-icons/fa6';
-import Disclaimer from '../Hotels/Partner/Disclaimer';
+import Disclaimer from '../partner/disclaimer';
+
+
 const TravelForm = () => {
     const [formData, setFormData] = useState({
         city: '',
@@ -76,14 +77,11 @@ const TravelForm = () => {
                 inclusion: newInclusion,
             });
         }
-        // Handle exclusion field, add/update based on index
         else if (name === 'exclusion') {
             const newExclusion = [...formData.exclusion];
             if (index !== null) {
-                // Update specific exclusion point if index is provided
                 newExclusion[index] = value;
             } else {
-                // Add a new empty exclusion point if no index
                 newExclusion.push(value);
             }
             setFormData({
@@ -99,9 +97,6 @@ const TravelForm = () => {
     };
 
     const handleAmenitiesChange = (selectedOptions) => {
-        // Log the selected options for debugging
-
-        // Update the state with selected amenities
         setFormData({
             ...formData,
             amenities: selectedOptions ? selectedOptions.map((option) => option.value) : [],
@@ -137,11 +132,10 @@ const TravelForm = () => {
 
     const handleImageChange = (index, e) => {
         const updatedImages = [...formData.images];
-        updatedImages[index] = e.target.files[0]; // Store the first image in the file input
+        updatedImages[index] = e.target.files[0];
         setFormData({ ...formData, images: updatedImages });
     };
 
-    // Add a new empty input field for inclusion
     const handleAddInclusion = () => {
         setFormData({ ...formData, inclusion: [...formData.inclusion, ''] });
     };
@@ -165,6 +159,7 @@ const TravelForm = () => {
         formDataToSend.append('from', formData.from);
         formDataToSend.append('to', formData.to);
         formDataToSend.append('starRating', formData.starRating);
+
         formData.inclusion.forEach((inclusions) => {
             formDataToSend.append('inclusion[]', inclusions);
         });
@@ -203,18 +198,8 @@ const TravelForm = () => {
         }
     };
 
-    const inputStyles = {
-        width: '100%',
-        padding: '12px',
-        border: '1px solid #ddd',
-        borderRadius: '20px',
-        fontSize: '0.9rem',
-        color: '#555',
-        boxSizing: 'border-box',
-    };
-
     useEffect(() => {
-        const allCountries = Country.getAllCountries(); // Fetching all countries
+        const allCountries = Country.getAllCountries();
         setCountries(allCountries);
 
         if (formData.country) {
@@ -227,460 +212,683 @@ const TravelForm = () => {
             setCities(initialCities);
         }
     }, [formData.country, formData.state]);
-    const pattern = /^[0-9]+N [a-zA-Z\s]+(\|[0-9]+N [a-zA-Z\s]+)*$/;
 
+    const pattern = /^[0-9]+N [a-zA-Z\s]+(\|[0-9]+N [a-zA-Z\s]+)*$/;
     const isValid = pattern.test(formData.visitngPlaces);
 
     const openDatePicker = (e) => {
         e.target.showPicker();
     };
+
+    // Custom styles for React Select
+    const selectStyles = {
+        control: (provided, state) => ({
+            ...provided,
+            minHeight: '48px',
+            border: state.isFocused ? '2px solid #3B82F6' : '1px solid #D1D5DB',
+            borderRadius: '12px',
+            boxShadow: state.isFocused ? '0 0 0 3px rgba(59, 130, 246, 0.1)' : 'none',
+            '&:hover': {
+                border: '1px solid #9CA3AF'
+            }
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: '#9CA3AF'
+        }),
+        multiValue: (provided) => ({
+            ...provided,
+            backgroundColor: '#EFF6FF',
+            border: '1px solid #DBEAFE'
+        }),
+        multiValueLabel: (provided) => ({
+            ...provided,
+            color: '#1E40AF'
+        }),
+        multiValueRemove: (provided) => ({
+            ...provided,
+            color: '#1E40AF',
+            '&:hover': {
+                backgroundColor: '#FEE2E2',
+                color: '#DC2626'
+            }
+        })
+    };
+
     return (
-        <div className="container">
-            <Disclaimer />
-            <h2>Travel Package Form</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaUser />
-                            Enter your travel agency name
-                        </label>
-                        <input
-                            type="text"
-                            style={inputStyles}
-                            name="travelAgencyName"
-                            value={formData.travelAgencyName}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaUser />
-                            Select your travel theme
-                        </label>
-                        <select
-                            style={inputStyles}
-                            name="themes"
-                            value={formData.themes}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select theme</option>
-                            <option value="Winter">Winter</option>
-                            <option value="Summer">Summer</option>
-                            <option value="Honeymoon">Honeymoon</option>
-                            <option value="Romantic">Romantic</option>
-                            <option value="Adventure">Adventure</option>
-                            <option value="Beach">Beach</option>
-                        </select>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaUser />
-                            Enter your travel agency ID
-                        </label>
-                        <input
-                            type="text"
-                            style={inputStyles}
-                            name="agencyId"
-                            value={formData.agencyId}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaUser />
-                            Contact Email
-                        </label>
-                        <input
-                            type="text"
-                            style={inputStyles}
-                            name="agencyEmail"
-                            value={formData.agencyEmail}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaUser />
-                            Contact Number
-                        </label>
-                        <input
-                            type="text"
-                            style={inputStyles}
-                            name="agencyPhone"
-                            value={formData.agencyPhone}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaCity /> Country <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <Select
-                            options={countries.map((country) => ({
-                                label: country.name,
-                                value: country.isoCode,
-                            }))}
-                            value={formData.country ? { label: formData.country, value: formData.country } : null}
-                            onChange={(selectedOption) => setFormData({ ...formData, country: selectedOption.value })}
-                            required
-                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaMapMarkerAlt /> State
-                        </label>
-                        <Select
-                            options={states.map((state) => ({
-                                label: state.name,
-                                value: state.isoCode,
-                            }))}
-                            value={formData.state ? { label: formData.state, value: formData.state } : null}
-                            onChange={(selectedOption) => setFormData({ ...formData, state: selectedOption.value })}
-                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaLocationArrow /> City
-                        </label>
-                        <Select
-                            options={cities.map((city) => ({
-                                label: city.name,
-                                value: city.name,
-                            }))}
-                            value={formData.city ? { label: formData.city, value: formData.city } : null}
-                            onChange={(selectedOption) => setFormData({ ...formData, city: selectedOption.value })}
-                            styles={{ container: (provided) => ({ ...provided, width: '100%' }) }}
-                        />
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaCalendarAlt /> Days <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <select style={inputStyles} name="days" value={formData.days} onChange={handleChange} required>
-                            <option value="">Select Days</option>
-                            {[...Array(30).keys()].map((i) => {
-                                const dayOption = i + 1;
-                                return (
-                                    <option key={dayOption} value={dayOption}>
-                                        {dayOption} Day
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaCalendarAlt /> Nights <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <select style={inputStyles} name="nights" value={formData.nights} onChange={handleChange} required>
-                            <option value="">Select nights</option>
-                            {[...Array(30).keys()].map((i) => {
-                                const nightOption = i + 1;
-                                return (
-                                    <option key={nightOption} value={nightOption}>
-                                        {nightOption} Night
-                                    </option>
-                                );
-                            })}
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaStar /> Star Rating <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <select style={inputStyles} name="starRating" value={formData.starRating} onChange={handleChange} required>
-                            <option value="">Select Rating</option>
-                            {[1, 2, 3, 4, 5].map((rating) => (
-                                <option key={rating} value={rating}>
-                                    {rating} Star
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaGlobe /> Places to visit eg(1N Bihar|2N Patna|1N Delhi)
-                            <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input
-                            type="text"
-                            style={inputStyles}
-                            name="visitngPlaces"
-                            value={formData.visitngPlaces}
-                            onChange={handleChange}
-                            required
-                            placeholder="Enter places like 1N Bihar|2N Patna|1N Delhi"
-                        />
-                        {!isValid && formData.visitngPlaces && (
-                            <small style={{ color: 'red' }}>
-                                Please enter the places in the correct format (e.g., 1N Bihar|2N Patna|1N Delhi)
-                            </small>
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaRupeeSign /> Package Price <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input type="number" style={inputStyles} name="price" value={formData.price} onChange={handleChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaStreetView /> Package Overview <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <textarea
-                            type="text"
-                            style={inputStyles}
-                            name="overview"
-                            value={formData.overview}
-                            onChange={handleChange}
-                            required
-                        />
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+                <Disclaimer />
+
+                {/* Header Section */}
+                <div className="bg-white rounded-2xl shadow-xl mb-8 p-6 sm:p-8 border border-gray-100">
+                    <div className="text-center">
+                        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
+                            Travel Package Form
+                        </h1>
+                        <p className="text-gray-600 max-w-2xl mx-auto">
+                            Create your perfect travel package by filling out the details below
+                        </p>
                     </div>
                 </div>
 
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaCalendarAlt /> From Date <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input
-                            type="date"
-                            style={inputStyles}
-                            name="from"
-                            value={formData.from}
-                            onChange={handleChange}
-                            onClick={openDatePicker} // Open the date picker on click
-                            required
-                        />
-                    </div>
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Agency Information Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <FaUser className="mr-3 text-blue-600" />
+                            Agency Information
+                        </h2>
 
-                    <div className="form-group">
-                        <label>
-                            <FaCalendarAlt /> To Date <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <input
-                            type="date"
-                            style={inputStyles}
-                            name="to"
-                            value={formData.to}
-                            onChange={handleChange}
-                            onClick={openDatePicker} // Open the date picker on click
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaRegCheckCircle /> Inclusion <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        {formData.inclusion.map((inclusion, index) => (
-                            <div key={index}>
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaUser className="mr-2 text-blue-600" />
+                                    Travel Agency Name <span className="text-red-500 ml-1">*</span>
+                                </label>
                                 <input
-                                    style={inputStyles}
-                                    name="inclusion"
-                                    value={inclusion}
-                                    onChange={(e) => handleChange(e, index)} // Pass the index here
+                                    type="text"
+                                    name="travelAgencyName"
+                                    value={formData.travelAgencyName}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    placeholder="Enter agency name"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaUser className="mr-2 text-blue-600" />
+                                    Travel Theme <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <select
+                                    name="themes"
+                                    value={formData.themes}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                >
+                                    <option value="">Select theme</option>
+                                    <option value="Winter">Winter</option>
+                                    <option value="Summer">Summer</option>
+                                    <option value="Honeymoon">Honeymoon</option>
+                                    <option value="Romantic">Romantic</option>
+                                    <option value="Adventure">Adventure</option>
+                                    <option value="Beach">Beach</option>
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaUser className="mr-2 text-blue-600" />
+                                    Agency ID <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="agencyId"
+                                    value={formData.agencyId}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    placeholder="Enter agency ID"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaUser className="mr-2 text-blue-600" />
+                                    Contact Email <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    name="agencyEmail"
+                                    value={formData.agencyEmail}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    placeholder="Enter email address"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaUser className="mr-2 text-blue-600" />
+                                    Contact Number <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    name="agencyPhone"
+                                    value={formData.agencyPhone}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    placeholder="Enter phone number"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Location Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <FaGlobe className="mr-3 text-green-600" />
+                            Location Details
+                        </h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCity className="mr-2 text-green-600" />
+                                    Country <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <Select
+                                    options={countries.map((country) => ({
+                                        label: country.name,
+                                        value: country.isoCode,
+                                    }))}
+                                    value={countries.find(c => c.isoCode === formData.country) ? 
+                                        { label: countries.find(c => c.isoCode === formData.country).name, value: formData.country } : null}
+                                    onChange={(selectedOption) => setFormData({ ...formData, country: selectedOption.value })}
+                                    placeholder="Select country"
+                                    styles={selectStyles}
                                     required
                                 />
                             </div>
-                        ))}
-                        <button
-                            type="button"
-                            className="add-button"
-                            onClick={() => handleChange({ target: { name: 'inclusion', value: '' } })}
-                        >
-                            Add More Inclusion
-                        </button>
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaRegCheckCircle /> Exclusion <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        {formData.exclusion.map((exclusion, index) => (
-                            <div key={index}>
-                                <input
-                                    style={inputStyles}
-                                    name="exclusion"
-                                    value={exclusion}
-                                    onChange={(e) => handleChange(e, index)} // Pass the index here
-                                    required
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaMapMarkerAlt className="mr-2 text-green-600" />
+                                    State
+                                </label>
+                                <Select
+                                    options={states.map((state) => ({
+                                        label: state.name,
+                                        value: state.isoCode,
+                                    }))}
+                                    value={states.find(s => s.isoCode === formData.state) ? 
+                                        { label: states.find(s => s.isoCode === formData.state).name, value: formData.state } : null}
+                                    onChange={(selectedOption) => setFormData({ ...formData, state: selectedOption.value })}
+                                    placeholder="Select state"
+                                    styles={selectStyles}
                                 />
                             </div>
-                        ))}
-                        <button
-                            type="button"
-                            className="add-button"
-                            onClick={() => handleChange({ target: { name: 'exclusion', value: '' } })}
-                        >
-                            Add More Exclusion
-                        </button>
-                    </div>
-                </div>
-                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
-                    <MdLabelImportant /> Amenities
-                </h4>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaTools /> Amenity Name <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <Select
-                            styles={{
-                                container: (provided) => ({ ...provided, width: '100%' }),
-                                control: (provided) => ({ ...provided, padding: '10px', borderRadius: '20px' }),
-                            }}
-                            isMulti
-                            value={formData.amenities.map((amenity) => ({ label: amenity, value: amenity }))}
-                            onChange={handleAmenitiesChange}
-                            options={iconsList.map((icon) => ({ label: icon.label, value: icon.label }))}
-                            placeholder="Select amenities..."
-                            required
-                        />
-                    </div>
-                </div>
 
-                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
-                    <MdLabelImportant /> Day-wise Itinerary
-                </h4>
-                {formData.dayWise.map((day, index) => (
-                    <div key={index} className="form-row">
-                        <div className="form-group">
-                            <label>
-                                <FaCalendarAlt /> Day <span style={{ color: 'red' }}>*</span>
-                            </label>
-                            <select style={inputStyles} name="day" value={day.day} onChange={(e) => handleDayWiseChange(index, e)} required>
-                                <option value="">Select Day</option>
-                                {[...Array(30).keys()].map((i) => {
-                                    const dayOption = i + 1; // Creating day options from 1 to 100
-                                    return (
-                                        <option key={dayOption} value={dayOption}>
-                                            Day {dayOption}
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaLocationArrow className="mr-2 text-green-600" />
+                                    City
+                                </label>
+                                <Select
+                                    options={cities.map((city) => ({
+                                        label: city.name,
+                                        value: city.name,
+                                    }))}
+                                    value={formData.city ? { label: formData.city, value: formData.city } : null}
+                                    onChange={(selectedOption) => setFormData({ ...formData, city: selectedOption.value })}
+                                    placeholder="Select city"
+                                    styles={selectStyles}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Package Details Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <FaCalendarAlt className="mr-3 text-purple-600" />
+                            Package Details
+                        </h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCalendarAlt className="mr-2 text-purple-600" />
+                                    Days <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <select
+                                    name="days"
+                                    value={formData.days}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                >
+                                    <option value="">Select Days</option>
+                                    {[...Array(30).keys()].map((i) => {
+                                        const dayOption = i + 1;
+                                        return (
+                                            <option key={dayOption} value={dayOption}>
+                                                {dayOption} Day{dayOption > 1 ? 's' : ''}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCalendarAlt className="mr-2 text-purple-600" />
+                                    Nights <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <select
+                                    name="nights"
+                                    value={formData.nights}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                >
+                                    <option value="">Select nights</option>
+                                    {[...Array(30).keys()].map((i) => {
+                                        const nightOption = i + 1;
+                                        return (
+                                            <option key={nightOption} value={nightOption}>
+                                                {nightOption} Night{nightOption > 1 ? 's' : ''}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaStar className="mr-2 text-yellow-500" />
+                                    Star Rating <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <select
+                                    name="starRating"
+                                    value={formData.starRating}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                >
+                                    <option value="">Select Rating</option>
+                                    {[1, 2, 3, 4, 5].map((rating) => (
+                                        <option key={rating} value={rating}>
+                                            {rating} Star{rating > 1 ? 's' : ''}
                                         </option>
-                                    );
-                                })}
-                            </select>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
 
-                        <div className="form-group">
-                            <label>
-                                <FaCalendarAlt /> Description <span style={{ color: 'red' }}>*</span>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaGlobe className="mr-2 text-purple-600" />
+                                    Places to visit <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    name="visitngPlaces"
+                                    value={formData.visitngPlaces}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="e.g., 1N Bihar|2N Patna|1N Delhi"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                />
+                                {!isValid && formData.visitngPlaces && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        Please enter places in correct format (e.g., 1N Bihar|2N Patna|1N Delhi)
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaRupeeSign className="mr-2 text-green-600" />
+                                    Package Price <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    value={formData.price}
+                                    onChange={handleChange}
+                                    required
+                                    placeholder="Enter price in rupees"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2 mb-6">
+                            <label className="flex items-center text-sm font-medium text-gray-700">
+                                <FaStreetView className="mr-2 text-purple-600" />
+                                Package Overview <span className="text-red-500 ml-1">*</span>
                             </label>
                             <textarea
-                                type="text"
-                                style={inputStyles}
-                                name="description"
-                                value={day.description}
-                                onChange={(e) => handleDayWiseChange(index, e)}
+                                name="overview"
+                                value={formData.overview}
+                                onChange={handleChange}
+                                required
+                                rows="4"
+                                placeholder="Describe your travel package in detail..."
+                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+                            />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCalendarAlt className="mr-2 text-purple-600" />
+                                    From Date <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    name="from"
+                                    value={formData.from}
+                                    onChange={handleChange}
+                                    onClick={openDatePicker}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCalendarAlt className="mr-2 text-purple-600" />
+                                    To Date <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    name="to"
+                                    value={formData.to}
+                                    onChange={handleChange}
+                                    onClick={openDatePicker}
+                                    required
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Inclusion/Exclusion Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <FaRegCheckCircle className="mr-3 text-green-600" />
+                            Package Inclusions & Exclusions
+                        </h2>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">
+                                    Inclusions <span className="text-red-500">*</span>
+                                </h3>
+                                {formData.inclusion.map((inclusion, index) => (
+                                    <div key={index} className="space-y-2">
+                                        <input
+                                            name="inclusion"
+                                            value={inclusion}
+                                            onChange={(e) => handleChange(e, index)}
+                                            required
+                                            placeholder={`Inclusion ${index + 1}`}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                        />
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => handleChange({ target: { name: 'inclusion', value: '' } })}
+                                    className="w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                                >
+                                    <span>+</span>
+                                    Add Inclusion
+                                </button>
+                            </div>
+
+                            <div className="space-y-4">
+                                <h3 className="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">
+                                    Exclusions <span className="text-red-500">*</span>
+                                </h3>
+                                {formData.exclusion.map((exclusion, index) => (
+                                    <div key={index} className="space-y-2">
+                                        <input
+                                            name="exclusion"
+                                            value={exclusion}
+                                            onChange={(e) => handleChange(e, index)}
+                                            required
+                                            placeholder={`Exclusion ${index + 1}`}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                        />
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => handleChange({ target: { name: 'exclusion', value: '' } })}
+                                    className="w-full sm:w-auto px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                                >
+                                    <span>+</span>
+                                    Add Exclusion
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Amenities Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <MdLabelImportant className="mr-3 text-blue-600" />
+                            Amenities
+                        </h2>
+
+                        <div className="space-y-2">
+                            <label className="flex items-center text-sm font-medium text-gray-700">
+                                <FaTools className="mr-2 text-blue-600" />
+                                Select Amenities <span className="text-red-500 ml-1">*</span>
+                            </label>
+                            <Select
+                                isMulti
+                                value={formData.amenities.map((amenity) => ({ label: amenity, value: amenity }))}
+                                onChange={handleAmenitiesChange}
+                                options={iconsList.map((icon) => ({ label: icon.label, value: icon.label }))}
+                                placeholder="Select amenities..."
+                                styles={selectStyles}
                                 required
                             />
                         </div>
-                        <button
-                            type="button"
-                            className="remove-button"
-                            style={{ height: '60px', marginTop: '30px' }}
-                            onClick={() => handleRemoveDay(index)}
-                        >
-                            Remove
-                        </button>
                     </div>
-                ))}
-                <button type="button" className="add-button" onClick={handleAddDay}>
-                    Add Day
-                </button>
-                <hr />
-                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
-                    <MdLabelImportant /> Terms & conditions
-                </h4>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label>
-                            <FaRegCheckCircle /> Cancellation Policy <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <textarea
-                            type="text"
-                            style={inputStyles}
-                            name="cancellation"
-                            value={formData.termsAndConditions.cancellation}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaRegCheckCircle /> Refund Policy <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <textarea
-                            type="text"
-                            style={inputStyles}
-                            name="refund"
-                            value={formData.termsAndConditions.refund}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            <FaRegCheckCircle /> Booking Policy <span style={{ color: 'red' }}>*</span>
-                        </label>
-                        <textarea
-                            style={inputStyles}
-                            name="bookingPolicy" // Name must match the nested property
-                            value={formData.termsAndConditions.bookingPolicy} // Bind to the correct state property
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                </div>
 
-                <hr />
-                <h4 style={{ background: '#2196f3', width: '220px', fontSize: '18px', color: 'white' }}>
-                    <MdLabelImportant /> Upload images
-                </h4>
-                {formData.images.map((image, index) => (
-                    <div key={index} className="form-row">
-                        <div className="form-group">
-                            <label>
-                                <FaFileImage /> Image {index + 1} <span style={{ color: 'red' }}>*</span>
-                            </label>
-                            <input type="file" accept="image/*" style={inputStyles} onChange={(e) => handleImageChange(index, e)} />
+                    {/* Day-wise Itinerary Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <MdLabelImportant className="mr-3 text-purple-600" />
+                            Day-wise Itinerary
+                        </h2>
+
+                        <div className="space-y-6">
+                            {formData.dayWise.map((day, index) => (
+                                <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-medium text-gray-800">
+                                            Day {index + 1}
+                                        </h3>
+                                        {formData.dayWise.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveDay(index)}
+                                                className="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors duration-200"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="flex items-center text-sm font-medium text-gray-700">
+                                                <FaCalendarAlt className="mr-2 text-purple-600" />
+                                                Day <span className="text-red-500 ml-1">*</span>
+                                            </label>
+                                            <select
+                                                name="day"
+                                                value={day.day}
+                                                onChange={(e) => handleDayWiseChange(index, e)}
+                                                required
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white appearance-none cursor-pointer"
+                                            >
+                                                <option value="">Select Day</option>
+                                                {[...Array(30).keys()].map((i) => {
+                                                    const dayOption = i + 1;
+                                                    return (
+                                                        <option key={dayOption} value={dayOption}>
+                                                            Day {dayOption}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                        </div>
+
+                                        <div className="lg:col-span-3 space-y-2">
+                                            <label className="flex items-center text-sm font-medium text-gray-700">
+                                                <FaCalendarAlt className="mr-2 text-purple-600" />
+                                                Description <span className="text-red-500 ml-1">*</span>
+                                            </label>
+                                            <textarea
+                                                name="description"
+                                                value={day.description}
+                                                onChange={(e) => handleDayWiseChange(index, e)}
+                                                required
+                                                rows="3"
+                                                placeholder="Describe the day's activities..."
+                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white resize-none"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={handleAddDay}
+                                className="w-full sm:w-auto px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                            >
+                                <span>+</span>
+                                Add Day
+                            </button>
                         </div>
-                        <button
-                            type="button"
-                            className="remove-button"
-                            style={{ height: '60px', marginTop: '20px' }}
-                            onClick={() => handleRemoveImage(index)}
-                        >
-                            Remove
-                        </button>
                     </div>
-                ))}
-                <button type="button" className="add-button" onClick={handleAddImage}>
-                    Add Image
-                </button>
-                <hr />
-                <div className="form-row">
-                    <button className="submit-button" type="submit">
-                        Submit
-                    </button>
-                </div>
-            </form>
+
+                    {/* Terms & Conditions Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <MdLabelImportant className="mr-3 text-red-600" />
+                            Terms & Conditions
+                        </h2>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaRegCheckCircle className="mr-2 text-red-600" />
+                                    Cancellation Policy <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <textarea
+                                    name="cancellation"
+                                    value={formData.termsAndConditions.cancellation}
+                                    onChange={handleChange}
+                                    required
+                                    rows="4"
+                                    placeholder="Describe cancellation policy..."
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaRegCheckCircle className="mr-2 text-red-600" />
+                                    Refund Policy <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <textarea
+                                    name="refund"
+                                    value={formData.termsAndConditions.refund}
+                                    onChange={handleChange}
+                                    required
+                                    rows="4"
+                                    placeholder="Describe refund policy..."
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaRegCheckCircle className="mr-2 text-red-600" />
+                                    Booking Policy <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <textarea
+                                    name="bookingPolicy"
+                                    value={formData.termsAndConditions.bookingPolicy}
+                                    onChange={handleChange}
+                                    required
+                                    rows="4"
+                                    placeholder="Describe booking policy..."
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Image Upload Section */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
+                            <MdLabelImportant className="mr-3 text-indigo-600" />
+                            Upload Images
+                        </h2>
+
+                        <div className="space-y-6">
+                            {formData.images.map((image, index) => (
+                                <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-lg font-medium text-gray-800">
+                                            Image {index + 1}
+                                        </h3>
+                                        {formData.images.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveImage(index)}
+                                                className="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors duration-200"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="flex items-center text-sm font-medium text-gray-700">
+                                            <FaFileImage className="mr-2 text-indigo-600" />
+                                            Choose Image <span className="text-red-500 ml-1">*</span>
+                                        </label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => handleImageChange(index, e)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+
+                            <button
+                                type="button"
+                                onClick={handleAddImage}
+                                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                            >
+                                <span>+</span>
+                                Add Image
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
+                        <div className="text-center">
+                            <button
+                                type="submit"
+                                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                            >
+                                Submit Travel Package
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
