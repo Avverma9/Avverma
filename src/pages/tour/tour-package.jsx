@@ -113,110 +113,111 @@ export default function TourPackages ()  {
   );
 
   // Enhanced filter content with better styling
-  const filterContent = (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
-      {/* Sort & Order */}
-      <div className="p-1 sm:col-span-2">
-        <label htmlFor="sort-by" className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <SortIcon className="w-5 h-5 mr-2 text-gray-500" />
-          Sort & Order
-        </label>
-        <div className="relative">
-          <select
-            id="sort-by"
-            value={sortByOrder}
-            onChange={(e) => setSortByOrder(e.target.value)}
-            className="w-full cursor-pointer appearance-none rounded-lg border-2 border-gray-200 bg-white px-4 py-3 font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-          >
-            <option value="asc">Price: Low to High</option>
-            <option value="desc">Price: High to Low</option>
-          </select>
-          <ArrowDropDownIcon className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-500" />
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div className="p-1 sm:col-span-2">
-        <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <FaRupeeSign className="w-4 h-4 mr-2 text-gray-500" />
-          Price
-        </p>
-        <div className="bg-white p-3 rounded-lg mb-4">
-          <p className="text-center font-bold text-blue-700 text-lg">
-            ₹{minPrice.toLocaleString()} - ₹{maxPrice.toLocaleString()}
-          </p>
-        </div>
-        <Slider
-          min={500}
-          max={164990}
-          step={500}
-          value={[minPrice, maxPrice]}
-          onChange={handlePriceChange}
-          className="h-2 w-full"
-          thumbClassName="h-5 w-5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full cursor-pointer outline-none -top-1.5 border-3 border-white shadow-lg focus:ring-4 focus:ring-blue-200 transform hover:scale-110 transition-transform"
-          renderTrack={(props, state) => (
-             <div {...props} className={`h-2 rounded-full ${state.index === 1 ? 'bg-gradient-to-r from-blue-500 to-blue-600' : 'bg-gray-200'}`} />
-          )}
-        />
-      </div>
-
-      {/* Duration */}
-      <div className="p-1 sm:col-span-2">
-        <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center">
-          <NightsStayIcon className="w-5 h-5 mr-2 text-gray-500" />
-          Duration
-        </p>
-        <div className="bg-white p-3 rounded-lg mb-4">
-          <p className="text-center font-bold text-green-700 text-lg">
-            {minNights} - {maxNights} Nights
-          </p>
-        </div>
-        <Slider
-          min={2}
-          max={9}
-          step={1}
-          value={[minNights, maxNights]}
-          onChange={handleNightsChange}
-          className="h-2 w-full"
-          thumbClassName="h-5 w-5 bg-gradient-to-r from-green-500 to-green-600 rounded-full cursor-pointer outline-none -top-1.5 border-3 border-white shadow-lg focus:ring-4 focus:ring-green-200 transform hover:scale-110 transition-transform"
-          renderTrack={(props, state) => (
-             <div {...props} className={`h-2 rounded-full ${state.index === 1 ? 'bg-gradient-to-r from-green-500 to-green-600' : 'bg-gray-200'}`} />
-          )}
-        />
-      </div>
-
-      {/* Trip Category */}
-      <div className="p-1 sm:col-span-2">
-        <p className="block text-sm font-semibold text-gray-800 mb-3 flex items-center"><CategoryIcon className="w-5 h-5 mr-2 text-gray-500" /> Category</p>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { value: "Winter", label: "Winter" },
-            { value: "Summer", label: "Summer" },
-            { value: "Honeymoon", label: "Honeymoon" },
-            { value: "Romantic", label: "Romantic" },
-            { value: "Adventure", label: "Adventure" },
-            { value: "Beach", label: "Beach" },
-          ].map((theme) => (
-            <label key={theme.value} className={`flex cursor-pointer items-center space-x-2 p-2.5 rounded-lg border-2 transition-all duration-200 ${
-              selectedThemes.includes(theme.value) 
-                ? 'bg-blue-50 border-blue-500 shadow-sm' 
-                : 'bg-white border-gray-200 hover:bg-gray-50'
-            }`}>
-              <input
-                type="checkbox"
-                checked={selectedThemes.includes(theme.value)}
-                onChange={handleThemeChange}
-                value={theme.value}
-                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-2 focus:ring-blue-500"
-              />
-              <span className="text-sm font-medium text-gray-800">{theme.label}</span>
-            </label>
-          ))}
-        </div>
+ const filterContent = (
+  <div className="grid grid-cols-1 gap-y-3 text-sm">
+    <div>
+      <label className="block font-semibold text-gray-800 mb-1">Sort & Order</label>
+      <div className="relative">
+        <select
+          value={sortByOrder}
+          onChange={(e) => setSortByOrder(e.target.value)}
+          className="w-full rounded-md border px-2 py-1.5 text-sm"
+        >
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
+        <ArrowDropDownIcon className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-500" />
       </div>
     </div>
-  );
 
+    <div>
+      <p className="font-semibold text-gray-800 mb-1 flex items-center">
+        <FaRupeeSign className="w-3.5 h-3.5 mr-1 text-gray-500" />
+        Price
+      </p>
+      <p className="text-center font-semibold text-blue-600 text-xs mb-1">
+        ₹{minPrice.toLocaleString()} - ₹{maxPrice.toLocaleString()}
+      </p>
+      <Slider
+        min={500}
+        max={164990}
+        step={500}
+        value={[minPrice, maxPrice]}
+        onChange={handlePriceChange}
+        className="h-1.5 w-full"
+        thumbClassName="h-4 w-4 bg-blue-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
+        renderTrack={(props, state) => (
+          <div
+            {...props}
+            className={`h-1.5 rounded-full ${
+              state.index === 1
+                ? "bg-gradient-to-r from-blue-500 to-blue-600"
+                : "bg-gray-200"
+            }`}
+          />
+        )}
+      />
+    </div>
+
+    <div>
+      <p className="font-semibold text-gray-800 mb-1 flex items-center">
+        <NightsStayIcon className="w-4 h-4 mr-1 text-gray-500" />
+        Duration
+      </p>
+      <p className="text-center text-green-600 text-xs font-semibold mb-1">
+        {minNights} - {maxNights} Nights
+      </p>
+      <Slider
+        min={2}
+        max={9}
+        step={1}
+        value={[minNights, maxNights]}
+        onChange={handleNightsChange}
+        className="h-1.5 w-full"
+        thumbClassName="h-4 w-4 bg-green-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
+        renderTrack={(props, state) => (
+          <div
+            {...props}
+            className={`h-1.5 rounded-full ${
+              state.index === 1
+                ? "bg-gradient-to-r from-green-500 to-green-600"
+                : "bg-gray-200"
+            }`}
+          />
+        )}
+      />
+    </div>
+
+    <div>
+      <p className="font-semibold text-gray-800 mb-1 flex items-center">
+        <CategoryIcon className="w-4 h-4 mr-1 text-gray-500" /> Category
+      </p>
+      <div className="grid grid-cols-2 gap-2">
+        {["Winter", "Summer", "Honeymoon", "Romantic", "Adventure", "Beach"].map(
+          (theme) => (
+            <label
+              key={theme}
+              className={`flex cursor-pointer items-center space-x-1.5 p-1.5 rounded-md border text-xs ${
+                selectedThemes.includes(theme)
+                  ? "bg-blue-50 border-blue-500"
+                  : "bg-white border-gray-200"
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedThemes.includes(theme)}
+                onChange={handleThemeChange}
+                value={theme}
+                className="h-3 w-3 text-blue-600"
+              />
+              <span>{theme}</span>
+            </label>
+          )
+        )}
+      </div>
+    </div>
+  </div>
+);
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-24 md:pb-8">
       <div className="mx-auto max-w-screen-xl px-3 sm:px-4 py-4 sm:py-8">
@@ -400,64 +401,40 @@ export default function TourPackages ()  {
         </div>
 
         {/* Enhanced Mobile Filter Drawer with Bottom App Bar Spacing */}
-        {isMobileDrawerOpen && (
-          <div className="fixed inset-0 z-50 flex items-end lg:hidden">
-            <div
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => setIsMobileDrawerOpen(false)}
-            ></div>
-            <div 
-              className="relative flex w-full flex-col bg-white shadow-2xl rounded-t-3xl transform transition-transform duration-300 ease-out"
-              style={{ 
-                height: 'calc(100vh - 80px)' // Account for top safe area
-              }}
-            >
-              {/* Drawer Handle */}
-              <div className="flex items-center justify-center pt-3 pb-2">
-                <div className="h-1.5 w-12 rounded-full bg-gray-300"></div>
-              </div>
-              
-              {/* Header */}
-              <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center mr-3">
-                    <FilterListIcon className="text-white text-lg" />
-                  </div>
-                  <h2 className="text-xl font-bold text-gray-800">Smart Filters</h2>
-                </div>
-                <button 
-                  onClick={() => setIsMobileDrawerOpen(false)} 
-                  className="rounded-full p-2 text-gray-500 hover:bg-gray-100 transition-colors"
-                >
-                  <CloseIcon />
-                </button>
-              </div>
-              
-              {/* Filter Content */}
-              <div className="flex-grow overflow-y-auto p-4 pb-[100px] custom-scrollbar">
-                {filterContent}
-              </div>
-              
-              {/* Bottom Action Buttons */}
-              <div className="absolute bottom-[70px] left-0 right-0 flex-shrink-0 border-t bg-white p-4">
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={handleClearFilters}
-                    className="flex-1 rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200"
-                  >
-                    🔄 Reset All
-                  </button>
-                  <button
-                    onClick={handleApplyFilters}
-                    className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 px-4 py-3 text-sm font-semibold text-white shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200"
-                  >
-                    ✨ Apply Filters
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+   {isMobileDrawerOpen && (
+  <div className="fixed inset-0 z-50 flex items-end lg:hidden">
+    <div
+      className="absolute inset-0 bg-black/40"
+      onClick={() => setIsMobileDrawerOpen(false)}
+    ></div>
+    <div className="relative flex w-full flex-col bg-white rounded-t-xl shadow-lg h-[80vh]">
+      <div className="flex items-center justify-between border-b px-4 py-3">
+        <h2 className="text-base font-bold">Smart Filters</h2>
+        <button
+          onClick={() => setIsMobileDrawerOpen(false)}
+          className="p-1 text-gray-500"
+        >
+          <CloseIcon />
+        </button>
+      </div>
+      <div className="flex-grow overflow-y-auto p-3 pb-24">{filterContent}</div>
+      <div className="absolute bottom-[80px] left-0 right-0 border-t bg-white p-3 flex space-x-2">
+        <button
+          onClick={handleClearFilters}
+          className="flex-1 rounded-lg border px-3 py-2 text-sm text-gray-700"
+        >
+          Reset
+        </button>
+        <button
+          onClick={handleApplyFilters}
+          className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm text-white"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+)}
       </div>
     </div>  
   );

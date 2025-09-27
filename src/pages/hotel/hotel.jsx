@@ -200,31 +200,20 @@ const HotelPageContent = () => {
         <Card
             elevation={0}
             sx={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                borderRadius: 4,
+                borderRadius: 3,
                 height: "100%",
                 overflow: "hidden",
                 position: "relative",
+                bgcolor: "#fff",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
             }}
         >
-            <Box
-                sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: "rgba(255, 255, 255, 0.95)",
-                    backdropFilter: "blur(10px)",
-                }}
-            />
             <CardContent
                 sx={{
                     p: { xs: 2, md: 3 },
                     height: "100%",
                     overflowY: "auto",
                     position: "relative",
-                    zIndex: 1,
                 }}
             >
                 <Stack spacing={2.5}>
@@ -234,19 +223,19 @@ const HotelPageContent = () => {
                             display: "flex",
                             justifyContent: "space-between",
                             alignItems: "center",
-                            pb: 1.5,
-                            borderBottom: "2px solid rgba(102, 126, 234, 0.1)",
+                            pb: 1,
+                            borderBottom: "1px solid rgba(0,0,0,0.08)",
                         }}
                     >
                         <Typography
                             variant="h6"
                             sx={{
                                 fontWeight: 800,
-                                background: "linear-gradient(135deg, #667eea, #764ba2)",
+                                fontSize: { xs: "1rem", md: "1.2rem" },
+                                background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
                                 backgroundClip: "text",
                                 WebkitBackgroundClip: "text",
                                 WebkitTextFillColor: "transparent",
-                                fontSize: { xs: "1.1rem", md: "1.3rem" },
                             }}
                         >
                             🎯 Filters
@@ -256,16 +245,12 @@ const HotelPageContent = () => {
                             onClick={handleClearFilters}
                             sx={{
                                 textTransform: "none",
-                                background: "linear-gradient(135deg, #ff6b6b, #ee5a24)",
-                                color: "white",
+                                fontSize: "0.75rem",
                                 fontWeight: 600,
-                                fontSize: "0.8rem",
-                                px: 2,
+                                px: 1.5,
                                 py: 0.5,
-                                borderRadius: 2,
-                                "&:hover": {
-                                    background: "linear-gradient(135deg, #ee5a24, #d63031)",
-                                },
+                                color: "#ef4444",
+                                "&:hover": { bgcolor: "rgba(239,68,68,0.08)" },
                             }}
                         >
                             Clear All
@@ -276,76 +261,53 @@ const HotelPageContent = () => {
                     <Box>
                         <Typography
                             sx={{
-                                fontWeight: 700,
-                                color: "#2d3436",
-                                mb: 1.5,
-                                fontSize: "0.9rem",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
+                                fontWeight: 600,
+                                mb: 1,
+                                fontSize: "0.85rem",
+                                color: "#374151",
                             }}
                         >
                             💰 Price Range
                         </Typography>
+                        <Slider
+                            value={[filters.minPrice, filters.maxPrice]}
+                            onChange={(e, val) =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    minPrice: val[0],
+                                    maxPrice: val[1],
+                                }))
+                            }
+                            onChangeCommitted={() => applyFilters(filters)}
+                            min={400}
+                            max={10000}
+                            step={100}
+                            valueLabelDisplay="auto"
+                            sx={{
+                                "& .MuiSlider-thumb": {
+                                    background: "linear-gradient(135deg, #4f46e5, #7c3aed)",
+                                    border: "2px solid #fff",
+                                    width: 16,
+                                    height: 16,
+                                },
+                                "& .MuiSlider-track": {
+                                    bgcolor: "linear-gradient(90deg, #4f46e5, #7c3aed)",
+                                },
+                                "& .MuiSlider-rail": { opacity: 0.2 },
+                            }}
+                        />
                         <Box
                             sx={{
-                                px: 1,
-                                py: 1,
-                                bgcolor: "rgba(102, 126, 234, 0.05)",
-                                borderRadius: 2,
-                                border: "1px solid rgba(102, 126, 234, 0.1)",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                mt: 0.5,
+                                fontSize: "0.75rem",
+                                color: "#4b5563",
+                                fontWeight: 600,
                             }}
                         >
-                            <Slider
-                                value={[filters.minPrice, filters.maxPrice]}
-                                onChange={(e, val) =>
-                                    setFilters((prev) => ({
-                                        ...prev,
-                                        minPrice: val[0],
-                                        maxPrice: val[1],
-                                    }))
-                                }
-                                onChangeCommitted={() => applyFilters(filters)}
-                                valueLabelDisplay="auto"
-                                min={400}
-                                max={10000}
-                                step={100}
-                                sx={{
-                                    height: 6,
-                                    "& .MuiSlider-thumb": {
-                                        background: "linear-gradient(135deg, #667eea, #764ba2)",
-                                        border: "2px solid #fff",
-                                        boxShadow: "0 0 0 3px rgba(102, 126, 234, 0.2)",
-                                        width: 20,
-                                        height: 20,
-                                    },
-                                    "& .MuiSlider-track": {
-                                        background: "linear-gradient(90deg, #667eea, #764ba2)",
-                                        border: "none",
-                                    },
-                                    "& .MuiSlider-rail": {
-                                        bgcolor: "rgba(102, 126, 234, 0.1)",
-                                    },
-                                }}
-                            />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                    mt: 1,
-                                }}
-                            >
-                                <Chip
-                                    label={`₹${filters.minPrice}`}
-                                    size="small"
-                                    sx={{ bgcolor: "#667eea", color: "white", fontWeight: 600 }}
-                                />
-                                <Chip
-                                    label={`₹${filters.maxPrice}`}
-                                    size="small"
-                                    sx={{ bgcolor: "#764ba2", color: "white", fontWeight: 600 }}
-                                />
-                            </Box>
+                            <span>₹{filters.minPrice}</span>
+                            <span>₹{filters.maxPrice}</span>
                         </Box>
                     </Box>
 
@@ -353,66 +315,43 @@ const HotelPageContent = () => {
                     <Box>
                         <Typography
                             sx={{
-                                fontWeight: 700,
-                                color: "#2d3436",
-                                mb: 1.5,
-                                fontSize: "0.9rem",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
+                                fontWeight: 600,
+                                mb: 1,
+                                fontSize: "0.85rem",
+                                color: "#374151",
                             }}
                         >
                             ⭐ Hotel Rating
                         </Typography>
-                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                        <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
                             {starRatings.map((r) => (
-                                <Button
+                                <Chip
                                     key={r}
+                                    label={`${r}★`}
+                                    clickable
                                     onClick={() => handleFilterChange("starRating", r)}
-                                    variant={
-                                        String(filters.starRating) === String(r)
-                                            ? "contained"
-                                            : "outlined"
+                                    color={
+                                        String(filters.starRating) === String(r) ? "primary" : "default"
                                     }
-                                    size="small"
                                     sx={{
-                                        minWidth: "50px",
-                                        px: 1.5,
-                                        py: 0.5,
-                                        fontSize: "0.8rem",
-                                        fontWeight: 700,
-                                        borderRadius: 3,
-                                        textTransform: "none",
-                                        ...(String(filters.starRating) === String(r)
-                                            ? {
-                                                background:
-                                                    "linear-gradient(135deg, #fdcb6e, #e17055)",
-                                                color: "white",
-                                                border: "none",
-                                                boxShadow: "0 4px 12px rgba(253, 203, 110, 0.4)",
-                                                "&:hover": {
-                                                    background:
-                                                        "linear-gradient(135deg, #e17055, #d63031)",
-                                                },
-                                            }
-                                            : {
-                                                borderColor: "rgba(102, 126, 234, 0.3)",
-                                                color: "#636e72",
-                                                bgcolor: "rgba(102, 126, 234, 0.05)",
-                                                "&:hover": {
-                                                    bgcolor: "rgba(102, 126, 234, 0.1)",
-                                                    borderColor: "#667eea",
-                                                },
-                                            }),
+                                        fontSize: "0.75rem",
+                                        fontWeight: 600,
+                                        px: 0.5,
+                                        bgcolor:
+                                            String(filters.starRating) === String(r)
+                                                ? "linear-gradient(135deg,#f59e0b,#d97706)"
+                                                : "#f3f4f6",
+                                        color:
+                                            String(filters.starRating) === String(r)
+                                                ? "white"
+                                                : "#374151",
                                     }}
-                                >
-                                    {r}★
-                                </Button>
+                                />
                             ))}
                         </Box>
                     </Box>
 
-                    <Divider sx={{ bgcolor: "rgba(102, 126, 234, 0.2)" }} />
+                    <Divider />
 
                     {/* Filter Groups */}
                     <FilterCollapseGroup
@@ -424,10 +363,7 @@ const HotelPageContent = () => {
                     <FilterCollapseGroup
                         title="🏢 Property Type"
                         filterKey="propertyType"
-                        items={propertyTypes.map((p) => ({
-                            name: p,
-                            icon: <FaBuilding />,
-                        }))}
+                        items={propertyTypes.map((p) => ({ name: p, icon: <FaBuilding /> }))}
                         onChange={(val) => handleFilterChange("propertyType", val, true)}
                     />
                     <FilterCollapseGroup
@@ -457,10 +393,10 @@ const HotelPageContent = () => {
             <Box>
                 <Typography
                     sx={{
-                        fontWeight: 700,
-                        color: "#2d3436",
-                        mb: 1,
-                        fontSize: "0.9rem",
+                        fontWeight: 600,
+                        mb: 0.5,
+                        fontSize: "0.85rem",
+                        color: "#374151",
                     }}
                 >
                     {title}
@@ -472,45 +408,25 @@ const HotelPageContent = () => {
                             control={
                                 <Checkbox
                                     size="small"
-                                    value={item.name}
                                     checked={filters[filterKey].includes(item.name)}
                                     onChange={() => onChange(item.name)}
                                     sx={{
-                                        color: "rgba(102, 126, 234, 0.3)",
-                                        "&.Mui-checked": {
-                                            color: "#667eea",
-                                        },
-                                        p: 0.5,
-                                        "& .MuiSvgIcon-root": {
-                                            fontSize: "1.2rem",
-                                        },
+                                        color: "rgba(79,70,229,0.3)",
+                                        "&.Mui-checked": { color: "#4f46e5" },
+                                        p: 0.3,
                                     }}
                                 />
                             }
                             label={
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 1,
-                                        fontSize: "0.8rem",
-                                        color: "#636e72",
-                                    }}
-                                >
-                                    <IconContext.Provider
-                                        value={{ size: "0.9em", color: "#74b9ff" }}
-                                    >
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                                    <IconContext.Provider value={{ size: "0.9em", color: "#6366f1" }}>
                                         {item.icon}
                                     </IconContext.Provider>
-                                    {item.name}
+                                    <Typography sx={{ fontSize: "0.75rem", color: "#4b5563" }}>
+                                        {item.name}
+                                    </Typography>
                                 </Box>
                             }
-                            sx={{
-                                m: 0,
-                                "& .MuiFormControlLabel-label": {
-                                    fontSize: "0.8rem",
-                                },
-                            }}
                         />
                     ))}
                 </FormGroup>
@@ -522,42 +438,27 @@ const HotelPageContent = () => {
                                 control={
                                     <Checkbox
                                         size="small"
-                                        value={item.name}
                                         checked={filters[filterKey].includes(item.name)}
                                         onChange={() => onChange(item.name)}
                                         sx={{
-                                            color: "rgba(102, 126, 234, 0.3)",
-                                            "&.Mui-checked": {
-                                                color: "#667eea",
-                                            },
-                                            p: 0.5,
+                                            color: "rgba(79,70,229,0.3)",
+                                            "&.Mui-checked": { color: "#4f46e5" },
+                                            p: 0.3,
                                         }}
                                     />
                                 }
                                 label={
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            gap: 1,
-                                            fontSize: "0.8rem",
-                                            color: "#636e72",
-                                        }}
-                                    >
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
                                         <IconContext.Provider
-                                            value={{ size: "0.9em", color: "#74b9ff" }}
+                                            value={{ size: "0.9em", color: "#6366f1" }}
                                         >
                                             {item.icon}
                                         </IconContext.Provider>
-                                        {item.name}
+                                        <Typography sx={{ fontSize: "0.75rem", color: "#4b5563" }}>
+                                            {item.name}
+                                        </Typography>
                                     </Box>
                                 }
-                                sx={{
-                                    m: 0,
-                                    "& .MuiFormControlLabel-label": {
-                                        fontSize: "0.8rem",
-                                    },
-                                }}
                             />
                         ))}
                     </FormGroup>
@@ -569,15 +470,10 @@ const HotelPageContent = () => {
                         sx={{
                             mt: 0.5,
                             textTransform: "none",
-                            fontSize: "0.75rem",
+                            fontSize: "0.7rem",
                             fontWeight: 600,
-                            color: "#667eea",
-                            minHeight: "auto",
-                            py: 0.25,
-                            px: 1,
-                            "&:hover": {
-                                bgcolor: "rgba(102, 126, 234, 0.1)",
-                            },
+                            color: "#4f46e5",
+                            "&:hover": { bgcolor: "rgba(79,70,229,0.08)" },
                         }}
                     >
                         {isExpanded ? "▲ Less" : `▼ ${items.length - visibleCount} More`}
@@ -586,6 +482,8 @@ const HotelPageContent = () => {
             </Box>
         );
     };
+
+
 
     const HotelCard = ({ hotel, isMobile, lastHotelElementRef, handleBuy, calculateGstAmount }) => {
         const minPriceRoom =
@@ -868,7 +766,7 @@ const HotelPageContent = () => {
     );
 };
 
-export default function  Hotel ()  {
+export default function Hotel() {
     const location = useLocation();
     const validPaths = ["/search/hotels", "/search"];
     if (!validPaths.includes(location.pathname)) {

@@ -287,34 +287,32 @@ const FilterComponent = ({
 
   return (
     <aside
-      className={`fixed inset-0 z-50 lg:static lg:bg-transparent transition-all duration-300 
-      ${isOpen ? "flex" : "hidden lg:block"} justify-end flex-col lg:justify-start lg:flex-row`}
+      className={`fixed inset-0 z-50 lg:static transition-all duration-300 
+      ${isOpen ? "flex" : "hidden lg:block"} justify-end`}
       onClick={onClose}
     >
-      <div // Mobile Drawer Container
-        className={`
-          bg-white w-full max-w-md lg:max-w-2xl lg:sticky lg:top-[120px] 
-          rounded-t-3xl lg:rounded-2xl shadow-2xl lg:shadow-lg
-          ${isOpen ? 'h-[85vh] lg:h-auto' : 'h-auto'}
-          mt-auto lg:mt-0 p-0 
-          border-t border-gray-200 lg:border lg:border-gray-100 
-          flex flex-col relative overflow-hidden
-        `}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+      <div
+        className={`bg-white w-full max-w-sm lg:max-w-md lg:sticky lg:top-[100px] 
+        rounded-t-xl lg:rounded-lg shadow-xl lg:shadow-md
+        ${isOpen ? "h-[80vh]" : "h-auto"} mt-auto lg:mt-0 flex flex-col relative`}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 flex-shrink-0">
-          <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <h2 className="text-base font-semibold">Filters</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors lg:hidden"
+            className="p-1.5 hover:bg-gray-100 rounded lg:hidden"
           >
             <CloseIcon />
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6">
-          <div className="space-y-3 p-2">
-            <label className="block text-sm font-semibold text-gray-700">Maximum Price</label>
+        {/* Body */}
+        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4 text-sm">
+          {/* Price */}
+          <div>
+            <label className="block font-medium mb-1">Max Price</label>
             <input
               type="range"
               name="price"
@@ -322,128 +320,156 @@ const FilterComponent = ({
               max={priceRange.max}
               value={filters.price}
               onChange={handleFilterChange}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
             />
-            <div className="flex justify-between text-sm text-gray-500">
+            <div className="flex justify-between text-xs text-gray-500">
               <span>₹{priceRange.min}</span>
               <span className="font-bold text-blue-600">₹{filters.price}</span>
               <span>₹{priceRange.max}</span>
             </div>
           </div>
 
-          <div className="space-y-3 p-2">
-            <label className="block text-sm font-semibold text-gray-700">Seats Required</label>
-            <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl overflow-hidden">
+          {/* Seats */}
+          <div>
+            <label className="block font-medium mb-1">Seats</label>
+            <div className="flex items-center border rounded-lg overflow-hidden">
               <button
                 onClick={() => handleSeatsChange(-1)}
                 disabled={filters.seats <= 1}
-                className="px-4 py-3 text-blue-600 hover:bg-blue-50 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors text-lg font-semibold"
+                className="px-3 py-1 text-blue-600 disabled:text-gray-400"
               >
                 −
               </button>
-              <span className="flex-1 text-center py-3 font-semibold text-lg">{filters.seats}</span>
+              <span className="flex-1 text-center py-1 font-semibold">
+                {filters.seats}
+              </span>
               <button
                 onClick={() => handleSeatsChange(1)}
-                className="px-4 py-3 text-blue-600 hover:bg-blue-50 transition-colors text-lg font-semibold"
+                className="px-3 py-1 text-blue-600"
               >
                 +
               </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
-            <div className="space-y-3 p-2">
-              <label className="block text-sm font-semibold text-gray-700">Car Brand</label>
-              <select
-                name="make"
-                value={filters.make}
-                onChange={handleFilterChange}
-                className="w-full border border-gray-300 rounded-xl p-3 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              >
-                <option value="All">All Brands</option>
-                {makes.map((m) => <option key={m} value={m}>{m}</option>)}
-              </select>
-            </div>
+          {/* Car Brand */}
+          <div>
+            <label className="block font-medium mb-1">Brand</label>
+            <select
+              name="make"
+              value={filters.make}
+              onChange={handleFilterChange}
+              className="w-full border rounded-lg p-2 text-sm"
+            >
+              <option value="All">All</option>
+              {makes.map((m) => (
+                <option key={m}>{m}</option>
+              ))}
+            </select>
+          </div>
 
-            <div className="space-y-3 p-2">
-              <label className="block text-sm font-semibold text-gray-700">Fuel Type</label>
-              <div className="flex flex-wrap gap-2">
-                {["All", ...fuelTypes].slice(0, 3).map((fuel) => (
-                  <label key={fuel} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.fuelType === fuel ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
-                    <input
-                      type="radio"
-                      name="fuelType"
-                      value={fuel}
-                      checked={filters.fuelType === fuel}
-                      onChange={handleFilterChange}
-                      className="sr-only"
-                    />
-                    <span className="text-xs font-medium text-gray-800">{fuel}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3 p-2">
-              <label className="block text-sm font-semibold text-gray-700">Sharing Type</label>
-              <div className="flex flex-wrap gap-2">
-                {["All", ...sharingTypes].map((type) => (
-                  <label key={type} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.sharingType === type ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
-                    <input
-                      type="radio"
-                      name="sharingType"
-                      value={type}
-                      checked={filters.sharingType === type}
-                      onChange={handleFilterChange}
-                      className="sr-only"
-                    />
-                    <span className="text-xs font-medium text-gray-800">{type}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3 p-2">
-              <label className="block text-sm font-semibold text-gray-700">Vehicle Type</label>
-              <div className="flex flex-wrap gap-2">
-                {["All", ...vehicleTypes].map((type) => (
-                  <label key={type} className={`flex-1 text-center cursor-pointer p-2 rounded-lg border-2 transition-all duration-200 ${filters.vehicleType === type ? 'bg-blue-50 border-blue-500' : 'bg-white border-gray-200 hover:bg-gray-50'}`}>
-                    <input
-                      type="radio"
-                      name="vehicleType"
-                      value={type}
-                      checked={filters.vehicleType === type}
-                      onChange={handleFilterChange}
-                      className="sr-only"
-                    />
-                    <span className="text-xs font-medium text-gray-800">{type}</span>
-                  </label>
-                ))}
-              </div>
+          {/* Fuel Type */}
+          <div>
+            <label className="block font-medium mb-1">Fuel</label>
+            <div className="flex flex-wrap gap-1.5">
+              {["All", ...fuelTypes].map((fuel) => (
+                <label
+                  key={fuel}
+                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
+                    filters.fuelType === fuel
+                      ? "bg-blue-50 border-blue-500"
+                      : "bg-white border-gray-200"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="fuelType"
+                    value={fuel}
+                    checked={filters.fuelType === fuel}
+                    onChange={handleFilterChange}
+                    className="sr-only"
+                  />
+                  {fuel}
+                </label>
+              ))}
             </div>
           </div>
 
-          <div className="h-20 lg:hidden"></div>
+          {/* Sharing Type */}
+          <div>
+            <label className="block font-medium mb-1">Sharing</label>
+            <div className="flex flex-wrap gap-1.5">
+              {["All", ...sharingTypes].map((type) => (
+                <label
+                  key={type}
+                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
+                    filters.sharingType === type
+                      ? "bg-blue-50 border-blue-500"
+                      : "bg-white border-gray-200"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="sharingType"
+                    value={type}
+                    checked={filters.sharingType === type}
+                    onChange={handleFilterChange}
+                    className="sr-only"
+                  />
+                  {type}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Vehicle Type */}
+          <div>
+            <label className="block font-medium mb-1">Vehicle</label>
+            <div className="flex flex-wrap gap-1.5">
+              {["All", ...vehicleTypes].map((type) => (
+                <label
+                  key={type}
+                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
+                    filters.vehicleType === type
+                      ? "bg-blue-50 border-blue-500"
+                      : "bg-white border-gray-200"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="vehicleType"
+                    value={type}
+                    checked={filters.vehicleType === type}
+                    onChange={handleFilterChange}
+                    className="sr-only"
+                  />
+                  {type}
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="absolute bottom-[70px] left-0 right-0 bg-white p-4 flex space-x-3 lg:static lg:bottom-auto lg:p-6 lg:border-t-0">
+        {/* Footer */}
+        <div className="absolute bottom-[80px] left-0 right-0 bg-white p-3 flex space-x-2 lg:static lg:p-4 border-t">
           <button
             onClick={resetFilters}
-            className="flex-1 py-3 text-blue-600 font-semibold border-2 border-blue-600 rounded-xl hover:bg-blue-50 transition-colors"
+            className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md text-sm"
           >
             Reset
           </button>
           <button
             onClick={onClose}
-            className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg"
+            className="flex-1 py-2 bg-blue-600 text-white rounded-md text-sm"
           >
-            Apply Filters
+            Apply
           </button>
         </div>
       </div>
     </aside>
   );
 };
+
 
 const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handleSearchSubmit }) => {
   if (!isOpen) return null;
