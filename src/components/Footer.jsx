@@ -138,14 +138,31 @@ export default function Footer() {
           <p className="text-gray-500 text-center">
             © {new Date().getFullYear()} RoomsStay Pvt Ltd. All rights reserved.
           </p>
-          <div className="flex items-center justify-center gap-2">
-            <a href="#" className="inline-block">
-              <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" className="h-8"/>
-            </a>
-            <a href="#" className="inline-block">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8"/>
-            </a>
-          </div>
+        <div className="flex items-center justify-center gap-2">
+  {/* APK Download */}
+  <a 
+    href="https://avverma.s3.ap-south-1.amazonaws.com/hrs.hotelroomsstay.apk" 
+    className="inline-block" 
+    download
+    target="_blank" 
+    rel="noopener noreferrer"
+  >
+    <button
+      className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium text-xs hover:bg-green-700 transition"
+      type="button"
+    >
+      Download APK
+    </button>
+  </a>
+  {/* iOS */}
+  <a href="#" className="inline-block">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" className="h-8"/>
+  </a>
+  {/* Android */}
+  <a href="#" className="inline-block">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8"/>
+  </a>
+</div>
         </div>
       </div>
 
