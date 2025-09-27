@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { toast } from 'react-toastify';
 import baseURL from '../../utils/baseURL';
-import { token } from '../../utils/Unauthorized';
+import { token, userMobile, userName } from '../../utils/Unauthorized';
 import alert from '../../utils/custom_alert/custom_alert';
 
 export const addCar = createAsyncThunk('car/addCar', async (data, { rejectWithValue }) => {
@@ -91,7 +91,7 @@ export const bookSeat = createAsyncThunk('car/bookSeat', async (data, { rejectWi
                 Authorization: token,
             },
         });
-        alert('Success', 'Seat booked successfully', 'success');
+       toast.success("Seat booked successfully!");
         return response.data;
     } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
@@ -100,6 +100,24 @@ export const bookSeat = createAsyncThunk('car/bookSeat', async (data, { rejectWi
     }
 });
 
+export const getBookings = createAsyncThunk('car/getBookings', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/travel/get-bookings-by/bookedBy`,
+      { customerMobile: userMobile },  // pass in body as object
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message;
+    toast.error(`Error: ${errorMessage}`);
+    return rejectWithValue(errorMessage);
+  }
+});
 
 
 const carSlice = createSlice({

@@ -34,6 +34,7 @@ import Banner from "./pages/home-section/banner";
 import Locations from "./pages/home-section/locations";
 import CouponPage from "./components/Profile/coupons";
 import TravelForm from "./pages/tour/partnerPage";
+import Policies from "./pages/booking/policies";
 
 export default function App() {
   return (
@@ -62,14 +63,12 @@ export default function App() {
             <Route path="/cab-booking/:id" element={<CabsBooking />} />
             <Route path="/cabs" element={<CarsPage />} />
             <Route path="/travel-partner" element={<TravelForm />} />
-         
             <Route path="/" element={<Offered />} />
-            <Route path='/policies' element={<PoliciesPage />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/contact' element={<ContactPage />} />
             <Route path='/careers' element={<Careers />} />
             <Route path='/coupons' element={< CouponPage/>} />
-            <Route path='/policies' element={<PoliciesPage />} />
+            <Route path='/policies' element={<Policies />} />
           </Routes>
           <ScrollToTop />
           

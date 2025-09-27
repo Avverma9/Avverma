@@ -12,7 +12,7 @@ export function ToastProvider({ children }) {
   });
 
   const showToast = useCallback((message, options = {}) => {
-    const { severity = "info", duration = 3000 } = options;
+    const { severity = "info", duration = 30000 } = options;
     setToastConfig({ open: true, message, severity, duration });
 
     // auto close

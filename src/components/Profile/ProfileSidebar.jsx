@@ -11,7 +11,7 @@ import ProfilePage from "./Profile";
 import ProfileUpdatePage from "./UpdateProfile";
 import ConfirmBooking from "./MyBookings";
 import TourBooking from "./TourBooking";
-import CabBooking from "./CabBooking"; // Assuming you have or will create this component
+import CabBooking from "./MyCabBooking"; // Assuming you have or will create this component
 import ComplaintsPage from "./complaints";
 import Reviews from "./MyReviews";
 

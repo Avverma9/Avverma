@@ -4,6 +4,7 @@ import { bookSeat, getCarById } from "../../redux/reducers/car";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useLoader } from "../../utils/loader";
+import { userEmail, userMobile, userName } from "../../utils/Unauthorized";
 
 // --- Enhanced SVG Icons ---
 const LogoIcon = () => (
@@ -67,18 +68,18 @@ const ArrowRightIcon = () => (
 
 // --- Helpers ---
 const formatDate = (dateString) =>
-  dateString ? new Date(dateString).toLocaleDateString("en-IN", { 
-    year: "numeric", 
-    month: "short", 
+  dateString ? new Date(dateString).toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "short",
     day: "numeric",
-    weekday: "short" 
+    weekday: "short"
   }) : "N/A";
 
 const formatTime = (dateString) =>
-  dateString ? new Date(dateString).toLocaleTimeString("en-IN", { 
-    hour: "2-digit", 
-    minute: "2-digit", 
-    hour12: true 
+  dateString ? new Date(dateString).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
   }).toUpperCase() : "N/A";
 
 // --- Enhanced Toast Component ---
@@ -89,11 +90,10 @@ const Toast = ({ message, type, onHide }) => {
   }, [onHide]);
 
   return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white max-w-sm animate-slide-in-right ${
-      type === "success" 
-        ? "bg-gradient-to-r from-green-500 to-green-600" 
-        : "bg-gradient-to-r from-red-500 to-red-600"
-    }`}>
+    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white max-w-sm animate-slide-in-right ${type === "success"
+      ? "bg-gradient-to-r from-green-500 to-green-600"
+      : "bg-gradient-to-r from-red-500 to-red-600"
+      }`}>
       <div className="flex-shrink-0">
         {type === "success" ? <CheckCircleIcon /> : <AlertTriangleIcon />}
       </div>
@@ -158,8 +158,8 @@ const Seat = ({ seat, onSelect, isSelected }) => {
 const TripInfoCard = ({ selectedCab }) => (
   <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
     <div className="relative">
-      <img 
-        src={selectedCab.images?.[0]} 
+      <img
+        src={selectedCab.images?.[0]}
         alt={`${selectedCab.make} ${selectedCab.model}`}
         className="w-full h-48 sm:h-56 object-cover"
       />
@@ -213,13 +213,15 @@ const TripInfoCard = ({ selectedCab }) => (
     </div>
   </div>
 );
-
+const defaultPassenger = userName
+const defaultPhone = userMobile
+const defaultEmail = userEmail
 // --- Main Component ---
 export default function CabsBooking() {
-  const [passengerDetails, setPassengerDetails] = useState({ 
-    fullName: "", 
-    phone: "", 
-    email: "" 
+  const [passengerDetails, setPassengerDetails] = useState({
+    fullName: defaultPassenger,
+    phone: defaultPhone,
+    email: defaultEmail
   });
   const { id } = useParams();
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -236,11 +238,11 @@ export default function CabsBooking() {
       dispatch(getCarById(id))
         .unwrap()
         .then((data) => setSelectedCab(data))
-        .catch(() => 
-          setToast({ 
-            visible: true, 
-            message: "Failed to load car details", 
-            type: "error" 
+        .catch(() =>
+          setToast({
+            visible: true,
+            message: "Failed to load car details",
+            type: "error"
           })
         )
         .finally(() => hideLoader());
@@ -256,48 +258,49 @@ export default function CabsBooking() {
 
   const handleBooking = async () => {
     if (!passengerDetails.fullName || !passengerDetails.phone) {
-      return setToast({ 
-        visible: true, 
-        message: "Please enter your full name and phone number", 
-        type: "error" 
+      return setToast({
+        visible: true,
+        message: "Please enter your full name and phone number",
+        type: "error"
       });
     }
     if (selectedSeats.length === 0) {
-      return setToast({ 
-        visible: true, 
-        message: "Please select at least one seat", 
-        type: "error" 
+      return setToast({
+        visible: true,
+        message: "Please select at least one seat",
+        type: "error"
       });
     }
 
     setIsBooking(true);
     try {
       const seatIds = selectedSeats.map((s) => s._id);
-      await dispatch(bookSeat({ 
-        seats: seatIds, 
-        carId: id, 
-        bookedBy: passengerDetails.fullName, 
-        customerMobile: passengerDetails.phone, 
-        customerEmail: passengerDetails.email 
-      })).unwrap();
-
-      setToast({ 
-        visible: true, 
-        message: "🎉 Booking confirmed successfully!", 
-        type: "success" 
-      });
-      setSelectedSeats([]);
-      setPassengerDetails({ fullName: "", phone: "", email: "" });
-    } catch {
-      setToast({ 
-        visible: true, 
-        message: "Booking failed. Please try again.", 
-        type: "error" 
-      });
+      const data = {
+        seats: seatIds,
+        carId: id,
+        bookedBy: passengerDetails.fullName,
+        sharingType: selectedCab?.sharingType,
+        vehicleType: selectedCab?.vehicleType,
+        customerMobile: passengerDetails.phone,
+        customerEmail: passengerDetails.email
+      };
+      const response = await dispatch(bookSeat(data)).unwrap();
+      if (response.payload) {
+        setToast({
+          visible: true,
+          message: "🎉 Booking confirmed successfully!",
+          type: "success"
+        });
+        setSelectedSeats([]);
+        setPassengerDetails({ fullName: "", phone: "", email: "" });
+      }
+    } catch (error) {
+      console.error("Booking failed:", error);
     } finally {
       setIsBooking(false);
     }
   };
+
 
   if (!selectedCab) {
     return (
@@ -321,9 +324,9 @@ export default function CabsBooking() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {toast.visible && (
-        <Toast 
-          {...toast} 
-          onHide={() => setToast({ ...toast, visible: false })} 
+        <Toast
+          {...toast}
+          onHide={() => setToast({ ...toast, visible: false })}
         />
       )}
 
@@ -365,11 +368,11 @@ export default function CabsBooking() {
               <div className="p-6">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {selectedCab.seatConfig?.map((seat) => (
-                    <Seat 
-                      key={seat.seatNumber} 
-                      seat={seat} 
-                      onSelect={handleSeatSelect} 
-                      isSelected={selectedSeats.some((s) => s.seatNumber === seat.seatNumber)} 
+                    <Seat
+                      key={seat.seatNumber}
+                      seat={seat}
+                      onSelect={handleSeatSelect}
+                      isSelected={selectedSeats.some((s) => s.seatNumber === seat.seatNumber)}
                     />
                   ))}
                 </div>
@@ -408,9 +411,9 @@ export default function CabsBooking() {
                       type="text"
                       placeholder="Enter your full name"
                       value={passengerDetails.fullName}
-                      onChange={(e) => setPassengerDetails({ 
-                        ...passengerDetails, 
-                        fullName: e.target.value 
+                      onChange={(e) => setPassengerDetails({
+                        ...passengerDetails,
+                        fullName: e.target.value
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
                     />
@@ -424,9 +427,9 @@ export default function CabsBooking() {
                       type="tel"
                       placeholder="Enter your phone number"
                       value={passengerDetails.phone}
-                      onChange={(e) => setPassengerDetails({ 
-                        ...passengerDetails, 
-                        phone: e.target.value 
+                      onChange={(e) => setPassengerDetails({
+                        ...passengerDetails,
+                        phone: e.target.value
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
                     />
@@ -440,9 +443,9 @@ export default function CabsBooking() {
                       type="email"
                       placeholder="Enter your email address"
                       value={passengerDetails.email}
-                      onChange={(e) => setPassengerDetails({ 
-                        ...passengerDetails, 
-                        email: e.target.value 
+                      onChange={(e) => setPassengerDetails({
+                        ...passengerDetails,
+                        email: e.target.value
                       })}
                       className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 placeholder-gray-400"
                     />
@@ -468,7 +471,7 @@ export default function CabsBooking() {
                       <div>
                         <span className="text-sm font-medium text-gray-700">Selected Seats</span>
                         <div className="text-xs text-gray-500 mt-1">
-                          {selectedSeats.length > 0 
+                          {selectedSeats.length > 0
                             ? selectedSeats.map((s) => s.seatNumber).join(", ")
                             : "No seats selected"
                           }
@@ -513,11 +516,10 @@ export default function CabsBooking() {
                     <button
                       onClick={handleBooking}
                       disabled={isBooking || !selectedSeats.length || !passengerDetails.fullName || !passengerDetails.phone}
-                      className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-200 ${
-                        isBooking || !selectedSeats.length || !passengerDetails.fullName || !passengerDetails.phone
-                          ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                          : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105"
-                      }`}
+                      className={`w-full py-4 px-6 rounded-xl font-bold text-lg transition-all duration-200 ${isBooking || !selectedSeats.length || !passengerDetails.fullName || !passengerDetails.phone
+                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        : "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg hover:shadow-xl transform hover:scale-105"
+                        }`}
                     >
                       {isBooking ? (
                         <div className="flex items-center justify-center space-x-2">

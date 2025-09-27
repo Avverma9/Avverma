@@ -178,6 +178,7 @@ export default function LoginPage() {
       localStorage.setItem("rsToken", res.data.rsToken);
       localStorage.setItem("roomsstayUserEmail", res.data.email);
       localStorage.setItem("rsUserMobile", res.data.mobile);
+      localStorage.setItem("rsUserName", res.data.name);
       window.location.href = "/";
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed.");
