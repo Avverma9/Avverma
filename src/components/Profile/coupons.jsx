@@ -19,7 +19,7 @@ export default function CouponPage() {
       .finally(() => {
         hideLoader();
       });
-  }, [dispatch, showLoader, hideLoader]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (coupon?.length) {

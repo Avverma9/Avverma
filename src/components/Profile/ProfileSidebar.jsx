@@ -11,6 +11,7 @@ import ProfilePage from "./Profile";
 import ProfileUpdatePage from "./UpdateProfile";
 import ConfirmBooking from "./MyBookings";
 import TourBooking from "./TourBooking";
+import CabBooking from "./CabBooking"; // Assuming you have or will create this component
 import ComplaintsPage from "./complaints";
 import Reviews from "./MyReviews";
 
@@ -82,6 +83,7 @@ export default function ProfileSideBar () {
       "/profile": "My Profile",
       "/bookings": "Hotel Bookings",
       "/tour-bookings": "Tour Bookings",
+      "/cab-bookings": "Cab Bookings",
       "/complaints": "Complaints",
       "/reviews": "Reviews",
       "/home": "Home",
@@ -111,6 +113,7 @@ export default function ProfileSideBar () {
     "/bookings",
     "/reviews",
     "/tour-bookings",
+    "/cab-bookings",
     "/complaints",
     "/profile",
     "/profile-update/user-data/page",
@@ -159,6 +162,7 @@ export default function ProfileSideBar () {
             <SidenavLink to="/profile" icon={<CgProfile />} label="Profile" onClick={closeMobileMenu} />
             <SidenavLink to="/bookings" icon={<PiTicketThin />} label="Hotel Bookings" onClick={closeMobileMenu} />
             <SidenavLink to="/tour-bookings" icon={<PiTicketThin />} label="Tour Bookings" onClick={closeMobileMenu} />
+            <SidenavLink to="/cab-bookings" icon={<RiCarLine />} label="Cab Bookings" onClick={closeMobileMenu} />
             <SidenavLink to="/complaints" icon={<IoWarningOutline />} label="Complaint" onClick={closeMobileMenu} />
             <SidenavLink to="/reviews" icon={<MdOutlineRateReview />} label="Reviews" onClick={closeMobileMenu} />
           </nav>
@@ -191,6 +195,7 @@ export default function ProfileSideBar () {
               <Route path="/profile-update/user-data/page" element={<ProfileUpdatePage />} />
                  <Route path="/bookings" element={<ConfirmBooking />} />
                  <Route path="/tour-bookings" element={<TourBooking />} />
+                 <Route path="/cab-bookings" element={<CabBooking />} />
                  <Route path="/complaints" element={<ComplaintsPage />} />
                  <Route path="/reviews" element={<Reviews />} />
 
@@ -209,4 +214,3 @@ export default function ProfileSideBar () {
     </div>
   );
 };
-
