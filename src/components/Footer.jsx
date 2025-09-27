@@ -13,10 +13,10 @@ const TwitterIcon = () => (
   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
 );
 const YouTubeIcon = () => (
-    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15V9l5.194 3Z" clipRule="evenodd" /></svg>
+  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM15.194 12 10 15V9l5.194 3Z" clipRule="evenodd" /></svg>
 );
 const CloseIcon = () => (
-    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
+  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" /></svg>
 );
 
 
@@ -70,23 +70,22 @@ export default function Footer() {
           {/* Brand & Social */}
           <div className="col-span-12 md:col-span-4 flex flex-col h-full">
             <div className="mb-4">
-              <img src="/logo.png" alt="Logo" className="h-10 invert"/>
-              
+              <img src="/logo.png" alt="Logo" className="h-10 invert" />
             </div>
-              <a 
-    href="https://avverma.s3.ap-south-1.amazonaws.com/hrs.hotelroomsstay.apk"
-    className="mb-4 mt-2 w-max"
-    download
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    <button
-      className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium text-xs hover:bg-green-700 transition"
-      type="button"
-    >
-      Download APK
-    </button>
-  </a>
+            <a
+              href="https://avverma.s3.ap-south-1.amazonaws.com/hrs.hotelroomsstay.apk"
+              className="mb-4 mt-2 w-max"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium text-xs hover:bg-green-700 transition"
+                type="button"
+              >
+                Download APK
+              </button>
+            </a>
             <p className="text-sm mb-6 max-w-xs">
               Your one-stop site to find and book perfect stays worldwide.
             </p>
@@ -155,10 +154,10 @@ export default function Footer() {
           </p>
           <div className="flex items-center justify-center gap-2">
             <a href="#" className="inline-block">
-              <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" className="h-8"/>
+              <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store" className="h-8" />
             </a>
             <a href="#" className="inline-block">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8"/>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8" />
             </a>
           </div>
         </div>
@@ -173,21 +172,21 @@ export default function Footer() {
           {/* Modal Content */}
           <div className={`relative bg-white rounded-lg shadow-xl w-11/12 sm:w-3/4 md:w-auto md:max-w-2xl max-h-[85vh] transition-all duration-300 ease-in-out ${open ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
             <div className="p-4 border-b">
-                <div className="flex justify-between items-center">
-                    <h2 id="modal-title" className="text-lg font-semibold text-gray-800">All Destinations</h2>
-                    <button onClick={closeModal} className="p-1 rounded-full hover:bg-gray-200">
-                        <CloseIcon />
-                    </button>
-                </div>
+              <div className="flex justify-between items-center">
+                <h2 id="modal-title" className="text-lg font-semibold text-gray-800">All Destinations</h2>
+                <button onClick={closeModal} className="p-1 rounded-full hover:bg-gray-200">
+                  <CloseIcon />
+                </button>
+              </div>
             </div>
             <div className="p-4 overflow-y-auto">
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {hotelList.map((h, i) => (
-                    <button key={i} onClick={() => onHotelClick(h.hotel)} className="w-full text-center text-sm font-medium text-gray-700 p-2 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors">
+                  <button key={i} onClick={() => onHotelClick(h.hotel)} className="w-full text-center text-sm font-medium text-gray-700 p-2 rounded-md hover:bg-gray-100 hover:text-blue-600 transition-colors">
                     {h.hotel}
-                    </button>
+                  </button>
                 ))}
-                </div>
+              </div>
             </div>
           </div>
         </div>
