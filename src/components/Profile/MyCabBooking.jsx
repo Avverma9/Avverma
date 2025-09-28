@@ -13,13 +13,13 @@ export default function CabBooking() {
       try {
         setLoading(true);
         const response = await dispatch(getBookings());
-        if (response?.payload) {
-          setBookings(response.payload);
+        if (response.payload && Array.isArray(response.payload.data)) {
+          setBookings(response.payload.data);
         } else {
           setError("Unable to load bookings. Please try again.");
         }
       } catch (err) {
-        setError("Something went wrong while fetching your bookings.");
+        console.error("Error fetching bookings:", err);
       } finally {
         setLoading(false);
       }
@@ -36,7 +36,7 @@ export default function CabBooking() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'Not specified';
+    if (!dateString) return '';
     return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -50,30 +50,7 @@ export default function CabBooking() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header Section */}
-      <header className="bg-white shadow-sm border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
-                Cab Bookings
-              </h1>
-              <p className="mt-1 text-sm sm:text-base text-slate-600">
-                Manage and track all your ride reservations
-              </p>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-slate-500">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-              </svg>
-              Last updated: {new Date().toLocaleTimeString()}
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
+    <div className="min-h-screen bg-white-to-br from-slate-50 via-blue-50 to-indigo-50">
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Loading State */}
         {loading && (
@@ -102,7 +79,7 @@ export default function CabBooking() {
                   <p className="text-red-700 text-sm mt-1">{error}</p>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => window.location.reload()}
                 className="mt-4 w-full bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm"
               >
@@ -138,16 +115,13 @@ export default function CabBooking() {
                     {/* Card Header */}
                     <header className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4 text-white">
                       <div className="flex items-center justify-between">
-                        <h2 className="font-semibold text-lg">
-                          Booking #{index + 1}
-                        </h2>
-                        <div className="text-right">
+
                           <div className="text-sm opacity-90">Total</div>
                           <div className="font-bold text-lg">
                             {formatCurrency(totalAmount)}
                           </div>
                         </div>
-                      </div>
+            
                     </header>
 
                     {/* Card Body */}
@@ -161,7 +135,7 @@ export default function CabBooking() {
                           <div className="flex justify-between">
                             <span className="text-slate-600">Name:</span>
                             <span className="font-medium text-slate-900">
-                              {booking?.customerName || 'Not provided'}
+                              {booking?.bookedBy || 'Not provided'}
                             </span>
                           </div>
                           <div className="flex justify-between">
@@ -182,7 +156,7 @@ export default function CabBooking() {
                           <div className="flex justify-between">
                             <span className="text-slate-600">Vehicle:</span>
                             <span className="font-medium text-slate-900">
-                              {booking?.carDetails?.name || 'Not specified'}
+                              {booking?.vehicleType || 'Not specified'}
                             </span>
                           </div>
                           <div>
@@ -191,7 +165,7 @@ export default function CabBooking() {
                               <div className="flex-1">
                                 <span className="text-slate-600 text-xs">Pickup:</span>
                                 <p className="font-medium text-slate-900 break-words">
-                                  {booking?.pickup || 'Not specified'}
+                                  {booking?.pickupP || 'Not specified'}
                                 </p>
                               </div>
                             </div>
@@ -200,7 +174,7 @@ export default function CabBooking() {
                               <div className="flex-1">
                                 <span className="text-slate-600 text-xs">Drop-off:</span>
                                 <p className="font-medium text-slate-900 break-words">
-                                  {booking?.drop || 'Not specified'}
+                                  {booking?.dropP || 'Not specified'}
                                 </p>
                               </div>
                             </div>
@@ -216,7 +190,7 @@ export default function CabBooking() {
                         {booking?.carDetails?.bookedSeats?.length > 0 ? (
                           <div className="space-y-2">
                             {booking.carDetails.bookedSeats.map((seat, seatIndex) => (
-                              <div 
+                              <div
                                 key={seat._id || seatIndex}
                                 className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200"
                               >
@@ -259,7 +233,7 @@ export default function CabBooking() {
                           Booking ID: {booking?._id?.slice(-8)?.toUpperCase() || 'N/A'}
                         </span>
                         <span>
-                          {formatDate(booking?.createdAt)}
+                          {formatDate(booking?.bookingDate) || 'Date not available'}
                         </span>
                       </div>
                     </footer>

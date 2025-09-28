@@ -49,7 +49,20 @@ export default function TourBookNowPage() {
     const { showLoader, hideLoader } = useLoader();
     const popup = useToast();
     const [finalPrice, setFinalPrice] = useState(0);
-    const [dateRange, setDateRange] = useState({ startDate: '', endDate: '' });
+    const [dateRange, setDateRange] = useState(() => {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const formatDateForInput = (date) => {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        return { startDate: formatDateForInput(today), endDate: formatDateForInput(tomorrow) };
+    });
 
     useEffect(() => {
         if (id) {
@@ -92,14 +105,18 @@ export default function TourBookNowPage() {
             price: finalPrice, 
             from: dateRange.startDate, 
             to: dateRange.endDate,
-            city: travelById.city // Assuming city is needed for the confirmation popup
+            city: travelById.city,
+            amenities: travelById.amenities,
+            inclusion: travelById.inclusion,
+            exclusion: travelById.exclusion,
+            dayWise: travelById.dayWise
         };
 
         try {
             showLoader();
             const res = await dispatch(bookNow(bookingData)).unwrap();
-            const bookingId = res?.bookingId || res?.data?._id || "N/A";
-             popup(
+            const response= res?.payload
+            const bookingId = response?.bookingId || res?.data?._id || "N/A";             popup.success(
                `✅ Booking Confirmed!\n\n📍 City: ${
                  bookingData.city
                }\n📅 From: ${formatDate(bookingData.from)}\n📅 To: ${formatDate(
@@ -286,4 +303,3 @@ export default function TourBookNowPage() {
         </div>
     );
 }
-

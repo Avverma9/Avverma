@@ -4,6 +4,7 @@ import { bookSeat, getCarById } from "../../redux/reducers/car";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useLoader } from "../../utils/loader";
+import { useToast } from "../../utils/toast";
 import { userEmail, userMobile, userName } from "../../utils/Unauthorized";
 
 // --- Enhanced SVG Icons ---
@@ -81,26 +82,6 @@ const formatTime = (dateString) =>
     minute: "2-digit",
     hour12: true
   }).toUpperCase() : "N/A";
-
-// --- Enhanced Toast Component ---
-const Toast = ({ message, type, onHide }) => {
-  useEffect(() => {
-    const timer = setTimeout(onHide, 4000);
-    return () => clearTimeout(timer);
-  }, [onHide]);
-
-  return (
-    <div className={`fixed top-4 right-4 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white max-w-sm animate-slide-in-right ${type === "success"
-      ? "bg-gradient-to-r from-green-500 to-green-600"
-      : "bg-gradient-to-r from-red-500 to-red-600"
-      }`}>
-      <div className="flex-shrink-0">
-        {type === "success" ? <CheckCircleIcon /> : <AlertTriangleIcon />}
-      </div>
-      <span className="font-medium">{message}</span>
-    </div>
-  );
-};
 
 // --- Enhanced Seat Component ---
 const Seat = ({ seat, onSelect, isSelected }) => {
@@ -227,10 +208,10 @@ export default function CabsBooking() {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const dispatch = useDispatch();
   const [selectedCab, setSelectedCab] = useState(null);
-  const [toast, setToast] = useState({ visible: false, message: "", type: "" });
   const [isBooking, setIsBooking] = useState(false);
 
   const { showLoader, hideLoader } = useLoader();
+  const popup = useToast();
 
   useEffect(() => {
     if (id) {
@@ -238,13 +219,7 @@ export default function CabsBooking() {
       dispatch(getCarById(id))
         .unwrap()
         .then((data) => setSelectedCab(data))
-        .catch(() =>
-          setToast({
-            visible: true,
-            message: "Failed to load car details",
-            type: "error"
-          })
-        )
+        .catch(() => popup.error("Failed to load car details"))
         .finally(() => hideLoader());
     }
   }, [id, dispatch]);
@@ -258,18 +233,10 @@ export default function CabsBooking() {
 
   const handleBooking = async () => {
     if (!passengerDetails.fullName || !passengerDetails.phone) {
-      return setToast({
-        visible: true,
-        message: "Please enter your full name and phone number",
-        type: "error"
-      });
+      return popup.error("Please enter your full name and phone number");
     }
     if (selectedSeats.length === 0) {
-      return setToast({
-        visible: true,
-        message: "Please select at least one seat",
-        type: "error"
-      });
+      return popup.error("Please select at least one seat");
     }
 
     setIsBooking(true);
@@ -279,23 +246,29 @@ export default function CabsBooking() {
         seats: seatIds,
         carId: id,
         bookedBy: passengerDetails.fullName,
-        sharingType: selectedCab?.sharingType,
-        vehicleType: selectedCab?.vehicleType,
+        sharingType: selectedCab.sharingType,
+        vehicleType: selectedCab.vehicleType,
         customerMobile: passengerDetails.phone,
         customerEmail: passengerDetails.email
       };
       const response = await dispatch(bookSeat(data)).unwrap();
-      if (response.payload) {
-        setToast({
-          visible: true,
-          message: "🎉 Booking confirmed successfully!",
-          type: "success"
-        });
+      const payload = response.payload;
+      console.log("Booking response:", payload);
+      if (payload && payload._id) {
+        const bookingId = payload._id.slice(-8).toUpperCase();
+        const totalAmount = selectedSeats.reduce((sum, seat) => sum + (seat.seatPrice || 0), 0) + Math.round(selectedSeats.reduce((sum, seat) => sum + (seat.seatPrice || 0), 0) * 0.05) + 25;
+        
+        popup.success(
+          `🎉 Booking Confirmed!\n\nBooking ID: ${bookingId}\nSeats: ${selectedSeats.map(s => s.seatNumber).join(', ')}\nTotal Paid: ₹${totalAmount}`
+        );
+
         setSelectedSeats([]);
         setPassengerDetails({ fullName: "", phone: "", email: "" });
+        // Refetch cab details to show updated seat status
+        dispatch(getCarById(id));
       }
     } catch (error) {
-      console.error("Booking failed:", error);
+      popup.error(error?.message || "Booking failed. Please try again.");
     } finally {
       setIsBooking(false);
     }
@@ -306,11 +279,7 @@ export default function CabsBooking() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center p-8">
-          <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-            <LogoIcon />
-          </div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Cab Not Found</h2>
-          <p className="text-gray-600">The requested cab could not be loaded.</p>
+         
         </div>
       </div>
     );
@@ -323,13 +292,6 @@ export default function CabsBooking() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      {toast.visible && (
-        <Toast
-          {...toast}
-          onHide={() => setToast({ ...toast, visible: false })}
-        />
-      )}
-
       {/* Enhanced Header */}
       <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 text-white shadow-2xl">
         <div className="container mx-auto px-4 sm:px-6 py-6">

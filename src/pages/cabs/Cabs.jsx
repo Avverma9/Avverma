@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { getAllCars } from "../../redux/reducers/car";
 import { useNavigate } from "react-router-dom";
@@ -106,8 +106,8 @@ const CabCardMobile = ({ cab }) => {
         </div>
         <div className="absolute bottom-2 left-2">
           <span className={`text-xs font-medium px-2 py-1 rounded-full shadow-lg ${availableSeats > 0
-              ? "bg-green-500 text-white"
-              : "bg-red-500 text-white"
+            ? "bg-green-500 text-white"
+            : "bg-red-500 text-white"
             }`}>
             {availableSeats > 0 ? `${availableSeats} Seats` : "Full"}
           </span>
@@ -155,8 +155,8 @@ const CabCardMobile = ({ cab }) => {
             onClick={() => navigate(`/cab-booking/${cab._id}`)}
             disabled={availableSeats <= 0}
             className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${availableSeats > 0
-                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
           >
             {availableSeats > 0 ? "Book Now" : "Unavailable"}
@@ -189,8 +189,8 @@ const CabCardDesktop = ({ cab }) => {
           </div>
           <div className="absolute bottom-3 left-3">
             <span className={`text-xs font-medium px-3 py-1 rounded-full shadow-lg ${availableSeats > 0
-                ? "bg-green-500 text-white"
-                : "bg-red-500 text-white"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
               }`}>
               {availableSeats > 0 ? `${availableSeats} Seats Available` : "Fully Booked"}
             </span>
@@ -240,8 +240,8 @@ const CabCardDesktop = ({ cab }) => {
               onClick={() => navigate(`/cab-booking/${cab._id}`)}
               disabled={availableSeats <= 0}
               className={`px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 ${availableSeats > 0
-                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
             >
               {availableSeats > 0 ? "Book Now" : "Unavailable"}
@@ -253,6 +253,7 @@ const CabCardDesktop = ({ cab }) => {
   );
 };
 
+
 const FilterComponent = ({
   filters,
   setFilters,
@@ -262,18 +263,22 @@ const FilterComponent = ({
   onClose,
   priceRange,
   sharingTypes,
-  vehicleTypes
+  vehicleTypes,
 }) => {
   const handleFilterChange = (e) => {
     const { name, value, type } = e.target;
     setFilters((prev) => ({
       ...prev,
-      [name]: type === "number" || type === "range" ? Number(value) : value
+      [name]:
+        type === "number" || type === "range" ? Number(value) : value,
     }));
   };
 
   const handleSeatsChange = (inc) =>
-    setFilters((p) => ({ ...p, seats: Math.max(1, (p.seats || 1) + inc) }));
+    setFilters((p) => ({
+      ...p,
+      seats: Math.max(1, (p.seats || 1) + inc),
+    }));
 
   const resetFilters = () =>
     setFilters({
@@ -282,37 +287,49 @@ const FilterComponent = ({
       seats: 1,
       price: priceRange.max,
       sharingType: "All",
-      vehicleType: "All"
+      vehicleType: "All",
     });
 
   return (
-    <aside
-      className={`fixed inset-0 z-50 lg:static transition-all duration-300 
-      ${isOpen ? "flex" : "hidden lg:block"} justify-end`}
-      onClick={onClose}
-    >
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed top-180-inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+
+      {/* Filter Panel */}
       <div
-        className={`bg-white w-full max-w-sm lg:max-w-md lg:sticky lg:top-[100px] 
-        rounded-t-xl lg:rounded-lg shadow-xl lg:shadow-md
-        ${isOpen ? "h-[80vh]" : "h-auto"} mt-auto lg:mt-0 flex flex-col relative`}
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50 w-full max-w-xs lg:max-w-sm
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+          lg:sticky lg:top-[80px] lg:h-fit
+          bg-white rounded-none lg:rounded-xl shadow-xl lg:shadow-md
+          flex flex-col
+        `}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b">
-          <h2 className="text-base font-semibold">Filters</h2>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
+          <h2 className="text-base font-semibold text-gray-900">Filters</h2>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-gray-100 rounded lg:hidden"
+            className="p-1.5 hover:bg-gray-100 rounded-full lg:hidden"
           >
-            <CloseIcon />
+            <CloseIcon fontSize="small" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4 text-sm">
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
           {/* Price */}
           <div>
-            <label className="block font-medium mb-1">Max Price</label>
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Max Price
+            </label>
             <input
               type="range"
               name="price"
@@ -320,32 +337,36 @@ const FilterComponent = ({
               max={priceRange.max}
               value={filters.price}
               onChange={handleFilterChange}
-              className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-1.5 bg-gray-200 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-xs text-gray-500">
+            <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>₹{priceRange.min}</span>
-              <span className="font-bold text-blue-600">₹{filters.price}</span>
+              <span className="font-semibold text-blue-600">
+                ₹{filters.price}
+              </span>
               <span>₹{priceRange.max}</span>
             </div>
           </div>
 
           {/* Seats */}
           <div>
-            <label className="block font-medium mb-1">Seats</label>
-            <div className="flex items-center border rounded-lg overflow-hidden">
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Seats Required
+            </label>
+            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
               <button
                 onClick={() => handleSeatsChange(-1)}
                 disabled={filters.seats <= 1}
-                className="px-3 py-1 text-blue-600 disabled:text-gray-400"
+                className="px-3 py-1 text-blue-600 hover:bg-blue-50 disabled:text-gray-400 disabled:cursor-not-allowed"
               >
                 −
               </button>
-              <span className="flex-1 text-center py-1 font-semibold">
+              <div className="flex-1 text-center py-1 font-semibold text-gray-800 border-x border-gray-300">
                 {filters.seats}
-              </span>
+              </div>
               <button
                 onClick={() => handleSeatsChange(1)}
-                className="px-3 py-1 text-blue-600"
+                className="px-3 py-1 text-blue-600 hover:bg-blue-50"
               >
                 +
               </button>
@@ -354,119 +375,104 @@ const FilterComponent = ({
 
           {/* Car Brand */}
           <div>
-            <label className="block font-medium mb-1">Brand</label>
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Car Brand
+            </label>
             <select
               name="make"
               value={filters.make}
               onChange={handleFilterChange}
-              className="w-full border rounded-lg p-2 text-sm"
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500"
             >
-              <option value="All">All</option>
-              {makes.map((m) => (
-                <option key={m}>{m}</option>
+              <option value="All">All Brands</option>
+              {makes.map((make) => (
+                <option key={make} value={make}>
+                  {make}
+                </option>
               ))}
             </select>
           </div>
 
-          {/* Fuel Type */}
+          {/* Fuel Type - Dropdown */}
           <div>
-            <label className="block font-medium mb-1">Fuel</label>
-            <div className="flex flex-wrap gap-1.5">
-              {["All", ...fuelTypes].map((fuel) => (
-                <label
-                  key={fuel}
-                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
-                    filters.fuelType === fuel
-                      ? "bg-blue-50 border-blue-500"
-                      : "bg-white border-gray-200"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="fuelType"
-                    value={fuel}
-                    checked={filters.fuelType === fuel}
-                    onChange={handleFilterChange}
-                    className="sr-only"
-                  />
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Fuel Type
+            </label>
+            <select
+              name="fuelType"
+              value={filters.fuelType}
+              onChange={handleFilterChange}
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="All">All Types</option>
+              {fuelTypes.map((fuel) => (
+                <option key={fuel} value={fuel}>
                   {fuel}
-                </label>
+                </option>
               ))}
-            </div>
+            </select>
           </div>
 
-          {/* Sharing Type */}
+          {/* Sharing Type - Dropdown */}
           <div>
-            <label className="block font-medium mb-1">Sharing</label>
-            <div className="flex flex-wrap gap-1.5">
-              {["All", ...sharingTypes].map((type) => (
-                <label
-                  key={type}
-                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
-                    filters.sharingType === type
-                      ? "bg-blue-50 border-blue-500"
-                      : "bg-white border-gray-200"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="sharingType"
-                    value={type}
-                    checked={filters.sharingType === type}
-                    onChange={handleFilterChange}
-                    className="sr-only"
-                  />
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Sharing Type
+            </label>
+            <select
+              name="sharingType"
+              value={filters.sharingType}
+              onChange={handleFilterChange}
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="All">All Types</option>
+              {sharingTypes.map((type) => (
+                <option key={type} value={type}>
                   {type}
-                </label>
+                </option>
               ))}
-            </div>
+            </select>
           </div>
 
-          {/* Vehicle Type */}
+          {/* Vehicle Type - Dropdown */}
           <div>
-            <label className="block font-medium mb-1">Vehicle</label>
-            <div className="flex flex-wrap gap-1.5">
-              {["All", ...vehicleTypes].map((type) => (
-                <label
-                  key={type}
-                  className={`flex-1 text-center cursor-pointer px-2 py-1 rounded-md border text-xs ${
-                    filters.vehicleType === type
-                      ? "bg-blue-50 border-blue-500"
-                      : "bg-white border-gray-200"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="vehicleType"
-                    value={type}
-                    checked={filters.vehicleType === type}
-                    onChange={handleFilterChange}
-                    className="sr-only"
-                  />
+            <label className="block font-medium text-gray-800 text-sm mb-1">
+              Vehicle Type
+            </label>
+            <select
+              name="vehicleType"
+              value={filters.vehicleType}
+              onChange={handleFilterChange}
+              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-green-500"
+            >
+              <option value="All">All Types</option>
+              {vehicleTypes.map((type) => (
+                <option key={type} value={type}>
                   {type}
-                </label>
+                </option>
               ))}
-            </div>
+            </select>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-[80px] left-0 right-0 bg-white p-3 flex space-x-2 lg:static lg:p-4 border-t">
-          <button
-            onClick={resetFilters}
-            className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md text-sm"
-          >
-            Reset
-          </button>
-          <button
-            onClick={onClose}
-            className="flex-1 py-2 bg-blue-600 text-white rounded-md text-sm"
-          >
-            Apply
-          </button>
+        <div className="sticky bottom-60 bg-white border-t border-gray-200 p-3">
+          <div className="flex space-x-3">
+            <button
+              onClick={resetFilters}
+              className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-50 text-sm"
+            >
+              Reset
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-medium hover:from-blue-700 hover:to-purple-700 text-sm"
+            >
+              Apply
+            </button>
+          </div>
         </div>
       </div>
-    </aside>
+    </>
   );
 };
 
@@ -557,14 +563,22 @@ const NoResults = () => (
     <p className="text-gray-500 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
       We couldn't find any rides matching your criteria. Try adjusting your search or filters to see more options.
     </p>
-    <button className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm" onClick={() => window.location.reload()}>
+    <button
+      className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm"
+      onClick={() => window.location.reload()}
+    >
       Clear Filters
     </button>
   </div>
 );
 
+
 const SkeletonCard = ({ isDesktop = false }) => (
-  <div className={`animate-pulse bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${isDesktop ? 'flex h-64' : ''}`}>
+  <div
+    className={`animate-pulse bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${
+      isDesktop ? "flex h-64" : ""
+    }`}
+  >
     {isDesktop ? (
       <>
         <div className="w-80 bg-gray-200 flex-shrink-0"></div>
@@ -610,7 +624,6 @@ const SkeletonCard = ({ isDesktop = false }) => (
     )}
   </div>
 );
-
 export default function CarsPage() {
   const [cabs, setCabs] = useState([]);
   const [filteredCabs, setFilteredCabs] = useState([]);
@@ -729,8 +742,11 @@ export default function CarsPage() {
   useEffect(() => {
     (async () => {
       try {
+      
+      
         const res = await dispatch(getAllCars());
         setCabs(res.payload || []);
+      
       } catch (err) {
         console.error("Fetch failed", err);
       }
@@ -815,7 +831,7 @@ export default function CarsPage() {
               </select>
             </div>
 
-            <div className="space-y-4 lg:space-y-6">
+            <div className="space-y-4 lg:space-y-6 pb-24 lg:pb-0 min-h-[50vh]">
               {isLoading ? (
                 <>
                   <div className="lg:hidden grid grid-cols-1 gap-4">
@@ -844,11 +860,18 @@ export default function CarsPage() {
 
       <button
         onClick={() => setMobileFilterOpen(true)}
-        className="fixed left-3 sm:left-4 lg:hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 sm:px-4 py-2 sm:py-3 rounded-full shadow-xl flex items-center space-x-2 hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 z-40 text-sm"
-        style={{ bottom: '90px' }}
+        className="
+          fixed bottom-[100px] left-4 lg:hidden z-40
+          bg-gradient-to-r from-blue-600 to-purple-600 text-white 
+          px-4 py-3 rounded-full shadow-xl 
+          flex items-center space-x-2 
+          hover:from-blue-700 hover:to-purple-700 
+          transition-all transform hover:scale-105
+          text-sm font-medium
+        "
       >
         <FilterIcon />
-        <span className="font-medium">Filters</span>
+        <span>Filters</span>
       </button>
 
       <SearchModal
@@ -859,25 +882,41 @@ export default function CarsPage() {
         handleSearchSubmit={handleSearchSubmit}
       />
 
+      {/* Bottom Navigation Space */}
+      <div className="h-20 lg:hidden"></div>
+
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
           height: 20px;
           width: 20px;
           border-radius: 50%;
-          background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+          background: linear-gradient(45deg, #3b82f6, #8b5cf6);
           cursor: pointer;
-          box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+          box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+          border: 2px solid white;
         }
-        
+
         .slider::-moz-range-thumb {
           height: 20px;
           width: 20px;
           border-radius: 50%;
-          background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+          background: linear-gradient(45deg, #3b82f6, #8b5cf6);
           cursor: pointer;
-          border: none;
-          box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
+          border: 2px solid white;
+          box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        .slider::-webkit-slider-track {
+          height: 8px;
+          border-radius: 4px;
+          background: #e5e7eb;
+        }
+
+        .slider::-moz-range-track {
+          height: 8px;
+          border-radius: 4px;
+          background: #e5e7eb;
         }
       `}</style>
     </div>
