@@ -13,8 +13,8 @@ export default function CabBooking() {
       try {
         setLoading(true);
         const response = await dispatch(getBookings());
-        if (response.payload && Array.isArray(response.payload.data)) {
-          setBookings(response.payload.data);
+        if (response.payload && Array.isArray(response.payload)) {
+          setBookings(response.payload);
         } else {
           setError("Unable to load bookings. Please try again.");
         }

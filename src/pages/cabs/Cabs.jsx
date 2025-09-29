@@ -295,7 +295,7 @@ const FilterComponent = ({
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed top-180-inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
+          className="fixed top-18 inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
@@ -322,7 +322,23 @@ const FilterComponent = ({
             <CloseIcon fontSize="small" />
           </button>
         </div>
-
+        {/* Footer */}
+        <div className="sticky bg-white border-t border-gray-200 p-3">
+          <div className="flex space-x-3">
+            <button
+              onClick={resetFilters}
+              className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-50 text-sm"
+            >
+              Reset
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-medium hover:from-blue-700 hover:to-purple-700 text-sm"
+            >
+              Apply
+            </button>
+          </div>
+        </div>
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
           {/* Price */}
@@ -454,23 +470,7 @@ const FilterComponent = ({
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="sticky bottom-60 bg-white border-t border-gray-200 p-3">
-          <div className="flex space-x-3">
-            <button
-              onClick={resetFilters}
-              className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-50 text-sm"
-            >
-              Reset
-            </button>
-            <button
-              onClick={onClose}
-              className="flex-1 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-medium hover:from-blue-700 hover:to-purple-700 text-sm"
-            >
-              Apply
-            </button>
-          </div>
-        </div>
+
       </div>
     </>
   );

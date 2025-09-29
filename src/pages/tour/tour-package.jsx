@@ -19,7 +19,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import { FaRupeeSign } from "react-icons/fa";
 
-export default function TourPackages ()  {
+export default function TourPackages() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data } = useSelector((state) => state.travel);
@@ -113,111 +113,108 @@ export default function TourPackages ()  {
   );
 
   // Enhanced filter content with better styling
- const filterContent = (
-  <div className="grid grid-cols-1 gap-y-3 text-sm">
-    <div>
-      <label className="block font-semibold text-gray-800 mb-1">Sort & Order</label>
-      <div className="relative">
-        <select
-          value={sortByOrder}
-          onChange={(e) => setSortByOrder(e.target.value)}
-          className="w-full rounded-md border px-2 py-1.5 text-sm"
-        >
-          <option value="asc">Price: Low to High</option>
-          <option value="desc">Price: High to Low</option>
-        </select>
-        <ArrowDropDownIcon className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-500" />
+  const filterContent = (
+    <div className="grid grid-cols-1 gap-y-3 text-sm">
+      <div>
+        <label className="block font-semibold text-gray-800 mb-1">Sort & Order</label>
+        <div className="relative">
+          <select
+            value={sortByOrder}
+            onChange={(e) => setSortByOrder(e.target.value)}
+            className="w-full rounded-md border px-2 py-1.5 text-sm"
+          >
+            <option value="asc">Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+          </select>
+          <ArrowDropDownIcon className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-500" />
+        </div>
+      </div>
+
+      <div>
+        <p className="font-semibold text-gray-800 mb-1 flex items-center">
+          <FaRupeeSign className="w-3.5 h-3.5 mr-1 text-gray-500" />
+          Price
+        </p>
+        <p className="text-center font-semibold text-blue-600 text-xs mb-1">
+          ₹{minPrice.toLocaleString()} - ₹{maxPrice.toLocaleString()}
+        </p>
+        <Slider
+          min={500}
+          max={164990}
+          step={500}
+          value={[minPrice, maxPrice]}
+          onChange={handlePriceChange}
+          className="h-1.5 w-full"
+          thumbClassName="h-4 w-4 bg-blue-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
+          renderTrack={(props, state) => (
+            <div
+              {...props}
+              className={`h-1.5 rounded-full ${state.index === 1
+                  ? "bg-gradient-to-r from-blue-500 to-blue-600"
+                  : "bg-gray-200"
+                }`}
+            />
+          )}
+        />
+      </div>
+
+      <div>
+        <p className="font-semibold text-gray-800 mb-1 flex items-center">
+          <NightsStayIcon className="w-4 h-4 mr-1 text-gray-500" />
+          Duration
+        </p>
+        <p className="text-center text-green-600 text-xs font-semibold mb-1">
+          {minNights} - {maxNights} Nights
+        </p>
+        <Slider
+          min={2}
+          max={9}
+          step={1}
+          value={[minNights, maxNights]}
+          onChange={handleNightsChange}
+          className="h-1.5 w-full"
+          thumbClassName="h-4 w-4 bg-green-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
+          renderTrack={(props, state) => (
+            <div
+              {...props}
+              className={`h-1.5 rounded-full ${state.index === 1
+                  ? "bg-gradient-to-r from-green-500 to-green-600"
+                  : "bg-gray-200"
+                }`}
+            />
+          )}
+        />
+      </div>
+
+      <div>
+        <p className="font-semibold text-gray-800 mb-1 flex items-center">
+          <CategoryIcon className="w-4 h-4 mr-1 text-gray-500" /> Category
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {["Winter", "Summer", "Honeymoon", "Romantic", "Adventure", "Beach"].map(
+            (theme) => (
+              <label
+                key={theme}
+                className={`flex cursor-pointer items-center space-x-1.5 p-1.5 rounded-md border text-xs ${selectedThemes.includes(theme)
+                    ? "bg-blue-50 border-blue-500"
+                    : "bg-white border-gray-200"
+                  }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedThemes.includes(theme)}
+                  onChange={handleThemeChange}
+                  value={theme}
+                  className="h-3 w-3 text-blue-600"
+                />
+                <span>{theme}</span>
+              </label>
+            )
+          )}
+        </div>
       </div>
     </div>
-
-    <div>
-      <p className="font-semibold text-gray-800 mb-1 flex items-center">
-        <FaRupeeSign className="w-3.5 h-3.5 mr-1 text-gray-500" />
-        Price
-      </p>
-      <p className="text-center font-semibold text-blue-600 text-xs mb-1">
-        ₹{minPrice.toLocaleString()} - ₹{maxPrice.toLocaleString()}
-      </p>
-      <Slider
-        min={500}
-        max={164990}
-        step={500}
-        value={[minPrice, maxPrice]}
-        onChange={handlePriceChange}
-        className="h-1.5 w-full"
-        thumbClassName="h-4 w-4 bg-blue-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
-        renderTrack={(props, state) => (
-          <div
-            {...props}
-            className={`h-1.5 rounded-full ${
-              state.index === 1
-                ? "bg-gradient-to-r from-blue-500 to-blue-600"
-                : "bg-gray-200"
-            }`}
-          />
-        )}
-      />
-    </div>
-
-    <div>
-      <p className="font-semibold text-gray-800 mb-1 flex items-center">
-        <NightsStayIcon className="w-4 h-4 mr-1 text-gray-500" />
-        Duration
-      </p>
-      <p className="text-center text-green-600 text-xs font-semibold mb-1">
-        {minNights} - {maxNights} Nights
-      </p>
-      <Slider
-        min={2}
-        max={9}
-        step={1}
-        value={[minNights, maxNights]}
-        onChange={handleNightsChange}
-        className="h-1.5 w-full"
-        thumbClassName="h-4 w-4 bg-green-600 rounded-full cursor-pointer outline-none -top-1.5 border-2 border-white shadow"
-        renderTrack={(props, state) => (
-          <div
-            {...props}
-            className={`h-1.5 rounded-full ${
-              state.index === 1
-                ? "bg-gradient-to-r from-green-500 to-green-600"
-                : "bg-gray-200"
-            }`}
-          />
-        )}
-      />
-    </div>
-
-    <div>
-      <p className="font-semibold text-gray-800 mb-1 flex items-center">
-        <CategoryIcon className="w-4 h-4 mr-1 text-gray-500" /> Category
-      </p>
-      <div className="grid grid-cols-2 gap-2">
-        {["Winter", "Summer", "Honeymoon", "Romantic", "Adventure", "Beach"].map(
-          (theme) => (
-            <label
-              key={theme}
-              className={`flex cursor-pointer items-center space-x-1.5 p-1.5 rounded-md border text-xs ${
-                selectedThemes.includes(theme)
-                  ? "bg-blue-50 border-blue-500"
-                  : "bg-white border-gray-200"
-              }`}
-            >
-              <input
-                type="checkbox"
-                checked={selectedThemes.includes(theme)}
-                onChange={handleThemeChange}
-                value={theme}
-                className="h-3 w-3 text-blue-600"
-              />
-              <span>{theme}</span>
-            </label>
-          )
-        )}
-      </div>
-    </div>
-  </div>
-);
+  );
   return (
     <div className="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen pb-24 md:pb-8">
       <div className="mx-auto max-w-screen-xl px-3 sm:px-4 py-4 sm:py-8">
@@ -256,7 +253,7 @@ export default function TourPackages ()  {
             {/* Hero Section - Compact for Mobile */}
             <div
               className="relative mb-4 sm:mb-8 overflow-hidden rounded-2xl bg-cover bg-center p-4 sm:p-8 text-center text-white shadow-2xl"
-              style={{ 
+              style={{
                 backgroundImage: 'url(https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop)',
                 minHeight: '160px'
               }}
@@ -279,13 +276,6 @@ export default function TourPackages ()  {
                   {loading ? "Loading..." : `${data?.length || 0} Packages Found`}
                 </h2>
               </div>
-              <button
-                onClick={() => setIsMobileDrawerOpen(true)}
-                className="lg:hidden flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
-              >
-                <FilterListIcon className="w-4 h-4" />
-                <span className="text-sm font-medium">Filters</span>
-              </button>
             </div>
 
             {/* Loading Skeleton - More Compact */}
@@ -328,12 +318,12 @@ export default function TourPackages ()  {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                      
+
                       {/* Duration Badge */}
                       <div className="absolute right-3 top-3 z-20 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 px-3 py-1.5 text-xs font-bold text-white shadow-lg backdrop-blur-sm">
                         {`${pkg.nights}N ${pkg.days}D`}
                       </div>
-                      
+
                       {/* Location */}
                       <div className="absolute bottom-3 left-3 z-20 flex items-center text-white">
                         <div className="p-1.5 bg-white/20 rounded-full mr-2 backdrop-blur-sm">
@@ -350,7 +340,7 @@ export default function TourPackages ()  {
                       <h3 className="mb-2 text-lg sm:text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-blue-600 transition-colors" title={pkg.travelAgencyName}>
                         {pkg.travelAgencyName}
                       </h3>
-                      
+
                       {/* Rating */}
                       <div className="mb-3 sm:mb-4 flex items-center">
                         <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-lg mr-3">
@@ -359,7 +349,7 @@ export default function TourPackages ()  {
                         </div>
                         <span className="text-xs sm:text-sm text-gray-500">(128 Reviews)</span>
                       </div>
-                      
+
                       {/* Amenities - Compact */}
                       <div className="mb-4 sm:mb-5 flex flex-wrap gap-1.5">
                         {pkg.amenities?.slice(0, 3).map((amenity, idx) => (
@@ -373,7 +363,7 @@ export default function TourPackages ()  {
                           </span>
                         )}
                       </div>
-                      
+
                       {/* Price & Book Button - Mobile Optimized */}
                       <div className="mt-auto flex items-center justify-between">
                         <div>
@@ -401,41 +391,66 @@ export default function TourPackages ()  {
         </div>
 
         {/* Enhanced Mobile Filter Drawer with Bottom App Bar Spacing */}
-   {isMobileDrawerOpen && (
-  <div className="fixed inset-0 z-50 flex items-end lg:hidden">
-    <div
-      className="absolute inset-0 bg-black/40"
-      onClick={() => setIsMobileDrawerOpen(false)}
-    ></div>
-    <div className="relative flex w-full flex-col bg-white rounded-t-xl shadow-lg h-[80vh]">
-      <div className="flex items-center justify-between border-b px-4 py-3">
-        <h2 className="text-base font-bold">Smart Filters</h2>
+        {isMobileDrawerOpen && (
+          <div className="fixed inset-0 z-50 flex items-end lg:hidden">
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setIsMobileDrawerOpen(false)}
+            ></div>
+
+            {/* Drawer */}
+            <div className="relative flex w-full flex-col bg-white rounded-t-2xl shadow-lg h-[60vh] animate-slideUp">
+
+              {/* Header with Actions */}
+              <div className="flex items-center justify-between border-b px-4 py-4">
+                <h2 className="text-base font-bold text-gray-800">Smart Filters</h2>
+
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={handleClearFilters}
+                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    onClick={handleApplyFilters}
+                    className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 transition shadow"
+                  >
+                    Apply
+                  </button>
+                  <button
+                    onClick={() => setIsMobileDrawerOpen(false)}
+                    className="ml-2 p-2 text-gray-500 hover:bg-gray-100 rounded-full transition"
+                  >
+                    <CloseIcon fontSize="small" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="flex-grow overflow-y-auto p-4">{filterContent}</div>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Filter Toggle Button */}
         <button
-          onClick={() => setIsMobileDrawerOpen(false)}
-          className="p-1 text-gray-500"
+          onClick={() => setIsMobileDrawerOpen(true)}
+          className="
+            fixed bottom-23 left-4 lg:hidden z-40
+            flex items-center space-x-2 
+            bg-gradient-to-r from-blue-600 to-purple-600 text-white 
+            px-4 py-3 rounded-full shadow-xl 
+            hover:from-blue-700 hover:to-purple-700 
+            transition-all transform hover:scale-105
+          "
         >
-          <CloseIcon />
+          <FilterListIcon />
+          <span className="text-sm font-medium">Filters</span>
         </button>
-      </div>
-      <div className="flex-grow overflow-y-auto p-3 pb-24">{filterContent}</div>
-      <div className="absolute bottom-[80px] left-0 right-0 border-t bg-white p-3 flex space-x-2">
-        <button
-          onClick={handleClearFilters}
-          className="flex-1 rounded-lg border px-3 py-2 text-sm text-gray-700"
-        >
-          Reset
-        </button>
-        <button
-          onClick={handleApplyFilters}
-          className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm text-white"
-        >
-          Apply
-        </button>
+
       </div>
     </div>
-  </div>
-)}
-      </div>
-    </div>  
   );
 };
