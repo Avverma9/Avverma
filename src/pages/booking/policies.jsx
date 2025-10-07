@@ -15,11 +15,15 @@ const PolicyTextItem = ({ text }) => {
   if (!text || !text.trim()) {
     return <p className="text-sm text-gray-500">Not specified.</p>;
   }
-  const lines = text.split("\n").filter((line) => line.trim());
+  // Split by newline, then remove any leading special characters (like •, ➤, etc.) and trim.
+  const lines = text.split('\n')
+    .map(line => line.trim().replace(/^[^a-zA-Z0-9]+/, '').trim())
+    .filter(line => line);
+
   return (
     <ul className="list-disc list-inside space-y-1">
       {lines.map((line, index) => (
-        <li key={index} className="text-sm text-gray-600">{line.trim()}</li>
+        <li key={index} className="text-sm text-gray-600">{line}</li>
       ))}
     </ul>
   );

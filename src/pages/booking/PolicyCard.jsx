@@ -142,6 +142,7 @@ export default function  HotelPolicyCard  ({ hotelData }) {
               title="Cancellation Policy"
               icon={<InfoOutlined fontSize="small" className="text-gray-500" />}
               value={policy.cancellationPolicy}
+              limit={2}
             />
           </div>
         </div>
