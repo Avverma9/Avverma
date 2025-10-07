@@ -69,16 +69,6 @@ const SearchForm = () => {
         }
       `}</style>
 
-      <div className="text-center my-2 md:my-4">
-        <h2 className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent inline-flex items-center gap-2">
-          <TravelExploreIcon className="text-indigo-600" />
-          Start Your Journey
-        </h2>
-        <p className="hidden sm:block text-sm md:text-base text-gray-500 font-medium">
-          Best prices guaranteed
-        </p>
-      </div>
-
       <div className="relative bg-gradient-to-r from-white/95 to-slate-50/95 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-purple-200/50 shadow-lg shadow-purple-600/5 transition-all duration-300 hover:shadow-xl hover:shadow-purple-600/10 hover:-translate-y-0.5">
         <div className="absolute top-0 left-0 right-0 h-1 gradient-bar bg-gradient-to-r from-purple-500 via-indigo-500 to-pink-500"></div>
         <div className="p-3 md:p-5">

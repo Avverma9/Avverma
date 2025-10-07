@@ -33,11 +33,10 @@ export default function  Offered  ()  {
 
   const limitedData = hotelData?.slice(0, 10);
   return (
-    <div className="container mt-4">
+    <div className="mt-4">
       <hr />
 
       <HotelMobileCard hotelData={limitedData} />
     </div>
   );
 };
-

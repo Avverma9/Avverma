@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import Offered from './Offered';
 
 // --- SVG ICON FOR THE BUTTON ---
 const ArrowRightIcon = (props) => (
@@ -76,11 +77,30 @@ export default function Locations() {
         return null
     }
     return (
-        <section className="py-16 md:py-24 bg-gray-50">
+        <section className="py-16 md:py-24">
+
             <div className="container mx-auto px-4">
+                <Offered />
+                <hr class="h-1 my-8 border-0 bg-gradient-to-r from-orange-500 via-pink-500 to-blue-500" />
                 <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
                     <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
-                        Top Destinations
+                        {/* Har letter ko alag span mein daala hai */}
+                        <span className="text-red-500">T</span>
+                        <span className="text-orange-500">o</span>
+                        <span className="text-amber-500">p</span>
+                        {' '} {/* Space ke liye */}
+                        <span className="text-blue-500">D</span>
+                        <span className="text-cyan-500">e</span>
+                        <span className="text-teal-500">s</span>
+                        <span className="text-emerald-500">t</span>
+                        <span className="text-green-500">i</span>
+                        <span className="text-lime-500">n</span>
+                        <span className="text-yellow-500">a</span>
+                        <span className="text-red-500">t</span>
+                        <span className="text-orange-500">i</span>
+                        <span className="text-amber-500">o</span>
+                        <span className="text-blue-500">n</span>
+                        <span className="text-cyan-500">s</span>
                     </h2>
                     <p className="text-lg text-gray-600 leading-relaxed">
                         Discover some of the most popular and breathtaking destinations curated just for you. Your next adventure awaits!

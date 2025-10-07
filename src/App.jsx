@@ -41,14 +41,15 @@ export default function App() {
     <div className="App flex flex-col">
       <LoaderProvider>
         <ToastProvider>
-          <Header />
+          <Header />  
+          <HeaderTravel /> 
           <BookNow />
-          <HeaderTravel />
           <ProfileSideBar />
           <Hotel />
-          <SearchForm />
           <Banner />
-          <Offered />
+        
+          <SearchForm />
+         
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<Locations />} />

@@ -65,7 +65,7 @@ const HotelMobileCard = ({ hotelData }) => {
     }
 
     return (
-        <div className="p-2 md:p-4 bg-gray-50">
+        <div className="container p-2 md:p-4">
             <div className="text-center mb-6">
                 <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                     Our Offered Hotels
