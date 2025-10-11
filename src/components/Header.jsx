@@ -20,8 +20,6 @@ const Logo = () => (
   <img src="/logo.png" alt="HRS" className="w-18 h-12" />
 );
 
-// --- Component-level Constants ---
-// Moved outside the component to prevent re-declaration on every render.
 const navLinks = [
   { text: "Cabs", path: "/cabs", icon: <CabIcon /> },
   { text: "Holidays", path: "/holidays", icon: <HolidayIcon /> },
@@ -38,8 +36,6 @@ const profileLinks = [
 
 const contactLink = { text: "Call us for booking", number: "9917991758", path: "tel:9917991758" };
 
-// --- Sub-components ---
-// Moved outside the main component to prevent re-creation on every render.
 const NavLink = ({ link, handleRedirect }) => {
   const location = useLocation();
   const isActive = location.pathname.startsWith(link.path);
@@ -63,8 +59,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
-
-  // Floating UI hooks for profile dropdown
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const { refs, floatingStyles, context } = useFloating({
     open: profileMenuOpen,
@@ -72,16 +67,28 @@ export default function Header() {
     middleware: [offset(10), flip()],
     whileElementsMounted: autoUpdate,
   });
+  const scrollTimeout = useRef(null);
+
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
   const { getReferenceProps, getFloatingProps } = useInteractions([click, dismiss, role]);
 
   useEffect(() => {
-    const handleScroll = () => setHeaderScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setHeaderScrolled(window.scrollY > 50);
+      setIsHeaderVisible(false);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+      scrollTimeout.current = setTimeout(() => setIsHeaderVisible(true), 250);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
     };
   }, []);
 
@@ -109,27 +116,25 @@ export default function Header() {
     setMobileMenuOpen(false);
     setProfileMenuOpen(false);
   };
+
   if (location.pathname === "/login" || location.pathname === "/register") return null;
 
   return (
     <>
-      {/* Floating Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 ">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${isHeaderVisible ? 'translate-y-0' : '-translate-y-full'}`}>
         <div
           className={`mx-auto max-w-7xl transition-all duration-500 ease-out transform ${headerScrolled
-              ? "bg-white/70 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl" // Scrolled state styles
-              : "bg-white/50 backdrop-blur-lg border border-white/30 shadow-lg rounded-2xl" // Initial state styles
+              ? "bg-white/50 backdrop-blur-xl border border-white/30 shadow-2xl rounded-2xl"
+              : "bg-white/30 backdrop-blur-lg border border-white/20 shadow-lg rounded-2xl"
             }`}
         >
           <div className="flex items-center justify-between h-16 px-6">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => handleRedirect("/")}
-                className="flex-shrink-0 flex items-center gap-3 hover:scale-105 transition-transform duration-200"
-              >
-                <Logo />
-              </button>
-            </div>
+            <button
+              onClick={() => handleRedirect("/")}
+              className="flex-shrink-0 flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+            >
+              <Logo />
+            </button>
 
             <nav className="hidden lg:flex items-center gap-2">
               {navLinks.map((link) => (
@@ -137,16 +142,16 @@ export default function Header() {
               ))}
             </nav>
 
-            <div className="flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-4">
               <button
                 onClick={() => handleRedirect(contactLink.path)}
-                className="hidden lg:flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 text-white text-sm font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-white/10"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 text-white text-sm font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-white/10"
               >
                 <PhoneIcon />
                 <span>{contactLink.number}</span>
               </button>
 
-              <div className="relative hidden lg:block">
+              <div className="relative">
                 <button
                   ref={refs.setReference}
                   {...getReferenceProps()}
@@ -158,7 +163,7 @@ export default function Header() {
                   <div
                     ref={refs.setFloating}
                     {...getFloatingProps()}
-                    style={floatingStyles} // floatingStyles must be applied for positioning
+                    style={floatingStyles}
                     className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200/80"
                   >
                     {profileLinks.map((link) => (
@@ -177,29 +182,26 @@ export default function Header() {
                   </div>
                 )}
               </div>
-
-              <button
-                onClick={() => setMobileMenuOpen(true)}
-                className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-white/15 focus:outline-none transition-all duration-200 hover:scale-105 backdrop-blur-sm"
-              >
-                <MenuIcon />
-              </button>
             </div>
+
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-white/15 focus:outline-none transition-all duration-200 hover:scale-105 backdrop-blur-sm"
+            >
+              <MenuIcon />
+            </button>
           </div>
         </div>
       </header>
 
-      {/* Add top padding to body content to account for floating header */}
       <div className="pt-24"></div>
 
-      {/* Mobile Menu Overlay */}
       <div
         className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         onClick={() => setMobileMenuOpen(false)}
       ></div>
 
-      {/* Mobile Menu Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full w-full max-w-xs bg-white/70 backdrop-blur-xl shadow-2xl transform transition-all duration-300 ease-in-out z-50 border-r border-white/30 ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
