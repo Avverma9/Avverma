@@ -204,13 +204,7 @@ export default function ProfileSideBar () {
         </main>
       </div>
 
-      {/* Bottom Nav */}
-      <nav className="fixed bottom-4 left-4 right-4 z-40 grid grid-cols-4 h-[64px] items-center rounded-xl border border-white/30 shadow-lg bg-white/40 backdrop-blur-xl md:hidden">
-        <BottomNavLink to="/home" icon={<RiHomeLine />} label="Home" />
-        <BottomNavLink to="/holidays" icon={<RiBriefcaseLine />} label="Holidays" />
-        <BottomNavLink to="/cabs" icon={<RiCarLine />} label="Cabs" />
-        <BottomNavLink to="/profile" icon={<MdOutlineAccountCircle />} label="Profile" />
-      </nav>
+     
     </div>
   );
 };

@@ -52,13 +52,13 @@ export default function ModernBottomNavigation() {
       <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}>
         <Paper
           sx={{
-            margin: "0 16px 16px", // Creates the floating effect
-            borderRadius: "24px",   // Modern rounded corners
-            backdropFilter: "blur(10px)",
-            backgroundColor: "rgba(255, 255, 255, 0.8)",
-            boxShadow: '0px 4px 20px rgba(0,0,0,0.15)',
+            // Added modern styling with transparency and rounded corners
+            borderTopLeftRadius: 24,
+            borderTopRightRadius: 24,
+            backdropFilter: 'blur(12px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.75)',
+            boxShadow: '0px -4px 20px rgba(0,0,0,0.08)',
           }}
-          elevation={3}
         >
           <BottomNavigation
             showLabels
@@ -67,17 +67,22 @@ export default function ModernBottomNavigation() {
               setValue(newValue); // Update state for immediate visual feedback
             }}
             sx={{
-              borderRadius: "24px",
-              backgroundColor: "transparent",
+              // Make the navigation itself transparent to show the Paper's background
+              backgroundColor: 'transparent',
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
               "& .MuiBottomNavigationAction-root": {
-                color: "#888",
+                color: '#4B5563', // Bolder inactive color
                 transition: 'all 0.3s ease',
               },
               "& .Mui-selected": {
-                color: "primary.main",
+                color: 'primary.main', // Keep active color bold
                 "& .MuiSvgIcon-root, .MuiBottomNavigationAction-label": {
-                  color: "primary.main",
+                  color: 'primary.main',
                 },
+                "& .MuiBottomNavigationAction-label": {
+                  fontWeight: 'bold', // Bolder text for active item
+                }
               },
             }}
           >

@@ -201,18 +201,16 @@ const HotelPageContent = () => {
             elevation={0}
             sx={{
                 borderRadius: 3,
-                height: "100%",
-                overflow: "hidden",
-                position: "relative",
+                position: "sticky",
+                top: 80,
                 bgcolor: "#fff",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.08)",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.08)"
             }}
         >
             <CardContent
                 sx={{
                     p: { xs: 2, md: 3 },
                     height: "100%",
-                    overflowY: "auto",
                     position: "relative",
                 }}
             >
@@ -669,14 +667,7 @@ const HotelPageContent = () => {
                 {/* Desktop Filters */}
                 {!isMobile && (
                     <Box
-                        sx={{
-                            width: "300px",
-                            flexShrink: 0,
-                            position: "sticky",
-                            top: 80,
-                            height: "calc(100vh - 100px)",
-                            alignSelf: "flex-start",
-                        }}
+                        sx={{ width: "300px", flexShrink: 0, alignSelf: "flex-start" }}
                     >
                         {renderFilters()}
                     </Box>
@@ -774,5 +765,3 @@ export default function Hotel() {
     }
     return <HotelPageContent />;
 };
-
-

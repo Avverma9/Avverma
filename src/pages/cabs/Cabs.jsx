@@ -5,20 +5,38 @@ import { useNavigate } from "react-router-dom";
 import { useLoader } from "../../utils/loader";
 
 const FilterIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
   </svg>
 );
 
 const CloseIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
 );
 
 const CarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-20 h-20 text-gray-300" fill="none" stroke="currentColor" strokeWidth="1.5">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-20 h-20 text-gray-300"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+  >
     <path d="M14 16.5V15a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v1.5"></path>
     <path d="M2 10h20"></path>
     <path d="M6 11v-1.5a1.5 1.5 0 0 1 3 0V11"></path>
@@ -29,7 +47,13 @@ const CarIcon = () => (
 );
 
 const LogoIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-8 h-8"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
     <circle cx="7" cy="17" r="2"></circle>
     <circle cx="17" cy="17" r="2"></circle>
@@ -37,21 +61,39 @@ const LogoIcon = () => (
 );
 
 const SearchIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <circle cx="11" cy="11" r="8"></circle>
     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
   </svg>
 );
 
 const LocationIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
     <circle cx="12" cy="10" r="3"></circle>
   </svg>
 );
 
 const CalendarIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
     <line x1="16" y1="2" x2="16" y2="6"></line>
     <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -60,7 +102,13 @@ const CalendarIcon = () => (
 );
 
 const UsersIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
     <circle cx="9" cy="7" r="4"></circle>
     <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -69,26 +117,38 @@ const UsersIcon = () => (
 );
 
 const FuelIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-4 h-4"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
     <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
     <path d="M3 3v5h5"></path>
   </svg>
 );
 
 const formatDate = (dateString) =>
-  dateString ? new Date(dateString).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  }) : "N/A";
+  dateString
+    ? new Date(dateString).toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "N/A";
 
 const formatDateForInput = (dateString) =>
   dateString ? new Date(dateString).toISOString().split("T") : "";
 
 const CabCardMobile = ({ cab }) => {
   const navigate = useNavigate();
-  const availableSeats = cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
-  const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(" ", "+")}`;
+  const availableSeats =
+    cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
+  const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(
+    " ",
+    "+"
+  )}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all duration-300">
@@ -105,10 +165,13 @@ const CabCardMobile = ({ cab }) => {
           </span>
         </div>
         <div className="absolute bottom-2 left-2">
-          <span className={`text-xs font-medium px-2 py-1 rounded-full shadow-lg ${availableSeats > 0
-            ? "bg-green-500 text-white"
-            : "bg-red-500 text-white"
-            }`}>
+          <span
+            className={`text-xs font-medium px-2 py-1 rounded-full shadow-lg ${
+              availableSeats > 0
+                ? "bg-green-500 text-white"
+                : "bg-red-500 text-white"
+            }`}
+          >
             {availableSeats > 0 ? `${availableSeats} Seats` : "Full"}
           </span>
         </div>
@@ -116,8 +179,12 @@ const CabCardMobile = ({ cab }) => {
 
       <div className="p-4 space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-bold text-lg text-gray-900 truncate">{cab.make} {cab.model}</h3>
-          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{cab.year}</span>
+          <h3 className="font-bold text-lg text-gray-900 truncate">
+            {cab.make} {cab.model}
+          </h3>
+          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+            {cab.year}
+          </span>
         </div>
 
         <div className="flex items-center space-x-2 text-gray-600">
@@ -148,16 +215,19 @@ const CabCardMobile = ({ cab }) => {
 
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
           <div className="flex flex-col">
-            <span className="text-xl font-bold text-blue-600">₹{cab.perPersonCost}</span>
+            <span className="text-xl font-bold text-blue-600">
+              ₹{cab.perPersonCost}
+            </span>
             <span className="text-xs text-gray-500">per person</span>
           </div>
           <button
             onClick={() => navigate(`/cab-booking/${cab._id}`)}
             disabled={availableSeats <= 0}
-            className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${availableSeats > 0
-              ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
+            className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
+              availableSeats > 0
+                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
           >
             {availableSeats > 0 ? "Book Now" : "Unavailable"}
           </button>
@@ -169,8 +239,12 @@ const CabCardMobile = ({ cab }) => {
 
 const CabCardDesktop = ({ cab }) => {
   const navigate = useNavigate();
-  const availableSeats = cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
-  const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(" ", "+")}`;
+  const availableSeats =
+    cab.seater - cab.seatConfig.filter((s) => s.isBooked).length;
+  const placeholderImage = `https://placehold.co/600x400/e0e7ff/4338ca?text=${cab.make.replace(
+    " ",
+    "+"
+  )}`;
 
   return (
     <div className="bg-white rounded-2xl shadow-sm hover:shadow-lg border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
@@ -188,11 +262,16 @@ const CabCardDesktop = ({ cab }) => {
             </span>
           </div>
           <div className="absolute bottom-3 left-3">
-            <span className={`text-xs font-medium px-3 py-1 rounded-full shadow-lg ${availableSeats > 0
-              ? "bg-green-500 text-white"
-              : "bg-red-500 text-white"
-              }`}>
-              {availableSeats > 0 ? `${availableSeats} Seats Available` : "Fully Booked"}
+            <span
+              className={`text-xs font-medium px-3 py-1 rounded-full shadow-lg ${
+                availableSeats > 0
+                  ? "bg-green-500 text-white"
+                  : "bg-red-500 text-white"
+              }`}
+            >
+              {availableSeats > 0
+                ? `${availableSeats} Seats Available`
+                : "Fully Booked"}
             </span>
           </div>
         </div>
@@ -200,8 +279,12 @@ const CabCardDesktop = ({ cab }) => {
         <div className="flex-1 p-6 flex flex-col justify-between">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-xl text-gray-900">{cab.make} {cab.model}</h3>
-              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">{cab.year}</span>
+              <h3 className="font-bold text-xl text-gray-900">
+                {cab.make} {cab.model}
+              </h3>
+              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">
+                {cab.year}
+              </span>
             </div>
 
             <div className="flex items-center space-x-3 text-gray-600">
@@ -218,7 +301,9 @@ const CabCardDesktop = ({ cab }) => {
               </div>
               <div className="flex flex-col items-center space-y-1 p-2 bg-gray-50 rounded-lg">
                 <CalendarIcon />
-                <span className="font-medium text-center">{formatDate(cab.pickupD)}</span>
+                <span className="font-medium text-center">
+                  {formatDate(cab.pickupD)}
+                </span>
               </div>
               <div className="flex flex-col items-center space-y-1 p-2 bg-gray-50 rounded-lg">
                 <FuelIcon />
@@ -233,16 +318,19 @@ const CabCardDesktop = ({ cab }) => {
 
           <div className="flex items-center justify-between pt-4 border-t border-gray-100">
             <div className="flex flex-col">
-              <span className="text-3xl font-bold text-blue-600">₹{cab.perPersonCost}</span>
+              <span className="text-3xl font-bold text-blue-600">
+                ₹{cab.perPersonCost}
+              </span>
               <span className="text-sm text-gray-500">per person</span>
             </div>
             <button
               onClick={() => navigate(`/cab-booking/${cab._id}`)}
               disabled={availableSeats <= 0}
-              className={`px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 ${availableSeats > 0
-                ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
+              className={`px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 ${
+                availableSeats > 0
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
               {availableSeats > 0 ? "Book Now" : "Unavailable"}
             </button>
@@ -252,7 +340,6 @@ const CabCardDesktop = ({ cab }) => {
     </div>
   );
 };
-
 
 const FilterComponent = ({
   filters,
@@ -264,13 +351,13 @@ const FilterComponent = ({
   priceRange,
   sharingTypes,
   vehicleTypes,
+  isDesktop = false,
 }) => {
   const handleFilterChange = (e) => {
     const { name, value, type } = e.target;
     setFilters((prev) => ({
       ...prev,
-      [name]:
-        type === "number" || type === "range" ? Number(value) : value,
+      [name]: type === "number" || type === "range" ? Number(value) : value,
     }));
   };
 
@@ -292,59 +379,53 @@ const FilterComponent = ({
 
   return (
     <>
-      {/* Mobile Overlay */}
-      {isOpen && (
+      {/* Overlay for mobile */}
+      {!isDesktop && isOpen && (
         <div
-          className="fixed top-18 inset-0 bg-black bg-opacity-40 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
           onClick={onClose}
         />
       )}
 
-      {/* Filter Panel */}
       <div
         className={`
-          fixed lg:static inset-y-0 left-0 z-50 w-full max-w-xs lg:max-w-sm
-          transform transition-transform duration-300 ease-in-out
-          ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          lg:sticky lg:top-[80px] lg:h-fit
-          bg-white rounded-none lg:rounded-xl shadow-xl lg:shadow-md
-          flex flex-col
+          ${
+            isDesktop
+              ? 'sticky top-24 bg-white rounded-2xl shadow-lg border border-gray-100'
+              : `
+                fixed inset-x-4 bottom-14 z-50
+                transform transition-transform duration-300 ease-out
+                ${isOpen ? 'translate-y-0' : 'translate-y-[110%]'}
+                bg-white rounded-2xl shadow-2xl
+                flex flex-col
+                max-h-[85vh]
+              ` // Adjusted bottom margin and max-height
+          }
         `}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 sticky top-0 bg-white z-10">
-          <h2 className="text-base font-semibold text-gray-900">Filters</h2>
-          <button
-            onClick={onClose}
-            className="p-1.5 hover:bg-gray-100 rounded-full lg:hidden"
-          >
-            <CloseIcon fontSize="small" />
-          </button>
-        </div>
-        {/* Footer */}
-        <div className="sticky bg-white border-t border-gray-200 p-3">
-          <div className="flex space-x-3">
-            <button
-              onClick={resetFilters}
-              className="flex-1 py-2 text-blue-600 border border-blue-600 rounded-md font-medium hover:bg-blue-50 text-sm"
-            >
-              Reset
-            </button>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white rounded-t-3xl sticky top-0 z-10">
+          <div className="flex items-center space-x-3">
+            <div className="w-1 h-6 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full" />
+            <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+          </div>
+          {!isDesktop && (
             <button
               onClick={onClose}
-              className="flex-1 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md font-medium hover:from-blue-700 hover:to-purple-700 text-sm"
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
             >
-              Apply
+              <CloseIcon />
             </button>
-          </div>
+          )}
         </div>
-        {/* Body */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-          {/* Price */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Max Price
+
+        {/* Filter Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-6">
+          {/* Price Range */}
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              💰 Maximum Price
             </label>
             <input
               type="range"
@@ -353,36 +434,43 @@ const FilterComponent = ({
               max={priceRange.max}
               value={filters.price}
               onChange={handleFilterChange}
-              className="w-full h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+              className="w-full h-2 bg-gray-200 rounded-lg cursor-pointer slider"
             />
-            <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>₹{priceRange.min}</span>
-              <span className="font-semibold text-blue-600">
+            <div className="flex justify-between text-sm text-gray-600">
+              <span className="bg-gray-100 px-3 py-1 rounded-full">
+                ₹{priceRange.min}
+              </span>
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-1 rounded-full font-semibold">
                 ₹{filters.price}
               </span>
-              <span>₹{priceRange.max}</span>
+              <span className="bg-gray-100 px-3 py-1 rounded-full">
+                ₹{priceRange.max}
+              </span>
             </div>
           </div>
 
-          {/* Seats */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Seats Required
+          {/* Seats Required */}
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              👥 Seats Required
             </label>
-            <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+            <div className="flex items-center justify-center bg-gray-50 rounded-2xl p-4">
               <button
                 onClick={() => handleSeatsChange(-1)}
                 disabled={filters.seats <= 1}
-                className="px-3 py-1 text-blue-600 hover:bg-blue-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                className="w-12 h-12 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-blue-600 font-bold text-xl disabled:text-gray-400 disabled:cursor-not-allowed hover:bg-blue-50 transition-colors"
               >
                 −
               </button>
-              <div className="flex-1 text-center py-1 font-semibold text-gray-800 border-x border-gray-300">
-                {filters.seats}
+              <div className="mx-8 text-center">
+                <div className="text-3xl font-bold text-gray-900">
+                  {filters.seats}
+                </div>
+                <div className="text-sm text-gray-500">seats</div>
               </div>
               <button
                 onClick={() => handleSeatsChange(1)}
-                className="px-3 py-1 text-blue-600 hover:bg-blue-50"
+                className="w-12 h-12 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-blue-600 font-bold text-xl hover:bg-blue-50 transition-colors"
               >
                 +
               </button>
@@ -390,15 +478,15 @@ const FilterComponent = ({
           </div>
 
           {/* Car Brand */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Car Brand
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              🚗 Car Brand
             </label>
             <select
               name="make"
               value={filters.make}
               onChange={handleFilterChange}
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500"
+              className="w-full border-2 border-gray-200 rounded-xl p-4 text-base bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
             >
               <option value="All">All Brands</option>
               {makes.map((make) => (
@@ -409,16 +497,16 @@ const FilterComponent = ({
             </select>
           </div>
 
-          {/* Fuel Type - Dropdown */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Fuel Type
+          {/* Fuel Type */}
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              ⛽ Fuel Type
             </label>
             <select
               name="fuelType"
               value={filters.fuelType}
               onChange={handleFilterChange}
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-blue-500"
+              className="w-full border-2 border-gray-200 rounded-xl p-4 text-base bg-white focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
             >
               <option value="All">All Types</option>
               {fuelTypes.map((fuel) => (
@@ -429,16 +517,16 @@ const FilterComponent = ({
             </select>
           </div>
 
-          {/* Sharing Type - Dropdown */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Sharing Type
+          {/* Sharing Type */}
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              🤝 Sharing Type
             </label>
             <select
               name="sharingType"
               value={filters.sharingType}
               onChange={handleFilterChange}
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-purple-500"
+              className="w-full border-2 border-gray-200 rounded-xl p-4 text-base bg-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
             >
               <option value="All">All Types</option>
               {sharingTypes.map((type) => (
@@ -449,16 +537,16 @@ const FilterComponent = ({
             </select>
           </div>
 
-          {/* Vehicle Type - Dropdown */}
-          <div>
-            <label className="block font-medium text-gray-800 text-sm mb-1">
-              Vehicle Type
+          {/* Vehicle Type */}
+          <div className="space-y-3">
+            <label className="block font-semibold text-gray-900 text-base">
+              🚙 Vehicle Type
             </label>
             <select
               name="vehicleType"
               value={filters.vehicleType}
               onChange={handleFilterChange}
-              className="w-full border border-gray-300 rounded-md p-2 text-sm bg-white focus:ring-2 focus:ring-green-500"
+              className="w-full border-2 border-gray-200 rounded-xl p-4 text-base bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
             >
               <option value="All">All Types</option>
               {vehicleTypes.map((type) => (
@@ -470,21 +558,54 @@ const FilterComponent = ({
           </div>
         </div>
 
-
+        {/* Footer Actions */}
+        <div
+          className={`p-6 space-y-3 ${
+            isDesktop ? 'border-t' : 'sticky bottom-0 bg-white border-t rounded-b-2xl'
+          } border-gray-200`}
+        >
+          <div className="flex space-x-3">
+            <button
+              onClick={resetFilters}
+              className="flex-1 py-3 text-blue-600 border-2 border-blue-600 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
+            >
+              Reset All
+            </button>
+            <button
+              onClick={onClose}
+              className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-colors"
+            >
+              {isDesktop ? "Apply" : "Apply Filters"}
+            </button>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-
-const SearchModal = ({ isOpen, onClose, searchParams, handleSearchChange, handleSearchSubmit }) => {
+const SearchModal = ({
+  isOpen,
+  onClose,
+  searchParams,
+  handleSearchChange,
+  handleSearchSubmit,
+}) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4" onClick={onClose}>
-      <div className="bg-white rounded-2xl w-full max-w-lg p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-3 sm:p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-2xl w-full max-w-lg p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-between items-center">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-900">Search Your Ride</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900">
+            Search Your Ride
+          </h3>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -559,9 +680,12 @@ const NoResults = () => (
     <div className="bg-gray-100 rounded-full p-6 sm:p-8 mb-4 sm:mb-6">
       <CarIcon />
     </div>
-    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">No Rides Found</h2>
+    <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">
+      No Rides Found
+    </h2>
     <p className="text-gray-500 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
-      We couldn't find any rides matching your criteria. Try adjusting your search or filters to see more options.
+      We couldn't find any rides matching your criteria. Try adjusting your
+      search or filters to see more options.
     </p>
     <button
       className="px-4 sm:px-6 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors text-sm"
@@ -571,7 +695,6 @@ const NoResults = () => (
     </button>
   </div>
 );
-
 
 const SkeletonCard = ({ isDesktop = false }) => (
   <div
@@ -638,20 +761,24 @@ export default function CarsPage() {
     from: "",
     to: "",
     pickupDate: "",
-    dropDate: ""
+    dropDate: "",
   });
   const [tempSearchParams, setTempSearchParams] = useState(searchParams);
 
-  const { makes, fuelTypes, priceRange, sharingTypes, vehicleTypes } = useMemo(() => {
-    const prices = cabs.map((c) => c.perPersonCost).filter((p) => p != null);
-    return {
-      makes: [...new Set(cabs.map((cab) => cab.make))],
-      fuelTypes: [...new Set(cabs.map((cab) => cab.fuelType))],
-      sharingTypes: ["Shared", "Private"],
-      vehicleTypes: ["Car", "Bus", "Bike"],
-      priceRange: { min: Math.min(...prices, 0), max: Math.max(...prices, 3000) },
-    };
-  }, [cabs]);
+  const { makes, fuelTypes, priceRange, sharingTypes, vehicleTypes } =
+    useMemo(() => {
+      const prices = cabs.map((c) => c.perPersonCost).filter((p) => p != null);
+      return {
+        makes: [...new Set(cabs.map((cab) => cab.make))],
+        fuelTypes: [...new Set(cabs.map((cab) => cab.fuelType))],
+        sharingTypes: ["Shared", "Private"],
+        vehicleTypes: ["Car", "Bus", "Bike"],
+        priceRange: {
+          min: Math.min(...prices, 0),
+          max: Math.max(...prices, 3000),
+        },
+      };
+    }, [cabs]);
 
   const [filters, setFilters] = useState({
     make: "All",
@@ -659,7 +786,7 @@ export default function CarsPage() {
     seats: 1,
     price: priceRange.max,
     sharingType: "All",
-    vehicleType: "All"
+    vehicleType: "All",
   });
 
   useEffect(() => {
@@ -681,12 +808,12 @@ export default function CarsPage() {
           c.dropP.toLowerCase().includes(searchParams.to.toLowerCase())
         );
       if (searchParams.pickupDate)
-        result = result.filter((c) =>
-          formatDateForInput(c.pickupD) >= searchParams.pickupDate
+        result = result.filter(
+          (c) => formatDateForInput(c.pickupD) >= searchParams.pickupDate
         );
       if (searchParams.dropDate)
-        result = result.filter((c) =>
-          formatDateForInput(c.dropD) <= searchParams.dropDate
+        result = result.filter(
+          (c) => formatDateForInput(c.dropD) <= searchParams.dropDate
         );
 
       if (filters.make !== "All")
@@ -698,15 +825,17 @@ export default function CarsPage() {
       if (filters.vehicleType !== "All")
         result = result.filter((c) => c.vehicleType === filters.vehicleType);
 
-      result = result.filter((c) =>
-        c.seatConfig.filter((s) => !s.isBooked).length >= filters.seats
+      result = result.filter(
+        (c) => c.seatConfig.filter((s) => !s.isBooked).length >= filters.seats
       );
       result = result.filter((c) => c.perPersonCost <= filters.price);
 
       result.sort((a, b) =>
-        sortBy === "price-asc" ? a.perPersonCost - b.perPersonCost :
-          sortBy === "price-desc" ? b.perPersonCost - a.perPersonCost :
-            b.year - a.year
+        sortBy === "price-asc"
+          ? a.perPersonCost - b.perPersonCost
+          : sortBy === "price-desc"
+          ? b.perPersonCost - a.perPersonCost
+          : b.year - a.year
       );
 
       setFilteredCabs(result);
@@ -732,21 +861,16 @@ export default function CarsPage() {
   const getSearchSummary = () => {
     const { from, to, pickupDate } = searchParams;
     if (!from && !to && !pickupDate) return "Search for your next ride...";
-    return [
-      from,
-      to && `→ ${to}`,
-      pickupDate && formatDate(pickupDate)
-    ].filter(Boolean).join(" ");
+    return [from, to && `→ ${to}`, pickupDate && formatDate(pickupDate)]
+      .filter(Boolean)
+      .join(" ");
   };
 
   useEffect(() => {
     (async () => {
       try {
-      
-      
         const res = await dispatch(getAllCars());
         setCabs(res.payload || []);
-      
       } catch (err) {
         console.error("Fetch failed", err);
       }
@@ -762,8 +886,12 @@ export default function CarsPage() {
               <LogoIcon />
             </div>
             <div className="min-w-0">
-              <h1 className="text-lg sm:text-xl font-bold truncate">HRS Cabs</h1>
-              <p className="text-blue-100 text-xs sm:text-sm truncate">Find your perfect ride</p>
+              <h1 className="text-lg sm:text-xl font-bold truncate">
+                HRS Cabs
+              </h1>
+              <p className="text-blue-100 text-xs sm:text-sm truncate">
+                Find your perfect ride
+              </p>
             </div>
           </div>
 
@@ -779,20 +907,23 @@ export default function CarsPage() {
         </div>
       </header>
 
-      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 pt-4">
         <div className="lg:grid lg:grid-cols-12 lg:gap-8">
           <div className="hidden lg:block lg:col-span-3">
-            <FilterComponent
-              filters={filters}
-              setFilters={setFilters}
-              makes={makes}
-              fuelTypes={fuelTypes}
-              isOpen={true}
-              onClose={() => { }}
-              priceRange={priceRange}
-              sharingTypes={sharingTypes}
-              vehicleTypes={vehicleTypes}
-            />
+            <div className="sticky top-24">
+              <FilterComponent
+                filters={filters}
+                setFilters={setFilters}
+                makes={makes}
+                fuelTypes={fuelTypes}
+                isOpen={true}
+                onClose={() => {}}
+                priceRange={priceRange}
+                sharingTypes={sharingTypes}
+                vehicleTypes={vehicleTypes}
+                isDesktop={true}
+              />
+            </div>
           </div>
           {isMobileFilterOpen && (
             <FilterComponent
@@ -808,7 +939,7 @@ export default function CarsPage() {
             />
           )}
 
-          <main className="lg:col-span-9 min-w-0 p-3 sm:p-4 lg:p-6">
+          <main className="lg:col-span-9 min-w-0">
             <div className="flex items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
               <button
                 onClick={openSearchModal}
@@ -831,23 +962,31 @@ export default function CarsPage() {
               </select>
             </div>
 
-            <div className="space-y-4 lg:space-y-6 pb-24 lg:pb-0 min-h-[50vh]">
+            <div className="space-y-4 lg:space-y-6 pb-20 lg:pb-0 min-h-[50vh]">
               {isLoading ? (
                 <>
                   <div className="lg:hidden grid grid-cols-1 gap-4">
-                    {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <SkeletonCard key={i} />
+                    ))}
                   </div>
                   <div className="hidden lg:block space-y-6">
-                    {Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={i} isDesktop={true} />)}
+                    {Array.from({ length: 3 }).map((_, i) => (
+                      <SkeletonCard key={i} isDesktop={true} />
+                    ))}
                   </div>
                 </>
               ) : filteredCabs.length ? (
                 <>
                   <div className="lg:hidden grid grid-cols-1 gap-4">
-                    {filteredCabs.map((cab) => <CabCardMobile key={cab._id} cab={cab} />)}
+                    {filteredCabs.map((cab) => (
+                      <CabCardMobile key={cab._id} cab={cab} />
+                    ))}
                   </div>
                   <div className="hidden lg:block space-y-6">
-                    {filteredCabs.map((cab) => <CabCardDesktop key={cab._id} cab={cab} />)}
+                    {filteredCabs.map((cab) => (
+                      <CabCardDesktop key={cab._id} cab={cab} />
+                    ))}
                   </div>
                 </>
               ) : (
@@ -860,7 +999,7 @@ export default function CarsPage() {
 
       <button
         onClick={() => setMobileFilterOpen(true)}
-        className="
+        className={`
           fixed bottom-[100px] left-4 lg:hidden z-40
           bg-gradient-to-r from-blue-600 to-purple-600 text-white 
           px-4 py-3 rounded-full shadow-xl 
@@ -868,7 +1007,7 @@ export default function CarsPage() {
           hover:from-blue-700 hover:to-purple-700 
           transition-all transform hover:scale-105
           text-sm font-medium
-        "
+        `}
       >
         <FilterIcon />
         <span>Filters</span>
@@ -881,9 +1020,6 @@ export default function CarsPage() {
         handleSearchChange={handleTempSearchChange}
         handleSearchSubmit={handleSearchSubmit}
       />
-
-      {/* Bottom Navigation Space */}
-      <div className="h-20 lg:hidden"></div>
 
       <style jsx>{`
         .slider::-webkit-slider-thumb {
