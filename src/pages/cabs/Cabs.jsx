@@ -222,14 +222,14 @@ const CabCardMobile = ({ cab }) => {
           </div>
           <button
             onClick={() => navigate(`/cab-booking/${cab._id}`)}
-            disabled={availableSeats <= 0}
+            disabled={availableSeats <= 0 || cab.runningStatus === 'Unavailable'}
             className={`px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200 ${
-              availableSeats > 0
+              availableSeats > 0 && cab.runningStatus !== 'Unavailable'
                 ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            {availableSeats > 0 ? "Book Now" : "Unavailable"}
+            {availableSeats > 0 && cab.runningStatus !== 'Unavailable' ? "Book Now" : "Unavailable"}
           </button>
         </div>
       </div>
@@ -325,14 +325,14 @@ const CabCardDesktop = ({ cab }) => {
             </div>
             <button
               onClick={() => navigate(`/cab-booking/${cab._id}`)}
-              disabled={availableSeats <= 0}
+              disabled={availableSeats <= 0 || cab.runningStatus === 'Unavailable'}
               className={`px-8 py-3 rounded-xl font-semibold text-base transition-all duration-200 ${
-                availableSeats > 0
+                availableSeats > 0 && cab.runningStatus !== 'Unavailable'
                   ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transform hover:scale-105"
                   : "bg-gray-300 text-gray-500 cursor-not-allowed"
               }`}
             >
-              {availableSeats > 0 ? "Book Now" : "Unavailable"}
+              {availableSeats > 0 && cab.runningStatus !== 'Unavailable' ? "Book Now" : "Unavailable"}
             </button>
           </div>
         </div>

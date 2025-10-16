@@ -81,7 +81,7 @@ export default function ComplaintsPage() {
 
   // Scroll to bottom when messages change
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current && openChatDialog) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [selectedComplaint, openChatDialog]);
@@ -95,24 +95,30 @@ export default function ComplaintsPage() {
     setIsSendingMessage(true);
 
     try {
-      const messages = {
+      const payload = {
         sender: userName || "User",
         receiver: "Admin",
         content: messageContent.trim(),
       };
 
-      const response = await axios.patch(
-        `${baseURL}/approveComplaint-on-panel/by-id/${selectedComplaint._id}`,
-        messages
+      const response = await axios.post(
+        `${baseURL}/do/chat-support/${selectedComplaint.complaintId}`,
+        payload
       );
 
-      if (response.status === 200) {
-        // Refresh complaints data
-        await dispatch(fetchComplaints(userId));
+      if (response.status === 200 || response.status === 201) {
+        // Refresh complaints data to get updated chats
+        await dispatch(fetchComplaints(userId)).unwrap();
 
-        // Update selected complaint with new message
-        const updatedComplaint = response.data;
-        setSelectedComplaint(updatedComplaint);
+        // Find and update the selected complaint with fresh data
+        const updatedData = await dispatch(fetchComplaints(userId)).unwrap();
+        const updatedComplaint = updatedData.find(
+          (c) => c._id === selectedComplaint._id
+        );
+        
+        if (updatedComplaint) {
+          setSelectedComplaint(updatedComplaint);
+        }
 
         // Clear input
         setMessageContent("");
@@ -132,23 +138,17 @@ export default function ComplaintsPage() {
     }
   };
 
-  // Aggregate all messages from updatedBy array
+  // Get all chat messages from the chats array
   const getAllMessages = (complaint) => {
-    if (!complaint.updatedBy) return [];
-
-    const allMessages = [];
-    complaint.updatedBy.forEach((update) => {
-      if (update.messages && update.messages.length > 0) {
-        allMessages.push(...update.messages);
-      }
-    });
+    if (!complaint.chats || complaint.chats.length === 0) return [];
 
     // Sort by timestamp
-    return allMessages.sort(
+    return [...complaint.chats].sort(
       (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
     );
   };
 
+  // Get unread count (messages from Admin)
   const getUnreadCount = (complaint) => {
     const messages = getAllMessages(complaint);
     return messages.filter((msg) => msg.sender === "Admin").length;
@@ -180,6 +180,7 @@ export default function ComplaintsPage() {
       setIsFormVisible(false);
     } catch (err) {
       console.error(err);
+      alert("Failed to submit complaint. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -187,8 +188,13 @@ export default function ComplaintsPage() {
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this complaint?")) {
-      await dispatch(deleteComplaint(id)).unwrap();
-      dispatch(fetchComplaints(userId));
+      try {
+        await dispatch(deleteComplaint(id)).unwrap();
+        dispatch(fetchComplaints(userId));
+      } catch (err) {
+        console.error(err);
+        alert("Failed to delete complaint. Please try again.");
+      }
     }
   };
 
@@ -423,7 +429,7 @@ export default function ComplaintsPage() {
         )}
 
         {/* Error Message */}
-        {error && (
+        {error && error.status !== 404 && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center gap-3">
             <IoAlertCircleOutline className="text-2xl" />
             <span className="font-medium">
@@ -473,7 +479,7 @@ export default function ComplaintsPage() {
                             {c.issue}
                           </h4>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 flex-wrap">
                           <span
                             className={`px-3 py-1 text-xs font-semibold rounded-full border ${getStatusColor(
                               c.status
@@ -560,7 +566,7 @@ export default function ComplaintsPage() {
                               <div className="space-y-2">
                                 {messages.slice(-2).map((msg, idx) => (
                                   <div
-                                    key={idx}
+                                    key={msg._id || idx}
                                     className="bg-white rounded-lg p-3 text-sm border border-purple-100"
                                   >
                                     <p className="text-gray-700">
@@ -713,7 +719,7 @@ export default function ComplaintsPage() {
                   <>
                     {getAllMessages(selectedComplaint).map((msg, idx) => (
                       <div
-                        key={idx}
+                        key={msg._id || idx}
                         className={`flex ${
                           msg.sender === "Admin"
                             ? "justify-start"
@@ -728,7 +734,7 @@ export default function ComplaintsPage() {
                           }`}
                         >
                           <p className="text-sm font-medium mb-1">
-                            {msg.sender === "Admin" ? "Support Team" : "You"}
+                            {msg.sender === "Admin" ? "Support Team" : msg.sender}
                           </p>
                           <p className="text-sm leading-relaxed">
                             {msg.content}

@@ -136,11 +136,20 @@ export default function TourBooking() {
   const dispatch = useDispatch();
   const bookings = useSelector((state) => state.travel.bookings);
   const [selectedBooking, setSelectedBooking] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     setLoading(true);
-    dispatch(getBookings()).finally(() => setLoading(false));
+    dispatch(getBookings())
+      .unwrap()
+      .catch((err) => {
+        // Only set an error if it's not a 404
+        if (err.status !== 404) {
+          setError("Failed to load tour bookings. Please try again.");
+        }
+      })
+      .finally(() => setLoading(false));
   }, [dispatch]);
 
   const openModal = (booking) => setSelectedBooking(booking);
@@ -153,6 +162,10 @@ export default function TourBooking() {
           <SkeletonCard />
           <SkeletonCard />
           <SkeletonCard />
+        </div>
+      ) : error ? (
+        <div className="text-center py-12 bg-red-50 border border-red-200 text-red-700 rounded-xl shadow-sm">
+          <p className="text-lg font-medium">{error}</p>
         </div>
       ) : bookings?.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl shadow-sm">

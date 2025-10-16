@@ -16,7 +16,11 @@ export default function CabBooking() {
         if (response.payload && Array.isArray(response.payload)) {
           setBookings(response.payload);
         } else {
-          setError("Unable to load bookings. Please try again.");
+          if (response.error?.message?.includes("404")) {
+            // It's a 404, so no bookings exist. Don't set an error.
+          } else {
+            setError("Unable to load bookings. Please try again.");
+          }
         }
       } catch (err) {
         console.error("Error fetching bookings:", err);
@@ -65,7 +69,7 @@ export default function CabBooking() {
         )}
 
         {/* Error State */}
-        {!loading && error && (
+        {!loading && error.status === 404 && (
           <div className="max-w-md mx-auto">
             <div className="bg-red-50 border border-red-200 rounded-xl p-6 shadow-sm">
               <div className="flex items-center gap-3">
