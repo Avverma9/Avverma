@@ -22,6 +22,8 @@ import {
   IoImageOutline,
   IoChevronDown,
   IoChevronUp,
+  IoPersonCircle,
+  IoShieldCheckmark,
 } from "react-icons/io5";
 import axios from "axios";
 import baseURL from "../../utils/baseURL";
@@ -148,10 +150,22 @@ export default function ComplaintsPage() {
     );
   };
 
-  // Get unread count (messages from Admin)
+  // FIXED: Check if message is from current user
+  const isMessageFromCurrentUser = (msg) => {
+    // Check if sender is current user by comparing with userName or userId
+    return (
+      msg.sender === userName ||
+      msg.sender === userId ||
+      (msg.sender && msg.sender.trim().toLowerCase() === userName?.trim().toLowerCase()) ||
+      // Also check if receiver is "Admin" (means user sent it)
+      (msg.receiver === "Admin" && msg.sender !== "Admin")
+    );
+  };
+
+  // Get unread count (messages from Admin only)
   const getUnreadCount = (complaint) => {
     const messages = getAllMessages(complaint);
-    return messages.filter((msg) => msg.sender === "Admin").length;
+    return messages.filter((msg) => !isMessageFromCurrentUser(msg)).length;
   };
 
   const handleSubmit = async (e) => {
@@ -316,7 +330,7 @@ export default function ComplaintsPage() {
                       );
                       if (sel) {
                         setHotelId(sel.hotelDetails.hotelId);
-                        setHotelName(sel.hotelDetails.hotelName);
+                        setHotelName(sel.hotelDetails.telName);
                         setHotelEmail(sel.hotelDetails.hotelEmail);
                       }
                     }}
@@ -573,7 +587,7 @@ export default function ComplaintsPage() {
                                       {msg.content}
                                     </p>
                                     <p className="text-xs text-gray-500 mt-1">
-                                      {msg.sender} •{" "}
+                                      {isMessageFromCurrentUser(msg) ? "You" : "Support Team"} •{" "}
                                       {new Date(msg.timestamp).toLocaleString()}
                                     </p>
                                   </div>
@@ -685,7 +699,7 @@ export default function ComplaintsPage() {
           </div>
         )}
 
-        {/* Chat Dialog */}
+        {/* FIXED: Enhanced Chat Dialog with proper message alignment */}
         {openChatDialog && selectedComplaint && (
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
             <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden">
@@ -714,49 +728,74 @@ export default function ComplaintsPage() {
               </div>
 
               {/* Messages Area */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
                 {getAllMessages(selectedComplaint).length > 0 ? (
                   <>
-                    {getAllMessages(selectedComplaint).map((msg, idx) => (
-                      <div
-                        key={msg._id || idx}
-                        className={`flex ${
-                          msg.sender === "Admin"
-                            ? "justify-start"
-                            : "justify-end"
-                        } animate-slideDown`}
-                      >
+                    {getAllMessages(selectedComplaint).map((msg, idx) => {
+                      const isFromCurrentUser = isMessageFromCurrentUser(msg);
+                      
+                      return (
                         <div
-                          className={`max-w-[75%] rounded-2xl px-4 py-3 ${
-                            msg.sender === "Admin"
-                              ? "bg-white border border-gray-200 text-gray-800"
-                              : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white"
-                          }`}
+                          key={msg._id || idx}
+                          className={`flex ${
+                            isFromCurrentUser ? "justify-end" : "justify-start"
+                          } animate-slideDown`}
                         >
-                          <p className="text-sm font-medium mb-1">
-                            {msg.sender === "Admin" ? "Support Team" : msg.sender}
-                          </p>
-                          <p className="text-sm leading-relaxed">
-                            {msg.content}
-                          </p>
-                          <p
-                            className={`text-xs mt-2 ${
-                              msg.sender === "Admin"
-                                ? "text-gray-500"
-                                : "text-indigo-100"
-                            }`}
-                          >
-                            {new Date(msg.timestamp).toLocaleString()}
-                          </p>
+                          <div className="flex items-end gap-2 max-w-[75%]">
+                            {/* Avatar for support team (left side) */}
+                            {!isFromCurrentUser && (
+                              <div className="flex-shrink-0">
+                                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full flex items-center justify-center">
+                                  <IoShieldCheckmark className="text-white text-sm" />
+                                </div>
+                              </div>
+                            )}
+                            
+                            <div
+                              className={`rounded-2xl px-4 py-3 ${
+                                !isFromCurrentUser
+                                  ? "bg-white border border-gray-200 text-gray-800 rounded-bl-md"
+                                  : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-br-md"
+                              }`}
+                            >
+                              {/* Sender name */}
+                              <p className={`text-xs font-medium mb-1 ${
+                                !isFromCurrentUser ? "text-indigo-600" : "text-indigo-100"
+                              }`}>
+                                {isFromCurrentUser ? "You" : "Support Team"}
+                              </p>
+                              
+                              {/* Message content */}
+                              <p className="text-sm leading-relaxed">
+                                {msg.content}
+                              </p>
+                              
+                              {/* Timestamp */}
+                              <p className={`text-xs mt-2 ${
+                                !isFromCurrentUser ? "text-gray-500" : "text-indigo-100"
+                              }`}>
+                                {new Date(msg.timestamp).toLocaleString()}
+                              </p>
+                            </div>
+
+                            {/* Avatar for current user (right side) */}
+                            {isFromCurrentUser && (
+                              <div className="flex-shrink-0">
+                                <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center">
+                                  <IoPersonCircle className="text-white text-lg" />
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                     <div ref={messagesEndRef} />
                   </>
                 ) : (
                   <div className="text-center py-12">
                     <IoChatbubbleEllipsesOutline className="text-6xl text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500">No messages yet</p>
+                    <p className="text-gray-500 font-medium">No messages yet</p>
                     <p className="text-sm text-gray-400 mt-1">
                       Start a conversation with the support team
                     </p>
@@ -772,13 +811,13 @@ export default function ComplaintsPage() {
                     value={messageContent}
                     onChange={(e) => setMessageContent(e.target.value)}
                     placeholder="Type your message..."
-                    className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                    className="flex-1 border border-gray-300 rounded-full px-4 py-3 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     disabled={isSendingMessage}
                   />
                   <button
                     type="submit"
                     disabled={isSendingMessage || !messageContent.trim()}
-                    className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-6 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 min-w-[100px] justify-center"
                   >
                     {isSendingMessage ? (
                       <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent" />
