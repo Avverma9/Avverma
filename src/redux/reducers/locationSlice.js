@@ -35,7 +35,6 @@ const locationSlice = createSlice({
             .addCase(fetchLocation.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                alert(`Failed to fetch location data: ${action.payload || 'Unknown error'}`);
             });
     },
 });
