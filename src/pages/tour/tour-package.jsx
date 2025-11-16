@@ -5,6 +5,7 @@ import { getTravelList } from "../../redux/reducers/travelSlice";
 import { useLoader } from "../../utils/loader";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import HolidayImageSlider from "../../components/HolidayImageSlider";
 
 
 const AmenityIcons = {
@@ -82,34 +83,50 @@ const HeroBanner = ({ onSearch, searchTerm }) => {
 
 
 const PackageCard = ({ item, handleBooking }) => {
-    const [currentImage, setCurrentImage] = useState(0);
     const [amenitiesExpanded, setAmenitiesExpanded] = useState(false);
+    const [placesExpanded, setPlacesExpanded] = useState(false);
     
     const maxVisibleAmenities = 4;
     const amenitiesToShow = amenitiesExpanded ? item.amenities : item.amenities.slice(0, maxVisibleAmenities);
     const hiddenAmenitiesCount = item.amenities ? item.amenities.length - maxVisibleAmenities : 0;
-
-    const nextImage = (e) => { e.stopPropagation(); e.preventDefault(); setCurrentImage((prev) => (prev + 1) % item.images.length); };
-    const prevImage = (e) => { e.stopPropagation(); e.preventDefault(); setCurrentImage((prev) => (prev - 1 + item.images.length) % item.images.length); };
+    const visitingPlacesList = (item.visitngPlaces || '')
+        .split('|')
+        .map(place => place.trim())
+        .filter(Boolean);
+    const visiblePlaces = placesExpanded ? visitingPlacesList : visitingPlacesList.slice(0, 3);
 
     return (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl flex flex-col lg:flex-row">
-            <div className="relative h-48 sm:h-56 lg:h-auto lg:w-2/5 flex-shrink-0">
-                <img src={item.images[currentImage]} alt={item.travelAgencyName} className="w-full h-full object-cover" />
-                {item.images.length > 1 && (
-                    <>
-                        <button onClick={prevImage} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full hover:bg-black/60 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                        <button onClick={nextImage} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1 rounded-full hover:bg-black/60 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-                    </>
-                )}
-                 <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-md text-sm font-semibold flex items-center text-amber-500">{item.starRating} <StarIcon className="w-4 h-4 ml-1" filled={true}/></div>
+            <div className="relative lg:w-2/5 flex-shrink-0">
+                <HolidayImageSlider
+                    images={item.images}
+                    heightClass="h-56 sm:h-64 lg:h-[360px]"
+                    showIndicators
+                    className="h-full"
+                />
+                 <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-md text-sm font-semibold flex items-center text-amber-500 shadow-md">{item.starRating} <StarIcon className="w-4 h-4 ml-1" filled={true}/></div>
             </div>
             <div className="p-4 sm:p-5 flex flex-col flex-grow lg:w-3/5">
                 <div className="flex-grow">
                     <h3 className="text-lg sm:text-xl font-bold text-gray-800">{item.travelAgencyName}</h3>
                     <p className="text-gray-500 text-sm mb-2">{item.city}, {item.state}</p>
                     <div className="flex flex-wrap gap-2 mb-3"><Tag>{item.themes}</Tag><Tag>{item.nights} Nights / {item.days} Days</Tag></div>
-                    <p className="text-gray-700 font-semibold mb-2 text-base">{item.visitngPlaces}</p>
+                    {visitingPlacesList.length > 0 && (
+                        <div className="mb-2">
+                            <p className="text-gray-700 font-semibold text-base break-words">
+                                {visiblePlaces.join(' | ')}
+                            </p>
+                            {visitingPlacesList.length > 3 && (
+                                <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); setPlacesExpanded(prev => !prev); }}
+                                    className="text-xs font-semibold text-blue-600 hover:underline"
+                                >
+                                    {placesExpanded ? 'View less' : `View more (+${visitingPlacesList.length - 3})`}
+                                </button>
+                            )}
+                        </div>
+                    )}
                     <p className="text-gray-600 text-sm mb-3 line-clamp-2">{item.overview}</p>
                     
                     {item.inclusion && item.inclusion.length > 0 && (<div className="mb-3 space-y-1.5">{item.inclusion.slice(0, 2).map(inc => <InclusionItem key={inc}>{inc}</InclusionItem>)}</div>)}

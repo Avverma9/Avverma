@@ -6,6 +6,7 @@ import { getGst } from "../../redux/reducers/gstSlice";
 import { useLoader } from '../../utils/loader';
 import { useToast } from '../../utils/toast';
 import { userId } from '../../utils/Unauthorized';
+import HolidayImageSlider from '../../components/HolidayImageSlider';
 
 // --- Icons ---
 const StarIcon = ({ filled, className = '' }) => (
@@ -178,21 +179,15 @@ export default function TourBookNowPage() {
           <div className="lg:col-span-2 space-y-6 lg:space-y-8">
 
             {/* Image Gallery */}
-            <section aria-label="Image Gallery" className="rounded-2xl overflow-hidden">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {travelById.images.map((img, index) => (
-                  <div key={index} className="group relative overflow-hidden rounded-xl shadow-sm ring-1 ring-slate-200 bg-white">
-                    <img
-                      src={img}
-                      alt={`Tour image ${index + 1}`}
-                      className="w-full h-56 sm:h-64 object-cover transform transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://placehold.co/600x400/e2e8f0/475569?text=Image+Not+Found'; }}
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                ))}
-              </div>
+            <section aria-label="Image Gallery" className="rounded-2xl">
+              <HolidayImageSlider
+                images={travelById.images}
+                heightClass="h-64 sm:h-72 lg:h-[420px]"
+                showIndicators
+                showThumbnails
+                className="bg-white/70 p-3 sm:p-4 rounded-3xl"
+                imageClassName="rounded-2xl"
+              />
             </section>
 
             {/* Overview */}
@@ -331,7 +326,7 @@ export default function TourBookNowPage() {
                       <ul className="space-y-2 sm:space-y-3 text-sm">
                         <li className="flex justify-between items-center">
                           <span className="text-slate-600 font-medium">Duration</span>
-                          <span className="font-bold text-slate-900 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs">
+                          <span className="font-bold text-blue-800 bg-blue-100 px-3 py-1 rounded-full text-xs">
                             {travelById.days} Days / {travelById.nights} Nights
                           </span>
                         </li>
