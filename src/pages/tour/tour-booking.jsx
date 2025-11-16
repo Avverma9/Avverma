@@ -172,28 +172,28 @@ const BookingRoomsModal = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
-      <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-2xl">
-        <div className="flex items-start justify-between gap-4 border-b border-gray-200 pb-4">
-          <div>
-            <p className="text-sm font-semibold text-indigo-600">{travel?.themes}</p>
-            <h2 className="text-2xl font-bold text-slate-900">{travel?.travelAgencyName}</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-2 sm:px-4 py-2 sm:py-6">
+      <div className="w-full max-w-3xl max-h-[95vh] rounded-2xl sm:rounded-3xl bg-white p-3 sm:p-6 shadow-2xl flex flex-col">
+        <div className="flex items-start justify-between gap-2 sm:gap-4 border-b border-gray-200 pb-3 sm:pb-4 flex-shrink-0">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs sm:text-sm font-semibold text-indigo-600">{travel?.themes}</p>
+            <h2 className="text-lg sm:text-2xl font-bold text-slate-900 truncate">{travel?.travelAgencyName}</h2>
             {visitPlaces && (
-              <p className="mt-1 text-sm text-slate-500">{visitPlaces}</p>
+              <p className="mt-1 text-xs sm:text-sm text-slate-500 line-clamp-1">{visitPlaces}</p>
             )}
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full border border-gray-200 p-2 text-gray-500 transition hover:bg-gray-100"
+            className="rounded-full border border-gray-200 p-1.5 sm:p-2 text-gray-500 transition hover:bg-gray-100 flex-shrink-0"
           >
             <span className="sr-only">Close</span>
             ×
           </button>
         </div>
 
-        <div className="mt-4 space-y-6">
-          <div className="rounded-2xl border border-gray-200 p-4">
+        <div className="mt-2 sm:mt-4 space-y-3 sm:space-y-6 overflow-y-auto flex-1">
+          <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-4">
             <p className="text-sm font-semibold text-slate-600">{customizable ? 'Select Travel Date' : 'Selected Date'}</p>
             {customizable ? (
               <input
@@ -203,112 +203,144 @@ const BookingRoomsModal = ({
                   setSelectedDate(e.target.value);
                   setCalcResult(null);
                 }}
-                className="mt-2 w-full rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200"
+                className="mt-2 w-full rounded-lg sm:rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-200"
               />
             ) : (
-              <p className="mt-2 text-lg font-semibold text-slate-900">{formatReadableDate(selectedDate)}</p>
+              <p className="mt-2 text-base sm:text-lg font-semibold text-slate-900">{formatReadableDate(selectedDate)}</p>
             )}
           </div>
 
           {rooms.map((room, index) => (
-            <div key={`room-${index}`} className="rounded-2xl border border-gray-200 bg-slate-50/60 p-4">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-slate-800">Room {index + 1}</h3>
+            <div key={`room-${index}`} className="rounded-xl sm:rounded-2xl border border-gray-200 bg-slate-50/60 p-3 sm:p-4">
+              <div className="mb-3 sm:mb-4 flex items-center justify-between">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-800">Room {index + 1}</h3>
                 {rooms.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeRoomBlock(index)}
-                    className="text-sm font-medium text-rose-600 hover:underline"
+                    className="text-xs sm:text-sm font-medium text-rose-600 hover:underline px-2 py-1"
                   >
                     Remove
                   </button>
                 )}
               </div>
 
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                  <p className="text-sm font-semibold text-slate-800">Adult</p>
-                  <p className="text-xs text-slate-500">Above 12 years</p>
-                  <div className="mt-3 flex items-center justify-between rounded-2xl border border-gray-300 px-3 py-2 text-lg font-semibold">
-                    <button type="button" onClick={() => changeAdultCount(index, -1)} className="px-2 text-2xl">−</button>
-                    <span>{room.adults}</span>
-                    <button type="button" onClick={() => changeAdultCount(index, 1)} className="px-2 text-2xl">+</button>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                  <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
+                    <p className="text-xs sm:text-sm font-semibold text-slate-800">Adult</p>
+                    <p className="text-xs text-slate-500">Above 12 years</p>
+                    <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
+                      <button 
+                        type="button" 
+                        onClick={() => changeAdultCount(index, -1)} 
+                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                        disabled={room.adults <= 1}
+                      >
+                        −
+                      </button>
+                      <span>{room.adults}</span>
+                      <button 
+                        type="button" 
+                        onClick={() => changeAdultCount(index, 1)} 
+                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                        disabled={room.adults >= 4}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
+                    <div className="flex items-start justify-between mb-1">
+                      <div>
+                        <p className="text-xs sm:text-sm font-semibold text-slate-800">Child</p>
+                        <p className="text-xs text-slate-500">Below 12 years</p>
+                      </div>
+                      <span className="text-xs text-blue-600 font-medium">8+ full fare</span>
+                    </div>
+                    <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
+                      <button 
+                        type="button" 
+                        onClick={() => changeChildCount(index, -1)} 
+                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                        disabled={room.children <= 0}
+                      >
+                        −
+                      </button>
+                      <span>{room.children}</span>
+                      <button 
+                        type="button" 
+                        onClick={() => changeChildCount(index, 1)} 
+                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                        disabled={room.children >= 3}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-semibold text-slate-800">Child</p>
-                      <p className="text-xs text-slate-500">Below 12 years</p>
-                    </div>
-                    <span className="text-xs text-blue-600">8+ years charged full</span>
+                {room.children > 0 && (
+                  <div className="space-y-2 sm:space-y-3">
+                    {getChildDOBsForRoom(room).slice(0, room.children).map((dob, childIdx) => (
+                      <div key={`child-${index}-${childIdx}`}>
+                        <label className="text-xs sm:text-sm font-medium text-slate-700 block mb-1">
+                          Child {childIdx + 1} Date of Birth
+                        </label>
+                        <input
+                          type="date"
+                          value={dob}
+                          max={new Date().toISOString().split('T')[0]}
+                          onChange={(e) => handleChildDOBChange(index, childIdx, e.target.value)}
+                          className="w-full rounded-lg sm:rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-200 text-sm"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <div className="mt-3 flex items-center justify-between rounded-2xl border border-gray-300 px-3 py-2 text-lg font-semibold">
-                    <button type="button" onClick={() => changeChildCount(index, -1)} className="px-2 text-2xl">−</button>
-                    <span>{room.children}</span>
-                    <button type="button" onClick={() => changeChildCount(index, 1)} className="px-2 text-2xl">+</button>
-                  </div>
-                </div>
+                )}
               </div>
-
-              {room.children > 0 && (
-                <div className="mt-4 space-y-3">
-                  {getChildDOBsForRoom(room).slice(0, room.children).map((dob, childIdx) => (
-                    <div key={`child-${index}-${childIdx}`}>
-                      <label className="text-sm font-medium text-slate-700">
-                        Child {childIdx + 1} Date of Birth
-                      </label>
-                      <input
-                        type="date"
-                        value={dob}
-                        max={new Date().toISOString().split('T')[0]}
-                        onChange={(e) => handleChildDOBChange(index, childIdx, e.target.value)}
-                        className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200"
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
           ))}
 
           {rooms.length < 4 && (
-            <button type="button" onClick={addRoomBlock} className="text-sm font-semibold text-blue-600 hover:underline">
+            <button type="button" onClick={addRoomBlock} className="text-sm font-semibold text-blue-600 hover:underline px-3 py-2">
               + Add Room
             </button>
           )}
 
-          <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-blue-800">
+          <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs sm:text-sm text-blue-800">
             Child below 8 years will be charged at 50% of adult fare. Above 8 years will be charged full price.
           </div>
 
           {error && (
-            <div className="rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+            <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs sm:text-sm text-rose-700">
               {error}
             </div>
           )}
 
           {calcResult && (
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
-              <p className="text-sm font-semibold">Travellers Summary</p>
-              <p className="text-sm">Adults: {calcResult.totalAdults} • Children: {calcResult.totalChildren}</p>
-              <p className="text-base font-bold mt-1">Calculated Amount: ₹{calcResult.totalAmount.toLocaleString()}</p>
+            <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-emerald-700">
+              <p className="text-xs sm:text-sm font-semibold">Travellers Summary</p>
+              <p className="text-xs sm:text-sm">Adults: {calcResult.totalAdults} • Children: {calcResult.totalChildren}</p>
+              <p className="text-sm sm:text-base font-bold mt-1">Calculated Amount: ₹{calcResult.totalAmount.toLocaleString()}</p>
             </div>
           )}
+        </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-2 sm:gap-3 mt-4 sm:mt-6 flex-shrink-0 border-t pt-3 sm:pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               type="button"
               onClick={handleCalculate}
-              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-white transition hover:bg-slate-800"
+              className="w-full rounded-lg sm:rounded-xl bg-slate-900 px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-white transition hover:bg-slate-800 font-medium"
             >
               Calculate Amount
             </button>
             <button
               type="button"
               onClick={handleConfirm}
-              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-white shadow-md transition hover:from-blue-700 hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+              className="w-full rounded-lg sm:rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base text-white shadow-md transition hover:from-blue-700 hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-70 font-medium"
               disabled={!calcResult}
             >
               Confirm Booking
