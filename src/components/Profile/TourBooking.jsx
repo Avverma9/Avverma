@@ -80,40 +80,114 @@ const ListSection = ({ title, items, icon, itemClassName }) => {
   );
 };
 
-const BookingModal = ({ booking, onClose }) => (
-  <Modal open={!!booking} onClose={onClose} title="Booking Details">
-    <div className="space-y-6">
-      {/* Trip Details */}
-      <section>
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          {booking.travelAgencyName}
-        </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <DetailItem
-            icon={<FaMapMarkerAlt />}
-            label="City"
-            value={booking.city}
-          />
-          <DetailItem
-            icon={<FaRegCalendarAlt />}
-            label="From"
-            value={formatDate(booking.from)}
-          />
-          <DetailItem
-            icon={<FaRegCalendarAlt />}
-            label="To"
-            value={formatDate(booking.to)}
-          />
-          <div className="flex items-center gap-4">
-            <DetailItem icon={<FaSun />} label="Days" value={booking.days} />
-            <DetailItem
-              icon={<FaMoon />}
-              label="Nights"
-              value={booking.nights}
-            />
+const BookingModal = ({ booking, onClose }) => {
+  if (!booking) return null;
+  const isCustomizable = booking.customizable;
+  const dateRows = isCustomizable
+    ? [
+        { label: "Travel From", value: formatDate(booking.from) },
+        { label: "Travel To", value: formatDate(booking.to) },
+      ]
+    : [
+        {
+          label: "Tour Start Date",
+          value: formatDate(booking.tourStartDate || booking.from),
+        },
+        booking.to
+          ? { label: "Ends", value: formatDate(booking.to) }
+          : null,
+      ].filter(Boolean);
+  const travellerSummary = {
+    adults: booking.numberOfAdults ?? 1,
+    children: booking.numberOfChildren ?? 0,
+    childDOBs: booking.childDateOfBirth || [],
+  };
+
+  return (
+    <Modal open={!!booking} onClose={onClose} title="Booking Details">
+      <div className="space-y-6">
+        {/* Trip Details */}
+        <section className="space-y-4">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-semibold text-indigo-600">
+                {booking.themes}
+              </p>
+              <h3 className="text-2xl font-semibold text-gray-900">
+                {booking.travelAgencyName}
+              </h3>
+              <p className="text-sm text-gray-500 flex items-center gap-2 mt-1">
+                <FaMapMarkerAlt className="text-blue-500" /> {booking.city}
+              </p>
+            </div>
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                isCustomizable
+                  ? "bg-amber-50 text-amber-700"
+                  : "bg-indigo-50 text-indigo-700"
+              }`}
+            >
+              {isCustomizable ? "Customizable" : "Fixed Package"}
+            </span>
           </div>
-        </div>
-      </section>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            {dateRows.map((row) => (
+              <DetailItem
+                key={row.label}
+                icon={<FaRegCalendarAlt />}
+                label={row.label}
+                value={row.value}
+              />
+            ))}
+            <div className="flex items-center gap-4 col-span-full">
+              <DetailItem icon={<FaSun />} label="Days" value={booking.days} />
+              <DetailItem icon={<FaMoon />} label="Nights" value={booking.nights} />
+            </div>
+          </div>
+        </section>
+
+        {/* Travellers */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-2xl border border-gray-200 p-4">
+          <div>
+            <p className="text-xs uppercase text-gray-500 font-semibold tracking-wide">
+              Travellers
+            </p>
+            <div className="mt-3 flex flex-wrap gap-4">
+              <div>
+                <p className="text-sm text-gray-500">Adults</p>
+                <p className="text-xl font-bold text-gray-800">
+                  {travellerSummary.adults}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Children</p>
+                <p className="text-xl font-bold text-gray-800">
+                  {travellerSummary.children}
+                </p>
+              </div>
+            </div>
+            {travellerSummary.childDOBs.length > 0 && (
+              <p className="mt-3 text-xs text-gray-500">
+                Child DOBs: {travellerSummary.childDOBs.map((dob) => formatDate(dob)).join(", ")}
+              </p>
+            )}
+          </div>
+          <div className="rounded-xl bg-blue-50 p-4">
+            <p className="text-xs uppercase text-blue-700 font-semibold tracking-wide">
+              Package Amount
+            </p>
+            <p className="mt-2 text-2xl font-bold text-blue-800">
+              {new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+              }).format(booking.price)}
+            </p>
+            <p className="text-xs text-blue-600 mt-1">
+              Booking ID: <span className="font-mono">{booking.bookingId}</span>
+            </p>
+          </div>
+        </section>
 
       {/* Day-wise Itinerary */}
       {booking.dayWise && booking.dayWise.length > 0 && (
@@ -160,27 +234,25 @@ const BookingModal = ({ booking, onClose }) => (
         />
       </div>
 
-      {/* Pricing */}
-      <section>
-        <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-2 flex items-center gap-2">
-          <IoPricetagOutline /> Pricing
-        </h3>
-        <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg text-lg font-bold text-blue-800">
-          <span>Total Amount Paid:</span>
-          <span>
-            {new Intl.NumberFormat("en-IN", {
-              style: "currency",
-              currency: "INR",
-            }).format(booking.price)}
-          </span>
-        </div>
-        <p className="text-xs text-gray-500 mt-2 text-right">
-          Booking ID: {booking.bookingId}
-        </p>
-      </section>
-    </div>
-  </Modal>
-);
+        {/* Pricing */}
+        <section>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-2 flex items-center gap-2">
+            <IoPricetagOutline /> Pricing
+          </h3>
+          <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg text-lg font-bold text-blue-800">
+            <span>Total Amount Paid:</span>
+            <span>
+              {new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+              }).format(booking.price)}
+            </span>
+          </div>
+        </section>
+      </div>
+    </Modal>
+  );
+};
 
 export default function TourBooking() {
   const dispatch = useDispatch();
