@@ -9,7 +9,12 @@ import {
   IoCloseCircleOutline,
   IoSparklesOutline,
 } from "react-icons/io5";
-import { FaRegCalendarAlt, FaMapMarkerAlt, FaMoon, FaSun } from "react-icons/fa";
+import {
+  FaRegCalendarAlt,
+  FaMapMarkerAlt,
+  FaMoon,
+  FaSun,
+} from "react-icons/fa";
 
 const Modal = ({ open, onClose, children, title }) => {
   if (!open) return null;
@@ -63,7 +68,10 @@ const ListSection = ({ title, items, icon, itemClassName }) => {
       </h3>
       <ul className="space-y-2 pl-2">
         {items.map((item, index) => (
-          <li key={index} className={`flex items-center gap-2 text-sm ${itemClassName}`}>
+          <li
+            key={index}
+            className={`flex items-center gap-2 text-sm ${itemClassName}`}
+          >
             {item}
           </li>
         ))}
@@ -81,12 +89,28 @@ const BookingModal = ({ booking, onClose }) => (
           {booking.travelAgencyName}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <DetailItem icon={<FaMapMarkerAlt />} label="City" value={booking.city} />
-          <DetailItem icon={<FaRegCalendarAlt />} label="From" value={formatDate(booking.from)} />
-          <DetailItem icon={<FaRegCalendarAlt />} label="To" value={formatDate(booking.to)} />
+          <DetailItem
+            icon={<FaMapMarkerAlt />}
+            label="City"
+            value={booking.city}
+          />
+          <DetailItem
+            icon={<FaRegCalendarAlt />}
+            label="From"
+            value={formatDate(booking.from)}
+          />
+          <DetailItem
+            icon={<FaRegCalendarAlt />}
+            label="To"
+            value={formatDate(booking.to)}
+          />
           <div className="flex items-center gap-4">
             <DetailItem icon={<FaSun />} label="Days" value={booking.days} />
-            <DetailItem icon={<FaMoon />} label="Nights" value={booking.nights} />
+            <DetailItem
+              icon={<FaMoon />}
+              label="Nights"
+              value={booking.nights}
+            />
           </div>
         </div>
       </section>
@@ -94,25 +118,46 @@ const BookingModal = ({ booking, onClose }) => (
       {/* Day-wise Itinerary */}
       {booking.dayWise && booking.dayWise.length > 0 && (
         <section>
-          <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-2">Itinerary</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-3 border-b pb-2">
+            Itinerary
+          </h3>
           <div className="space-y-4">
-            {booking.dayWise.filter(d => d.description).map((day) => (
-              <div key={day._id} className="flex items-start gap-3">
-                <div className="flex-shrink-0 bg-blue-100 text-blue-700 rounded-full h-8 w-8 flex items-center justify-center font-bold text-sm">
-                  {day.day}
+            {booking.dayWise
+              .filter((d) => d.description)
+              .map((day) => (
+                <div key={day._id} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 bg-blue-100 text-blue-700 rounded-full h-8 w-8 flex items-center justify-center font-bold text-sm">
+                    {day.day}
+                  </div>
+                  <p className="text-sm text-gray-700 mt-1">
+                    {day.description}
+                  </p>
                 </div>
-                <p className="text-sm text-gray-700 mt-1">{day.description}</p>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
       )}
 
       {/* Package Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ListSection title="Amenities" items={booking.amenities} icon={<IoSparklesOutline />} itemClassName="text-gray-700" />
-        <ListSection title="Inclusions" items={booking.inclusion} icon={<IoCheckmarkCircleOutline className="text-green-500" />} itemClassName="text-green-800 font-medium" />
-        <ListSection title="Exclusions" items={booking.exclusion} icon={<IoCloseCircleOutline className="text-red-500" />} itemClassName="text-red-700" />
+        <ListSection
+          title="Amenities"
+          items={booking.amenities}
+          icon={<IoSparklesOutline />}
+          itemClassName="text-gray-700"
+        />
+        <ListSection
+          title="Inclusions"
+          items={booking.inclusion}
+          icon={<IoCheckmarkCircleOutline className="text-green-500" />}
+          itemClassName="text-green-800 font-medium"
+        />
+        <ListSection
+          title="Exclusions"
+          items={booking.exclusion}
+          icon={<IoCloseCircleOutline className="text-red-500" />}
+          itemClassName="text-red-700"
+        />
       </div>
 
       {/* Pricing */}
@@ -123,10 +168,15 @@ const BookingModal = ({ booking, onClose }) => (
         <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg text-lg font-bold text-blue-800">
           <span>Total Amount Paid:</span>
           <span>
-            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(booking.price)}
+            {new Intl.NumberFormat("en-IN", {
+              style: "currency",
+              currency: "INR",
+            }).format(booking.price)}
           </span>
         </div>
-        <p className="text-xs text-gray-500 mt-2 text-right">Booking ID: {booking.bookingId}</p>
+        <p className="text-xs text-gray-500 mt-2 text-right">
+          Booking ID: {booking.bookingId}
+        </p>
       </section>
     </div>
   </Modal>
@@ -173,51 +223,135 @@ export default function TourBooking() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {bookings.map((booking) => (
-            <div
-              key={booking._id}
-              className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col"
-            >
-              <header className="p-5 border-b border-slate-100">
-                <div className="flex items-start justify-between gap-4">
-                  <h3 className="font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
-                    {booking.travelAgencyName}
-                  </h3>
-                  <div className="text-lg font-bold text-blue-600 whitespace-nowrap">
-                    ₹{booking.price.toLocaleString('en-IN')}
+          {bookings.map((booking) => {
+            const isCustomizable = booking?.customizable;
+            const dateRows = isCustomizable
+              ? [
+                  { label: "From", value: formatDate(booking.from) },
+                  { label: "To", value: formatDate(booking.to) },
+                ]
+              : [
+                  {
+                    label: "Tour Start Date",
+                    value: formatDate(booking.tourStartDate || booking.from),
+                  },
+                ];
+            const travellerSummary = {
+              adults: booking.numberOfAdults ?? 1,
+              children: booking.numberOfChildren ?? 0,
+            };
+            const childDOBs = booking.childDateOfBirth || [];
+
+            return (
+              <div
+                key={booking._id}
+                className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+              >
+                <header className="p-5 border-b border-slate-100">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="font-bold text-gray-800 hover:text-blue-600 transition-colors">
+                        {booking.travelAgencyName}
+                      </h3>
+                      <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">
+                        <FaMapMarkerAlt className="text-blue-500" /> {booking.city}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                          isCustomizable
+                            ? "bg-amber-50 text-amber-700"
+                            : "bg-indigo-50 text-indigo-700"
+                        }`}
+                      >
+                        {isCustomizable ? "Customizable" : "Fixed Package"}
+                      </span>
+                      <div className="text-lg font-bold text-blue-600 whitespace-nowrap">
+                        ₹{booking.price.toLocaleString("en-IN")}
+                      </div>
+                    </div>
+                  </div>
+                </header>
+
+                <div className="p-5 flex-1 space-y-4 text-sm">
+                  <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      {isCustomizable ? "Selected Travel Range" : "Departure"}
+                    </p>
+                    <div className="mt-3 space-y-2">
+                      {dateRows.map((row) => (
+                        <div key={row.label} className="flex justify-between">
+                          <span className="text-slate-500">{row.label}</span>
+                          <span className="font-medium text-slate-800">{row.value}</span>
+                        </div>
+                      ))}
+                      {!isCustomizable && booking.to && (
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Ends</span>
+                          <span className="font-medium text-slate-800">
+                            {formatDate(booking.to)}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 p-4">
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      Travellers
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-500">Adults</span>
+                        <span className="text-lg font-semibold text-slate-900">
+                          {travellerSummary.adults}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-500">Children</span>
+                        <span className="text-lg font-semibold text-slate-900">
+                          {travellerSummary.children}
+                        </span>
+                      </div>
+                    </div>
+                    {childDOBs.length > 0 && (
+                      <p className="mt-3 text-xs text-slate-500">
+                        Child DOBs: {childDOBs.map((dob) => formatDate(dob)).join(", ")}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 p-4 bg-white">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-500">Duration</span>
+                      <span className="font-semibold text-slate-900">
+                        {booking.nights}N / {booking.days}D
+                      </span>
+                    </div>
+                    {booking.visitngPlaces && (
+                      <p className="mt-2 text-xs text-slate-500 line-clamp-2">
+                        {booking.visitngPlaces.replace(/\|/g, " · ")}
+                      </p>
+                    )}
                   </div>
                 </div>
-                <p className="text-sm text-slate-500 mt-1">{booking.city}</p>
-              </header>
 
-              <div className="p-5 flex-grow space-y-3 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">From:</span>
-                  <span className="font-medium text-slate-700">{formatDate(booking.from)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">To:</span>
-                  <span className="font-medium text-slate-700">{formatDate(booking.to)}</span>
-                </div>
-                <div className="flex justify-between pt-2 border-t border-dashed">
-                  <span className="text-slate-500">Duration:</span>
-                  <span className="font-medium text-slate-700">{booking.nights}N / {booking.days}D</span>
-                </div>
+                <footer className="p-4 bg-slate-50 border-t border-slate-200">
+                  <button
+                    onClick={() => openModal(booking)}
+                    className="w-full py-2.5 px-4 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors text-sm shadow-sm"
+                  >
+                    View Details
+                  </button>
+                  <div className="text-center text-xs text-slate-400 mt-2">
+                    Booking ID:{" "}
+                    <span className="font-mono">{booking.bookingId}</span>
+                  </div>
+                </footer>
               </div>
-
-              <footer className="p-3 bg-slate-50 border-t border-slate-200">
-                <button
-                  onClick={() => openModal(booking)}
-                  className="w-full py-2.5 px-4 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors text-sm shadow-sm"
-                >
-                  View Details
-                </button>
-                <div className="text-center text-xs text-slate-400 mt-2">
-                  Booking ID: <span className="font-mono">{booking.bookingId}</span>
-                </div>
-              </footer>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
