@@ -8,6 +8,318 @@ import { useToast } from '../../utils/toast';
 import { userId } from '../../utils/Unauthorized';
 import HolidayImageSlider from '../../components/HolidayImageSlider';
 
+const formatReadableDate = (dateString) => {
+  if (!dateString) return '';
+  const parsed = new Date(dateString);
+  if (Number.isNaN(parsed.getTime())) return '';
+  return parsed.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+};
+
+const addDays = (dateString, days) => {
+  if (!dateString) return '';
+  const parsed = new Date(dateString);
+  if (Number.isNaN(parsed.getTime())) return '';
+  parsed.setDate(parsed.getDate() + days);
+  return parsed.toISOString().split('T')[0];
+};
+
+const calculateAge = (dob) => {
+  if (!dob) return null;
+  const birthDate = new Date(dob);
+  if (Number.isNaN(birthDate.getTime())) return null;
+  const today = new Date();
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1;
+  }
+  return age;
+};
+
+const defaultRoom = () => ({ adults: 2, children: 0, childDOBs: [] });
+
+const BookingRoomsModal = ({
+  open,
+  onClose,
+  travel,
+  finalPrice,
+  onConfirm
+}) => {
+  const customizable = travel?.customizable;
+  const durationInDays = travel?.days || 1;
+  const visitPlaces = useMemo(() => (travel?.visitngPlaces || '').replace(/\|/g, ' | '), [travel]);
+  const fixedStartDate = useMemo(() => {
+    if (!travel) return '';
+    return (!customizable ? (travel.tourStartDate || travel.from || '') : '');
+  }, [travel, customizable]);
+
+  const [selectedDate, setSelectedDate] = useState(fixedStartDate);
+  const [rooms, setRooms] = useState([defaultRoom()]);
+  const [calcResult, setCalcResult] = useState(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (open) {
+      setRooms([defaultRoom()]);
+      setCalcResult(null);
+      setError('');
+      setSelectedDate(fixedStartDate);
+    }
+  }, [open, fixedStartDate]);
+
+  const getChildDOBsForRoom = (room) => {
+    const required = room.children;
+    const source = room.childDOBs || [];
+    const dobList = source.slice(0, required);
+    while (dobList.length < required) {
+      dobList.push('');
+    }
+    return dobList;
+  };
+
+  const updateRoom = (index, updater) => {
+    setRooms((prev) => prev.map((room, idx) => (idx === index ? updater(room) : room)));
+    setCalcResult(null);
+  };
+
+  const changeAdultCount = (index, delta) => {
+    updateRoom(index, (room) => {
+      const nextAdults = Math.min(4, Math.max(1, room.adults + delta));
+      return { ...room, adults: nextAdults };
+    });
+  };
+
+  const changeChildCount = (index, delta) => {
+    updateRoom(index, (room) => {
+      const nextChildren = Math.min(3, Math.max(0, room.children + delta));
+      const adjustedDOBs = getChildDOBsForRoom({ ...room, children: nextChildren });
+      return { ...room, children: nextChildren, childDOBs: adjustedDOBs };
+    });
+  };
+
+  const handleChildDOBChange = (roomIndex, childIndex, value) => {
+    updateRoom(roomIndex, (room) => {
+      const dobList = getChildDOBsForRoom(room);
+      dobList[childIndex] = value;
+      return { ...room, childDOBs: dobList };
+    });
+  };
+
+  const addRoomBlock = () => {
+    setRooms((prev) => [...prev, defaultRoom()]);
+    setCalcResult(null);
+  };
+
+  const removeRoomBlock = (roomIndex) => {
+    setRooms((prev) => prev.filter((_, idx) => idx !== roomIndex));
+    setCalcResult(null);
+  };
+
+  const aggregateTotals = () => {
+    const totalAdults = rooms.reduce((sum, room) => sum + room.adults, 0);
+    let totalAmount = totalAdults * finalPrice;
+    const childDOBs = [];
+    for (const room of rooms) {
+      const dobList = getChildDOBsForRoom(room).slice(0, room.children);
+      for (let i = 0; i < dobList.length; i += 1) {
+        const dob = dobList[i];
+        if (!dob) {
+          return { error: 'Please enter date of birth for every child.' };
+        }
+        const age = calculateAge(dob);
+        const isFullFare = age === null || age >= 8;
+        const childFare = isFullFare ? finalPrice : finalPrice / 2;
+        totalAmount += childFare;
+        childDOBs.push(dob);
+      }
+    }
+    return {
+      totalAmount,
+      totalAdults,
+      totalChildren: childDOBs.length,
+      childDOBs
+    };
+  };
+
+  const handleCalculate = () => {
+    setError('');
+    const activeDate = selectedDate || fixedStartDate;
+    if (!activeDate) {
+      setError('Please select a start date for this tour.');
+      return;
+    }
+    const totals = aggregateTotals();
+    if (totals.error) {
+      setError(totals.error);
+      return;
+    }
+    const endDate = addDays(activeDate, durationInDays - 1);
+    setCalcResult({ ...totals, startDate: activeDate, endDate });
+  };
+
+  const handleConfirm = () => {
+    if (!calcResult) {
+      handleCalculate();
+      return;
+    }
+    onConfirm(calcResult);
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-6">
+      <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-2xl">
+        <div className="flex items-start justify-between gap-4 border-b border-gray-200 pb-4">
+          <div>
+            <p className="text-sm font-semibold text-indigo-600">{travel?.themes}</p>
+            <h2 className="text-2xl font-bold text-slate-900">{travel?.travelAgencyName}</h2>
+            {visitPlaces && (
+              <p className="mt-1 text-sm text-slate-500">{visitPlaces}</p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full border border-gray-200 p-2 text-gray-500 transition hover:bg-gray-100"
+          >
+            <span className="sr-only">Close</span>
+            ×
+          </button>
+        </div>
+
+        <div className="mt-4 space-y-6">
+          <div className="rounded-2xl border border-gray-200 p-4">
+            <p className="text-sm font-semibold text-slate-600">{customizable ? 'Select Travel Date' : 'Selected Date'}</p>
+            {customizable ? (
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => {
+                  setSelectedDate(e.target.value);
+                  setCalcResult(null);
+                }}
+                className="mt-2 w-full rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200"
+              />
+            ) : (
+              <p className="mt-2 text-lg font-semibold text-slate-900">{formatReadableDate(selectedDate)}</p>
+            )}
+          </div>
+
+          {rooms.map((room, index) => (
+            <div key={`room-${index}`} className="rounded-2xl border border-gray-200 bg-slate-50/60 p-4">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-800">Room {index + 1}</h3>
+                {rooms.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeRoomBlock(index)}
+                    className="text-sm font-medium text-rose-600 hover:underline"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
+                  <p className="text-sm font-semibold text-slate-800">Adult</p>
+                  <p className="text-xs text-slate-500">Above 12 years</p>
+                  <div className="mt-3 flex items-center justify-between rounded-2xl border border-gray-300 px-3 py-2 text-lg font-semibold">
+                    <button type="button" onClick={() => changeAdultCount(index, -1)} className="px-2 text-2xl">−</button>
+                    <span>{room.adults}</span>
+                    <button type="button" onClick={() => changeAdultCount(index, 1)} className="px-2 text-2xl">+</button>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-gray-200 bg-white px-4 py-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">Child</p>
+                      <p className="text-xs text-slate-500">Below 12 years</p>
+                    </div>
+                    <span className="text-xs text-blue-600">8+ years charged full</span>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between rounded-2xl border border-gray-300 px-3 py-2 text-lg font-semibold">
+                    <button type="button" onClick={() => changeChildCount(index, -1)} className="px-2 text-2xl">−</button>
+                    <span>{room.children}</span>
+                    <button type="button" onClick={() => changeChildCount(index, 1)} className="px-2 text-2xl">+</button>
+                  </div>
+                </div>
+              </div>
+
+              {room.children > 0 && (
+                <div className="mt-4 space-y-3">
+                  {getChildDOBsForRoom(room).slice(0, room.children).map((dob, childIdx) => (
+                    <div key={`child-${index}-${childIdx}`}>
+                      <label className="text-sm font-medium text-slate-700">
+                        Child {childIdx + 1} Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        value={dob}
+                        max={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => handleChildDOBChange(index, childIdx, e.target.value)}
+                        className="mt-1 w-full rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {rooms.length < 4 && (
+            <button type="button" onClick={addRoomBlock} className="text-sm font-semibold text-blue-600 hover:underline">
+              + Add Room
+            </button>
+          )}
+
+          <div className="rounded-2xl border border-blue-100 bg-blue-50/60 p-4 text-sm text-blue-800">
+            Child below 8 years will be charged at 50% of adult fare. Above 8 years will be charged full price.
+          </div>
+
+          {error && (
+            <div className="rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+              {error}
+            </div>
+          )}
+
+          {calcResult && (
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-700">
+              <p className="text-sm font-semibold">Travellers Summary</p>
+              <p className="text-sm">Adults: {calcResult.totalAdults} • Children: {calcResult.totalChildren}</p>
+              <p className="text-base font-bold mt-1">Calculated Amount: ₹{calcResult.totalAmount.toLocaleString()}</p>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={handleCalculate}
+              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-white transition hover:bg-slate-800"
+            >
+              Calculate Amount
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirm}
+              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-white shadow-md transition hover:from-blue-700 hover:to-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+              disabled={!calcResult}
+            >
+              Confirm Booking
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // --- Icons ---
 const StarIcon = ({ filled, className = '' }) => (
   <svg
@@ -43,20 +355,15 @@ export default function TourBookNowPage() {
   const { showLoader, hideLoader } = useLoader();
   const popup = useToast();
   const [finalPrice, setFinalPrice] = useState(0);
-
-  const [dateRange, setDateRange] = useState(() => {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const formatDateForInput = (date) => {
-      const d = new Date(date);
-      const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
-    return { startDate: formatDateForInput(today), endDate: formatDateForInput(tomorrow) };
+  const [bookingSummary, setBookingSummary] = useState({
+    startDate: '',
+    endDate: '',
+    totalAdults: 1,
+    totalChildren: 0,
+    totalAmount: 0,
+    childDOBs: []
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) dispatch(getTravelById(id));
@@ -77,24 +384,44 @@ export default function TourBookNowPage() {
     }
   }, [gstData, travelById]);
 
-  const formatDate = useCallback((dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric', month: 'long', day: 'numeric'
-    });
-  }, []);
+  const formatDate = useCallback((dateString) => formatReadableDate(dateString) || 'N/A', []);
 
-  const handleBooking = async () => {
+  useEffect(() => {
+    if (!travelById) return;
+    const defaultStart = travelById.customizable ? '' : (travelById.tourStartDate || travelById.from || '');
+    const defaultEnd = defaultStart ? addDays(defaultStart, (travelById.days || 1) - 1) : '';
+    setBookingSummary((prev) => ({
+      ...prev,
+      startDate: defaultStart,
+      endDate: defaultEnd
+    }));
+  }, [travelById]);
+
+  const handleBooking = async (details) => {
     if (!userId) return popup("Please log in to book.");
-    if (!dateRange.startDate || !dateRange.endDate) return popup("Please select travel dates.");
+    const selectedStart = details?.startDate || bookingSummary.startDate || travelById?.tourStartDate || travelById?.from;
+    if (!selectedStart) return popup("Please select travel dates.");
+    const computedEnd = details?.endDate || bookingSummary.endDate || addDays(selectedStart, (travelById?.days || 1) - 1);
+    const totalAdults = details?.totalAdults ?? bookingSummary.totalAdults ?? 1;
+    const totalChildren = details?.totalChildren ?? bookingSummary.totalChildren ?? 0;
+    const childDOBs = details?.childDOBs ?? bookingSummary.childDOBs ?? [];
+  const totalAmount = details?.totalAmount ?? bookingSummary.totalAmount ?? finalPrice;
 
     const bookingData = {
       userId,
       travelId: travelById._id,
-      price: finalPrice,
-      to: dateRange.endDate,
+      price: totalAmount,
+      to: computedEnd,
       city: travelById.city,
+      from: selectedStart,
+      tourStartDate: travelById.tourStartDate || selectedStart,
+      customizable: travelById.customizable,
       amenities: travelById.amenities,
+      child: finalPrice / 2,
+      numberOfAdults: totalAdults,
+      numberOfChildren: totalChildren,
+      childDateOfBirth: childDOBs,
+      adult: finalPrice,
       inclusion: travelById.inclusion,
       exclusion: travelById.exclusion,
       dayWise: travelById.dayWise
@@ -106,7 +433,7 @@ export default function TourBookNowPage() {
       const response = res?.payload;
       const bookingId = response?.bookingId || res?.data?._id || "N/A";
       popup.success(
-        `✅ Booking Confirmed!\n\n📍 City: ${bookingData.city}\n📅 From: ${formatDate(dateRange.startDate)}\n🆔 Booking ID: ${bookingId}`
+        `✅ Booking Confirmed!\n\n📍 City: ${bookingData.city}\n📅 From: ${formatDate(selectedStart)}\n🆔 Booking ID: ${bookingId}`
       );
       setTimeout(() => navigate("/tour-bookings"), 3000);
     } catch (err) {
@@ -115,6 +442,19 @@ export default function TourBookNowPage() {
     } finally {
       hideLoader();
     }
+  };
+
+  const handleModalConfirm = (details) => {
+    setBookingSummary({
+      startDate: details.startDate,
+      endDate: details.endDate,
+      totalAdults: details.totalAdults,
+      totalChildren: details.totalChildren,
+      totalAmount: details.totalAmount,
+      childDOBs: details.childDOBs || []
+    });
+    setIsModalOpen(false);
+    handleBooking(details);
   };
 
   const visitingPlaces = useMemo(() => {
@@ -283,40 +623,32 @@ export default function TourBookNowPage() {
                   <span className="text-sm font-medium text-slate-500">/ person</span>
                 </div>
 
-                {/* Date Picker */}
+                {/* Booking Summary */}
                 <div className="space-y-5 sm:space-y-6">
-                  <div>
-                    <label htmlFor="booking-date" className="block text-sm font-semibold text-slate-800 mb-2 sm:mb-3">
-                      Select Booking Date
-                    </label>
-                    <div
-                      className="relative group"
-                      onClick={(e) => {
-                        const input = e.currentTarget.querySelector('input[type="date"]');
-                        if (input && input.showPicker) input.showPicker();
-                      }}
-                    >
-                      <svg
-                        aria-hidden="true"
-                        className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <input
-                        type="date"
-                        id="booking-date"
-                        value={dateRange.startDate}
-                        onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                        onClick={(e) => e.currentTarget.showPicker && e.currentTarget.showPicker()}
-                        onFocus={(e) => e.currentTarget.showPicker && e.currentTarget.showPicker()}
-                        className="w-full appearance-none rounded-xl border-2 border-slate-300 bg-white py-2.5 sm:py-3 pl-10 sm:pl-11 pr-4 text-slate-900 font-medium transition-all duration-200 placeholder:text-slate-400 hover:border-slate-400 focus:border-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200 cursor-pointer"
-                        aria-describedby="booking-date-help"
-                      />
-                    </div>
-                    <p id="booking-date-help" className="mt-1 text-xs text-slate-500">
-                      Tap anywhere in the field to open the calendar.
+                  <div className="rounded-2xl border border-slate-200 p-4">
+                    <p className="text-sm font-semibold text-slate-600">Travel Date</p>
+                    <p className="mt-2 text-lg font-bold text-slate-900">
+                      {bookingSummary.startDate ? formatDate(bookingSummary.startDate) : 'Select during booking'}
                     </p>
+                    {bookingSummary.endDate && (
+                      <p className="text-sm text-slate-500">Ends {formatDate(bookingSummary.endDate)}</p>
+                    )}
+                    {travelById.customizable && !bookingSummary.startDate && (
+                      <p className="mt-2 text-xs text-slate-500">Pick your preferred date when configuring the booking.</p>
+                    )}
+                  </div>
+
+                  <div className="rounded-2xl border border-slate-200 p-4">
+                    <p className="text-sm font-semibold text-slate-600">Travellers</p>
+                    <p className="mt-2 text-lg font-bold text-slate-900">
+                      {(bookingSummary.totalAdults ?? 1)} Adults • {(bookingSummary.totalChildren ?? 0)} Children
+                    </p>
+                    <p className="mt-1 text-xs text-slate-500">Adjust guests, child ages, and fare in the booking step.</p>
+                    {bookingSummary.totalAmount > 0 && (
+                      <p className="mt-2 text-sm font-semibold text-emerald-600">
+                        Last calculated amount: ₹{bookingSummary.totalAmount.toLocaleString()}
+                      </p>
+                    )}
                   </div>
 
                   {/* Package Details */}
@@ -370,10 +702,10 @@ export default function TourBookNowPage() {
                 {/* CTA */}
                 <div className="mt-6 sm:mt-8">
                   <button
-                    onClick={handleBooking}
+                    onClick={() => setIsModalOpen(true)}
                     className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 sm:px-6 sm:py-4 text-base sm:text-lg font-bold text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:from-blue-700 hover:to-indigo-700 hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/40 active:scale-100 focus:outline-none focus:ring-4 focus:ring-blue-300"
                   >
-                    Book Now — Secure Your Trip
+                    Book Now — Configure Travellers
                   </button>
                 </div>
 
@@ -401,6 +733,13 @@ export default function TourBookNowPage() {
           </aside>
         </main>
       </div>
+      <BookingRoomsModal
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        travel={travelById}
+        finalPrice={finalPrice}
+        onConfirm={handleModalConfirm}
+      />
     </div>
   );
 }

@@ -39,6 +39,8 @@ const TravelForm = () => {
         nights: '',
         days: '',
         from: '',
+        tourStartDate: '',
+        customizable: false,
         to: '',
         amenities: [],
         inclusion: [''],
@@ -121,6 +123,16 @@ const TravelForm = () => {
         setFormData({ ...formData, dayWise: updatedDayWise });
     };
 
+    const handleCustomizableChange = (value) => {
+        setFormData((prev) => ({
+            ...prev,
+            customizable: value,
+            ...(value
+                ? { tourStartDate: '' }
+                : { from: '', to: '' })
+        }));
+    };
+
     const handleAddImage = () => {
         setFormData({ ...formData, images: [...formData.images, null] });
     };
@@ -158,6 +170,8 @@ const TravelForm = () => {
         formDataToSend.append('days', formData.days);
         formDataToSend.append('from', formData.from);
         formDataToSend.append('to', formData.to);
+    formDataToSend.append('tourStartDate', formData.tourStartDate);
+    formDataToSend.append('customizable', formData.customizable);
         formDataToSend.append('starRating', formData.starRating);
 
         formData.inclusion.forEach((inclusions) => {
@@ -566,39 +580,79 @@ const TravelForm = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCalendarAlt className="mr-2 text-purple-600" />
-                                    From Date <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <input
-                                    type="date"
-                                    name="from"
-                                    value={formData.from}
-                                    onChange={handleChange}
-                                    onClick={openDatePicker}
-                                    required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                />
+                        <div className="space-y-3 mb-6">
+                            <label className="flex items-center text-sm font-medium text-gray-700">
+                                <FaCalendarAlt className="mr-2 text-purple-600" />
+                                Customizable Package <span className="text-red-500 ml-1">*</span>
+                            </label>
+                            <div className="flex flex-wrap gap-4">
+                                {[{ label: 'Yes', value: true }, { label: 'No', value: false }].map(option => (
+                                    <button
+                                        type="button"
+                                        key={option.label}
+                                        onClick={() => handleCustomizableChange(option.value)}
+                                        className={`px-4 py-2 rounded-xl border transition font-semibold ${formData.customizable === option.value ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'}`}
+                                    >
+                                        {option.label}
+                                    </button>
+                                ))}
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCalendarAlt className="mr-2 text-purple-600" />
-                                    To Date <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <input
-                                    type="date"
-                                    name="to"
-                                    value={formData.to}
-                                    onChange={handleChange}
-                                    onClick={openDatePicker}
-                                    required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                />
-                            </div>
+                            <p className="text-xs text-gray-500">
+                                Select "Yes" to allow travellers to choose a date range. Select "No" to keep a fixed tour start date.
+                            </p>
                         </div>
+
+                        {formData.customizable ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="flex items-center text-sm font-medium text-gray-700">
+                                        <FaCalendarAlt className="mr-2 text-purple-600" />
+                                        From Date <span className="text-red-500 ml-1">*</span>
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="from"
+                                        value={formData.from}
+                                        onChange={handleChange}
+                                        onClick={openDatePicker}
+                                        required={formData.customizable}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="flex items-center text-sm font-medium text-gray-700">
+                                        <FaCalendarAlt className="mr-2 text-purple-600" />
+                                        To Date <span className="text-red-500 ml-1">*</span>
+                                    </label>
+                                    <input
+                                        type="date"
+                                        name="to"
+                                        value={formData.to}
+                                        onChange={handleChange}
+                                        onClick={openDatePicker}
+                                        required={formData.customizable}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                <label className="flex items-center text-sm font-medium text-gray-700">
+                                    <FaCalendarAlt className="mr-2 text-purple-600" />
+                                    Tour Start Date <span className="text-red-500 ml-1">*</span>
+                                </label>
+                                <input
+                                    type="date"
+                                    name="tourStartDate"
+                                    value={formData.tourStartDate}
+                                    onChange={handleChange}
+                                    onClick={openDatePicker}
+                                    required={!formData.customizable}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     {/* Inclusion/Exclusion Section */}
