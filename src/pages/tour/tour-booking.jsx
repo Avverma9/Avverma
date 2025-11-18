@@ -40,15 +40,7 @@ const calculateAge = (dob) => {
   return age;
 };
 
-const defaultRoom = () => ({ adults: 2, children: 0, childDOBs: [] });
-
-const BookingRoomsModal = ({
-  open,
-  onClose,
-  travel,
-  finalPrice,
-  onConfirm
-}) => {
+const BookingRoomsModal = ({ open, onClose, travel, finalPrice, onConfirm }) => {
   const customizable = travel?.customizable;
   const durationInDays = travel?.days || 1;
   const visitPlaces = useMemo(() => (travel?.visitngPlaces || '').replace(/\|/g, ' | '), [travel]);
@@ -58,90 +50,69 @@ const BookingRoomsModal = ({
   }, [travel, customizable]);
 
   const [selectedDate, setSelectedDate] = useState(fixedStartDate);
-  const [rooms, setRooms] = useState([defaultRoom()]);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [childDOBs, setChildDOBs] = useState([]);
   const [calcResult, setCalcResult] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
     if (open) {
-      setRooms([defaultRoom()]);
+      setAdults(2);
+      setChildren(0);
+      setChildDOBs([]);
       setCalcResult(null);
       setError('');
       setSelectedDate(fixedStartDate);
     }
   }, [open, fixedStartDate]);
 
-  const getChildDOBsForRoom = (room) => {
-    const required = room.children;
-    const source = room.childDOBs || [];
-    const dobList = source.slice(0, required);
-    while (dobList.length < required) {
-      dobList.push('');
-    }
-    return dobList;
-  };
-
-  const updateRoom = (index, updater) => {
-    setRooms((prev) => prev.map((room, idx) => (idx === index ? updater(room) : room)));
+  const changeAdults = (delta) => {
+    setAdults((prev) => Math.min(4, Math.max(1, prev + delta)));
     setCalcResult(null);
   };
 
-  const changeAdultCount = (index, delta) => {
-    updateRoom(index, (room) => {
-      const nextAdults = Math.min(4, Math.max(1, room.adults + delta));
-      return { ...room, adults: nextAdults };
+  const changeChildren = (delta) => {
+    setChildren((prev) => {
+      const next = Math.min(3, Math.max(0, prev + delta));
+      setChildDOBs((dobs) => {
+        const copy = dobs.slice(0, next);
+        while (copy.length < next) copy.push('');
+        return copy;
+      });
+      return next;
     });
-  };
-
-  const changeChildCount = (index, delta) => {
-    updateRoom(index, (room) => {
-      const nextChildren = Math.min(3, Math.max(0, room.children + delta));
-      const adjustedDOBs = getChildDOBsForRoom({ ...room, children: nextChildren });
-      return { ...room, children: nextChildren, childDOBs: adjustedDOBs };
-    });
-  };
-
-  const handleChildDOBChange = (roomIndex, childIndex, value) => {
-    updateRoom(roomIndex, (room) => {
-      const dobList = getChildDOBsForRoom(room);
-      dobList[childIndex] = value;
-      return { ...room, childDOBs: dobList };
-    });
-  };
-
-  const addRoomBlock = () => {
-    setRooms((prev) => [...prev, defaultRoom()]);
     setCalcResult(null);
   };
 
-  const removeRoomBlock = (roomIndex) => {
-    setRooms((prev) => prev.filter((_, idx) => idx !== roomIndex));
+  const handleChildDOBChange = (index, value) => {
+    setChildDOBs((prev) => {
+      const copy = prev.slice();
+      copy[index] = value;
+      return copy;
+    });
     setCalcResult(null);
   };
 
   const aggregateTotals = () => {
-    const totalAdults = rooms.reduce((sum, room) => sum + room.adults, 0);
+    const totalAdults = adults;
     let totalAmount = totalAdults * finalPrice;
-    const childDOBs = [];
-    for (const room of rooms) {
-      const dobList = getChildDOBsForRoom(room).slice(0, room.children);
-      for (let i = 0; i < dobList.length; i += 1) {
-        const dob = dobList[i];
-        if (!dob) {
-          return { error: 'Please enter date of birth for every child.' };
-        }
-        const age = calculateAge(dob);
-        const isFullFare = age === null || age >= 8;
-        const childFare = isFullFare ? finalPrice : finalPrice / 2;
-        totalAmount += childFare;
-        childDOBs.push(dob);
-      }
+    const dobList = childDOBs.slice(0, children);
+    const collectedChildDOBs = [];
+    for (let i = 0; i < children; i += 1) {
+      const dob = dobList[i];
+      if (!dob) return { error: 'Please enter date of birth for every child.' };
+      const age = calculateAge(dob);
+      const isFullFare = age === null || age >= 8;
+      const childFare = isFullFare ? finalPrice : finalPrice / 2;
+      totalAmount += childFare;
+      collectedChildDOBs.push(dob);
     }
     return {
       totalAmount,
       totalAdults,
-      totalChildren: childDOBs.length,
-      childDOBs
+      totalChildren: children,
+      childDOBs: collectedChildDOBs
     };
   };
 
@@ -210,104 +181,87 @@ const BookingRoomsModal = ({
             )}
           </div>
 
-          {rooms.map((room, index) => (
-            <div key={`room-${index}`} className="rounded-xl sm:rounded-2xl border border-gray-200 bg-slate-50/60 p-3 sm:p-4">
-              <div className="mb-3 sm:mb-4 flex items-center justify-between">
-                <h3 className="text-base sm:text-lg font-semibold text-slate-800">Room {index + 1}</h3>
-                {rooms.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => removeRoomBlock(index)}
-                    className="text-xs sm:text-sm font-medium text-rose-600 hover:underline px-2 py-1"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
+      
+            <div className="mb-3 sm:mb-4 flex items-center justify-between">
+         
+            </div>
 
-              <div className="space-y-3 sm:space-y-4">
-                <div className="grid grid-cols-2 gap-2 sm:gap-4">
-                  <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800">Adult</p>
-                    <p className="text-xs text-slate-500">Above 12 years</p>
-                    <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
-                      <button 
-                        type="button" 
-                        onClick={() => changeAdultCount(index, -1)} 
-                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
-                        disabled={room.adults <= 1}
-                      >
-                        −
-                      </button>
-                      <span>{room.adults}</span>
-                      <button 
-                        type="button" 
-                        onClick={() => changeAdultCount(index, 1)} 
-                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
-                        disabled={room.adults >= 4}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
-                    <div className="flex items-start justify-between mb-1">
-                      <div>
-                        <p className="text-xs sm:text-sm font-semibold text-slate-800">Child</p>
-                        <p className="text-xs text-slate-500">Below 12 years</p>
-                      </div>
-                      <span className="text-xs text-blue-600 font-medium">8+ full fare</span>
-                    </div>
-                    <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
-                      <button 
-                        type="button" 
-                        onClick={() => changeChildCount(index, -1)} 
-                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
-                        disabled={room.children <= 0}
-                      >
-                        −
-                      </button>
-                      <span>{room.children}</span>
-                      <button 
-                        type="button" 
-                        onClick={() => changeChildCount(index, 1)} 
-                        className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
-                        disabled={room.children >= 3}
-                      >
-                        +
-                      </button>
-                    </div>
+            <div className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-4">
+                <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
+                  <p className="text-xs sm:text-sm font-semibold text-slate-800">Adult</p>
+                  <p className="text-xs text-slate-500">Above 12 years</p>
+                  <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
+                    <button
+                      type="button"
+                      onClick={() => changeAdults(-1)}
+                      className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                      disabled={adults <= 1}
+                    >
+                      −
+                    </button>
+                    <span>{adults}</span>
+                    <button
+                      type="button"
+                      onClick={() => changeAdults(1)}
+                      className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                      disabled={adults >= 4}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
 
-                {room.children > 0 && (
-                  <div className="space-y-2 sm:space-y-3">
-                    {getChildDOBsForRoom(room).slice(0, room.children).map((dob, childIdx) => (
-                      <div key={`child-${index}-${childIdx}`}>
-                        <label className="text-xs sm:text-sm font-medium text-slate-700 block mb-1">
-                          Child {childIdx + 1} Date of Birth
-                        </label>
-                        <input
-                          type="date"
-                          value={dob}
-                          max={new Date().toISOString().split('T')[0]}
-                          onChange={(e) => handleChildDOBChange(index, childIdx, e.target.value)}
-                          className="w-full rounded-lg sm:rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-200 text-sm"
-                        />
-                      </div>
-                    ))}
+                <div className="rounded-xl border border-gray-200 bg-white px-3 py-2 sm:px-4 sm:py-3">
+                  <div className="flex items-start justify-between mb-1">
+                    <div>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800">Child</p>
+                      <p className="text-xs text-slate-500">Below 12 years</p>
+                    </div>
+                    <span className="text-xs text-blue-600 font-medium">8+ full fare</span>
                   </div>
-                )}
+                  <div className="mt-2 sm:mt-3 flex items-center justify-between rounded-lg sm:rounded-xl border border-gray-300 px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg font-semibold">
+                    <button
+                      type="button"
+                      onClick={() => changeChildren(-1)}
+                      className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                      disabled={children <= 0}
+                    >
+                      −
+                    </button>
+                    <span>{children}</span>
+                    <button
+                      type="button"
+                      onClick={() => changeChildren(1)}
+                      className="px-1 sm:px-2 text-lg sm:text-2xl touch-manipulation active:scale-95 transition-transform"
+                      disabled={children >= 3}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
 
-          {rooms.length < 4 && (
-            <button type="button" onClick={addRoomBlock} className="text-sm font-semibold text-blue-600 hover:underline px-3 py-2">
-              + Add Room
-            </button>
-          )}
+              {children > 0 && (
+                <div className="space-y-2 sm:space-y-3">
+                  {childDOBs.slice(0, children).map((dob, childIdx) => (
+                    <div key={`child-${childIdx}`}>
+                      <label className="text-xs sm:text-sm font-medium text-slate-700 block mb-1">
+                        Child {childIdx + 1} Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        value={dob}
+                        max={new Date().toISOString().split('T')[0]}
+                        onChange={(e) => handleChildDOBChange(childIdx, e.target.value)}
+                        className="w-full rounded-lg sm:rounded-xl border border-gray-300 px-3 py-2 text-slate-800 focus:border-blue-600 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-blue-200 text-sm"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
 
           <div className="rounded-xl border border-blue-100 bg-blue-50/60 p-3 text-xs sm:text-sm text-blue-800">
             Child below 8 years will be charged at 50% of adult fare. Above 8 years will be charged full price.

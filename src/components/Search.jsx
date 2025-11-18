@@ -76,7 +76,7 @@ const SearchForm = () => {
                 {/* Destination Input */}
                 <div className="col-span-12 md:col-span-4">
                     <label className="flex items-center gap-1.5 text-xs md:text-sm font-semibold text-gray-700 mb-1">
-                        <LocationOnIcon className="text-purple-600" />
+                        <LocationOnIcon className="text-purple-600"  />
                         Destination
                     </label>
                     <div className="relative">
@@ -87,6 +87,7 @@ const SearchForm = () => {
                             type="text"
                             name="search"
                             value={data.search}
+                            required={true}
                             onChange={handleChange}
                             placeholder="City or hotel..."
                             onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), handleSearch())}
