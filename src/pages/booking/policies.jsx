@@ -8,16 +8,14 @@ import {
   HighlightOff,
   Deck,
   SevereCold,
-  PrivacyTip,
-  Info,
-  Security,
-  Gavel
 } from "@mui/icons-material";
 
+// Helper for bulleted lists
 const PolicyTextItem = ({ text }) => {
   if (!text || !text.trim()) {
     return <p className="text-sm text-gray-500">Not specified.</p>;
   }
+  // Split by newline, then remove any leading special characters (like •, ➤, etc.) and trim.
   const lines = text.split('\n')
     .map(line => line.trim().replace(/^[^a-zA-Z0-9]+/, '').trim())
     .filter(line => line);
@@ -31,6 +29,7 @@ const PolicyTextItem = ({ text }) => {
   );
 };
 
+// Helper for status chips
 const StatusChip = ({ status }) => {
   const isAllowed = status === "Allowed" || status === "Accepted";
   const bgColor = isAllowed ? "bg-green-100" : "bg-red-100";
@@ -45,6 +44,7 @@ const StatusChip = ({ status }) => {
   );
 };
 
+// Main Component
 const Policies = () => {
   const location = useLocation();
   const { hotelData, policies } = location.state || {};
@@ -98,6 +98,7 @@ const Policies = () => {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-4xl mx-auto">
         
+        {/* Header */}
         <div className="flex items-center mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -109,17 +110,19 @@ const Policies = () => {
             <h1 className="text-xl font-semibold text-gray-900">
               {hotelData?.hotelName}
             </h1>
-            <p className="text-sm text-gray-500">Policies & Privacy Information</p>
+            <p className="text-sm text-gray-500">Policies & House Rules</p>
           </div>
         </div>
 
         <div className="space-y-6">
           
+          {/* Key Information */}
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Key Information</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
+              {/* Timings */}
               <div>
                 <div className="flex items-center mb-3">
                   <AccessTime className="w-5 h-5 text-gray-400 mr-2" />
@@ -137,6 +140,7 @@ const Policies = () => {
                 </div>
               </div>
 
+              {/* Guest Policies */}
               <div>
                 <div className="flex items-center mb-3">
                   <Groups className="w-5 h-5 text-gray-400 mr-2" />
@@ -162,6 +166,7 @@ const Policies = () => {
             </div>
           </div>
 
+          {/* Property Rules */}
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Property Rules</h2>
             
@@ -187,11 +192,13 @@ const Policies = () => {
             </div>
           </div>
 
+          {/* Tariffs */}
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Tariffs</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
+              {/* On Season */}
               <div>
                 <div className="flex items-center mb-3">
                   <Deck className="w-5 h-5 text-orange-500 mr-2" />
@@ -207,6 +214,7 @@ const Policies = () => {
                 </div>
               </div>
 
+              {/* Off Season */}
               <div>
                 <div className="flex items-center mb-3">
                   <SevereCold className="w-5 h-5 text-blue-500 mr-2" />
@@ -221,89 +229,6 @@ const Policies = () => {
                   ))}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow p-8">
-            <div className="flex items-center mb-6">
-              <PrivacyTip className="w-6 h-6 text-blue-600 mr-2" />
-              <h2 className="text-xl font-bold text-gray-900">Privacy Policy</h2>
-            </div>
-            
-            <div className="prose prose-blue max-w-none text-gray-600 space-y-6">
-              <div className="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500 text-sm">
-                <p className="font-semibold text-blue-800">Last Updated: December 16, 2025</p>
-                <p className="mt-1">Happy Hotel Stay Service ("we," "us," or "our") is committed to protecting your privacy.</p>
-              </div>
-
-              <section>
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center mb-3">
-                  <Info className="w-5 h-5 mr-2 text-gray-400" />
-                  1. Information We Collect
-                </h3>
-                <div className="space-y-3 pl-7">
-                  <p><span className="font-medium text-gray-800">Personal Data:</span> Personally identifiable information (name, email, mobile number) given voluntarily during registration.</p>
-                  <p><span className="font-medium text-gray-800">Partner Data:</span> For hotels/agents, we collect business name, address, registration documents, and bank details.</p>
-                  <p><span className="font-medium text-gray-800">Booking Information:</span> Travel dates, accommodations, cab/tour details, and payment history.</p>
-                  <p><span className="font-medium text-gray-800">Derivative Data:</span> Server logs including IP address, browser type, and access times.</p>
-                  <p><span className="font-medium text-gray-800">Financial Data:</span> Limited payment information; full details are secured by our payment processor.</p>
-                </div>
-              </section>
-
-              <section>
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center mb-3">
-                  <Gavel className="w-5 h-5 mr-2 text-gray-400" />
-                  2. How We Use Your Information
-                </h3>
-                <ul className="list-disc pl-12 space-y-1">
-                  <li>Create and manage your user account.</li>
-                  <li>Process bookings, payments, and facilitate partner communication.</li>
-                  <li>Provide customer support and respond to inquiries.</li>
-                  <li>Analyze usage trends and improve platform performance.</li>
-                  <li>Prevent fraudulent transactions and protect security.</li>
-                </ul>
-              </section>
-
-              <section>
-                <h3 className="text-lg font-semibold text-gray-800 flex items-center mb-3">
-                  <Security className="w-5 h-5 mr-2 text-gray-400" />
-                  3. Disclosure of Your Information
-                </h3>
-                <div className="space-y-3 pl-7">
-                  <p><span className="font-medium text-gray-800">By Law:</span> Disclosed if required for legal processes or protection of rights.</p>
-                  <p><span className="font-medium text-gray-800">Service Providers:</span> Shared with third parties performing tasks like hosting or payment processing.</p>
-                  <p><span className="font-medium text-gray-800">Partners:</span> Personal details shared with hotels to complete your reservation.</p>
-                </div>
-              </section>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
-                <section>
-                  <h4 className="font-semibold text-gray-800 mb-2">4. Data Security</h4>
-                  <p className="text-sm leading-relaxed">We use administrative, technical, and physical security measures. While we take reasonable steps, no digital transmission is 100% impenetrable.</p>
-                </section>
-                <section>
-                  <h4 className="font-semibold text-gray-800 mb-2">5. Your Rights</h4>
-                  <p className="text-sm leading-relaxed">You may review, change, or terminate your account at any time. Opt-out options are available for marketing communications.</p>
-                </section>
-              </div>
-
-              <section className="bg-gray-50 p-6 rounded-xl border border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">9. Contact Us</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-500 uppercase text-xs font-bold tracking-wider">Company Name</p>
-                    <p className="text-gray-900 font-medium">Happy Hotel Stay Service</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 uppercase text-xs font-bold tracking-wider">Email Support</p>
-                    <p className="text-blue-600 font-medium underline">info@hotelroomsstay.com</p>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <p className="text-gray-500 uppercase text-xs font-bold tracking-wider">Address</p>
-                    <p className="text-gray-900 font-medium italic">Agra Rd, ADA Bank Colony, Aligarh, Uttar Pradesh 202001</p>
-                  </div>
-                </div>
-              </section>
             </div>
           </div>
 

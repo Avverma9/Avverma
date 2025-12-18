@@ -35,6 +35,7 @@ import Locations from "./pages/home-section/locations";
 import CouponPage from "./components/Profile/coupons";
 import TravelForm from "./pages/tour/partnerPage";
 import Policies from "./pages/booking/policies";
+import TermsPage from "./pages/TermsPage";
 import ServerErrorPage from "./pages/errors/ServerError"; // ✅ Add karo
 
 import baseURL from "./utils/baseURL";
@@ -79,9 +80,12 @@ function MainLayout() {
         <Route path="/offered" element={<Offered />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/policy" element={<PoliciesPage />} />
+        <Route path="/privacy" element={<PoliciesPage />} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/coupons" element={<CouponPage />} />
-        <Route path="/privacy" element={<Policies />} />
+        <Route path="/policies" element={<Policies />} />
       </Routes>
 
       <ScrollToTop />
