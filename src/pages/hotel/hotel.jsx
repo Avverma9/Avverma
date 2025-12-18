@@ -100,7 +100,7 @@ const HotelPageContent = () => {
 
         const params = new URLSearchParams(location.search);
         params.set("page", String(page));
-        params.set("limit", "5");
+        params.set("limit", "8");
         const apiUrl = `${baseURL}/hotels/filters?${params.toString()}`;
 
         try {

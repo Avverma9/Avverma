@@ -132,6 +132,21 @@ export const getBookings = createAsyncThunk('travel/getBookings', async (_, { re
     }
 });
 
+// Fetch seat map for a specific tour vehicle
+export const fetchSeatMap = createAsyncThunk(
+    'travel/fetchSeatMap',
+    async ({ tourId, vehicleId }, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(`${baseURL}/tours/${tourId}/vehicles/${vehicleId}/seats`, {
+                headers: { Authorization: token }
+            });
+            return { tourId, vehicleId, seats: response?.data?.seats || [] };
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || error.message);
+        }
+    }
+);
+
 const travelSlice = createSlice({
     name: 'travel',
     initialState: {
@@ -140,6 +155,13 @@ const travelSlice = createSlice({
         travelById: null,
         loading: false,
         error: null,
+        // seat map cache keyed by `${tourId}:${vehicleId}`
+        seatMapByKey: {},
+    },
+    reducers: {
+        clearSeatError(state) {
+            state.error = null;
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -179,7 +201,22 @@ const travelSlice = createSlice({
                 state.bookings = action.payload;
                 state.loading = false;
             })
+            // seat map handlers
+            .addCase(fetchSeatMap.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchSeatMap.fulfilled, (state, action) => {
+                const { tourId, vehicleId, seats } = action.payload;
+                state.loading = false;
+                state.seatMapByKey[`${tourId}:${vehicleId}`] = seats;
+            })
+            .addCase(fetchSeatMap.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || action.error?.message;
+            });
     },
 });
 
+export const { clearSeatError } = travelSlice.actions;
 export default travelSlice.reducer;

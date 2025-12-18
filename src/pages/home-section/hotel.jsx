@@ -26,7 +26,16 @@ const CardSkeleton = () => (
     </div>
 );
 
-const HotelMobileCard = ({ hotelData }) => {
+const LoadingSpinner = () => (
+    <div className="col-span-full flex justify-center items-center py-8">
+        <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-blue-500/30 border-t-blue-600 rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-500">Loading more hotels...</p>
+        </div>
+    </div>
+);
+
+const HotelMobileCard = ({ hotelData, lastItemRef, loadingMore, hasMore, initialLoading }) => {
     const [expandedHotelId, setExpandedHotelId] = useState(null);
     const dispatch = useDispatch();
     const gstData = useSelector((state) => state.gst.gst);
@@ -40,7 +49,7 @@ const HotelMobileCard = ({ hotelData }) => {
         window.location.href = `/book-hotels/${userId}/${hotelID}`;
     };
 
-    const loading = hotelData === null || hotelData === undefined;
+    const loading = initialLoading || hotelData === null || hotelData === undefined;
 
     useEffect(() => {
         if (hotelData && hotelData.length > 0) {
@@ -82,13 +91,19 @@ const HotelMobileCard = ({ hotelData }) => {
                         <p className="text-gray-600 font-semibold">No hotels found for your search.</p>
                     </div>
                 ) : (
-                    hotelData.map((hotel, index) => {
+                    <>
+                    {hotelData.map((hotel, index) => {
                         const mainRoomPrice = hotel?.rooms?.[0]?.price || 0;
                         const mainRoomGst = calculateGstAmount(mainRoomPrice);
                         const isExpanded = expandedHotelId === hotel.hotelId;
+                        const isLastItem = index === hotelData.length - 1;
 
                         return (
-                            <div key={hotel.hotelId} className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1 overflow-hidden">
+                            <div 
+                                key={hotel.hotelId} 
+                                ref={isLastItem ? lastItemRef : null}
+                                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1 overflow-hidden"
+                            >
                                 <div className="p-3 cursor-pointer flex-grow" onClick={() => handleBuy(hotel?.hotelId)}>
                                     <div className="flex gap-2 mb-3 md:hidden">
                                         {hotel?.images?.[0] && (
@@ -162,7 +177,18 @@ const HotelMobileCard = ({ hotelData }) => {
                                 </div>
                             </div>
                         );
-                    })
+                    })}
+                    
+                    {/* Loading more indicator */}
+                    {loadingMore && <LoadingSpinner />}
+                    
+                    {/* End of list indicator */}
+                    {!hasMore && hotelData.length > 0 && (
+                        <div className="col-span-full text-center py-6">
+                            <p className="text-sm text-gray-500">You've reached the end of the list</p>
+                        </div>
+                    )}
+                    </>
                 )}
             </div>
         </div>
