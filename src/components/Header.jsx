@@ -194,7 +194,7 @@ export default function Header() {
         </div>
       </header>
 
-      <div className="pt-24"></div>
+      <div className="pt-15"></div>
 
       <div
         className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
