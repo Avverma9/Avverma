@@ -57,22 +57,21 @@ const StarIcon = ({ filled, className = "" }) => (
 );
 
 // Image Carousel Component
-const ImageCarousel = ({ images, title, dates, duration, rating, themes }) => {
+const ImageCarousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (!images || images.length === 0) return;
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
-    }, 4000);
+    }, 3000);
     return () => clearInterval(timer);
   }, [images]);
 
   if (!images || images.length === 0) return null;
 
   return (
-    <div className="relative h-64 md:h-96 w-full overflow-hidden bg-gray-900">
-      {/* Images */}
+    <div className="relative h-64 md:h-[500px] w-full overflow-hidden bg-gray-900">
       <div 
         className="flex transition-transform duration-700 ease-in-out h-full" 
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -82,54 +81,20 @@ const ImageCarousel = ({ images, title, dates, duration, rating, themes }) => {
             <img 
               src={img} 
               alt={`Slide ${idx + 1}`} 
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-cover opacity-80" 
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
           </div>
         ))}
       </div>
 
-      {/* Overlay Content */}
-      <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6">
-        {/* Top: Theme Badge */}
-        <div className="flex justify-start">
-          <span className="bg-orange-600 text-white text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold shadow-lg">
-            {themes}
-          </span>
-        </div>
-
-        {/* Bottom: Title and Info */}
-        <div className="text-white">
-          <h1 className="text-2xl md:text-4xl font-bold mb-2 tracking-tight drop-shadow-lg">
-            {title}
-          </h1>
-          <div className="flex items-center gap-3 flex-wrap mb-2">
-            <span className="flex items-center gap-1 text-xs md:text-sm bg-black/40 backdrop-blur-sm px-2 py-1 rounded">
-              <Calendar size={14} className="text-orange-400" />
-              {dates}
-            </span>
-            <span className="flex items-center gap-1 text-xs md:text-sm bg-black/40 backdrop-blur-sm px-2 py-1 rounded">
-              <Moon size={14} className="text-orange-400" />
-              {duration}
-            </span>
-          </div>
-          <div className="flex items-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <StarIcon key={i} filled={i < rating} className="w-4 h-4" />
-            ))}
-            <span className="text-sm ml-1">{rating}.0 Star Rating</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Indicators */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-1.5 z-10">
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
         {images.map((_, idx) => (
           <button
             key={idx}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              currentIndex === idx ? 'bg-orange-500 w-6' : 'bg-white/60 hover:bg-white w-1.5'
+            className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+              currentIndex === idx ? 'bg-orange-500 w-6 md:w-8' : 'bg-white/50 hover:bg-white'
             }`}
           />
         ))}
@@ -147,7 +112,7 @@ export default function TourBookNowPage() {
   const navigate = useNavigate();
 
   const { showLoader, hideLoader } = useLoader();
-  const toast = useToast();
+  const popup = useToast();
 
   const [view, setView] = useState('details');
   const [activeTab, setActiveTab] = useState('itinerary');
@@ -157,16 +122,15 @@ export default function TourBookNowPage() {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [passengers, setPassengers] = useState({});
   const [selectedVehicleId, setSelectedVehicleId] = useState("");
+  const [busType, setBusType] = useState('2x2');
 
   useEffect(() => {
     if (id) dispatch(getTravelById(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (travelById?.price) {
-      dispatch(getGst({ type: "Tour", gstThreshold: travelById.price }));
-    }
-  }, [dispatch, travelById?.price]);
+    dispatch(getGst({ type: "Tour" }));
+  }, [dispatch]);
 
   useEffect(() => {
     if (gstData && travelById) {
@@ -197,10 +161,6 @@ export default function TourBookNowPage() {
   const seatMap = seatKey ? (seatMapByKey[seatKey] || []) : [];
   const bookedSeats = seatMap.filter(s => s.status === "booked").map(s => s.code);
 
-  // Get bus type from selected vehicle
-  const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
-  const busType = selectedVehicle?.seaterType === '2*3' ? '2x3' : '2x2';
-
   const visitingPlaces = useMemo(() => {
     try {
       return (travelById?.visitngPlaces || "").replace(/\|/g, ", ");
@@ -211,7 +171,7 @@ export default function TourBookNowPage() {
 
   const startBooking = () => {
     if (!userId) {
-      toast.warning("Please log in to book.");
+      popup("Please log in to book.");
       return;
     }
     setView('booking');
@@ -244,7 +204,7 @@ export default function TourBookNowPage() {
 
   const confirmBooking = async () => {
     if (selectedSeats.length === 0) {
-      toast.warning("Please select at least one seat.");
+      popup("Please select at least one seat.");
       return;
     }
 
@@ -257,7 +217,7 @@ export default function TourBookNowPage() {
     });
 
     if (!valid) {
-      toast.warning("Please fill in all passenger details correctly.");
+      popup("Please fill in all passenger details correctly.");
       return;
     }
 
@@ -318,11 +278,11 @@ export default function TourBookNowPage() {
       const res = await dispatch(bookNow(bookingData)).unwrap();
       const data = res?.payload || res;
       const bookingCode = data?.bookingCode || data?.bookingId || "N/A";
-      toast.success(`Booking Confirmed!\nBooking ID: ${bookingCode}`);
+      popup.success(`Booking Confirmed!\nBooking ID: ${bookingCode}`);
       setView('success');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-      toast.error(`Booking failed.\nReason: ${err?.message || err?.toString() || "Unknown error"}`);
+      popup(`Booking failed.\nReason: ${err?.message || err?.toString() || "Unknown error"}`);
     } finally {
       hideLoader();
     }
@@ -356,20 +316,14 @@ export default function TourBookNowPage() {
   };
 
   const StickyFooter = () => (
-    <div className="fixed left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.1)]" style={{ bottom: window.innerWidth <= 768 ? 'calc(env(safe-area-inset-bottom) + 56px)' : '0', zIndex: 1050 }}>
-      <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
-        <div className="min-w-0">
-          <p className="text-xs text-gray-500">Total Package Cost</p>
-          <p className="text-lg md:text-2xl font-bold text-gray-900">
-            {formatCurrency(finalPrice)} 
-            <span className="text-xs font-normal text-gray-500 ml-1">/ person</span>
-          </p>
+    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div>
+          <p className="text-sm text-gray-500">Total Package Cost</p>
+          <p className="text-2xl font-bold text-gray-900">{formatCurrency(finalPrice)} <span className="text-xs font-normal text-gray-500">/ person</span></p>
         </div>
-        <button 
-          onClick={startBooking} 
-          className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-lg shadow-lg transform transition active:scale-95 flex items-center gap-2 whitespace-nowrap"
-        >
-          Book Now <ArrowRight size={18} className="md:w-5 md:h-5" />
+        <button onClick={startBooking} className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition active:scale-95 flex items-center gap-2">
+          Book Now <ArrowRight size={20} />
         </button>
       </div>
     </div>
@@ -389,19 +343,40 @@ export default function TourBookNowPage() {
   return (
     <div className="bg-gray-50 text-gray-800 min-h-screen font-sans">
       {view === 'details' && (
-        <div className="pb-20 md:pb-24">
-          {/* Image Carousel with Overlay */}
-          <ImageCarousel 
-            images={travelById.images}
-            title={travelById.travelAgencyName}
-            dates={`${formatDate(travelById.from)} - ${formatDate(addDays(travelById.from, travelById.days - 1))}`}
-            duration={`${travelById.nights}N/${travelById.days}D`}
-            rating={travelById.starRating}
-            themes={travelById.themes}
-          />
+        <div className="pb-24">
+          {/* Image Carousel */}
+          <ImageCarousel images={travelById.images} />
+          
+          {/* Hero Section with Title Overlay */}
+          <div className="relative -mt-32 z-10">
+            <div className="max-w-7xl mx-auto px-4">
+              <div className="bg-gradient-to-t from-black/90 via-black/20 to-transparent text-white p-6 rounded-t-xl">
+                <span className="bg-orange-600 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold mb-3 inline-block shadow-lg">
+                  {travelById.themes}
+                </span>
+                <h1 className="text-3xl md:text-6xl font-bold mb-2 tracking-tight">{travelById.travelAgencyName}</h1>
+                <p className="opacity-90 flex items-center gap-3 text-sm md:text-lg font-medium flex-wrap">
+                  <span className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded backdrop-blur-sm">
+                    <Calendar size={16} className="text-orange-400" /> {formatDate(travelById.from)} - {formatDate(addDays(travelById.from, travelById.days - 1))}
+                  </span>
+                  <span className="flex items-center gap-1 bg-black/30 px-2 py-1 rounded backdrop-blur-sm">
+                    <Moon size={16} className="text-orange-400" /> {travelById.nights}N/{travelById.days}D
+                  </span>
+                </p>
+                <div className="flex items-center mt-2">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <StarIcon key={i} filled={i < travelById.starRating} />
+                    ))}
+                  </div>
+                  <p className="ml-2 text-base sm:text-lg">{travelById.starRating}.0 Star Rating</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 mt-4">
+          <div className="max-w-7xl mx-auto px-4 md:px-0 mt-6">
             <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
               {/* Tabs */}
               <div className="flex border-b border-gray-200 bg-white sticky top-0 z-40 shadow-sm overflow-x-auto">
@@ -409,7 +384,7 @@ export default function TourBookNowPage() {
                   <button 
                     key={tab}
                     onClick={() => setActiveTab(tab)} 
-                    className={`flex-1 py-3 px-4 text-center whitespace-nowrap capitalize font-medium transition-colors text-sm md:text-base ${activeTab === tab ? 'border-b-3 border-orange-600 text-orange-600 font-bold bg-orange-50/50' : 'text-gray-600 hover:text-orange-500 hover:bg-gray-50'}`}
+                    className={`flex-1 py-4 px-6 text-center whitespace-nowrap capitalize font-medium transition-colors ${activeTab === tab ? 'border-b-2 border-orange-600 text-orange-600 font-bold bg-orange-50/50' : 'text-gray-600 hover:text-orange-500 hover:bg-gray-50'}`}
                   >
                     {tab === 'info' ? 'Overview & Inclusions' : tab}
                   </button>
@@ -491,24 +466,19 @@ export default function TourBookNowPage() {
                 )}
 
                 {activeTab === 'policies' && (
-                  <div className="p-4 md:p-8 max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
+                  <div className="p-6 md:p-8 max-w-3xl mx-auto space-y-8 animate-in fade-in duration-500">
                     {travelById.termsAndConditions && (
-                      <section className="bg-white rounded-lg border border-gray-100">
-                        <div className="bg-gradient-to-r from-orange-50 to-orange-100/50 p-4 border-b border-orange-200">
-                          <h3 className="text-lg md:text-xl font-bold text-gray-800 flex items-center gap-2">
-                            <AlertCircle className="text-orange-500" size={20} /> Terms & Conditions
-                          </h3>
-                        </div>
-                        <div className="p-4 md:p-6 space-y-6">
+                      <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                        <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+                          <AlertCircle className="text-orange-500" /> Terms & Conditions
+                        </h3>
+                        <div className="space-y-4">
                           {Object.entries(travelById.termsAndConditions).map(([key, value]) => (
-                            <div key={key} className="pb-4 border-b border-gray-100 last:border-0">
-                              <h4 className="font-bold text-sm md:text-base capitalize text-slate-900 mb-2 flex items-center gap-2">
-                                <div className="w-1.5 h-5 bg-orange-500 rounded-full"></div>
-                                {key.replace(/([A-Z])/g, " $1").trim()}
+                            <div key={key}>
+                              <h4 className="font-semibold text-base sm:text-lg capitalize text-slate-900 mb-2">
+                                {key.replace(/([A-Z])/g, " $1")}
                               </h4>
-                              <p className="text-xs md:text-sm text-slate-600 whitespace-pre-line leading-relaxed ml-3.5">
-                                {value}
-                              </p>
+                              <p className="text-sm sm:text-base text-slate-600 whitespace-pre-line">{value}</p>
                             </div>
                           ))}
                         </div>
@@ -531,19 +501,30 @@ export default function TourBookNowPage() {
             <p className="opacity-80 text-sm mt-1">Select seats and enter details</p>
           </div>
           
-          <div className="max-w-6xl mx-auto px-4 py-8 grid lg:grid-cols-12 gap-8 items-start pb-32 md:pb-40">
+          <div className="max-w-6xl mx-auto px-4 py-8 grid lg:grid-cols-12 gap-8 items-start pb-24">
             {/* Seat Selection */}
             <div className="lg:col-span-5 order-2 lg:order-1">
               <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-200 mx-auto">
-                <div className="mb-6">
+                <div className="flex justify-between items-center mb-6">
                   <h3 className="font-bold text-lg text-gray-800 flex items-center gap-2">
                     <Armchair className="text-orange-600" /> Select Seats
                   </h3>
-                  {selectedVehicle && (
-                    <p className="text-xs text-gray-500 mt-1">
-                      {selectedVehicle.name} • {selectedVehicle.seaterType || '2*2'} Layout • {selectedVehicle.totalSeats} Seats
-                    </p>
-                  )}
+                  
+                  {/* Bus Type Selector */}
+                  <div className="flex bg-gray-100 rounded-lg p-1">
+                    <button 
+                      onClick={() => { setBusType('2x2'); setSelectedSeats([]); setPassengers({}); }}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${busType === '2x2' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                      2x2
+                    </button>
+                    <button 
+                      onClick={() => { setBusType('2x3'); setSelectedSeats([]); setPassengers({}); }}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${busType === '2x3' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                    >
+                      2x3
+                    </button>
+                  </div>
                 </div>
 
                 <div className="flex gap-4 text-xs mb-6 justify-center bg-gray-50 p-3 rounded-lg border border-gray-100">
@@ -713,39 +694,18 @@ export default function TourBookNowPage() {
                         <span>{formatCurrency(selectedSeats.length * finalPrice * 0.20)}</span>
                       </div>
                     </div>
+                    
+                    <div className="mt-6 flex gap-4">
+                      <button onClick={goBack} className="flex-1 py-3.5 border border-gray-300 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-colors">Cancel</button>
+                      <button onClick={confirmBooking} className="flex-[2] bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl flex justify-center items-center gap-2 transition-all active:scale-95">
+                        Confirm & Pay {formatCurrency(selectedSeats.length * finalPrice * 0.20)}
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
             </div>
           </div>
-
-          {/* Fixed Booking Footer */}
-          {selectedSeats.length > 0 && (
-            <div className="fixed left-0 right-0 bg-white border-t-2 border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.15)]" style={{ bottom: window.innerWidth <= 768 ? 'calc(env(safe-area-inset-bottom) + 56px)' : '0', zIndex: 1050 }}>
-              <div className="max-w-7xl mx-auto px-4 py-3 md:py-4 flex justify-between items-center gap-4">
-                <div className="min-w-0">
-                  <p className="text-xs text-gray-500">Advance Payment (20%)</p>
-                  <p className="text-lg md:text-2xl font-bold text-gray-900">
-                    {formatCurrency(selectedSeats.length * finalPrice * 0.20)}
-                  </p>
-                </div>
-                <div className="flex gap-2 md:gap-3">
-                  <button 
-                    onClick={goBack} 
-                    className="py-2.5 md:py-3 px-4 md:px-6 border-2 border-gray-300 rounded-lg text-gray-700 font-bold hover:bg-gray-50 transition-colors whitespace-nowrap text-sm md:text-base"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    onClick={confirmBooking} 
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-lg shadow-lg hover:shadow-xl flex items-center gap-2 transition-all active:scale-95 whitespace-nowrap text-sm md:text-base"
-                  >
-                    <CheckCircle2 size={18} className="md:w-5 md:h-5" /> Confirm & Pay
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 

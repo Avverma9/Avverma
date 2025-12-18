@@ -1,88 +1,27 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import { userId } from "../../utils/Unauthorized";
 import HotelMobileCard from "./hotel";
-
-const ITEMS_PER_PAGE = 8;
-
-export default function Offered() {
+export default function  Offered  ()  {
   const [hotelData, setHotelData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
   const location = useLocation();
-  const observerRef = useRef(null);
+  const [page, setPage] = useState(1);
 
-  // Fetch hotels with pagination (page & limit query params)
-  const fetchHotels = useCallback(async (pageNum, isInitial = false) => {
-    try {
-      if (isInitial) setInitialLoading(true);
-      else setLoadingMore(true);
-
-      const apiUrl = `${baseURL}/hotels/filters?page=${pageNum}&limit=${ITEMS_PER_PAGE}`;
-      const response = await fetch(apiUrl);
-      const result = await response.json();
-      
-      // API returns { data: [...], totalPages, currentPage, ... } or just array
-      const newHotels = result?.data || result || [];
-      const totalPages = result?.totalPages;
-      
-      if (isInitial) {
-        setHotelData(newHotels);
-      } else {
-        setHotelData((prev) => [...prev, ...newHotels]);
-      }
-
-      // Check if there's more data
-      if (totalPages !== undefined) {
-        setHasMore(pageNum < totalPages);
-      } else {
-        // If API doesn't return totalPages, check if we got fewer items than requested
-        setHasMore(newHotels.length === ITEMS_PER_PAGE);
-      }
-    } catch (error) {
-      console.error("Error fetching hotel data:", error);
-      setHasMore(false);
-    } finally {
-      setInitialLoading(false);
-      setLoadingMore(false);
-    }
-  }, []);
-
-  // Initial fetch
+  const apiUrl = `${baseURL}/get/offers/main/hotels`;
   useEffect(() => {
-    fetchHotels(1, true);
-  }, [fetchHotels]);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        setHotelData(data);
+      } catch (error) {
+        console.error("Error fetching hotel data:", error);
+      }
+    };
 
-  // Load more items
-  const loadMore = useCallback(() => {
-    if (loadingMore || !hasMore) return;
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchHotels(nextPage, false);
-  }, [page, loadingMore, hasMore, fetchHotels]);
-
-  // IntersectionObserver callback
-  const lastItemRef = useCallback(
-    (node) => {
-      if (initialLoading || loadingMore) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          if (entries[0].isIntersecting && hasMore) {
-            loadMore();
-          }
-        },
-        { threshold: 0.1, rootMargin: "100px" }
-      );
-
-      if (node) observerRef.current.observe(node);
-    },
-    [initialLoading, loadingMore, hasMore, loadMore]
-  );
+    fetchData();
+  }, [apiUrl, page]);
 
   if (location.pathname !== "/") {
     return null;
@@ -92,16 +31,12 @@ export default function Offered() {
     window.location.href = `/book-hotels/${userId}/${hotelID}`;
   };
 
+  const limitedData = hotelData?.slice(0, 10);
   return (
     <div className="mt-4">
       <hr />
-      <HotelMobileCard 
-        hotelData={hotelData} 
-        lastItemRef={lastItemRef}
-        loadingMore={loadingMore}
-        hasMore={hasMore}
-        initialLoading={initialLoading}
-      />
+
+      <HotelMobileCard hotelData={limitedData} />
     </div>
   );
-}
+};

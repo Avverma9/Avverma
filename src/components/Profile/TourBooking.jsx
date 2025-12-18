@@ -181,7 +181,7 @@ const BookingModal = ({ booking, onClose }) => {
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(booking.price)}
+              }).format(booking.price || booking.totalAmount || booking.basePrice || 0)}
             </p>
             <p className="text-xs text-blue-600 mt-1">
               Booking ID: <span className="font-mono">{booking.bookingId}</span>
@@ -245,7 +245,7 @@ const BookingModal = ({ booking, onClose }) => {
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(booking.price)}
+              }).format(booking.price || booking.totalAmount || booking.basePrice || 0)}
             </span>
           </div>
         </section>
@@ -340,7 +340,7 @@ export default function TourBooking() {
                         {isCustomizable ? "Customizable" : "Fixed Package"}
                       </span>
                       <div className="text-lg font-bold text-blue-600 whitespace-nowrap">
-                        ₹{booking.price.toLocaleString("en-IN")}
+                        ₹{(booking.price || booking.totalAmount || booking.basePrice || 0).toLocaleString("en-IN")}
                       </div>
                     </div>
                   </div>

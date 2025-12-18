@@ -1,64 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { MdLabelImportant } from 'react-icons/md';
+import { MdLabelImportant, MdClose, MdAdd, MdDelete } from 'react-icons/md';
 import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
 import { createTravel } from '../../redux/reducers/travelSlice';
 import { useLoader } from '../../utils/loader';
 import {
-    FaCity,
-    FaMapMarkerAlt,
-    FaCalendarAlt,
-    FaStar,
-    FaTools,
-    FaFileImage,
-    FaRegCheckCircle,
-    FaRupeeSign,
-    FaStreetView,
-    FaGlobe,
-    FaUser,
+    FaCity, FaMapMarkerAlt, FaCalendarAlt, FaStar, FaTools,
+    FaFileImage, FaRegCheckCircle, FaRupeeSign, FaStreetView,
+    FaGlobe, FaUser, FaBus, FaCheck
 } from 'react-icons/fa';
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { FaLocationArrow } from 'react-icons/fa6';
 import Disclaimer from '../partner/disclaimer';
 
-
 const TravelForm = () => {
     const [formData, setFormData] = useState({
-        city: '',
-        country: '',
-        state: '',
-        travelAgencyName: '',
-        agencyId: '',
-        agencyEmail: '',
-        agencyPhone: '',
-        themes: '',
-        visitngPlaces: '',
-        overview: '',
-        price: '',
-        nights: '',
-        days: '',
-        from: '',
-        tourStartDate: '',
-        customizable: false,
-        to: '',
-        amenities: [],
-        inclusion: [''],
-        exclusion: [''],
+        city: '', country: '', state: '', travelAgencyName: '', agencyId: '',
+        agencyEmail: '', agencyPhone: '', themes: '', visitngPlaces: '',
+        overview: '', price: '', nights: '', days: '', from: '', tourStartDate: '',
+        customizable: false, to: '', amenities: [], inclusion: [''], exclusion: [''],
         termsAndConditions: { cancellation: '', refund: '', bookingPolicy: '' },
-        dayWise: [{ day: '', description: '' }],
-        starRating: '',
-        images: [],
+        dayWise: [{ day: '', description: '' }], starRating: '', images: [],
+        vehicles: [{
+            name: '', vehicleNumber: '', totalSeats: '', seaterType: '2*2',
+            pricePerSeat: 0, isActive: true
+        }]
     });
 
-    const dispatch = useDispatch();
-    const { showLoader, hideLoader } = useLoader();
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
     const [cities, setCities] = useState([]);
+    const dispatch = useDispatch();
+    const { showLoader, hideLoader } = useLoader();
 
     const handleChange = (e, index = null) => {
         const { name, value } = e.target;
+
         if (['cancellation', 'refund', 'bookingPolicy'].includes(name)) {
             setFormData({
                 ...formData,
@@ -74,22 +53,15 @@ const TravelForm = () => {
             } else {
                 newInclusion.push(value);
             }
-            setFormData({
-                ...formData,
-                inclusion: newInclusion,
-            });
-        }
-        else if (name === 'exclusion') {
+            setFormData({ ...formData, inclusion: newInclusion });
+        } else if (name === 'exclusion') {
             const newExclusion = [...formData.exclusion];
             if (index !== null) {
                 newExclusion[index] = value;
             } else {
                 newExclusion.push(value);
             }
-            setFormData({
-                ...formData,
-                exclusion: newExclusion,
-            });
+            setFormData({ ...formData, exclusion: newExclusion });
         } else {
             setFormData({
                 ...formData,
@@ -99,9 +71,13 @@ const TravelForm = () => {
     };
 
     const handleAmenitiesChange = (selectedOptions) => {
+        const capitalizeFirstLetter = (str) => {
+            if (!str) return str;
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        };
         setFormData({
             ...formData,
-            amenities: selectedOptions ? selectedOptions.map((option) => option.value) : [],
+            amenities: selectedOptions ? selectedOptions.map((option) => capitalizeFirstLetter(option.value)) : [],
         });
     };
 
@@ -127,9 +103,7 @@ const TravelForm = () => {
         setFormData((prev) => ({
             ...prev,
             customizable: value,
-            ...(value
-                ? { tourStartDate: '' }
-                : { from: '', to: '' })
+            ...(value ? { tourStartDate: '' } : { from: '', to: '' })
         }));
     };
 
@@ -144,17 +118,52 @@ const TravelForm = () => {
 
     const handleImageChange = (index, e) => {
         const updatedImages = [...formData.images];
-        updatedImages[index] = e.target.files[0];
+        updatedImages[index] = e.target.files;
         setFormData({ ...formData, images: updatedImages });
+    };
+
+    const handleVehicleChange = (index, e) => {
+        const { name, value, type, checked } = e.target;
+        const updatedVehicles = [...formData.vehicles];
+        updatedVehicles[index][name] = type === 'checkbox' ? checked : value;
+        setFormData({ ...formData, vehicles: updatedVehicles });
+    };
+
+    const handleAddVehicle = () => {
+        setFormData({
+            ...formData,
+            vehicles: [...formData.vehicles, {
+                name: '', vehicleNumber: '', totalSeats: '', seaterType: '2*2',
+                pricePerSeat: 0, isActive: true
+            }]
+        });
+    };
+
+    const handleRemoveVehicle = (index) => {
+        const updatedVehicles = formData.vehicles.filter((_, i) => i !== index);
+        setFormData({ ...formData, vehicles: updatedVehicles });
+    };
+
+    const handleRemoveInclusion = (index) => {
+        const updatedInclusion = formData.inclusion.filter((_, i) => i !== index);
+        setFormData({ ...formData, inclusion: updatedInclusion });
+    };
+
+    const handleRemoveExclusion = (index) => {
+        const updatedExclusion = formData.exclusion.filter((_, i) => i !== index);
+        setFormData({ ...formData, exclusion: updatedExclusion });
     };
 
     const handleAddInclusion = () => {
         setFormData({ ...formData, inclusion: [...formData.inclusion, ''] });
     };
 
+    const handleAddExclusion = () => {
+        setFormData({ ...formData, exclusion: [...formData.exclusion, ''] });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         const formDataToSend = new FormData();
         formDataToSend.append('city', formData.city);
         formDataToSend.append('themes', formData.themes);
@@ -170,8 +179,8 @@ const TravelForm = () => {
         formDataToSend.append('days', formData.days);
         formDataToSend.append('from', formData.from);
         formDataToSend.append('to', formData.to);
-    formDataToSend.append('tourStartDate', formData.tourStartDate);
-    formDataToSend.append('customizable', formData.customizable);
+        formDataToSend.append('tourStartDate', formData.tourStartDate);
+        formDataToSend.append('customizable', formData.customizable);
         formDataToSend.append('starRating', formData.starRating);
 
         formData.inclusion.forEach((inclusions) => {
@@ -180,14 +189,20 @@ const TravelForm = () => {
         formData.exclusion.forEach((exclusions) => {
             formDataToSend.append('exclusion[]', exclusions);
         });
-
         formData.amenities.forEach((amenity) => {
             formDataToSend.append('amenities[]', amenity);
         });
-
         formData.dayWise.forEach((day, index) => {
             formDataToSend.append(`dayWise[${index}][day]`, day.day);
             formDataToSend.append(`dayWise[${index}][description]`, day.description);
+        });
+        formData.vehicles.forEach((vehicle, index) => {
+            formDataToSend.append(`vehicles[${index}][name]`, vehicle.name);
+            formDataToSend.append(`vehicles[${index}][vehicleNumber]`, vehicle.vehicleNumber);
+            formDataToSend.append(`vehicles[${index}][totalSeats]`, vehicle.totalSeats);
+            formDataToSend.append(`vehicles[${index}][seaterType]`, vehicle.seaterType);
+            formDataToSend.append(`vehicles[${index}][pricePerSeat]`, vehicle.pricePerSeat);
+            formDataToSend.append(`vehicles[${index}][isActive]`, vehicle.isActive);
         });
 
         for (const [key, value] of Object.entries(formData.termsAndConditions)) {
@@ -228,309 +243,225 @@ const TravelForm = () => {
     }, [formData.country, formData.state]);
 
     const pattern = /^[0-9]+N [a-zA-Z\s]+(\|[0-9]+N [a-zA-Z\s]+)*$/;
-    const isValid = pattern.test(formData.visitngPlaces);
+    const isValid = pattern.test(formData.visitngPlaces) || !formData.visitngPlaces;
 
     const openDatePicker = (e) => {
         e.target.showPicker();
     };
 
-    // Custom styles for React Select
     const selectStyles = {
         control: (provided, state) => ({
             ...provided,
             minHeight: '48px',
-            border: state.isFocused ? '2px solid #3B82F6' : '1px solid #D1D5DB',
+            border: state.isFocused ? '2px solid #3B82F6' : '1px solid #E5E7EB',
             borderRadius: '12px',
             boxShadow: state.isFocused ? '0 0 0 3px rgba(59, 130, 246, 0.1)' : 'none',
-            '&:hover': {
-                border: '1px solid #9CA3AF'
-            }
+            '&:hover': { border: '1px solid #9CA3AF' }
         }),
-        placeholder: (provided) => ({
-            ...provided,
-            color: '#9CA3AF'
-        }),
-        multiValue: (provided) => ({
-            ...provided,
-            backgroundColor: '#EFF6FF',
-            border: '1px solid #DBEAFE'
-        }),
-        multiValueLabel: (provided) => ({
-            ...provided,
-            color: '#1E40AF'
-        }),
+        placeholder: (provided) => ({ ...provided, color: '#9CA3AF' }),
+        multiValue: (provided) => ({ ...provided, backgroundColor: '#EFF6FF', border: '1px solid #DBEAFE' }),
+        multiValueLabel: (provided) => ({ ...provided, color: '#1E40AF' }),
         multiValueRemove: (provided) => ({
             ...provided,
             color: '#1E40AF',
-            '&:hover': {
-                backgroundColor: '#FEE2E2',
-                color: '#DC2626'
-            }
+            '&:hover': { backgroundColor: '#FEE2E2', color: '#DC2626' }
         })
     };
 
+    const FormField = ({ label, required = false, children, error = null, icon = null }) => (
+        <div className="space-y-2">
+            <label className="flex items-center text-sm font-semibold text-gray-700 mb-1">
+                {icon && <span className="mr-2 text-lg">{icon}</span>}
+                {label}
+                {required && <span className="text-red-500 ml-1">*</span>}
+            </label>
+            {children}
+            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+        </div>
+    );
+
+    const SectionTitle = ({ icon, title }) => (
+        <div className="flex items-center gap-3 mb-8 pb-4 border-b-2 border-gradient-to-r from-blue-400 to-purple-400">
+            <div className="text-4xl">{icon}</div>
+            <div>
+                <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+                <p className="text-sm text-gray-500">Fill in the details below</p>
+            </div>
+        </div>
+    );
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 py-12 px-4">
             <div className="max-w-6xl mx-auto">
                 <Disclaimer />
 
-                {/* Header Section */}
-                <div className="bg-white rounded-2xl shadow-xl mb-8 p-6 sm:p-8 border border-gray-100">
-                    <div className="text-center">
-                        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-                            Travel Package Form
-                        </h1>
-                        <p className="text-gray-600 max-w-2xl mx-auto">
-                            Create your perfect travel package by filling out the details below
-                        </p>
-                    </div>
+                {/* Header */}
+                <div className="text-center mb-12">
+                    <h1 className="text-5xl font-black text-gray-900 mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        Travel Package Management
+                    </h1>
+                    <p className="text-gray-600 text-lg">Create and manage your premium travel packages</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
-                    {/* Agency Information Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <FaUser className="mr-3 text-blue-600" />
-                            Agency Information
-                        </h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaUser className="mr-2 text-blue-600" />
-                                    Travel Agency Name <span className="text-red-500 ml-1">*</span>
-                                </label>
+                <form onSubmit={handleSubmit} className="space-y-12">
+                    {/* Agency Information */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="👤" title="Agency Information" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <FormField label="Agency Name" required icon="🏢">
                                 <input
                                     type="text"
                                     name="travelAgencyName"
                                     value={formData.travelAgencyName}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    placeholder="Enter agency name"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    placeholder="Your agency name"
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaUser className="mr-2 text-blue-600" />
-                                    Travel Theme <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Theme" required icon="🎯">
                                 <select
                                     name="themes"
                                     value={formData.themes}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 >
                                     <option value="">Select theme</option>
-                                    <option value="Winter">Winter</option>
-                                    <option value="Summer">Summer</option>
-                                    <option value="Honeymoon">Honeymoon</option>
-                                    <option value="Romantic">Romantic</option>
-                                    <option value="Adventure">Adventure</option>
-                                    <option value="Beach">Beach</option>
+                                    {['Winter', 'Summer', 'Honeymoon', 'Romantic', 'Adventure', 'Beach'].map(t => (
+                                        <option key={t} value={t}>{t}</option>
+                                    ))}
                                 </select>
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaUser className="mr-2 text-blue-600" />
-                                    Agency ID <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Agency ID" required icon="🆔">
                                 <input
                                     type="text"
                                     name="agencyId"
                                     value={formData.agencyId}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    placeholder="Enter agency ID"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    placeholder="AGY-2024-001"
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaUser className="mr-2 text-blue-600" />
-                                    Contact Email <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Email" required icon="📧">
                                 <input
                                     type="email"
                                     name="agencyEmail"
                                     value={formData.agencyEmail}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    placeholder="Enter email address"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    placeholder="agency@example.com"
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaUser className="mr-2 text-blue-600" />
-                                    Contact Number <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Phone" required icon="📱">
                                 <input
                                     type="tel"
                                     name="agencyPhone"
                                     value={formData.agencyPhone}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    placeholder="Enter phone number"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                                    placeholder="+91 98765 43210"
                                 />
-                            </div>
+                            </FormField>
                         </div>
                     </div>
 
-                    {/* Location Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <FaGlobe className="mr-3 text-green-600" />
-                            Location Details
-                        </h2>
-
+                    {/* Location Details */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="🌍" title="Location Details" />
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCity className="mr-2 text-green-600" />
-                                    Country <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Country" required icon="🗺️">
                                 <Select
-                                    options={countries.map((country) => ({
-                                        label: country.name,
-                                        value: country.isoCode,
-                                    }))}
-                                    value={countries.find(c => c.isoCode === formData.country) ? 
-                                        { label: countries.find(c => c.isoCode === formData.country).name, value: formData.country } : null}
-                                    onChange={(selectedOption) => setFormData({ ...formData, country: selectedOption.value })}
+                                    options={countries.map((c) => ({ label: c.name, value: c.isoCode }))}
+                                    value={countries.find(c => c.isoCode === formData.country) ? { label: countries.find(c => c.isoCode === formData.country).name, value: formData.country } : null}
+                                    onChange={(opt) => setFormData({ ...formData, country: opt.value })}
                                     placeholder="Select country"
                                     styles={selectStyles}
-                                    required
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaMapMarkerAlt className="mr-2 text-green-600" />
-                                    State
-                                </label>
+                            <FormField label="State" icon="📍">
                                 <Select
-                                    options={states.map((state) => ({
-                                        label: state.name,
-                                        value: state.isoCode,
-                                    }))}
-                                    value={states.find(s => s.isoCode === formData.state) ? 
-                                        { label: states.find(s => s.isoCode === formData.state).name, value: formData.state } : null}
-                                    onChange={(selectedOption) => setFormData({ ...formData, state: selectedOption.value })}
+                                    options={states.map((s) => ({ label: s.name, value: s.isoCode }))}
+                                    value={states.find(s => s.isoCode === formData.state) ? { label: states.find(s => s.isoCode === formData.state).name, value: formData.state } : null}
+                                    onChange={(opt) => setFormData({ ...formData, state: opt.value })}
                                     placeholder="Select state"
                                     styles={selectStyles}
                                 />
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaLocationArrow className="mr-2 text-green-600" />
-                                    City
-                                </label>
+                            <FormField label="City" icon="🏙️">
                                 <Select
-                                    options={cities.map((city) => ({
-                                        label: city.name,
-                                        value: city.name,
-                                    }))}
+                                    options={cities.map((c) => ({ label: c.name, value: c.name }))}
                                     value={formData.city ? { label: formData.city, value: formData.city } : null}
-                                    onChange={(selectedOption) => setFormData({ ...formData, city: selectedOption.value })}
+                                    onChange={(opt) => setFormData({ ...formData, city: opt.value })}
                                     placeholder="Select city"
                                     styles={selectStyles}
                                 />
-                            </div>
+                            </FormField>
                         </div>
                     </div>
 
-                    {/* Package Details Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <FaCalendarAlt className="mr-3 text-purple-600" />
-                            Package Details
-                        </h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCalendarAlt className="mr-2 text-purple-600" />
-                                    Days <span className="text-red-500 ml-1">*</span>
-                                </label>
+                    {/* Package Details */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="📦" title="Package Details" />
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <FormField label="Days" required icon="📅">
                                 <select
                                     name="days"
                                     value={formData.days}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 >
                                     <option value="">Select Days</option>
-                                    {[...Array(30).keys()].map((i) => {
-                                        const dayOption = i + 1;
-                                        return (
-                                            <option key={dayOption} value={dayOption}>
-                                                {dayOption} Day{dayOption > 1 ? 's' : ''}
-                                            </option>
-                                        );
-                                    })}
+                                    {[...Array(30).keys()].map((i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1} Day{i > 0 ? 's' : ''}</option>
+                                    ))}
                                 </select>
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCalendarAlt className="mr-2 text-purple-600" />
-                                    Nights <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Nights" required icon="🌙">
                                 <select
                                     name="nights"
                                     value={formData.nights}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 >
                                     <option value="">Select nights</option>
-                                    {[...Array(30).keys()].map((i) => {
-                                        const nightOption = i + 1;
-                                        return (
-                                            <option key={nightOption} value={nightOption}>
-                                                {nightOption} Night{nightOption > 1 ? 's' : ''}
-                                            </option>
-                                        );
-                                    })}
+                                    {[...Array(30).keys()].map((i) => (
+                                        <option key={i + 1} value={i + 1}>{i + 1} Night{i > 0 ? 's' : ''}</option>
+                                    ))}
                                 </select>
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaStar className="mr-2 text-yellow-500" />
-                                    Star Rating <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Star Rating" required icon="⭐">
                                 <select
                                     name="starRating"
                                     value={formData.starRating}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white appearance-none cursor-pointer"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 >
                                     <option value="">Select Rating</option>
                                     {[1, 2, 3, 4, 5].map((rating) => (
-                                        <option key={rating} value={rating}>
-                                            {rating} Star{rating > 1 ? 's' : ''}
-                                        </option>
+                                        <option key={rating} value={rating}>{rating} Star{rating > 1 ? 's' : ''}</option>
                                     ))}
                                 </select>
-                            </div>
+                            </FormField>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaGlobe className="mr-2 text-purple-600" />
-                                    Places to visit <span className="text-red-500 ml-1">*</span>
-                                </label>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <FormField label="Places to Visit" required icon="🎯" error={!isValid && formData.visitngPlaces ? "Format: 1N Bihar|2N Patna" : null}>
                                 <input
                                     type="text"
                                     name="visitngPlaces"
@@ -538,37 +469,24 @@ const TravelForm = () => {
                                     onChange={handleChange}
                                     required
                                     placeholder="e.g., 1N Bihar|2N Patna|1N Delhi"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 />
-                                {!isValid && formData.visitngPlaces && (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        Please enter places in correct format (e.g., 1N Bihar|2N Patna|1N Delhi)
-                                    </p>
-                                )}
-                            </div>
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaRupeeSign className="mr-2 text-green-600" />
-                                    Package Price <span className="text-red-500 ml-1">*</span>
-                                </label>
+                            <FormField label="Package Price" required icon="💰">
                                 <input
                                     type="number"
                                     name="price"
                                     value={formData.price}
                                     onChange={handleChange}
                                     required
-                                    placeholder="Enter price in rupees"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
+                                    placeholder="₹ 0"
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                                 />
-                            </div>
+                            </FormField>
                         </div>
 
-                        <div className="space-y-2 mb-6">
-                            <label className="flex items-center text-sm font-medium text-gray-700">
-                                <FaStreetView className="mr-2 text-purple-600" />
-                                Package Overview <span className="text-red-500 ml-1">*</span>
-                            </label>
+                        <FormField label="Package Overview" required icon="📝">
                             <textarea
                                 name="overview"
                                 value={formData.overview}
@@ -576,370 +494,238 @@ const TravelForm = () => {
                                 required
                                 rows="4"
                                 placeholder="Describe your travel package in detail..."
-                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
+                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none"
                             />
-                        </div>
+                        </FormField>
 
-                        <div className="space-y-3 mb-6">
-                            <label className="flex items-center text-sm font-medium text-gray-700">
-                                <FaCalendarAlt className="mr-2 text-purple-600" />
-                                Customizable Package <span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <div className="flex flex-wrap gap-4">
-                                {[{ label: 'Yes', value: true }, { label: 'No', value: false }].map(option => (
-                                    <button
-                                        type="button"
-                                        key={option.label}
-                                        onClick={() => handleCustomizableChange(option.value)}
-                                        className={`px-4 py-2 rounded-xl border transition font-semibold ${formData.customizable === option.value ? 'bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400'}`}
-                                    >
-                                        {option.label}
-                                    </button>
-                                ))}
-                            </div>
-                            <p className="text-xs text-gray-500">
-                                Select "Yes" to allow travellers to choose a date range. Select "No" to keep a fixed tour start date.
-                            </p>
-                        </div>
-
-                        {formData.customizable ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="flex items-center text-sm font-medium text-gray-700">
-                                        <FaCalendarAlt className="mr-2 text-purple-600" />
-                                        From Date <span className="text-red-500 ml-1">*</span>
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="from"
-                                        value={formData.from}
-                                        onChange={handleChange}
-                                        onClick={openDatePicker}
-                                        required={formData.customizable}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    />
+                        <div className="mt-8 p-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl">
+                            <FormField label="Customizable Package" required icon="🔄">
+                                <div className="flex gap-4">
+                                    {[{ label: 'Yes', value: true }, { label: 'No', value: false }].map(opt => (
+                                        <button
+                                            type="button"
+                                            key={opt.label}
+                                            onClick={() => handleCustomizableChange(opt.value)}
+                                            className={`px-8 py-3 rounded-xl font-bold transition-all ${formData.customizable === opt.value ? 'bg-blue-600 text-white shadow-lg scale-105' : 'bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-400'}`}
+                                        >
+                                            {opt.label}
+                                        </button>
+                                    ))}
                                 </div>
+                            </FormField>
 
-                                <div className="space-y-2">
-                                    <label className="flex items-center text-sm font-medium text-gray-700">
-                                        <FaCalendarAlt className="mr-2 text-purple-600" />
-                                        To Date <span className="text-red-500 ml-1">*</span>
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="to"
-                                        value={formData.to}
-                                        onChange={handleChange}
-                                        onClick={openDatePicker}
-                                        required={formData.customizable}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                    />
+                            {formData.customizable ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                                    <FormField label="From Date" required icon="📅">
+                                        <input type="date" name="from" value={formData.from} onChange={handleChange} onClick={openDatePicker} required={formData.customizable} className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                                    </FormField>
+                                    <FormField label="To Date" required icon="📅">
+                                        <input type="date" name="to" value={formData.to} onChange={handleChange} onClick={openDatePicker} required={formData.customizable} className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                                    </FormField>
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaCalendarAlt className="mr-2 text-purple-600" />
-                                    Tour Start Date <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <input
-                                    type="date"
-                                    name="tourStartDate"
-                                    value={formData.tourStartDate}
-                                    onChange={handleChange}
-                                    onClick={openDatePicker}
-                                    required={!formData.customizable}
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                />
-                            </div>
-                        )}
+                            ) : (
+                                <FormField label="Tour Start Date" required icon="📅">
+                                    <input type="date" name="tourStartDate" value={formData.tourStartDate} onChange={handleChange} onClick={openDatePicker} required={!formData.customizable} className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" />
+                                </FormField>
+                            )}
+                        </div>
                     </div>
 
-                    {/* Inclusion/Exclusion Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <FaRegCheckCircle className="mr-3 text-green-600" />
-                            Package Inclusions & Exclusions
-                        </h2>
-
+                    {/* Inclusions & Exclusions */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="✅" title="Inclusions & Exclusions" />
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">
-                                    Inclusions <span className="text-red-500">*</span>
+                            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8">
+                                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+                                    <span className="text-2xl">✅</span> Inclusions
                                 </h3>
-                                {formData.inclusion.map((inclusion, index) => (
-                                    <div key={index} className="space-y-2">
-                                        <input
-                                            name="inclusion"
-                                            value={inclusion}
-                                            onChange={(e) => handleChange(e, index)}
-                                            required
-                                            placeholder={`Inclusion ${index + 1}`}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                        />
+                                {formData.inclusion.map((item, idx) => (
+                                    <div key={idx} className="flex gap-2 mb-3 items-end">
+                                        <input name="inclusion" value={item} onChange={(e) => handleChange(e, idx)} required placeholder={`Inclusion ${idx + 1}`} className="flex-1 px-4 py-3 border-2 border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all" />
+                                        {formData.inclusion.length > 1 && (
+                                            <button type="button" onClick={() => handleRemoveInclusion(idx)} className="px-3 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                                <MdDelete />
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
-                                <button
-                                    type="button"
-                                    onClick={() => handleChange({ target: { name: 'inclusion', value: '' } })}
-                                    className="w-full sm:w-auto px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-                                >
-                                    <span>+</span>
-                                    Add Inclusion
+                                <button type="button" onClick={handleAddInclusion} className="w-full px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 flex items-center justify-center gap-2 mt-4">
+                                    <MdAdd /> Add
                                 </button>
                             </div>
 
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-medium text-gray-800 border-b border-gray-200 pb-2">
-                                    Exclusions <span className="text-red-500">*</span>
+                            <div className="bg-gradient-to-br from-red-50 to-rose-50 rounded-2xl p-8">
+                                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+                                    <span className="text-2xl">❌</span> Exclusions
                                 </h3>
-                                {formData.exclusion.map((exclusion, index) => (
-                                    <div key={index} className="space-y-2">
-                                        <input
-                                            name="exclusion"
-                                            value={exclusion}
-                                            onChange={(e) => handleChange(e, index)}
-                                            required
-                                            placeholder={`Exclusion ${index + 1}`}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white"
-                                        />
+                                {formData.exclusion.map((item, idx) => (
+                                    <div key={idx} className="flex gap-2 mb-3 items-end">
+                                        <input name="exclusion" value={item} onChange={(e) => handleChange(e, idx)} required placeholder={`Exclusion ${idx + 1}`} className="flex-1 px-4 py-3 border-2 border-red-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all" />
+                                        {formData.exclusion.length > 1 && (
+                                            <button type="button" onClick={() => handleRemoveExclusion(idx)} className="px-3 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                                <MdDelete />
+                                            </button>
+                                        )}
                                     </div>
                                 ))}
-                                <button
-                                    type="button"
-                                    onClick={() => handleChange({ target: { name: 'exclusion', value: '' } })}
-                                    className="w-full sm:w-auto px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-                                >
-                                    <span>+</span>
-                                    Add Exclusion
+                                <button type="button" onClick={handleAddExclusion} className="w-full px-4 py-2 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 flex items-center justify-center gap-2 mt-4">
+                                    <MdAdd /> Add
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Amenities Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <MdLabelImportant className="mr-3 text-blue-600" />
-                            Amenities
-                        </h2>
-
-                        <div className="space-y-2">
-                            <label className="flex items-center text-sm font-medium text-gray-700">
-                                <FaTools className="mr-2 text-blue-600" />
-                                Select Amenities <span className="text-red-500 ml-1">*</span>
-                            </label>
-                            <Select
+                    {/* Amenities */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="🛠️" title="Amenities" />
+                        <FormField label="Select Amenities" required icon="⭐">
+                            <CreatableSelect
                                 isMulti
-                                value={formData.amenities.map((amenity) => ({ label: amenity, value: amenity }))}
+                                value={formData.amenities.map((a) => ({ label: a, value: a }))}
                                 onChange={handleAmenitiesChange}
-                                options={iconsList.map((icon) => ({ label: icon.label, value: icon.label }))}
-                                placeholder="Select amenities..."
+                                options={iconsList?.map((icon) => ({ label: icon.label, value: icon.label })) || []}
+                                placeholder="Select or type custom amenities..."
                                 styles={selectStyles}
-                                required
                             />
-                        </div>
+                        </FormField>
                     </div>
 
-                    {/* Day-wise Itinerary Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <MdLabelImportant className="mr-3 text-purple-600" />
-                            Day-wise Itinerary
-                        </h2>
-
-                        <div className="space-y-6">
-                            {formData.dayWise.map((day, index) => (
-                                <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-medium text-gray-800">
-                                            Day {index + 1}
-                                        </h3>
-                                        {formData.dayWise.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveDay(index)}
-                                                className="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors duration-200"
-                                            >
-                                                Remove
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="flex items-center text-sm font-medium text-gray-700">
-                                                <FaCalendarAlt className="mr-2 text-purple-600" />
-                                                Day <span className="text-red-500 ml-1">*</span>
-                                            </label>
-                                            <select
-                                                name="day"
-                                                value={day.day}
-                                                onChange={(e) => handleDayWiseChange(index, e)}
-                                                required
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white appearance-none cursor-pointer"
-                                            >
-                                                <option value="">Select Day</option>
-                                                {[...Array(30).keys()].map((i) => {
-                                                    const dayOption = i + 1;
-                                                    return (
-                                                        <option key={dayOption} value={dayOption}>
-                                                            Day {dayOption}
-                                                        </option>
-                                                    );
-                                                })}
-                                            </select>
-                                        </div>
-
-                                        <div className="lg:col-span-3 space-y-2">
-                                            <label className="flex items-center text-sm font-medium text-gray-700">
-                                                <FaCalendarAlt className="mr-2 text-purple-600" />
-                                                Description <span className="text-red-500 ml-1">*</span>
-                                            </label>
-                                            <textarea
-                                                name="description"
-                                                value={day.description}
-                                                onChange={(e) => handleDayWiseChange(index, e)}
-                                                required
-                                                rows="3"
-                                                placeholder="Describe the day's activities..."
-                                                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white resize-none"
-                                            />
-                                        </div>
-                                    </div>
+                    {/* Day-wise Itinerary */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="📅" title="Day-wise Itinerary" />
+                        {formData.dayWise.map((day, idx) => (
+                            <div key={idx} className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 mb-4 border-l-4 border-purple-500">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h4 className="text-lg font-bold text-gray-800">📍 Day {idx + 1}</h4>
+                                    {formData.dayWise.length > 1 && (
+                                        <button type="button" onClick={() => handleRemoveDay(idx)} className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm">
+                                            Remove
+                                        </button>
+                                    )}
                                 </div>
-                            ))}
-
-                            <button
-                                type="button"
-                                onClick={handleAddDay}
-                                className="w-full sm:w-auto px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-                            >
-                                <span>+</span>
-                                Add Day
-                            </button>
-                        </div>
+                                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+                                    <select name="day" value={day.day} onChange={(e) => handleDayWiseChange(idx, e)} required className="px-4 py-3 border-2 border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all">
+                                        <option value="">Select Day</option>
+                                        {[...Array(30).keys()].map((i) => (
+                                            <option key={i + 1} value={i + 1}>Day {i + 1}</option>
+                                        ))}
+                                    </select>
+                                    <textarea name="description" value={day.description} onChange={(e) => handleDayWiseChange(idx, e)} required rows="1" placeholder="Describe activities..." className="lg:col-span-3 px-4 py-3 border-2 border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all resize-none" />
+                                </div>
+                            </div>
+                        ))}
+                        <button type="button" onClick={handleAddDay} className="w-full px-6 py-3 bg-purple-600 text-white rounded-xl font-bold hover:bg-purple-700 flex items-center justify-center gap-2">
+                            <MdAdd /> Add Day
+                        </button>
                     </div>
 
-                    {/* Terms & Conditions Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <MdLabelImportant className="mr-3 text-red-600" />
-                            Terms & Conditions
-                        </h2>
-
+                    {/* Terms & Conditions */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="⚖️" title="Terms & Conditions" />
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaRegCheckCircle className="mr-2 text-red-600" />
-                                    Cancellation Policy <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <textarea
-                                    name="cancellation"
-                                    value={formData.termsAndConditions.cancellation}
-                                    onChange={handleChange}
-                                    required
-                                    rows="4"
-                                    placeholder="Describe cancellation policy..."
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
-                                />
-                            </div>
+                            <FormField label="Cancellation Policy" required icon="📋">
+                                <textarea name="cancellation" value={formData.termsAndConditions.cancellation} onChange={handleChange} required rows="4" placeholder="Your cancellation policy..." className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none" />
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaRegCheckCircle className="mr-2 text-red-600" />
-                                    Refund Policy <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <textarea
-                                    name="refund"
-                                    value={formData.termsAndConditions.refund}
-                                    onChange={handleChange}
-                                    required
-                                    rows="4"
-                                    placeholder="Describe refund policy..."
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
-                                />
-                            </div>
+                            <FormField label="Refund Policy" required icon="💵">
+                                <textarea name="refund" value={formData.termsAndConditions.refund} onChange={handleChange} required rows="4" placeholder="Your refund policy..." className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none" />
+                            </FormField>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center text-sm font-medium text-gray-700">
-                                    <FaRegCheckCircle className="mr-2 text-red-600" />
-                                    Booking Policy <span className="text-red-500 ml-1">*</span>
-                                </label>
-                                <textarea
-                                    name="bookingPolicy"
-                                    value={formData.termsAndConditions.bookingPolicy}
-                                    onChange={handleChange}
-                                    required
-                                    rows="4"
-                                    placeholder="Describe booking policy..."
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-gray-50 focus:bg-white resize-none"
-                                />
-                            </div>
+                            <FormField label="Booking Policy" required icon="📝">
+                                <textarea name="bookingPolicy" value={formData.termsAndConditions.bookingPolicy} onChange={handleChange} required rows="4" placeholder="Your booking policy..." className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none" />
+                            </FormField>
                         </div>
                     </div>
 
-                    {/* Image Upload Section */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <h2 className="flex items-center text-xl sm:text-2xl font-semibold text-gray-800 mb-6">
-                            <MdLabelImportant className="mr-3 text-indigo-600" />
-                            Upload Images
-                        </h2>
+                    {/* Vehicles */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12 overflow-x-auto">
+                        <SectionTitle icon="🚌" title="Vehicles" />
+                        <table className="w-full">
+                            <thead>
+                                <tr className="bg-gradient-to-r from-blue-100 to-purple-100">
+                                    <th className="px-4 py-4 text-left font-bold text-gray-700">Vehicle Type</th>
+                                    <th className="px-4 py-4 text-left font-bold text-gray-700">Number</th>
+                                    <th className="px-4 py-4 text-left font-bold text-gray-700">Seats</th>
+                                    <th className="px-4 py-4 text-left font-bold text-gray-700">Seater</th>
+                                    <th className="px-4 py-4 text-left font-bold text-gray-700">Price/Seat</th>
+                                    <th className="px-4 py-4 text-center font-bold text-gray-700">Active</th>
+                                    <th className="px-4 py-4 text-center font-bold text-gray-700">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {formData.vehicles.map((vehicle, idx) => (
+                                    <tr key={idx} className="border-b hover:bg-gray-50 transition-colors">
+                                        <td className="px-4 py-4">
+                                            <select name="name" value={vehicle.name} onChange={(e) => handleVehicleChange(idx, e)} required className="px-3 py-2 border-2 border-gray-200 rounded-lg w-full text-sm">
+                                                <option value="">Select</option>
+                                                {['Deluxe Bus', 'AC Deluxe Bus', 'Luxury Coach', 'Tempo Traveller', 'Innova Crysta'].map(v => (
+                                                    <option key={v} value={v}>{v}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td className="px-4 py-4">
+                                            <input type="text" name="vehicleNumber" value={vehicle.vehicleNumber} onChange={(e) => handleVehicleChange(idx, e)} required placeholder="UP81AB1234" className="px-3 py-2 border-2 border-gray-200 rounded-lg w-full text-sm" />
+                                        </td>
+                                        <td className="px-4 py-4">
+                                            <input type="number" name="totalSeats" value={vehicle.totalSeats} onChange={(e) => handleVehicleChange(idx, e)} required min="1" className="px-3 py-2 border-2 border-gray-200 rounded-lg w-full text-sm" />
+                                        </td>
+                                        <td className="px-4 py-4">
+                                            <select name="seaterType" value={vehicle.seaterType} onChange={(e) => handleVehicleChange(idx, e)} required className="px-3 py-2 border-2 border-gray-200 rounded-lg w-full text-sm">
+                                                <option value="2*2">2x2</option>
+                                                <option value="2*3">2x3</option>
+                                            </select>
+                                        </td>
+                                        <td className="px-4 py-4">
+                                            <input type="number" name="pricePerSeat" value={vehicle.pricePerSeat} onChange={(e) => handleVehicleChange(idx, e)} min="0" className="px-3 py-2 border-2 border-gray-200 rounded-lg w-full text-sm" />
+                                        </td>
+                                        <td className="px-4 py-4 text-center">
+                                            <input type="checkbox" name="isActive" checked={vehicle.isActive} onChange={(e) => handleVehicleChange(idx, e)} className="w-5 h-5 cursor-pointer" />
+                                        </td>
+                                        <td className="px-4 py-4 text-center">
+                                            {formData.vehicles.length > 1 && (
+                                                <button type="button" onClick={() => handleRemoveVehicle(idx)} className="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                                    <MdDelete />
+                                                </button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <button type="button" onClick={handleAddVehicle} className="w-full mt-6 px-6 py-3 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-700 flex items-center justify-center gap-2">
+                            <MdAdd /> Add Vehicle
+                        </button>
+                    </div>
 
-                        <div className="space-y-6">
-                            {formData.images.map((image, index) => (
-                                <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <h3 className="text-lg font-medium text-gray-800">
-                                            Image {index + 1}
-                                        </h3>
+                    {/* Images */}
+                    <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-12">
+                        <SectionTitle icon="🖼️" title="Images" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                            {formData.images.map((img, idx) => (
+                                <div key={idx} className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-2xl p-4 border-2 border-dashed border-indigo-300">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <h4 className="font-bold text-gray-800">📸 {idx + 1}</h4>
                                         {formData.images.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => handleRemoveImage(index)}
-                                                className="px-3 py-1 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg font-medium transition-colors duration-200"
-                                            >
-                                                Remove
+                                            <button type="button" onClick={() => handleRemoveImage(idx)} className="p-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                                <MdClose />
                                             </button>
                                         )}
                                     </div>
-
-                                    <div className="space-y-2">
-                                        <label className="flex items-center text-sm font-medium text-gray-700">
-                                            <FaFileImage className="mr-2 text-indigo-600" />
-                                            Choose Image <span className="text-red-500 ml-1">*</span>
-                                        </label>
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            onChange={(e) => handleImageChange(index, e)}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-                                        />
-                                    </div>
+                                    <input type="file" accept="image/*" onChange={(e) => handleImageChange(idx, e)} className="w-full px-3 py-2 border-2 border-indigo-200 rounded-lg file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:bg-blue-100 file:text-blue-700 text-sm" />
+                                    {img && <p className="text-sm text-green-600 mt-2 flex items-center gap-1"><FaCheck /> {img.name}</p>}
                                 </div>
                             ))}
-
-                            <button
-                                type="button"
-                                onClick={handleAddImage}
-                                className="w-full sm:w-auto px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-                            >
-                                <span>+</span>
-                                Add Image
-                            </button>
                         </div>
+                        <button type="button" onClick={handleAddImage} className="w-full px-6 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 flex items-center justify-center gap-2">
+                            <MdAdd /> Add Image
+                        </button>
                     </div>
 
-                    {/* Submit Button */}
-                    <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
-                            >
-                                Submit Travel Package
-                            </button>
-                        </div>
+                    {/* Submit */}
+                    <div className="flex justify-center pb-8">
+                        <button type="submit" className="px-16 py-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 text-white rounded-2xl font-black text-xl transition-all shadow-2xl hover:shadow-3xl transform hover:scale-105 active:scale-95">
+                            🚀 Submit Travel Package
+                        </button>
                     </div>
                 </form>
             </div>

@@ -4,10 +4,14 @@ import baseURL from "../../utils/baseURL";
 import { token } from "../../utils/Unauthorized";
 export const getGst = createAsyncThunk(
     "gst/getGst",
-    async ({type,gstThreshold}, { rejectWithValue }) => {
+    async ({type, gstThreshold}, { rejectWithValue }) => {
         try {
+            const params = new URLSearchParams({ type });
+            if (gstThreshold !== undefined && gstThreshold !== null) {
+                params.append('gstThreshold', gstThreshold);
+            }
             const response = await axios.get(
-                `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
+                `${baseURL}/gst/get-single-gst?${params.toString()}`,
                 {
                     headers: { Authorization: token },
                 }
@@ -24,8 +28,12 @@ export const getGstForHotelData = createAsyncThunk(
     "gst/getGstForHotelData",
     async ({ type, gstThreshold }, { rejectWithValue }) => {
         try {
+            const params = new URLSearchParams({ type });
+            if (gstThreshold !== undefined && gstThreshold !== null) {
+                params.append('gstThreshold', gstThreshold);
+            }
             const response = await axios.get(
-                `${baseURL}/gst/get-single-gst?type=${type}&gstThreshold=${gstThreshold}`,
+                `${baseURL}/gst/get-single-gst?${params.toString()}`,
                 {
                     headers: { Authorization: token },
                 }
