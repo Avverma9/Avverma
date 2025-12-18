@@ -81,7 +81,7 @@ function MainLayout() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/careers" element={<Careers />} />
         <Route path="/coupons" element={<CouponPage />} />
-        <Route path="/policies" element={<Policies />} />
+        <Route path="/privacy" element={<Policies />} />
       </Routes>
 
       <ScrollToTop />
