@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { MdLabelImportant, MdClose, MdAdd, MdDelete } from 'react-icons/md';
+import {  MdClose, MdAdd, MdDelete } from 'react-icons/md';
 import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
 import { createTravel } from '../../redux/reducers/travelSlice';
 import { useLoader } from '../../utils/loader';
 import {
-    FaCity, FaMapMarkerAlt, FaCalendarAlt, FaStar, FaTools,
-    FaFileImage, FaRegCheckCircle, FaRupeeSign, FaStreetView,
-    FaGlobe, FaUser, FaBus, FaCheck
+   FaCheck
 } from 'react-icons/fa';
 import iconsList from '../../utils/icons';
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
-import { FaLocationArrow } from 'react-icons/fa6';
 import Disclaimer from '../partner/disclaimer';
 
 const TravelForm = () => {
