@@ -1005,6 +1005,24 @@ export default function BookNowPage() {
                 <h2 className="text-lg font-semibold text-gray-900">Price summary</h2>
                 {bookingState.loading && <Loader2 size={18} className="text-blue-600 animate-spin" />}
               </div>
+              <div className="space-y-2 text-sm text-gray-600 border-b border-gray-200 pb-2 mb-2">
+                <div className="flex items-center justify-between">
+                  <span>Check-in</span>
+                  <span className="font-semibold">{new Date(checkInDate).toDateString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Check-out</span>
+                  <span className="font-semibold">{new Date(checkOutDate).toDateString()}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Total Guests</span>
+                  <span className="font-semibold">{guestsCount} Guest{guestsCount > 1 ? 's' : ''}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Total Rooms</span>
+                  <span className="font-semibold">{roomsCount} Room{roomsCount > 1 ? 's' : ''}</span>
+                </div>
+              </div>
               <div className="space-y-2 text-sm text-gray-600">
                 <div className="flex items-center justify-between">
                   <span>Room ({roomsCount} × {nights} night{nights > 1 ? 's' : ''})</span>
