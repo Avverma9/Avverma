@@ -26,7 +26,7 @@ import {
   IoShieldCheckmark,
 } from "react-icons/io5";
 import axios from "axios";
-import baseURL from "../../utils/baseUrl";
+import baseURL from "../../utils/baseURL";
 
 export default function ComplaintsPage() {
   const dispatch = useDispatch();

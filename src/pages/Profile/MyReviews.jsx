@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { IoClose, IoTrash } from "react-icons/io5";
 import { FaStar } from "react-icons/fa";
-import baseURL from "../../utils/baseUrl";
+import baseURL from "../../utils/baseURL";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import { useToast } from "../../utils/toast";
 import { Unauthorized, userId } from "../../utils/Unauthorized";
