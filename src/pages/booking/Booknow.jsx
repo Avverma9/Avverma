@@ -559,7 +559,6 @@ export default function BookNowPage() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [showRoomsPopup, setShowRoomsPopup] = useState(false);
   const [showPolicies, setShowPolicies] = useState(false);
-  const [galleryIndex, setGalleryIndex] = useState(0);
   const roomsPopupRef = useRef(null);
 
   useEffect(() => {
@@ -877,66 +876,26 @@ export default function BookNowPage() {
         {/* --- Top Section: Gallery & Quick Info --- */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
            {/* Gallery (Left - 8 cols) */}
-           <div className="lg:col-span-8 h-[300px] md:h-[400px] rounded-3xl overflow-hidden shadow-sm relative group bg-gray-200">
-              <div className="w-full h-full relative">
-                  <img 
-                    src={galleryImages[galleryIndex] || PLACEHOLDER_IMAGE} 
-                    alt={hotelName} 
-                    className="w-full h-full object-cover transition duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
-                  
-                  {/* Slider Controls */}
-                  {galleryImages.length > 1 && (
-                      <>
-                        <button 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setGalleryIndex((prev) => (prev - 1 < 0 ? galleryImages.length - 1 : prev - 1));
-                            }}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white transition opacity-0 group-hover:opacity-100"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
-                        <button 
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setGalleryIndex((prev) => (prev + 1 >= galleryImages.length ? 0 : prev + 1));
-                            }}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white transition opacity-0 group-hover:opacity-100"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                      </>
-                  )}
-              </div>
-
-              <div className="absolute bottom-6 left-6 text-white z-10 max-w-[70%]">
+           <div className="lg:col-span-8 h-[300px] md:h-[400px] rounded-3xl overflow-hidden shadow-sm relative group">
+              <img src={galleryImages[0]} alt={hotelName} className="w-full h-full object-cover transition duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
+              <div className="absolute bottom-6 left-6 text-white">
                 <div className="flex items-center gap-2 mb-2">
                    {hotelRating > 0 && <span className="bg-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-1"><Star size={10} fill="white"/> {hotelRating}</span>}
                    {rooms.some(r => r.offerApplied) && <span className="bg-rose-500/90 backdrop-blur-md px-2 py-1 rounded-md text-xs border border-white/20 font-bold animate-pulse">Hot Deal</span>}
                 </div>
-                <h2 className="text-2xl font-bold leading-tight">{hotelName}</h2>
-                <p className="text-sm opacity-90 line-clamp-1 mt-1">{hotelAddress}</p>
+                <h2 className="text-2xl font-bold">{hotelName}</h2>
+                <p className="text-sm opacity-90 line-clamp-1">{hotelAddress}</p>
               </div>
-              
-              {/* Thumbnails */}
               {galleryImages.length > 1 && (
-                  <div className="absolute bottom-6 right-6 flex gap-2 z-20">
-                      {galleryImages.slice(0, 4).map((img, i) => (
-                          <div 
-                            key={i} 
-                            onClick={() => setGalleryIndex(i)}
-                            className={`w-14 h-14 rounded-xl overflow-hidden border-2 cursor-pointer transition shadow-lg ${i === galleryIndex ? 'border-white scale-105' : 'border-white/50 hover:border-white'}`}
-                          >
-                              <img src={img} className="w-full h-full object-cover" alt={`thumb-${i}`} />
+                  <div className="absolute bottom-6 right-6 flex gap-2">
+                      {galleryImages.slice(1, 4).map((img, i) => (
+                          <div key={i} className="w-16 h-16 rounded-xl overflow-hidden border-2 border-white/50 cursor-pointer hover:border-white transition">
+                              <img src={img} className="w-full h-full object-cover" alt="thumb" />
                           </div>
                       ))}
                       {galleryImages.length > 4 && (
-                          <div 
-                            onClick={() => setGalleryIndex(4)}
-                            className="w-14 h-14 rounded-xl bg-black/60 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center text-white text-xs font-bold cursor-pointer hover:bg-black/80 transition"
-                          >
+                          <div className="w-16 h-16 rounded-xl bg-black/60 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center text-white text-xs font-bold cursor-pointer">
                               +{galleryImages.length - 4}
                           </div>
                       )}

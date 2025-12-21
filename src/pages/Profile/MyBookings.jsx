@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchFilteredBooking } from "../../redux/slices/bookingSlice";
 import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
-import baseURL from "../../utils/baseUrl";
+import baseURL from "../../utils/baseURL";
 import { useLoader } from "../../utils/loader";
 import NotFoundPage from "../../utils/Not-found";
 import { Unauthorized, userId } from "../../utils/Unauthorized";

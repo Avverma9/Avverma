@@ -9,9 +9,8 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HotelSearch from './pages/hotel/HotelSearch';
-import BookNowPage from './pages/booking/booknow.jsx';
+import BookNowPage from './pages/booking/booknow';
 
-// Tour Pages
 import TourPackages from './pages/tour/tour-package';
 import TourBookingPage from './pages/tour/tour-booking';
 import PartnerPage from './pages/tour/partnerPage';

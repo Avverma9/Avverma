@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import baseUrl from '../baseUrl'
+import baseUrl from '../baseURL'
 export const useBedTypes = () => {
     const [bedTypes, setBedTypes] = useState([])
     useEffect(() => {

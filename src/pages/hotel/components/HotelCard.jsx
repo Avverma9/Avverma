@@ -232,7 +232,11 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
         : starRatingNumber.toFixed(1)
       : null;
 
-  const availabilityStatus = hotel.availability?.status;
+  // Only use availabilityStatus if it's a non-empty string (ignore numeric 0 or empty)
+  const rawAvailabilityStatus = hotel.availability?.status;
+  const availabilityStatus = typeof rawAvailabilityStatus === 'string' && rawAvailabilityStatus.trim() 
+    ? rawAvailabilityStatus 
+    : null;
   const availabilityRooms =
     typeof hotel.availability?.availableRooms === "number"
       ? hotel.availability.availableRooms
