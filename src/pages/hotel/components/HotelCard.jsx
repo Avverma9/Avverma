@@ -114,6 +114,31 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
     return derivedMin === Number.MAX_SAFE_INTEGER ? 0 : derivedMin;
   }, [hotel.rooms]);
 
+  // Derive the best active offer from the hotel or its rooms
+  const activeOffer = useMemo(() => {
+      // Check top-level first
+      if (hotel.isOffer || hotel.offerApplied) {
+          return {
+              name: hotel.offerName || hotel.offerTitle || 'Offer',
+              value: toNumber(hotel.offerPriceLess || hotel.offerValue, 0),
+              isPercentage: false
+          };
+      }
+
+      // Fallback to rooms: Find the room with an offer and the max savings
+      const rooms = Array.isArray(hotel.rooms) ? hotel.rooms : [];
+      const roomWithOffer = rooms.find(r => r.offerApplied || r.isOffer);
+      
+      if (roomWithOffer) {
+          return {
+              name: roomWithOffer.offerName || roomWithOffer.offerTitle || 'Limited Deal',
+              value: toNumber(roomWithOffer.offerPriceLess || roomWithOffer.offerValue, 0),
+              isPercentage: Boolean(roomWithOffer.offerPercent > 0)
+          };
+      }
+      return null;
+  }, [hotel]);
+
   const calculateGstAmount = useCallback(
     (price) => {
       if (!gstData) return 0;
@@ -381,29 +406,30 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
   const normalizedAmenities = React.useMemo(() => {
     if (!hotel.amenities) return [];
     if (!Array.isArray(hotel.amenities))
-      return String(hotel.amenities).split(",");
+      return String(hotel.amenities).split(",").filter(s => s && s.trim());
     if (hotel.amenities.length === 0) return [];
 
     const first = hotel.amenities[0];
     // Common backend shape: [{ hotelId: '...', amenities: [ 'Free Wi-Fi', ... ] }]
     if (first && Array.isArray(first.amenities)) {
-      return first.amenities;
+      return first.amenities.filter(a => a && typeof a === "string" && a.trim());
     }
 
     // If it's already an array of strings
     if (hotel.amenities.every((a) => typeof a === "string"))
-      return hotel.amenities;
+      return hotel.amenities.filter(a => a && a.trim());
 
     // Fallback: flatten possible nested structures and extract string values
     const flat = hotel.amenities.flatMap((a) => {
       if (!a) return [];
-      if (typeof a === "string") return [a];
-      if (Array.isArray(a.amenities)) return a.amenities;
+      if (typeof a === "string") return a.trim() ? [a] : [];
+      if (Array.isArray(a.amenities)) return a.amenities.filter(x => x && typeof x === "string" && x.trim());
       if (typeof a === "object") {
         // collect string properties
-        return Object.values(a).filter((v) => typeof v === "string");
+        return Object.values(a).filter((v) => typeof v === "string" && v.trim());
       }
-      return [String(a)];
+      // Skip non-string falsy values like 0
+      return [];
     });
 
     return flat;
@@ -493,7 +519,7 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
         {/* Top badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
           <div className="flex items-center gap-2 flex-wrap max-w-[85%]">
-            {formattedStarRating && (
+            {formattedStarRating && toNumber(formattedStarRating) > 0 && (
               <div className="flex items-center gap-1 bg-blue-600/90 px-2 py-1 rounded-full shadow-lg text-white text-xs font-semibold">
                 <SolidStar size={12} />
                 <span>{formattedStarRating}</span>
@@ -511,11 +537,11 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
                 {availabilityStatus}
               </span>
             )}
-            {/* Offer badge - show only when isOffer is true */}
-            {hotel.isOffer && (
-              <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full shadow-lg font-semibold uppercase">
-                {hotel.offerName ? hotel.offerName : "Offer"}
-                {hotel.offerPriceLess ? ` • -${hotel.offerPriceLess}` : ""}
+            {/* Offer badge - use derived activeOffer */}
+            {activeOffer && (
+              <span className="text-xs bg-rose-500 text-white px-2 py-1 rounded-full shadow-lg font-semibold uppercase animate-pulse">
+                {activeOffer.name}
+                {activeOffer.value > 0 ? ` • Save ₹${activeOffer.value}` : ""}
               </span>
             )}
           </div>
@@ -649,7 +675,7 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
             <div className="flex justify-between items-start">
               <div>
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  {formattedStarRating && (
+                  {formattedStarRating && toNumber(formattedStarRating) > 0 && (
                     <span className="flex items-center gap-1 text-[11px] font-semibold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded border border-gray-200">
                       <SolidStar size={12} />
                       {formattedStarRating}
@@ -667,11 +693,11 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
                       {availabilityStatus}
                     </span>
                   )}
-                  {hotel.isOffer && (
-                    <span className="text-[11px] bg-red-500 text-white px-2 py-0.5 rounded font-semibold ml-1">
-                      {hotel.offerName ? hotel.offerName : "Offer"}
-                      {hotel.offerPriceLess
-                        ? ` • -${hotel.offerPriceLess}`
+                  {activeOffer && (
+                    <span className="text-[11px] bg-rose-500 text-white px-2 py-0.5 rounded font-semibold ml-1">
+                      {activeOffer.name}
+                      {activeOffer.value > 0
+                        ? ` • Save ₹${activeOffer.value}`
                         : ""}
                     </span>
                   )}
@@ -698,7 +724,7 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
 
           <div className="mt-4 pt-3 border-t border-dashed border-gray-200 flex items-end justify-between gap-3">
             <div className="flex items-center gap-2">
-              {hotel.rating && (
+              {hotel.rating && toNumber(hotel.rating) > 0 && (
                 <>
                   <div className="bg-blue-600 text-white text-sm font-bold px-2 py-1 rounded shadow-sm">
                     {hotel.rating}
@@ -713,9 +739,11 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
                         ? "Good"
                         : "Average"}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {hotel.reviews || hotel.reviewCount || 0} ratings
-                    </p>
+                    {(hotel.reviews || hotel.reviewCount) ? (
+                      <p className="text-xs text-gray-500">
+                        {hotel.reviews || hotel.reviewCount} ratings
+                      </p>
+                    ) : null}
                   </div>
                 </>
               )}

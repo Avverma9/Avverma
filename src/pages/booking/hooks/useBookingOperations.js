@@ -69,9 +69,9 @@ const computeBookingStatus = ({ roomsCount, nights }) => {
   const stayNights = Number(nights || 0);
 
   // Business rules:
-  // 1) If customer books more than 3 rooms AND more than 3 nights => Pending
+  // 1) If customer books more than 3 rooms => Pending (regardless of nights)
   // 2) If single-room booking and more than 3 nights => Pending
-  if (rooms > 3 && stayNights > 3) return "Pending";
+  if (rooms > 3) return "Pending";
   if (rooms === 1 && stayNights > 3) return "Pending";
   return "Confirmed";
 };
