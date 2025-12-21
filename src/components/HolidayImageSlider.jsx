@@ -1,146 +1,105 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 
-const FALLBACK_IMAGE = 'https://placehold.co/800x600/e2e8f0/475569?text=Holiday+Preview';
+const HolidayImageSlider = ({ images = [], autoPlay = true, interval = 4000 }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-const clampHeightClass = (heightClass) => (heightClass && heightClass.trim().length > 0
-  ? heightClass
-  : 'h-56 sm:h-64 lg:h-72');
+  // Default images if none provided
+  const defaultImages = [
+    'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop',
+  ];
 
-const HolidayImageSlider = ({
-  images = [],
-  autoPlayInterval = 0,
-  heightClass = 'h-56 sm:h-64 lg:h-72',
-  rounded = true,
-  showIndicators = true,
-  showThumbnails = false,
-  className = '',
-  imageClassName = '',
-  onImageClick
-}) => {
-  const normalizedImages = useMemo(() => {
-    const validImages = images?.filter(Boolean) ?? [];
-    return validImages.length > 0 ? validImages : [FALLBACK_IMAGE];
-  }, [images]);
-
-  const [activeIndex, setActiveIndex] = useState(0);
+  const displayImages = images.length > 0 ? images : defaultImages;
 
   useEffect(() => {
-    setActiveIndex(0);
-  }, [normalizedImages.length]);
+    if (!autoPlay || displayImages.length <= 1) return;
 
-  useEffect(() => {
-    if (!autoPlayInterval || normalizedImages.length <= 1) return undefined;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % displayImages.length);
+    }, interval);
 
-    const intervalId = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % normalizedImages.length);
-    }, autoPlayInterval);
+    return () => clearInterval(timer);
+  }, [autoPlay, interval, displayImages.length]);
 
-    return () => window.clearInterval(intervalId);
-  }, [autoPlayInterval, normalizedImages.length]);
-
-  const goTo = (offset) => {
-    setActiveIndex((prev) => {
-      const nextIndex = (prev + offset + normalizedImages.length) % normalizedImages.length;
-      return nextIndex;
-    });
+  const goToSlide = (index) => {
+    setCurrentIndex(index);
   };
 
-  const sliderHeightClass = clampHeightClass(heightClass);
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + displayImages.length) % displayImages.length);
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % displayImages.length);
+  };
+
+  if (displayImages.length === 0) return null;
 
   return (
-    <div className={`w-full ${className}`}>
-      <div className={`relative overflow-hidden bg-slate-100 ${rounded ? 'rounded-2xl' : ''} ${sliderHeightClass}`}>
-        {normalizedImages.map((src, index) => (
-          <img
-            key={`${src}-${index}`}
-            src={src}
-            alt={`holiday slide ${index + 1}`}
-            className={`absolute inset-0 h-full w-full object-cover transition-all duration-500 ease-out ${index === activeIndex ? 'opacity-100 scale-100' : 'opacity-0 scale-105'} ${imageClassName}`}
-            loading="lazy"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = FALLBACK_IMAGE;
-            }}
-            onClick={() => onImageClick?.(index, src)}
-          />
-        ))}
-
-        {normalizedImages.length > 1 && (
-          <>
-            <button
-              type="button"
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/60"
-              onClick={() => goTo(-1)}
-              aria-label="Previous slide"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60 focus:outline-none focus:ring-2 focus:ring-white/60"
-              onClick={() => goTo(1)}
-              aria-label="Next slide"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-          </>
-        )}
-
-        {showIndicators && normalizedImages.length > 1 && (
-          <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-1.5">
-            {normalizedImages.map((_, index) => (
-              <span
-                key={`indicator-${index}`}
-                className={`h-1.5 rounded-full transition-all ${index === activeIndex ? 'w-6 bg-white shadow' : 'w-3 bg-white/60'}`}
-              />
-            ))}
+    <div className="relative w-full h-full overflow-hidden rounded-lg group">
+      {/* Main Image */}
+      <div className="relative w-full h-full">
+        {displayImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-500 ${
+              index === currentIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img
+              src={typeof image === 'string' ? image : image.url || image.src}
+              alt={typeof image === 'string' ? `Slide ${index + 1}` : image.alt || `Slide ${index + 1}`}
+              className="w-full h-full object-cover"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
           </div>
-        )}
+        ))}
       </div>
 
-      {showThumbnails && normalizedImages.length > 1 && (
-        <div className="mt-4 flex gap-3 overflow-x-auto pb-2">
-          {normalizedImages.map((src, index) => (
+      {/* Navigation Arrows */}
+      {displayImages.length > 1 && (
+        <>
+          <button
+            onClick={goToPrevious}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            aria-label="Previous slide"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <button
+            onClick={goToNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            aria-label="Next slide"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
+
+      {/* Dots Indicator */}
+      {displayImages.length > 1 && (
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+          {displayImages.map((_, index) => (
             <button
-              type="button"
-              key={`thumb-${src}-${index}`}
-              className={`relative h-16 w-24 flex-shrink-0 overflow-hidden rounded-xl border transition focus:outline-none focus:ring-2 focus:ring-blue-300 ${index === activeIndex ? 'border-blue-500 ring-2 ring-blue-200' : 'border-transparent'}`}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`View slide ${index + 1}`}
-            >
-              <img
-                src={src}
-                alt={`holiday thumbnail ${index + 1}`}
-                className="h-full w-full object-cover"
-                loading="lazy"
-                onError={(event) => {
-                  event.currentTarget.onerror = null;
-                  event.currentTarget.src = FALLBACK_IMAGE;
-                }}
-              />
-            </button>
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? 'bg-white w-4'
+                  : 'bg-white/50 hover:bg-white/75'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </div>
       )}
     </div>
   );
-};
-
-HolidayImageSlider.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.string),
-  autoPlayInterval: PropTypes.number,
-  heightClass: PropTypes.string,
-  rounded: PropTypes.bool,
-  showIndicators: PropTypes.bool,
-  showThumbnails: PropTypes.bool,
-  className: PropTypes.string,
-  imageClassName: PropTypes.string,
-  onImageClick: PropTypes.func
 };
 
 export default HolidayImageSlider;

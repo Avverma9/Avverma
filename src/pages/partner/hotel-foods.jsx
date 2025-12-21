@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import baseURL from "../../utils/baseURL";
+import baseURL from "../../utils/baseUrl";
 
 export default function PartnerFoods() {
   const navigate = useNavigate();

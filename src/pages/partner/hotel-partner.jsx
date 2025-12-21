@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import axios from "axios";
 import { City, State } from "country-state-city";
-import baseURL from "../../utils/baseURL";
+import baseURL from "../../utils/baseUrl";
 import alert from "../../utils/custom_alert/custom_alert";
 import { fetchLocation } from "../../utils/fetchLocation";
 import { useLoader } from "../../utils/loader";

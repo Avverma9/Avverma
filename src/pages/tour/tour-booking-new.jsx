@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { getTravelById, bookNow, fetchSeatMap } from "../../redux/reducers/travelSlice";
-import { getGst } from "../../redux/reducers/gstSlice";
+import { getTravelById, bookNow, fetchSeatMap } from "../../redux/slices/travelSlice";
+import { getGst } from "../../redux/slices/gstSlice";
 import { useLoader } from "../../utils/loader";
 import { useToast } from "../../utils/toast";
 import { userId } from "../../utils/Unauthorized";

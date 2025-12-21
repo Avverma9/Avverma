@@ -30,7 +30,7 @@ import {
 import { toast } from "react-toastify";
 
 
-import { bookSeat, getSeatsData } from "../../redux/reducers/car";
+import { bookSeat, getSeatsData } from "../../redux/slices/car";
 
 const Seat = ({ seat, onSeatClick, isSelected }) => {
   const getSeatStyle = () => {

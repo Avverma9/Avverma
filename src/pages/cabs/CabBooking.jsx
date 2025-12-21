@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { bookSeat, getCarById } from "../../redux/reducers/car";
+import { bookSeat, getCarById } from "../../redux/slices/car";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useLoader } from "../../utils/loader";

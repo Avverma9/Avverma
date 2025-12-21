@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { getAllCars } from "../../redux/reducers/car";
+import { getAllCars } from "../../redux/slices/car";
 import { useNavigate } from "react-router-dom";
 import { useLoader } from "../../utils/loader";
 

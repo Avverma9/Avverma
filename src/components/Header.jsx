@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/slices/authSlice';
+import toast from 'react-hot-toast';
 import {
   useFloating,
   useClick,
@@ -11,27 +14,36 @@ import {
   autoUpdate
 } from '@floating-ui/react';
 import {
-  MenuIcon, CloseIcon, PhoneIcon, CabIcon, HolidayIcon,
-  PropertyIcon, PartnerIcon, ProfileIcon, BookingIcon,
-  CouponIcon, LogoutIcon, UserCircleIcon
-} from './Icons';
+  Menu,
+  X,
+  Phone,
+  Car,
+  Palmtree,
+  Building2,
+  Handshake,
+  User,
+  Calendar,
+  Ticket,
+  LogOut,
+  UserCircle2
+} from 'lucide-react';
 
 const Logo = () => (
   <img src="/logo.png" alt="HRS" className="w-18 h-12" />
 );
 
 const navLinks = [
-  { text: "Cabs", path: "/cabs", icon: <CabIcon /> },
-  { text: "Holidays", path: "/holidays", icon: <HolidayIcon /> },
-  { text: "List Property", path: "/partner", icon: <PropertyIcon /> },
-  { text: "Travel Partner", path: "/travel-partner", icon: <PartnerIcon /> },
+  { text: "Cabs", path: "/cabs", icon: <Car className="w-5 h-5" /> },
+  { text: "Holidays", path: "/holidays", icon: <Palmtree className="w-5 h-5" /> },
+  { text: "List Property", path: "/partner", icon: <Building2 className="w-5 h-5" /> },
+  { text: "Travel Partner", path: "/travel-partner", icon: <Handshake className="w-5 h-5" /> },
 ];
 
 const profileLinks = [
-  { text: "Profile", path: "/profile", icon: <ProfileIcon /> },
-  { text: "Bookings", path: "/bookings", icon: <BookingIcon /> },
-  { text: "Coupons", path: "/coupons", icon: <CouponIcon /> },
-  { text: "Logout", path: "/login", icon: <LogoutIcon /> },
+  { text: "Profile", path: "/profile", icon: <User className="w-5 h-5" /> },
+  { text: "Bookings", path: "/bookings", icon: <Calendar className="w-5 h-5" /> },
+  { text: "Coupons", path: "/coupons", icon: <Ticket className="w-5 h-5" /> },
+  { text: "Logout", path: "/login", icon: <LogOut className="w-5 h-5" /> },
 ];
 
 const contactLink = { text: "Call us for booking", number: "9917991758", path: "tel:9917991758" };
@@ -57,6 +69,8 @@ const NavLink = ({ link, handleRedirect }) => {
 export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user, isAuthenticated } = useSelector((state) => state.auth);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -108,6 +122,16 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   const handleRedirect = (path) => {
+    // Handle logout specifically
+    if (path === "/login" && isAuthenticated) {
+      dispatch(logout());
+      toast.success('Logged out successfully');
+      navigate('/login');
+      setMobileMenuOpen(false);
+      setProfileMenuOpen(false);
+      return;
+    }
+
     if (path.startsWith('tel:')) {
       window.location.href = path;
     } else {
@@ -117,7 +141,7 @@ export default function Header() {
     setProfileMenuOpen(false);
   };
 
-  if (location.pathname === "/login" || location.pathname === "/register") return null;
+  if (location.pathname === "/login" || location.pathname === "/register" || location.pathname === "/hotel-search") return null;
 
   return (
     <>
@@ -131,7 +155,7 @@ export default function Header() {
           <div className="flex items-center justify-between h-16 px-6">
             <button
               onClick={() => handleRedirect("/")}
-              className="flex-shrink-0 flex items-center gap-3 hover:scale-105 transition-transform duration-200"
+              className="shrink-0 flex items-center gap-3 hover:scale-105 transition-transform duration-200"
             >
               <Logo />
             </button>
@@ -145,9 +169,9 @@ export default function Header() {
             <div className="hidden lg:flex items-center gap-4">
               <button
                 onClick={() => handleRedirect(contactLink.path)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-gray-600 to-gray-700 text-white text-sm font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-white/10"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-linear-to-r from-gray-600 to-gray-700 text-white text-sm font-semibold hover:from-gray-700 hover:to-gray-800 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm border border-white/10"
               >
-                <PhoneIcon />
+                <Phone className="w-5 h-5" />
                 <span>{contactLink.number}</span>
               </button>
 
@@ -157,7 +181,7 @@ export default function Header() {
                   {...getReferenceProps()}
                   className="p-2 rounded-xl hover:bg-white/15 transition-all duration-200 hover:scale-105 backdrop-blur-sm"
                 >
-                  <UserCircleIcon />
+                  <UserCircle2 className="w-7 h-7 text-gray-700" />
                 </button>
                 {profileMenuOpen && (
                   <div
@@ -188,7 +212,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(true)}
               className="lg:hidden p-2 rounded-xl text-gray-600 hover:bg-white/15 focus:outline-none transition-all duration-200 hover:scale-105 backdrop-blur-sm"
             >
-              <MenuIcon />
+              <Menu className="w-6 h-6" />
             </button>
           </div>
         </div>
@@ -214,7 +238,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(false)}
             className="p-2 rounded-xl hover:bg-white/15 text-gray-500 transition-all duration-200"
           >
-            <CloseIcon />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
@@ -262,7 +286,7 @@ export default function Header() {
               className="flex items-center gap-3 p-3 rounded-xl w-full text-left text-gray-600 hover:bg-white/15 transition-all duration-200"
             >
               <div className="p-2 bg-white/20 rounded-xl text-gray-800 backdrop-blur-sm">
-                <PhoneIcon />
+                <Phone className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
                 <span className="text-xs text-gray-500">{contactLink.text}</span>

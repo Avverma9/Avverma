@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {  MdClose, MdAdd, MdDelete } from 'react-icons/md';
 import { Country, State, City } from 'country-state-city';
 import { useDispatch } from 'react-redux';
-import { createTravel } from '../../redux/reducers/travelSlice';
+import { createTravel } from '../../redux/slices/travelSlice';
 import { useLoader } from '../../utils/loader';
 import {
    FaCheck

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   postRooms,
   sendNotification,
-} from "../../redux/reducers/partnerSlice";
+} from "../../redux/slices/partnerSlice";
 import { useBedTypes } from "../../utils/additional-fields/bedTypes";
 import { useRoomTypes } from "../../utils/additional-fields/roomTypes";
 

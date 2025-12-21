@@ -1,17 +1,21 @@
 @import "tailwindcss";
 
-/*
-  ये स्टाइल मोबाइल डिवाइस पर स्क्रॉल करते समय फिक्स्ड एलिमेंट्स (जैसे हेडर और बॉटम नेविगेशन)
-  के हिलने (jittering) की समस्या को ठीक करने में मदद करते हैं।
-*/
-html,
-#root,
-.App {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
+/* Custom CSS variables and overrides */
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  overscroll-behavior-y: contain; /* वर्टिकल 'पुल-टू-रीफ्रेश' एक्शन को रोकता है */
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Add your custom styles below */

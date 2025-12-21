@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-irregular-whitespace */
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { getTravelList } from "../../redux/reducers/travelSlice";
+import { getTravelList } from "../../redux/slices/travelSlice";
 import { useLoader } from "../../utils/loader";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
