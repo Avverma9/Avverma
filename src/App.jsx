@@ -9,7 +9,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HotelSearch from './pages/hotel/HotelSearch';
-import BookNowPage from './pages/booking/booknow';
+import BookNowPage from './pages/booking/booknow.jsx';
 
 // Tour Pages
 import TourPackages from './pages/tour/tour-package';

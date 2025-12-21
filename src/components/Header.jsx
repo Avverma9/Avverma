@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 
 const Logo = () => (
-  <img src="/logo.png" alt="HRS" className="w-18 h-12" />
+  <img src="/logo.png" alt="HRS" className="w-18 h-15" />
 );
 
 const navLinks = [
