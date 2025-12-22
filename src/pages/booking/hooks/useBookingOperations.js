@@ -367,21 +367,21 @@ const useBookingOperations = ({
   ]);
 
   const handleOfflineBooking = useCallback(async () => {
-    if (!ensureUserAndRoom()) return;
+    if (!ensureUserAndRoom()) return { success: false };
     try {
       showLoader();
       const payload = buildBookingPayload({ pm: "Offline" });
-      await createBookingRequest(bookingUserId, hotelId, payload);
+      const response = await createBookingRequest(bookingUserId, hotelId, payload);
       toast.success("Booking confirmed! Pay at hotel on arrival.");
       localStorage.removeItem("discountPrice");
-      return true;
+      return { success: true, data: response };
     } catch (error) {
       const message =
         error.response?.data?.message ||
         error.message ||
         "Booking failed, please try again.";
       toast.error(message);
-      return false;
+      return { success: false, error: message };
     } finally {
       hideLoader();
     }

@@ -38,6 +38,7 @@ import CalendarPicker from "./components/CalendarPicker";
 import RoomsGuestsPopup from "./components/RoomsGuestsPopup";
 import PoliciesModal from "./components/PoliciesModal";
 import GalleryModal from "./components/GalleryModal";
+import BookingSuccessModal from "./components/BookingSuccessModal";
 import {
   getAmenityIcon,
   SectionCard,
@@ -87,6 +88,8 @@ export default function BookNowPage() {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showBookingSheet, setShowBookingSheet] = useState(false);
   const [showAllAmenities, setShowAllAmenities] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [bookingResponseData, setBookingResponseData] = useState(null);
 
   const roomsPopupRef = useRef(null);
 
@@ -489,23 +492,21 @@ export default function BookNowPage() {
   const triggerOfflineBooking = useCallback(async () => {
     if (offlineBookingLoading) return;
     setOfflineBookingLoading(true);
-    const success = await handleOfflineBooking?.();
-    if (success) {
-      const status = roomsCount > 3 ? "Pending" : "Confirmed";
-      setBookingStatus({
-        type: "offline",
-        status,
-        reference: `HTL-${Date.now()}`,
-        amount: priceSummary.netPay,
-      });
+    const result = await handleOfflineBooking?.();
+    console.log('🎉 Booking Result:', result);
+    if (result?.success) {
+      // Extract the actual booking data from nested response
+      const actualData = result.data?.data || result.data;
+      console.log('📦 Actual Booking Data to Modal:', actualData);
+      setBookingResponseData(actualData);
       setShowBookingSheet(false);
+      // Show success modal
+      setShowSuccessModal(true);
     }
     setOfflineBookingLoading(false);
   }, [
     handleOfflineBooking,
     offlineBookingLoading,
-    priceSummary.netPay,
-    roomsCount,
   ]);
 
   // --- Policy Highlights ---
@@ -1455,6 +1456,16 @@ export default function BookNowPage() {
           </div>
         </div>
       )}
+
+      {/* Booking Success Modal */}
+      <BookingSuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => {
+          setShowSuccessModal(false);
+          navigate('/bookings');
+        }}
+        bookingData={bookingResponseData}
+      />
     </div>
   );
 }
