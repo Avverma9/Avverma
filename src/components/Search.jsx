@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
@@ -20,6 +20,18 @@ export default function SearchForm() {
     d.setDate(d.getDate() + 1);
     return d.toISOString().split("T")[0];
   };
+
+  // Auto-apply stored session location (so user need not click the location button)
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('autoLocation');
+      if (saved) {
+        setData(prev => (prev.search ? prev : ({ ...prev, search: saved })));
+      }
+    } catch (e) {
+      // ignore sessionStorage errors (e.g., in some strict privacy modes)
+    }
+  }, []);
 
   const [fetchingLocation, setFetchingLocation] = useState(false);
   const [showGuestPopup, setShowGuestPopup] = useState(false);
@@ -69,8 +81,21 @@ export default function SearchForm() {
     toast.success('Searching...');
   };
 
-  const getLocation = () => {
+  
+  // force = true will bypass stored session value and perform a fresh geolocation fetch
+  const getLocation = (force = false) => {
     if (!navigator.geolocation) return;
+
+    // If not forcing, and user already fetched location earlier in this session, reuse it and do not re-fetch
+    if (!force) {
+      const saved = sessionStorage.getItem('autoLocation');
+      if (saved) {
+        setData((p) => ({ ...p, search: saved }));
+        toast.success(`Location: ${saved}`);
+        return;
+      }
+    }
+
     setFetchingLocation(true);
     navigator.geolocation.getCurrentPosition(
       async ({ coords: { latitude, longitude } }) => {
@@ -79,6 +104,10 @@ export default function SearchForm() {
           const json = await res.json();
           const name = json.address.city || json.address.town || "Current Location";
           setData((p) => ({ ...p, search: name }));
+          // Only set the stored value if it's not already present, so we don't reset it
+          if (!sessionStorage.getItem('autoLocation')) {
+            sessionStorage.setItem('autoLocation', name);
+          }
           toast.success(`Location: ${name}`);
         } catch (e) {
           toast.error('Failed to get location');
@@ -115,7 +144,7 @@ export default function SearchForm() {
                <MapPinIcon />
             </div>
             <input type="text" name="search" value={data.search} onChange={handleChange} placeholder="Where to?" className="w-full h-12 pl-12 pr-10 bg-transparent text-sm font-bold text-gray-800 placeholder-gray-400 border-none focus:ring-0 outline-none" />
-            <button disabled={fetchingLocation} onClick={getLocation} className="absolute inset-y-0 right-2 px-2 flex items-center text-gray-300 hover:text-blue-600 transition-colors">
+      <button disabled={fetchingLocation} onClick={() => getLocation(true)} className="absolute inset-y-0 right-2 px-2 flex items-center text-gray-300 hover:text-blue-600 transition-colors">
                {fetchingLocation ? <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div> : <MyLocationIcon />}
             </button>
           </div>
