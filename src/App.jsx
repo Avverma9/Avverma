@@ -9,7 +9,6 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HotelSearch from './pages/hotel/HotelSearch';
-import BookNowPage from './pages/booking/booknow';
 
 import TourPackages from './pages/tour/tour-package';
 import TourBookingPage from './pages/tour/tour-booking';
@@ -41,6 +40,7 @@ import Offered from './pages/Offered';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomBar from './components/BottomBar';
+import BookNowPage from './pages/booking/Booknow';
 
 // Styles
 
