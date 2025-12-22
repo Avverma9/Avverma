@@ -624,7 +624,7 @@ export default function BookNowPage() {
 
           {/* Right Column - Desktop Booking Panel */}
           <div className="lg:col-span-1">
-            <div className="hidden lg:block sticky top-24 space-y-4">
+            <div className="lg:sticky lg:top-24 space-y-4">
               <BookingPanel compact={false} />
             </div>
           </div>

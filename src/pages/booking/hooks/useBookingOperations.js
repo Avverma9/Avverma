@@ -12,6 +12,7 @@ import {
   loadRazorpayScript,
   openRazorpayCheckout,
 } from "../../../services/bookingService";
+import { userId } from "@/utils/Unauthorized";
 
 const formatForApi = (value) => {
   if (!value) return null;
@@ -322,6 +323,7 @@ const useBookingOperations = ({
 
     const payload = {
       hotelId,
+      userId,
       roomId: selectedRooms?.[0]?.roomId,
       couponCode,
       checkInDate: formatForApi(checkInDate),
