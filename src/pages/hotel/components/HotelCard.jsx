@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Navigation2,
 } from "lucide-react";
+import { getRoomEffectivePrice } from "../HotelSearch";
 
 const FALLBACK_HOTEL_IMAGE = "https://via.placeholder.com/800x500?text=No+Image";
 
@@ -173,27 +174,37 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
   const priceDetails = useMemo(() => {
     const rooms = Array.isArray(hotel.rooms) ? hotel.rooms : [];
 
-    const cheapestRoom = rooms.reduce((best, room) => {
-      const roomPrice = toNumber(room?.finalPrice ?? room?.price, Number.MAX_SAFE_INTEGER);
-      if (!best) return room;
-      const bestPrice = toNumber(best?.finalPrice ?? best?.price, Number.MAX_SAFE_INTEGER);
-      return roomPrice < bestPrice ? room : best;
-    }, null);
+    // Try to use effective room price (handles monthly/seasonal pricing) when tripMeta dates are available
+    const checkInStr = tripMeta?.checkIn ?? "";
+    const checkOutStr = tripMeta?.checkOut ?? "";
+
+    let chosenRoom = null;
+    let chosenEffectivePrice = null;
+
+    if (rooms.length) {
+      for (const room of rooms) {
+        const eff = getRoomEffectivePrice(room, checkInStr, checkOutStr);
+        const effNum = toNumber(eff, Number.MAX_SAFE_INTEGER);
+        if (chosenRoom === null || effNum < toNumber(chosenEffectivePrice, Number.MAX_SAFE_INTEGER)) {
+          chosenRoom = room;
+          chosenEffectivePrice = eff;
+        }
+      }
+    }
 
     const summaryBase = toNumber(hotel.pricing?.startingFrom, 0);
     const summaryWithGst = toNumber(hotel.pricing?.startingFromWithGST, 0);
 
-    const basePrice =
-      cheapestRoom
-        ? toNumber(cheapestRoom.finalPrice ?? cheapestRoom.price, summaryBase || minPrice)
-        : summaryBase || minPrice;
+    const basePrice = chosenRoom
+      ? toNumber(chosenEffectivePrice ?? chosenRoom.finalPrice ?? chosenRoom.price, summaryBase || minPrice)
+      : summaryBase || minPrice;
 
-    const gstFromRoom = toNumber(cheapestRoom?.gstAmount, 0);
+    const gstFromRoom = toNumber(chosenRoom?.gstAmount, 0);
     const gstFromSummary = summaryWithGst && basePrice ? Math.max(summaryWithGst - basePrice, 0) : 0;
     const gstAmount = gstFromRoom || gstFromSummary || calculateGstAmount(basePrice);
 
     const finalPrice = toNumber(
-      cheapestRoom?.priceWithGST ?? hotel.pricing?.startingFromWithGST ?? basePrice + gstAmount,
+      chosenRoom?.priceWithGST ?? hotel.pricing?.startingFromWithGST ?? basePrice + gstAmount,
       basePrice + gstAmount
     );
 
@@ -202,17 +213,17 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
       finalPrice,
       gstAmount,
       gstPercent:
-        cheapestRoom?.gstPercent ??
+        chosenRoom?.gstPercent ??
         hotel.pricing?.gstPercent ??
         gstData?.gstPrice ??
         gstData?.defaultRate ??
         null,
-      roomType: cheapestRoom?.type || null,
+      roomType: chosenRoom?.type || null,
       includesTaxes: Boolean(
-        cheapestRoom?.priceWithGST || hotel.pricing?.startingFromWithGST || hotel.pricing?.gstApplicable
+        chosenRoom?.priceWithGST || hotel.pricing?.startingFromWithGST || hotel.pricing?.gstApplicable
       ),
     };
-  }, [calculateGstAmount, gstData, hotel.pricing, hotel.rooms, minPrice]);
+  }, [calculateGstAmount, gstData, hotel.pricing, hotel.rooms, minPrice, tripMeta]);
 
   const currencyFormatter = useMemo(() => new Intl.NumberFormat("en-IN"), []);
 
@@ -841,41 +852,3 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
   );
 }
 
-export function HotelCardSkeleton() {
-  return (
-    <>
-      {/* Mobile Skeleton */}
-      <div className="md:hidden relative rounded-xl overflow-hidden shadow-lg mb-4 h-96 animate-pulse">
-        <div className="absolute inset-0 bg-gray-200"></div>
-        <div className="absolute inset-0 bg-linear-to-t from-gray-400/50 via-transparent to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 p-5">
-          <div className="space-y-3">
-            <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-            <div className="flex justify-between items-end pt-2">
-              <div className="h-10 w-24 bg-gray-300 rounded-lg"></div>
-              <div className="h-12 w-24 bg-gray-300 rounded-lg"></div>
-            </div>
-            <div className="flex gap-2 pt-2">
-              <div className="h-5 w-16 bg-gray-300 rounded-full"></div>
-              <div className="h-5 w-12 bg-gray-300 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Desktop Skeleton */}
-      <div className="hidden md:flex bg-white rounded-xl border border-gray-200 mb-4 overflow-hidden animate-pulse">
-        <div className="w-72 h-56 bg-gray-200 shrink-0" />
-        <div className="flex-1 p-4">
-          <div className="h-6 w-3/4 bg-gray-200 rounded mb-2" />
-          <div className="h-4 w-1/2 bg-gray-200 rounded mb-4" />
-          <div className="flex gap-2">
-            <div className="h-6 w-16 bg-gray-200 rounded-full" />
-            <div className="h-6 w-20 bg-gray-200 rounded-full" />
-          </div>
-        </div>
-      </div>
-    </>
-  );
-}

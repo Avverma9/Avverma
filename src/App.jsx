@@ -41,6 +41,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import BottomBar from './components/BottomBar';
 import BookNowPage from './pages/booking/Booknow';
+import CouponPage from './pages/Profile/coupons';
 
 // Styles
 
@@ -140,6 +141,7 @@ function App() {
           <Route path="/cab-bookings" element={<ProfileSideBar />} />
           <Route path="/complaints" element={<ProfileSideBar />} />
           <Route path="/reviews" element={<ProfileSideBar />} />
+          <Route path="/coupons" element={<CouponPage />} />
 
           {/* Static Pages */}
           <Route path="/offered" element={<Offered />} />

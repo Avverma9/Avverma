@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { 
-  Search, 
-  MapPin, 
+import {
+  Search,
+  MapPin,
   Menu,
   X,
   User,
@@ -17,22 +17,19 @@ import {
 import { searchHotels, setFilters, resetFilters } from '../../redux/slices/hotelSearchSlice';
 import { getGst } from '../../redux/slices/gstSlice';
 
-// Import modular components
 import SearchLocationModal from './components/SearchLocationModal';
 import DatePickerModal from './components/DatePickerModal';
 import GuestSelectorModal from './components/GuestSelectorModal';
-import HotelCard, { HotelCardSkeleton } from './components/HotelCard';
+import HotelCard from './components/HotelCard';
 import FilterSidebar, { MobileFilterPanel } from './components/filters/FilterSidebar';
 import ErrorBoundary from '../../components/ErrorBoundary';
+import { HotelCardSkeleton } from './components/HotelcardSkeleton';
 
 const flattenAmenities = (amenities) => {
   if (!amenities) return [];
   if (Array.isArray(amenities)) {
-    // Check if first element contains nested amenities array
     const first = amenities[0];
-    if (first && Array.isArray(first.amenities)) {
-      return first.amenities;
-    }
+    if (first && Array.isArray(first.amenities)) return first.amenities;
 
     return amenities.flatMap((item) => {
       if (!item) return [];
@@ -47,24 +44,64 @@ const flattenAmenities = (amenities) => {
   return String(amenities).split(',');
 };
 
+const toLocalDateTime = (dateStr, fallback = null) => {
+  if (!dateStr) return fallback;
+  const d = new Date(`${dateStr}T00:00:00`);
+  return Number.isNaN(d.getTime()) ? fallback : d;
+};
+
+const isBookingInsideRange = (checkInStr, checkOutStr, startStr, endStr) => {
+  const checkIn = toLocalDateTime(checkInStr);
+  const checkOut = toLocalDateTime(checkOutStr);
+  const start = toLocalDateTime(startStr);
+  const end = toLocalDateTime(endStr);
+  if (!checkIn || !checkOut || !start || !end) return false;
+  return checkIn >= start && checkOut <= end;
+};
+
+const getRoomBasePrice = (room) => {
+  return room?.finalPrice ?? room?.price ?? 0;
+};
+
+const getRoomEffectivePrice = (room, checkInStr, checkOutStr) => {
+  const base = getRoomBasePrice(room);
+  const mp = room?.monthlyPriceDetails;
+  if (!mp || mp.validForBooking !== true) return base;
+  const inside = isBookingInsideRange(checkInStr, checkOutStr, mp.startDate, mp.endDate);
+  if (!inside) return base;
+  const monthPrice = Number(mp.monthPrice);
+  if (Number.isFinite(monthPrice) && monthPrice > 0) return monthPrice;
+  return base;
+};
+
+const getHotelMinEffectivePrice = (hotel, checkInStr, checkOutStr) => {
+  const rooms = hotel?.rooms || [];
+  if (!rooms.length) return 0;
+  return Math.min(...rooms.map((r) => getRoomEffectivePrice(r, checkInStr, checkOutStr)));
+};
+
+const getHotelMaxEffectivePrice = (hotel, checkInStr, checkOutStr) => {
+  const rooms = hotel?.rooms || [];
+  if (!rooms.length) return 0;
+  return Math.max(...rooms.map((r) => getRoomEffectivePrice(r, checkInStr, checkOutStr)));
+};
+
 export default function HotelSearchPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  
+
   const { hotels, loading, filters } = useSelector((state) => state.hotelSearch);
   const { gst: gstData } = useSelector((state) => state.gst);
-  
-  // Modal states
+
   const [isMobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showGuestSelector, setShowGuestSelector] = useState(false);
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc' or 'desc'
-  
-  // Search states
+  const [sortOrder, setSortOrder] = useState('asc');
+
   const [searchLocation, setSearchLocation] = useState(searchParams.get('destination') || '');
   const [checkInDate, setCheckInDate] = useState(searchParams.get('checkIn') || '');
   const [checkOutDate, setCheckOutDate] = useState(searchParams.get('checkOut') || '');
@@ -111,7 +148,7 @@ export default function HotelSearchPage() {
       page: 1,
       limit: 20
     };
-    
+
     if (searchData.destination) {
       dispatch(searchHotels(searchData));
     }
@@ -119,57 +156,80 @@ export default function HotelSearchPage() {
 
   useEffect(() => {
     if (hotels && hotels.length > 0) {
-      const allRoomPrices = hotels.flatMap(hotel => hotel.rooms?.map(room => room.finalPrice || room.price) || []);
-      if (allRoomPrices.length > 0) {
-        const maxRoomPrice = Math.max(...allRoomPrices);
-        dispatch(getGst({ type: 'Hotel', gstThreshold: maxRoomPrice }));
+      const maxPrices = hotels
+        .filter((h) => h && typeof h === 'object')
+        .map((hotel) => getHotelMaxEffectivePrice(hotel, checkInDate, checkOutDate));
+
+      if (maxPrices.length > 0) {
+        const maxRoomPrice = Math.max(...maxPrices);
+        if (Number.isFinite(maxRoomPrice) && maxRoomPrice > 0) {
+          dispatch(getGst({ type: 'Hotel', gstThreshold: maxRoomPrice }));
+        }
       }
     }
-  }, [hotels, dispatch]);
+  }, [hotels, dispatch, checkInDate, checkOutDate]);
 
   const filteredHotels = useMemo(() => {
     const validHotels = Array.isArray(hotels)
       ? hotels.filter((item) => item && typeof item === 'object')
       : [];
-    const filtered = validHotels.filter((hotel) => {
-      const minHotelPrice = hotel.rooms && hotel.rooms.length > 0
-        ? Math.min(...hotel.rooms.map((r) => r.finalPrice || r.price || 0))
-        : 0;
 
+    const filtered = validHotels.filter((hotel) => {
+      const minHotelPrice = getHotelMinEffectivePrice(hotel, checkInDate, checkOutDate);
       const normalizedAmenities = flattenAmenities(hotel.amenities);
 
-      const priceMatch = minHotelPrice >= (filters.minPrice ?? 0) && minHotelPrice <= (filters.maxPrice ?? Number.MAX_SAFE_INTEGER);
-      const starMatch = !filters.starRating || String(hotel.starRating || '').startsWith(filters.starRating);
-      const amenityMatch = filters.amenities.length === 0 || filters.amenities.every((selected) =>
-        normalizedAmenities.some((amenity) => amenity.toLowerCase().includes(selected.toLowerCase()))
-      );
-      const propertyMatch = filters.propertyType.length === 0 || (hotel.propertyType || []).some((type) => filters.propertyType.includes(type));
-      const roomTypeMatch = filters.type.length === 0 || (hotel.rooms || []).some((room) =>
-        filters.type.some((selected) => room.type && room.type.toLowerCase().includes(selected.toLowerCase()))
-      );
-      const bedTypeMatch = filters.bedTypes.length === 0 || (hotel.rooms || []).some((room) => {
-        if (!room.bedTypes) return false;
-        return filters.bedTypes.some((selected) => room.bedTypes.toLowerCase().includes(selected.toLowerCase()));
-      });
+      const priceMatch =
+        minHotelPrice >= (filters.minPrice ?? 0) &&
+        minHotelPrice <= (filters.maxPrice ?? Number.MAX_SAFE_INTEGER);
+
+      const starMatch =
+        !filters.starRating || String(hotel.starRating || '').startsWith(filters.starRating);
+
+      const amenityMatch =
+        filters.amenities.length === 0 ||
+        filters.amenities.every((selected) =>
+          normalizedAmenities.some((amenity) =>
+            String(amenity).toLowerCase().includes(selected.toLowerCase())
+          )
+        );
+
+      const propertyMatch =
+        filters.propertyType.length === 0 ||
+        (hotel.propertyType || []).some((type) => filters.propertyType.includes(type));
+
+      const roomTypeMatch =
+        filters.type.length === 0 ||
+        (hotel.rooms || []).some((room) =>
+          filters.type.some((selected) =>
+            room.type && room.type.toLowerCase().includes(selected.toLowerCase())
+          )
+        );
+
+      const bedTypeMatch =
+        filters.bedTypes.length === 0 ||
+        (hotel.rooms || []).some((room) => {
+          if (!room.bedTypes) return false;
+          return filters.bedTypes.some((selected) =>
+            room.bedTypes.toLowerCase().includes(selected.toLowerCase())
+          );
+        });
 
       return priceMatch && starMatch && amenityMatch && propertyMatch && roomTypeMatch && bedTypeMatch;
     });
 
     return filtered.sort((a, b) => {
-      const priceA = a.rooms && a.rooms.length > 0 ? Math.min(...a.rooms.map((r) => r.finalPrice || r.price || 0)) : 0;
-      const priceB = b.rooms && b.rooms.length > 0 ? Math.min(...b.rooms.map((r) => r.finalPrice || r.price || 0)) : 0;
+      const priceA = getHotelMinEffectivePrice(a, checkInDate, checkOutDate);
+      const priceB = getHotelMinEffectivePrice(b, checkInDate, checkOutDate);
       return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
     });
-  }, [filters, hotels, sortOrder]);
+  }, [filters, hotels, sortOrder, checkInDate, checkOutDate]);
 
   const handleClearFilters = () => {
     dispatch(resetFilters());
   };
 
   const handleSearch = () => {
-    if (!searchLocation.trim()) {
-      return;
-    }
+    if (!searchLocation.trim()) return;
 
     const searchData = {
       destination: searchLocation,
@@ -180,26 +240,22 @@ export default function HotelSearchPage() {
       page: 1,
       limit: 20
     };
-    
-    // Update URL
+
     const params = new URLSearchParams();
     if (searchLocation) params.append('destination', searchLocation);
     if (checkInDate) params.append('checkIn', checkInDate);
     if (checkOutDate) params.append('checkOut', checkOutDate);
     if (rooms) params.append('rooms', rooms);
     if (guests) params.append('guests', guests);
-    
+
     navigate(`/hotel-search?${params.toString()}`);
-    
-    // Dispatch search action
     dispatch(searchHotels(searchData));
   };
 
   const handleLocationApply = (newLocation) => {
     setSearchLocation(newLocation);
     setShowSearchModal(false);
-    
-    // Trigger API call with new location
+
     if (newLocation.trim()) {
       const searchData = {
         destination: newLocation,
@@ -210,17 +266,15 @@ export default function HotelSearchPage() {
         page: 1,
         limit: 20
       };
-      
-      // Update URL
+
       const params = new URLSearchParams();
       params.append('destination', newLocation);
       if (checkInDate) params.append('checkIn', checkInDate);
       if (checkOutDate) params.append('checkOut', checkOutDate);
       if (rooms) params.append('rooms', rooms);
       if (guests) params.append('guests', guests);
+
       navigate(`/hotel-search?${params.toString()}`);
-      
-      // Dispatch API call
       dispatch(searchHotels(searchData));
     }
   };
@@ -239,7 +293,7 @@ export default function HotelSearchPage() {
   };
 
   const toggleSortOrder = () => {
-    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
   };
 
   const formatDisplayDate = (dateStr) => {
@@ -250,21 +304,20 @@ export default function HotelSearchPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
-      {/* Modals */}
-      <SearchLocationModal 
+      <SearchLocationModal
         isOpen={showSearchModal}
         onClose={() => setShowSearchModal(false)}
         currentLocation={searchLocation}
         onApply={handleLocationApply}
       />
-      <DatePickerModal 
+      <DatePickerModal
         isOpen={showDatePicker}
         onClose={() => setShowDatePicker(false)}
         checkIn={checkInDate}
         checkOut={checkOutDate}
         onApply={handleDateApply}
       />
-      <GuestSelectorModal 
+      <GuestSelectorModal
         isOpen={showGuestSelector}
         onClose={() => setShowGuestSelector(false)}
         rooms={rooms}
@@ -273,17 +326,13 @@ export default function HotelSearchPage() {
         onApply={handleGuestApply}
       />
 
-      {/* Header */}
       <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-3">
-          {/* Desktop Header */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Large logo on the left side */}
             <div onClick={() => navigate('/')} className="cursor-pointer flex items-center gap-2 mr-4">
               <img src="/logo.png" alt="HappyStay" className="w-36 h-12 object-contain" />
             </div>
 
-            {/* Search controls take remaining space */}
             <div className="flex items-center gap-4 flex-1">
               <button
                 onClick={() => setShowSearchModal(true)}
@@ -299,7 +348,7 @@ export default function HotelSearchPage() {
               >
                 <CalendarIcon size={18} className="text-gray-400" />
                 <span className="text-sm whitespace-nowrap">
-                  {checkInDate && checkOutDate 
+                  {checkInDate && checkOutDate
                     ? `${formatDisplayDate(checkInDate)} - ${formatDisplayDate(checkOutDate)}`
                     : 'Select dates'
                   }
@@ -354,7 +403,6 @@ export default function HotelSearchPage() {
             </div>
           </div>
 
-          {/* Mobile Header */}
           <div className="md:hidden">
             <div className="flex items-center justify-between mb-3">
               <div onClick={() => navigate('/')} className="cursor-pointer flex items-center gap-2">
@@ -373,10 +421,9 @@ export default function HotelSearchPage() {
                 </button>
               </div>
             </div>
-            
-            {/* Location and Dates Row */}
+
             <div className="space-y-1">
-              <button 
+              <button
                 onClick={() => setShowSearchModal(true)}
                 className="flex items-center gap-2 text-gray-700 w-full text-left"
               >
@@ -384,17 +431,17 @@ export default function HotelSearchPage() {
                 <span className="font-medium text-sm">{searchLocation || 'Select Location'}</span>
               </button>
               <div className="flex items-center gap-3 text-gray-500 text-xs">
-                <button 
+                <button
                   onClick={() => setShowDatePicker(true)}
                   className="hover:text-blue-600"
                 >
-                  {checkInDate && checkOutDate 
+                  {checkInDate && checkOutDate
                     ? `${formatDisplayDate(checkInDate)} - ${formatDisplayDate(checkOutDate)}`
                     : 'Select Dates'
                   }
                 </button>
                 <span>•</span>
-                <button 
+                <button
                   onClick={() => setShowGuestSelector(true)}
                   className="hover:text-blue-600"
                 >
@@ -403,7 +450,6 @@ export default function HotelSearchPage() {
               </div>
             </div>
 
-            {/* Profile Menu Mobile */}
             {showProfileMenu && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setShowProfileMenu(false)} />
@@ -438,12 +484,8 @@ export default function HotelSearchPage() {
             onClear={handleClearFilters}
           />
 
-          {/* Main Content */}
           <section className="flex-1">
             <div className="flex items-center justify-between mb-4">
-              {/* <h2 className="text-xl font-bold">
-                {loading ? "Searching..." : `${filteredHotels.length} Hotels Found`}
-              </h2> */}
               <button
                 onClick={toggleSortOrder}
                 className="hidden md:flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-sm font-medium"
@@ -487,7 +529,6 @@ export default function HotelSearchPage() {
         </div>
       </main>
 
-      {/* Mobile Bottom Filter Bar */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 z-30">
         <div className="flex items-center justify-between gap-2">
           <button
@@ -497,7 +538,7 @@ export default function HotelSearchPage() {
             <SlidersHorizontal size={18} />
             <span className="text-sm font-medium">Filters ({activeFiltersCount})</span>
           </button>
-          <button 
+          <button
             onClick={toggleSortOrder}
             className="flex-1 flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
@@ -507,7 +548,6 @@ export default function HotelSearchPage() {
         </div>
       </div>
 
-      {/* Mobile Filter Modal */}
       {isMobileFilterOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
           <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-2xl max-h-[80vh] overflow-y-auto">
@@ -529,3 +569,5 @@ export default function HotelSearchPage() {
     </div>
   );
 }
+
+export { getRoomEffectivePrice, toLocalDateTime, isBookingInsideRange, getRoomBasePrice };

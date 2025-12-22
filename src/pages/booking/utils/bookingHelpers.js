@@ -128,13 +128,12 @@ export const dateRangesOverlap = (startA, endA, startB, endB) => {
 export const pickMonthlyOverride = (monthlyData, roomId, checkInIso, checkOutIso) => {
   if (!Array.isArray(monthlyData) || !monthlyData.length) return null;
   if (!roomId || !checkInIso || !checkOutIso) return null;
-  return (
-    monthlyData.find((entry) => {
-      const entryRoomId = entry?.roomId || entry?._id || entry?.room?._id;
-      if (!entryRoomId || String(entryRoomId) !== String(roomId)) return false;
-      return dateRangesOverlap(checkInIso, checkOutIso, entry?.startDate, entry?.endDate);
-    }) || null
-  );
+  
+  return monthlyData.find((entry) => {
+    const entryRoomId = entry?.roomId || entry?._id || entry?.room?._id;
+    if (!entryRoomId || String(entryRoomId) !== String(roomId)) return false;
+    return dateRangesOverlap(checkInIso, checkOutIso, entry?.startDate, entry?.endDate);
+  }) || null;
 };
 
 export const badgeForPolicy = (val) => {
