@@ -143,7 +143,7 @@ export default function SearchForm() {
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-blue-600 transition-colors">
                <MapPinIcon />
             </div>
-            <input type="text" name="search" value={data.search} onChange={handleChange} placeholder="Where to?" className="w-full h-12 pl-12 pr-10 bg-transparent text-sm font-bold text-gray-800 placeholder-gray-400 border-none focus:ring-0 outline-none" />
+            <input type="text" name="search" value={data.search} onChange={handleChange} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} placeholder="Where to?" className="w-full h-12 pl-12 pr-10 bg-transparent text-sm font-bold text-gray-800 placeholder-gray-400 border-none focus:ring-0 outline-none" />
       <button disabled={fetchingLocation} onClick={() => getLocation(true)} className="absolute inset-y-0 right-2 px-2 flex items-center text-gray-300 hover:text-blue-600 transition-colors">
                {fetchingLocation ? <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div> : <MyLocationIcon />}
             </button>

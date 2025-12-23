@@ -45,19 +45,23 @@ import CouponPage from './pages/Profile/coupons';
 
 // Styles
 
-// Layout wrapper component to conditionally show Header/Footer
+// Layout wrapper component to conditionally show Header/Footer/BottomBar
 function Layout({ children }) {
   const location = useLocation();
-  const hideLayout = location.pathname === '/login' || location.pathname === '/register';
+  const pathname = location.pathname || "";
+  const hideLayout = pathname === "/login" || pathname === "/register";
+
+  // Hide bottom bar on specific pages: Book Now and Tour Booking pages
+  const hideBottomBar = hideLayout || pathname === "/book-now" || pathname.startsWith("/travellers/booking");
 
   return (
     <>
       {!hideLayout && <Header />}
-      <main className={!hideLayout ? 'min-h-screen' : ''}>
+      <main className={!hideLayout ? "min-h-screen" : ""}>
         {children}
       </main>
       {!hideLayout && <Footer />}
-      {!hideLayout && <BottomBar />}
+      {!hideBottomBar && <BottomBar />}
     </>
   );
 }

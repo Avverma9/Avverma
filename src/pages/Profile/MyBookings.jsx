@@ -1,382 +1,322 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { fetchFilteredBooking } from "../../redux/slices/bookingSlice";
-import { formatDateWithOrdinal } from "../../utils/_dateFunctions";
 import baseURL from "../../utils/baseURL";
 import { useLoader } from "../../utils/loader";
 import NotFoundPage from "../../utils/Not-found";
-import { Unauthorized, userId } from "../../utils/Unauthorized";
+import { Unauthorized } from "../../utils/Unauthorized";
 import { useToast } from "../../utils/toast";
-import { IoCalendarOutline, IoCloseSharp, IoReceiptOutline } from "react-icons/io5";
-import { FiFilter } from "react-icons/fi";
+import { IoCloseSharp, IoPrintOutline, IoReceiptOutline } from "react-icons/io5";
+import { FiFilter, FiMapPin } from "react-icons/fi";
 import { useMediaQuery } from "@mui/material";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { RiMoneyRupeeCircleFill } from "react-icons/ri";
 
-const ModalShell = ({ open, onClose, children, maxWidthClass = "max-w-3xl" }) => {
+// --- 1. UTILITIES ---
+
+// Print Function (Opens a new window with Tailwind CDN for styling)
+const printSpecificContent = (htmlContent) => {
+  if (!htmlContent) return;
+  const printWindow = window.open('', '_blank', 'width=900,height=800');
+  if (printWindow) {
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Print Ticket</title>
+          <script src="https://cdn.tailwindcss.com"></script>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+            body { font-family: 'Inter', sans-serif; background: #fff; padding: 20px; display: flex; justify-content: center; }
+            .print-container { max-width: 400px; width: 100%; border: 2px solid #0f172a; padding: 20px; }
+          </style>
+        </head>
+        <body>
+          ${htmlContent}
+          <script>
+            setTimeout(() => { window.print(); window.close(); }, 800);
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  }
+};
+
+// Modal Shell
+const ModalShell = ({ open, onClose, children }) => {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center px-2 sm:px-4">
-      <div className="absolute inset-0 bg-black/50 transition-opacity duration-500" onClick={onClose} />
-      <div className={`relative bg-white rounded-xl shadow-2xl w-full ${maxWidthClass} mx-auto overflow-hidden animate-fadeIn`}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-md bg-white shadow-2xl rounded-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {children}
       </div>
     </div>
   );
 };
 
-const PriceRow = ({ label, value, isTotal }) => (
-  <div className="flex justify-between items-center py-2 border-b last:border-b-0">
-    <div className={`text-sm font-semibold ${isTotal ? 'text-gray-900' : 'text-gray-600'}`}>{label}</div>
-    <div className={`text-sm font-bold ${isTotal ? 'text-primary-600' : 'text-gray-800'}`}>₹{value}</div>
-  </div>
-);
-
-const BookingCard = ({ bookingDetail, onShowDetails, onReview }) => (
-  <article className="w-full max-w-3xl bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-transform hover:scale-[1.01]">
-    <header className="bg-red-600 text-white px-4 py-3 flex items-center justify-between">
-      <h3 className="text-lg font-semibold">My Bookings</h3>
-      <time className="text-sm">{moment(bookingDetail?.createdAt).format("MMMM DD, YYYY")}</time>
-    </header>
-    <div className="p-4">
-      <h4 className="text-xl font-bold text-gray-900 mb-2">{bookingDetail?.hotelDetails?.hotelName}</h4>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-center mb-2">
-        <div className="flex items-center gap-2">
-          <IoCalendarOutline className="text-gray-500 text-xl" />
-          <div>
-            <span className="text-sm font-semibold">{formatDateWithOrdinal(bookingDetail.checkInDate)} <span className="text-gray-400">-</span> {formatDateWithOrdinal(bookingDetail.checkOutDate)}</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 justify-start md:justify-end">
-          <IoReceiptOutline className="text-gray-500 text-xl" />
-          <span className="text-sm text-gray-500 mr-1">Booking ID:</span>
-          <span className="font-semibold">{bookingDetail.bookingId}</span>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4 mb-2">
-        <div>
-          <div className="text-xs uppercase text-gray-500">Guests</div>
-          <div className="font-semibold">{bookingDetail.guests} {bookingDetail.guests > 1 ? 'Adults' : 'Adult'}</div>
-        </div>
-        <div>
-          <div className="text-xs uppercase text-gray-500">Rooms</div>
-          <div className="font-semibold">{bookingDetail.numRooms}</div>
-        </div>
-      </div>
-      <div className="flex items-center justify-between">
-        <span className="text-2xl font-extrabold text-emerald-600 flex items-center gap-1">
-          <RiMoneyRupeeCircleFill className="text-xl" /> <span>{bookingDetail.price}</span>
-        </span>
-        <div className="flex gap-2">
-          <button onClick={() => onShowDetails(bookingDetail)} className="px-3 py-2 border rounded-md text-sm hover:bg-gray-50 focus-ring">View Details</button>
-          <button onClick={() => onReview(bookingDetail?.hotelDetails?.hotelId)} className="px-3 py-2 bg-primary-600 text-white rounded-md text-sm hover:opacity-95">Review</button>
-        </div>
-      </div>
-    </div>
-  </article>
-);
+// --- 2. MAIN COMPONENT ---
 
 export default function MyBookings() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();
   const toast = useToast();
-  const [bookingDetails, setBookingDetails] = useState([]);
+  
+  // State
+  const [htmlContent, setHtmlContent] = useState("");
+  const [bookings, setBookings] = useState([]);
+  const [paginationInfo, setPaginationInfo] = useState({ currentPage: 1, totalPages: 1 });
+  
+  // Modal State
   const [modalData, setModalData] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
-  const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(0);
+  
+  // Filters
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState("Confirmed");
+  
+  // Redux & Globals
   const filteredBookings = useSelector((state) => state.booking.filteredBookings);
+  const userIdLocal = localStorage.getItem("rsUserId");
   const isSmallScreen = useMediaQuery('(max-width:768px)');
-  const bookingsPerPage = isSmallScreen ? 2 : 3;
+  const bookingsPerPage = isSmallScreen ? 5 : 10;
 
+  // --- 3. WINDOW HANDLERS (Bridge Backend to Frontend) ---
+  useEffect(() => {
+    window.handlePageChange = (page) => {
+      setCurrentPage(page);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.handleShowDetails = (id) => {
+      const booking = bookings.find(b => b.bookingId === id || b._id === id);
+      if (booking) {
+        setModalData(booking);
+        setShowModal(true);
+      }
+    };
+
+    window.handlePrintTicket = (contentHtml) => {
+      printSpecificContent(contentHtml);
+    };
+
+    return () => {
+      delete window.handlePageChange;
+      delete window.handleShowDetails;
+      delete window.handlePrintTicket;
+    };
+  }, [bookings]);
+
+  // --- 4. DATA FETCHING ---
   useEffect(() => {
     const fetchData = async () => {
+      if (!userIdLocal) return;
       try {
         showLoader();
-        const userIdLocal = localStorage.getItem("rsUserId");
-        if (!userIdLocal) throw new Error("You are not logged in!");
-        setBookingDetails([]);
-        dispatch(fetchFilteredBooking({ selectedStatus, userId: userIdLocal }));
+        await dispatch(fetchFilteredBooking({ 
+          selectedStatus, 
+          userId: userIdLocal, 
+          page: currentPage, 
+          limit: bookingsPerPage 
+        }));
       } catch (error) {
-        toast.error(error.message);
+        toast.error("Failed to load bookings");
       } finally {
         hideLoader();
       }
     };
     fetchData();
-  }, [dispatch, selectedStatus]);
+  }, [dispatch, selectedStatus, currentPage, userIdLocal]);
 
+  // Sync Redux Data
   useEffect(() => {
-    if (Array.isArray(filteredBookings)) setBookingDetails(filteredBookings);
-    else if (filteredBookings && Array.isArray(filteredBookings.data)) setBookingDetails(filteredBookings.data);
-    else setBookingDetails([]);
+    if (filteredBookings) {
+      setHtmlContent(filteredBookings.html || "");
+      setBookings(Array.isArray(filteredBookings.data) ? filteredBookings.data : []);
+      if (filteredBookings.pagination) setPaginationInfo(filteredBookings.pagination);
+    }
   }, [filteredBookings]);
 
-  const handleShowDetails = (value) => { setModalData(value); setShowModal(true); };
-  const handleCloseDetails = () => { setModalData(null); setShowModal(false); };
-  const handleReview = (hotelId) => {
-    localStorage.setItem("hotelId_review", hotelId);
-    setShowReviewForm(true);
-  };
-  const handleCloseReview = () => { setComment(""); setRating(0); setShowReviewForm(false); };
-
-  const postReview = async () => {
-    const userIdLocal = localStorage.getItem("rsUserId");
-    const hotelId = localStorage.getItem("hotelId_review");
-    try {
-      const response = await axios.post(`${baseURL}/reviews/${userIdLocal}/${hotelId}`, { comment, rating });
-      if (response.status === 201) {
-        setComment(""); setRating(0); toast.info("Your review has been added"); setShowReviewForm(false);
+  // --- 5. SMART PRINT HANDLER ---
+  const handlePrintFromModal = () => {
+    // Try to find the pre-generated HTML from the hidden DOM list first (Best Quality)
+    if (modalData) {
+      const hiddenElement = document.getElementById(`print-view-${modalData.bookingId}`);
+      if (hiddenElement) {
+        printSpecificContent(hiddenElement.innerHTML);
+      } else {
+        // Fallback: Print the current window
+        window.print();
       }
-    } catch (error) {
-      toast.info(error.response?.data?.message || "Error posting review");
     }
   };
 
-  const indexOfLastBooking = currentPage * bookingsPerPage;
-  const indexOfFirstBooking = indexOfLastBooking - bookingsPerPage;
-  const currentBookings = bookingDetails.slice(indexOfFirstBooking, indexOfLastBooking);
-  const totalPages = Math.max(1, Math.ceil(bookingDetails.length / bookingsPerPage));
+  // --- 6. RENDER HELPERS (Calculations) ---
+  const calculateCosts = (data) => {
+    if(!data) return { roomTotal: 0, foodTotal: 0, tax: 0, grandTotal: 0 };
+    
+    // Safety checks for numbers
+    const finalPrice = Number(data.price) || 0;
+    const foodTotal = (data.foodDetails || []).reduce((acc, f) => acc + ((Number(f.price)||0) * (Number(f.quantity)||1)), 0);
+    
+    // Reverse calculation assuming finalPrice includes 12% GST
+    const baseAmount = Math.round(finalPrice / 1.12); 
+    const tax = finalPrice - baseAmount;
+    const roomTotal = baseAmount - foodTotal;
 
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    return { roomTotal, foodTotal, tax, grandTotal: finalPrice };
   };
 
-  const renderPagination = () => {
-    if (bookingDetails.length === 0) return null;
+  if (!userIdLocal) return <Unauthorized />;
 
-    return (<div className="flex justify-center mt-8 min-h-[48px]">
-      <nav className="flex items-center gap-1 px-3 py-2 bg-white/80 rounded-xl border shadow-lg backdrop-blur-xl w-full max-w-md">
-        <button
-          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-          className="rounded-full text-gray-700 p-2 hover:bg-gray-100 transition disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none"
-        >
-          <ChevronLeftIcon className="h-5 w-5" />
-        </button>
-        {currentPage > 3 && (
-          <>
-            <button
-              onClick={() => handlePageChange(1)}
-              className="rounded-lg px-2 font-semibold text-sm text-gray-600 hover:bg-gray-100"
-            >
-              1
-            </button>
-            <span className="px-1 text-gray-500">...</span>
-          </>
-        )}
-        {Array.from({ length: totalPages }, (_, i) => i + 1)
-          .filter(page =>
-            page === 1 ||
-            page === totalPages ||
-            Math.abs(page - currentPage) <= 2
-          )
-          .map(number => (
-            <button
-              key={number}
-              onClick={() => handlePageChange(number)}
-              className={`rounded-lg px-3 py-1.5 mx-1 font-semibold text-sm transition-colors duration-150
-                ${currentPage === number
-                  ? 'bg-primary-600 text-black font-extrabold border border-black shadow-lg scale-110'
-                  : 'text-gray-700 hover:bg-gray-100'}`}
-            >
-              {number}
-            </button>
-          ))}
-        {currentPage < totalPages - 2 && (
-          <>
-            <span className="px-1 text-gray-500">...</span>
-            <button
-              onClick={() => handlePageChange(totalPages)}
-              className="rounded-lg px-2 font-semibold text-sm text-gray-600 hover:bg-gray-100"
-            >
-              {totalPages}
-            </button>
-          </>
-        )}
-        <button
-          onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-          disabled={currentPage === totalPages}
-          className="rounded-full text-gray-700 p-2 hover:bg-gray-100 transition disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none"
-        >
-          <ChevronRightIcon className="h-5 w-5" />
-        </button>
-      </nav>
-    </div>);
-  };
-
-  if (!userId) return <Unauthorized />;
+  const costs = calculateCosts(modalData);
 
   return (
-    <main className="p-2 sm:p-4 md:p-8">
-      <section className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-end mb-3 sm:mb-6">
-          <div className="w-full md:w-auto flex items-center gap-3">
-            <div className="relative w-full max-w-xs">
-              <select
-                id="status"
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="appearance-none w-full bg-white border border-gray-200 rounded-lg py-2 px-3 pr-8 text-sm font-medium shadow-sm"
-              >
-                <option>Confirmed</option>
-                <option>Pending</option>
-                <option>Failed</option>
-                <option>Checked-in</option>
-                <option>Checked-out</option>
-                <option>Cancelled</option>
-                <option>No-show</option>
-              </select>
-              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><FiFilter /></span>
-            </div>
+    <main className="p-2 md:p-6 bg-gray-50 min-h-screen font-sans">
+      <div className="max-w-4xl mx-auto">
+        
+        {/* Header & Filter */}
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+          <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <IoReceiptOutline className="text-slate-600" /> My Bookings
+          </h1>
+          <div className="relative w-full sm:w-48">
+            <select
+              value={selectedStatus}
+              onChange={(e) => { setSelectedStatus(e.target.value); setCurrentPage(1); }}
+              className="w-full pl-3 pr-10 py-2 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 bg-slate-50 focus:ring-2 focus:ring-slate-900 outline-none appearance-none"
+            >
+              {['Confirmed', 'Pending', 'Checked-in', 'Checked-out', 'Cancelled'].map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <FiFilter className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
-         
         </div>
-        <div className="grid grid-cols-1 gap-4 min-h-[50vh]">
-          {currentBookings.length > 0 ? (
-            currentBookings.map((booking) => (
-              <div key={booking.bookingId} className="flex justify-center">
-                <BookingCard bookingDetail={booking} onShowDetails={handleShowDetails} onReview={handleReview} />
-              </div>
-            ))
+
+        {/* --- BOOKING LIST (Backend HTML) --- */}
+        <div className="min-h-[400px]">
+          {htmlContent ? (
+            <div className="animate-fadeIn" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           ) : (
-            <div className="text-center">
-              <NotFoundPage />
-            </div>
+            <div className="text-center py-10"><NotFoundPage /></div>
           )}
         </div>
-        {renderPagination()}
-      </section>
-      <ModalShell open={showModal} onClose={handleCloseDetails} maxWidthClass="max-w-4xl">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-primary-600">Booking Details</h2>
-            <div className="flex items-center gap-2">
-              <button onClick={() => window.print()} className="px-3 py-2 border rounded-md text-sm">Print</button>
-              <button onClick={handleCloseDetails} className="p-2 rounded-md hover:bg-gray-100"><IoCloseSharp /></button>
+      </div>
+
+      {/* --- TICKET MODAL (Receipt Style) --- */}
+      <ModalShell open={showModal} onClose={() => setShowModal(false)}>
+        {modalData && (
+          <div className="flex flex-col h-full bg-white">
+            
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-slate-50">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">Booking Details</h2>
+              <button onClick={() => setShowModal(false)} className="bg-white p-1.5 rounded-full shadow-sm border hover:bg-red-50 hover:text-red-500 transition-all">
+                <IoCloseSharp size={18} />
+              </button>
             </div>
-          </div>
-          <div className="max-h-[65vh] overflow-y-auto pr-2">
-            <section className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">Booking Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div>
-                  <div className="text-xs text-gray-500">Booking ID</div>
-                  <div className="font-semibold">{modalData?.bookingId}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500">Booked By</div>
-                  <div className="font-semibold">{modalData?.user?.name}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500">Booking Date</div>
-                  <div className="font-semibold">{moment(modalData?.createdAt).format('Do MMM YYYY')}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500">Status</div>
-                  <div className="font-semibold">{modalData?.bookingStatus}</div>
-                </div>
-              </div>
-            </section>
-            <hr className="my-4" />
-            <section className="mb-6">
-              <h3 className="text-lg font-semibold mb-3">Hotel Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <div className="text-xs text-gray-500">Hotel</div>
-                  <div className="font-semibold">{modalData?.hotelDetails?.hotelName}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-gray-500">Location</div>
-                  <div className="font-semibold">{modalData?.destination}</div>
-                </div>
-              </div>
-            </section>
-            <hr className="my-4" />
-            {modalData?.roomDetails?.length > 0 && (
-              <section className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Room Details</h3>
-                <div className="space-y-3">
-                  {modalData.roomDetails.map((room, idx) => (
-                    <div key={idx} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center bg-gray-50 rounded p-3">
-                      <div>
-                        <div className="text-xs text-gray-500">Room Type</div>
-                        <div className="font-semibold">{room?.type}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-500">Bed Type</div>
-                        <div className="font-semibold">{room?.bedTypes}</div>
-                      </div>
-                      <div>
-                        <div className="text-xs text-gray-500">Price</div>
-                        <div className="font-semibold">₹{room?.price}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-            <hr className="my-4" />
-            <section>
-              <h3 className="text-lg font-semibold mb-3">Price Summary</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <PriceRow label="Room Total" value={(((modalData?.roomDetails||[]).reduce((acc, r) => acc + (Number(r.price) || 0), 0) * (Number(modalData?.numRooms) || 1))).toFixed(2)} />
-                  <PriceRow label="Food Total" value={(((modalData?.foodDetails||[]).reduce((acc, f) => acc + (Number(f.price) || 0), 0))).toFixed(2)} />
-                  <PriceRow label={`GST (${modalData?.gstPrice || 0}%)`} value={(((modalData?.roomDetails||[]).reduce((acc, r) => acc + (Number(r.price) || 0), 0) * (Number(modalData?.numRooms) || 1)) * (Number(modalData?.gstPrice)||0)/100).toFixed(2)} />
-                </div>
-                <div className="space-y-2">
-                  <div className="py-2">
-                    <div className="text-sm font-semibold text-gray-600">Discount</div>
-                    <div className="text-sm font-medium">{(Number(modalData?.discountPrice) || 0) > 0 ? `- ₹${modalData?.discountPrice}` : 'No Discount'}</div>
+
+            {/* Receipt Content */}
+            <div className="flex-1 overflow-y-auto p-5 bg-white">
+              <div className="border-2 border-slate-800 p-5 rounded-sm relative">
+                
+                {/* 1. Ticket Header */}
+                <div className="flex justify-between items-start mb-6 border-b border-dashed border-slate-300 pb-4">
+                  <div>
+                    <h3 className="text-xl font-black text-slate-900 leading-tight">{modalData.hotelDetails?.hotelName}</h3>
+                    <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
+                       <FiMapPin className="inline w-3 h-3" /> {modalData.destination}
+                    </p>
                   </div>
-                  {modalData?.isPartialBooking && (
-                    <div className="py-2">
-                      <div className="text-sm font-semibold text-gray-600">Partially Paid</div>
-                      <div className="text-sm font-medium">{(Number(modalData?.partialAmount) || 0).toFixed(2)}</div>
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <div className="bg-gradient-to-r from-white to-gray-50 p-4 rounded-lg border">
-                    <div className="text-sm text-gray-600">Final Total</div>
-                    <div className="text-2xl font-extrabold">₹{modalData?.price || 0}</div>
+                  <div className="text-right">
+                    <span className={`inline-block px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded border ${modalData.bookingStatus === 'Confirmed' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`}>
+                      {modalData.bookingStatus}
+                    </span>
+                    <p className="text-[10px] text-slate-400 mt-1">ID: #{modalData.bookingId.slice(-6).toUpperCase()}</p>
                   </div>
                 </div>
-              </div>
-            </section>
-          </div>
-        </div>
-  </ModalShell>
-  <ModalShell open={showReviewForm} onClose={handleCloseReview} maxWidthClass="max-w-xl">
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-primary-600">Write a Review</h3>
-            <button onClick={handleCloseReview} className="p-2 rounded-md hover:bg-gray-100"><IoCloseSharp /></button>
-          </div>
-          <div className="space-y-3">
-            <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={4} className="w-full border rounded-md p-3 text-sm" placeholder="Write your comment here..." />
-            <div className="flex items-center gap-3">
-              <label className="text-sm font-medium">Rating:</label>
-              <div className="flex gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <button key={i} onClick={() => setRating(i + 1)} className={`text-2xl ${rating >= i + 1 ? 'text-yellow-400' : 'text-gray-300'}`} aria-label={`Star ${i + 1}`}>★</button>
-                ))}
+
+                {/* 2. Dates Timeline */}
+                <div className="flex items-center justify-between bg-slate-50 p-3 rounded border border-slate-100 mb-5">
+                   <div className="text-left">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Check-in</p>
+                      <p className="text-sm font-bold text-slate-900">{modalData.checkInDate}</p>
+                   </div>
+                   <div className="flex-1 px-4 flex flex-col items-center">
+                      <div className="w-full h-px bg-slate-300"></div>
+                      <span className="text-[9px] bg-white px-2 -mt-2 text-slate-400 font-medium">1 Night</span>
+                   </div>
+                   <div className="text-right">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase">Check-out</p>
+                      <p className="text-sm font-bold text-slate-900">{modalData.checkOutDate}</p>
+                   </div>
+                </div>
+
+                {/* 3. Room & Guests */}
+                <div className="grid grid-cols-2 gap-4 text-xs mb-5">
+                   <div>
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Guest Name</p>
+                      <p className="font-semibold text-slate-800">{modalData.user?.name || "Guest"}</p>
+                   </div>
+                   <div className="text-right">
+                      <p className="text-[10px] uppercase font-bold text-slate-400">Room Type</p>
+                      <p className="font-semibold text-slate-800">
+                        {modalData.roomDetails?.[0]?.type || "Standard"}
+                        <span className="text-slate-400 font-normal"> ({modalData.guests} Guests)</span>
+                      </p>
+                   </div>
+                </div>
+
+                {/* 4. Food Orders (Conditional) */}
+                {modalData.foodDetails?.length > 0 && (
+                   <div className="mb-5 pt-3 border-t border-dashed border-slate-200">
+                      <p className="text-[10px] uppercase font-bold text-orange-500 mb-2">Food Orders</p>
+                      {modalData.foodDetails.map((f, i) => (
+                        <div key={i} className="flex justify-between text-xs text-slate-600 mb-1">
+                           <span>{f.name} <span className="text-slate-400">x{f.quantity}</span></span>
+                           <span className="font-medium">₹{f.price * f.quantity}</span>
+                        </div>
+                      ))}
+                   </div>
+                )}
+
+                {/* 5. Payment Breakdown */}
+                <div className="bg-slate-50 p-3 rounded border border-slate-100 space-y-2">
+                   <div className="flex justify-between text-xs text-slate-500">
+                      <span>Room Base Price</span>
+                      <span>₹{costs.roomTotal}</span>
+                   </div>
+                   {costs.foodTotal > 0 && (
+                     <div className="flex justify-between text-xs text-slate-500">
+                        <span>Food & Beverages</span>
+                        <span>₹{costs.foodTotal}</span>
+                     </div>
+                   )}
+                   <div className="flex justify-between text-xs text-slate-500">
+                      <span>GST & Taxes (12%)</span>
+                      <span>₹{costs.tax}</span>
+                   </div>
+                   <div className="flex justify-between items-center pt-2 border-t border-slate-200 mt-1">
+                      <span className="text-sm font-bold text-slate-900">Total Paid</span>
+                      <span className="text-lg font-black text-slate-900">₹{costs.grandTotal}</span>
+                   </div>
+                </div>
+
               </div>
             </div>
-            <button onClick={postReview} className="w-full py-2 bg-primary-600 text-white rounded-md">Send Review</button>
+
+            {/* Modal Footer (Action Buttons) */}
+            <div className="p-4 bg-white border-t border-slate-100 flex gap-3">
+              <button 
+                onClick={handlePrintFromModal}
+                className="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-3 rounded-lg font-bold text-sm shadow-lg transition-all flex justify-center items-center gap-2 active:scale-95"
+              >
+                <IoPrintOutline size={18} /> Print Ticket
+              </button>
+            </div>
+
           </div>
-        </div>
+        )}
       </ModalShell>
+
     </main>
   );
 }

@@ -595,7 +595,7 @@ export default function HotelCard({ hotel = {}, gstData, tripMeta = null }) {
                 {priceDetails.roomType && (
                   <p className="text-[10px] text-gray-200 mt-0.5 line-clamp-1">{priceDetails.roomType}</p>
                 )}
-                <p className="text-[10px] text-gray-300">per night</p>
+                <p className="text-[10px] text-gray-300">Including GST</p>
               </div>
             </div>
 

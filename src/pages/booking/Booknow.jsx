@@ -68,6 +68,7 @@ import {
   fetchBookingData,
   fetchMonthlyData,
 } from "@/redux/slices/bookingSlice";
+import { ReviewSection } from "./sections/Review";
 
 // ============================================================
 // MAIN COMPONENT
@@ -493,21 +494,18 @@ export default function BookNowPage() {
     if (offlineBookingLoading) return;
     setOfflineBookingLoading(true);
     const result = await handleOfflineBooking?.();
-    console.log('🎉 Booking Result:', result);
+    console.log("🎉 Booking Result:", result);
     if (result?.success) {
       // Extract the actual booking data from nested response
       const actualData = result.data?.data || result.data;
-      console.log('📦 Actual Booking Data to Modal:', actualData);
+      console.log("📦 Actual Booking Data to Modal:", actualData);
       setBookingResponseData(actualData);
       setShowBookingSheet(false);
       // Show success modal
       setShowSuccessModal(true);
     }
     setOfflineBookingLoading(false);
-  }, [
-    handleOfflineBooking,
-    offlineBookingLoading,
-  ]);
+  }, [handleOfflineBooking, offlineBookingLoading]);
 
   // --- Policy Highlights ---
   const policy0 = hotel?.policies?.[0] || {};
@@ -547,19 +545,7 @@ export default function BookNowPage() {
     return direct > 0 ? direct : reviewsArray.length;
   }, [hotel, reviewsArray.length]);
 
-  const safeRating = useMemo(() => {
-    if (hotelRating !== null && hotelRating !== undefined)
-      return Math.max(0, Math.min(5, hotelRating));
-    const fromReviews = reviewsArray
-      .map((r) => parseNumber(r?.rating ?? r?.stars ?? 0, 0))
-      .filter((x) => x > 0 && x <= 5);
-    if (!fromReviews.length) return null;
-    return (
-      Math.round(
-        (fromReviews.reduce((a, b) => a + b, 0) / fromReviews.length) * 10
-      ) / 10
-    );
-  }, [hotelRating, reviewsArray]);
+
 
   // --- Helpers ---
   const formatDateShort = (isoDate) => {
@@ -660,7 +646,7 @@ export default function BookNowPage() {
                   <img
                     src={galleryImages[0]}
                     alt={hotelName}
-                    className="w-full h-[230px] sm:h-[320px] object-cover"
+                    className="w-full h-57.5 sm:h-80 object-cover"
                   />
                 </button>
               </div>
@@ -913,68 +899,18 @@ export default function BookNowPage() {
             </SectionCard>
 
             {/* Reviews */}
-            <SectionCard
-              title="Reviews"
-              icon={<Star size={20} className="text-yellow-500" />}
-            >
-              <div className="rounded-2xl border border-gray-100 bg-white p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-sm font-bold text-gray-900">
-                      Overall
-                    </div>
-                    <div className="mt-1 flex items-center gap-2">
-                      <span className="text-2xl font-extrabold text-gray-900">
-                        {safeRating || "N/A"}
-                      </span>
-                      {safeRating && <Stars value={safeRating} />}
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">
-                      {reviewCount
-                        ? `${reviewCount} review${reviewCount > 1 ? "s" : ""}`
-                        : "No reviews found"}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {reviewsArray.length > 0 && (
-                <div className="mt-4 space-y-3">
-                  {reviewsArray.slice(0, 3).map((r, i) => {
-                    const name = r?.name || r?.userName || "Guest";
-                    const rating = parseNumber(r?.rating ?? r?.stars ?? 0, 0);
-                    const text = r?.comment || r?.review || r?.message || "";
-                    return (
-                      <div
-                        key={i}
-                        className="rounded-2xl border border-gray-100 bg-white p-4"
-                      >
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="font-bold text-gray-900 text-sm truncate">
-                            {name}
-                          </div>
-                          {rating > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold">
-                              <Star size={12} fill="currentColor" />
-                              {rating}
-                            </span>
-                          )}
-                        </div>
-                        {text && (
-                          <p className="mt-2 text-sm text-gray-700">{text}</p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </SectionCard>
+           <ReviewSection
+             reviewsArray={reviewsArray}
+             reviewCount={reviewCount}
+             hotelRating={hotelRating}
+           />
           </div>
 
           {/* Right Column - Desktop Booking Panel */}
           <div className="lg:col-span-1">
             <div className="lg:sticky lg:top-24 space-y-4">
               <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-visible relative z-40">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white rounded-t-3xl">
+                <div className="bg-linear-to-r from-blue-600 to-blue-700 p-4 text-white rounded-t-3xl">
                   <h3 className="font-bold text-lg">Your Stay</h3>
                   <p className="text-xs text-blue-100">
                     {nights} Night{nights > 1 ? "s" : ""} at {hotelName}
@@ -993,14 +929,15 @@ export default function BookNowPage() {
                       <div className="flex items-center gap-2 text-sm font-bold text-gray-800 mt-1">
                         <CalendarDays size={16} className="text-blue-500" />
                         <span>
-                          {formatDateShort(checkInDate)} - {formatDateShort(checkOutDate)}
+                          {formatDateShort(checkInDate)} -{" "}
+                          {formatDateShort(checkOutDate)}
                         </span>
                       </div>
                     </button>
                     <div className="relative" ref={roomsPopupRef}>
                       <button
                         onClick={() => setShowRoomsPopup(!showRoomsPopup)}
-                        className="h-full flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200 min-w-[120px]"
+                        className="h-full flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200 min-w-30"
                       >
                         <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
                           Rooms
@@ -1028,14 +965,18 @@ export default function BookNowPage() {
                   <InfoRows
                     rows={[
                       {
-                        label: `Room Price (${nights} night${nights > 1 ? "s" : ""})`,
+                        label: `Room Price (${nights} night${
+                          nights > 1 ? "s" : ""
+                        })`,
                         value: `₹${formatCurrency(priceSummary.roomSubtotal)}`,
                       },
                       ...(priceSummary.addonsTotal > 0
                         ? [
                             {
                               label: "Meals & Addons",
-                              value: `₹${formatCurrency(priceSummary.addonsTotal)}`,
+                              value: `₹${formatCurrency(
+                                priceSummary.addonsTotal
+                              )}`,
                             },
                           ]
                         : []),
@@ -1047,7 +988,9 @@ export default function BookNowPage() {
                         ? [
                             {
                               label: "Total Savings",
-                              value: `- ₹${formatCurrency(priceSummary.discount)}`,
+                              value: `- ₹${formatCurrency(
+                                priceSummary.discount
+                              )}`,
                               valueClass: "text-emerald-700",
                             },
                           ]
@@ -1057,7 +1000,9 @@ export default function BookNowPage() {
 
                   {/* Total */}
                   <div className="bg-gray-50 p-4 rounded-2xl flex justify-between items-center border border-gray-100">
-                    <span className="font-bold text-gray-900">Total Payable</span>
+                    <span className="font-bold text-gray-900">
+                      Total Payable
+                    </span>
                     <span className="font-bold text-xl text-blue-600">
                       ₹{formatCurrency(priceSummary.netPay)}
                     </span>
@@ -1074,7 +1019,9 @@ export default function BookNowPage() {
                         type="text"
                         placeholder="Have a coupon?"
                         value={couponCode}
-                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        onChange={(e) =>
+                          setCouponCode(e.target.value.toUpperCase())
+                        }
                         className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
                       />
                     </div>
@@ -1091,7 +1038,8 @@ export default function BookNowPage() {
                   <>
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
                       <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                        <Users size={18} className="text-gray-500" /> Guest Details
+                        <Users size={18} className="text-gray-500" /> Guest
+                        Details
                       </h4>
                       <div className="space-y-3">
                         <input
@@ -1099,7 +1047,10 @@ export default function BookNowPage() {
                           placeholder="Full Name"
                           value={guestDetails.name}
                           onChange={(e) =>
-                            setGuestDetails({ ...guestDetails, name: e.target.value })
+                            setGuestDetails({
+                              ...guestDetails,
+                              name: e.target.value,
+                            })
                           }
                           className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
                         />
@@ -1138,11 +1089,15 @@ export default function BookNowPage() {
                     </div>
                     <button
                       disabled={
-                        !guestFormValid || offlineBookingLoading || priceSummary.netPay <= 0
+                        !guestFormValid ||
+                        offlineBookingLoading ||
+                        priceSummary.netPay <= 0
                       }
                       onClick={triggerOfflineBooking}
-                      className={`w-full py-4 bg-gradient-to-r ${
-                        roomsCount > 3 ? "from-orange-500 to-orange-600" : "from-blue-600 to-blue-700"
+                      className={`w-full py-4 bg-linear-to-r ${
+                        roomsCount > 3
+                          ? "from-orange-500 to-orange-600"
+                          : "from-blue-600 to-blue-700"
                       } text-white font-bold text-lg rounded-2xl shadow-lg disabled:opacity-70 flex items-center justify-center gap-3`}
                     >
                       {offlineBookingLoading ? (
@@ -1150,7 +1105,9 @@ export default function BookNowPage() {
                       ) : (
                         <>
                           <span>
-                            {roomsCount > 3 ? "Request Group Booking" : "Book Now & Pay at Hotel"}
+                            {roomsCount > 3
+                              ? "Request Group Booking"
+                              : "Book Now & Pay at Hotel"}
                           </span>
                           <ChevronRight size={20} />
                         </>
@@ -1174,9 +1131,13 @@ export default function BookNowPage() {
                         />
                         <div>
                           <h4 className="font-bold">
-                            {bookingStatus.status === "Pending" ? "Request Received" : "Booking Confirmed!"}
+                            {bookingStatus.status === "Pending"
+                              ? "Request Received"
+                              : "Booking Confirmed!"}
                           </h4>
-                          <p className="text-sm mt-1">Reference: {bookingStatus.reference}</p>
+                          <p className="text-sm mt-1">
+                            Reference: {bookingStatus.reference}
+                          </p>
                         </div>
                       </div>
                     )}
@@ -1214,7 +1175,7 @@ export default function BookNowPage() {
 
       {/* Mobile Booking Sheet */}
       {showBookingSheet && (
-        <div className="fixed inset-0 z-[140] bg-black/40 backdrop-blur-[2px]">
+  <div className="fixed inset-0 z-140 bg-black/40 backdrop-blur-[2px]">
           <div className="absolute inset-x-0 bottom-0 bg-white rounded-t-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
             {/* Close Button - Top Right */}
             <button
@@ -1225,7 +1186,7 @@ export default function BookNowPage() {
             </button>
 
             {/* Blue Header with Your Stay Info */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-5 pt-6 pb-4 text-white rounded-t-3xl">
+            <div className="bg-linear-to-r from-blue-600 to-blue-700 px-5 pt-6 pb-4 text-white rounded-t-3xl">
               <h3 className="font-bold text-xl">Your Stay</h3>
               <p className="text-sm text-blue-100 mt-1">
                 {nights} Night{nights > 1 ? "s" : ""} at {hotelName}
@@ -1306,24 +1267,14 @@ export default function BookNowPage() {
                   />
                 </div>
                 <button
-                  onClick={applyCoupon}
+                  onClick={handleApplyCoupon}
                   disabled={!couponCode.trim()}
                   className="px-5 py-3 bg-blue-600 text-white font-bold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition"
                 >
                   Apply
                 </button>
               </div>
-              {couponMessage && (
-                <p
-                  className={`text-xs ${
-                    couponMessage.includes("applied")
-                      ? "text-emerald-600"
-                      : "text-rose-600"
-                  }`}
-                >
-                  {couponMessage}
-                </p>
-              )}
+              {/* Coupon Code */}
 
               {/* Guest Details */}
               <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
@@ -1378,7 +1329,7 @@ export default function BookNowPage() {
               <button
                 disabled={!guestFormValid || offlineBookingLoading}
                 onClick={triggerOfflineBooking}
-                className={`w-full py-4 bg-gradient-to-r ${
+                className={`w-full py-4 bg-linear-to-r ${
                   roomsCount > 3
                     ? "from-orange-500 to-orange-600"
                     : "from-blue-600 to-blue-700"
@@ -1437,7 +1388,7 @@ export default function BookNowPage() {
         isOpen={showSuccessModal}
         onClose={() => {
           setShowSuccessModal(false);
-          navigate('/bookings');
+          navigate("/bookings");
         }}
         bookingData={bookingResponseData}
       />

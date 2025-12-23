@@ -85,8 +85,11 @@ export const fetchFilteredBooking = createAsyncThunk(
         }
       });
 
-      const response = await apiClient.get(`/get/all/filtered/booking/by/query?${params.toString()}`);
-      return normalizeResponse(response);
+      const response = await apiClient.get(`/get/all/users-filtered/booking/by?${params.toString()}`);
+      // The backend returns an envelope: { success, data, html, pagination }
+      // For bookings we want the full envelope (so caller can use html + pagination),
+      // don't normalize to only response.data.data here.
+      return response?.data ?? response;
     } catch (error) {
       const message = error.response?.data?.message || error.message || 'Failed to fetch bookings';
       return rejectWithValue(message);
@@ -97,7 +100,7 @@ export const fetchFilteredBooking = createAsyncThunk(
 const initialState = {
   monthlyData: null,
   bookingData: null,
-  filteredBookings: [],
+  filteredBookings: null,
   coupon: null,
   gstQuote: null,
   loading: false,
