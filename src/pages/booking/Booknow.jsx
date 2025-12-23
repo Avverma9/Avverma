@@ -589,241 +589,7 @@ export default function BookNowPage() {
     );
   }
 
-  // ============================================================
-  // BOOKING PANEL SUB-COMPONENT
-  // ============================================================
-  const BookingPanel = ({ compact = false }) => (
-    <div
-      className={
-        compact
-          ? ""
-          : "bg-white rounded-3xl shadow-lg border border-gray-100 overflow-visible relative z-40"
-      }
-    >
-      {!compact && (
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white rounded-t-3xl">
-          <h3 className="font-bold text-lg">Your Stay</h3>
-          <p className="text-xs text-blue-100">
-            {nights} Night{nights > 1 ? "s" : ""} at {hotelName}
-          </p>
-        </div>
-      )}
-      <div className={`${compact ? "" : "p-5"} space-y-4`}>
-        {/* Date & Room Selection */}
-        <div className="flex gap-3 relative z-50">
-          <button
-            onClick={() => setShowCalendar(true)}
-            className="flex-1 flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200"
-          >
-            <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-              Dates
-            </span>
-            <div className="flex items-center gap-2 text-sm font-bold text-gray-800 mt-1">
-              <CalendarDays size={16} className="text-blue-500" />
-              <span>
-                {formatDateShort(checkInDate)} - {formatDateShort(checkOutDate)}
-              </span>
-            </div>
-          </button>
-          <div className="relative" ref={roomsPopupRef}>
-            <button
-              onClick={() => setShowRoomsPopup(!showRoomsPopup)}
-              className="h-full flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200 min-w-[120px]"
-            >
-              <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
-                Rooms
-              </span>
-              <div className="flex items-center gap-2 text-sm font-bold text-gray-800 mt-1">
-                <Users size={16} className="text-blue-500" />
-                <span>
-                  {roomsCount}R, {guestsCount}G
-                </span>
-              </div>
-            </button>
-            {showRoomsPopup && (
-              <RoomsGuestsPopup
-                rooms={roomsCount}
-                guests={guestsCount}
-                onRoomsChange={setRoomsCount}
-                onGuestsChange={setGuestsCount}
-                onClose={() => setShowRoomsPopup(false)}
-              />
-            )}
-          </div>
-        </div>
-
-        {/* Price Breakdown */}
-        <InfoRows
-          rows={[
-            {
-              label: `Room Price (${nights} night${nights > 1 ? "s" : ""})`,
-              value: `₹${formatCurrency(priceSummary.roomSubtotal)}`,
-            },
-            ...(priceSummary.addonsTotal > 0
-              ? [
-                  {
-                    label: "Meals & Addons",
-                    value: `₹${formatCurrency(priceSummary.addonsTotal)}`,
-                  },
-                ]
-              : []),
-            {
-              label: "Taxes & Fees",
-              value: `₹${formatCurrency(priceSummary.taxes)}`,
-            },
-            ...(priceSummary.discount > 0
-              ? [
-                  {
-                    label: "Total Savings",
-                    value: `- ₹${formatCurrency(priceSummary.discount)}`,
-                    valueClass: "text-emerald-700",
-                  },
-                ]
-              : []),
-          ]}
-        />
-
-        {/* Total */}
-        <div className="bg-gray-50 p-4 rounded-2xl flex justify-between items-center border border-gray-100">
-          <span className="font-bold text-gray-900">Total Payable</span>
-          <span className="font-bold text-xl text-blue-600">
-            ₹{formatCurrency(priceSummary.netPay)}
-          </span>
-        </div>
-
-        {/* Coupon */}
-        <div className="flex gap-2">
-          <div className="relative flex-1">
-            <Tag
-              size={14}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              placeholder="Have a coupon?"
-              value={couponCode}
-              onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-              className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
-            />
-          </div>
-          <button
-            onClick={() => handleApplyCoupon?.(couponCode)}
-            disabled={!couponCode}
-            className="px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-black disabled:opacity-50 transition"
-          >
-            APPLY
-          </button>
-        </div>
-
-        {/* Guest Details & Book Button (only in full panel) */}
-        {!compact && (
-          <>
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
-              <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Users size={18} className="text-gray-500" /> Guest Details
-              </h4>
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  value={guestDetails.name}
-                  onChange={(e) =>
-                    setGuestDetails({ ...guestDetails, name: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
-                />
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="tel"
-                    placeholder="Mobile Number"
-                    value={guestDetails.phone}
-                    onChange={(e) =>
-                      setGuestDetails({
-                        ...guestDetails,
-                        phone: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email (Optional)"
-                    value={guestDetails.email}
-                    onChange={(e) =>
-                      setGuestDetails({
-                        ...guestDetails,
-                        email: e.target.value,
-                      })
-                    }
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
-                  />
-                </div>
-                {!guestFormValid && (
-                  <p className="text-xs text-rose-600">
-                    Please enter valid name and mobile number.
-                  </p>
-                )}
-              </div>
-            </div>
-            <button
-              disabled={
-                !guestFormValid ||
-                offlineBookingLoading ||
-                priceSummary.netPay <= 0
-              }
-              onClick={triggerOfflineBooking}
-              className={`w-full py-4 bg-gradient-to-r ${
-                roomsCount > 3
-                  ? "from-orange-500 to-orange-600"
-                  : "from-blue-600 to-blue-700"
-              } text-white font-bold text-lg rounded-2xl shadow-lg disabled:opacity-70 flex items-center justify-center gap-3`}
-            >
-              {offlineBookingLoading ? (
-                <Loader2 className="animate-spin" size={24} />
-              ) : (
-                <>
-                  <span>
-                    {roomsCount > 3
-                      ? "Request Group Booking"
-                      : "Book Now & Pay at Hotel"}
-                  </span>
-                  <ChevronRight size={20} />
-                </>
-              )}
-            </button>
-            {bookingStatus?.type === "offline" && (
-              <div
-                className={`${
-                  bookingStatus.status === "Pending"
-                    ? "bg-orange-50 border-orange-200"
-                    : "bg-emerald-50 border-emerald-200"
-                } border rounded-2xl p-4 flex items-start gap-3`}
-              >
-                <CheckCircle2
-                  size={24}
-                  className={
-                    bookingStatus.status === "Pending"
-                      ? "text-orange-600"
-                      : "text-emerald-600"
-                  }
-                />
-                <div>
-                  <h4 className="font-bold">
-                    {bookingStatus.status === "Pending"
-                      ? "Request Received"
-                      : "Booking Confirmed!"}
-                  </h4>
-                  <p className="text-sm mt-1">
-                    Reference: {bookingStatus.reference}
-                  </p>
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
+  // BookingPanel removed - inlined at render to prevent remounts and preserve input focus
 
   // ============================================================
   // RENDER
@@ -1207,7 +973,216 @@ export default function BookNowPage() {
           {/* Right Column - Desktop Booking Panel */}
           <div className="lg:col-span-1">
             <div className="lg:sticky lg:top-24 space-y-4">
-              <BookingPanel compact={false} />
+              <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-visible relative z-40">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 text-white rounded-t-3xl">
+                  <h3 className="font-bold text-lg">Your Stay</h3>
+                  <p className="text-xs text-blue-100">
+                    {nights} Night{nights > 1 ? "s" : ""} at {hotelName}
+                  </p>
+                </div>
+                <div className="p-5 space-y-4">
+                  {/* Date & Room Selection */}
+                  <div className="flex gap-3 relative z-50">
+                    <button
+                      onClick={() => setShowCalendar(true)}
+                      className="flex-1 flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200"
+                    >
+                      <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                        Dates
+                      </span>
+                      <div className="flex items-center gap-2 text-sm font-bold text-gray-800 mt-1">
+                        <CalendarDays size={16} className="text-blue-500" />
+                        <span>
+                          {formatDateShort(checkInDate)} - {formatDateShort(checkOutDate)}
+                        </span>
+                      </div>
+                    </button>
+                    <div className="relative" ref={roomsPopupRef}>
+                      <button
+                        onClick={() => setShowRoomsPopup(!showRoomsPopup)}
+                        className="h-full flex flex-col items-start p-3 bg-gray-50 rounded-2xl hover:bg-gray-100 transition border border-transparent hover:border-blue-200 min-w-[120px]"
+                      >
+                        <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                          Rooms
+                        </span>
+                        <div className="flex items-center gap-2 text-sm font-bold text-gray-800 mt-1">
+                          <Users size={16} className="text-blue-500" />
+                          <span>
+                            {roomsCount}R, {guestsCount}G
+                          </span>
+                        </div>
+                      </button>
+                      {showRoomsPopup && (
+                        <RoomsGuestsPopup
+                          rooms={roomsCount}
+                          guests={guestsCount}
+                          onRoomsChange={setRoomsCount}
+                          onGuestsChange={setGuestsCount}
+                          onClose={() => setShowRoomsPopup(false)}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Price Breakdown */}
+                  <InfoRows
+                    rows={[
+                      {
+                        label: `Room Price (${nights} night${nights > 1 ? "s" : ""})`,
+                        value: `₹${formatCurrency(priceSummary.roomSubtotal)}`,
+                      },
+                      ...(priceSummary.addonsTotal > 0
+                        ? [
+                            {
+                              label: "Meals & Addons",
+                              value: `₹${formatCurrency(priceSummary.addonsTotal)}`,
+                            },
+                          ]
+                        : []),
+                      {
+                        label: "Taxes & Fees",
+                        value: `₹${formatCurrency(priceSummary.taxes)}`,
+                      },
+                      ...(priceSummary.discount > 0
+                        ? [
+                            {
+                              label: "Total Savings",
+                              value: `- ₹${formatCurrency(priceSummary.discount)}`,
+                              valueClass: "text-emerald-700",
+                            },
+                          ]
+                        : []),
+                    ]}
+                  />
+
+                  {/* Total */}
+                  <div className="bg-gray-50 p-4 rounded-2xl flex justify-between items-center border border-gray-100">
+                    <span className="font-bold text-gray-900">Total Payable</span>
+                    <span className="font-bold text-xl text-blue-600">
+                      ₹{formatCurrency(priceSummary.netPay)}
+                    </span>
+                  </div>
+
+                  {/* Coupon */}
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Tag
+                        size={14}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                      />
+                      <input
+                        type="text"
+                        placeholder="Have a coupon?"
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                        className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition"
+                      />
+                    </div>
+                    <button
+                      onClick={() => handleApplyCoupon?.(couponCode)}
+                      disabled={!couponCode}
+                      className="px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-xl hover:bg-black disabled:opacity-50 transition"
+                    >
+                      APPLY
+                    </button>
+                  </div>
+
+                  {/* Guest Details & Book Button (only in full panel) */}
+                  <>
+                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-5">
+                      <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <Users size={18} className="text-gray-500" /> Guest Details
+                      </h4>
+                      <div className="space-y-3">
+                        <input
+                          type="text"
+                          placeholder="Full Name"
+                          value={guestDetails.name}
+                          onChange={(e) =>
+                            setGuestDetails({ ...guestDetails, name: e.target.value })
+                          }
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
+                        />
+                        <div className="grid grid-cols-2 gap-3">
+                          <input
+                            type="tel"
+                            placeholder="Mobile Number"
+                            value={guestDetails.phone}
+                            onChange={(e) =>
+                              setGuestDetails({
+                                ...guestDetails,
+                                phone: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
+                          />
+                          <input
+                            type="email"
+                            placeholder="Email (Optional)"
+                            value={guestDetails.email}
+                            onChange={(e) =>
+                              setGuestDetails({
+                                ...guestDetails,
+                                email: e.target.value,
+                              })
+                            }
+                            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm"
+                          />
+                        </div>
+                        {!guestFormValid && (
+                          <p className="text-xs text-rose-600">
+                            Please enter valid name and mobile number.
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      disabled={
+                        !guestFormValid || offlineBookingLoading || priceSummary.netPay <= 0
+                      }
+                      onClick={triggerOfflineBooking}
+                      className={`w-full py-4 bg-gradient-to-r ${
+                        roomsCount > 3 ? "from-orange-500 to-orange-600" : "from-blue-600 to-blue-700"
+                      } text-white font-bold text-lg rounded-2xl shadow-lg disabled:opacity-70 flex items-center justify-center gap-3`}
+                    >
+                      {offlineBookingLoading ? (
+                        <Loader2 className="animate-spin" size={24} />
+                      ) : (
+                        <>
+                          <span>
+                            {roomsCount > 3 ? "Request Group Booking" : "Book Now & Pay at Hotel"}
+                          </span>
+                          <ChevronRight size={20} />
+                        </>
+                      )}
+                    </button>
+                    {bookingStatus?.type === "offline" && (
+                      <div
+                        className={`${
+                          bookingStatus.status === "Pending"
+                            ? "bg-orange-50 border-orange-200"
+                            : "bg-emerald-50 border-emerald-200"
+                        } border rounded-2xl p-4 flex items-start gap-3`}
+                      >
+                        <CheckCircle2
+                          size={24}
+                          className={
+                            bookingStatus.status === "Pending"
+                              ? "text-orange-600"
+                              : "text-emerald-600"
+                          }
+                        />
+                        <div>
+                          <h4 className="font-bold">
+                            {bookingStatus.status === "Pending" ? "Request Received" : "Booking Confirmed!"}
+                          </h4>
+                          <p className="text-sm mt-1">Reference: {bookingStatus.reference}</p>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                </div>
+              </div>
             </div>
           </div>
         </div>
