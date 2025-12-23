@@ -17,7 +17,6 @@ import CabBooking from "./MyCabBooking";
 import ComplaintsPage from "./complaints";
 import Reviews from "./MyReviews";
 
-
 // --- Sidebar NavLink ---
 const SidenavLink = ({ to, icon, label, onClick }) => (
   <NavLink
@@ -25,9 +24,11 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
     onClick={onClick}
     className={({ isActive }) =>
       `group flex items-center rounded-lg px-4 py-3 transition-all duration-300 ease-in-out no-underline
-       ${isActive
-         ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
-         : "hover:bg-white/30 text-slate-800"}`
+       ${
+         isActive
+           ? "bg-gradient-to-tr from-indigo-600 to-blue-500 text-white shadow-md"
+           : "hover:bg-white/30 text-slate-800"
+       }`
     }
     style={{ textDecoration: "none" }}
   >
@@ -35,7 +36,11 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
       <>
         <div
           className={`text-xl h-6 w-6 flex items-center justify-center transition-colors duration-300
-          ${isActive ? "text-white" : "text-slate-500 group-hover:text-indigo-600"}`}
+          ${
+            isActive
+              ? "text-white"
+              : "text-slate-500 group-hover:text-indigo-600"
+          }`}
         >
           {icon}
         </div>
@@ -51,32 +56,7 @@ const SidenavLink = ({ to, icon, label, onClick }) => (
   </NavLink>
 );
 
-// --- Bottom NavLink ---
-const BottomNavLink = ({ to, icon, label }) => (
-  <NavLink
-    to={to}
-    className={({ isActive }) =>
-      `flex flex-1 flex-col items-center justify-center gap-1 text-xs font-medium transition-all duration-300 no-underline
-       ${isActive ? "text-indigo-600" : "text-slate-500 hover:text-indigo-600"}`
-    }
-    style={{ textDecoration: "none" }}
-  >
-    {({ isActive }) => (
-      <>
-        <div
-          className={`text-2xl transition-transform duration-300 ${
-            isActive ? "scale-110" : "group-hover:scale-110"
-          }`}
-        >
-          {icon}
-        </div>
-        <span>{label}</span>
-      </>
-    )}
-  </NavLink>
-);
-
-export default function ProfileSideBar () {
+export default function ProfileSideBar() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -145,15 +125,7 @@ export default function ProfileSideBar () {
   if (!paths.some((path) => location.pathname.startsWith(path))) return null;
 
   return (
-    <div className="relative min-h-screen md:flex bg-transparent">
-      {/* Overlay */}
-      {isMenuOpen && (
-        <div
-          onClick={toggleMenu}
-          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm transition-opacity duration-300 md:hidden"
-        ></div>
-      )}
-
+    <div className="relative min-h-screen md:flex bg-white">
       {/* Sidebar */}
       <aside
         className={`fixed top-[80px] bottom-[150px] left-4 z-40 w-72 transform transition-all duration-500 ease-in-out
@@ -161,7 +133,11 @@ export default function ProfileSideBar () {
          h-[570px]   
         bg-white/40 backdrop-blur-xl
         md:relative md:translate-x-0
-        ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 md:opacity-100"}`}
+        ${
+          isMenuOpen
+            ? "translate-x-0 opacity-100"
+            : "-translate-x-full opacity-0 md:opacity-100"
+        }`}
       >
         <div className="flex h-full flex-col">
           {/* Header */}
@@ -183,12 +159,42 @@ export default function ProfileSideBar () {
 
           {/* Links */}
           <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-            <SidenavLink to="/profile" icon={<CgProfile />} label="Profile" onClick={closeMobileMenu} />
-            <SidenavLink to="/bookings" icon={<PiTicketThin />} label="Hotel Bookings" onClick={closeMobileMenu} />
-            <SidenavLink to="/tour-bookings" icon={<PiTicketThin />} label="Tour Bookings" onClick={closeMobileMenu} />
-            <SidenavLink to="/cab-bookings" icon={<RiCarLine />} label="Cab Bookings" onClick={closeMobileMenu} />
-            <SidenavLink to="/complaints" icon={<IoWarningOutline />} label="Complaint" onClick={closeMobileMenu} />
-            <SidenavLink to="/reviews" icon={<MdOutlineRateReview />} label="Reviews" onClick={closeMobileMenu} />
+            <SidenavLink
+              to="/profile"
+              icon={<CgProfile />}
+              label="Profile"
+              onClick={closeMobileMenu}
+            />
+            <SidenavLink
+              to="/bookings"
+              icon={<PiTicketThin />}
+              label="Hotel Bookings"
+              onClick={closeMobileMenu}
+            />
+            <SidenavLink
+              to="/tour-bookings"
+              icon={<PiTicketThin />}
+              label="Tour Bookings"
+              onClick={closeMobileMenu}
+            />
+            <SidenavLink
+              to="/cab-bookings"
+              icon={<RiCarLine />}
+              label="Cab Bookings"
+              onClick={closeMobileMenu}
+            />
+            <SidenavLink
+              to="/complaints"
+              icon={<IoWarningOutline />}
+              label="Complaint"
+              onClick={closeMobileMenu}
+            />
+            <SidenavLink
+              to="/reviews"
+              icon={<MdOutlineRateReview />}
+              label="Reviews"
+              onClick={closeMobileMenu}
+            />
           </nav>
         </div>
       </aside>
@@ -203,7 +209,9 @@ export default function ProfileSideBar () {
           >
             <HiOutlineMenuAlt2 size={24} />
           </button>
-          <span className="text-lg font-semibold text-slate-900">{pageTitle}</span>
+          <span className="text-lg font-semibold text-slate-900">
+            {pageTitle}
+          </span>
           <NavLink
             to="/profile"
             className="p-2 -mr-2 rounded-full hover:bg-white/30 transition no-underline"
@@ -217,8 +225,6 @@ export default function ProfileSideBar () {
           {renderContent()}
         </main>
       </div>
-
-     
     </div>
   );
-};
+}

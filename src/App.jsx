@@ -52,7 +52,8 @@ function Layout({ children }) {
   const hideLayout = pathname === "/login" || pathname === "/register";
 
   // Hide bottom bar on specific pages: Book Now and Tour Booking pages
-  const hideBottomBar = hideLayout || pathname === "/book-now" || pathname.startsWith("/travellers/booking");
+  // Hide bottom bar on book-now, tour booking pages and holidays (and their subroutes)
+  const hideBottomBar = hideLayout || pathname === "/book-now" || pathname.startsWith("/travellers/booking") || pathname.startsWith("/holidays") || pathname.startsWith("/cabs");
 
   return (
     <>

@@ -204,7 +204,7 @@ export default function SearchForm() {
         </div>
       </div>
   <div className="mt-4 sm:mt-6 text-center">
-        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mr-3">Popular:</span>
+        
         {['Goa', 'Manali', 'Mumbai', 'Dubai'].map((city) => (
           <button key={city} onClick={() => setData(prev => ({ ...prev, search: city }))} className="inline-block mx-1 my-1 px-4 py-2 text-xs font-semibold text-gray-700 hover:text-blue-600 bg-white hover:bg-blue-50 rounded-full transition-all border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow-md">{city}</button>
         ))}
