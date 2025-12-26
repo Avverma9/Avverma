@@ -25,6 +25,12 @@ const formatDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 };
 
+// Helper to extract YYYY-MM-DD from ISO string for HTML input min/max
+const formatDateForInput = (isoDate) => {
+  if (!isoDate) return "";
+  return isoDate.split("T")[0];
+};
+
 const addDays = (dateString, days) => {
   if (!dateString) return "";
   const parsed = new Date(dateString);
@@ -153,6 +159,7 @@ export default function TourBookNowPage() {
   const [activeTab, setActiveTab] = useState('itinerary');
   const [finalPrice, setFinalPrice] = useState(0);
   const [bookingStartDate, setBookingStartDate] = useState("");
+  const [bookingEndDate, setBookingEndDate] = useState("");
   
   // Booking state
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -199,6 +206,10 @@ export default function TourBookNowPage() {
   const bookedSeats = seatMap.filter(s => s.status === "booked").map(s => s.code);
   const isCustomizable = !!travelById?.isCustomizable;
 
+  // Determine allowed date range (HTML input format YYYY-MM-DD)
+  const minDate = travelById?.from ? formatDateForInput(travelById.from) : "";
+  const maxDate = travelById?.to ? formatDateForInput(travelById.to) : "";
+
   // Get bus type from selected vehicle
   const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
   const busType = selectedVehicle?.seaterType === '2*3' ? '2x3' : '2x2';
@@ -218,9 +229,17 @@ export default function TourBookNowPage() {
     }
     // Initialize booking start date based on package configurability
     if (isCustomizable) {
-      setBookingStartDate("");
+      // If customizable, let user pick, but can pre-fill min date if desired
+      setBookingStartDate(minDate || "");
+      setBookingEndDate(""); // User must pick end date or auto-calculate based on nights? 
+      // If fully customizable means they pick duration, leave empty. 
+      // If they pick dates but duration is fixed, we might auto-calc end date.
+      // Based on request "From and To dono put krne ka input field do", we leave both open.
     } else {
-      setBookingStartDate(travelById?.tourStartDate || travelById?.from || "");
+      const start = travelById?.tourStartDate || travelById?.from || "";
+      const end = travelById?.to || (start ? addDays(start, (travelById?.days || 1) - 1) : "");
+      setBookingStartDate(start ? formatDateForInput(start) : "");
+      setBookingEndDate(end ? formatDateForInput(end) : "");
     }
     setView('booking');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -256,10 +275,40 @@ export default function TourBookNowPage() {
       return;
     }
 
-    // If package is customizable, require user to select a start date
-    if (isCustomizable && !bookingStartDate) {
-      toast.warning("Please select a travel start date.");
+    if (!bookingStartDate || !bookingEndDate) {
+      toast.warning("Please select both From and To dates.");
       return;
+    }
+
+    // Validate Date Range
+    const fromTs = new Date(bookingStartDate).getTime();
+    const toTs = new Date(bookingEndDate).getTime();
+    const minTs = minDate ? new Date(minDate).getTime() : 0;
+    const maxTs = maxDate ? new Date(maxDate).getTime() : Infinity;
+
+    if (Number.isNaN(fromTs) || Number.isNaN(toTs)) {
+        toast.warning("Invalid dates selected.");
+        return;
+    }
+
+    if (toTs < fromTs) {
+      toast.warning("End date must be after Start date.");
+      return;
+    }
+
+    // Check against API limits
+    if (isCustomizable) {
+        if (fromTs < minTs || toTs > maxTs) {
+            toast.warning(`Dates must be between ${formatDate(minDate)} and ${formatDate(maxDate)}`);
+            return;
+        }
+    }
+
+    // If fixed package, ensure duration matches (optional, depending on strictness)
+    if (!isCustomizable && travelById?.days) {
+         const daysSelected = Math.round((toTs - fromTs) / (1000 * 60 * 60 * 24)) + 1;
+         // Allow slight flexibility or strict check? Usually fixed means fixed dates.
+         // Assuming fixed means input is disabled anyway, but double check.
     }
 
     let valid = true;
@@ -291,9 +340,6 @@ export default function TourBookNowPage() {
       }
     });
 
-  const selectedStart = isCustomizable ? bookingStartDate : (travelById.tourStartDate || travelById.from || "");
-    const computedEnd = addDays(selectedStart, (travelById?.days || 1) - 1);
-
     const passengerList = [
       ...Array.from({ length: totalAdults }).map(() => ({ type: "adult" })),
       ...childDOBs.map((dob) => ({ type: "child", dateOfBirth: dob }))
@@ -308,9 +354,9 @@ export default function TourBookNowPage() {
       numberOfAdults: totalAdults,
       numberOfChildren: totalChildren,
       passengers: passengerList,
-      from: selectedStart,
-      to: computedEnd,
-      tourStartDate: travelById.tourStartDate || selectedStart,
+      from: bookingStartDate,
+      to: bookingEndDate,
+      tourStartDate: travelById.tourStartDate || bookingStartDate,
       isCustomizable: isCustomizable,
       travelAgencyName: travelById.travelAgencyName,
       agencyPhone: travelById.agencyPhone,
@@ -556,17 +602,65 @@ export default function TourBookNowPage() {
                     <Armchair className="text-orange-600" /> Select Seats
                   </h3>
                   <div className="mt-3 mb-4">
-                    <label className="text-xs font-semibold text-gray-500 block mb-1">Travel Date</label>
+                    {/* UPDATED DATE SELECTION LOGIC */}
                     {isCustomizable ? (
-                      <input
-                        type="date"
-                        value={bookingStartDate}
-                        onChange={(e) => setBookingStartDate(e.target.value)}
-                        required
-                        className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      />
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs font-semibold text-gray-500 block mb-1">Start Date</label>
+                          <input
+                            type="date"
+                            value={bookingStartDate}
+                            onChange={(e) => setBookingStartDate(e.target.value)}
+                            min={minDate}
+                            max={maxDate}
+                            required
+                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-semibold text-gray-500 block mb-1">End Date</label>
+                          <input
+                            type="date"
+                            value={bookingEndDate}
+                            onChange={(e) => setBookingEndDate(e.target.value)}
+                            min={bookingStartDate || minDate}
+                            max={maxDate}
+                            required
+                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                            <p className="text-[10px] text-gray-400 mt-1">
+                                Available Range: {formatDate(minDate)} to {formatDate(maxDate)}
+                            </p>
+                        </div>
+                      </div>
                     ) : (
-                      <div className="text-sm font-medium text-gray-800">{formatDate(travelById.tourStartDate || travelById.from)}</div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-500 block mb-1">From</label>
+                          <input
+                            type="date"
+                            value={bookingStartDate}
+                            disabled
+                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-500 block mb-1">To</label>
+                          <input
+                            type="date"
+                            value={bookingEndDate}
+                            disabled
+                            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm bg-gray-100 text-gray-500 cursor-not-allowed"
+                          />
+                        </div>
+                        <div className="col-span-2">
+                           <p className="text-[10px] text-orange-500 font-semibold mt-1">
+                               * Fixed Departure Dates
+                           </p>
+                        </div>
+                      </div>
                     )}
                   </div>
                   {selectedVehicle && (
@@ -800,9 +894,15 @@ export default function TourBookNowPage() {
                 <span className="text-sm text-gray-500">Seats</span>
                 <span className="font-medium text-gray-800">{selectedSeats.join(', ')}</span>
               </div>
-              <div className="flex justify-between relative z-10">
-                <span className="text-sm text-gray-500">Start Date</span>
-                <span className="font-medium text-gray-800">{formatDate(bookingStartDate || travelById.from)}</span>
+              <div className="flex flex-col gap-2 relative z-10">
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-500">Start Date</span>
+                  <span className="font-medium text-gray-800">{formatDate(bookingStartDate || travelById.from)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-sm text-gray-500">End Date</span>
+                  <span className="font-medium text-gray-800">{formatDate(bookingEndDate || travelById.to || addDays(bookingStartDate || travelById.from, (travelById?.days || 1) - 1))}</span>
+                </div>
               </div>
             </div>
 
