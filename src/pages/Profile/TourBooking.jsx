@@ -82,7 +82,7 @@ const ListSection = ({ title, items, icon, itemClassName }) => {
 
 const BookingModal = ({ booking, onClose }) => {
   if (!booking) return null;
-  const isCustomizable = booking.customizable;
+  const isCustomizable = !!booking?.isCustomizable;
   const dateRows = isCustomizable
     ? [
         { label: "Travel From", value: formatDate(booking.from) },
@@ -296,7 +296,7 @@ export default function TourBooking() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {bookings.map((booking) => {
-            const isCustomizable = booking?.customizable;
+            const isCustomizable = !!booking?.isCustomizable;
             const dateRows = isCustomizable
               ? [
                   { label: "From", value: formatDate(booking.from) },

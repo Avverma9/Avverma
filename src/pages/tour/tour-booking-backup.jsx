@@ -63,15 +63,15 @@ const XCircleIcon = () => (
 );
 
 const BookingRoomsModal = ({ open, onClose, travel, finalPrice, onConfirm }) => {
-  const customizable = travel?.customizable;
+  const isCustomizable = !!travel?.isCustomizable;
   const durationInDays = travel?.days || 1;
 
   const visitPlaces = useMemo(() => (travel?.visitngPlaces || "").replace(/\|/g, " | "), [travel]);
 
   const fixedStartDate = useMemo(() => {
     if (!travel) return "";
-    return !customizable ? (travel.tourStartDate || travel.from || "") : "";
-  }, [travel, customizable]);
+  return !isCustomizable ? (travel.tourStartDate || travel.from || "") : "";
+  }, [travel, isCustomizable]);
 
   const dispatch = useDispatch();
   // seat map moved into travel slice at state.travel.seatMapByKey
@@ -227,8 +227,8 @@ const BookingRoomsModal = ({ open, onClose, travel, finalPrice, onConfirm }) => 
 
         <div className="mt-2 sm:mt-4 space-y-3 sm:space-y-6 overflow-y-auto flex-1">
           <div className="rounded-xl sm:rounded-2xl border border-gray-200 p-3 sm:p-4">
-            <p className="text-sm font-semibold text-slate-600">{customizable ? "Select Travel Date" : "Selected Date"}</p>
-            {customizable ? (
+            <p className="text-sm font-semibold text-slate-600">{isCustomizable ? "Select Travel Date" : "Selected Date"}</p>
+            {isCustomizable ? (
               <input
                 type="date"
                 value={selectedDate}
@@ -443,7 +443,7 @@ export default function TourBookNowPage() {
 
   useEffect(() => {
     if (!travelById) return;
-    const defaultStart = travelById.customizable ? "" : (travelById.tourStartDate || travelById.from || "");
+  const defaultStart = travelById.isCustomizable ? "" : (travelById.tourStartDate || travelById.from || "");
     const defaultEnd = defaultStart ? addDays(defaultStart, (travelById.days || 1) - 1) : "";
     setBookingSummary((prev) => ({ ...prev, startDate: defaultStart, endDate: defaultEnd }));
   }, [travelById]);
@@ -483,7 +483,7 @@ export default function TourBookNowPage() {
       from: selectedStart,
       to: computedEnd,
       tourStartDate: travelById.tourStartDate || selectedStart,
-      customizable: travelById.customizable,
+  isCustomizable: travelById.isCustomizable,
 
       travelAgencyName: travelById.travelAgencyName,
       visitngPlaces: travelById.visitngPlaces,

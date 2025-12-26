@@ -152,6 +152,7 @@ export default function TourBookNowPage() {
   const [view, setView] = useState('details');
   const [activeTab, setActiveTab] = useState('itinerary');
   const [finalPrice, setFinalPrice] = useState(0);
+  const [bookingStartDate, setBookingStartDate] = useState("");
   
   // Booking state
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -196,6 +197,7 @@ export default function TourBookNowPage() {
   const seatKey = travelById?._id && selectedVehicleId ? `${travelById._id}:${selectedVehicleId}` : "";
   const seatMap = seatKey ? (seatMapByKey[seatKey] || []) : [];
   const bookedSeats = seatMap.filter(s => s.status === "booked").map(s => s.code);
+  const isCustomizable = !!travelById?.isCustomizable;
 
   // Get bus type from selected vehicle
   const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
@@ -213,6 +215,12 @@ export default function TourBookNowPage() {
     if (!userId) {
       toast.warning("Please log in to book.");
       return;
+    }
+    // Initialize booking start date based on package configurability
+    if (isCustomizable) {
+      setBookingStartDate("");
+    } else {
+      setBookingStartDate(travelById?.tourStartDate || travelById?.from || "");
     }
     setView('booking');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -248,6 +256,12 @@ export default function TourBookNowPage() {
       return;
     }
 
+    // If package is customizable, require user to select a start date
+    if (isCustomizable && !bookingStartDate) {
+      toast.warning("Please select a travel start date.");
+      return;
+    }
+
     let valid = true;
     selectedSeats.forEach(seat => {
       const p = passengers[seat];
@@ -277,7 +291,7 @@ export default function TourBookNowPage() {
       }
     });
 
-    const selectedStart = travelById.customizable ? "" : (travelById.tourStartDate || travelById.from || "");
+  const selectedStart = isCustomizable ? bookingStartDate : (travelById.tourStartDate || travelById.from || "");
     const computedEnd = addDays(selectedStart, (travelById?.days || 1) - 1);
 
     const passengerList = [
@@ -297,7 +311,7 @@ export default function TourBookNowPage() {
       from: selectedStart,
       to: computedEnd,
       tourStartDate: travelById.tourStartDate || selectedStart,
-      customizable: travelById.customizable,
+      isCustomizable: isCustomizable,
       travelAgencyName: travelById.travelAgencyName,
       agencyPhone: travelById.agencyPhone,
       agencyEmail: travelById.agencyEmail,
@@ -541,6 +555,20 @@ export default function TourBookNowPage() {
                   <h3 className="font-bold text-lg text-gray-800 flex items-center gap-2">
                     <Armchair className="text-orange-600" /> Select Seats
                   </h3>
+                  <div className="mt-3 mb-4">
+                    <label className="text-xs font-semibold text-gray-500 block mb-1">Travel Date</label>
+                    {isCustomizable ? (
+                      <input
+                        type="date"
+                        value={bookingStartDate}
+                        onChange={(e) => setBookingStartDate(e.target.value)}
+                        required
+                        className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    ) : (
+                      <div className="text-sm font-medium text-gray-800">{formatDate(travelById.tourStartDate || travelById.from)}</div>
+                    )}
+                  </div>
                   {selectedVehicle && (
                     <p className="text-xs text-gray-500 mt-1">
                       {selectedVehicle.name} • {selectedVehicle.seaterType || '2*2'} Layout • {selectedVehicle.totalSeats} Seats
@@ -774,7 +802,7 @@ export default function TourBookNowPage() {
               </div>
               <div className="flex justify-between relative z-10">
                 <span className="text-sm text-gray-500">Start Date</span>
-                <span className="font-medium text-gray-800">{formatDate(travelById.from)}</span>
+                <span className="font-medium text-gray-800">{formatDate(bookingStartDate || travelById.from)}</span>
               </div>
             </div>
 
