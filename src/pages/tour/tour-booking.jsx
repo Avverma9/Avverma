@@ -299,6 +299,8 @@ export default function TourBookNowPage() {
       tourStartDate: travelById.tourStartDate || selectedStart,
       customizable: travelById.customizable,
       travelAgencyName: travelById.travelAgencyName,
+      agencyPhone: travelById.agencyPhone,
+      agencyEmail: travelById.agencyEmail,
       visitngPlaces: travelById.visitngPlaces,
       country: travelById.country,
       state: travelById.state,
