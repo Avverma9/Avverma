@@ -7,32 +7,68 @@ import HolidayImageSlider from "../../components/HolidayImageSlider";
 import { ChevronDownIcon, FunnelIcon, XMarkIcon, StarIcon, MapPinIcon } from "@heroicons/react/24/solid";
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
-const AmenityIcons = {
-  'Coffee': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>,
-  'Pool': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m6.2 11.8 1.4-1.4c.54-.54 1.29-.81 2.03-.81s1.5.27 2.03.81l1.4 1.4"/><path d="m14.8 14.2-1.4 1.4c-.54-.54-1.29.81-2.03.81s-1.5-.27-2.03-.81l-1.4-1.4"/><path d="M22 12h-2"/><path d="M4 12H2"/></svg>,
-  'Parking': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V6h6.5a4.5 4.5 0 1 1 0 9H9"/></svg>,
-  'Gym': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.2 21.2-3.8-3.8"/><path d="M12.028 12.028 2.8 2.8"/><path d="m18.4 6-2.8 2.8"/><path d="M14.8 9.6 2.8 21.2"/><path d="M9.6 14.8 21.2 2.8"/></svg>,
-  'Restaurant': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
-  'WIFI': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a8 8 0 0 1 14 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M8 16.29a4 4 0 0 1 8 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>,
-  'AC': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 10 2 10"/><path d="M12 14 2 14"/><path d="M20 12 2 12"/><path d="m16 6-4 4 4 4"/></svg>,
-  'Heater': () => <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 4v2"/><path d="M12 18v2"/><path d="M18.36 6.64l-1.41 1.41"/><path d="M7.05 17.05l-1.41 1.41"/><path d="M20 12h-2"/><path d="M6 12H4"/></svg>,
+
+// Updated amenity icons to be more generic
+const getAmenityIcon = (amenity) => {
+  const amenityLower = amenity.toLowerCase();
+  
+  if (amenityLower.includes('coffee') || amenityLower.includes('breakfast')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>;
+  }
+  if (amenityLower.includes('hotel') || amenityLower.includes('stay')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
+  }
+  if (amenityLower.includes('pool') || amenityLower.includes('swim')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 15c.6.5 1.2 1 2.1 1C5.8 16 7.2 15 8.9 15c1.6 0 3.1 1 4.6 1 1.4 0 2.8-1 4.5-1 .9 0 1.5.5 2.1 1"/><path d="M2 20c.6.5 1.2 1 2.1 1 1.7 0 3.1-1 4.8-1 1.6 0 3.1 1 4.6 1 1.4 0 2.8-1 4.5-1 .9 0 1.5.5 2.1 1"/><path d="m2 12 2-4 4 2 4-6 3 6 4-2 2 4"/></svg>;
+  }
+  if (amenityLower.includes('wifi') || amenityLower.includes('wi-fi')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12.55a8 8 0 0 1 14 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M8 16.29a4 4 0 0 1 8 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>;
+  }
+  if (amenityLower.includes('guide') || amenityLower.includes('tour')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+  }
+  if (amenityLower.includes('parking')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V6h6.5a4.5 4.5 0 1 1 0 9H9"/></svg>;
+  }
+  if (amenityLower.includes('gym') || amenityLower.includes('fitness')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.2 21.2-3.8-3.8"/><path d="M12.028 12.028 2.8 2.8"/><path d="m18.4 6-2.8 2.8"/><path d="M14.8 9.6 2.8 21.2"/><path d="M9.6 14.8 21.2 2.8"/></svg>;
+  }
+  if (amenityLower.includes('restaurant') || amenityLower.includes('dinner') || amenityLower.includes('meal')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>;
+  }
+  if (amenityLower.includes('music')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>;
+  }
+  if (amenityLower.includes('pet')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11.5" cy="8.5" r="2.5"/><path d="M12 12v9"/><circle cx="6" cy="15" r="1.5"/><circle cx="18" cy="15" r="1.5"/><path d="M6 12l6-4 6 4"/></svg>;
+  }
+  if (amenityLower.includes('ac') || amenityLower.includes('air')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 10 2 10"/><path d="M12 14 2 14"/><path d="M20 12 2 12"/><path d="m16 6-4 4 4 4"/></svg>;
+  }
+  if (amenityLower.includes('pickup') || amenityLower.includes('transport')) {
+    return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>;
+  }
+  
+  // Default icon for unknown amenities
+  return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>;
 };
 
+
 const AmenityDisplay = ({ amenity }) => {
-  const Icon = AmenityIcons[amenity];
-  if (!Icon) return null;
   return (
     <div className="flex items-center justify-center w-7 h-7 bg-gray-50 rounded-full text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-colors" title={amenity}>
-      <Icon />
+      {getAmenityIcon(amenity)}
     </div>
   );
 };
+
 
 const Tag = ({ children, className }) => (
   <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${className}`}>
     {children}
   </span>
 );
+
 
 const bannerImages = {
   default: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070&auto=format&fit=crop",
@@ -41,18 +77,23 @@ const bannerImages = {
   patna: "https://images.unsplash.com/photo-1627513393021-a91334c40b8a?q=80&w=1932&auto=format&fit=crop"
 };
 
+
 const HeroBanner = ({ onSearch, searchTerm }) => {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState(searchTerm);
 
+
   useEffect(() => setTo(searchTerm), [searchTerm]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     onSearch(to);
   };
 
+
   const bannerImage = bannerImages[searchTerm.toLowerCase()] || bannerImages.default;
+
 
   return (
     <div className="relative h-48 md:h-64 rounded-xl overflow-hidden mb-6 group">
@@ -86,6 +127,7 @@ const HeroBanner = ({ onSearch, searchTerm }) => {
   );
 };
 
+
 const PackageCard = ({ item, handleBooking }) => {
   const amenitiesToShow = item.amenities ? item.amenities.slice(0, 5) : [];
   
@@ -111,6 +153,7 @@ const PackageCard = ({ item, handleBooking }) => {
         </div>
       </div>
 
+
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-1">
           <h3 className="text-base font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
@@ -123,9 +166,11 @@ const PackageCard = ({ item, handleBooking }) => {
           {item.city}, {item.state}
         </p>
 
+
         <div className="flex gap-2 mb-3 overflow-x-auto no-scrollbar py-1">
-           {amenitiesToShow.map(am => <AmenityDisplay key={am} amenity={am} />)}
+           {amenitiesToShow.map((am, idx) => <AmenityDisplay key={idx} amenity={am} />)}
         </div>
+
 
         <div className="mt-auto pt-3 border-t border-dashed border-gray-200 flex items-center justify-between">
           <div>
@@ -143,6 +188,7 @@ const PackageCard = ({ item, handleBooking }) => {
   );
 };
 
+
 const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAmenities, clearFilters, applyFilters, setIsSidebarOpen }) => {
   return (
     <aside className="flex flex-col h-full bg-white">
@@ -154,6 +200,7 @@ const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAm
           <XMarkIcon className="w-5 h-5 text-gray-500" />
         </button>
       </div>
+
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         <div>
@@ -172,6 +219,7 @@ const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAm
           />
         </div>
 
+
         <div>
           <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3">Star Rating</h3>
           <div className="flex gap-2">
@@ -186,6 +234,7 @@ const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAm
             ))}
           </div>
         </div>
+
 
         {[ {title: 'Themes', name: 'themes', options: allThemes}, {title: 'Amenities', name: 'amenities', options: allAmenities} ].map(group => (
           <div key={group.name}>
@@ -213,6 +262,7 @@ const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAm
         ))}
       </div>
 
+
       <div className="p-4 border-t border-gray-100 bg-gray-50 flex gap-3">
         <button onClick={clearFilters} className="flex-1 px-4 py-2 text-xs font-bold text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-100">Reset</button>
         <button onClick={applyFilters} className="flex-1 px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm">Show Results</button>
@@ -221,35 +271,55 @@ const FilterSidebar = ({ filters, handleFilterChange, maxPrice, allThemes, allAm
   );
 };
 
+
 function TourPackages() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { showLoader, hideLoader } = useLoader();  
   const { data } = useSelector((state) => state.travel);
-  const travelData = data || [];
+  const travelData = Array.isArray(data) ? data : [];
 
+console.log("Travel Data:", travelData);
   useEffect(() => {
     showLoader();
     dispatch(getTravelList({})).finally(() => hideLoader());
   }, [dispatch]);
 
+
   const handleBooking = useCallback((id) => navigate(`/travellers/booking/${id}`), [navigate]);
   
-  const allThemes = useMemo(() => [...new Set(travelData.map(item => item.themes).filter(Boolean))], [travelData]);
+  // FIXED: Parse themes as comma-separated string and create unique array
+  const allThemes = useMemo(() => {
+    const themesSet = new Set();
+    travelData.forEach(item => {
+      if (item.themes && typeof item.themes === 'string') {
+        // Split by comma and trim whitespace
+        item.themes.split(',').forEach(theme => {
+          const trimmed = theme.trim();
+          if (trimmed) themesSet.add(trimmed);
+        });
+      }
+    });
+    return Array.from(themesSet).sort();
+  }, [travelData]);
+  
   const allAmenities = useMemo(() => [...new Set(travelData.flatMap(item => item.amenities ?? []))].sort(), [travelData]);
-  const maxPrice = useMemo(() => (travelData.length > 0 ? Math.max(...travelData.map(item => item.price)) : 100000), [travelData]);
+  const maxPrice = useMemo(() => (travelData.length > 0 ? Math.max(...travelData?.map(item => item.price)) : 100000), [travelData]);
   
   const initialFilters = { searchTerm: '', price: maxPrice, themes: [], amenities: [], rating: 0 };
   const [activeFilters, setActiveFilters] = useState(initialFilters);
   const [tempFilters, setTempFilters] = useState(initialFilters);
+
 
   useEffect(() => {
     setActiveFilters(f => ({...f, price: maxPrice}));
     setTempFilters(f => ({...f, price: maxPrice}));
   }, [maxPrice]);
 
+
   useEffect(() => { if (isSidebarOpen) setTempFilters(activeFilters); }, [isSidebarOpen, activeFilters]);
+
 
   const handleFilterChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -293,26 +363,42 @@ function TourPackages() {
     }, 300);
   };
 
+
+  // FIXED: Filter logic to handle themes as string
   const filteredData = useMemo(() => {
     return travelData.filter(item => {
       if (!item) return false;
+      
       const searchLower = activeFilters.searchTerm.toLowerCase();
       const nameMatch = item.travelAgencyName?.toLowerCase().includes(searchLower);
       const cityMatch = item.city?.toLowerCase().includes(searchLower);
       const priceMatch = item.price <= activeFilters.price;
       const ratingMatch = item.starRating >= activeFilters.rating;
-      const themeMatch = activeFilters.themes.length === 0 || activeFilters.themes.includes(item.themes);
+      
+      // FIXED: Handle themes as comma-separated string
+      let themeMatch = true;
+      if (activeFilters.themes.length > 0 && item.themes) {
+        const itemThemes = typeof item.themes === 'string' 
+          ? item.themes.split(',').map(t => t.trim()) 
+          : [];
+        themeMatch = activeFilters.themes.some(filterTheme => 
+          itemThemes.includes(filterTheme)
+        );
+      }
+      
       const amenityMatch = activeFilters.amenities.every(amenity => item.amenities?.includes(amenity));
       
       return (nameMatch || cityMatch) && priceMatch && ratingMatch && themeMatch && amenityMatch;
     });
   }, [activeFilters, travelData]);
 
+
   return (
     <div className="bg-white min-h-screen font-sans text-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         
         <HeroBanner onSearch={handleSearch} searchTerm={activeFilters.searchTerm} />
+
 
         <div className="flex flex-col lg:flex-row gap-8">
           
@@ -332,6 +418,7 @@ function TourPackages() {
              </div>
           </div>
 
+
           <div className="hidden lg:block w-64 flex-shrink-0">
              <div className="sticky top-4 bg-white rounded-xl shadow-[0_2px_12px_-4px_rgba(0,0,0,0.1)] border border-gray-100 overflow-hidden">
                 <FilterSidebar 
@@ -347,6 +434,7 @@ function TourPackages() {
              </div>
           </div>
 
+
           <main className="flex-1 min-w-0">
              <div className="flex justify-between items-center mb-4">
                <h2 className="text-xl font-bold text-gray-900">
@@ -357,6 +445,7 @@ function TourPackages() {
                  <FunnelIcon className="w-4 h-4" /> Filters
                </button>
              </div>
+
 
              {filteredData.length > 0 ? (
                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -378,5 +467,6 @@ function TourPackages() {
     </div>
   );
 }
+
 
 export default TourPackages;

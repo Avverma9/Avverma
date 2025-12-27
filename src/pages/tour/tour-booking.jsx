@@ -74,7 +74,41 @@ const ImageCarousel = ({ images, title, dates, duration, rating, themes }) => {
     return () => clearInterval(timer);
   }, [images]);
 
-  if (!images || images.length === 0) return null;
+  if (!images || images.length === 0) {
+    // Show placeholder if no images
+    return (
+      <div className="relative h-64 md:h-96 w-full bg-gradient-to-br from-orange-400 to-orange-600">
+        <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6">
+          <div className="flex justify-start">
+            <span className="bg-white/20 backdrop-blur text-white text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold shadow-lg">
+              {themes}
+            </span>
+          </div>
+          <div className="text-white">
+            <h1 className="text-2xl md:text-4xl font-bold mb-2 tracking-tight drop-shadow-lg">
+              {title}
+            </h1>
+            <div className="flex items-center gap-3 flex-wrap mb-2">
+              <span className="flex items-center gap-1 text-xs md:text-sm bg-black/40 backdrop-blur-sm px-2 py-1 rounded">
+                <Calendar size={14} className="text-orange-400" />
+                {dates}
+              </span>
+              <span className="flex items-center gap-1 text-xs md:text-sm bg-black/40 backdrop-blur-sm px-2 py-1 rounded">
+                <Moon size={14} className="text-orange-400" />
+                {duration}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <StarIcon key={i} filled={i < rating} className="w-4 h-4" />
+              ))}
+              <span className="text-sm ml-1">{rating}.0 Star Rating</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative h-64 md:h-96 w-full overflow-hidden bg-gray-900">
@@ -203,42 +237,44 @@ export default function TourBookNowPage() {
 
   const seatKey = travelById?._id && selectedVehicleId ? `${travelById._id}:${selectedVehicleId}` : "";
   const seatMap = seatKey ? (seatMapByKey[seatKey] || []) : [];
-  // Selected vehicle (used to read vehicle.bookedSeats)
   const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
-  // Seats marked as booked can come from the fetched seatMap or from the vehicle object
+  
   const bookedFromSeatMap = (seatMap || []).filter(s => s.status === "booked" || s.isBooked || s.booked).map(s => String(s.code || s.seatNumber || s.label || s.id));
   const bookedFromVehicle = (selectedVehicle?.bookedSeats || []).map(s => String(s));
   const bookedSeats = Array.from(new Set([...(bookedFromSeatMap || []), ...(bookedFromVehicle || [])]));
   const isCustomizable = !!travelById?.isCustomizable;
 
-  // Determine allowed date range (HTML input format YYYY-MM-DD)
   const minDate = travelById?.from ? formatDateForInput(travelById.from) : "";
   const maxDate = travelById?.to ? formatDateForInput(travelById.to) : "";
 
-  // Get bus type from selected vehicle
-  const busType = selectedVehicle?.seaterType === '2*3' ? '2x3' : '2x2';
+  const busType = selectedVehicle?.seaterType === '2x3' ? '2x3' : '2x2';
 
+  // FIXED: Handle visitngPlaces (note the typo in API)
   const visitingPlaces = useMemo(() => {
     try {
-      return (travelById?.visitngPlaces || "").replace(/\|/g, ", ");
+      const places = travelById?.visitngPlaces || travelById?.visitingPlaces || "";
+      return places.replace(/\|/g, ", ");
     } catch {
       return "";
     }
   }, [travelById]);
+
+  // FIXED: Get first theme from comma-separated string for display
+  const displayTheme = useMemo(() => {
+    if (!travelById?.themes) return "Tour Package";
+    const themesArray = travelById.themes.split(',').map(t => t.trim());
+    return themesArray[0] || "Tour Package";
+  }, [travelById?.themes]);
 
   const startBooking = () => {
     if (!userId) {
       toast.warning("Please log in to book.");
       return;
     }
-    // Initialize booking start date based on package configurability
+    
     if (isCustomizable) {
-      // If customizable, let user pick, but can pre-fill min date if desired
       setBookingStartDate(minDate || "");
-      setBookingEndDate(""); // User must pick end date or auto-calculate based on nights? 
-      // If fully customizable means they pick duration, leave empty. 
-      // If they pick dates but duration is fixed, we might auto-calc end date.
-      // Based on request "From and To dono put krne ka input field do", we leave both open.
+      setBookingEndDate("");
     } else {
       const start = travelById?.tourStartDate || travelById?.from || "";
       const end = travelById?.to || (start ? addDays(start, (travelById?.days || 1) - 1) : "");
@@ -284,7 +320,6 @@ export default function TourBookNowPage() {
       return;
     }
 
-    // Validate Date Range
     const fromTs = new Date(bookingStartDate).getTime();
     const toTs = new Date(bookingEndDate).getTime();
     const minTs = minDate ? new Date(minDate).getTime() : 0;
@@ -300,19 +335,11 @@ export default function TourBookNowPage() {
       return;
     }
 
-    // Check against API limits
     if (isCustomizable) {
         if (fromTs < minTs || toTs > maxTs) {
             toast.warning(`Dates must be between ${formatDate(minDate)} and ${formatDate(maxDate)}`);
             return;
         }
-    }
-
-    // If fixed package, ensure duration matches (optional, depending on strictness)
-    if (!isCustomizable && travelById?.days) {
-         const daysSelected = Math.round((toTs - fromTs) / (1000 * 60 * 60 * 24)) + 1;
-         // Allow slight flexibility or strict check? Usually fixed means fixed dates.
-         // Assuming fixed means input is disabled anyway, but double check.
     }
 
     let valid = true;
@@ -460,10 +487,10 @@ export default function TourBookNowPage() {
           <ImageCarousel 
             images={travelById.images}
             title={travelById.travelAgencyName}
-            dates={`${formatDate(travelById.from)} - ${formatDate(addDays(travelById.from, travelById.days - 1))}`}
+            dates={`${formatDate(travelById.from)} - ${formatDate(travelById.to || addDays(travelById.from, travelById.days - 1))}`}
             duration={`${travelById.nights}N/${travelById.days}D`}
             rating={travelById.starRating}
-            themes={travelById.themes}
+            themes={displayTheme}
           />
 
           {/* Main Content */}
@@ -509,10 +536,21 @@ export default function TourBookNowPage() {
 
                 {activeTab === 'info' && (
                   <div className="p-6 md:p-8 max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-                    <section>
-                      <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Info className="text-orange-600" /> Overview</h3>
-                      <p className="text-gray-600 leading-relaxed bg-gray-50 p-6 rounded-lg border border-gray-100">{travelById.overview}</p>
-                    </section>
+                    {/* Overview Section */}
+                    {travelById.overview && (
+                      <section>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><Info className="text-orange-600" /> Overview</h3>
+                        <p className="text-gray-600 leading-relaxed bg-gray-50 p-6 rounded-lg border border-gray-100 whitespace-pre-line">{travelById.overview}</p>
+                      </section>
+                    )}
+
+                    {/* Visiting Places */}
+                    {visitingPlaces && (
+                      <section>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><MapPin className="text-blue-600" /> Visiting Places</h3>
+                        <p className="text-gray-600 leading-relaxed bg-blue-50 p-6 rounded-lg border border-blue-100">{visitingPlaces}</p>
+                      </section>
+                    )}
                     
                     <div className="grid md:grid-cols-2 gap-8">
                       <section>
@@ -537,6 +575,20 @@ export default function TourBookNowPage() {
                         </ul>
                       </section>
                     </div>
+
+                    {/* Amenities */}
+                    {travelById.amenities && travelById.amenities.length > 0 && (
+                      <section>
+                        <h3 className="text-xl font-bold mb-4 flex items-center gap-2"><CheckCircle className="text-purple-600" /> Amenities</h3>
+                        <div className="flex flex-wrap gap-2">
+                          {travelById.amenities.map((amenity, idx) => (
+                            <span key={idx} className="bg-purple-50 text-purple-700 px-3 py-1.5 rounded-full text-sm font-medium border border-purple-200">
+                              {amenity}
+                            </span>
+                          ))}
+                        </div>
+                      </section>
+                    )}
 
                     {travelById.vehicles && travelById.vehicles.length > 0 && (
                       <section className="bg-blue-50 p-6 rounded-lg border border-blue-100 flex items-center gap-4">
@@ -606,7 +658,6 @@ export default function TourBookNowPage() {
                     <Armchair className="text-orange-600" /> Select Seats
                   </h3>
                   <div className="mt-3 mb-4">
-                    {/* UPDATED DATE SELECTION LOGIC */}
                     {isCustomizable ? (
                       <div className="grid grid-cols-2 gap-3">
                         <div>
@@ -669,7 +720,7 @@ export default function TourBookNowPage() {
                   </div>
                   {selectedVehicle && (
                     <p className="text-xs text-gray-500 mt-1">
-                      {selectedVehicle.name} • {selectedVehicle.seaterType || '2*2'} Layout • {selectedVehicle.totalSeats} Seats
+                      {selectedVehicle.name} • {selectedVehicle.seaterType || '2x2'} Layout • {selectedVehicle.totalSeats} Seats
                     </p>
                   )}
                 </div>

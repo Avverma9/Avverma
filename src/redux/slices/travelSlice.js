@@ -23,7 +23,7 @@ export const getTravelList = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await apiClient.get('/get-tour-list');
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
@@ -83,7 +83,7 @@ export const getTravelById = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await apiClient.get('/get-tour/' + id);
-      return response?.data;
+      return response?.data?.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || error.message);
     }
