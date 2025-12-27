@@ -203,7 +203,12 @@ export default function TourBookNowPage() {
 
   const seatKey = travelById?._id && selectedVehicleId ? `${travelById._id}:${selectedVehicleId}` : "";
   const seatMap = seatKey ? (seatMapByKey[seatKey] || []) : [];
-  const bookedSeats = seatMap.filter(s => s.status === "booked").map(s => s.code);
+  // Selected vehicle (used to read vehicle.bookedSeats)
+  const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
+  // Seats marked as booked can come from the fetched seatMap or from the vehicle object
+  const bookedFromSeatMap = (seatMap || []).filter(s => s.status === "booked" || s.isBooked || s.booked).map(s => String(s.code || s.seatNumber || s.label || s.id));
+  const bookedFromVehicle = (selectedVehicle?.bookedSeats || []).map(s => String(s));
+  const bookedSeats = Array.from(new Set([...(bookedFromSeatMap || []), ...(bookedFromVehicle || [])]));
   const isCustomizable = !!travelById?.isCustomizable;
 
   // Determine allowed date range (HTML input format YYYY-MM-DD)
@@ -211,7 +216,6 @@ export default function TourBookNowPage() {
   const maxDate = travelById?.to ? formatDateForInput(travelById.to) : "";
 
   // Get bus type from selected vehicle
-  const selectedVehicle = travelById?.vehicles?.find(v => v._id === selectedVehicleId);
   const busType = selectedVehicle?.seaterType === '2*3' ? '2x3' : '2x2';
 
   const visitingPlaces = useMemo(() => {
